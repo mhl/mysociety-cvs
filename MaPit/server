@@ -1,20 +1,19 @@
 #!/usr/bin/perl -w -I../perllib
 #
 # server:
-# XMLRPC server.
+# RABX server for MaPit.
 #
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.4 2004-11-08 18:09:30 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.5 2004-11-10 11:13:10 francis Exp $';
 
 use FCGI;
 use mySociety::MaPit;   # client interface
 use mySociety::VotingArea;
 use MaPit;
 use RABX;
-use XMLRPC::Transport::HTTP;
 
 use mySociety::WatchUpdate;
 my $W = new mySociety::WatchUpdate();
@@ -22,21 +21,17 @@ my $W = new mySociety::WatchUpdate();
 my $req = FCGI::Request();
 
 while ($req->Accept() >= 0) {
-    if ($ENV{REQUEST_METHOD} eq 'POST' and $ENV{CONTENT_TYPE} eq 'text/xml') {
-        my $s = XMLRPC::Transport::HTTP::CGI->dispatch_to('MaPit')->handle();
-    } else {
-        RABX::Server::CGI::dispatch(
-                'MaPit.get_voting_areas' => sub {
-                    return MaPit->get_voting_areas(@_);
-                },
-                'MaPit.get_voting_area_info' => sub {
-                    return MaPit->get_voting_area_info(@_);
-                },
-                'MaPit.get_voting_areas_info' => sub {
-                    return MaPit->get_voting_areas_info(@_);
-                }
-            );
-    }
+    RABX::Server::CGI::dispatch(
+            'MaPit.get_voting_areas' => sub {
+                return MaPit->get_voting_areas(@_);
+            },
+            'MaPit.get_voting_area_info' => sub {
+                return MaPit->get_voting_area_info(@_);
+            },
+            'MaPit.get_voting_areas_info' => sub {
+                return MaPit->get_voting_areas_info(@_);
+            }
+        );
     $W->exit_if_changed();
 }
 

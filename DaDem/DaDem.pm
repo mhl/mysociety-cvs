@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 #
 # DaDem.pm:
-# Implementation of DaDem functions, to be called by XMLRPC.
+# Implementation of DaDem functions, to be called by RABX.
 #
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.13 2004-11-08 18:09:30 francis Exp $
+# $Id: DaDem.pm,v 1.14 2004-11-10 11:13:10 francis Exp $
 #
 
 package DaDem;
