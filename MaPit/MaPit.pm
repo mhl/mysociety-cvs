@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.7 2004-10-18 10:00:40 francis Exp $
+# $Id: MaPit.pm,v 1.8 2004-10-18 10:30:18 chris Exp $
 #
 
 package MaPit;
@@ -39,6 +39,7 @@ sub dbh () {
 }
 
 # Special cases to represent parliaments, assemblies themselves.
+use constant DUMMY_ID => 1000000;
 my %special_cases = (
         # Enclosing bodies
         900000 => {
@@ -97,22 +98,13 @@ sub get_voting_areas ($$) {
     $pc = uc($pc);
 
     # Dummy postcode case
-    if ($pc eq 'zz99zz') {
-        my %db = (
-                mySociety::VotingArea::CTY , 1000001,
-                mySociety::VotingArea::CED , 1000002,
-                mySociety::VotingArea::DIS , 1000003,
-                mySociety::VotingArea::DIW , 1000004,
-                mySociety::VotingArea::WMP , 1000005,
-                mySociety::VotingArea::WMC , 1000006,
-                mySociety::VotingArea::EUP , 1000007,
-                mySociety::VotingArea::EUR , 1000008
-            );
-        return \%db;
+    if ($pc eq 'ZZ99ZZ') {
+        return {
+                map { $special_cases{$_}->{type} => $_ } keys(%special_cases)
+            };
     }
 
     # Real data
-
     return mySociety::MaPit::BAD_POSTCODE if ($pc !~ m#^[A-Z]{1,2}[0-9]{1,4}[A-Z]{1,2}$#);
 
     my $pcid = dbh()->selectrow_array('select id from postcode where postcode = ?', {}, $pc);
@@ -121,7 +113,7 @@ sub get_voting_areas ($$) {
     # Also add pseudo-areas.
     return {
             (
-                map { $special_cases{$_}->{type} => $_ } keys %special_cases
+                map { $special_cases{$_}->{type} => $_ } grep { $_ < DUMMY_ID } keys %special_cases
             ), (
                 map { $mySociety::VotingArea::type_to_id{$_->[0]} => $_->[1] } @{
                     dbh()->selectall_arrayref('select type, id from postcode_area, area where postcode_area.area_id = area.id and postcode_area.postcode_id = ?', {}, $pcid)
