@@ -6,14 +6,18 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.2 2004-10-15 16:35:47 francis Exp $
+# $Id: MaPit.pm,v 1.3 2004-10-17 10:57:20 chris Exp $
 #
 
 package MaPit;
 
 use strict;
+
 use mySociety::MaPit;
 use mySociety::VotingArea;
+
+use DBI;
+use DBD::SQLite;
 
 =head1 NAME
 
@@ -27,30 +31,35 @@ Implementation of MaPit
 
 =over 4
 
+=cut
+
+sub dbh () {
+    our $dbh;
+    $dbh ||= DBI->connect('dbi:SQLite:dbname=/home/chris/projects/mysociety/MaPit/mapit.sqlite', '', '', { RaiseError => 1, AutoCommit => 0 });
+    return $dbh;
+}
+
 =item get_voting_areas POSTCODE
+
+Return voting area IDs for POSTCODE.
 
 =cut
 sub get_voting_areas ($$) {
     my ($x, $pc) = @_;
+    
     $pc =~ s/\s+//g;
     $pc = uc($pc);
-    if ($pc !~ m#^[A-Z]{1,2}[0-9]{1,4}[A-Z]{1,2}$#) { # XXX
-        return mySociety::MaPit::BAD_POSTCODE;
-    } elsif ($pc eq 'CB41XP') {
-        my %db = (
-                mySociety::VotingArea::CTY , 1,
-                mySociety::VotingArea::CED , 2,
-                mySociety::VotingArea::DIS , 3,
-                mySociety::VotingArea::DIW , 4,
-                mySociety::VotingArea::WMP , 5,
-                mySociety::VotingArea::WMC , 6,
-                mySociety::VotingArea::EUP , 7,
-                mySociety::VotingArea::EUR , 8
-            );
-        return \%db;
-    } else {
-        return mySociety::MaPit::POSTCODE_NOT_FOUND;
-    }
+
+    return mySociety::MaPit::BAD_POSTCODE if ($pc !~ m#^[A-Z]{1,2}[0-9]{1,4}[A-Z]{1,2}$#);
+
+    my $pcid = dbh()->selectrow_array('select id from postcode where postcode = ?', {}, $pc);
+    return mySociety::MaPit::POSTCODE_NOT_FOUND if (!$pcid);
+
+    return {
+            map { $_->[0] => $_->[1] } @{
+                    dbh()->selectall_arrayref('select type, id from postcode_area, area where postcode_area.area_id = area.id and postcode_area.postcode_id = ?', {}, $pcid)
+                }
+        };
 }
 
 =item get_voting_area_info ID
@@ -59,29 +68,20 @@ sub get_voting_areas ($$) {
 sub get_voting_area_info ($$) {
     my ($x, $id) = @_;
 
-    my %db = (
-            1 => {'type' => mySociety::VotingArea::CTY, 'name' => 'Cambridgeshire County Council'},
-            2 => {'type' => mySociety::VotingArea::CED, 'name' => 'West Chesterton ED'},
-            3 => {'type' => mySociety::VotingArea::DIS, 'name' => 'Cambridge District Council'},
-            4 => {'type' => mySociety::VotingArea::DIW, 'name' => 'West Chesterton Ward'},
-            5 => {'type' => mySociety::VotingArea::WMP, 'name' => 'House of Commons'},
-            6 => {'type' => mySociety::VotingArea::WMC, 'name' => 'Cambridge'},
-            7 => {'type' => mySociety::VotingArea::EUP, 'name' => 'European Parliament'},
-            8 => {'type' => mySociety::VotingArea::EUR, 'name' => 'Eastern Euro Region'}
-        );
+    my ($type, $name);
+    return mySociety::MaPit::AREA_NOT_FOUND unless (($type, $name) = dbh()->selectrow_array('select type, name from area where id = ?', {}, $id));
+ 
+    my $ret = {
+            name => $name,
+            type => $mySociety::VotingArea::type_to_id{$type}
+        };
 
-    if (exists($db{$id})) {
-        $db{$id}{'type_name'} = $mySociety::VotingArea::name{$db{$id}{'type'}};
-        $db{$id}{'attend_prep'} = $mySociety::VotingArea::attend_prep{$db{$id}{'type'}};
-        $db{$id}{'rep_name'} = $mySociety::VotingArea::rep_name{$db{$id}{'type'}};
-        $db{$id}{'rep_name_plural'} = $mySociety::VotingArea::rep_name_plural{$db{$id}{'type'}};
-        $db{$id}{'rep_suffix'} = $mySociety::VotingArea::rep_suffix{$db{$id}{'type'}};
-        $db{$id}{'rep_prefix'} = $mySociety::VotingArea::rep_prefix{$db{$id}{'type'}};
-
-        return $db{$id};
-    } else {
-        return mySociety::MaPit::AREA_NOT_FOUND;
+    # Annotate with information about the representative type returned for that area.
+    foreach (qw(type_name attend_prep rep_name rep_name_plural rep_suffix rep_prefix)) {
+        no strict 'refs';
+        $ret->{$_} = ${"mySociety::VotingArea::$_"}{$ret->{type}};
     }
+    return $ret;
 }
 
 1;
