@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.18 2004-11-10 12:31:28 chris Exp $
+# $Id: MaPit.pm,v 1.19 2004-11-10 12:36:56 francis Exp $
 #
 
 package MaPit;
@@ -16,6 +16,7 @@ use strict;
 use mySociety::MaPit;
 use mySociety::Util;
 use mySociety::VotingArea;
+use mySociety::Config;
 
 use DBI;
 use DBD::SQLite;
@@ -35,7 +36,8 @@ Implementation of MaPit
 =cut
 sub dbh () {
     our $dbh;
-    $dbh ||= DBI->connect('dbi:SQLite:dbname=/home/chris/projects/mysociety/MaPit/mapit.sqlite', '', '', { RaiseError => 1, AutoCommit => 0 });
+    $dbh ||= DBI->connect('dbi:SQLite:dbname=' .  mySociety::Config::get('MAPIT_SQLITE_DB'), 
+            '', '', { RaiseError => 1, AutoCommit => 0 });
     return $dbh;
 }
 

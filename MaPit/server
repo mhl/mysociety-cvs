@@ -7,13 +7,16 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.7 2004-11-10 12:29:57 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.8 2004-11-10 12:36:56 francis Exp $';
 
 use FCGI;
 use mySociety::MaPit;   # client interface
 use mySociety::VotingArea;
 use MaPit;
 use RABX;
+
+use mySociety::Config;
+mySociety::Config::set_file('../services/conf/general');
 
 use mySociety::WatchUpdate;
 my $W = new mySociety::WatchUpdate();
