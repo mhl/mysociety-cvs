@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.9 2004-10-20 13:18:03 francis Exp $
+# $Id: DaDem.pm,v 1.10 2004-10-20 14:00:06 francis Exp $
 #
 
 package DaDem;
@@ -74,9 +74,6 @@ my %dummy_representatives = (
         2000005 => {
             'type' => mySociety::VotingArea::WMC,
             'voting_area' => 1000006,
-#            'name' => 'Stom Teinberg',
-#            'contact_method' => 'fax',
-#            'fax' => '0000000000'
             'name' => 'Andrea Bryant',
             'contact_method' => 'email',
             'email' => 'Andrea.Bryant@westsussex.gov.uk'
@@ -133,10 +130,12 @@ my %dummy_representatives = (
         2000012 => {
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
-            'name' => 'Tu Stily',
+            'name' => 'Stom Teinberg',
             'contact_method' => 'email',
-            'email' => 'tu.stily@dummy.mysociety.org'
+            'email' => 'mep@tomsteinberg.co.uk'
         }
+
+#            'name' => 'Tu Stily',
     );
 
 my %dummy_areas;
