@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w -I../perllib
+#!/usr/bin/perl -w -I../../perllib
 #
 # server:
 # RABX server for DaDem.
@@ -12,7 +12,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.9 2004-11-10 12:36:55 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.1 2004-11-10 13:07:59 francis Exp $';
 
 use FCGI;
 use mySociety::DaDem;   # client interface
@@ -21,7 +21,7 @@ use DaDem;
 use RABX;
 
 use mySociety::Config;
-mySociety::Config::set_file('../services/conf/general');
+mySociety::Config::set_file('../conf/general');
 
 use mySociety::WatchUpdate;
 my $W = new mySociety::WatchUpdate();

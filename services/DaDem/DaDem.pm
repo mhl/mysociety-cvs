@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.17 2004-11-10 12:36:55 francis Exp $
+# $Id: DaDem.pm,v 1.1 2004-11-10 13:07:59 francis Exp $
 #
 
 package DaDem;

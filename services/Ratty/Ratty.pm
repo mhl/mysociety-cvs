@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Ratty.pm,v 1.3 2004-10-30 10:40:12 chris Exp $
+# $Id: Ratty.pm,v 1.1 2004-11-10 13:08:00 francis Exp $
 #
 
 package Ratty;

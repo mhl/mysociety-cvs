@@ -5,7 +5,7 @@
 -- Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 -- Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.1 2004-10-28 15:31:05 chris Exp $
+-- $Id: schema.sql,v 1.1 2004-11-10 13:08:00 francis Exp $
 --
 
 create table rule (

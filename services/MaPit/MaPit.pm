@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.19 2004-11-10 12:36:56 francis Exp $
+# $Id: MaPit.pm,v 1.1 2004-11-10 13:08:00 francis Exp $
 #
 
 package MaPit;

@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w -I../perllib
+#!/usr/bin/perl -w -I../../perllib
 #
 # server:
 # RABX server for MaPit.
@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.8 2004-11-10 12:36:56 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.1 2004-11-10 13:08:00 francis Exp $';
 
 use FCGI;
 use mySociety::MaPit;   # client interface
@@ -16,7 +16,7 @@ use MaPit;
 use RABX;
 
 use mySociety::Config;
-mySociety::Config::set_file('../services/conf/general');
+mySociety::Config::set_file('../conf/general');
 
 use mySociety::WatchUpdate;
 my $W = new mySociety::WatchUpdate();
