@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.2 2004-10-14 14:14:21 chris Exp $
+# $Id: DaDem.pm,v 1.3 2004-10-14 15:49:22 francis Exp $
 #
 
 package DaDem;
@@ -90,6 +90,7 @@ sub get_representative_info ($$) {
     my %db = (
             1 => {
                 type => mySociety::VotingArea::CED,
+                'voting_area' => 2,
                 name => 'Maurice Leeke',
                 contact_method => 'email',
                 email => 'Maurice.Leeke@cambridgeshire.gov.uk'
@@ -97,6 +98,7 @@ sub get_representative_info ($$) {
 
             2 => {
                 'type' => mySociety::VotingArea::DIW,
+                'voting_area' => 4,
                 'name' => 'Diane Armstrong',
                 'contact_method' => 'email',
                 'email' => 'diane_armstrong@tiscali.co.uk'
@@ -104,6 +106,7 @@ sub get_representative_info ($$) {
             
             3 => {
                 'type' => mySociety::VotingArea::DIW,
+                'voting_area' => 4,
                 'name' => 'Max Boyce',
                 'contact_method' => 'email',
                 'email' => 'maxboyce@cix.co.uk'
@@ -111,6 +114,7 @@ sub get_representative_info ($$) {
             
             4 => {
                 'type' => mySociety::VotingArea::DIW,
+                'voting_area' => 4,
                 'name' => 'Ian Nimmo-Smith',
                 'contact_method' => 'email',
                 'email' => 'ian@monksilver.com'
@@ -118,6 +122,7 @@ sub get_representative_info ($$) {
             
             5 => {
                 'type' => mySociety::VotingArea::WMC,
+                'voting_area' => 6,
                 'name' => 'Anne Campbell',
                 'contact_method' => 'fax',
                 'fax' => '+441223311315'
@@ -125,6 +130,8 @@ sub get_representative_info ($$) {
             
             6 => {
                 'type' => mySociety::VotingArea::EUR,
+                'voting_area' => 8,
+                'name' => 'Anne Campbell',
                 'name' => 'Geoffrey Van Orden',
                 'contact_method' => 'fax',
                 'fax' => '+3222849332'
@@ -132,6 +139,7 @@ sub get_representative_info ($$) {
             
             7 => {
                 'type' => mySociety::VotingArea::EUR,
+                'voting_area' => 8,
                 'name' => 'Jeffrey Titford',
                 'contact_method' => 'fax',
                 'fax' => '+441245252071'
@@ -139,6 +147,7 @@ sub get_representative_info ($$) {
             
             8 => {
                 'type' => mySociety::VotingArea::EUR,
+                'voting_area' => 8,
                 'name' => 'Richard Howitt',
                 'contact_method' => 'email',
                 'email' => 'richard.howitt@geo2.poptel.org.uk'
@@ -146,6 +155,7 @@ sub get_representative_info ($$) {
             
             9 => {
                 'type' => mySociety::VotingArea::EUR,
+                'voting_area' => 8,
                 'name' => 'Robert Sturdy',
                 'contact_method' => 'email',
                 'email' => 'rsturdy@europarl.eu.int'
@@ -153,6 +163,7 @@ sub get_representative_info ($$) {
             
             10 => {
                 'type' => mySociety::VotingArea::EUR,
+                'voting_area' => 8,
                 'name' => 'Andrew Duff',
                 'contact_method' => 'email',
                 'email' => 'mep@andrewduffmep.org'
@@ -160,6 +171,7 @@ sub get_representative_info ($$) {
             
             11 => {
                 'type' => mySociety::VotingArea::EUR,
+                'voting_area' => 8,
                 'name' => 'Christopher Beazley',
                 'contact_method' => 'fax',
                 'fax' => '+441920485805'
@@ -167,6 +179,7 @@ sub get_representative_info ($$) {
             
             12 => {
                 'type' => mySociety::VotingArea::EUR,
+                'voting_area' => 8,
                 'name' => 'Tom Wise',
                 'contact_method' => 'email',
                 'email' => 'ukipeast@globalnet.co.uk'
