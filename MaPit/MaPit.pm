@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.1 2004-10-14 15:22:32 chris Exp $
+# $Id: MaPit.pm,v 1.2 2004-10-15 16:35:47 francis Exp $
 #
 
 package MaPit;
@@ -71,6 +71,13 @@ sub get_voting_area_info ($$) {
         );
 
     if (exists($db{$id})) {
+        $db{$id}{'type_name'} = $mySociety::VotingArea::name{$db{$id}{'type'}};
+        $db{$id}{'attend_prep'} = $mySociety::VotingArea::attend_prep{$db{$id}{'type'}};
+        $db{$id}{'rep_name'} = $mySociety::VotingArea::rep_name{$db{$id}{'type'}};
+        $db{$id}{'rep_name_plural'} = $mySociety::VotingArea::rep_name_plural{$db{$id}{'type'}};
+        $db{$id}{'rep_suffix'} = $mySociety::VotingArea::rep_suffix{$db{$id}{'type'}};
+        $db{$id}{'rep_prefix'} = $mySociety::VotingArea::rep_prefix{$db{$id}{'type'}};
+
         return $db{$id};
     } else {
         return mySociety::MaPit::AREA_NOT_FOUND;
