@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.8 2004-10-18 10:30:18 chris Exp $
+# $Id: MaPit.pm,v 1.9 2004-10-19 17:08:12 chris Exp $
 #
 
 package MaPit;
@@ -105,7 +105,7 @@ sub get_voting_areas ($$) {
     }
 
     # Real data
-    return mySociety::MaPit::BAD_POSTCODE if ($pc !~ m#^[A-Z]{1,2}[0-9]{1,4}[A-Z]{1,2}$#);
+    return mySociety::MaPit::BAD_POSTCODE if ($pc !~ m#^[A-Z]{1,2}[0-9]{1,2}[A-Z]?[0-9]{1,2}[A-Z]{1,2}$#);
 
     my $pcid = dbh()->selectrow_array('select id from postcode where postcode = ?', {}, $pc);
     return mySociety::MaPit::POSTCODE_NOT_FOUND if (!$pcid);
