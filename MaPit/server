@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.5 2004-11-10 11:13:10 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.6 2004-11-10 12:02:38 francis Exp $';
 
 use FCGI;
 use mySociety::MaPit;   # client interface
@@ -23,13 +23,13 @@ my $req = FCGI::Request();
 while ($req->Accept() >= 0) {
     RABX::Server::CGI::dispatch(
             'MaPit.get_voting_areas' => sub {
-                return MaPit->get_voting_areas(@_);
+                return MaPit::get_voting_areas(@_);
             },
             'MaPit.get_voting_area_info' => sub {
-                return MaPit->get_voting_area_info(@_);
+                return MaPit::get_voting_area_info(@_);
             },
             'MaPit.get_voting_areas_info' => sub {
-                return MaPit->get_voting_areas_info(@_);
+                return MaPit::get_voting_areas_info(@_);
             }
         );
     $W->exit_if_changed();
