@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.9 2004-10-19 17:08:12 chris Exp $
+# $Id: MaPit.pm,v 1.10 2004-10-20 13:43:06 francis Exp $
 #
 
 package MaPit;
@@ -143,7 +143,8 @@ sub get_voting_area_info ($$) {
     }
 
     # Annotate with information about the representative type returned for that area.
-    foreach (qw(type_name attend_prep rep_name rep_name_plural rep_suffix rep_prefix)) {
+    foreach (qw(type_name attend_prep rep_name rep_name_plural
+                rep_name_long rep_name_long_plural rep_suffix rep_prefix)) {
         no strict 'refs';
         $ret->{$_} = ${"mySociety::VotingArea::$_"}{$ret->{type}};
     }
