@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.8 2004-10-20 08:47:00 francis Exp $
+# $Id: DaDem.pm,v 1.9 2004-10-20 13:18:03 francis Exp $
 #
 
 package DaDem;
@@ -86,8 +86,8 @@ my %dummy_representatives = (
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
             'name' => 'Lis Chrightfoot',
-            'contact_method' => 'fax',
-            'fax' => '0000000000'
+            'contact_method' => 'email',
+            'email' => 'chris-fyrtest@ex-parrot.com'
         },
         
         2000007 => {
@@ -126,8 +126,8 @@ my %dummy_representatives = (
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
             'name' => 'Ancis Frirving',
-            'contact_method' => 'fax',
-            'fax' => '0000000000'
+            'contact_method' => 'email',
+            'email' => 'francis@flourish.org'
         },
         
         2000012 => {
