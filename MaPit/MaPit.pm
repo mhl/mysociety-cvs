@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.3 2004-10-17 10:57:20 chris Exp $
+# $Id: MaPit.pm,v 1.4 2004-10-17 13:24:56 chris Exp $
 #
 
 package MaPit;
@@ -32,7 +32,6 @@ Implementation of MaPit
 =over 4
 
 =cut
-
 sub dbh () {
     our $dbh;
     $dbh ||= DBI->connect('dbi:SQLite:dbname=/home/chris/projects/mysociety/MaPit/mapit.sqlite', '', '', { RaiseError => 1, AutoCommit => 0 });
