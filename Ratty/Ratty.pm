@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Ratty.pm,v 1.1 2004-10-28 15:31:05 chris Exp $
+# $Id: Ratty.pm,v 1.2 2004-10-28 15:47:24 chris Exp $
 #
 
 package Ratty;
@@ -67,7 +67,7 @@ sub new ($) {
             lastcommit => time(),
             numsincelastcommit => 0,
             lastrebuild => time(),
-            tester => compile_rules();
+            tester => compile_rules()
         };
     return bless($self, $class);
 }
@@ -84,6 +84,7 @@ sub test ($$) {
     if (defined(my $r = $self->{tester}->($V))) {
         # have a hit on rule $r
         # XXX log this
+        warn "rule #$r triggered\n";
         $result = 0;
     } else {
         # No rule hits, carry on.
@@ -201,7 +202,7 @@ sub compile_rules () {
                     '}');
     }
 
-    push(@code, 'return 0;',
+    push(@code, 'return undef;',
                 '}');
 
     my $subr = eval(join("\n", @code));
