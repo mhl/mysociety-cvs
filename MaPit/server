@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.1 2004-10-14 15:22:32 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.2 2004-10-15 09:16:31 francis Exp $';
 
 use FCGI;
 use mySociety::MaPit;   # client interface
@@ -15,9 +15,16 @@ use mySociety::VotingArea;
 use MaPit;
 use XMLRPC::Transport::HTTP;
 
+use mySociety::WatchUpdate;
+my $W = new mySociety::WatchUpdate();
+
 my $req = FCGI::Request();
 
 while ($req->Accept() >= 0) {
     my $s = XMLRPC::Transport::HTTP::CGI->dispatch_to('MaPit')->handle();
+    $W->exit_if_changed();
 }
+
+
+
 

@@ -12,7 +12,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.3 2004-10-14 14:14:21 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.4 2004-10-15 09:16:31 francis Exp $';
 
 use FCGI;
 use mySociety::DaDem;   # client interface
@@ -20,9 +20,13 @@ use mySociety::VotingArea;
 use DaDem;
 use XMLRPC::Transport::HTTP;
 
+use mySociety::WatchUpdate;
+my $W = new mySociety::WatchUpdate();
+
 my $req = FCGI::Request();
 
 while ($req->Accept() >= 0) {
     my $s = XMLRPC::Transport::HTTP::CGI->dispatch_to('DaDem')->handle();
+    $W->exit_if_changed();
 }
 
