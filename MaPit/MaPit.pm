@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.4 2004-10-17 13:24:56 chris Exp $
+# $Id: MaPit.pm,v 1.5 2004-10-18 09:24:56 francis Exp $
 #
 
 package MaPit;
@@ -49,6 +49,23 @@ sub get_voting_areas ($$) {
     $pc =~ s/\s+//g;
     $pc = uc($pc);
 
+    # Dummy postcode case
+    if ($pc eq 'zz99zz') {
+        my %db = (
+                mySociety::VotingArea::CTY , 1000001,
+                mySociety::VotingArea::CED , 1000002,
+                mySociety::VotingArea::DIS , 1000003,
+                mySociety::VotingArea::DIW , 1000004,
+                mySociety::VotingArea::WMP , 1000005,
+                mySociety::VotingArea::WMC , 1000006,
+                mySociety::VotingArea::EUP , 1000007,
+                mySociety::VotingArea::EUR , 1000008
+            );
+        return \%db;
+    }
+
+    # Real data
+
     return mySociety::MaPit::BAD_POSTCODE if ($pc !~ m#^[A-Z]{1,2}[0-9]{1,4}[A-Z]{1,2}$#);
 
     my $pcid = dbh()->selectrow_array('select id from postcode where postcode = ?', {}, $pc);
@@ -67,13 +84,30 @@ sub get_voting_areas ($$) {
 sub get_voting_area_info ($$) {
     my ($x, $id) = @_;
 
-    my ($type, $name);
-    return mySociety::MaPit::AREA_NOT_FOUND unless (($type, $name) = dbh()->selectrow_array('select type, name from area where id = ?', {}, $id));
- 
-    my $ret = {
-            name => $name,
-            type => $mySociety::VotingArea::type_to_id{$type}
-        };
+    my $ret;
+    if ($id >=1000001 && $id <=1000008) {
+        # Dummy postcode case
+        my %db = (
+                1000001 => {type => mySociety::VotingArea::CTY, name => 'Cambridgeshire County Council'},
+                1000002 => {type => mySociety::VotingArea::CED, name => 'West Chesterton ED'},
+                1000003 => {type => mySociety::VotingArea::DIS, name => 'Cambridge District Council'},
+                1000004 => {type => mySociety::VotingArea::DIW, name => 'West Chesterton Ward'},
+                1000005 => {type => mySociety::VotingArea::WMP, name => 'House of Commons'},
+                1000006 => {type => mySociety::VotingArea::WMC, name => 'Cambridge'},
+                1000007 => {type => mySociety::VotingArea::EUP, name => 'European Parliament'},
+                1000008 => {type => mySociety::VotingArea::EUR, name => 'Eastern Euro Region'}
+            );
+        $ret = $db{$id};
+    } else {
+        # Real data
+        my ($type, $name);
+        return mySociety::MaPit::AREA_NOT_FOUND unless (($type, $name) = dbh()->selectrow_array('select type, name from area where id = ?', {}, $id));
+     
+        $ret = {
+                name => $name,
+                type => $mySociety::VotingArea::type_to_id{$type}
+            };
+    }
 
     # Annotate with information about the representative type returned for that area.
     foreach (qw(type_name attend_prep rep_name rep_name_plural rep_suffix rep_prefix)) {
