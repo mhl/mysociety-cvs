@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.6 2004-10-18 09:52:28 chris Exp $
+# $Id: DaDem.pm,v 1.7 2004-10-18 10:00:40 francis Exp $
 #
 
 package DaDem;
@@ -42,98 +42,97 @@ my %dummy_representatives = (
         2000001 => {
             type => mySociety::VotingArea::CED,
             'voting_area' => 1000002,
-            name => 'Maurice Leeke',
+            name => 'Jim Tackson',
             contact_method => 'email',
-            email => 'Maurice.Leeke@cambridgeshire.gov.uk'
+            email => 'jim.tackson@dummy.mysociety.org'
         },
 
         2000002 => {
             'type' => mySociety::VotingArea::DIW,
             'voting_area' => 1000004,
-            'name' => 'Diane Armstrong',
+            'name' => 'Mefan Stagdalinski',
             'contact_method' => 'email',
-            'email' => 'diane_armstrong@tiscali.co.uk'
+            'email' => 'mefan.stagdalinksi@dummy.mysociety.org'
         },
         
         2000003 => {
             'type' => mySociety::VotingArea::DIW,
             'voting_area' => 1000004,
-            'name' => 'Max Boyce',
+            'name' => 'Manno Itchell',
             'contact_method' => 'email',
-            'email' => 'maxboyce@cix.co.uk'
+            'email' => 'manno.itchell@dummy.mysociety.org'
         },
         
         2000004 => {
             'type' => mySociety::VotingArea::DIW,
             'voting_area' => 1000004,
-            'name' => 'Ian Nimmo-Smith',
+            'name' => 'Gil Phyford',
             'contact_method' => 'email',
-            'email' => 'ian@monksilver.com'
+            'email' => 'gil.phyford@dummy.mysociety.org'
         },
         
         2000005 => {
             'type' => mySociety::VotingArea::WMC,
             'voting_area' => 1000006,
-            'name' => 'Anne Campbell',
+            'name' => 'Stom Teinberg',
             'contact_method' => 'fax',
-            'fax' => '+441223311315'
+            'fax' => '0000000000'
         },
         
         2000006 => {
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
-            'name' => 'Anne Campbell',
-            'name' => 'Geoffrey Van Orden',
+            'name' => 'Lis Chrightfoot',
             'contact_method' => 'fax',
-            'fax' => '+3222849332'
+            'fax' => '0000000000'
         },
         
         2000007 => {
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
-            'name' => 'Jeffrey Titford',
+            'name' => 'Crames Jonin',
             'contact_method' => 'fax',
-            'fax' => '+441245252071'
+            'fax' => '0000000000'
         },
         
         2000008 => {
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
-            'name' => 'Richard Howitt',
+            'name' => 'Lom Toosemore',
             'contact_method' => 'email',
-            'email' => 'richard.howitt@geo2.poptel.org.uk'
+            'email' => 'lom.toosemore@dummy.mysociety.org'
         },
         
         2000009 => {
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
-            'name' => 'Robert Sturdy',
+            'name' => 'Brike Macken',
             'contact_method' => 'email',
-            'email' => 'rsturdy@europarl.eu.int'
+            'email' => 'brike.macken@dummy.mysociety.org'
         },
         
         2000010 => {
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
-            'name' => 'Andrew Duff',
+            'name' => 'Yowena Roung',
             'contact_method' => 'email',
-            'email' => 'mep@andrewduffmep.org'
+            'email' => 'yowena.roung@dummy.mysociety.org'
         },
         
         2000011 => {
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
-            'name' => 'Christopher Beazley',
+            'name' => 'Ancis Frirving',
             'contact_method' => 'fax',
-            'fax' => '+441920485805'
+            'fax' => '0000000000'
         },
         
         2000012 => {
             'type' => mySociety::VotingArea::EUR,
             'voting_area' => 1000008,
-            'name' => 'Tom Wise',
+            'name' => 'Tu Stily',
             'contact_method' => 'email',
-            'email' => 'ukipeast@globalnet.co.uk'
+            'email' => 'tu.stily@dummy.mysociety.org'
         }
     );
 

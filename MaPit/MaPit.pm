@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.6 2004-10-18 09:44:21 chris Exp $
+# $Id: MaPit.pm,v 1.7 2004-10-18 10:00:40 francis Exp $
 #
 
 package MaPit;
@@ -49,23 +49,23 @@ my %special_cases = (
             type => mySociety::VotingArea::EUP,
             name => 'European Parliament',
         },
-        
+     
         # Test data
         1000001 => {
             type => mySociety::VotingArea::CTY,
-            name => 'Cambridgeshire County Council'
+            name => 'Everyone\'s County Council'
         },
         1000002 => {
             type => mySociety::VotingArea::CED,
-            name => 'West Chesterton ED'
+            name => 'Chest Westerton ED'
         },
         1000003 => {
             type => mySociety::VotingArea::DIS,
-            name => 'Cambridge District Council'
+            name => 'Our District Council'
         },
         1000004 => {
             type => mySociety::VotingArea::DIW,
-            name => 'West Chesterton Ward'
+            name => 'Chest Westerton Ward'
         },
         1000005 => {
             type => mySociety::VotingArea::WMP,
@@ -73,7 +73,7 @@ my %special_cases = (
         },
         1000006 => {
             type => mySociety::VotingArea::WMC,
-            name => 'Cambridge'
+            name => 'Your and My Society'
         },
         1000007 => {
             type => mySociety::VotingArea::EUP,
@@ -81,7 +81,7 @@ my %special_cases = (
         },
         1000008 => {
             type => mySociety::VotingArea::EUR,
-            name => 'Eastern Euro Region'
+            name => 'Windward Euro Region'
         }
     );
 
