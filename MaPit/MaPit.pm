@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.13 2004-11-02 14:20:50 chris Exp $
+# $Id: MaPit.pm,v 1.14 2004-11-08 18:09:30 francis Exp $
 #
 
 package MaPit;
@@ -119,20 +119,20 @@ sub get_voting_areas ($$) {
         $ret = {
                 map { $special_cases{$_}->{type} => $_ } grep { $_ >= DUMMY_ID } keys(%special_cases)
             };
+    } else {
+        # Real data
+        throw RABX::Error("Postcode '$pc' is not valid.", mySociety::MaPit::BAD_POSTCODE) unless (mySociety::Util::is_valid_postcode($pc));
+
+        my $pcid = dbh()->selectrow_array('select id from postcode where postcode = ?', {}, $pc);
+        throw RABX::Error("Postcode '$pc' not found.", mySociety::MaPit::POSTCODE_NOT_FOUND) if (!$pcid);
+
+        # Also add pseudo-areas.
+        $ret = {
+                ( map { $mySociety::VotingArea::type_to_id{$_->[0]} => $_->[1] } @{
+                        dbh()->selectall_arrayref('select type, id from postcode_area, area where postcode_area.area_id = area.id and postcode_area.postcode_id = ?', {}, $pcid)
+                    })
+            };
     }
-
-    # Real data
-    return mySociety::MaPit::BAD_POSTCODE unless (mySociety::Util::is_valid_postcode($pc));
-
-    my $pcid = dbh()->selectrow_array('select id from postcode where postcode = ?', {}, $pc);
-    return mySociety::MaPit::POSTCODE_NOT_FOUND if (!$pcid);
-
-    # Also add pseudo-areas.
-    $ret = {
-            ( map { $mySociety::VotingArea::type_to_id{$_->[0]} => $_->[1] } @{
-                    dbh()->selectall_arrayref('select type, id from postcode_area, area where postcode_area.area_id = area.id and postcode_area.postcode_id = ?', {}, $pcid)
-                })
-        };
 
     # Add fictional enclosing areas.
     foreach my $ty (keys %enclosing_areas) {
@@ -157,7 +157,7 @@ sub get_voting_area_info ($$) {
     } else {
         # Real data
         my ($type, $name);
-        return mySociety::MaPit::AREA_NOT_FOUND unless (($type, $name) = dbh()->selectrow_array('select type, name from area where id = ?', {}, $id));
+        throw RABX::Error("Voting area not found id $id", mySociety::MaPit::AREA_NOT_FOUND) unless (($type, $name) = dbh()->selectrow_array('select type, name from area where id = ?', {}, $id));
      
         $ret = {
                 name => $name,

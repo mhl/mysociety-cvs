@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.12 2004-10-29 10:23:39 chris Exp $
+# $Id: DaDem.pm,v 1.13 2004-11-08 18:09:30 francis Exp $
 #
 
 package DaDem;
@@ -167,7 +167,7 @@ sub get_representatives ($$) {
     # Real data
     my $y = dbh()->selectall_arrayref('select id from representative where area_id = ?', {}, $id);
     if (!$y) {
-        return mySociety::DaDem::UNKNOWN_AREA;
+        throw RABX::Error("Area $id not found", mySociety::DaDem::UNKNOWN_AREA);
     } else {
         return [ map { $_->[0] } @$y ];
     }
@@ -238,7 +238,7 @@ sub get_representative_info ($$) {
                 fax => $fax
             };
     } else {
-        return mySociety::DaDem::REP_NOT_FOUND;
+        throw RABX::Exception("Representative $id not found", mySociety::DaDem::REP_NOT_FOUND);
     }
 }
 
