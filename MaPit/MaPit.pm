@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.17 2004-11-10 12:22:00 francis Exp $
+# $Id: MaPit.pm,v 1.18 2004-11-10 12:31:28 chris Exp $
 #
 
 package MaPit;
@@ -106,7 +106,7 @@ my %enclosing_areas = (
 Return voting area IDs for POSTCODE.
 
 =cut
-sub get_voting_areas($) {
+sub get_voting_areas ($) {
     my ($pc) = @_;
     
     my $ret = undef;
@@ -145,10 +145,10 @@ sub get_voting_areas($) {
     return $ret;
 }
 
-=item get_voting_area_info($) ID
+=item get_voting_area_info ID
 
 =cut
-sub get_voting_area_info {
+sub get_voting_area_info ($) {
     my ($id) = @_;
 
     my $ret;
@@ -165,7 +165,8 @@ sub get_voting_area_info {
             };
     }
 
-    # Annotate with information about the representative type returned for that area.
+    # Annotate with information about the representative type returned for that
+    # area.
     foreach (qw(type_name attend_prep rep_name rep_name_plural
                 rep_name_long rep_name_long_plural rep_suffix rep_prefix)) {
         no strict 'refs';
@@ -177,7 +178,7 @@ sub get_voting_area_info {
 =item get_voting_areas_info ARY
 
 =cut
-sub get_voting_areas_info($) {
+sub get_voting_areas_info ($) {
     my ($ary) = @_;
     return { (map { $_ => get_voting_area_info($_) } @$ary) };
 }
