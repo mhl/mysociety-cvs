@@ -7,6 +7,7 @@ description of the files and folders in this package follows.
 LICENSE.txt - Details of open source licensing terms, mainly the Affero GPL
 
 fyr - WriteToThem (internal name FaxYourRepresentative) website
+pb  - PledgeBank website
 
 services - Everything which runs under services.mysociety.org, being:
 services/MaPit - Find voting areas for a given postcode
