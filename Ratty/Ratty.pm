@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Ratty.pm,v 1.2 2004-10-28 15:47:24 chris Exp $
+# $Id: Ratty.pm,v 1.3 2004-10-30 10:40:12 chris Exp $
 #
 
 package Ratty;
@@ -112,7 +112,8 @@ sub test ($$) {
 sub compile_rules () {
     my @code = ('sub ($$) {',
                 'my ($V, $data) = @_;',
-                'my $dbh = Ratty::dbh();');
+                'my $dbh = Ratty::dbh();',
+                'my $result = undef;');
 
     # We stow all literal strings etc. in the array @data, which is then passed
     # to the constructed function. The point of this is to avoid having to
@@ -197,12 +198,13 @@ sub compile_rules () {
         push(@code, sprintf('$dbh->do(q#delete from rule_hit where rule_id = ? and hit < ?#, {}, %d, time() - $interval);', $ruleid));
 
         # If we've got here, and the number of requests over the last interval
-        # exceeds the limit, return true.
-        push(@code, sprintf('return %d if ($num > $requests);', $ruleid),
+        # exceeds the limit, record the matching rule if it's the first which
+        # matches.
+        push(@code, sprintf('$result ||= %d if ($num > $requests);', $ruleid),
                     '}');
     }
 
-    push(@code, 'return undef;',
+    push(@code, 'return $result;',
                 '}');
 
     my $subr = eval(join("\n", @code));
