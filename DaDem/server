@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl -w -I../perllib
 #
 # server:
 # XMLRPC server.
@@ -12,9 +12,11 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.2 2004-10-14 14:13:44 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.3 2004-10-14 14:14:21 chris Exp $';
 
 use FCGI;
+use mySociety::DaDem;   # client interface
+use mySociety::VotingArea;
 use DaDem;
 use XMLRPC::Transport::HTTP;
 
