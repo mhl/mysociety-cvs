@@ -1,0 +1,21 @@
+#!/usr/bin/perl -w
+#
+# server:
+# XMLRPC server.
+#
+# Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
+# Email: chris@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.1 2004-10-06 15:41:23 chris Exp $';
+
+use FCGI;
+use DaDem;
+use XMLRPC::Transport::HTTP;
+
+my $req = FCGI::Request();
+
+while ($req->Accept() >= 0) {
+    my $s = XMLRPC::Transport::HTTP::CGI->dispatch_to('DaDem')->handle();
+}
+
