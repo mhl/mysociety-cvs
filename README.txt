@@ -6,7 +6,7 @@ description of the files and folders in this package follows.
 
 LICENSE.txt - Details of open source licensing terms, mainly the Affero GPL
 
-fyr - FaxYourRepresentative website, and specific code
+fyr - WriteToThem (internal name FaxYourRepresentative) website
 
 services - Everything which runs under services.mysociety.org, being:
 services/MaPit - Find voting areas for a given postcode
