@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w -I../perllib
+#!/usr/bin/perl5.8.5 -w -I../perllib
 #
 # server:
 # XMLRPC server.
@@ -12,21 +12,37 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.4 2004-10-15 09:16:31 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.5 2004-10-29 10:23:39 chris Exp $';
 
 use FCGI;
 use mySociety::DaDem;   # client interface
 use mySociety::VotingArea;
 use DaDem;
+use RABX;
 use XMLRPC::Transport::HTTP;
 
 use mySociety::WatchUpdate;
 my $W = new mySociety::WatchUpdate();
 
 my $req = FCGI::Request();
+use Data::Dumper;
 
 while ($req->Accept() >= 0) {
-    my $s = XMLRPC::Transport::HTTP::CGI->dispatch_to('DaDem')->handle();
+    if ($ENV{REQUEST_METHOD} eq 'POST' and $ENV{CONTENT_TYPE} eq 'text/xml') {
+        my $s = XMLRPC::Transport::HTTP::CGI->dispatch_to('DaDem')->handle();
+    } else {
+        RABX::Server::CGI::dispatch(
+                'DaDem.get_representatives' => sub {
+                    return DaDem->get_representatives(@_);
+                },
+                'DaDem.get_representative_info' => sub {
+                    return DaDem->get_representative_info(@_);
+                },
+                'DaDem.get_representatives_info' => sub {
+                    return DaDem->get_representatives_info(@_);
+                }
+            );
+    }
     $W->exit_if_changed();
 }
 

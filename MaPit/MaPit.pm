@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.11 2004-10-24 17:10:48 chris Exp $
+# $Id: MaPit.pm,v 1.12 2004-10-29 10:23:39 chris Exp $
 #
 
 package MaPit;
@@ -150,6 +150,14 @@ sub get_voting_area_info ($$) {
         $ret->{$_} = ${"mySociety::VotingArea::$_"}{$ret->{type}};
     }
     return $ret;
+}
+
+=item get_voting_areas_info ARY
+
+=cut
+sub get_voting_areas_info ($$) {
+    my ($x, $ary) = @_;
+    return { (map { $_ => MaPit->get_voting_area_info($_) } @$ary) };
 }
 
 1;

@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.11 2004-10-20 16:24:42 chris Exp $
+# $Id: DaDem.pm,v 1.12 2004-10-29 10:23:39 chris Exp $
 #
 
 package DaDem;
@@ -146,12 +146,18 @@ foreach (keys %dummy_representatives) {
 
 =item get_representatives ID
 
-Given the ID of an area, return a list of the representatives returned by that
-area, or, on failure, an error code.
+=item get_representatives ARRAY
+
+Given the ID of an area (or an ARRAY of IDs of several areas), return a list of
+the representatives returned by that area, or, on failure, an error code.
 
 =cut
 sub get_representatives ($$) {
     my ($x, $id) = @_;
+
+    if (ref($id) eq 'ARRAY') {
+        return { (map { $_ => DaDem->get_representatives($_) } @$id) };
+    }
 
     # Dummy postcode case
     if (exists($dummy_areas{$id})) {
@@ -234,6 +240,17 @@ sub get_representative_info ($$) {
     } else {
         return mySociety::DaDem::REP_NOT_FOUND;
     }
+}
+
+=item get_representatives_info ARRAY
+
+Return a reference to a hash of information on all of the representative IDs
+given in ARRAY.
+
+=cut
+sub get_representatives_info ($$) {
+    my ($x, $ary) = @_;
+    return { (map { $_ => DaDem->get_representative_info($_) } @$ary) };
 }
 
 1;
