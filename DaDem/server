@@ -3,11 +3,16 @@
 # server:
 # XMLRPC server.
 #
+# To run it you need these lines in an Apache config:
+#     Options +ExecCGI
+#     SetHandler fastcgi-script
+#
+#
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: server,v 1.1 2004-10-06 15:41:23 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: server,v 1.2 2004-10-14 14:13:44 francis Exp $';
 
 use FCGI;
 use DaDem;
