@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: MaPit.pm,v 1.12 2004-10-29 10:23:39 chris Exp $
+# $Id: MaPit.pm,v 1.13 2004-11-02 14:20:50 chris Exp $
 #
 
 package MaPit;
@@ -41,17 +41,24 @@ sub dbh () {
 
 # Special cases to represent parliaments, assemblies themselves.
 use constant DUMMY_ID => 1000000;
+
 my %special_cases = (
-        # Enclosing bodies
-        900000 => {
+        # Enclosing areas.
+        mySociety::VotingArea::WMP_AREA_ID => {
             type => mySociety::VotingArea::WMP,
-            name => 'House of Commons',
+            name => 'House of Commons'
         },
-        900001 => {
+        
+        mySociety::VotingArea::EUP_AREA_ID => {
             type => mySociety::VotingArea::EUP,
-            name => 'European Parliament',
+            name => 'European Parliament'
         },
-     
+
+        mySociety::VotingArea::LAE_AREA_ID => {
+            type => mySociety::VotingArea::LAE,
+            name => 'London Assembly'
+        },
+
         # Test data
         1000001 => {
             type => mySociety::VotingArea::CTY,
@@ -87,6 +94,13 @@ my %special_cases = (
         }
     );
 
+# Map area type to ID of "fictional" (i.e., not in DB) enclosing area.
+my %enclosing_areas = (
+        mySociety::VotingArea::LAC => mySociety::VotingArea::LAE_AREA_ID,
+        mySociety::VotingArea::WMC => mySociety::VotingArea::WMP_AREA_ID,
+        mySociety::VotingArea::EUR => mySociety::VotingArea::EUP_AREA_ID
+    );
+
 =item get_voting_areas POSTCODE
 
 Return voting area IDs for POSTCODE.
@@ -95,13 +109,15 @@ Return voting area IDs for POSTCODE.
 sub get_voting_areas ($$) {
     my ($x, $pc) = @_;
     
+    my $ret = undef;
+    
     $pc =~ s/\s+//g;
     $pc = uc($pc);
 
     # Dummy postcode case
     if ($pc eq 'ZZ99ZZ') {
-        return {
-                map { $special_cases{$_}->{type} => $_ } keys(%special_cases)
+        $ret = {
+                map { $special_cases{$_}->{type} => $_ } grep { $_ >= DUMMY_ID } keys(%special_cases)
             };
     }
 
@@ -112,15 +128,21 @@ sub get_voting_areas ($$) {
     return mySociety::MaPit::POSTCODE_NOT_FOUND if (!$pcid);
 
     # Also add pseudo-areas.
-    return {
-            (
-                map { $special_cases{$_}->{type} => $_ } grep { $_ < DUMMY_ID } keys %special_cases
-            ), (
-                map { $mySociety::VotingArea::type_to_id{$_->[0]} => $_->[1] } @{
+    $ret = {
+            ( map { $mySociety::VotingArea::type_to_id{$_->[0]} => $_->[1] } @{
                     dbh()->selectall_arrayref('select type, id from postcode_area, area where postcode_area.area_id = area.id and postcode_area.postcode_id = ?', {}, $pcid)
-                }
-            )
+                })
         };
+
+    # Add fictional enclosing areas.
+    foreach my $ty (keys %enclosing_areas) {
+        if (exists($ret->{$ty})) {
+            my $encl = $enclosing_areas{$ty};
+            $ret->{$special_cases{$encl}->{type}} = $enclosing_areas{$ty};
+        }
+    }
+
+    return $ret;
 }
 
 =item get_voting_area_info ID
