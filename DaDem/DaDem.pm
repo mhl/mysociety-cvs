@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: DaDem.pm,v 1.15 2004-11-10 12:02:38 francis Exp $
+# $Id: DaDem.pm,v 1.16 2004-11-10 12:22:00 francis Exp $
 #
 
 package DaDem;
@@ -156,7 +156,7 @@ sub get_representatives ($) {
     my ($id) = @_;
 
     if (ref($id) eq 'ARRAY') {
-        return { (map { $_ => DaDem->get_representatives($_) } @$id) };
+        return { (map { $_ => get_representatives($_) } @$id) };
     }
 
     # Dummy postcode case
@@ -250,7 +250,7 @@ given in ARRAY.
 =cut
 sub get_representatives_info ($) {
     my ($ary) = @_;
-    return { (map { $_ => DaDem->get_representative_info($_) } @$ary) };
+    return { (map { $_ => get_representative_info($_) } @$ary) };
 }
 
 1;
