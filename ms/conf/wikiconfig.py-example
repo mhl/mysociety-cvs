@@ -27,7 +27,6 @@
 
 from MoinMoin.multiconfig import DefaultConfig
 
-
 class Config(DefaultConfig):
 
     # Wiki identity ----------------------------------------------------
@@ -84,7 +83,7 @@ class Config(DefaultConfig):
     
     # Link spam protection for public wikis (Uncomment to enable)
     # Needs a reliable internet connection.
-    #from MoinMoin.util.antispam import SecurityPolicy
+    from MoinMoin.util.antispam import SecurityPolicy
 
 
     # Mail --------------------------------------------------------------
@@ -93,10 +92,10 @@ class Config(DefaultConfig):
     # or sending forgotten passwords.
 
     # SMTP server, e.g. "mail.provider.com" (empty or None to disable mail)
-    mail_smarthost = ""
+    mail_smarthost = "localhost"
 
     # The return address, e.g "My Wiki <noreply@mywiki.org>"
-    mail_from = ""
+    mail_from = "mySociety Wiki <francis@mysociety.org>"
 
     # "user pwd" if you need to use SMTP AUTH
     mail_login = ""
