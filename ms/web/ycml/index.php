@@ -5,7 +5,7 @@
 // Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 // Email: matthew@mysociety.org. WWW: http://www.mysociety.org
 //
-// $Id: index.php,v 1.3 2005-05-05 16:14:23 francis Exp $
+// $Id: index.php,v 1.4 2005-05-05 16:19:13 francis Exp $
 
 require_once '../../../phplib/importparams.php';
 require_once '../../../phplib/utility.php';
@@ -171,7 +171,7 @@ be on the list.</p>
         <input type="text" name="email" id="email" value="<?=htmlspecialchars(get_http_var('email'))?>" size="30">
         <br><label for="postcode">Postcode:</label> 
         <input type="text" name="postcode" id="postcode" value="<?=htmlspecialchars(get_http_var('postcode'))?>" size="10">
-        <input type="submit" class="submit" value="Go">
+        <input type="submit" class="submit" value="Sign up">
         <br><em>(for example OX1 3DR)</em>
     </form>
     </td></tr>
