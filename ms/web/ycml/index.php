@@ -5,7 +5,7 @@
 // Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 // Email: matthew@mysociety.org. WWW: http://www.mysociety.org
 //
-// $Id: index.php,v 1.1 2005-05-05 01:01:00 francis Exp $
+// $Id: index.php,v 1.2 2005-05-05 01:21:42 francis Exp $
 
 require_once '../../../phplib/importparams.php';
 require_once '../../../phplib/utility.php';
@@ -94,14 +94,14 @@ if (DB::isError($ycmldb)) {
     $done = false;
     $errors = array();
     if (get_http_var('posted')) {
-        if (!validate_postcode(trim(get_http_var('postcode')))) {
-            $errors[] = "Please enter a postcode, like  BS3 1QP";
+        if (strlen(trim(get_http_var('name'))) < 1) {
+            $errors[] = "Please enter your name";
         }
         if (!validate_email(get_http_var('email'))) {
             $errors[] = "Please enter your email address";
         }
-        if (strlen(trim(get_http_var('name'))) < 1) {
-            $errors[] = "Please enter your name";
+        if (!validate_postcode(trim(get_http_var('postcode')))) {
+            $errors[] = "Please enter a postcode, like  BS3 1QP";
         }
     }
 
