@@ -5,7 +5,7 @@
 // Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 // Email: matthew@mysociety.org. WWW: http://www.mysociety.org
 //
-// $Id: index.php,v 1.2 2005-05-05 01:21:42 francis Exp $
+// $Id: index.php,v 1.3 2005-05-05 16:14:23 francis Exp $
 
 require_once '../../../phplib/importparams.php';
 require_once '../../../phplib/utility.php';
@@ -45,22 +45,13 @@ if (DB::isError($ycmldb)) {
         background-color: #ffffff;
     }
     td {
-        text-align: center;
-        vertical-align: middle;
-    }
-    div#votingmachine {
         text-align: left;
-        margin: 0 auto;
-        padding-left: 418px;
-        background: url("shoup.gif") no-repeat top left #ffffff;
-        width: 408px;
-        height: 658px;
+        vertical-align: middle;
     }
     h1 {
         text-align: center;
         font-size: 250%;
         margin: 0;
-        width: 1px;
     }
     form {
         display: table;
@@ -124,8 +115,15 @@ if (DB::isError($ycmldb)) {
     
     if (!$done) {
 ?>
-<table border=0><tr><td><div id="votingmachine">
+<table border=0><tr><td>
+<img alt="" src="shoup.gif"></td>
+
+    <td>
     <h1>Your constituency mailing list</h1>
+<p align="center">a <a href="http://www.mysociety.org/">
+<img style="vertical-align:middle; border: none;" alt="mySociety" src="../mysociety_sm.gif"></a>
+project
+</p>
 
 <?
     if (sizeof($errors)) {
@@ -134,14 +132,40 @@ if (DB::isError($ycmldb)) {
         print '</li></ul></div>';
     } else {
 ?>
-    <p>In the near future, this site will go live, to encourage and enable
-    MPs to run email lists for their constituents, and allow those
-    constituents to discuss ideas in a way which doesn't bombard them with
-    email. <a href="http://www.mysociety.org/cgi-bin/moin.cgi/YourConstituencyMailingList">More information on our website</a>. Sign up if you're interested, and to hear more around launch time:</p>
+
+<p><em>"So, the voting is over. The politicians vanish to Westminster, and
+everything carries on as before, right?"</em></p>
+
+<p>Wrong. Between elections the internet is really starting to challenge
+politics as usual. As part of this change, we'd like to put you in
+touch with your new MP. Not for a specific purpose, but in order to
+hear what they're working on, to debate their thoughts in a safe,
+friendly environment, and generally to build better, more useful
+relationships between constituents and their MPs.</p>
+
+<p>If you enter your details below, we'll add you to a queue of other
+people in your constituency. When enough have signed up, your MP will
+get sent an email. It'll say '20 of your constituents would like to
+hear what you're up to - hit reply to let them know'. If they don't
+reply, nothing will happen, until they get an email which says there
+are now 100 people; 200 people; 500 people - until it is nonsensical
+not to reply and start talking.</p>
+
+<p>When your MP replies, it won't be one-way spam, and it won't be an
+inbox-filling free-for-all. Instead, each email will have a link at
+the bottom, which will take you straight to a forum where the first
+post will contain the MP's email. There'll be no tiresome login - you
+can just start talking about what they've said. Safe, easy and
+democratic.</p>
+
+<p><strong>Sign up now</strong>, and when the site is finished, you'll already
+be on the list.</p>
+
+
 <? } ?>
     <form method="post" action="./">
         <input type="hidden" name="posted" id="posted" value="1">
-        <br><label for="name">Name:</label>
+        <label for="name">Name:</label>
         <input type="text" name="name" id="name" value="<?=htmlspecialchars(get_http_var('name'))?>" size="20">
         <br><label for="email">Email:</label>
         <input type="text" name="email" id="email" value="<?=htmlspecialchars(get_http_var('email'))?>" size="30">
@@ -150,8 +174,7 @@ if (DB::isError($ycmldb)) {
         <input type="submit" class="submit" value="Go">
         <br><em>(for example OX1 3DR)</em>
     </form>
-    </div></td></tr>
-    <tr><td style="padding-left: 418px">Being built by <a href="http://www.mysociety.org/">mySociety</a></td></tr>
+    </td></tr>
     </table>
 <? 
     } 
