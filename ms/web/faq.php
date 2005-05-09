@@ -14,7 +14,7 @@ include "wordpress/wp-content/themes/mysociety/header.php";
   A.</b> Email <a href="mailto:tom@mysociety.org">Tom Steinberg</a> or call 07811 082158.</p>
   <a name="do" id="do"></a>
   <p><b>Q. What exactly are you going to do?<br/>
-  A.</b> We are building five sites, our <a href="http://www.mysociety.org/cgi-bin/moin.cgi/LaunchProjects">Launch projects</a>. </p>
+  A.</b> We are building five sites, our <a href="projects.php">launch projects</a>. </p>
   <p><b>Q. Can you give us any examples of the types of project you're on about?<br/>
   A.</b> <a href="http://www.upmystreet.com">UpMyStreet.com</a>, <a href="http://www.faxyourmp.com">FaxYourMp.com</a>, <a href="http://www.theyworkforyou.com">TheyWorkForYou.com</a> and <a href="http://writetothem.com">WriteToThem</a> (which we just launched) are all examples of the type of service which we aim to foster. But it is exactly the rarity of such really useful, effective, cheap civic sites that has lead to mySociety's creation</p>
 <p><b>Q. What have you been doing for the last year?<br/>
