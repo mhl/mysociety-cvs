@@ -43,7 +43,6 @@ things that require several people. We think that the world needs such
 a service: lots of good things don't happen because there aren't
 enough organised people to do them. We are looking for people to help
 test the site, so please do pay the testing site a visit.
-Foobar
 </div>
 <div class="item_foot">
 </div>
