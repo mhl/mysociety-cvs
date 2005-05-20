@@ -5,7 +5,7 @@
 // Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 // Email: matthew@mysociety.org. WWW: http://www.mysociety.org
 //
-// $Id: index.php,v 1.4 2005-05-05 16:19:13 francis Exp $
+// $Id: index.php,v 1.5 2005-05-20 08:17:48 francis Exp $
 
 require_once '../../../phplib/importparams.php';
 require_once '../../../phplib/utility.php';
@@ -105,10 +105,13 @@ if (DB::isError($ycmldb)) {
         }
         $ycmldb->commit();
 ?>
-    <p align="center">
+    <p style="font-size:100%; text-align:center">
     <b>Thank you!</b>  We'll email you when we've built the site and your new
     MP is ready to start.
     </p>
+
+    <p style="font-size:150%; padding:1em; text-align:center">Meanwhile, why not <a href="http://www.ivotedforyoubecause.com">tell
+    your new MP why you voted the way you did?</a>
 <?
         $done = true;
     } 
