@@ -34,7 +34,7 @@
 &nbsp;<a href="/index.php">News</a>&nbsp;|
 &nbsp;<a href="/faq.php">FAQ</a> &nbsp;|
 &nbsp;<a href="/projects.php">Projects</a>&nbsp;|
-&nbsp;<a href="/?cat=2">Developers Blog</a>&nbsp;|
+&nbsp;<a href="/?cat=2">Developers' Blog</a>&nbsp;|
 &nbsp;<a href="/moin.cgi">Wiki</a> |
 </div>
 
