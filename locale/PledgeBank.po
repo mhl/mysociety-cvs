@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2005-06-24 15:51+0100\n"
+"POT-Creation-Date: 2005-06-24 23:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,11 +71,11 @@ msgstr ""
 msgid "<em>Announcement permission mail sent</em>"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:646
+#: pb/phplib/admin-pb.php:644
 msgid "Abuse reports"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:823
+#: pb/phplib/admin-pb.php:810
 msgid "Discard selected abuse reports"
 msgstr ""
 
@@ -132,49 +132,49 @@ msgstr ""
 msgid "%s by %s, on pledge %s at %s"
 msgstr ""
 
-#: pb/phplib/comments.php:121
+#: pb/phplib/comments.php:133
 msgid "<h2>Latest comments</h2>"
 msgstr ""
 
-#: pb/phplib/comments.php:163
+#: pb/phplib/comments.php:165
 msgid "<h2>Add Comment</h2>"
 msgstr ""
 
-#: pb/phplib/comments.php:166 pb/web/contact.php:39
+#: pb/phplib/comments.php:168 pb/web/contact.php:39
 msgid "Your name"
 msgstr ""
 
-#: pb/phplib/comments.php:171 pb/phplib/pledge.php:545 pb/web/contact.php:40
+#: pb/phplib/comments.php:173 pb/phplib/pledge.php:551 pb/web/contact.php:40
 msgid "Your email"
 msgstr ""
 
-#: pb/phplib/comments.php:176
+#: pb/phplib/comments.php:178
 msgid "Your web site"
 msgstr ""
 
-#: pb/phplib/comments.php:176
+#: pb/phplib/comments.php:178
 msgid "(optional)"
 msgstr ""
 
-#: pb/phplib/comments.php:180
+#: pb/phplib/comments.php:182
 msgid "Your comment"
 msgstr ""
 
-#: pb/phplib/comments.php:188
+#: pb/phplib/comments.php:190
 msgid ""
 "Your name and web site, if given, will be shown on your comment,\n"
 "but your email address will not be."
 msgstr ""
 
-#: pb/phplib/comments.php:191
+#: pb/phplib/comments.php:193
 msgid "Email me any replies to my comment"
 msgstr ""
 
-#: pb/phplib/comments.php:193 pb/web/new.php:254
+#: pb/phplib/comments.php:195 pb/web/new.php:254
 msgid "Preview"
 msgstr ""
 
-#: pb/phplib/comments.php:195
+#: pb/phplib/comments.php:197
 msgid "Post comment"
 msgstr ""
 
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: pb/phplib/page.php:125 pb/web/all.php:25
+#: pb/phplib/page.php:125 pb/web/list.php:26
 msgid "All Pledges"
 msgstr ""
 
@@ -362,196 +362,210 @@ msgstr ""
 msgid "Deadline:"
 msgstr ""
 
-#: pb/phplib/pledge.php:198
+#: pb/phplib/pledge.php:199
+#, php-format
+msgid "%s person signed up"
+msgid_plural "%s people signed up"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pb/phplib/pledge.php:201
 #, php-format
 msgid "%s person has signed up"
 msgid_plural "%s people have signed up"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/pledge.php:201
+#: pb/phplib/pledge.php:204
 #, php-format
 msgid "(%d over target)"
 msgstr ""
 
-#: pb/phplib/pledge.php:204
+#: pb/phplib/pledge.php:208
+#, php-format
+msgid "%d more was needed"
+msgid_plural "%d more were needed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pb/phplib/pledge.php:210
 #, php-format
 msgid "%d more needed"
 msgstr ""
 
-#: pb/phplib/pledge.php:213
+#: pb/phplib/pledge.php:219
 msgid "More details"
 msgstr ""
 
-#: pb/phplib/pledge.php:218
+#: pb/phplib/pledge.php:224
 msgid "Anything wrong with this pledge?  Tell us!"
 msgstr ""
 
-#: pb/phplib/pledge.php:259
+#: pb/phplib/pledge.php:265
 msgid "Success"
 msgstr ""
 
-#: pb/phplib/pledge.php:262
+#: pb/phplib/pledge.php:268
 msgid "That pledge has already finished"
 msgstr ""
 
-#: pb/phplib/pledge.php:265
+#: pb/phplib/pledge.php:271
 msgid "That pledge is already full"
 msgstr ""
 
-#: pb/phplib/pledge.php:268
+#: pb/phplib/pledge.php:274
 msgid "You've already signed that pledge"
 msgstr ""
 
-#: pb/phplib/pledge.php:271 pb/web/comment.php:43 pb/web/ref-sign.php:46
+#: pb/phplib/pledge.php:277 pb/web/comment.php:43 pb/web/ref-sign.php:46
 #: pb/web/sms.php:64
 msgid "Permission denied"
 msgstr ""
 
-#: pb/phplib/pledge.php:275
+#: pb/phplib/pledge.php:281
 msgid "Something went wrong unexpectedly"
 msgstr ""
 
-#: pb/phplib/pledge.php:317
+#: pb/phplib/pledge.php:323
 #, php-format
 msgid "I, %s, will %s but only if <strong>%s</strong> %s will %s."
 msgstr ""
 
-#: pb/phplib/pledge.php:319
+#: pb/phplib/pledge.php:325
 #, php-format
 msgid "I will %s but only if <strong>%s</strong> %s will %s."
 msgstr ""
 
-#: pb/phplib/pledge.php:322
+#: pb/phplib/pledge.php:328
 #, php-format
 msgid "%s will %s but only if <strong>%s</strong> %s will %s."
 msgstr ""
 
-#: pb/phplib/pledge.php:344
+#: pb/phplib/pledge.php:350
 msgid "Target met, pledge open until midnight tonight, London time."
 msgstr ""
 
-#: pb/phplib/pledge.php:346
+#: pb/phplib/pledge.php:352
 msgid "Target met, pledge over."
 msgstr ""
 
-#: pb/phplib/pledge.php:348
+#: pb/phplib/pledge.php:354
 #, php-format
 msgid "Target met, pledge still open for %d day."
 msgid_plural "Target met, pledge still open for %d days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/pledge.php:352
+#: pb/phplib/pledge.php:358
 #, php-format
 msgid "(needs %d more by midnight tonight, London time)"
 msgstr ""
 
-#: pb/phplib/pledge.php:354
+#: pb/phplib/pledge.php:360
 msgid "Deadline expired, pledge failed."
 msgstr ""
 
-#: pb/phplib/pledge.php:358
+#: pb/phplib/pledge.php:364
 #, php-format
 msgid "just %d day left"
 msgid_plural "just %d days left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/pledge.php:360
+#: pb/phplib/pledge.php:366
 #, php-format
 msgid "%d day left"
 msgid_plural "%d days left"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/pledge.php:362
+#: pb/phplib/pledge.php:368
 #, php-format
 msgid ", %d more signature needed)"
 msgid_plural ", %d more signatures needed)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/pledge.php:467
+#: pb/phplib/pledge.php:473
 msgid "Incorrect PIN!"
 msgstr ""
 
-#: pb/phplib/pledge.php:470
+#: pb/phplib/pledge.php:476
 msgid "PIN Protected Pledge"
 msgstr ""
 
-#: pb/phplib/pledge.php:470
+#: pb/phplib/pledge.php:476
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr ""
 
-#: pb/phplib/pledge.php:471 pb/web/ref-picture.php:152 pb/web/sms.php:233
+#: pb/phplib/pledge.php:477 pb/web/ref-picture.php:152 pb/web/sms.php:233
 msgid "Submit"
 msgstr ""
 
-#: pb/phplib/pledge.php:540
+#: pb/phplib/pledge.php:546
 msgid "Sign up now"
 msgstr ""
 
-#: pb/phplib/pledge.php:544
+#: pb/phplib/pledge.php:550
 #, php-format
 msgid "I, %s, sign up to the pledge."
 msgstr ""
 
-#: pb/phplib/pledge.php:546
+#: pb/phplib/pledge.php:552
 msgid ""
 "(we need this so we can tell you when the pledge is completed and let the "
 "pledge creator get in touch)"
 msgstr ""
 
-#: pb/phplib/pledge.php:548 pb/web/sms.php:232
+#: pb/phplib/pledge.php:554 pb/web/sms.php:232
 msgid "Show my name on this pledge"
 msgstr ""
 
-#: pb/phplib/pledge.php:549
+#: pb/phplib/pledge.php:555
 msgid "Sign Pledge"
 msgstr ""
 
-#: pb/phplib/pledge.php:572
+#: pb/phplib/pledge.php:578
 msgid ""
 "You will massively increase the chance of this pledge succeeding if you "
 msgstr ""
 
-#: pb/phplib/pledge.php:574 pb/web/ref-flyers.php:53
+#: pb/phplib/pledge.php:580 pb/web/ref-flyers.php:53
 msgid "print this page out"
 msgstr ""
 
-#: pb/phplib/pledge.php:575
+#: pb/phplib/pledge.php:581
 msgid "these more attractive PDF and RTF (Word) versions"
 msgstr ""
 
-#: pb/phplib/pledge.php:576
+#: pb/phplib/pledge.php:582
 #, php-format
 msgid ""
 "(or use %s), cut up the flyers and stick them through your neighbours' "
 "letterboxes."
 msgstr ""
 
-#: pb/phplib/pledge.php:581
+#: pb/phplib/pledge.php:587
 msgid "print these pages out"
 msgstr ""
 
-#: pb/phplib/pledge.php:582
+#: pb/phplib/pledge.php:588
 msgid ""
 ", cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr ""
 
-#: pb/phplib/pledge.php:584
+#: pb/phplib/pledge.php:590
 msgid ""
 "We cannot emphasise this enough &mdash; print them NOW and post them next "
 "time you\n"
 "go out to the shops or your pledge is unlikely to succeed."
 msgstr ""
 
-#: pb/phplib/pledge.php:591 pb/web/ref-flyers.php:56
+#: pb/phplib/pledge.php:597 pb/web/ref-flyers.php:56
 msgid "Graphic of flyers for printing"
 msgstr ""
 
-#: pb/phplib/pledge.php:601
+#: pb/phplib/pledge.php:607
 #, php-format
 msgid ""
 "<p class=\"noprint\"><strong>Take your Pledge to the pub</strong> &ndash; "
@@ -692,20 +706,6 @@ msgstr ""
 msgid "Subscribe"
 msgstr ""
 
-#: pb/web/all.php:22
-msgid "Illegal offset or sort parameter passed"
-msgstr ""
-
-#: pb/web/all.php:52
-msgid ""
-"<h2>All Pledges <small>(which at least a few people have signed up to)</"
-"small></h2>"
-msgstr ""
-
-#: pb/web/all.php:88
-msgid "There are currently none."
-msgstr ""
-
 #: pb/web/comment.php:22
 msgid "Missing pledge id"
 msgstr ""
@@ -813,7 +813,7 @@ msgstr ""
 msgid "Did you <a href=\"/faq\">read the FAQ</a> first?"
 msgstr ""
 
-#: pb/web/contact.php:44 pb/web/ref-announce.php:295
+#: pb/web/contact.php:44 pb/web/ref-announce.php:280
 msgid "Send"
 msgstr ""
 
@@ -1043,7 +1043,7 @@ msgstr ""
 
 #: pb/web/faq.php:86
 msgid ""
-"PledgeBank has been built under the by mySociety thanks to the effort\n"
+"PledgeBank has been built by mySociety thanks to the effort\n"
 "of a combination of paid core developers and unpaid volunteers. The\n"
 "core developers were paid for by the \n"
 "<acronym title=\"Office of the Deputy Prime Minister\">ODPM</acronym>'s \n"
@@ -1252,6 +1252,32 @@ msgstr ""
 
 #: pb/web/index.php:126
 msgid "Recent successful pledges"
+msgstr ""
+
+#: pb/web/list.php:23
+msgid "Illegal offset or sort parameter passed"
+msgstr ""
+
+#: pb/web/list.php:66
+msgid "Successful pledges which are still open"
+msgstr ""
+
+#: pb/web/list.php:69
+msgid "Successful, closed pledges"
+msgstr ""
+
+#: pb/web/list.php:72
+msgid "Failed pledges"
+msgstr ""
+
+#: pb/web/list.php:75
+msgid ""
+"Pledges which still need signers <small>(to which at least a few people have "
+"signed up)</small>"
+msgstr ""
+
+#: pb/web/list.php:118
+msgid "There are currently none."
 msgstr ""
 
 #: pb/web/login.php:57
@@ -1837,8 +1863,7 @@ msgstr ""
 
 #: pb/web/new.php:650
 #, php-format
-msgid ""
-"It is now live at <strong>%s</strong><br>and people can sign up to it there."
+msgid "It is now live at %s<br>and people can sign up to it there."
 msgstr ""
 
 #: pb/web/new.php:651
@@ -2165,11 +2190,11 @@ msgid ""
 "Otherwise people who signed up by text won't be able to contact you again."
 msgstr ""
 
-#: pb/web/ref-announce.php:292
+#: pb/web/ref-announce.php:277
 msgid "<h3>Send Announcement</h3>"
 msgstr ""
 
-#: pb/web/ref-announce.php:294
+#: pb/web/ref-announce.php:279
 msgid ""
 "(Remember, when you send this message <strong>your email address will be "
 "given to everyone who has signed up or will sign up</strong> to your pledge "
@@ -2830,4 +2855,3 @@ msgid ""
 "Why not <a href=\"mailto:team@pledgebank.com\">send us photos</a> of "
 "yourself carrying out successful pledges?"
 msgstr ""
-
