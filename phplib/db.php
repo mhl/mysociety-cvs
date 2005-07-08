@@ -6,10 +6,10 @@
 // Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org. WWW: http://www.mysociety.org
 //
-// $Id: db.php,v 1.18 2005-05-25 09:44:27 chris Exp $
+// $Id: db.php,v 1.1 2005-07-08 11:33:02 matthew Exp $
 
 require_once "DB.php";
-require_once "../../phplib/utility.php";
+require_once "utility.php";
 
 /* db_connect
  * Connect a global handle to the database. */
@@ -17,9 +17,10 @@ function db_connect() {
     global $pbdb;
     $vars = array('hostspec'=>'HOST', 'port'=>'PORT', 'database'=>'NAME', 'username'=>'USER', 'password'=>'PASS');
     $connstr = array('phptype'=>'pgsql');
+    $prefix = OPTION_PHP_MAINDB;
     foreach ($vars as $k => $v) {
-        if (defined('OPTION_PB_DB_' . $v)) {
-            $connstr[$k] = constant('OPTION_PB_DB_' . $v);
+        if (defined('OPTION_' . $prefix . '_DB_' . $v)) {
+            $connstr[$k] = constant('OPTION_' . $prefix . '_DB_' . $v);
         }
     }
     $pbdb = DB::connect($connstr);

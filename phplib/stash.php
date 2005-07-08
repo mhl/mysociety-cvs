@@ -6,16 +6,14 @@
  * Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
  * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
- * $Id: stash.php,v 1.10 2005-07-06 15:21:57 chris Exp $
+ * $Id: stash.php,v 1.1 2005-07-08 11:33:02 matthew Exp $
  * 
  */
 
-require_once '../../phplib/rabx.php';   /* for serialise/unserialise */
-require_once '../../phplib/utility.php';
+require_once 'rabx.php';   /* for serialise/unserialise */
+require_once 'utility.php';
 
-require_once '../phplib/db.php';
-
-db_connect();
+require_once 'db.php';
 
 /* stash_request [EXTRA]
  * Stash details of the request (i.e., method, URL, and any URL-encoded form

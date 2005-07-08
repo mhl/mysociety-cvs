@@ -6,7 +6,7 @@
  * Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org/
  *
- * $Id: auth.php,v 1.1 2005-04-30 15:54:29 francis Exp $
+ * $Id: auth.php,v 1.1 2005-07-08 11:33:02 matthew Exp $
  * 
  */
 
