@@ -8,16 +8,21 @@ include "wordpress/wp-content/themes/mysociety/header.php";
 </div>
  <div class="item">
   <a name="moo" id="moo"></a>
-  <p><b>Q. What is MySociety.Org?<br/>
+  <p><b>Q. What is mySociety.org?<br/>
   A.</b> mySociety has two missions. The first is to be a charitable project which builds websites that give people simple, tangible benefits in the civic and community aspects of their lives. The second is to teach the public and voluntary sectors, through demonstration, how to most efficiently use the internet to improve lives.</p>
   <p><b>Q. How do I get in contact with you in person?<br/>
   A.</b> Email <a href="mailto:tom@mysociety.org">Tom Steinberg</a> or call 07811 082158.</p>
   <a name="do" id="do"></a>
-  <p><b>Q. What exactly are you going to do?<br/>
+  <p><b>Q. What exactly are you doing?<br/>
   A.</b> We are building five sites, our <a href="projects.php">launch projects</a>. </p>
   <p><b>Q. Can you give us any examples of the types of project you're on about?<br/>
-  A.</b> <a href="http://www.upmystreet.com">UpMyStreet.com</a>, <a href="http://www.faxyourmp.com">FaxYourMp.com</a>, <a href="http://www.theyworkforyou.com">TheyWorkForYou.com</a> and <a href="http://writetothem.com">WriteToThem</a> are all examples of the type of service which we aim to foster. But it is exactly the rarity of such really useful, effective, cheap civic sites that has lead to mySociety's creation</p>
-<p><b>Q. What have you been doing for the last year?<br/>
+  A.</b> <a href="http://www.theyworkforyou.com">TheyWorkForYou.com</a>, <a
+  href="http://writetothem.com">WriteToThem</a> (which used to be called FaxYourMP) and <a
+  href="http://www.pledgebank.com">PledgeBank</a> are all examples of the type
+  of service which we aim to foster. But it is exactly the rarity of such
+  really useful, effective, cheap civic sites that has lead to mySociety's
+  creation</p>
+<p><b>Q. What have you been doing for the last two years?<br/>
   A.</b> mySociety was founded in September 2003, but it only started building projects in September 2004. The reason for this is, strangely, that we got very lucky. The ODPM told us in March 2004 that we were being awarded a substantial sum of money in partnership with West Sussex County Council, which was the single most important event in mySociety's brief history. However, government handling of funding has to be extremely cautious, and it took until September 2004 for us to actually recieve money to start development. Since then, we've been racing along!</p>
 
 <p><b>Q. So what is this funding about?<br/>
