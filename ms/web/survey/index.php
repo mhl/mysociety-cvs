@@ -22,7 +22,7 @@
 
     <title>mySociety Survey</title>
     
-    <link rel="stylesheet" href="survey.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="survey.css" type="text/css" media="projection,screen" />
     </head>
 <body>
 
@@ -65,7 +65,7 @@ hand side of the page).
     <? } elseif ($page == 3) { ?>
 <h1>WriteToThem - Priority Outcomes</h1>
 
-<p>2005 ODPM Priority Outcomes supported by WriteToThem:
+<p>2005 ODPM Priority Outcomes helped by WriteToThem:
 
 <ul>
 <li>No. 2 - Community Information
@@ -118,6 +118,145 @@ images specific to your councillors or local authority.
 
 <? $end_project = 1 ?>
 
+    <? } ?>
+<? } elseif ($project == "pb") { ?>
+    <? if ($page == 1) { ?>
+<h1>PledgeBank - Introduction</h1>
+
+<p>A widely reported and highly popular site, which engages local people
+to achieve things together that they otherwise wouldn't do, building
+on a sense of community spirit.
+
+<p>PledgeBank lets users make pledges in the form "I'll do something, but
+only if 10 other people will do it too." Launched in June 2005,
+PledgeBank has already had over 21,000 signatures on over 600 pledges,
+varying from cleaning up riverbank in Cardiff, donating blood, using
+energy efficient light bulbs and replacing the broken windows of an
+East London mosque as a show of local solidarity after racist
+violence.
+    <? } elseif ($page == 2) { ?>
+<h1>PledgeBank - Screenshot</h1>
+<img src="rivertaff.jpg" alt="[screenshot of PledgeBank]">
+    <? } elseif ($page == 3) { ?>
+<h1>PledgeBank - Benefits to Local Authorities</h1>
+
+<ul>
+<li>Proven track record of getting people to collaborate on a range of
+activities that they otherwise wouldn't have done.
+
+<li>Customisable so that it just shows and highlights pledges created in one area.
+
+<li>Acts as a lever to improve the effectiveness of a wider range of
+pre-existing local agendas for healthier local democracy, better
+schooling, and cleaner local environment and beyond.
+</ul>
+    <? } elseif ($page == 4) { ?>
+<h1>PledgeBank - Benefits to local citizens</h1>
+
+<ul>
+<li>Improving and building community cohesion.
+
+<li>Reassurance that if a citizen chooses to take action of benefit to
+their local community, they won't be left isolated, trying to achieve
+change on their own.
+
+<li>The ability to signup to receive emails in a local area, and to be
+notified when people create local pledges at any point in the future.
+</ul>
+
+    <? } elseif ($page == 5) { ?>
+
+<h1>PledgeBank - Priority Outcomes</h1>
+
+<p>2005 ODPM Priority Outcomes helped by PledgeBank
+
+<ul>
+<li>No. 3 - Democractic Renewal
+<li>No. 4 - Local Environment
+<li>No. 5 - Library Sport and Leisure
+<li>No. 8 - Supporting new ways of working
+</ul>
+    <? } elseif ($page == 6) { ?>
+<h1>PledgeBank - Local adaptation</h1>
+
+<p>We can create versions of PledgeBank that are branded for specific
+local organisations (say a London borough, or an agency like Sport
+London). These will only show local pledges within the remit of those
+bodies.
+
+<p>PledgeBank can also be adapted for use within organisations, for
+example organising volunteering or social activities within a local
+authority intranet (i.e I will volunteer 3 hours a week on project X,
+but only if 5 other people in this building will too)
+
+    <? } elseif ($page == 7) { ?>
+<? $end_project = 1 ?>
+    <? } ?>
+<? } elseif ($project == "ycml") { ?>
+    <? if ($page == 1) { ?>
+<h1>YourConstituencyMailingList</h1>
+
+<p>YourConstituencyMailingList (a placeholder name) is mySociety's next major
+citizen focussed  web project.
+
+<p>It is designed to let MPs and other elected representatives email their
+constituents about matters which they consider to be important,
+and to discuss those in a public forum.
+
+    <? } elseif ($page == 2) { ?>
+    <h1>YourConstituencyMailingList - How does it work?</h1>
+
+    <p>A constituent enters their postcode, name and email address, and they
+    are  added  to a queue of other people in their constituency. When
+    enough people have signed up, the MP representing that area will be
+    automatically sent an email. The email will say  '20 of your
+    constituents would like to hear what you're up to - hit reply to talk
+    to them'. If they don't reply nothing will happen, and the
+    constituents will have to wait. But at some point in the future the MP
+    will get another email which says 100 people; 200 people; 500 people -
+    the day-to-day operation of the site will create incentives for the MP
+    to respond, even if they choose not to for the first few times.
+
+    <p>When the MP replies, the result isn't one-way spam or an uncontrolled
+    email free-for-all. Instead, each email will have a link at the
+    bottom, which will take you straight to a forum where the first post
+    will contain the MP's email. There'll be no tiresome login procedure,
+    users can just start talking with a single click. And the MP can
+    engage directly or watch from a distance, depending on their
+    preference.
+
+    <? } elseif ($page == 3) { ?>
+<h1>YourConstituencyMailingList - Screenshot</h1>
+<img src="ycmlscreen.gif" alt="YCML screenshot">
+
+    <? } elseif ($page == 4) { ?>
+<h1>YourConstituencyMailingList - Questions</h1>
+
+<h2>How do councillors fit in?</h2>
+
+<p>Whilst the service is being launched as a service for MPs, it is
+technically easy to adapt the site to create 'Your Ward Mailing Lists'
+for councillors. We would very much like to work with partner local
+authorities to test councillor run lists, and we can easily integrate
+the whole site into local authority websites.
+
+<h2>When does it launch?</h2>
+
+<p>We plan to start testing YourConstituencyMailingList with real MPs and
+constituents in mid-September. We already have over 3500 people signed
+up, showing the great latent demand for an easy way to hear from local
+politicians.
+    <? } elseif ($page == 5) { ?>
+<h1>YourConstituencyMailingList - Priority Outcomes</h1>
+<p>2005 ODPM Priority Outcomes supported by YourConstituencyMailingList:
+
+<ul>
+<li>No. 2 - Community information
+<li>No. 3 - Democratic renewal
+<li>No. 11 -  Supporting new ways of working
+</ul>
+    <? } elseif ($page == 6) { ?>
+<? $end_project = 1 ?>
     <? } ?>
 <? } else { ?>
 
@@ -221,7 +360,7 @@ images specific to your councillors or local authority.
     is like to feel powerless, that our own actions can't really change the things
     that we want to change.  PledgeBank is about beating that feeling. Read about
     our newest and most popular site yet.
-    <a href="?page=<?=$page?>&project=pb">Click here to find out about PledgeBank &gt;&gt;</a>
+    <a href="?page=1&project=pb">Click here to find out about PledgeBank &gt;&gt;</a>
     </div>
 
     <div class="project" id="wtt">
@@ -233,12 +372,16 @@ images specific to your councillors or local authority.
 
     <h2>Future citizen facing projects</h2>
 
-    <ul>
-    <li>Your Constituency Mailing List - Our next site allows MPs and
-    councillors to contact their constituents. 3500+ subscribers so far
-    and site not launched yet.
-    <li>Give It Away
-    </ul>
+    <div class="project" id="ycml">
+    <strong>YourConstituencyMailingList</strong> - Our next site allows MPs and councillors
+    to contact their constituents. 3500+ subscribers so far and the site not
+    launched yet.
+    <a href="?page=1&project=ycml">Click here to find out about YourConstituencyMailingList &gt;&gt;</a>
+    </div>
+
+    <div class="project" id="gia">
+    <strong>Give It Away</strong> - Lowering the barriers to giving things away
+    </div>
 
     <h2>Backoffice services</h2>
 
@@ -286,7 +429,6 @@ images specific to your councillors or local authority.
     <a href="mailto:tom@mysociety.org">tom@mysociety.org</a>.
     <? } ?>
 <? } ?>
-
 <? if ($end_project) { ?>
 <p>Now you can either go back and read about the other projects, or
 proceed to take the survey.
