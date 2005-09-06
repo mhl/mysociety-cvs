@@ -30,16 +30,16 @@
     <? if ($page == 1) { ?>
 <h1>WriteToThem - Introduction</h1>
 
-<p>WriteToThem.com is a highly popular, award-winning service which
-allows members of the public to easily discover and then get in touch
-with any of their elected representatives.
+<p> <img src="award.jpeg" align="right" style="margin: 1em"> WriteToThem.com is a highly popular, award-winning
+service which allows members of the public to easily discover and then get in
+touch with any of their elected representatives.
+
 
 <p>We currently cover all UK councillors, MPs, MEPs, MSPs, Welsh and
 London assembly members.
 
 <p>WriteToThem.com is the successor to the multi-award winning
-FaxYourMP.com, and has been funded by the ODPM's e-innovations fund,
-in partnership with West Sussex County Council.
+FaxYourMP.com.
 
     <? } elseif ($page == 2) { ?>
 <h1>WriteToThem - How it works</h1>
@@ -65,7 +65,7 @@ hand side of the page).
     <? } elseif ($page == 3) { ?>
 <h1>WriteToThem - Priority Outcomes</h1>
 
-<p>2005 ODPM Priority Outcomes helped by WriteToThem:
+<p>2005 ODPM Priority Outcomes supported by WriteToThem:
 
 <ul>
 <li>No. 2 - Community Information
@@ -123,19 +123,19 @@ images specific to your councillors or local authority.
     <? if ($page == 1) { ?>
 <h1>PledgeBank - Introduction</h1>
 
-<p>A widely reported and highly popular site, which engages local people
-to achieve things together that they otherwise wouldn't do, building
-on a sense of community spirit.
+<p>Pledgebank is a widely reported and highly popular site designed to
+get people doing things in their local communities that they wouldn't
+otherwise ever get round to.
 
 <p>PledgeBank lets users make pledges in the form "I'll do something, but
 only if 10 other people will do it too." Launched in June 2005,
-PledgeBank has already had over 21,000 signatures on over 600 pledges,
+PledgeBank has already had over 21,000 signatures on over 700 pledges,
 varying from cleaning up riverbank in Cardiff, donating blood, using
 energy efficient light bulbs and replacing the broken windows of an
 East London mosque as a show of local solidarity after racist
 violence.
     <? } elseif ($page == 2) { ?>
-<h1>PledgeBank - Screenshot</h1>
+<h1>PledgeBank - An example of a successful pledge</h1>
 <img src="rivertaff.jpg" alt="[screenshot of PledgeBank]">
     <? } elseif ($page == 3) { ?>
 <h1>PledgeBank - Benefits to Local Authorities</h1>
@@ -168,7 +168,7 @@ notified when people create local pledges at any point in the future.
 
 <h1>PledgeBank - Priority Outcomes</h1>
 
-<p>2005 ODPM Priority Outcomes helped by PledgeBank
+<p>2005 ODPM Priority Outcomes supported by PledgeBank
 
 <ul>
 <li>No. 3 - Democractic Renewal
@@ -188,6 +188,10 @@ bodies.
 example organising volunteering or social activities within a local
 authority intranet (i.e I will volunteer 3 hours a week on project X,
 but only if 5 other people in this building will too)
+
+<p>View a <a href="http://very.unfortu.net/~tom/pbpublicsector.ppt"
+target="_blank">more detailed presentation</a> about PledgeBank (will open as a
+Powerpoint file) or <a href="http://www.pledgebank.com" target="_blank">visit PledgeBank itself</a>.
 
     <? } elseif ($page == 7) { ?>
 <? $end_project = 1 ?>
@@ -213,20 +217,22 @@ and to discuss those in a public forum.
     constituents would like to hear what you're up to - hit reply to talk
     to them'. If they don't reply nothing will happen, and the
     constituents will have to wait. But at some point in the future the MP
-    will get another email which says 100 people; 200 people; 500 people -
-    the day-to-day operation of the site will create incentives for the MP
-    to respond, even if they choose not to for the first few times.
-
-    <p>When the MP replies, the result isn't one-way spam or an uncontrolled
-    email free-for-all. Instead, each email will have a link at the
-    bottom, which will take you straight to a forum where the first post
-    will contain the MP's email. There'll be no tiresome login procedure,
-    users can just start talking with a single click. And the MP can
-    engage directly or watch from a distance, depending on their
-    preference.
+    will get another email which says 100 people; 200 people; 500 people are
+    waiting to hear from you - the day-to-day operation of the site will create
+    incentives for the MP to respond, even if they choose not to for the first
+    few times.
+    
+    <p>When the MP replies users are given a controlled opportuniy to discuss
+    the MP's message. Each email sent will have a link at the bottom, which
+    takes users straight to a custom designed discussion forum. The first post
+    in the forum is the message the MP emailed, and users can respond then and
+    there, of they so wish.  There'll be no tiresome login procedure, users can
+    just start talking with a single click. And the MP can engage directly to
+    the group or respond to individual constituents privately, depending on
+    their wishes.
 
     <? } elseif ($page == 3) { ?>
-<h1>YourConstituencyMailingList - Screenshot</h1>
+<h1>YourConstituencyMailingList - Screenshot of pre-launch site</h1>
 <img src="ycmlscreen.gif" alt="YCML screenshot">
 
     <? } elseif ($page == 4) { ?>
@@ -265,21 +271,26 @@ politicians.
     e-innovations funding.
 
     <p>It is a service to make it very easy for people to give away unwanted goods
-    to local charities and community groups. It's goal is to increase the
+    to local charities and community groups. Its goal is to increase the
     amount of valuable goods which are sold or re-used by organisations in
     local communities.
     <? } elseif ($page == 2) { ?>
     <h1>Give It Away - How it will work</h1>
     <p>A user starts by being in possesssion of some item or items they want
-    to get rid of. They surf to GiveItAway, enter a postcode, tick a box
-    referring to the category of item, and enter an email address. They
-    are then sent an email which is copied to a contact at the relevent
-    charity. They can then discuss with the charity the details of whether
-    the item is wanted, and if so, how it can be donated or collected.
+    to get rid of. They visit GiveItAway, enter a postcode and their email
+    address, and enter the type of item they want to give away.
 
-    <p>The key to GiveItAway is minimalism and similicity - it relies on
-    email to contact charities because it demands a lower level of
-    technical knowledge than any other internet based interaction.
+    <p>Moments later they recieve an email which is copied into both the user
+    as well as a nearby charity or community group which has previously
+    indicated interest in this type of item. They can then discuss with
+    the charity the details of whether the item is wanted, and if so, how
+    it can be donated or collected.
+
+    <p>The key to GiveItAway is minimalism and simplicity - as a website it
+    features a single page, and relies on email to contact charities
+    because it demands a lower level of technical knowledge than any other
+    internet based interaction.
+
     <? } elseif ($page == 3) { ?>
     <h1>Give It Away - How it can be used by local authorities</h1>
 
@@ -389,11 +400,12 @@ escalate complaints as required.
     ODPM as a key representative of an organisation or sector with an
     interest in e-democracy, electronic public service provision or
     e-engagement generally. mySociety operates in these fields, and during
-    this survey we will tell you about our work and it's relevence to your
+    this survey we will tell you about our work and its relevence to your
     organisations.
 
-    <p>The information on this site is designed to help you complete the
-    survey as quickly and painlessly as possible.
+    <p>We know that many of you will not be familiar with mySociety's projects,
+    so we've included some concise information on each of the projects,
+    explaining what they do and highlighting specific benefits.
 
     <p>Thank you for taking the time to complete this survey - your responses
     are of great importance to the future of our project, and we believe
@@ -413,10 +425,11 @@ escalate complaints as required.
     to most efficiently use the internet to improve lives.</i>
     </ul>
 
-    <p>The purpose of the survey is to collect your thoughts and opinions on
-    the current and future value of mySociety products and services to
-    you, your organisation and, where appropriate, the sector in which you
-    operate.
+    <p>Following these aims mySociety has built a set of popular products,
+    using ODPM funding. The purpose of the survey is to collect your thoughts
+    and opinions on the current and future value of mySociety products and
+    services to you, your organisation and, where appropriate, the sector in
+    which you operate.
 
     <p>As such, we will ask questions about your current spending on
     e-services and future plans. All answers provided will be treated in
@@ -427,26 +440,6 @@ escalate complaints as required.
     your organisation both now and in the future.
 
     <? } elseif ($page == 3) { ?>
-    <h1>e-Innovations Fund</h1>
-
-    <p>The e-innovations fund is an ODPM backed government program. The focus
-    of e-innovations is to encourage practical examples of new and
-    innovative approaches to joined-up working, effective service delivery
-    and community engagement which are sustainable in the long term.
-
-    <p>The first round of support for e-Innovations is now well under way
-    with 34 councils receiving matched funding of &pound;6.2m to deliver their
-    innovative ideas by September 2005
-
-    <p>mySociety, in conjunction with West Sussex County Council, was a
-    successful applicant to Round 1 of the Fund. The products of this
-    funding are now in the public arena, and you will be given the chance
-    to read about them shortly.
-
-    <p>For more about the e-innovation fund, please 
-    <a href="http://www.localegov.gov.uk/en/1/einnovation.html" target="_blank">click here</a>.
-
-    <? } elseif ($page == 4) { ?>
 
     <h1>What is mySociety?</h1>
 
@@ -472,13 +465,33 @@ escalate complaints as required.
     <p>For more details on the organization, its aims and ambitions, please
     <a href="http://www.mysociety.org/faq.php" target="_blank">click here</a>.
 
+    <? } elseif ($page == 4) { ?>
+    <h1>e-Innovations Fund</h1>
+
+    <p>The e-innovations fund is an ODPM backed government program. The focus
+    of e-innovations is to encourage practical examples of new and
+    innovative approaches to joined-up working, effective service delivery
+    and community engagement which are sustainable in the long term.
+
+    <p>The first round of support for e-Innovations is now well under way
+    with 34 councils receiving matched funding of &pound;6.2m to deliver their
+    innovative ideas by September 2005
+
+    <p>mySociety, in conjunction with West Sussex County Council, was a
+    successful applicant to Round 1 of the Fund. The products of this
+    funding are now in the public arena, and you will be given the chance
+    to read about them shortly.
+
+    <p>For more about the e-innovation fund, please 
+    <a href="http://www.localegov.gov.uk/en/1/einnovation.html" target="_blank">click here</a>.
+
     <? } elseif ($page == 5) { ?>
 
     <h1>mySociety Projects</h1>
     
     <p>Choose the project you'd like to find out about.
 
-    <h2>Live citizen facing projects</h2>
+    <h2 align="center">Live citizen facing projects</h2>
 
     <div class="project" id="pb"><strong>PledgeBank</strong> - We all know what it
     is like to feel powerless, that our own actions can't really change the things
@@ -494,7 +507,7 @@ escalate complaints as required.
     <a href="?page=1&project=wtt">Click here to find out about WriteToThem &gt;&gt;</a>
     </div>
 
-    <h2>Next citizen facing projects</h2>
+    <h2 align="center">Next citizen facing projects</h2>
 
     <div class="project" id="ycml">
     <strong>YourConstituencyMailingList</strong> - Our next site allows MPs and councillors
@@ -508,7 +521,7 @@ escalate complaints as required.
     <a href="?page=1&project=gia">Click here to find out about Give It Away &gt;&gt;</a>
     </div>
 
-    <h2>Backoffice services</h2>
+    <h2 align="center">Backoffice services</h2>
 
     <div class="project" id="dadem">
     DaDem - Web service database of elected representatives
@@ -518,6 +531,7 @@ escalate complaints as required.
     Mapit - Web service database of electoral boundaries and postcodes
     <a href="?page=1&project=mapit">Click here to find out about MaPit &gt;&gt;</a>
     </div>
+    <h2 align="center">The survey</h2>
     <? $project_choice_page = 1 ?>
 
     <? } elseif ($page == 6) { ?>
