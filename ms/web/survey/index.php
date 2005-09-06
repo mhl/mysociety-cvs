@@ -311,6 +311,73 @@ politicians.
 <? $end_project = 1 ?>
     <? } ?>
 
+<? } elseif ($project == "dadem") { ?>
+    <? if ($page == 1) { ?>
+    <h1>DaDem</h1>
+    <p>DaDem is a web service, and therefore of interest people with
+    responsibilities for backend IT systems in local government
+    organisations of all kinds.
+
+    <p>DaDem is a stand-alone web service which provides licensed users with
+    details on all the elected representatives in the UK: who they are,
+    the areas they represent, their contact details, and in some contexts
+    an image and a history of changed contact details. We use it to manage
+    the 20,000+ pieces of contact information required to run
+    WriteToThem.com
+
+    <? } elseif ($page == 2) { ?>
+    <h1>DaDem</h1>
+<p>DaDem could be used in many useful and innovative ways by interested
+local authorities - here are just a couple:
+
+<p>1 - DaDem could be queried by the council-tax bill printing systems,
+and everytime a council tax bill was sent out, details of each
+citizen's specific councillors could be printed it.
+
+<p>2 - If a citizen phoned a council call-centre to report a broken
+paving slab, the call-centre assistant could have an instant readout
+of who the local councillors were for that citizen, to pass on or
+escalate complaints as required.
+
+    <? } elseif ($page == 3) { ?>
+<? $end_project = 1 ?>
+    <? } ?>
+
+<? } elseif ($project == "mapit") { ?>
+    <? if ($page == 1) { ?>
+    <h1>MaPit</h1>
+    <p>MapIt is a web service, and therefore of interest people with
+    responsibilities for backend IT systems in local government
+    organisations of all kinds.
+
+    <p>Mapit converts users' postcodes to the electoral and administrative
+    regions in which those postcodes lie ( ward, electoral division,
+    district, county, constituency, devolved assembly electoral region
+    etc.) as well as their geographical (grid) coordinates. It is
+    presented as a web service which may be used by any licensed website
+    or other application.
+
+    <? } elseif ($page == 2) { ?>
+    <h1>MaPit</h1>
+    <p>The underlying Mapit service can be customised for easy integration
+    with existing or planned applications through an industry-standard or
+    any sui generis interface. Further, coverage can be limited to
+    specific areas (e.g., "within the area of Newtown Borough Council") or
+    types of geographies (e.g., "only wards and constituencies") where
+    only a subset of the available data is relevant.
+
+    <p>So, for example:
+
+    <p>1 - It can be used on websites, or call-centres to confirm that users
+    are actually contacting the correct local authority.
+
+    <p>2 - It can be combined with any number of services to find the
+    closest/most appropriate public service to the user's location.
+
+    <? } elseif ($page == 3) { ?>
+<? $end_project = 1 ?>
+    <? } ?>
+
 <? } else { ?>
 
     <? if ($page == 1) { ?>
@@ -407,7 +474,9 @@ politicians.
 
     <? } elseif ($page == 5) { ?>
 
-    <h1>Choose the project you'd like to find out about:</h1>
+    <h1>mySociety Projects</h1>
+    
+    <p>Choose the project you'd like to find out about.
 
     <h2>Citizen facing projects</h2>
 
@@ -441,10 +510,14 @@ politicians.
 
     <h2>Backoffice services</h2>
 
-    <ul>
-    <li>DaDem - Web service database of elected representatives
-    <li>Mapit - Web service database of electoral boundaries and postcodes
-    </ul>
+    <div class="project" id="dadem">
+    DaDem - Web service database of elected representatives
+    <a href="?page=1&project=dadem">Click here to find out about DaDem &gt;&gt;</a>
+    </div>
+    <div class="project" id="mapit">
+    Mapit - Web service database of electoral boundaries and postcodes
+    <a href="?page=1&project=mapit">Click here to find out about MaPit &gt;&gt;</a>
+    </div>
     <? $project_choice_page = 1 ?>
 
     <? } elseif ($page == 6) { ?>
@@ -498,7 +571,7 @@ proceed to take the survey.
 <p><a href="?page=5">Read about the other projects &gt;&gt;&gt;</a>
 <br><a href="?page=6">Take the survey &gt;&gt;&gt;</a>
 <? } elseif ($project_choice_page) { ?>
-<a href="?page=6">Take the survey &gt;&gt;&gt;</a>
+<p style="clear:all"><a href="?page=6">Take the survey &gt;&gt;&gt;</a>
 <? } else { ?>
 <p>
 <? if ($prevpage) { ?>
