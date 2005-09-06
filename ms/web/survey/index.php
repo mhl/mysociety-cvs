@@ -20,7 +20,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <title>mySociety Survey</title>
+    <title>mySociety Survey - Guidance Notes</title>
     
     <link rel="stylesheet" href="survey.css" type="text/css" media="projection,screen" />
     </head>
@@ -59,7 +59,7 @@ systems.
 
 <p>To see an example of this in action, go to Cheltenham Borough Councils'
 implementation by
-<a href="http://www.cheltenham.gov.uk/libraries/templates/thecouncil.asp?FolderID=8">clicking here</a> (look for "Contact your Councillors, MP and MEPs right here" half way down the right
+<a href="http://www.cheltenham.gov.uk/libraries/templates/thecouncil.asp?FolderID=8" target="_blank">clicking here</a> (look for "Contact your Councillors, MP and MEPs right here" half way down the right
 hand side of the page).
 
     <? } elseif ($page == 3) { ?>
@@ -285,11 +285,13 @@ politicians.
     <p>mySociety is a charitable organisation, funded largely by ODPM's
     e-innovations fund, with the following aims:
 
-    <p><blockquote>To build websites which give people simple, tangible benefits
-    in the civic and community aspects of their lives.
-
-    To teach the public and voluntary sectors, through demonstration, how
-    to most efficiently use the internet to improve lives. </blockquote>
+    <p>
+    <ul>
+    <li><i>To build websites which give people simple, tangible benefits
+    in the civic and community aspects of their lives.</i>
+    <li><i>To teach the public and voluntary sectors, through demonstration, how
+    to most efficiently use the internet to improve lives.</i>
+    </ul>
 
     <p>The purpose of the survey is to collect your thoughts and opinions on
     the current and future value of mySociety products and services to
@@ -322,7 +324,7 @@ politicians.
     to read about them shortly.
 
     <p>For more about the e-innovation fund, please 
-    <a href="http://www.localegov.gov.uk/en/1/einnovation.html">click here</a>.
+    <a href="http://www.localegov.gov.uk/en/1/einnovation.html" target="_blank">click here</a>.
 
     <? } elseif ($page == 4) { ?>
 
@@ -348,7 +350,7 @@ politicians.
     Sussex county council but we are keen to work with further partners.
 
     <p>For more details on the organization, its aims and ambitions, please
-    <a href="http://www.mysociety.org/faq.php">click here</a>.
+    <a href="http://www.mysociety.org/faq.php" target="_blank">click here</a>.
 
     <? } elseif ($page == 5) { ?>
 
@@ -427,6 +429,13 @@ politicians.
     face-to-face or telephone interview, or can recommend someone who
     would be interested, please email 
     <a href="mailto:tom@mysociety.org">tom@mysociety.org</a>.
+    
+    <h1>Password</h1>
+
+    Your password has been sent separately by email. Please send an email to
+    <a href="mailto:tom@mysociety.org">tom@mysociety.org</a>  if you are denied
+    access or require a password.
+
     <? } ?>
 <? } ?>
 <? if ($end_project) { ?>
