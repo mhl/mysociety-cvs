@@ -292,15 +292,31 @@ politicians.
     throw something away that might be of value to someone else? Why not
     GiveItAway?"
     <? } elseif ($page == 4) { ?>
+    <h1>Give It Away - Priority Outcomes</h1>
+    <p>2005 ODPM Priority Outcomes supported by Give It Away:
+
+    <ul>
+    <li>No. 2 - Community information
+    <li>No. 4 - Local Environment
+    </ul>
+
+    <h1>Benefits to citizens</h1>
+
+    <ul>
+    <li>Getting more resources to local community groups and charities
+    <li>Increasing recycling/decreasing landfill
+    </ul>
+
+    <? } elseif ($page == 5) { ?>
 <? $end_project = 1 ?>
     <? } ?>
 
 <? } else { ?>
 
     <? if ($page == 1) { ?>
-    <h1>Introduction</h1>
+    <h1>mySociety Survey - Guidance Notes</h1>
 
-    <p>Welcome to the the mySociety/ODPM e-innovation fund survey
+    <p>Welcome to the the mySociety/ODPM e-innovation fund survey.
 
     <p>You are one of a small group of people identified by mySociety and the
     ODPM as a key representative of an organisation or sector with an
