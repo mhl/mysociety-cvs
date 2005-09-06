@@ -67,7 +67,7 @@ hand side of the page).
 
 <ul>
 <li>No. 2 - Community Information
-<li>No. 3 - Democractic Renewal
+<li>No. 3 - Democratic Renewal
 <li>No. 12 - Accessibility of Services
 <li>No. 13 - High takeup of web based transactional services
 </ul>
@@ -169,7 +169,7 @@ notified when people create local pledges at any point in the future.
 <p>2005 ODPM Priority Outcomes supported by PledgeBank
 
 <ul>
-<li>No. 3 - Democractic Renewal
+<li>No. 3 - Democratic Renewal
 <li>No. 4 - Local Environment
 <li>No. 5 - Library Sport and Leisure
 <li>No. 8 - Supporting new ways of working
@@ -397,7 +397,7 @@ escalate complaints as required.
     ODPM as a key representative of an organisation or sector with an
     interest in e-democracy, electronic public service provision or
     e-engagement generally. mySociety operates in these fields, and during
-    this survey we will tell you about our work and its relevence to your
+    this survey we will tell you about our work and its relevance to your
     organisations.
 
     <p>We know that many of you will not be familiar with mySociety's projects,
