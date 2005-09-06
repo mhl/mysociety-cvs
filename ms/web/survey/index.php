@@ -35,7 +35,7 @@ service which allows members of the public to easily discover and then get in
 touch with any of their elected representatives.
 
 
-<p>We currently cover all UK councillors, MPs, MEPs, MSPs, Welsh and
+<p>We currently cover most UK councillors, MPs, MEPs, MSPs, Welsh and
 London assembly members.
 
 <p>WriteToThem.com is the successor to the multi-award winning
@@ -47,17 +47,15 @@ FaxYourMP.com.
 <p>WriteToThem.com has been designed so that any local government
 organisation can have a version appear consistently branded on its own
 site. For example, your site homepage can feature an 'Enter Your
-Postcode' box on any page which leads people to a page containing all
+Postcode' box on any page which leads people to a page listing all
 of their elected representatives, with descriptions of their different
-responsibilities.
+responsibilities. The page appears to be entirely within and consistent in
+visual appearance and brand identity with your local authority website.
 
-<p>The page appears to be entirely within and consistent in visual
-appearance and brand identity with your local authority website. The
-user then chooses a representative, writes them a message, and it
-would be sent through our ultra-usable, abuse-proofed email or fax
-systems.
+<p>The user then chooses a representative and writes them a message. It is
+then sent through our ultra-usable, abuse-proofed email or fax systems.
 
-<p>To see an example of this in action, go to Cheltenham Borough Councils'
+<p>To see an example of this in action, go to Cheltenham Borough Council's
 implementation by
 <a href="http://www.cheltenham.gov.uk/libraries/templates/thecouncil.asp?FolderID=8" target="_blank">clicking here</a> (look for "Contact your Councillors, MP and MEPs right here" half way down the right
 hand side of the page).
@@ -81,8 +79,8 @@ hand side of the page).
 <li>A simpler, more usable interface will put more people in contact
 with their elected representatives than previously possible.
 <li>Citizens who have gone to the wrong local authority website, or to
-the wrong entire part of government will still be given the correct
-contact information, and won't require time and resource consuming
+an entirely wrong part of government will still be given the correct
+contact information, and won't require time or resource consuming
 mail redirection by council staff.
 <li>WriteToThem.com protects elected representatives from spam or
 abusive mail more effectively than the postal service, email services,
@@ -94,7 +92,7 @@ perspective.
 <li>A redirection service which will enable misdirected messages to be
 sent to the correct representatives (i.e. mail that should have gone
 to an MSP, or an MP) with a minimum of time, difficulty or expense.
-<li>WriteToThem has a proven trackrecord of being used by less
+<li>WriteToThem has a proven track record of being used by less
 tech-literate audiences - 60% of users reported they were writing to
 their MP for the first time.
 </ol>
@@ -125,12 +123,12 @@ images specific to your councillors or local authority.
 
 <p>Pledgebank is a widely reported and highly popular site designed to
 get people doing things in their local communities that they wouldn't
-otherwise ever get round to.
+otherwise get round to.
 
 <p>PledgeBank lets users make pledges in the form "I'll do something, but
 only if 10 other people will do it too." Launched in June 2005,
 PledgeBank has already had over 21,000 signatures on over 700 pledges,
-varying from cleaning up riverbank in Cardiff, donating blood, using
+varying from cleaning up a river bank in Cardiff, donating blood, using
 energy efficient light bulbs and replacing the broken windows of an
 East London mosque as a show of local solidarity after racist
 violence.
@@ -160,7 +158,7 @@ schooling, and cleaner local environment and beyond.
 their local community, they won't be left isolated, trying to achieve
 change on their own.
 
-<li>The ability to signup to receive emails in a local area, and to be
+<li>The ability to sign up to receive emails in a local area, and to be
 notified when people create local pledges at any point in the future.
 </ul>
 
@@ -201,7 +199,7 @@ Powerpoint file) or <a href="http://www.pledgebank.com" target="_blank">visit Pl
 <h1>YourConstituencyMailingList</h1>
 
 <p>YourConstituencyMailingList (a placeholder name) is mySociety's next major
-citizen focussed  web project.
+citizen focussed web project.
 
 <p>It is designed to let MPs and other elected representatives email their
 constituents about matters which they consider to be important,
@@ -212,24 +210,23 @@ and to discuss those in a public forum.
 
     <p>A constituent enters their postcode, name and email address, and they
     are  added  to a queue of other people in their constituency. When
-    enough people have signed up, the MP representing that area will be
-    automatically sent an email. The email will say  '20 of your
+    enough people have signed up, the MP representing that area will
+    automatically be sent an email. The email will say  '20 of your
     constituents would like to hear what you're up to - hit reply to talk
     to them'. If they don't reply nothing will happen, and the
     constituents will have to wait. But at some point in the future the MP
-    will get another email which says 100 people; 200 people; 500 people are
-    waiting to hear from you - the day-to-day operation of the site will create
+    will get another email which says 100 people; 200 people; or 500 people are
+    waiting to hear from them - the day-to-day operation of the site will create
     incentives for the MP to respond, even if they choose not to for the first
     few times.
     
-    <p>When the MP replies users are given a controlled opportuniy to discuss
+    <p>When the MP replies users are given a controlled opportunity to discuss
     the MP's message. Each email sent will have a link at the bottom, which
     takes users straight to a custom designed discussion forum. The first post
-    in the forum is the message the MP emailed, and users can respond then and
-    there, of they so wish.  There'll be no tiresome login procedure, users can
-    just start talking with a single click. And the MP can engage directly to
-    the group or respond to individual constituents privately, depending on
-    their wishes.
+    in the forum is the MP's emailed message, and users can respond then and
+    there, if they wish.  There's no tiresome login procedure - users can
+    just start talking with a single click. And the MP can choose directly
+    to engage with the group or respond to individual constituents privately.
 
     <? } elseif ($page == 3) { ?>
 <h1>YourConstituencyMailingList - Screenshot of pre-launch site</h1>
@@ -243,7 +240,7 @@ and to discuss those in a public forum.
 <p>Whilst the service is being launched as a service for MPs, it is
 technically easy to adapt the site to create 'Your Ward Mailing Lists'
 for councillors. We would very much like to work with partner local
-authorities to test councillor run lists, and we can easily integrate
+authorities to test councillor-run lists, and we can easily integrate
 the whole site into local authority websites.
 
 <h2>When does it launch?</h2>
@@ -276,20 +273,20 @@ politicians.
     local communities.
     <? } elseif ($page == 2) { ?>
     <h1>Give It Away - How it will work</h1>
-    <p>A user starts by being in possesssion of some item or items they want
+    <p>A user starts by being in possession of some item or items they want
     to get rid of. They visit GiveItAway, enter a postcode and their email
     address, and enter the type of item they want to give away.
 
-    <p>Moments later they recieve an email which is copied into both the user
+    <p>Moments later they receive an email which is copied into both the user
     as well as a nearby charity or community group which has previously
     indicated interest in this type of item. They can then discuss with
     the charity the details of whether the item is wanted, and if so, how
     it can be donated or collected.
 
     <p>The key to GiveItAway is minimalism and simplicity - as a website it
-    features a single page, and relies on email to contact charities
-    because it demands a lower level of technical knowledge than any other
-    internet based interaction.
+    features a single page, and relies on email to contact charities.
+    This design demands a lower level of technical knowledge than any other
+    internet-based interaction.
 
     <? } elseif ($page == 3) { ?>
     <h1>Give It Away - How it can be used by local authorities</h1>
@@ -325,16 +322,16 @@ politicians.
 <? } elseif ($project == "dadem") { ?>
     <? if ($page == 1) { ?>
     <h1>DaDem</h1>
-    <p>DaDem is a web service, and therefore of interest people with
+    <p>DaDem is a web service, and therefore of interest to people with
     responsibilities for backend IT systems in local government
     organisations of all kinds.
 
-    <p>DaDem is a stand-alone web service which provides licensed users with
+    <p>The service provides licensed users with
     details on all the elected representatives in the UK: who they are,
-    the areas they represent, their contact details, and in some contexts
+    the areas they represent, their contact details, and in some cases
     an image and a history of changed contact details. We use it to manage
     the 20,000+ pieces of contact information required to run
-    WriteToThem.com
+    WriteToThem.com.
 
     <? } elseif ($page == 2) { ?>
     <h1>DaDem</h1>
@@ -342,7 +339,7 @@ politicians.
 local authorities - here are just a couple:
 
 <p>1 - DaDem could be queried by the council-tax bill printing systems,
-and everytime a council tax bill was sent out, details of each
+and every time a council tax bill was sent out, details of each
 citizen's specific councillors could be printed it.
 
 <p>2 - If a citizen phoned a council call-centre to report a broken
@@ -361,8 +358,8 @@ escalate complaints as required.
     responsibilities for backend IT systems in local government
     organisations of all kinds.
 
-    <p>Mapit converts users' postcodes to the electoral and administrative
-    regions in which those postcodes lie ( ward, electoral division,
+    <p>The service converts users' postcodes to the electoral and administrative
+    regions in which those postcodes lie (ward, electoral division,
     district, county, constituency, devolved assembly electoral region
     etc.) as well as their geographical (grid) coordinates. It is
     presented as a web service which may be used by any licensed website
@@ -379,7 +376,7 @@ escalate complaints as required.
 
     <p>So, for example:
 
-    <p>1 - It can be used on websites, or call-centres to confirm that users
+    <p>1 - It can be used on websites or in call-centres to confirm that users
     are actually contacting the correct local authority.
 
     <p>2 - It can be combined with any number of services to find the
@@ -433,7 +430,7 @@ escalate complaints as required.
 
     <p>As such, we will ask questions about your current spending on
     e-services and future plans. All answers provided will be treated in
-    strict confidentiality. As we asking your opinion on future products
+    strict confidence. As we are asking your opinion on future products
     and services, we recognise that you are not committing your
     organisation to any future procurement from mySociety. We are simply
     attempting to assess the likely value of mySociety products to you and
@@ -449,26 +446,26 @@ escalate complaints as required.
     <p>It was founded in September 2003, having emerged from the voluntary
     programming community which built FaxYourMP.com in 2000. In March 2004
     we were awarded &pound;250,000 in a joint bid with West Sussex County
-    Council. The money came from the Office of the Deputy Prime Ministers
+    Council. The money came from the Office of the Deputy Prime Minister's
     e-innovations fund, and we commenced building web projects in October
     of that year.
 
-    <p>The organization is directed by Tom Steinberg, who was formerly
-    government policy analyst serving time with the Prime Minister's
-    Strategy Unit and Defra. The organization consists of a small team of
+    <p>The organisation is directed by Tom Steinberg, who was formerly
+    government policy analyst working in the Prime Minister's
+    Strategy Unit and Defra. The organisation consists of a small team of
     core, paid developers and a looser volunteer group of programmers,
     designers and non-technical helpers.
 
     <p>mySociety has created its services working in partnership with West
     Sussex county council but we are keen to work with further partners.
 
-    <p>For more details on the organization, its aims and ambitions, please
+    <p>For more details on the organisation, its aims and ambitions, please
     <a href="http://www.mysociety.org/faq.php" target="_blank">click here</a>.
 
     <? } elseif ($page == 4) { ?>
     <h1>e-Innovations Fund</h1>
 
-    <p>The e-innovations fund is an ODPM backed government program. The focus
+    <p>The e-innovations fund is an ODPM-backed government program. The focus
     of e-innovations is to encourage practical examples of new and
     innovative approaches to joined-up working, effective service delivery
     and community engagement which are sustainable in the long term.
