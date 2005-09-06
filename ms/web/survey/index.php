@@ -478,7 +478,7 @@ escalate complaints as required.
     
     <p>Choose the project you'd like to find out about.
 
-    <h2>Citizen facing projects</h2>
+    <h2>Live citizen facing projects</h2>
 
     <div class="project" id="pb"><strong>PledgeBank</strong> - We all know what it
     is like to feel powerless, that our own actions can't really change the things
@@ -494,7 +494,7 @@ escalate complaints as required.
     <a href="?page=1&project=wtt">Click here to find out about WriteToThem &gt;&gt;</a>
     </div>
 
-    <h2>Future citizen facing projects</h2>
+    <h2>Next citizen facing projects</h2>
 
     <div class="project" id="ycml">
     <strong>YourConstituencyMailingList</strong> - Our next site allows MPs and councillors
