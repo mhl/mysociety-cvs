@@ -258,6 +258,43 @@ politicians.
     <? } elseif ($page == 6) { ?>
 <? $end_project = 1 ?>
     <? } ?>
+<? } elseif ($project == "gia") { ?>
+    <? if ($page == 1) { ?>
+    <h1>Give It Away - Introduction</h1>
+    <p>Give It Away is our final citizen facing project being built with round 1
+    e-innovations funding.
+
+    <p>It is a service to make it very easy for people to give away unwanted goods
+    to local charities and community groups. It's goal is to increase the
+    amount of valuable goods which are sold or re-used by organisations in
+    local communities.
+    <? } elseif ($page == 2) { ?>
+    <h1>Give It Away - How it will work</h1>
+    <p>A user starts by being in possesssion of some item or items they want
+    to get rid of. They surf to GiveItAway, enter a postcode, tick a box
+    referring to the category of item, and enter an email address. They
+    are then sent an email which is copied to a contact at the relevent
+    charity. They can then discuss with the charity the details of whether
+    the item is wanted, and if so, how it can be donated or collected.
+
+    <p>The key to GiveItAway is minimalism and similicity - it relies on
+    email to contact charities because it demands a lower level of
+    technical knowledge than any other internet based interaction.
+    <? } elseif ($page == 3) { ?>
+    <h1>Give It Away - How it can be used by local authorities</h1>
+
+    <p>As with most citizen-facing mySociety projects, GiveItAway can be
+    rebranded and integrated within existing local authority websites.
+
+    <p>An ideal location will be on the waste disposal information pages of a
+    local council website. Next to information on garbage collection a
+    council could place a prominent option which said "Are you about to
+    throw something away that might be of value to someone else? Why not
+    GiveItAway?"
+    <? } elseif ($page == 4) { ?>
+<? $end_project = 1 ?>
+    <? } ?>
+
 <? } else { ?>
 
     <? if ($page == 1) { ?>
@@ -383,6 +420,7 @@ politicians.
 
     <div class="project" id="gia">
     <strong>Give It Away</strong> - Lowering the barriers to giving things away
+    <a href="?page=1&project=gia">Click here to find out about Give It Away &gt;&gt;</a>
     </div>
 
     <h2>Backoffice services</h2>
