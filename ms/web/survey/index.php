@@ -9,8 +9,9 @@
         $prevpage = null;
     $project = $_GET['project'];
 
+    $survey_url = "http://www.wavex.co.uk/projects/survey.asp";
     if (!$project && $page == 7) {
-        header("Location: http://www.wavex.co.uk/projects/survey.asp");
+        header("Location: $survey_url");
         exit;
     }
 ?>
@@ -505,7 +506,7 @@ escalate complaints as required.
     <? } elseif ($page == 5) { ?>
 
     <h1>mySociety Projects</h1>
-    
+
     <p>Choose the project you'd like to find out about:
 
     <h2 align="center">Live citizen facing projects</h2>
@@ -591,12 +592,6 @@ escalate complaints as required.
     would be interested, please email 
     <a href="mailto:tom@mysociety.org">tom@mysociety.org</a>.
     
-    <h1>Password</h1>
-
-    Your password has been sent separately by email. Please send an email to
-    <a href="mailto:tom@mysociety.org">tom@mysociety.org</a>  if you are denied
-    access or require a password.
-
     <? } ?>
 <? } ?>
 <? if ($end_project) { ?>
@@ -605,7 +600,11 @@ proceed to take the survey.
 <p><a href="?page=5">Read about the other projects &gt;&gt;&gt;</a>
 <br><a href="?page=6">Take the survey &gt;&gt;&gt;</a>
 <? } elseif ($project_choice_page) { ?>
-<p style="clear:all"><a href="?page=6">Take the survey &gt;&gt;&gt;</a>
+<p style="clear:all"><a href="?page=6">Click here</a> to take the survey straight away 
+(although we recommend you take a quick tour through at least 
+<a href="?page=1&project=pb">PledgeBank</a> and <a
+href="?page=1&project=wtt">WriteToThem</a> first).
+<!--<p style="clear:all"><a href="?page=6">Take the survey &gt;&gt;&gt;</a>-->
 <? } else { ?>
 <p>
 <? if ($prevpage) { ?>
@@ -613,7 +612,10 @@ proceed to take the survey.
 <? } ?>
 <a href="?page=<?=$nextpage?>&project=<?=urlencode($project)?>">Next &gt;&gt;&gt;</a>
 <? } ?>
-<p><img align="center" src="/mslogo.gif">
+<p><img align="center" src="/mslogo.gif"> 
+&nbsp;<img align="center" src="/wscc_logo.jpg"> 
+&nbsp;<img align="center" src="/odpm_logo.gif">
+
 
 </body>
 </html>
