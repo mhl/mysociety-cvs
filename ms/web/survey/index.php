@@ -265,7 +265,7 @@ politicians.
     <? if ($page == 1) { ?>
     <h1>Give It Away - Introduction</h1>
     <p>Give It Away is our final citizen facing project being built with round 1
-    e-innovations funding.
+    E-Innovations funding.
 
     <p>It is a service to make it very easy for people to give away unwanted goods
     to local charities and community groups. Its goal is to increase the
@@ -391,7 +391,7 @@ escalate complaints as required.
     <? if ($page == 1) { ?>
     <h1>mySociety Survey - Guidance Notes</h1>
 
-    <p>Welcome to the the mySociety/ODPM e-innovation fund survey.
+    <p>Welcome to the the mySociety/ODPM E-Innovation Fund survey.
 
     <p>You are one of a small group of people identified by mySociety and the
     ODPM as a key representative of an organisation or sector with an
@@ -412,7 +412,7 @@ escalate complaints as required.
     <h1>What is this survey about?</h1>
 
     <p>mySociety is a charitable organisation, funded largely by ODPM's
-    e-innovations fund, with the following aims:
+    E-Innovations Fund, with the following aims:
 
     <p>
     <ul>
@@ -447,46 +447,46 @@ escalate complaints as required.
     programming community which built FaxYourMP.com in 2000. In March 2004
     we were awarded &pound;250,000 in a joint bid with West Sussex County
     Council. The money came from the Office of the Deputy Prime Minister's
-    e-innovations fund, and we commenced building web projects in October
+    E-Innovations Fund, and we commenced building web projects in October
     of that year.
 
-    <p>The organisation is directed by Tom Steinberg, who was formerly
+    <p>The organisation is directed by Tom Steinberg, who was formerly a
     government policy analyst working in the Prime Minister's
     Strategy Unit and Defra. The organisation consists of a small team of
     core, paid developers and a looser volunteer group of programmers,
     designers and non-technical helpers.
 
-    <p>mySociety has created its services working in partnership with West
-    Sussex county council but we are keen to work with further partners.
+    <p>mySociety has created its services in partnership with West
+    Sussex county council, but we are keen to work with further partners.
 
     <p>For more details on the organisation, its aims and ambitions, please
     <a href="http://www.mysociety.org/faq.php" target="_blank">click here</a>.
 
     <? } elseif ($page == 4) { ?>
-    <h1>e-Innovations Fund</h1>
+    <h1>E-Innovations Fund</h1>
 
-    <p>The e-innovations fund is an ODPM-backed government program. The focus
-    of e-innovations is to encourage practical examples of new and
+    <p>The E-Innovations Fund is an ODPM-backed government programme. The focus
+    of E-Innovations is to encourage practical examples of new and
     innovative approaches to joined-up working, effective service delivery
     and community engagement which are sustainable in the long term.
 
-    <p>The first round of support for e-Innovations is now well under way
+    <p>The first round of support for E-Innovations is now well under way
     with 34 councils receiving matched funding of &pound;6.2m to deliver their
-    innovative ideas by September 2005
+    innovative ideas by September 2005.
 
     <p>mySociety, in conjunction with West Sussex County Council, was a
-    successful applicant to Round 1 of the Fund. The products of this
+    successful applicant in Round 1 of the Fund. The products of this
     funding are now in the public arena, and you will be given the chance
     to read about them shortly.
 
-    <p>For more about the e-innovation fund, please 
+    <p>For more about the E-Innovation Fund, please 
     <a href="http://www.localegov.gov.uk/en/1/einnovation.html" target="_blank">click here</a>.
 
     <? } elseif ($page == 5) { ?>
 
     <h1>mySociety Projects</h1>
     
-    <p>Choose the project you'd like to find out about.
+    <p>Choose the project you'd like to find out about:
 
     <h2 align="center">Live citizen facing projects</h2>
 
@@ -498,7 +498,7 @@ escalate complaints as required.
     </div>
 
     <div class="project" id="wtt">
-    <strong>WriteToThem</strong> - Our first site, award winning in only 12 weeks,
+    <strong>WriteToThem</strong> - Our first site, which was winning awards after just twelve weeks online,
     makes it easy for any British citizen to contact their Councillors, MP, MEPs,
     MSPs, or Welsh and London Assembly Members for free.
     <a href="?page=1&project=wtt">Click here to find out about WriteToThem &gt;&gt;</a>
@@ -508,24 +508,23 @@ escalate complaints as required.
 
     <div class="project" id="ycml">
     <strong>YourConstituencyMailingList</strong> - Our next site allows MPs and councillors
-    to contact their constituents. 3500+ subscribers so far and the site not
-    launched yet.
+    to contact their constituents. More than 3500 people have subscribed pre-launch.
     <a href="?page=1&project=ycml">Click here to find out about YourConstituencyMailingList &gt;&gt;</a>
     </div>
 
     <div class="project" id="gia">
-    <strong>Give It Away</strong> - Lowering the barriers to giving things away
+    <strong>Give It Away</strong> - Lowering the barriers to giving things away.
     <a href="?page=1&project=gia">Click here to find out about Give It Away &gt;&gt;</a>
     </div>
 
-    <h2 align="center">Backoffice services</h2>
+    <h2 align="center">Back-office services</h2>
 
     <div class="project" id="dadem">
-    DaDem - Web service database of elected representatives
+    DaDem - Web service database of elected representatives.
     <a href="?page=1&project=dadem">Click here to find out about DaDem &gt;&gt;</a>
     </div>
     <div class="project" id="mapit">
-    Mapit - Web service database of electoral boundaries and postcodes
+    Mapit - Web service database of electoral boundaries and postcodes.
     <a href="?page=1&project=mapit">Click here to find out about MaPit &gt;&gt;</a>
     </div>
     <h2 align="center">The survey</h2>
