@@ -386,6 +386,26 @@ escalate complaints as required.
 <? $end_project = 1 ?>
     <? } ?>
 
+<? } elseif ($project == "sams") { ?>
+    <? if ($page == 1) { ?>
+    <h1>SAMS</h1>
+    <p>mySociety is currently developing SAMS, the Syndicatable, Annotatable
+    Mapping Service.
+
+    <p>This is a generic mapping service built on top of Google Maps which
+    allows users to annotate maps with data, and for that data to be made
+    available to other services via an API.
+
+    <p>Our first demo implementation is YourHistoryHere - a local cultural
+    knowledge site build in conjunction with the Young Foundation. This is
+    specifically of use to educational, tourism and cultural establishments,
+    but there are many other uses of the same technology,
+    for example citizens using SAMS to locate and report broken civic
+    infrastructure.
+    <? } elseif ($page == 2) { ?>
+<? $end_project = 1 ?>
+    <? } ?>
+
 <? } else { ?>
 
     <? if ($page == 1) { ?>
@@ -522,6 +542,10 @@ escalate complaints as required.
     <div class="project" id="dadem">
     DaDem - Web service database of elected representatives.
     <a href="?page=1&project=dadem">Click here to find out about DaDem &gt;&gt;</a>
+    </div>
+    <div class="project" id="sams">
+    SAMS - Web service for annotatable maps
+    <a href="?page=1&project=sams">Click here to find out about SAMS &gt;&gt;</a>
     </div>
     <div class="project" id="mapit">
     Mapit - Web service database of electoral boundaries and postcodes.
