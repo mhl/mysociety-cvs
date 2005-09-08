@@ -545,7 +545,7 @@ escalate complaints as required.
     <a href="?page=1&project=dadem">Click here to find out about DaDem &gt;&gt;</a>
     </div>
     <div class="project" id="sams">
-    SAMS - Web service for annotatable maps
+    SAMS - Web service for annotatable maps.
     <a href="?page=1&project=sams">Click here to find out about SAMS &gt;&gt;</a>
     </div>
     <div class="project" id="mapit">
