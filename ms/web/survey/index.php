@@ -558,7 +558,7 @@ escalate complaints as required.
     <? } elseif ($page == 6) { ?>
     <h1>Timing and survey requirements</h1>
 
-    <p>All surveys need to be completed by close of business on Monday 12th
+    <p>All surveys need to be completed by close of business on Thursday 15th
     September 2005.
 
     If you have any queries please contact 
