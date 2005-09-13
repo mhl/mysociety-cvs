@@ -583,6 +583,8 @@ escalate complaints as required.
     If you have any queries please contact 
     <a href="mailto:tom@mysociety.org">tom@mysociety.org</a>.
 
+    <p><a href="?page=<?=$nextpage?>&project=<?=urlencode($project)?>">Next &gt;&gt;&gt;</a>
+
     <h1>Interviews</h1>
 
     <p>If you feel you any opinions or thoughts regarding mySociety's future
@@ -610,6 +612,28 @@ escalate complaints as required.
     face-to-face or telephone interview, or can recommend someone who
     would be interested, please email 
     <a href="mailto:tom@mysociety.org">tom@mysociety.org</a>.
+
+    <h1>Data Usage and Protection Information</h1>
+
+    <p>The data you provide for the survey will be stored, analysed and
+    protected in line with the 8 principles of the Data Protection Act of
+    1998
+
+    <p>The data will remain confidential and will be provided only to the ODPM's
+    e-government unit. The data will not be used to resell any third party products
+    or services to you.
+    <p>By providing information about your organisation you make no commitment to
+    purchase or agree to purchase in future and product or
+    service from mySociety or its partners.
+    <p>The data is obtained solely for the ODPM's e-innovations program. It
+    will not be provided to any third parties or other organisations.
+    <p>The data is adequate, relevant and not excessive to the ODPM's
+    e-innovations program.
+    <p>The data will be kept until the final research has been received and
+    signed-off by the ODPM.
+    <p>The data will be kept secure against unlawful or unauthorised
+    processing, or accidental loss or erasure
+    <p>The data will not be tranferred to a country outside the European Economic Area
     
     <? } ?>
 <? } ?>
