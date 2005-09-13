@@ -320,6 +320,25 @@ politicians.
 <? $end_project = 1 ?>
     <? } ?>
 
+<? } elseif ($project == "notapathetic") { ?>
+    <? if ($page == 1) { ?>
+    <h1>Not Apathetic</h1>
+    <p>NotApathetic was a short-term project during the 2005 general election
+    to find out why people weren't voting.
+
+    <p>It gathered 3000 responses, and was reported in the media across the
+    world. You can see the responses at <a href="http://www.notapathetic.com">www.NotApathetic.com</a>
+
+    <p>We are including this in the survey as it is based on a very simple,
+    easy to use technology that can be repurposed whenever you are trying
+    to ask a large group of people one question, to solicit opinions. It
+    is not a replacement for consultation software, but it has proven
+    success at gathering large numbers of qualitative responses, as you
+    can also see at <a href="http://www.ivotedforyoubecause.com">www.IVotedForYouBecause.com</a>
+
+    <? } elseif ($page == 2) { ?>
+<? $end_project = 1 ?>
+    <? } ?>
 <? } elseif ($project == "dadem") { ?>
     <? if ($page == 1) { ?>
     <h1>DaDem</h1>
