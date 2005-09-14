@@ -7,10 +7,10 @@
 # Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: CouncilMatch.pm,v 1.33 2005-09-14 15:41:44 francis Exp $
+# $Id: CouncilMatch.pm,v 1.1 2005-09-14 16:22:33 francis Exp $
 #
 
-package mySociety::CouncilMatch;
+package CouncilMatch;
 
 use Data::Dumper;
 use LWP::Simple;
@@ -98,7 +98,7 @@ sub refresh_live_data($$) {
     my $error = "";
 
     # Get updated data from raw table
-    my @raw = mySociety::CouncilMatch::get_raw_data($area_id);
+    my @raw = CouncilMatch::get_raw_data($area_id);
     my $update_keys;
     my $ward_ids;
     # ... name match to fill in ward id, and contact type
@@ -206,7 +206,7 @@ sub find_conflicts($$) {
     my $error = "";
 
     # Get updated data from raw table
-    my @raw = mySociety::CouncilMatch::get_raw_data($area_id);
+    my @raw = CouncilMatch::get_raw_data($area_id);
     # ... find any CONFLICT
     foreach my $row (@raw) {
         foreach my $field (keys %$row) {
@@ -456,7 +456,7 @@ sub canonicalise_ward_name ($) {
     ($_) = @_;
     s# ED\b.*$##;
     s# Ward\b.*$##;
-    return mySociety::CouncilMatch::canonicalise_council_name($_);
+    return CouncilMatch::canonicalise_council_name($_);
 }
 
 # Internal use
@@ -871,7 +871,7 @@ sub check_councillors_against_website($$) {
         raw_council_extradata where council_id = ?#, {}, $area_id);
 
     # Get known data from database
-    my @raw = mySociety::CouncilMatch::get_raw_data($area_id);
+    my @raw = CouncilMatch::get_raw_data($area_id);
     my $wardnames = $m_dbh->selectall_hashref(
             q#select * from area_name, area where area_name.area_id = area.id and
             parent_area_id = ?
