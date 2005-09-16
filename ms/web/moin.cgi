@@ -49,7 +49,7 @@ $c = $q->cookie('captcha_cookie');
 
 if ($action and ($action eq 'savepage' or $action eq 'edit')) {
     my %ipexceptions = map { $_ => 1 } qw(
-                82.69.12.16 80.177.16.113 
+                82.69.12.16 80.177.16.113 84.9.135.177
             );
     if (!exists($ipexceptions{$q->remote_host()}) and (!$c or !is_cookie_valid($c))) {
         if (lc($q->request_method()) eq 'post') {
