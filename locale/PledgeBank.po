@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2005-10-22 12:07+0100\n"
+"POT-Creation-Date: 2005-10-28 16:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <team@pledgebank.com>\n"
@@ -995,6 +995,10 @@ msgid ""
 "expired.  Please try doing what you were doing from the beginning."
 msgstr ""
 
+#: phplib/utility.php:553
+msgid "today"
+msgstr ""
+
 #: pb/phplib/admin-pb.php:45
 msgid "Pledges and Signers"
 msgstr ""
@@ -1019,8 +1023,8 @@ msgstr ""
 msgid "Language:"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:235 pb/phplib/fns.php:422 pb/phplib/pledge.php:297
-#: pb/phplib/pledge.php:300 pb/web/alert.php:195
+#: pb/phplib/admin-pb.php:235 pb/phplib/fns.php:437 pb/phplib/pledge.php:297
+#: pb/phplib/pledge.php:300 pb/web/alert.php:198
 msgid "Country:"
 msgstr ""
 
@@ -1082,53 +1086,57 @@ msgstr ""
 msgid "Alert statistics"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:986
+#: pb/phplib/admin-pb.php:993
 msgid "Local alerts by country"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:1011
+#: pb/phplib/admin-pb.php:1032
 msgid "Local alert signups"
 msgstr ""
 
-#: pb/phplib/alert.php:113
+#: pb/phplib/alert.php:124
 #, php-format
 msgid "Unknown alert %d"
 msgstr ""
 
-#: pb/phplib/alert.php:116
+#: pb/phplib/alert.php:127
 #, php-format
 msgid "Alert %d does not belong to person %d"
 msgstr ""
 
-#: pb/phplib/alert.php:135
-#, php-format
-msgid "new comments on the pledge '%s'"
+#: pb/phplib/alert.php:144
+msgid " (disabled)"
 msgstr ""
 
-#: pb/phplib/alert.php:138
+#: pb/phplib/alert.php:148
 #, php-format
-msgid "new pledges near UK postcode %s"
+msgid "new comments on the pledge '%s'%s"
 msgstr ""
 
-#: pb/phplib/alert.php:140
+#: pb/phplib/alert.php:151
 #, php-format
-msgid "new pledges near %s"
+msgid "new pledges near UK postcode %s%s"
 msgstr ""
 
-#: pb/phplib/alert.php:142
+#: pb/phplib/alert.php:153
+#, php-format
+msgid "new pledges near %s%s"
+msgstr ""
+
+#: pb/phplib/alert.php:155
 #, php-format
 msgid "Unknown event code '%s'"
 msgstr ""
 
-#: pb/phplib/alert.php:162
+#: pb/phplib/alert.php:177
 msgid "Local pledge alerts"
 msgstr ""
 
-#: pb/phplib/alert.php:164
+#: pb/phplib/alert.php:179
 msgid "You will get email when there are:<ul>"
 msgstr ""
 
-#: pb/phplib/alert.php:178
+#: pb/phplib/alert.php:193
 msgid "To add a new place, <a href=\"/alert\">click here</a>."
 msgstr ""
 
@@ -1215,150 +1223,150 @@ msgstr ""
 msgid "-- the PledgeBank.com team"
 msgstr ""
 
-#: pb/phplib/fns.php:223
+#: pb/phplib/fns.php:238
 msgid "Email this pledge"
 msgstr ""
 
-#: pb/phplib/fns.php:224
+#: pb/phplib/fns.php:239
 msgid ""
 "Please enter these details so that we can send your message to your "
 "contacts.\n"
 "We will not give or sell either your or their email address to anyone else."
 msgstr ""
 
-#: pb/phplib/fns.php:226
+#: pb/phplib/fns.php:241
 msgid "Other people's email addresses:"
 msgstr ""
 
-#: pb/phplib/fns.php:233
+#: pb/phplib/fns.php:248
 msgid "Add a message, if you want:"
 msgstr ""
 
-#: pb/phplib/fns.php:237 pb/web/new.php:132
+#: pb/phplib/fns.php:252 pb/web/new.php:132
 msgid "Your name:"
 msgstr ""
 
-#: pb/phplib/fns.php:238 pb/phplib/fns.php:421 pb/web/alert.php:191
+#: pb/phplib/fns.php:253 pb/phplib/fns.php:436 pb/web/alert.php:194
 #: pb/web/new.php:133 pb/web/sms.php:231
 msgid "Email:"
 msgstr ""
 
-#: pb/phplib/fns.php:240
+#: pb/phplib/fns.php:255
 msgid "Send message"
 msgstr ""
 
-#: pb/phplib/fns.php:249
+#: pb/phplib/fns.php:264
 #, php-format
 msgid "There are several possible places which match '%s'. Please choose one:"
 msgstr ""
 
-#: pb/phplib/fns.php:256 pb/web/search.php:129
+#: pb/phplib/fns.php:271 pb/web/search.php:129
 msgid "near"
 msgstr ""
 
-#: pb/phplib/fns.php:266
+#: pb/phplib/fns.php:281
 msgid ""
 "If it isn't any of those, try a different spelling, or the name of another "
 "nearby town:"
 msgstr ""
 
-#: pb/phplib/fns.php:291 pb/web/new.php:329
+#: pb/phplib/fns.php:306 pb/web/new.php:329
 msgid "(choose one)"
 msgstr ""
 
-#: pb/phplib/fns.php:293
+#: pb/phplib/fns.php:308
 msgid "None &mdash; applies anywhere"
 msgstr ""
 
-#: pb/phplib/fns.php:331
+#: pb/phplib/fns.php:346
 msgid "---------------------------------------------------"
 msgstr ""
 
-#: pb/phplib/fns.php:381
+#: pb/phplib/fns.php:396
 msgid "Place name:"
 msgstr ""
 
-#: pb/phplib/fns.php:392
+#: pb/phplib/fns.php:407
 msgid "Or, UK only, you can give a postcode area:"
 msgstr ""
 
-#: pb/phplib/fns.php:394
+#: pb/phplib/fns.php:409
 msgid "(just the start of the postcode, such as WC1)"
 msgstr ""
 
-#: pb/phplib/fns.php:420
+#: pb/phplib/fns.php:435
 msgid "Sign up for emails when people make pledges in your local area"
 msgstr ""
 
-#: pb/phplib/fns.php:420
+#: pb/phplib/fns.php:435
 msgid "Works in any country!"
 msgstr ""
 
-#: pb/phplib/fns.php:423
+#: pb/phplib/fns.php:438
 msgid "Town:"
 msgstr ""
 
-#: pb/phplib/fns.php:424 pb/web/alert.php:203
+#: pb/phplib/fns.php:439 pb/web/alert.php:206
 msgid "Subscribe"
 msgstr ""
 
-#: pb/phplib/fns.php:435
+#: pb/phplib/fns.php:450
 msgid "the UK"
 msgstr ""
 
-#: pb/phplib/fns.php:449
+#: pb/phplib/fns.php:464
 msgid "choose site"
 msgstr ""
 
-#: pb/phplib/fns.php:451
+#: pb/phplib/fns.php:466
 msgid "change country"
 msgstr ""
 
-#: pb/phplib/fns.php:453
+#: pb/phplib/fns.php:468
 msgid "choose country"
 msgstr ""
 
-#: pb/phplib/fns.php:461
+#: pb/phplib/fns.php:476
 msgid "change language"
 msgstr ""
 
-#: pb/phplib/fns.php:468
+#: pb/phplib/fns.php:483
 msgid "Available in"
 msgstr ""
 
-#: pb/phplib/fns.php:485
+#: pb/phplib/fns.php:500
 msgid "and"
 msgstr ""
 
-#: pb/phplib/fns.php:488
+#: pb/phplib/fns.php:503
 msgid "Translate PledgeBank into your language"
 msgstr ""
 
-#: pb/phplib/fns.php:558
+#: pb/phplib/fns.php:573
 #, php-format
 msgid "%s (%s) pledges only listed"
 msgstr ""
 
-#: pb/phplib/fns.php:562
+#: pb/phplib/fns.php:577
 #, php-format
 msgid "%s (%s) pledges and global %s (%s) pledges listed"
 msgstr ""
 
-#: pb/phplib/fns.php:564
+#: pb/phplib/fns.php:579
 #, php-format
 msgid "%s (%s) pledges in %s (%s) only listed"
 msgstr ""
 
-#: pb/phplib/fns.php:571
+#: pb/phplib/fns.php:586
 #, php-format
 msgid "There are no featured pledges for %s (%s) at the moment."
 msgstr ""
 
-#: pb/phplib/microsites.php:87
+#: pb/phplib/microsites.php:89
 msgid "other local people"
 msgstr ""
 
-#: pb/phplib/microsites.php:109
+#: pb/phplib/microsites.php:113
 msgid ""
 "\"We all know what it is like to feel powerless, that our own\n"
 "        actions can't really change the things that we want to change.\n"
@@ -1877,46 +1885,30 @@ msgid ""
 "new pledges in your area."
 msgstr ""
 
-#: pb/web/alert.php:143
-msgid "Summer pledgin'!"
-msgstr ""
-
-#: pb/web/alert.php:143
-msgid "Given that it is summer time, why not use PledgeBank to "
-msgstr ""
-
-#: pb/web/alert.php:144
-msgid "organise a street party"
-msgstr ""
-
-#: pb/web/alert.php:145
-msgid "a picnic"
-msgstr ""
-
-#: pb/web/alert.php:161
+#: pb/web/alert.php:164
 msgid ""
 "Now please select one of the possible places; if none of them is right, "
 "please type the name of another nearby place"
 msgstr ""
 
-#: pb/web/alert.php:164 pb/web/new.php:243
+#: pb/web/alert.php:167 pb/web/new.php:243
 #, php-format
 msgid ""
 "Unfortunately, we couldn't find anywhere with a name like '%s'.  Please try "
 "a different spelling, or another nearby village, town or city."
 msgstr ""
 
-#: pb/web/alert.php:186
+#: pb/web/alert.php:189
 msgid "Get emails about local pledges"
 msgstr ""
 
-#: pb/web/alert.php:187
+#: pb/web/alert.php:190
 msgid ""
 "Fill in the form, and we'll email you when someone creates a new pledge near "
 "you."
 msgstr ""
 
-#: pb/web/alert.php:200
+#: pb/web/alert.php:203
 msgid "Where in that country?"
 msgstr ""
 
@@ -2295,16 +2287,32 @@ msgid ""
 "Please <a href=\"/contact\">contact us</a> if you want to get in touch."
 msgstr ""
 
-#: pb/web/faq.php:108
+#: pb/web/faq.php:104
+msgid "Where's the \"source code\" to PledgeBank?"
+msgstr ""
+
+#: pb/web/faq.php:106
+msgid ""
+"The software behind PledgeBank is open source, and available to you\n"
+"mainly under the Affero GPL software license. You can <a\n"
+"href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">download the "
+"source\n"
+"code</a> (look under 'pb') and help us develop it. You're welcome to use it\n"
+"in your own projects, although you must also make available the source code "
+"to\n"
+"any such projects.\n"
+msgstr ""
+
+#: pb/web/faq.php:118
 msgid "Pledge Creators' Questions"
 msgstr ""
 
-#: pb/web/faq.php:111
+#: pb/web/faq.php:121
 msgid ""
 "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr ""
 
-#: pb/web/faq.php:113
+#: pb/web/faq.php:123
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
 "which will apply. First, the lower a pledge target (in terms of\n"
@@ -2316,11 +2324,11 @@ msgid ""
 "puts their pledge up and forgets about it."
 msgstr ""
 
-#: pb/web/faq.php:122
+#: pb/web/faq.php:132
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr ""
 
-#: pb/web/faq.php:124
+#: pb/web/faq.php:134
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
 "Choose the number of people for which you could only just be bothered to "
@@ -2331,11 +2339,11 @@ msgid ""
 "can always sign up."
 msgstr ""
 
-#: pb/web/faq.php:139
+#: pb/web/faq.php:149
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr ""
 
-#: pb/web/faq.php:141
+#: pb/web/faq.php:151
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
 "the site, until a few people have signed up to them. This is to make\n"
@@ -2344,11 +2352,11 @@ msgid ""
 "neighbours about your pledge!"
 msgstr ""
 
-#: pb/web/faq.php:147
+#: pb/web/faq.php:157
 msgid "Do you remove silly or illegal pledges?"
 msgstr ""
 
-#: pb/web/faq.php:149
+#: pb/web/faq.php:159
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "consider to be inappropriate. This means that your pledge will work, but "
@@ -2360,12 +2368,12 @@ msgid ""
 "illegal behaviour."
 msgstr ""
 
-#: pb/web/faq.php:156
+#: pb/web/faq.php:166
 msgid ""
 "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr ""
 
-#: pb/web/faq.php:158
+#: pb/web/faq.php:168
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "the pledge.  If you change the wording, then their signatures would no "
@@ -2378,11 +2386,11 @@ msgid ""
 "this from the 'Spread the word' section of your pledge page."
 msgstr ""
 
-#: pb/web/faq.php:165
+#: pb/web/faq.php:175
 msgid "Can I contact the people who have signed my pledge?"
 msgstr ""
 
-#: pb/web/faq.php:167
+#: pb/web/faq.php:177
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
 "to your pledge's page, and follow the link under 'Spread the word'.  For "
@@ -2398,11 +2406,11 @@ msgid ""
 "them."
 msgstr ""
 
-#: pb/web/faq.php:176
+#: pb/web/faq.php:186
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr ""
 
-#: pb/web/faq.php:178
+#: pb/web/faq.php:188
 #, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -2418,11 +2426,11 @@ msgid ""
 "appears at the end of its address."
 msgstr ""
 
-#: pb/web/faq.php:188
+#: pb/web/faq.php:198
 msgid "How do I add a picture to my pledge?"
 msgstr ""
 
-#: pb/web/faq.php:190
+#: pb/web/faq.php:200
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
 "(creator only)' under 'Spread the word on and offline'. Either find a "
@@ -2430,15 +2438,15 @@ msgid ""
 "of something to do with your pledge, or even just use a photo of yourself!"
 msgstr ""
 
-#: pb/web/faq.php:198
+#: pb/web/faq.php:208
 msgid "International Questions"
 msgstr ""
 
-#: pb/web/faq.php:201
+#: pb/web/faq.php:211
 msgid "Can I put up pledges in languages other than English?"
 msgstr ""
 
-#: pb/web/faq.php:203
+#: pb/web/faq.php:213
 msgid ""
 "You can try! Fully internationalised versions of PledgeBank are\n"
 "more than possible, but we can't do them without speakers of other "
@@ -2447,11 +2455,11 @@ msgid ""
 "<a href=\"/translate\">read our translation help page</a>."
 msgstr ""
 
-#: pb/web/faq.php:208
+#: pb/web/faq.php:218
 msgid "Do I have to have a UK postcode to use this service?"
 msgstr ""
 
-#: pb/web/faq.php:210
+#: pb/web/faq.php:220
 msgid ""
 "No, although you get some extra, handy features if you are in the UK,\n"
 "such as the ability to search for pledges close to your location.\n"
@@ -2462,15 +2470,15 @@ msgid ""
 "email list</a> to help us out.\n"
 msgstr ""
 
-#: pb/web/faq.php:222
+#: pb/web/faq.php:232
 msgid "Privacy Questions"
 msgstr ""
 
-#: pb/web/faq.php:225
+#: pb/web/faq.php:235
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr ""
 
-#: pb/web/faq.php:227
+#: pb/web/faq.php:237
 #, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -2481,11 +2489,11 @@ msgid ""
 "view the pledge page."
 msgstr ""
 
-#: pb/web/faq.php:233
+#: pb/web/faq.php:243
 msgid "Who gets to see my email address?"
 msgstr ""
 
-#: pb/web/faq.php:235
+#: pb/web/faq.php:245
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
 "creator of your pledge. We do let the pledge creators send emails to pledge\n"
@@ -2498,11 +2506,11 @@ msgid ""
 "email address - please be aware!"
 msgstr ""
 
-#: pb/web/faq.php:242
+#: pb/web/faq.php:252
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr ""
 
-#: pb/web/faq.php:244
+#: pb/web/faq.php:254
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
 "relation to your pledge. These will be a mixture of status emails from\n"
@@ -2961,6 +2969,10 @@ msgstr ""
 
 #: pb/web/new.php:117
 msgid "Deadline date"
+msgstr ""
+
+#: pb/web/new.php:117
+msgid "e.g."
 msgstr ""
 
 #: pb/web/new.php:123
@@ -3904,6 +3916,10 @@ msgstr ""
 
 #: pb/web/ref-index.php:62
 msgid "Print out customised flyers"
+msgstr ""
+
+#: pb/web/ref-index.php:64
+msgid "Create a local version of this pledge"
 msgstr ""
 
 #: pb/web/ref-index.php:65 pb/web/ref-index.php:68
