@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /usr/local/bin/php "$@"
+PHP_FCGI_CHILDREN=1 exec /usr/local/bin/php "$@"
