@@ -1,0 +1,134 @@
+#!/usr/bin/perl -w
+#
+# scrape:
+# Scrape Newspaper Society newspaper records.
+#
+# Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
+# Email: chris@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.1 2005-11-23 15:29:40 chris Exp $';
+
+use strict;
+require 5.8.0;
+
+package Oops;
+
+@Oops::ISA = qw(Error::Simple);
+
+package main;
+
+use Data::Dumper;
+use Error qw(:try);
+use HTML::Entities;
+use HTML::TreeBuilder;
+
+# strip_tags ELT
+# Strip font tags from ELT.
+sub strip_tags ($) {
+    my $e = shift;
+    # XXX Should replace with recursive procedure -- see
+    # HTML::Element::traverse(1).
+    $e->traverse([
+            # pre-order callback
+            sub {
+                my $node = shift;
+                if ($node->tag() eq 'font') {
+                    $node->replace_with_content();
+                }
+                return 1;
+            },
+            # no post-order callback
+            0],
+            # no text callback
+            1);
+}
+
+# scrape_single_record HTML
+# Given the HTML page about an individual newspaper, scrape information about
+# it and return same.
+sub scrape_single_record ($) {
+    my $html = shift;
+
+    my ($id) = ($html =~ m#"javascript: DoMap\(([1-9]\d*)\);"#);
+    throw Oops("no ID found in newspaper HTML") unless (defined($id));
+
+    my $T = HTML::TreeBuilder->new_from_content($html);
+    strip_tags($T);
+
+    # Find the "Newspaper" panel in the top table. "Newspaper" is emboldened.
+    my $n = $T->look_down('_tag', 'b',
+                    sub ($) {
+                        my $t = shift;
+                        if ($t->parent()->tag() eq 'td'
+                            && $t->as_text() eq 'Newspaper') {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    })
+        || throw Oops("no newspaper panel found in top table");
+    
+    $n = $n->parent();
+    
+    # The newspaper's name, address, editor and other details are in a <p> tag
+    # within this table cell.
+    my $p = $n->look_down('_tag', 'p');
+    my $details = $p->as_HTML();
+    $details =~ s#</?[a-z]>##g;
+
+    my %h = ( newspapersocid => $id );
+
+    my ($name, @lines) = map { decode_entities($_) } split(m#<br>#, $details);
+
+    if ($name =~ m#^<a href="([^"]+)" target="_blank">(.+)#) {
+        $h{name} = $2;
+        $h{web} = $1;
+    } else {
+        $h{name} = $name;
+    }
+   
+    # Remaining lines are either part of the address, or prefixed lines about
+    # other aspects of the newspaper.
+    $h{address} = '';
+    foreach (@lines) {
+        if ($_ =~ /^\s*([^:]+):\s*(.*)/) {
+            if ($1 eq 'Tel') {
+                # ||= so that advertising telephone # doesn't replace
+                # editorial.
+                $h{telephone} ||= $2;
+            } elsif ($1 eq 'Fax') {
+                $h{fax} ||= $2;
+            } elsif ($1 eq 'Newspaper Editor') {
+                $h{editor} ||= $2;
+            }
+        } elsif ($_ =~ /\s*([^\s].*)/) {
+            $h{address} .= "$1\n";
+        }
+    }
+
+    # Now find the table of coverage by location.
+    my $t = $T->look_down('_tag', 'td',
+                    sub ($) {
+                        my $t = shift;
+                        if ($t->as_text() =~ /^\s*Location Name\s*$/) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    })
+        || throw Oops("no coverage by location table found");
+    $t = $t->parent()->parent();
+    foreach my $row ($t->content_list()) {
+        my ($place, $households, $circulation) = map { my $x = $_->as_text(); $x =~ s/^\s+//; $x =~ s/\s+$//; $x } $row->content_list();
+        next unless ($households =~ /^[1-9][0-9]*$/);
+        push(@{$h{coverage}}, [$place, $households, $circulation]);
+    }
+
+    return \%h;
+}
+
+foreach (@ARGV) {
+    my $html = `cat '$_'`;
+    print Dumper(scrape_single_record($html));
+}
