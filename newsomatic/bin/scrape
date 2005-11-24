@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.3 2005-11-24 15:20:53 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.4 2005-11-24 16:10:56 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -235,6 +235,7 @@ sub scrape_single_record ($) {
     return \%h;
 }
 
+# should scrape http://www.newspapersoc.org.uk/Documents/Newspapers&Publishers/newspaper-index.htm
 foreach (@ARGV) {
     my $html = `cat '$_'`;
     my $r = scrape_single_record($html);
