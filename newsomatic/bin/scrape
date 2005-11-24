@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.1 2005-11-23 15:29:40 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.2 2005-11-24 14:26:29 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -18,10 +18,80 @@ package Oops;
 
 package main;
 
+# Horrible boilerplate to set up appropriate library paths.
+use FindBin;
+use lib "$FindBin::Bin/../perllib";
+use lib "$FindBin::Bin/../../perllib";
+
 use Data::Dumper;
 use Error qw(:try);
 use HTML::Entities;
 use HTML::TreeBuilder;
+
+use mySociety::Gaze;
+mySociety::Gaze::configure('http://gaze.mysociety.org/gaze');
+
+# median2d ARRAY
+# Compute a two-dimensional analogue of the median. ARRAY is a reference to a
+# list of [X, Y] pairs; the function returns the coordinates of the "median"
+# point. For each point, the number of points in the four quadrants (above
+# left, above right, below left, below right) around the point are computed,
+# and the maximum difference between the population of any two quadrants is
+# recorded. A point which lies on the border between two quadrants is shared
+# equally between them. The "median" is the point for which this maximum
+# difference is minimised. If there are ties, then the mean of the coordinates
+# of the tied points is computed.
+sub median2d ($) {
+    my $ary = shift;
+    my @score = ( );
+    for (my $i = 0; $i < @$ary; ++$i) {
+        #           TL TR BL BR
+        my @qq = qw(0  0  0  0);
+        my ($x, $y) = @{$ary->[$i]};
+        for (my $j = 0; $j < @$ary; ++$j) {
+            next if ($j == $i);
+            my $X = ($ary->[$j]->[0] <=> $x);
+            my $Y = ($ary->[$j]->[1] <=> $y);
+            my $b = 0;
+            $b |= 1 if ($X > 0);
+            $b |= 2 if ($Y > 0);
+            if ($X && $Y) {
+                ++$qq[$b];
+            } elsif ($X) {
+                $qq[$b] += .5;
+                $qq[$b | 2] += .5;
+            } elsif ($Y) {
+                $qq[$b] += .5;
+                $qq[$b | 1] += .5;
+            } # else points i and j coincide; no point adding .25 everywhere
+        }
+
+        # Find the max difference
+        my $maxdiff = 0;
+        for (my $a = 0; $a < 4; ++$a) {
+            for (my $b = 0; $b < 4; ++$b) {
+                my $d = abs($qq[$a] - $qq[$b]);
+                $maxdiff = $d if ($d > $maxdiff);
+            }
+        }
+
+        push(@score, [$i, $maxdiff]);
+    }
+    @score = sort { $a->[0] <=> $b->[0] } @score;
+    my ($x, $y) = (0, 0);
+    for (my $n = 0; $score[$n]->[1] == $score[0]->[1]; ++$n) {
+        my $i = $score[$n]->[0];
+        $x += $ary->[$i]->[0];
+        $y += $ary->[$i]->[1];
+    }
+    $x /= $n;
+    $y /= $n;
+    if (wantarray()) {
+        return ($x, $y);
+    } else {
+        return [$x, $y];
+    }
+}
 
 # strip_tags ELT
 # Strip font tags from ELT.
@@ -130,5 +200,14 @@ sub scrape_single_record ($) {
 
 foreach (@ARGV) {
     my $html = `cat '$_'`;
-    print Dumper(scrape_single_record($html));
+    my $r = scrape_single_record($html);
+    print Dumper($r);
+    foreach my $row (@{$r->{coverage}}) {
+        my ($place) = @$row;
+        print "$place == \n";
+        my $rr = mySociety::Gaze::find_places('GB', undef, $place, 10, 90);
+        foreach (@$rr) {
+            print Dumper($_);
+        }
+    }
 }
