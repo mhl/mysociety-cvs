@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.2 2005-11-24 14:26:29 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.3 2005-11-24 15:20:53 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -25,6 +25,7 @@ use lib "$FindBin::Bin/../../perllib";
 
 use Data::Dumper;
 use Error qw(:try);
+use Geo::Distance;
 use HTML::Entities;
 use HTML::TreeBuilder;
 
@@ -79,7 +80,8 @@ sub median2d ($) {
     }
     @score = sort { $a->[0] <=> $b->[0] } @score;
     my ($x, $y) = (0, 0);
-    for (my $n = 0; $score[$n]->[1] == $score[0]->[1]; ++$n) {
+    my $n;
+    for ($n = 0; $n < @score && $score[$n]->[1] == $score[0]->[1]; ++$n) {
         my $i = $score[$n]->[0];
         $x += $ary->[$i]->[0];
         $y += $ary->[$i]->[1];
@@ -195,6 +197,41 @@ sub scrape_single_record ($) {
         push(@{$h{coverage}}, [$place, $households, $circulation]);
     }
 
+    # Now try to figure out where the various named places are.
+    my @allplaces;
+    my @coords;
+    foreach (@{$h{coverage}}) {
+        my ($name) = @$_;
+        # Circulation in "... Rural" or "... Rural Area" is often listed. So
+        # that Gaze gets a chance to find these, strip off the suffix.
+        $name =~ s/Rural(| Area)$//;
+        # Set a high minimum score so that we only get exact or close matches.
+        my $places = mySociety::Gaze::find_places('GB', undef, $name, 10, 90);
+        push(@allplaces, $places);
+        foreach (@$places) {
+            push(@coords, [$_->[3], $_->[4]]);
+        }
+    }
+
+    my ($lat, $lon) = median2d(\@coords);
+
+    # Find best match for each place in @allplaces, and annotate the coverage
+    # array with its coordinates.
+    for (my $i = 0; $i < @allplaces; ++$i) {
+        my $pp = $allplaces[$i];
+        if (@$pp > 1) {
+            # Several candidates; find the one closest to the "median".
+            @$pp = sort { Geo::Distance::distance($a->[3], $a->[4], $lat, $lon) <=> Geo::Distance::distance($b->[3], $b->[4], $lat, $lon) } @$pp;
+        }
+
+        if (@$pp > 0) {
+            push(@{$h{coverage}->[$i]}, $pp->[0]->[3], $pp->[0]->[4]);
+        } else {
+            push(@{$h{coverage}->[$i]}, undef, undef);
+        }
+    }
+#    printf "median2d coordinates are (%f, %f)\n", $lat, $lon;
+
     return \%h;
 }
 
@@ -202,12 +239,4 @@ foreach (@ARGV) {
     my $html = `cat '$_'`;
     my $r = scrape_single_record($html);
     print Dumper($r);
-    foreach my $row (@{$r->{coverage}}) {
-        my ($place) = @$row;
-        print "$place == \n";
-        my $rr = mySociety::Gaze::find_places('GB', undef, $place, 10, 90);
-        foreach (@$rr) {
-            print Dumper($_);
-        }
-    }
 }
