@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.4 2005-11-24 16:10:56 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.5 2005-11-24 17:42:07 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -28,6 +28,7 @@ use Error qw(:try);
 use Geo::Distance;
 use HTML::Entities;
 use HTML::TreeBuilder;
+use WWW::Mechanize;
 
 use mySociety::Gaze;
 mySociety::Gaze::configure('http://gaze.mysociety.org/gaze');
@@ -116,10 +117,10 @@ sub strip_tags ($) {
             1);
 }
 
-# scrape_single_record HTML
+# parse_record HTML
 # Given the HTML page about an individual newspaper, scrape information about
 # it and return same.
-sub scrape_single_record ($) {
+sub parse_record ($) {
     my $html = shift;
 
     my ($id) = ($html =~ m#"javascript: DoMap\(([1-9]\d*)\);"#);
@@ -230,14 +231,30 @@ sub scrape_single_record ($) {
             push(@{$h{coverage}->[$i]}, undef, undef);
         }
     }
-#    printf "median2d coordinates are (%f, %f)\n", $lat, $lon;
-
     return \%h;
 }
 
-# should scrape http://www.newspapersoc.org.uk/Documents/Newspapers&Publishers/newspaper-index.htm
-foreach (@ARGV) {
-    my $html = `cat '$_'`;
-    my $r = scrape_single_record($html);
-    print Dumper($r);
+my $M = new WWW::Mechanize();
+$M->agent_alias('Windows IE 6');
+
+$M->get('http://www.newspapersoc.org.uk/Documents/Newspapers&Publishers/newspaper-index.htm');
+
+my $i = 0;
+while (1) {
+    ++$i;
+    if (my $r = $M->follow_link(n => $i, url_regex => qr#/newspaperdetail\.cfm\?paperid=[1-9]\d*$#)) {
+        my $html = $r->content();
+        # Sometimes the links are bad, so still trap errors.
+        my $record;
+        try {
+            $record = parse_record($html);
+            print Dumper($record), "-----\n";
+        } catch Oops with {
+            my $E = shift;
+            print STDERR "oops: ", $E->text(), "\n";
+        };
+        $M->back();
+    } else {
+        last;
+    }
 }
