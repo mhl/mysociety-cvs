@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.5 2005-11-24 17:42:07 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: scrape,v 1.6 2005-11-24 17:43:37 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -242,6 +242,8 @@ $M->get('http://www.newspapersoc.org.uk/Documents/Newspapers&Publishers/newspape
 my $i = 0;
 while (1) {
     ++$i;
+    # XXX maybe check the link text as well -- sometimes the linked page quotes
+    # a different name for the newspaper than the link does.
     if (my $r = $M->follow_link(n => $i, url_regex => qr#/newspaperdetail\.cfm\?paperid=[1-9]\d*$#)) {
         my $html = $r->content();
         # Sometimes the links are bad, so still trap errors.
