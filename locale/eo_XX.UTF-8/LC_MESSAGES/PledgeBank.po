@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2005-11-27 17:54+0000\n"
-"PO-Revision-Date: 2005-11-26 22:35+0000\n"
+"POT-Creation-Date: 2005-11-27 22:47+0000\n"
+"PO-Revision-Date: 2005-11-27 23:35+0000\n"
 "Last-Translator: Tim Morley <t_morley@argonet.co.uk>\n"
 "Language-Team: Esperanto <team@pledgebank.com>\n"
 "MIME-Version: 1.0\n"
@@ -1473,7 +1473,7 @@ msgstr "Viaj Promesoj"
 
 #: pb/phplib/page.php:160
 msgid "Logout"
-msgstr "Adiaŭi"
+msgstr "Elsaluti"
 
 #: pb/phplib/page.php:166
 msgid "Built by mySociety"
@@ -1579,7 +1579,7 @@ msgstr[1] "ankoraŭ %d estis bezonataj"
 #, fuzzy, php-format
 msgid "%d more needed"
 msgid_plural "%d more needed"
-msgstr[0] "ankoraŭ %d bezonataj"
+msgstr[0] "ankoraŭ %d bezonata"
 msgstr[1] "ankoraŭ %d bezonataj"
 
 #: pb/phplib/pledge.php:322
@@ -1713,13 +1713,15 @@ msgstr "Montri mian nomon sur tiu ĉi promeso"
 msgid "Sign Pledge"
 msgstr "Subskribi Promeson"
 
+# I've translated this as "In order to massively increase the chance of this pledge succeeding, " because what follows is "print this page out" (entry immediately below) in the imperative. See comment there. (Tim Morley, 2005-11-27)
 #: pb/phplib/pledge.php:682
 msgid "You will massively increase the chance of this pledge succeeding if you "
-msgstr "Vi pliigegos la probablecon de sukceso se vi "
+msgstr "Por pliigegi la probablecon de sukceso de tiu ĉi promeso, vi "
 
+# This phrase is used on two different pages, in two grammatically different ways (one present tense, one imperative), which doesn't matter in English, but does in Esperanto. I've translated it as imperative, and changed the translation of the entry above (msgid "You will massively increase the chance of this pledge succeeding if you "). (Tim Morley, 2005-11-27)
 #: pb/phplib/pledge.php:684 pb/web/ref-flyers.php:53
 msgid "print this page out"
-msgstr "presas tiun ĉi paĝon"
+msgstr "presu tiun ĉi paĝon"
 
 #: pb/phplib/pledge.php:685
 msgid "these more attractive PDF and RTF (Word) versions"
@@ -1760,7 +1762,7 @@ msgstr ""
 "<p class=\"noprint\"><strong>Kunportu vian Promeson al la trinkejo</strong> &ndash; je via venonta eliro,\n"
 "petu ke viaj amikoj subskribu per SMS-mesaĝo tia (de brita poŝtelefono):\n"
 "<strong>pledge&nbsp;%s</strong> al <strong>60022</strong>.\n"
-"La mesaĝo kostas same kiel kutima mesaĝo, kaj ni poste daŭre informos ilin pri progreso\n"
+"La mesaĝo kostas same kiel kutima mesaĝo, kaj ni poste daŭre informos ilin senpage pri progreso\n"
 "per ilia poŝtelefono.</p>"
 
 #: pb/web/404.php:9
@@ -3698,7 +3700,7 @@ msgid ""
 msgstr ""
 "Iu ajn kun poŝtelefono povas subskribi promeson per jena SMS-tekstmesaĝo:\n"
 "<strong>pledge</strong> sekve de la promesoreferenco al\n"
-"<strong>%s</strong>. Aktuale tio funkcia nur en %s. Bonvolu kontakti\n"
+"<strong>%s</strong>. Aktuale tio funkcias nur en %s. Bonvolu kontakti\n"
 "nin se vi povas helpi kun SMS por aliaj landoj."
 
 #: pb/web/offline.php:57
@@ -4090,7 +4092,7 @@ msgstr "Ĉu vi provas uzi nin por SPAMADO!?!?!?"
 
 #: pb/web/ref-email.php:64
 msgid "They added this message:"
-msgstr "Ili aldonis tiun ĉi mesaĝon:"
+msgstr "Li/ŝi aldonis tiun ĉi mesaĝon:"
 
 #: pb/web/ref-email.php:69
 msgid "Your message has been sent.  Thanks very much for spreading the word of this pledge."
@@ -4102,7 +4104,7 @@ msgstr "Bedaŭrinde, estis problemo dum la sendo de la mesaĝoj. Bonvolu kontrol
 
 #: pb/web/ref-flyers.php:36
 msgid "<h2>Customised Flyers</h2>"
-msgstr "<h2>Speciale Preparitaj Flugfolioj"
+msgstr "<h2>Speciale Preparitaj Flugfolioj</h2>"
 
 #: pb/web/ref-flyers.php:37
 msgid "Here you can get <acronym title=\"Portable Document Format\">PDF</acronym>s or editable <acronym title=\"Rich Text File\">RTF</acronym>s (Word compatible) containing your pledge data, to print out, display, hand out, or whatever."
@@ -4126,8 +4128,9 @@ msgstr ", kiu inkluzivas pli da detaloj"
 
 #: pb/web/ref-flyers.php:43
 msgid "A4 editable poster (RTF)"
-msgstr "redaktebla afiŝo (RTF)"
+msgstr "Redaktebla afiŝo (RTF)"
 
+# The %s token here is replaced with msgid "Print out this page", but see comment there for potential trap. (Tim Morley, 2005-11-27)
 #: pb/web/ref-flyers.php:53
 #, php-format
 msgid "Alternatively, simply %s to get these flyers."
@@ -4737,17 +4740,16 @@ msgid "People who signed the pledges you created or signed also signed these..."
 msgstr "Iuj, kiuj subskribis promesojn kreitajn de vi subskribis ankaŭ tiujn ĉi..."
 
 #: pb/web/your.php:80
-#, fuzzy
 msgid "Update your details"
-msgstr "Pli da detaloj"
+msgstr "Ĝisdatigi viajn detalojn"
 
 #: pb/web/your.php:101
 msgid "Password successfully updated"
-msgstr ""
+msgstr "Pasvorto sukcese ĝisdatigita"
 
 #: pb/web/your.php:107
 msgid "If you wish to change your password, you can do so here."
-msgstr ""
+msgstr "Se vi volas ŝanĝi vian pasvorton, vi povas fari tion tie ĉi."
 
 #: pb/web/your.php:109
 msgid "New password:"
@@ -4881,7 +4883,7 @@ msgstr " (nur %s) aŭ subskribu ĉe "
 
 #: pb/web/poster.cgi:196
 msgid "This pledge closes on "
-msgstr "Tiu ĉi promeso fermas je "
+msgstr "Tiu ĉi promeso fermiĝos je "
 
 #: pb/web/poster.cgi:196
 msgid ". Thanks!"
@@ -4941,7 +4943,7 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"            Tiu ĉi promeso fermos je <font color=\"#522994\">%s</font>. Dankon!\n"
+"            Tiu ĉi promeso fermiĝos je <font color=\"#522994\">%s</font>. Dankon!\n"
 "            "
 
 #: pb/web/poster.cgi:337
@@ -5256,7 +5258,7 @@ msgstr ""
 "\n"
 "<?=$values['pledgebank_url']?> estas retejo kreita por potencigi\n"
 "VIN, ebligante al vi certigi, ke aliaj subtenos viajn agojn. Se iam vi volis\n"
-"influeti ion sed ne sciis kiel komencis nek kiu kunstarus kun vi, musklaku\n"
+"influeti ion sed ne sciis kiel komenci nek kiu kunstarus kun vi, musklaku\n"
 "ĉi tie <?=$values['pledgebank_url']?> !\n"
 "\n"
 "La promeso de <?=$values['from_name']?> fermiĝos je <?=$values['pretty_date']?>\n"
