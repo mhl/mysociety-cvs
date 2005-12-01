@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2005-12-01 00:33+0000\n"
+"POT-Creation-Date: 2005-12-01 23:07+0000\n"
 "PO-Revision-Date: 2005-11-30 13:35+0000\n"
 "Last-Translator: Tim Morley <t_morley@argonet.co.uk>\n"
 "Language-Team: Esperanto <team@pledgebank.com>\n"
@@ -1025,7 +1025,7 @@ msgstr "Lingvo:"
 #: pb/phplib/admin-pb.php:253 pb/phplib/fns.php:536 pb/phplib/pledge.php:309
 #: pb/phplib/pledge.php:312 pb/web/alert.php:207
 msgid "Country:"
-msgstr "Lando"
+msgstr "Lando:"
 
 #: pb/phplib/admin-pb.php:369
 msgid "Messages"
@@ -1247,7 +1247,7 @@ msgstr "-- la skipo de PledgeBank.com"
 
 #: pb/phplib/fns.php:315
 msgid "Email this pledge"
-msgstr "Sendu tiun promeson per retmesaĝo"
+msgstr "Sendi tiun ĉi promeson per retmesaĝo"
 
 #: pb/phplib/fns.php:316
 msgid ""
@@ -1329,7 +1329,7 @@ msgstr "Funkcias en ĉiu lando!"
 
 #: pb/phplib/fns.php:537 pb/web/pb.js:125 pb/web/pb.js:128
 msgid "Town:"
-msgstr "Urbo"
+msgstr "Urbo:"
 
 #: pb/phplib/fns.php:538 pb/web/alert.php:216
 msgid "Subscribe"
@@ -1414,7 +1414,7 @@ msgstr "Diru al la mondo \"Mi tion faros, sed nur se vi helpos\""
 
 #: pb/phplib/page.php:91
 msgid "This pledge's permanent location: "
-msgstr "La porĉiama loko de tiu ĉi promeso: "
+msgstr "La porĉiama loko de tiu ĉi promeso estas: "
 
 #: pb/phplib/page.php:110
 msgid "Hello, "
@@ -3158,10 +3158,13 @@ msgstr "Nova Promeso &#8211; Ŝtupo 1 el 4"
 msgid "Your Pledge"
 msgstr "Via Promeso"
 
+# Added message here about typing using the x-method for Esperanto. (Tim Morley, 2005-12-01)
 #: pb/web/new.php:110
 #, php-format
 msgid "(if you'd like your pledge in a language other than %s, <a href=\"%s\">click here</a>)"
-msgstr "(se vi volas verki vian promeson en lingvo alia ol %s, <a href=\"%s\">musklaku ĉi tie</a>."
+msgstr ""
+"(se vi volas verki vian promeson en lingvo alia ol %s, <a href=\"%s\">musklaku ĉi tie</a>.)\n"
+"Tajpu aŭ kun ĉapelitaj literoj, aŭ per x-metodo. Ĉiu 'cx', 'ux' ktp. estos aŭtomate transformita al 'ĉ', 'ŭ' ktp."
 
 #: pb/web/new.php:114 pb/web/new.php:426 pb/web/ref-index.php:245
 msgid "I will"
@@ -3575,7 +3578,7 @@ msgstr "La celo de tio estas simple doni al via promeso la plej grandan ŝancon 
 
 #: pb/web/new.php:761
 msgid "Rest assured that we won't ever give or sell anyone your email address."
-msgstr "Ni promesas, ke ni neniam donos nek vendos vian retadreson al iu ajn"
+msgstr "Ni promesas, ke ni neniam donos nek vendos vian retadreson al iu ajn."
 
 #: pb/web/new.php:772
 msgid "Other Details"
@@ -4830,87 +4833,83 @@ msgstr "Musklaku por pli da informoj"
 msgid "SMS operated by charity UKCOD. Available in UK only. Sign-up message costs your normal text rate. Further messages are free. "
 msgstr "SMS funkciigata de la almozfondaĵo UKCOD. Disponeblas nur en Britio. La kosto de la subskriba mesaĝo estas la sama kiel kutima SMS-mesaĝo, laŭ via telefona kontrakto. Ĉiuj postaj mesaĝoj estas senpagaj."
 
-#: pb/web/poster.cgi:116
-msgid "UK"
-msgstr "Britio"
-
-#: pb/web/poster.cgi:163
+#: pb/web/poster.cgi:161
 msgid "If"
 msgstr "Se"
 
-#: pb/web/poster.cgi:165
+#: pb/web/poster.cgi:163
 #, python-format
 msgid " %s will %s, then "
 msgstr " %s promesas %s, tiam "
 
-#: pb/web/poster.cgi:166
+#: pb/web/poster.cgi:164
 msgid "I"
 msgstr "mi"
 
-#: pb/web/poster.cgi:167
+#: pb/web/poster.cgi:165
 #, python-format
 msgid " will %s."
 msgstr " promesas %s."
 
-#: pb/web/poster.cgi:174
+#: pb/web/poster.cgi:172
 msgid "More details:"
 msgstr "Pli da detaloj:"
 
 # OK, even having found this in the source code, I can't work out what its context is! I gather it's part of a SMS message, but I can't get any more. Please help. What follows "at"? Is it a time, a date, or something else? (Tim Morley, 2005-11-23)
 # It's on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:181 pb/web/poster.cgi:316
+#: pb/web/poster.cgi:179 pb/web/poster.cgi:314
 msgid "Pledge at "
 msgstr "Subskribu ĉe "
 
-#: pb/web/poster.cgi:183 pb/web/poster.cgi:318
+#: pb/web/poster.cgi:181 pb/web/poster.cgi:316
 msgid " pin "
 msgstr " sekreta kodnumero "
 
 # I think from the context in poster.cgi that this is an instruction (i.e. verb in the imperative), not the noun 'text', is that right? (Tim Morley, 2005-11-23)
 # Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:187
+#: pb/web/poster.cgi:185
 msgid "Text"
 msgstr "Tekstmesaĝu"
 
 # Should 'pledge' be translated here or not? If it's part of an automatic system for picking up and counting SMS messages, does it have to stay in English? (Tim Morley, 2005-11-23)
 # Yes, this needs to stay in English, it's the SMS shortcode. I guess it should stay in translation in case we get more shortcodes, but I should also add comments to the .po file with things like this. Thanks again. :) (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:189
+#: pb/web/poster.cgi:187
 #, python-format
 msgid "pledge %s"
 msgstr "pledge %s"
 
 # This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:190
+#: pb/web/poster.cgi:188
 msgid "to"
 msgstr "al"
 
 # I think 'pledge' here means 'sign up to', as part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
 # Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:192
+#: pb/web/poster.cgi:190
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr " (nur %s) aŭ subskribu ĉe "
 
-#: pb/web/poster.cgi:196
+#: pb/web/poster.cgi:194
 msgid "This pledge closes on "
 msgstr "Tiu ĉi promeso fermiĝos je "
 
-#: pb/web/poster.cgi:196
+#: pb/web/poster.cgi:194
 msgid ". Thanks!"
 msgstr ". Dankon!"
 
 # Some characters seem corrupted in the original .po file. I think they're meant to be em-dashes, but is it OK to put the HTML code &mdash; in their place? A Google search for '"you only have to act" site:pledgebank.com' suggests that this code is used to create pdf's, not webpages, so maybe HTML codes are no use. Oh yeah, the fact that this is all in a file called "poster.cgi" suggests it might be used for generating, er, posters. What to do then? (Tim Morley, 2005-11-23)
 # Hmm, yes. The poster.cgi file is indeed for creating PDF and RTF posters in Python, and the RTF generation library we use (or RTF standard itself) requires the characters to be in, I believe, Win-1252. As the .po file says it's in UTF-8, it's encoded e.g. \x96 as \xc2 \x96. If you just copy that identically (\x96 and \x97 are dashes, \x92 is apostrophe), it should be okay. I know that's not perfect, sorry. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:197
+#: pb/web/poster.cgi:195
 #, python-format
 msgid "Remember, you only have to act if %d other people sign up \\u8211- that\\u8217's what PledgeBank is all about."
 msgstr "Memoru, vi devas ekagi nur se %d aliaj personoj subskribas \\u8211- tio estas la etoso de PledgeBank."
 
-#: pb/web/poster.cgi:270
+#: pb/web/poster.cgi:268
 msgid "<font color=\"#ffffff\">Pledge</font>Bank.com"
 msgstr "<font color=\"#ffffff\">Pledge</font>Bank.com"
 
-#: pb/web/poster.cgi:296
+#: pb/web/poster.cgi:294
 #, python-format
 msgid ""
 "\n"
@@ -4923,18 +4922,18 @@ msgstr ""
 "            tiam <font color=\"#522994\">mi</font> promesas %s.\n"
 "            "
 
-#: pb/web/poster.cgi:312
+#: pb/web/poster.cgi:310
 #, python-format
 msgid "<b>More details:</b> %s"
 msgstr "<b>Pli da detaloj:</b> %s"
 
-#: pb/web/poster.cgi:324
+#: pb/web/poster.cgi:322
 msgid "pledge at "
 msgstr "subskribu ĉe "
 
 # Translate "pledge" here or not (as part of text message to be automatically interpreted as a signing up)? (Tim Morley, 2005-11-23)
 # No, we only have use of the word "pledge" currently. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:326
+#: pb/web/poster.cgi:324
 #, python-format
 msgid ""
 "<font size=\"+2\">Text</font> <font size=\"+8\" color=\"#522994\">\n"
@@ -4945,7 +4944,7 @@ msgstr ""
 "            <b>pledge %s</b></font> al <font color=\"#522994\"><b>%s</b></font> \n"
 "            (nur en %s) aŭ "
 
-#: pb/web/poster.cgi:334
+#: pb/web/poster.cgi:332
 #, python-format
 msgid ""
 "\n"
@@ -4956,10 +4955,14 @@ msgstr ""
 "            Tiu ĉi promeso fermiĝos je <font color=\"#522994\">%s</font>. Dankon!\n"
 "            "
 
-#: pb/web/poster.cgi:337
+#: pb/web/poster.cgi:335
 #, python-format
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr "Memoru, vi devas ekagi nur se %d aliaj personoj subskribas – tio estas la etoso de PledgeBank."
+
+#: pb/web/poster.cgi:498
+msgid "UK"
+msgstr "Britio"
 
 # I've translated this as "with you", because putting "too" at the end of a sentence doesn't really work in Esperanto; it's inelegant anyway. I think I'm right in saying that this word forms the end of a sentence like "...only if xx people sign up too", so if I can't change the word order, a workaround could be to change the end of the sentence to "to you". How's that? (Tim Morley, 2005-11-23)
 # What the code does here is change the last word of the sentence to "too" if it currently ends "do the same". If you want, you could translate this "too" to "do the same" to not do this. Or "with you", I guess either is fine. :) This should probably be a better-constructed sentence. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
