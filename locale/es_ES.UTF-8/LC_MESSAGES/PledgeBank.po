@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2005-12-11 21:08+0000\n"
-"PO-Revision-Date: 2005-12-10 00:49+0100\n"
+"POT-Creation-Date: 2005-12-11 22:49+0000\n"
+"PO-Revision-Date: 2005-12-11 23:19+0100\n"
 "Last-Translator: Hugo Caballero Figueroa <hc.figueroa@gmail.com>\n"
 "Language-Team: Spanish <LL@pledgebank.com>\n"
 "MIME-Version: 1.0\n"
@@ -990,7 +990,7 @@ msgstr "La CONTRASEÑA no puede ser nula en el método de contraseña"
 
 #: phplib/stash.php:83 phplib/stash.php:117
 msgid "If you got the email more than a week ago, then your request has probably expired.  Please try doing what you were doing from the beginning."
-msgstr "Si recibió el correo electrónico hace más de una semana, es posible que su solicitud haya expirado. Por favor, trate de hacer lo mismo que al principio."
+msgstr "Si recibió el correo electrónico hace más de una semana, es posible que su solicitud haya expirado. Por favor, repita de nuevo el proceso."
 
 #: phplib/utility.php:602
 msgid "today"
@@ -1084,7 +1084,7 @@ msgstr "Resumen de notificaciones locales"
 
 #: pb/phplib/admin-pb.php:1023
 msgid "Alerts followed by signatures"
-msgstr "Notificaciones seguidas por firmas"
+msgstr "Notificaciones que derivaron en suscripción"
 
 #: pb/phplib/admin-pb.php:1039
 #, php-format
@@ -1355,12 +1355,12 @@ msgstr "Traduzca PledgeBank a su idioma"
 #: pb/phplib/fns.php:696
 #, fuzzy, php-format
 msgid "%s (%s) pledges listed"
-msgstr "Tan sólo los compromisos %s (%s) serán listados"
+msgstr "Tan sólo los compromisos en %s (%s) serán listados"
 
 #: pb/phplib/fns.php:698
 #, php-format
 msgid "%s (%s) pledges only listed"
-msgstr "Tan sólo los compromisos %s (%s) serán listados"
+msgstr "Tan sólo los compromisos en %s (%s) serán listados"
 
 #: pb/phplib/fns.php:702
 #, php-format
@@ -1370,7 +1370,7 @@ msgstr "Listado de compromisos en %s (%s) y compromisos globales en %s (%s)"
 #: pb/phplib/fns.php:704
 #, php-format
 msgid "%s (%s) pledges in %s (%s) only listed"
-msgstr "Tan sólo %s (%s) compromisos en %s (%s) serán listados"
+msgstr "Tan sólo los compromisos en %s (%s) en %s (%s) serán listados"
 
 #: pb/phplib/fns.php:711
 #, php-format
@@ -2011,10 +2011,10 @@ msgstr "Lo sentimos -- ha ocurrido un error"
 msgid "'%s' is not a valid email address; please check it carefully"
 msgstr "'%s' no es una dirección válida de correo electrónico; por favor, compruébela de nuevo"
 
-#: pb/web/comment.php:79
-#, php-format
-msgid "Please enter your name %s"
-msgstr "Por favor, introduzca su nombre, %s"
+#: pb/web/comment.php:79 pb/web/contact.php:67 pb/web/new.php:571
+#: pb/web/ref-email.php:48 pb/web/ref-sign.php:35 pb/web/sms.php:77
+msgid "Please enter your name"
+msgstr "Por favor, introduzca su nombre"
 
 #: pb/web/comment.php:82
 msgid "Please enter a message"
@@ -2106,11 +2106,6 @@ msgstr "Enviar"
 #: pb/web/ref-sign.php:41 pb/web/pb.js:15
 msgid "<Enter your name>"
 msgstr "<Introduzca su nombre>"
-
-#: pb/web/contact.php:67 pb/web/new.php:571 pb/web/ref-email.php:48
-#: pb/web/ref-sign.php:35 pb/web/sms.php:77
-msgid "Please enter your name"
-msgstr "Por favor, introduzca su nombre"
 
 #: pb/web/contact.php:70
 msgid "Please enter a subject"
@@ -3315,7 +3310,7 @@ msgstr ""
 
 #: pb/web/new.php:222
 msgid "<strong>My target</strong> is "
-msgstr "<strong>Mi meta</strong> es "
+msgstr "<strong>El número mínimo de voluntarios solicitados</strong> es "
 
 #: pb/web/new.php:226
 msgid ""
@@ -4033,7 +4028,7 @@ msgstr ""
 #: pb/web/ref-announce.php:292
 #, php-format
 msgid "Pledge %s success! Email %s for more"
-msgstr "¡El compromiso %s ha tenido éxito! Escriba %s para más"
+msgstr "¡El compromiso %s ha tenido éxito! Escriba a %s para más"
 
 #: pb/web/ref-announce.php:297
 msgid "<h3>Send Announcement</h3>"
@@ -4449,7 +4444,7 @@ msgid ""
 "        <a href=\"/logout\">log out</a> and log in again as them."
 msgstr ""
 "Vd. ha de ser el creador del compromiso para poder añadir una imagen al mismo.  Por favor,\n"
-"        <a href=\"/logout\">salga</a> y vuelva a entar nuevamente como ellos."
+"        <a href=\"/logout\">salga</a> y vuelva a entar nuevamente como tal."
 
 #: pb/web/ref-picture.php:61 pb/web/ref-picture.php:162
 msgid "Change pledge picture"
@@ -4887,7 +4882,7 @@ msgstr "Si"
 #: pb/web/poster.cgi:186
 #, python-format
 msgid " %s will %s, then "
-msgstr "%s se compromete a %s, entonces"
+msgstr "%s se comprometen a %s, entonces"
 
 #: pb/web/poster.cgi:187
 msgid "I"
@@ -4974,8 +4969,8 @@ msgid ""
 "            <b>pledge %s</b></font> to <font color=\"#522994\"><b>%s</b></font> \n"
 "            (%s only) or "
 msgstr ""
-"<font size=\"+2\">Texto</font> <font size=\"+8\" color=\"#522994\">\n"
-"            <b>compromiso %s</b></font> a <font color=\"#522994\"><b>%s</b></font> \n"
+"<font size=\"+2\">Envíe</font> <font size=\"+8\" color=\"#522994\">\n"
+"            <b>pledge %s</b></font> al <font color=\"#522994\"><b>%s</b></font> \n"
 "            (%s solamente) o "
 
 #: pb/web/poster.cgi:362
@@ -5678,14 +5673,6 @@ msgstr "Sus derechos"
 
 #~ msgid "Do I have to have a UK postcode to use this service?"
 #~ msgstr "¿He de estar en posesión de un código postal en el Reino Unido para hacer uso de este servicio?"
-
-#, fuzzy
-#~ msgid "Start your own football pledge"
-#~ msgstr "Cree su propio compromiso"
-
-#, fuzzy
-#~ msgid "Start your own residents association pledge"
-#~ msgstr "Cree su propio compromiso"
 
 #~ msgid "Results for <strong>open pledges near %s</strong>, %s (%s):"
 #~ msgstr "Resultados de <strong>compromisos en activo cerca de %s</strong>, %s(%s):"
