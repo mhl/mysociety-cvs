@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
 "POT-Creation-Date: 2005-12-17 21:23+0000\n"
-"PO-Revision-Date: 2005-12-15 10:48+0200\n"
+"PO-Revision-Date: 2005-12-19 19:40+0200\n"
 "Last-Translator: Alexander <pledgebank@avmgroup.com.ua>\n"
 "Language-Team: AVM-group <pledgebank@avmgroup.com.ua>\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-Country: UKRAINE\n"
-"Plural-Forms: nplurals=3; plural=n%100/10==1 ? 2 : n%10==1 ? 0 : (n+9)%10>3 ? 2 : 1;\n"
+"Plural-Forms: nplurals=3; plural= n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 2 : 1;\n"
 
 #: phplib/countries.php:17
 msgid "Afghanistan"
@@ -1073,7 +1073,7 @@ msgstr "Отчеты о неправильных обещаниях"
 
 #: pb/phplib/admin-pb.php:997
 msgid "Discard selected abuse reports"
-msgstr ""
+msgstr "Отменить выбранные сообщения об оскорблениях"
 
 #: pb/phplib/admin-pb.php:1007
 msgid "Statistics"
@@ -1103,12 +1103,12 @@ msgstr ""
 #: pb/phplib/alert.php:125
 #, php-format
 msgid "Unknown alert %d"
-msgstr ""
+msgstr "Неизвестное сообщение %d"
 
 #: pb/phplib/alert.php:128
 #, php-format
 msgid "Alert %d does not belong to person %d"
-msgstr ""
+msgstr "Сообщение %d не принадлежит к человеку %d"
 
 #: pb/phplib/alert.php:145
 msgid " (disabled)"
@@ -1143,9 +1143,8 @@ msgid "You will get email when there are:<ul>"
 msgstr "Вы получите email когда:<ul>"
 
 #: pb/phplib/alert.php:188
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "Подписаться"
+msgstr "Отказаться"
 
 #: pb/phplib/alert.php:194
 msgid "To add a new place, <a href=\"/alert\">click here</a>."
@@ -1168,7 +1167,7 @@ msgstr "%s в %s."
 
 #: pb/phplib/comments.php:63
 msgid "Abusive? Report it!"
-msgstr "Оскорбительно? Сообщите нам!"
+msgstr "Вас оскорбили? Сообщите нам!"
 
 #: pb/phplib/comments.php:86
 #, php-format
@@ -1234,11 +1233,11 @@ msgstr "Разместить комментарий"
 
 #: pb/phplib/fns.php:98
 msgid "exceeded"
-msgstr ""
+msgstr "превышено"
 
 #: pb/phplib/fns.php:98
 msgid "met"
-msgstr ""
+msgstr "достигнуто"
 
 #: pb/phplib/fns.php:128
 msgid "-- the PledgeBank.com team"
@@ -1369,17 +1368,17 @@ msgstr "Перевести PledgeBank на свой язык"
 #: pb/phplib/fns.php:705
 #, php-format
 msgid "%s (%s) pledges listed"
-msgstr "Список %s (%s) обещаний"
+msgstr "Список обещаний из %s (%s)"
 
 #: pb/phplib/fns.php:707
 #, php-format
 msgid "%s (%s) pledges only listed"
-msgstr "Список обещаний из %s (%s)"
+msgstr "Список обещаний только из %s (%s)"
 
 #: pb/phplib/fns.php:711
 #, php-format
 msgid "%s (%s) pledges and global %s (%s) pledges listed"
-msgstr "%s (%s) обещания и глобальные %s (%s) обещания"
+msgstr "Обещания из %s (%s) и обещания на %s (%s) языке"
 
 #: pb/phplib/fns.php:713
 #, php-format
@@ -1393,32 +1392,32 @@ msgstr "На данный момент обещаний из %s (%s) нет."
 
 #: pb/phplib/fns.php:767
 msgid "under 1 km away"
-msgstr ""
+msgstr "на расстоянии менее 1 км"
 
 #: pb/phplib/fns.php:769
 msgid "under 1 mile away"
-msgstr ""
+msgstr "на расстоянии менее 1 мили"
 
 #: pb/phplib/fns.php:771
-#, fuzzy, php-format
+#, php-format
 msgid "%d mile away"
 msgid_plural "%d miles away"
-msgstr[0] "%d минут назад"
-msgstr[1] "%d минут назад"
-msgstr[2] "%d минут назад"
+msgstr[0] "на расстоянии %d мили"
+msgstr[1] "на расстоянии %d миль"
+msgstr[2] "на расстоянии %d миль"
 
 #: pb/phplib/fns.php:773
 #, php-format
 msgid "%d km (%d mile) away"
 msgid_plural "%d km (%d miles) away"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "на расстоянии %d км (%d мили)"
+msgstr[1] "на расстоянии %d км (%d миль)"
+msgstr[2] "на расстоянии %d км (%d миль)"
 
 #: pb/phplib/fns.php:775
 #, php-format
 msgid "%d km away"
-msgstr ""
+msgstr "на расстоянии %d км"
 
 #: pb/phplib/microsites.php:16
 msgid "Everywhere"
@@ -1438,7 +1437,7 @@ msgstr "(изменить)"
 
 #: pb/phplib/microsites.php:58
 msgid "(other PledgeBanks)"
-msgstr ""
+msgstr "(другие банки обещаний)"
 
 #: pb/phplib/microsites.php:115 pb/web/pb.js:38 pb/web/pb.js:40
 msgid "other local people"
@@ -3346,6 +3345,11 @@ msgid ""
 "    pledge targets at %d or above have succeeded - why risk it? Does\n"
 "    your pledge really need so many people to be worthwhile?"
 msgstr ""
+"Подключить более %d человек к обещанию намного сложнее, чем\n"
+"    может показаться на первый взгляд. <strong>Только %0.0f%%</strong> человек,     кто установил цель обещания равной %d человек или больше,\n"
+"     оказались успешными - зачем рисковать? Действительно ли\n"
+"     Вашему обещанию требуется такое количество человек для успешного\n"
+"     воплощения в жизнь?"
 
 #: pb/web/new.php:208
 #, php-format
@@ -3519,6 +3523,12 @@ msgid ""
 "        with a short deadline, and drop us an email to <a href=\"mailto:team@pledgebank.com\">team@pledgebank.com</a>\n"
 "        asking for an alteration."
 msgstr ""
+"Пожалуйста, измените дату окончания обещания так, чтобы она\n"
+"        была меньше чем %d лет. Чтобы продолжить создание обещания,\n"
+"        Вы должны изменить дату окончания. Если Вы хотите установить дату,\n"
+"        которая больше указанного выше числа, пожалуйста, создайте обещание\n"
+"        с датой меньшей указанного числа, и напишите нам письмо <a href=\"mailto:team@pledgebank.com\">team@pledgebank.com</a>\n"
+"        с просьбой об изменении даты."
 
 #: pb/web/new.php:575
 msgid "Please change <MY STREET> to the name of your street"
@@ -3691,7 +3701,7 @@ msgstr "Теперь оно доступно по адресу %s<br>и к не�
 
 #: pb/web/new.php:913
 msgid "Your pledge will <strong>not succeed</strong> unless people find out about it.  So get out there and tell your friends and colleagues about your pledge."
-msgstr ""
+msgstr "Ваше обещание <strong>не достигнет своей цели</strong> до тех пор, пока люди не узнают о нем. Расскажите своим друзьям и коллегам о Вашем обещании."
 
 #: pb/web/new.php:915
 msgid "Your pledge will <strong>not be publicised</strong> elsewhere on the site until a few people have signed it.  So get out there and tell your friends and neighbours about your pledge."
@@ -4671,23 +4681,23 @@ msgid "We couldn't find that postcode, please check it again."
 msgstr "Мы не можем найти данный почтовый индекс. Пожалуйста, проверьте его еще раз."
 
 #: pb/web/search.php:155
-#, fuzzy, php-format
+#, php-format
 msgid "Results for <strong>open pledges</strong> within %2.0f km (%d miles) %s of UK postcode <strong>%s</strong>:"
-msgstr "Найденные <strong>открытые обещания</strong> в радиусе %2.0f км %s от региона с почтовым индексом Соединенного Королевства <strong>%s</strong>:"
+msgstr "Найденные <strong>открытые обещания</strong> в радиусе %2.0f км (%d мили) %s от региона с почтовым индексом Соединенного Королевства <strong>%s</strong>:"
 
 #: pb/web/search.php:159 pb/web/search.php:228
 msgid "No nearby open pledges. Why not <a href=\"/new\">make one</a>?"
 msgstr "По близости нет открытых обещаний. Почему бы не <a href=\"/new\">создать свое</a>?"
 
 #: pb/web/search.php:220
-#, fuzzy, php-format
+#, php-format
 msgid "Results for <strong>open pledges</strong> within %2.0f miles %s of <strong>%s</strong>, %s (%s):"
-msgstr "Найденные <strong>открытые обещания</strong> в радиусе %2.0f км %s от <strong>%s</strong>, %s (%s):"
+msgstr "Найденные <strong>открытые обещания</strong> в радиусе %2.0f мили %s от <strong>%s</strong>, %s (%s):"
 
 #: pb/web/search.php:222
-#, fuzzy, php-format
+#, php-format
 msgid "Results for <strong>open pledges</strong> within %2.0f km (%2.0f miles) %s of <strong>%s</strong>, %s (%s):"
-msgstr "Найденные <strong>открытые обещания</strong> в радиусе %2.0f км %s от <strong>%s</strong>, %s (%s):"
+msgstr "Найденные <strong>открытые обещания</strong> в радиусе %2.0f км (%2.0f мили) %s от <strong>%s</strong>, %s (%s):"
 
 #: pb/web/search.php:224
 #, php-format
@@ -4770,6 +4780,11 @@ msgid ""
 "        be two groups of four letters and numbers, joined by a hyphen (\"-\"),\n"
 "        something like \"1234-abcd\"."
 msgstr ""
+"Извините, мы не можем распознать код '%s'. Не могли бы Вы\n"
+"        проверить указанный Вами адрес; его последняя часть\n"
+"        должна состоять из двух групп разделенных символом (\"-\"):\n"
+"        первая группа - четыре символа, вторая - четыре цифры.\n"
+"        Пример: \"1234-abcd\"."
 
 #: pb/web/sms.php:171
 msgid "Sorry, we couldn't sign you up to that pledge:"
@@ -4832,20 +4847,20 @@ msgid "Name:"
 msgstr "Имя:"
 
 #: pb/web/translate.php:13
-#, fuzzy
 msgid "Translate PledgeBank into your own language"
 msgstr "Перевести PledgeBank на свой язык"
 
 #: pb/web/translate.php:23
-#, fuzzy
 msgid "Translating PledgeBank"
-msgstr "Что такое \"Банк обещаний\"(PledgeBank)?"
+msgstr "Правила перевода банка обещаний на свой язык"
 
 #: pb/web/translate.php:24
 msgid ""
 "So you want to have PledgeBank in your own language?\n"
 "We've hopefully made it relatively straightforward."
 msgstr ""
+"И так, Вы хотите перевести \"Банк обещаний\" на свой язык?\n"
+"Мы надеемся, что сделали этот процесс сравнительно простым."
 
 #: pb/web/translate.php:27
 msgid ""
@@ -4854,6 +4869,11 @@ msgid ""
 "with other people translating into the same language.\n"
 "Also, <a href=\"http://www.mysociety.org/mailman/listinfo/mysociety-i18n\">sign up to our mailing list</a> to discuss translations."
 msgstr ""
+"Во-первых, обязательно <a href=\"/contact\">свяжитесь с нами</a> \n"
+"чтобы мы могли следить за этим процессом и могли связать Вас людьми, \n"
+"которые, возможно, уже выполняют перевод.\n"
+"Также, <a href=\"http://www.mysociety.org/mailman/listinfo/mysociety-i18n\">подключитесь к нашей рассылке</a>, \n"
+"чтобы иметь возможность обсуждать процесс перевода."
 
 #: pb/web/translate.php:32
 msgid ""
@@ -4862,6 +4882,12 @@ msgid ""
 "Windows, apologies for that &ndash; users of other operating\n"
 "systems should be able to work out what similar steps to take."
 msgstr ""
+"Дайте нам знать если что-нибудь, \n"
+"из указанного ниже, тяжело понять. \n"
+"Инструкции указаны для пользователей \n"
+"Windows. Извините за это. Пользователям других \n"
+"операционных систем придеться самим выяснять шаги, \n"
+"необходимые для выполнения описанных операций."
 
 #: pb/web/translate.php:37
 msgid ""
@@ -4870,14 +4896,18 @@ msgid ""
 "If you're new at translating, I recommend using poEdit, as it\n"
 "keeps track of untranslated strings and things like that."
 msgstr ""
+"Существует два способа перевести файл - <a href=\"#manually\">вручную</a> или\n"
+"<a href=\"#poedit\">используя poEdit</a>, программу которая помогает в переводе.\n"
+"Если Вы новичок в таких переводах, я рекомендую использовать poEdit, так как\n"
+" он следит за целостностью файла."
 
 #: pb/web/translate.php:42
 msgid "If there are any problems or questions at any stage, <a href=\"/contact\">contact us</a> or ask on the mailing list."
-msgstr ""
+msgstr "Если у Вас появятся вопросы или проблемы на любом этапе перевода, <a href=\"/contact\">свяжитесь с нами</a> или задайте вопрос через нашу рассылку."
 
 #: pb/web/translate.php:44
 msgid "Using poEdit"
-msgstr ""
+msgstr "Использование poEdit"
 
 #: pb/web/translate.php:48
 msgid ""
@@ -4886,6 +4916,10 @@ msgid ""
 "(if running Windows, just get the simple installer version)\n"
 "and install it."
 msgstr ""
+"<strong>Установка PoEdit:</strong>\n"
+"Загрузите poEdit из <a href=\"http://www.poedit.org/\">PoEdit</a>\n"
+"(если у Вас Windows, можете просто загрузить exe-версию)\n"
+"и установите его."
 
 #: pb/web/translate.php:53 pb/web/translate.php:100
 msgid ""
@@ -4896,6 +4930,13 @@ msgid ""
 "<a href=\"https://secure.mysociety.org/cvstrac/getfile/mysociety/locale/PledgeBank.po\">Translation file</a>.\n"
 "(If you left click on the link, you can File-&gt;Save As... and then click Back to get back here.)"
 msgstr ""
+"<strong>Получение оригинала:</strong>\n"
+"Сохраните находящийся по данной ссылке\n"
+" (обычно, чтобы сделать это необходимо навести\n"
+" курсор мыши на ссылку, нажать правую клавишу мыши\n"
+" и выбрать пунк в появившемся меню\n"
+" \"Save Target As...\" или \"Save Link As...\" или \"Сохранить как...\"):\n"
+" <a href=\"https://secure.mysociety.org/cvstrac/getfile/mysociety/locale/PledgeBank.po\">файл для перевода</a>."
 
 #: pb/web/translate.php:60
 msgid ""
@@ -4906,6 +4947,13 @@ msgid ""
 "us what you have done &ndash; the site will simply default\n"
 "to English for anything yet to be translated."
 msgstr ""
+"<strong>Открытие файла:</strong> \n"
+"Запустите poEdit (Start-&gt;Programs-&gt;poEdit-&gt;poEdit). При первом запуске программа возможно попросит указать Ваше имя и email-адрес, чтобы затем поместить их в файл с переводом. Откройте файл, который Вы загрузили, \n"
+"воспользовавшись меню \"File-&gt;Open\". \n"
+"<em>Пусть Вас не пугает количество строк, которые необходимо перевести!</em> \n"
+"Не обязательно переводить всё, прежде чем отослать нам \n"
+"результат &ndash; всё что не переведено просто будет отображаться \n"
+"на английском языке."
 
 #: pb/web/translate.php:67
 msgid ""
@@ -4914,6 +4962,10 @@ msgid ""
 "poEdit will also tell you if a sentence has a plural (ie. needs a different translation depending on the number of things being printed out). This should be straightforward.\n"
 "File-&gt;Save or the Save button will save your translations to the same file."
 msgstr ""
+"<strong>Основы перевода:</strong>\n"
+"Выберите строку для перевода в верхней области, и наберите её перевод внизу. poEdit следит за тем, какие строки еще не были переведены, и какие помечены как \"fuzzy\"-переводы (автоматические переводы, которые могут быть неправильными и требуют проверки).\n"
+"poEdit также укажет, имеет ли предложение множественное число (то есть требует перевода зависящего от чисел используемых в предложени). Все это должно быть просто.\n"
+"Чтобы сохранить перевод, воспользуйтесь меню \"Файл-&gt;Сохранить\" или кнопкой \"Сохранить\"."
 
 #: pb/web/translate.php:72
 msgid ""
@@ -4936,11 +4988,11 @@ msgstr ""
 
 #: pb/web/translate.php:92 pb/web/translate.php:180
 msgid "Email me with as much or as little as you have done, and I will get it up and running as soon as possible. :-)"
-msgstr ""
+msgstr "Присылайте мне перевод когда посчитаете необходимым, независимо от количества переведенного материала, а я постараюсь сделать это доступным для тестирования на тестовом сайте как можно быстрее. :-)"
 
 #: pb/web/translate.php:96
 msgid "Manually"
-msgstr ""
+msgstr "Вручную"
 
 #: pb/web/translate.php:114
 msgid ""
@@ -4950,6 +5002,11 @@ msgid ""
 "the Last-Translator line to be your name and email address, \n"
 "and the Language-Team line to your language."
 msgstr ""
+"<strong>Изменение заголовка:</strong>\n"
+"Выполните следующие изменения &ndash; измените \n"
+"значение поля \"PO-Revision-Date\" на текущую дату и время,\n"
+"значение поля \"Last-Translator\" на Ваше имя и email адрес, \n"
+"и значение поля \"Language-Team\" на имя своего языка."
 
 #: pb/web/translate.php:120
 msgid ""
@@ -4960,14 +5017,21 @@ msgid ""
 "The line following that (beginning \"<kbd>msgstr</kbd>\") should contain the translation,\n"
 "within the double quotes (\")."
 msgstr ""
+"<strong>Основы перевода:</strong>\n"
+"Строка начинающаяся символом <kbd>#</kbd> является комментарием и её можно \n"
+"менять без опаски. Для обычных предложений, правила перевода такие. Строка, \n"
+"начинающаяся текстом \"<kbd>msgid</kbd>\", является предложением на английском языке, \n"
+"которое необходимо перевести. Следующая за этой строкой линия \n"
+"(начинающаяся текстом \"<kbd>msgstr</kbd>\") должна, внутри двойных кавычек (\"), \n"
+"содержать перевод."
 
 #: pb/web/translate.php:126
 msgid "For example, in French:"
-msgstr ""
+msgstr "Например, на Французком:"
 
 #: pb/web/translate.php:129
 msgid "If the translated line needs to include a double quote, you put a slash before it. For example, in German:"
-msgstr ""
+msgstr "Если переведённая строка требует включить в неё двойную кавычку, тогда Вам необходимо вставить косую черту перед кавычкой. Пример с немецким языком:"
 
 #: pb/web/translate.php:132
 msgid ""
@@ -4984,6 +5048,12 @@ msgid ""
 "\":# pb/web/faq.php\" is from the FAQ page. This might be useful in\n"
 "providing context for the text."
 msgstr ""
+"<strong>Комментарии содержащие имена файлов:</strong>\n"
+"Строка комментария перед строкой \"msgid\" - это имя файла \n"
+"или файлов в которых она используется. Так что, например, \n"
+"все строки, которые имеют комментарий \":# pb/web/faq.php\" \n"
+"относятся к странице \"Помощь\". Это может оказаться полезным \n"
+"при определении контекста, в котором используется переводимый текст."
 
 #: pb/web/translate.php:151
 msgid ""
@@ -5004,11 +5074,11 @@ msgstr ""
 
 #: pb/web/translate.php:178
 msgid "Some languages have three plurals &ndash; simply add a msgstr[2] line for the third, and I can sort out making sure it uses the right one."
-msgstr ""
+msgstr "Некоторые языки имеют три формы множественного числа &ndash; просто добавьте строку msgstr[2] для третьей формы."
 
 #: pb/web/translate.php:184
 msgid "Matthew Somerville<br>13<sup>th</sup> November 2005"
-msgstr ""
+msgstr "Мэтью Сомервиль<br>13<sup>ое</sup> Ноября 2005"
 
 #: pb/web/where.php:21
 msgid "Choose your country"
@@ -5331,7 +5401,6 @@ msgstr ""
 "<?=$values['unsubscribe_url']?>\n"
 
 #: pb/templates/emails/alert-local-single
-#, fuzzy
 msgid ""
 "Subject: New pledge near you! - '<?=$values['title']?>' at PledgeBank.com\n"
 "\n"
@@ -5351,7 +5420,7 @@ msgstr ""
 "\n"
 "Появилось новое обещание в <?=$values['alert_description']?>.\n"
 "\n"
-"на расстоянии <?=$values['distance']?> км от Вас: '<?=$values['sentence_first']?>' -- <?=$values['creator_name']?>\n"
+"<?=$values['distance_string']?>: '<?=$values['sentence_first']?>' -- <?=$values['creator_name']?>\n"
 "\n"
 "Нажмите для получения более детальной\n"
 " информации или чтобы подключиться к обещанию: <?=$values['pledge_url']?>\n"
@@ -5530,6 +5599,22 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
+"Subject: Обещание не достигло своей цели - '<?=$values['title']?>' на PledgeBank.com\n"
+"\n"
+"Нам очень жаль сообщать Вам, что обещание, к которому Вы подключены,\n"
+" не достигло своей цели за требуемое время. Требовалось <?=$values['target']?>\n"
+"<?=$values['type']?>, но подключились только <?=$values['actual']?>.\n"
+"\n"
+"Обещание, созданное автором <?=$values['creator_name']?>, звучит так:\n"
+"'<?=$values['sentence_first']?>'\n"
+"\n"
+"Вы не обязаны выполнять свою часть обещания. Вместо этого, можете\n"
+"подписаться на рассылку сообщений о создании обещаний\n"
+" в своем регионе здесь <?=$values['pledgebank_url']?>alert,\n"
+"полистать обещания здесь <?=$values['pledgebank_url']?>list или,\n"
+" возможно, создать свое собственное обещание.\n"
+"\n"
+"<?=$values['signature']?>\n"
 
 #: pb/templates/emails/generic-confirm
 msgid ""
