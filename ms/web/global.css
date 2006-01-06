@@ -2,6 +2,8 @@ body	{
 	background: #fcfefc;
 	font-family: verdana, helvetica, sans-serif;
 	font-size: 14px/16px;
+        margin: 0 auto;
+        max-width: 50em;
 	}
 .top	{
 	margin: 0 0 1em 20px;
@@ -86,8 +88,20 @@ div.item_foot	{
 div.page-body	{
 	margin: 0 0 2em 20px;
 	background: #FFFFFF;
-	width: 80%;
 	}
+div#content {
+    float: left;
+    width: 70%;
+    margin-bottom: 1em;
+}
+div#sidebar {
+    float: right;
+    width: 25%;
+}
+#page #content {
+    float: none;
+    width: 100%;
+}
 a	{
 	text-decoration:	none;
 	font-weight:	bold;
@@ -112,7 +126,7 @@ a:hover	{
 	background-color: transparent;
 	text-decoration:	underline;
 	}
-#content form {
+.page-body form {
        margin: 1em 0; 
 }
 
