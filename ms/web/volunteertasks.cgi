@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.1 2006-01-06 16:06:40 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.2 2006-01-06 17:03:50 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -77,6 +77,47 @@ sub html_format_ticket ($) {
     return ($heading, $content);
 }
 
+sub start_html ($$) {
+    my ($q, $title) = @_;
+    return $q->start_html(
+                -encoding => 'utf-8',
+                -title => ($title ? "mySociety: $title" : "mySociety"),
+                -style => {
+                    -src => 'http://www.mysociety.org/global.css',
+                    -media => 'screen',
+                    -type => 'text/css'
+                }
+            ),
+            $q->div({ -class => 'top' },
+                $q->div({ -class => 'masthead' },
+                    $q->img({
+                        -src => 'http://www.mysociety.org/mslogo.gif',
+                        -alt => 'mySociety.org'
+                    })
+                )
+            ),
+            $q->start_div({ -class => 'page-body' }),
+            $q->div({ -class => 'menu' }, <<EOF
+&nbsp;<a href="/">News</a>&nbsp;|
+&nbsp;<a href="/faq.php">FAQ</a> &nbsp;|
+&nbsp;<a href="/projects.php">Projects</a>&nbsp;|
+&nbsp;<a href="/?cat=2">Developers' Blog</a>&nbsp;|
+&nbsp;<a href="/moin.cgi">Wiki</a>&nbsp;|
+&nbsp;<a href="">Volunteers</a>&nbsp;|
+EOF
+            ),
+            $q->div({ -class => 'item_head' }, $title),
+            $q->start_div({ -class => 'item' });
+}
+
+sub end_html ($) {
+    my $q = shift;
+    print $q->end_div(),
+            $q->div({ -class => 'item_foot' }),
+            $q->end_div(),
+            $q->end_html();
+}
+
 sub do_list_page ($) {
     my $q = shift;
     my $pagelen = 20;
@@ -91,10 +132,7 @@ sub do_list_page ($) {
         );
 
     print $q->header(-type => 'text/html; charset=utf-8'),
-            $q->start_html(
-                -title => 'mySociety: Tasks for Volunteers',
-                -encoding => 'utf-8'
-            );
+            start_html($q, 'Tasks for Volunteers');
 
     my $choose = "Tasks for:";
     foreach (qw(nontech programmer designer)) {
@@ -160,7 +198,7 @@ sub do_list_page ($) {
     }
 
 
-    print $q->end_html();
+    print end_html($q);
 }
 
 while (my $q = new CGI::Fast()) {
