@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.3 2006-01-10 13:34:16 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.4 2006-01-10 13:35:35 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -255,6 +255,11 @@ sub do_register_page ($) {
     }
 
     if ($q->param('edited') && !@errors) {
+        # XXX should be in transaction.
+###         $dbh->do('
+###                 delete from volunteer_interest
+###                 where ticket_num = ? and email = ?', {},
+###                 $tn, $email);
 ###         $dbh->do('
 ###                 insert into volunteer_interest
 ###                     (ticket_num, name, email, whenregistered)
