@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.5 2006-01-10 15:13:34 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.6 2006-01-10 16:47:41 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -127,7 +127,7 @@ sub do_list_page ($) {
     my $pagelen = 20;
 
     my $skills_needed = $q->param('skills');
-    $skills_needed = 'nontech' if (!$skills_needed || !exists($skills{$skills_needed}));
+    $skills_needed = undef if (!$skills_needed || !exists($skills{$skills_needed}));
 
     my %skills_desc = (
             nontech => 'anyone',
@@ -135,8 +135,65 @@ sub do_list_page ($) {
             designer => 'a graphic designer'
         );
 
+    # Generic blurb.
+    my $blurb = <<EOF;
+<h2>Getting involved in mySociety &mdash; the First Step</h2>
+
+<img src="mysociety-at-work.jpg" alt="" title="mySociety at work">
+
+<p>mySociety needs volunteers with all sorts of skills to help build, maintain
+and get the most out of our sites and services.  Which of these descriptions
+fits your skills best?</p>
+
+<ul>
+<li><a href="?skills=nontech">I am not a techy, although I do use a
+computer</a></li>
+<li><a href="?skills=programmer">I am a programmer</a></li>
+<li><a href="?skills=designer">I am a graphic designer</a></li>
+</ul>
+EOF
+
+    my %blurb = (
+        nontech => <<EOF,
+<p>People sometimes think that we're only interested in programmers, but
+nothing could be further from the truth. In 2006 we want our various
+sites to grow, and to be more and more widely used by people in as
+many places as possible: people who can tell their friends, put up
+posters, hold dinners, write to newspapers, design brochures and so on
+are invaluable to us. Just look at the list below and click to tell us
+how you can help!</p>
+EOF
+        programmer => <<EOF,
+<p>We're an Open Source languages shop, but beyond that we're very free and
+easy about what people use. Perl, PHP, Python, Javascript and Ruby, have all
+been used on mySociety's projects, and there's no reason to stop there. Our
+servers run on Linux and FreeBSD, and we prefer PostgreSQL to MySQL, but none
+of that is set in stone.</p>
+
+<p>If you just want to get straight   
+into hacking our code, you can get everything from CVS
+<a href="http://www.mysociety.org/moin.cgi/CvsRepository">as described
+here</a>, but don't forget to put your name to one of the tasks below so that
+we know who's working on what.</p>
+EOF
+        designer => <<EOF,
+<p>mySociety has never had enough people skilled in graphic design on board. We
+have a near-insatiable appetite for posters, presentations, animations,
+leaflets and documents of other kinds. Please help us &mdash; Tom got a D in
+GCSE art!</p>
+EOF
+    );
+
     print $q->header(-type => 'text/html; charset=utf-8'),
-            start_html($q, 'Tasks for Volunteers');
+            start_html($q, 'Getting involved');
+    
+    $blurb = $blurb{$skills_needed} if ($skills_needed);
+    print $blurb;
+    
+    if (!$skills_needed) {
+        print end_html($q);
+        return;
+    }
 
     my $choose = "Tasks for:";
     foreach (qw(nontech programmer designer)) {
