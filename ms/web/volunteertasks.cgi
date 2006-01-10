@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl -w -I../../perllib
 #
 # volunteertasks.cgi:
 # Simple interface for viewing volunteer tasks from the CVSTrac database.
@@ -7,22 +7,25 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.2 2006-01-06 17:03:50 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.3 2006-01-10 13:34:16 chris Exp $';
 
 use strict;
 require 5.8.0;
 
-use CGI;
+use CGI qw(-no_xhtml);
 use CGI::Fast;
 use DBI;
+use HTML::Entities;
 use POSIX;
 use WWW::Mechanize;
+
+use mySociety::Util;
 
 my $dbh = DBI->connect(
                 "dbi:SQLite2:dbname=/usr/local/cvs/mysociety/mysociety.db",
                 "", "", { 
-                    # Actually we're read-only, but we don't want to enter
-                    # a transaction which would lock the database.
+                    # We don't want to enter a transaction which would lock the
+                    # database.
                     AutoCommit => 1,
                     RaiseError => 1,
                     PrintError => 0,
@@ -52,7 +55,7 @@ sub html_format_ticket ($) {
 
     my $changetime = $dbh->selectrow_array('select changetime from ticket where tn = ?', {}, $ticket_num);
 
-    return undef if (!defined($changetime));
+    return () if (!defined($changetime));
 
     if (exists($ticket_cache{$ticket_num})
         && $ticket_cache{$ticket_num}->[0] >= $changetime) {
@@ -112,8 +115,9 @@ EOF
 
 sub end_html ($) {
     my $q = shift;
-    print $q->end_div(),
+    return $q->end_div(),
             $q->div({ -class => 'item_foot' }),
+            $q->end_div(),
             $q->end_div(),
             $q->end_html();
 }
@@ -186,25 +190,150 @@ sub do_list_page ($) {
                 my $timestamp = strftime('%A, %e %B %Y', localtime($orig));
                 $timestamp .= " (changed "
                                 . strftime('%A, %e %B %Y', localtime($change))
-                                . ")" if (strftime('%A, %e %B %Y', localtime($change)) ne $timestamp);
+                                . ")"
+                    if (strftime('%A, %e %B %Y', localtime($change)) ne $timestamp);
                 print $q->li(
                         $q->h4($heading),
                         $q->span({ -class => 'when' }, $timestamp),
-                        $q->div($content));
+                        $q->div($content),
+                        $q->div({ -class => 'signup' },
+                            $q->start_form(-method => 'POST'),
+                            $q->hidden(-name => 'tn', -value => $tn),
+                            $q->hidden(-name => 'prevurl', -value => $q->url()),
+                            $q->submit(-name => 'register', -value => "I'm interested >>>"),
+                            $q->end_form()
+                        ));
             }
 
             print $q->end_ul();
         }
     }
 
-
     print end_html($q);
+}
+
+sub do_register_page ($) {
+    my $q = shift;
+
+    my $tn = $q->param('tn');
+
+    my ($orig, $change, $extra1, $extra2)
+        = $dbh->selectrow_array("
+                        select origtime, changetime, extra1, extra2
+                        from ticket
+                        where tn = ?", {}, $tn);
+    my ($heading, $content) = html_format_ticket($tn);
+
+    if (!$extra1 || $extra1 !~ /^(nontech|programmer|designer)$/
+        || !$extra2 || $extra2 !~ /^(dunno|30mins|3hours|more)/
+        || !$heading || !$content) {
+        print $q->header(
+                    -status => 400,
+                    -type => 'text/html; charset=utf-8'),
+                start_html($q, 'Oops'),
+                $q->p("We couldn't find a volunteer task for the link you clicked on."),
+                end_html($q);
+        return;
+    }
+
+    my $name = $q->param('name');
+    $name ||= $q->cookie('mysociety_volunteer_name');
+    $name ||= '';
+    $q->param('name', $name);
+    my $email = $q->param('email');
+    $email ||= $q->cookie('mysociety_volunteer_email');
+    $email ||= '';
+    $q->param('email', $email);
+
+    my @errors = ( );
+    push(@errors, "Please enter your name so that we know who you are") if (!$name);
+    if ($email) {
+        push(@errors, "The email address '$email' doesn't appear to be valid; please check it and try again")
+            if (!mySociety::Util::is_valid_email($email))
+    } else {
+        push(@errors, "Please enter your email address so we can get in touch with you");
+    }
+
+    if ($q->param('edited') && !@errors) {
+###         $dbh->do('
+###                 insert into volunteer_interest
+###                     (ticket_num, name, email, whenregistered)
+###                 values (?, ?, ?, ?)', {},
+###                 $tn, $name, $email, time());
+        my $url = $q->param('prevurl');
+        $url ||= 'http://www.mysociety.org/';
+        print $q->header(
+                -status => 302,
+                -location => $url,
+                -cookie => [
+                    $q->cookie(
+                        -name => 'mysociety_volunteer_name',
+                        -value => $name,
+                        -expires => '+1y',
+                        -domain => 'mysociety.org'
+                    ),
+                    $q->cookie(
+                        -name => 'mysociety_volunteer_email',
+                        -value => $email,
+                        -expires => '+1y',
+                        -domain => 'mysociety.org'
+                    ),
+                ]
+            );
+    }
+
+    print $q->header(-type => 'text/html; charset=utf-8'),
+            start_html($q, "Express an interest in task #$tn");
+
+    # Reproduce the task.
+    my $timestamp = strftime('%A, %e %B %Y', localtime($orig));
+    $timestamp .= " (changed "
+                    . strftime('%A, %e %B %Y', localtime($change))
+                    . ")"
+        if (strftime('%A, %e %B %Y', localtime($change)) ne $timestamp);
+
+    print $q->ul($q->li(
+            $q->h4($heading),
+            $q->span({ -class => 'when' }, $timestamp),
+            $q->div($content)
+        ));
+
+    if (@errors) {
+        print $q->ul($q->li([map { encode_entities($_) } @errors]));
+    }
+
+    print $q->start_form(-method => 'POST'),
+            $q->hidden(-name => 'edited', -value => '1'),
+            $q->hidden(-name => 'tn'),
+            $q->hidden(-name => 'prevurl'),
+            $q->start_table({ -id => 'volunteerform' }),
+            $q->Tr(
+                $q->th('Name'),
+                $q->td($q->textfield(-name => 'name', -size => 30))
+            ),
+            $q->Tr(
+                $q->th('Email'),
+                $q->td($q->textfield(-name => 'email', -size => 30))
+            ),
+            $q->Tr(
+                $q->th(),
+                $q->td($q->submit(-name => 'register',
+                        -value => 'Register my interest'))
+            ),
+            $q->end_table(),
+            $q->end_form(),
+            end_html($q);
 }
 
 while (my $q = new CGI::Fast()) {
 #    $q->encoding('utf-8');
     $q->autoEscape(0);
-    do_list_page($q);
+    my $tn = $q->param('tn');
+    if ($q->param('register') && defined($tn) && $tn =~ /^[1-9]\d*$/) {
+        do_register_page($q);
+    } else {
+        do_list_page($q);
+    }
 }
 
 $dbh->disconnect();
