@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.6 2006-01-10 16:47:41 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.7 2006-01-10 17:55:03 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -109,7 +109,7 @@ sub start_html ($$) {
 &nbsp;<a href="">Volunteers</a>&nbsp;|
 EOF
             ),
-            $q->div({ -class => 'item_head' }, $title),
+            $q->div({ -class => 'item_head' }, ''), #, $title),
             $q->start_div({ -class => 'item' });
 }
 
@@ -137,9 +137,9 @@ sub do_list_page ($) {
 
     # Generic blurb.
     my $blurb = <<EOF;
-<h2>Getting involved in mySociety &mdash; the First Step</h2>
+<img style="float: right;" src="mysociety-at-work.jpg" alt="" title="mySociety at work">
 
-<img src="mysociety-at-work.jpg" alt="" title="mySociety at work">
+<h2>Getting involved in mySociety &mdash; the First Step</h2>
 
 <p>mySociety needs volunteers with all sorts of skills to help build, maintain
 and get the most out of our sites and services.  Which of these descriptions
@@ -186,14 +186,6 @@ EOF
 
     print $q->header(-type => 'text/html; charset=utf-8'),
             start_html($q, 'Getting involved');
-    
-    $blurb = $blurb{$skills_needed} if ($skills_needed);
-    print $blurb;
-    
-    if (!$skills_needed) {
-        print end_html($q);
-        return;
-    }
 
     my $choose = "Tasks for:";
     foreach (qw(nontech programmer designer)) {
@@ -202,8 +194,18 @@ EOF
                     . $q->a({ -href => $u }, $skills_desc{$_});
     }
     
-    print $q->h2("Tasks suitable for $skills_desc{$skills_needed}"),
-            $q->p($choose);
+    if ($skills_needed) {
+        $blurb = $blurb{$skills_needed};
+        print $q->h2("Tasks suitable for $skills_desc{$skills_needed}"),
+                $q->p($choose);
+    }
+
+    print $blurb;
+    
+    if (!$skills_needed) {
+        print end_html($q);
+        return;
+    }
 
     my $ntasks = $dbh->selectrow_array("
                     select count(tn) from ticket where extra1 = ?
@@ -231,8 +233,16 @@ EOF
                             where extra1 = ? and extra2 = ?
                         ", {}, $skills_needed, $howlong);
             next if ($ntasks == 0);
-            print $q->h3($desc),
-                    $q->start_ul({ -class => 'tasklist' });
+#            print $q->h3($desc),
+#                    $q->start_ul({ -class => 'tasklist' });
+
+            print '</div>',     # end item
+                    '<div class="item_foot"></div>',
+                    '<div class="item_head"></div>',
+                    '<div class="item">', # start item
+                    $q->h3($desc),
+                    $q->start_ul();
+
             my $s = $dbh->prepare("
                             select tn, origtime, changetime, extra1, extra2
                             from ticket
