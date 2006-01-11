@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.7 2006-01-10 17:55:03 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.8 2006-01-11 16:51:43 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -18,8 +18,13 @@ use DBI;
 use HTML::Entities;
 use POSIX;
 use WWW::Mechanize;
+use Data::Dumper;
+
+use mySociety::Config;
+mySociety::Config::set_file('../conf/general');
 
 use mySociety::Util;
+use mySociety::EvEl;
 
 my $dbh = DBI->connect(
                 "dbi:SQLite2:dbname=/usr/local/cvs/mysociety/mysociety.db",
@@ -261,12 +266,12 @@ EOF
                     if (strftime('%A, %e %B %Y', localtime($change)) ne $timestamp);
                 print $q->li(
                         $q->h4($heading),
-                        $q->span({ -class => 'when' }, $timestamp),
+                        #$q->span({ -class => 'when' }, "Created: " . $timestamp),
                         $q->div($content),
                         $q->div({ -class => 'signup' },
                             $q->start_form(-method => 'POST'),
                             $q->hidden(-name => 'tn', -value => $tn),
-                            $q->hidden(-name => 'prevurl', -value => $q->url()),
+                            $q->hidden(-name => 'prevurl', -value => $q->self_url()),
                             $q->submit(-name => 'register', -value => "I'm interested >>>"),
                             $q->end_form()
                         ));
@@ -332,11 +337,33 @@ sub do_register_page ($) {
                     (ticket_num, name, email, whenregistered)
                 values (?, ?, ?, ?)', {},
                 $tn, $name, $email, time());
+        my $mysociety_email = "volunteers\@mysociety.org";
+        mySociety::EvEl::send(
+            { 'To' => $email, 'Cc' => $mysociety_email, 
+              'From' => $mysociety_email, 
+              'Subject' => "mySociety task: $heading",
+              '_unwrapped_body_' => "$name,
+
+Thanks for expressing an interesting in helping with this task:
+$heading
+
+First thing to do - reply to this email and ask us any questions 
+that you have.
+
+You can find the task in our ticket tracking system here. Please add
+remarks with any information you find out, and as you make progress.
+https://secure.mysociety.org/cvstrac/tktview?tn=$tn
+
+Good luck!
+
+-- the mySociety team
+"
+            }, [ $email, $mysociety_email ]);
         my $url = $q->param('prevurl');
+        warn "url: $url";
         $url ||= 'http://www.mysociety.org/';
         print $q->header(
-                -status => 302,
-                -location => $url,
+                -type => 'text/html; charset=utf-8' ,
                 -cookie => [
                     $q->cookie(
                         -name => 'mysociety_volunteer_name',
@@ -352,6 +379,14 @@ sub do_register_page ($) {
                     ),
                 ]
             );
+
+        print start_html($q, "Express an interest in task #$tn");
+        print $q->p("Thanks for expressing an interest in the task '$heading'.");
+        print $q->p("You've been sent an email putting you in touch
+        with people at mySociety, so you can ask any questions.");
+        print $q->p( $q->a({ -href => $url }, 'Back to task list'));
+        print end_html($q);
+        return;
     }
 
     print $q->header(-type => 'text/html; charset=utf-8'),
@@ -364,9 +399,11 @@ sub do_register_page ($) {
                     . ")"
         if (strftime('%A, %e %B %Y', localtime($change)) ne $timestamp);
 
+    print $q->div("Fill in the form below to express your interest in this task.");
+
     print $q->ul($q->li(
             $q->h4($heading),
-            $q->span({ -class => 'when' }, $timestamp),
+            # $q->span({ -class => 'when' }, $timestamp),
             $q->div($content)
         ));
 
