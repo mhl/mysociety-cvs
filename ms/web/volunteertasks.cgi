@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.12 2006-01-16 12:16:13 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.13 2006-01-16 17:02:41 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -19,6 +19,7 @@ use HTML::Entities;
 use POSIX;
 use WWW::Mechanize;
 use Data::Dumper;
+use LWP::Simple;
 
 use mySociety::Config;
 mySociety::Config::set_file('../conf/general');
@@ -45,6 +46,8 @@ my %times = map { $_->[0] => lc($_->[1]) }
                 @{$dbh->selectall_arrayref(
                     "select name, value from enums where type = 'extra2'")
                 };
+
+my $html_nav_menu = get("http://www.mysociety.org/menu.html");
 
 my %ticket_cache;  # id -> [date, heading, text]
 my $M;
@@ -103,15 +106,7 @@ sub start_html ($$) {
                 )
             ),
             $q->start_div({ -class => 'page-body' }),
-            $q->div({ -class => 'menu' }, <<EOF
-&nbsp;<a href="/">News</a>&nbsp;|
-&nbsp;<a href="/faq.php">FAQ</a> &nbsp;|
-&nbsp;<a href="/projects.php">Projects</a>&nbsp;|
-&nbsp;<a href="/?cat=2">Developers' Blog</a>&nbsp;|
-&nbsp;<a href="/moin.cgi">Wiki</a>&nbsp;|
-&nbsp;<a href="">Volunteers</a>&nbsp;|
-EOF
-            ),
+            $html_nav_menu,
             $q->div({ -class => 'item_head' }, ''), #, $title),
             $q->start_div({ -class => 'item' });
 }
