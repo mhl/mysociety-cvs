@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.9 2006-01-16 10:27:08 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.10 2006-01-16 10:34:21 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -405,7 +405,7 @@ Good luck!
             $q->div($content)
         ));
 
-    if (@errors) {
+    if ($q->param('edited') && @errors) {
         print $q->ul($q->li([map { encode_entities($_) } @errors]));
     }
 
