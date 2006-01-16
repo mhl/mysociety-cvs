@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.8 2006-01-11 16:51:43 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.9 2006-01-16 10:27:08 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -64,11 +64,9 @@ sub html_format_ticket ($) {
 
     if (exists($ticket_cache{$ticket_num})
         && $ticket_cache{$ticket_num}->[0] >= $changetime) {
-        warn "using cached value for #$ticket_num\n";
         return ($ticket_cache{$ticket_num}->[1], $ticket_cache{$ticket_num}->[2]);
     }
 
-    warn "grabbing #$ticket_num anew\n";
     my $url = "https://secure.mysociety.org/cvstrac/tktview?tn=$ticket_num";
     my $resp = $M->get($url) || die "GET $url: failed; system error = $!";
     die "GET $url: " . $resp->status_line() if (!$resp->is_success());
