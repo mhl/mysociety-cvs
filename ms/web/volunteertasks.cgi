@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.11 2006-01-16 11:13:46 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.12 2006-01-16 12:16:13 chris Exp $';
 
 use strict;
 require 5.8.0;
@@ -263,7 +263,7 @@ EOF
                                 . ")"
                     if (strftime('%A, %e %B %Y', localtime($change)) ne $timestamp);
                 print $q->li(
-                        $q->h4($heading),
+                        $q->h4($heading, $q->a({ -class => 'permalink', -href => $q->url(-relative => 1) . "?tn=$tn;register=1" }, "#")),
                         #$q->span({ -class => 'when' }, "Created: " . $timestamp),
                         $q->div($content),
                         $q->div({ -class => 'signup' },
