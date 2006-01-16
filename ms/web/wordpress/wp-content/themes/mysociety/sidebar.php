@@ -1,12 +1,9 @@
 	<div id="sidebar">
 			
-                <p>
-            <?php include (TEMPLATEPATH . '/searchform.php'); ?>
-
-			<?php /* If this is a category archive */ if (is_category()) { ?>
+			<?php /* If this is a category archive */ if (is_category() && $cat!=1) { ?>
 			<p>You are currently browsing the archives for the <?php single_cat_title(''); ?> category.</p>
 			
-			<?php /* If this is a yearly archive */ } elseif (is_day()) { ?>
+			<?php /* If this is a daily archive */ } elseif (is_day()) { ?>
 			<p>You are currently browsing the <a href="<?php echo get_settings('siteurl'); ?>"><?php echo bloginfo('name'); ?></a> weblog archives
 			for the day <?php the_time('l, F jS, Y'); ?>.</p>
 			
@@ -18,21 +15,29 @@
 			<p>You are currently browsing the <a href="<?php echo get_settings('siteurl'); ?>"><?php echo bloginfo('name'); ?></a> weblog archives
 			for the year <?php the_time('Y'); ?>.</p>
 			
-		 <?php /* If this is a monthly archive */ } elseif (is_search()) { ?>
+		 <?php /* If this is a search archive */ } elseif (is_search()) { ?>
 			<p>You have searched the <a href="<?php echo get_settings('siteurl'); ?>"><?php echo bloginfo('name'); ?></a> weblog archives
 			for <strong>'<?php echo wp_specialchars($s); ?>'</strong>. If you are unable to find anything in these search results, you can try one of these links.</p>
 
-			<?php /* If this is a monthly archive */ } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) { ?>
+			<?php /* If this is a paged archive */ } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) { ?>
 			<p>You are currently browsing the <a href="<?php echo get_settings('siteurl'); ?>"><?php echo bloginfo('name'); ?></a> weblog archives.</p>
 
 			<?php } ?>
 
 			<?php wp_list_pages('title_li=<h2>' . __('Pages') . '</h2>' ); ?>
 
+			<?php if (is_category() && $cat==1) { ?>
+				<div class="item_head">Developer's Blog</div>
+				<div class="item"><ul>
+				<?php wp_get_archives('type=postbypost&limit=10'); ?>
+				</ul></div>
+				<div class="item_foot"></div>
+			<?php } ?>
+
 			<div class="item_head"><?php _e('Archives'); ?></div>
             <div class="item">
 				<ul>
-				<?php wp_get_archives('type=monthly&cat='.$cat); ?>
+				<?php wp_get_archives(); ?>
 				</ul>
             </div>
             <div class="item_foot">
@@ -40,14 +45,16 @@
 
                 <div class="item_head">Categories</div>
                 <div class="item">
-<ul><?php wp_list_cats('feed=XML');?></ul>
+<ul><?php wp_list_cats('feed=XML&use_desc_for_title=0');?></ul>
 </div>
 <div class="item_foot">
 </div>
 
+            <?php include (TEMPLATEPATH . '/searchform.php'); ?>
+
 <!--			<h2><?php _e('Categories'); ?></h2>
 				<ul>
-				<?php list_cats(0, '', 'name', 'asc', '', 1, 0, 1, 1, 1, 1, 0,'','','','','') ?>
+				<?php list_cats(0, '', 'name', 'asc', '', 1, 0, 1, 1, FALSE, 1, 0,'','','','','') ?>
 				</ul>-->
 
 <!--
@@ -65,7 +72,7 @@
 				</ul>
 				</li>
 			<?php } ?>
--->			
 		</ul>
+-->			
 	</div>
 
