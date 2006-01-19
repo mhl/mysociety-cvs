@@ -1,5 +1,6 @@
 mySociety Source Code
 ---------------------
+foo
 
 Here you can find the source code for various mySociety projects.  A
 description of the files and folders in this package follows.
@@ -22,6 +23,7 @@ services/DaDem - Look up who represents a given voting area
 services/Ratty - Rate limit web page accesses
 services/EvEl - Email formatter and sender
 services/Gaze - Gazeteer, look up place names
+services/NeWs - Directory of local newspapers
 services/Queue - General queuing system (UNFINISHED)
 
 bin - General use scripts
