@@ -7,7 +7,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.13 2006-01-16 17:02:41 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: volunteertasks.cgi,v 1.14 2006-01-24 11:41:02 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -340,8 +340,9 @@ sub do_register_page ($) {
 Thanks for expressing an interesting in helping with this task:
 $heading
 
-First thing to do - reply to this email and ask us any questions 
-that you have.
+First thing to do is drop us an email telling us a bit about who
+and where you are, and what ideas you have for doing this task in
+interested and exciting ways.
 
 You can find the task in our ticket tracking system here. Please add
 remarks with any information you find out, and as you make progress.
