@@ -1,3 +1,11 @@
 <FilesMatch "^index.html">
     ForceType text/html
 </FilesMatch>
+
+RedirectPermanent /random http://www.notapathetic.com/
+RedirectPermanent /cgi-bin/similarity.cgi http://www.notapathetic.com/
+
+# TODO: redirect or make:
+# cgi-bin/rss-comments.cgi
+# cgi-bin/tag.cgi
+
