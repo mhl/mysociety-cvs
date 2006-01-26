@@ -37,6 +37,13 @@ CVS changes to override any that were made directly to the config files.
 Then commit any changes to /data/servers, leaving an appropriate comment.
 There's no other change log file.
 
+Editing users/groups
+--------------------
+
+Use adduser, useradd or any other tool which edits /etc/{group,passwd} as
+normal. The state is then automatically synced between bitter and tea, and
+saved in /data/servers/state/*/{group,passwd}.
+
 Installing new software
 -----------------------
 
