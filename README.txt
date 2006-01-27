@@ -1,6 +1,5 @@
 mySociety Source Code
 ---------------------
-foo
 
 Here you can find the source code for various mySociety projects.  A
 description of the files and folders in this package follows.
