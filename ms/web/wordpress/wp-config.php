@@ -5,8 +5,10 @@
 // ** MySQL settings ** //
 if (!@include "../conf/general") {
     if (!@include "../../conf/general") {
-        print "Error including conf/general in wp-config.php on mysociety.org WordPress";
-        exit;
+        if (!@include "../../../conf/general") {
+            print "Error including conf/general in wp-config.php on mysociety.org WordPress";
+            exit;
+        }
     }
 }
 define('DB_NAME', OPTION_MS_DB_NAME);     // The name of the database
