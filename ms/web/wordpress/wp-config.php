@@ -3,7 +3,12 @@
 /** http://wordpress.org/   **/
 
 // ** MySQL settings ** //
-include "../conf/general";
+if (!@include "../conf/general") {
+    if (!@include "../../conf/general") {
+        print "Error including conf/general in wp-config.php on mysociety.org WordPress";
+        exit;
+    }
+}
 define('DB_NAME', OPTION_MS_DB_NAME);     // The name of the database
 define('DB_USER', OPTION_MS_DB_USER);     // Your MySQL username
 define('DB_PASSWORD', OPTION_MS_DB_PASSWORD); // ...and password
