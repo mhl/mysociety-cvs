@@ -3,10 +3,12 @@
 
 set -e
 
-cd /data/vhost/www.mysociety.org/docs/cvs
+cd ../../../mysociety/ms/docs
+mkdir -p /cvs
+cd cvs
 
 rm -fr mysociety
-export CVSROOT=/usr/local/cvs
+export CVSROOT=:pserver:anonymous@cvs.mysociety.org:/repos
 cvs -Q export -D now mysociety
 
 rm -fr mysociety-new.tar.gz
