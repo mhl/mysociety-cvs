@@ -25,7 +25,7 @@
 
 <body>
 <div class="top">
-<div class="masthead"><img src="/mslogo.gif" alt="mySociety.org"/></div>
+<div class="masthead"><a href="/"><img src="/mslogo.gif" alt="mySociety.org"/></a></div>
 </div>
 
 <div class="page-body">
