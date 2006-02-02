@@ -37,6 +37,7 @@ phplib - General purpose PHP modules
 pylib - General purpose Python modules
 shlib - General purpose shell functions
 locale - Translations into different human languages
+rotatelogs - Enhanced rotatelogs program for apache
 
 web-admin - General use web administration scripts (UNFINISHED - should really be in ms/web-admin
 or as a module?)
