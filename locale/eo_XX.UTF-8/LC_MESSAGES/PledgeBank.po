@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-02-08 18:52+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-02-11 15:31+0000\n"
 "PO-Revision-Date: 2006-01-12 15:32+0000\n"
 "Last-Translator: Tim Morley <t_morley@argonet.co.uk>\n"
 "Language-Team: Esperanto <team@pledgebank.com>\n"
@@ -1702,7 +1702,7 @@ msgstr "Tiu promeso jam plenas"
 msgid "You've already signed that pledge"
 msgstr "Vi jam subskribis tiun promeson"
 
-#: pb/phplib/pledge.php:400 pb/web/comment.php:45 pb/web/ref-sign.php:51
+#: pb/phplib/pledge.php:400 pb/web/comment.php:45 pb/web/ref-sign.php:58
 #: pb/web/sms.php:65
 msgid "Permission denied"
 msgstr "Ne permesita"
@@ -3906,9 +3906,8 @@ msgid "Announcement sent"
 msgstr "Anonco sendita"
 
 #: pb/web/ref-announce.php:82
-#, fuzzy
 msgid "<strong>Thank you!</strong> Your message will now be sent to all the people who signed your pledge. A copy will also be sent to you for your records."
-msgstr "<strong>Dankon!</strong> Via mesaĝo nun sendiĝos al ĉiuj viaj subskribintoj."
+msgstr "<strong>Dankon!</strong> Via mesaĝo nun sendiĝos al ĉiuj viaj subskribintoj. Ni sendos kopion ankaŭ al vi."
 
 #: pb/web/ref-announce.php:105
 #, php-format
@@ -4626,27 +4625,31 @@ msgstr "Bildoj estas malpermesataj por privataj promesoj. Bonvolu sciigi al ni, 
 msgid "Signature addition"
 msgstr "Aldono de subskribo"
 
-#: pb/web/ref-sign.php:58
+#: pb/web/ref-sign.php:54
+msgid "No pledge reference was specified"
+msgstr "Promesreferenco ne donita"
+
+#: pb/web/ref-sign.php:65
 msgid "Before putting your signature on the pledge, we need to check that your email is working."
 msgstr "Antaŭ ol aldoni vian subskribon al la promeso, ni devas kontroli, ke via retadreso bone funkcias."
 
-#: pb/web/ref-sign.php:69 pb/web/sms.php:70 pb/web/sms.php:143
+#: pb/web/ref-sign.php:76 pb/web/sms.php:70 pb/web/sms.php:143
 msgid "Thanks for signing up to this pledge!"
 msgstr "Dankon pro via subskribo!"
 
-#: pb/web/ref-sign.php:74
+#: pb/web/ref-sign.php:81
 msgid "Your signature has made this pledge reach its target! Woohoo!"
 msgstr "Via subskribo sukcesigis tiun promeson! Ni festu!"
 
-#: pb/web/ref-sign.php:81 pb/web/sms.php:134
+#: pb/web/ref-sign.php:88 pb/web/sms.php:134
 msgid "You cannot sign your own pledge!"
 msgstr "Vi ne rajtas subskribi vian propran promeson!"
 
-#: pb/web/ref-sign.php:83
+#: pb/web/ref-sign.php:90
 msgid "You've already signed this pledge!"
 msgstr "Vi jam subskribis tiun ĉi promeson!"
 
-#: pb/web/ref-sign.php:88
+#: pb/web/ref-sign.php:95
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Pardonu &mdash; ne eblis subskribi tiun ĉi promeson."
 
@@ -5176,12 +5179,15 @@ msgid "PledgeBank here. Sorry, the %s pledge has failed. Better luck next time!"
 msgstr "Skribas al vi PledgeBank. Ni bedaŭras, ke la promeso %s malsukcesis. Plibonan ŝancon venontfoje!"
 
 #: pb/bin/frequentupdate:371
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone who signed your pledge %s ]\n"
 "\n"
 "%s"
-msgstr "Kopio de via mesaĝo estos sendita al eventualaj subskribontoj de via promeso."
+msgstr ""
+"[ Tio estas kopio de la mesaĝo, kiun vi ĵus sendis la ĉiuj subskribintoj de via promeso %s ]\n"
+"\n"
+"%s"
 
 #: pb/bin/frequentupdate:506
 #, php-format

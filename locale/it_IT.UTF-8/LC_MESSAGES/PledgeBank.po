@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-02-08 18:52+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-02-11 15:31+0000\n"
 "PO-Revision-Date: 2006-02-06 11:42+0100\n"
 "Last-Translator: Federico Cherubini <fcherub@free.fr>\n"
 "Language-Team: RNP <team@pledgebank.com>\n"
@@ -1687,7 +1687,7 @@ msgstr "L'impegno è già completo"
 msgid "You've already signed that pledge"
 msgstr "Hai già sottoscritto questo impegno"
 
-#: pb/phplib/pledge.php:400 pb/web/comment.php:45 pb/web/ref-sign.php:51
+#: pb/phplib/pledge.php:400 pb/web/comment.php:45 pb/web/ref-sign.php:58
 #: pb/web/sms.php:65
 msgid "Permission denied"
 msgstr "Accesso negato"
@@ -4584,27 +4584,31 @@ msgstr "Immagini non disponibili per gli impegni privati. Si prega di contattarc
 msgid "Signature addition"
 msgstr "Sottoscrizione"
 
-#: pb/web/ref-sign.php:58
+#: pb/web/ref-sign.php:54
+msgid "No pledge reference was specified"
+msgstr ""
+
+#: pb/web/ref-sign.php:65
 msgid "Before putting your signature on the pledge, we need to check that your email is working."
 msgstr "Prima di poter sottocrivere questo impegno, dobbiamo verificare la validità del tuo indirizzo email."
 
-#: pb/web/ref-sign.php:69 pb/web/sms.php:70 pb/web/sms.php:143
+#: pb/web/ref-sign.php:76 pb/web/sms.php:70 pb/web/sms.php:143
 msgid "Thanks for signing up to this pledge!"
 msgstr "Grazie di aver aderito a questo impegno!"
 
-#: pb/web/ref-sign.php:74
+#: pb/web/ref-sign.php:81
 msgid "Your signature has made this pledge reach its target! Woohoo!"
 msgstr "La tua firma ha permesso a questo impegno di raggiungere il traguardo! "
 
-#: pb/web/ref-sign.php:81 pb/web/sms.php:134
+#: pb/web/ref-sign.php:88 pb/web/sms.php:134
 msgid "You cannot sign your own pledge!"
 msgstr "Non è possibile aderire al proprio impegno!"
 
-#: pb/web/ref-sign.php:83
+#: pb/web/ref-sign.php:90
 msgid "You've already signed this pledge!"
 msgstr "Hai già sottoscritto questo impegno!"
 
-#: pb/web/ref-sign.php:88
+#: pb/web/ref-sign.php:95
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Errore &mdash; impossibile sottoscrivere l'impegno."
 
@@ -5144,7 +5148,8 @@ msgid ""
 "[ This is a copy of the message you have just sent to everyone who signed your pledge %s ]\n"
 "\n"
 "%s"
-msgstr "[Questa è una copia del messaggio che hai appena inviato ai co-firmatari del tuo impegno %s ]\n"
+msgstr ""
+"[Questa è una copia del messaggio che hai appena inviato ai co-firmatari del tuo impegno %s ]\n"
 "\n"
 "%s"
 
@@ -5953,4 +5958,3 @@ msgstr "Diritti Civili"
 
 #~ msgid "Remember, you only have to act if %d other people sign up \\u8211- that\\u8217's what PledgeBank is all about."
 #~ msgstr "Ricorda, ti impegni ad agire se %d altre persone faranno lo stesso \\u8211- questo è il principio di funzionamento di PledgeBank."
-
