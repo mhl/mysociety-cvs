@@ -21,9 +21,14 @@
 
 	<?php wp_head(); ?>
 </head>
-<body>
 
 <body>
+<?php
+if ($_SERVER['HTTP_HOST'] != 'www.mysociety.org') {
+	print '<p align="center">This is a test site, the real site is <a href="http://www.mysociety.org">over here</a>.<br>mySociety developers test new things here, you can <a href="http://www.mysociety.org/volunteertasks">join us</a> if you like.';
+}
+?>
+
 <div class="top">
 <div class="masthead"><a href="/"><img border="0" src="/mslogo.gif" alt="mySociety.org"/></a></div>
 </div>
