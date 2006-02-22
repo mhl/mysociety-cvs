@@ -1,4 +1,6 @@
-#!c:/ruby/bin/ruby
+#!/usr/bin/ruby1.8
+
+#!/usr/local/bin/ruby
 
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
 

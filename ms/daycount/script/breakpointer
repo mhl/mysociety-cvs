@@ -1,3 +1,5 @@
-#!/usr/bin/env ruby
-require File.dirname(__FILE__) + '/../config/boot'
-require 'commands/breakpointer'
+#!/usr/bin/ruby1.8
+
+#!/usr/local/bin/ruby
+$LOAD_PATH << File.dirname(__FILE__) + '/../vendor/railties/lib'
+require 'breakpoint_client'

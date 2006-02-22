@@ -1,19 +1,14 @@
-# Settings specified here will take precedence over those in config/environment.rb
-
 # In the development environment your application's code is reloaded on
 # every request.  This slows down response time but is perfect for development
 # since you don't have to restart the webserver when you make code changes.
-config.cache_classes     = false
 
 # Log error messages when you accidentally call methods on nil.
-config.whiny_nils        = true
+require 'active_support/whiny_nil'
 
-# Enable the breakpoint server that script/breakpointer connects to
-config.breakpoint_server = true
+# Reload code; show full error reports; disable caching.
+Dependencies.mechanism                             = :load
+ActionController::Base.consider_all_requests_local = true
+ActionController::Base.perform_caching             = false
 
-# Show full error reports and disable caching
-config.action_controller.consider_all_requests_local = true
-config.action_controller.perform_caching             = false
-
-# Don't care if the mailer can't send
-config.action_mailer.raise_delivery_errors = false
+# The breakpoint server port that script/breakpointer connects to.
+BREAKPOINT_SERVER_PORT = 42531
