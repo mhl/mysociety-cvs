@@ -1,7 +1,8 @@
 --
 -- PostgreSQL database dump
 -- schema.sql:
--- Schema for meetup day preference app (daycount)
+-- Schema for mysociety site - first tables 
+-- are formeetup day preference app (daycount)
 --
 -- Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 -- Email: louise.crow@gmail.com; WWW: http://www.mysociety.org/
