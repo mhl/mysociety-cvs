@@ -90,5 +90,43 @@ It's OK, but discouraged!, to add other vhosts manually in /data/vhosts.  In
 that case, edit Apache configuration here:
 /data/servers/$class/etc/apache/virtualhosts.d/special.conf.ugly
 
+Creating a PostgreSQL database
+------------------------------
+
+Databases have the same name as the only database user who can access them.
+The password is generated from a secret key by /data/mysociety/bin/pgpw, so it
+is predictable. This system makes configuration across multiple servers
+simple, without having to use identd or similar.
+
+(Any MySQL database is configured similarly, using password from pgpw as well.
+But hopefully you won't need to make a new one of those.)
+
+To create a new database:
+1. Decide which host you want to keep it on (there's no mirroring yet), and
+become user "postgres" on that host.
+2. Run "createdb <databasename>". Call live databases after the site e.g. "pb".
+Call test databases with a suffix e.g. "pb-staging" or "pb-matthew".
+3. As root, run "/data/mysociety/bin/pgpw <databasename>" to find the password.
+4. As postgresql, run psql to get into the PostgreSQL command line, then do
+        create user "<databasename>" with password '<password>'
+   The double quotes on the db name are necessary if it has a dash "-" in it.
+5. As postgresql, give the user permissions:
+        grant all on database "<databasename>" to "<databasename>";
+6. If you want it backed up, add the database to 
+    /data/servers/bitter/etc/cron.daily/backup-database
+   Or, if you don't want it backed up, add it explicitly to the "don't back up"
+   place there as well (or else cron will warn about it). Then deploy config
+   with that on both servers.
+
+Passwords are in the following places:
+- inside the database itself, as the configuration for the user/database
+- in the conf/general files for each vhost. These files are readable only by
+  owner, and are generated from the template files in /data/servers/vhosts/*.
+  The templates call pgpw, and "mysociety vhost" is run as root who has access
+  to the secret key. This users the predictable nature of the passwords.
+- in ~/.pgpass, which again is only user readable. There's a script
+  /data/mysociety/bin/generate-pgpass which makes ~/.pgpass files for lots of
+  users. This is a convenience feature. If you regularly want to access a database 
+  as a user, then add appropriate entries in generate-pgpass and rerun it.
 
 
