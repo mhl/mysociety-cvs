@@ -1,0 +1,24 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	 "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en-US"><head>
+<title>mySociety: Meetup days</title>
+<link rel="stylesheet" href="http://www.mysociety.org/global.css" type="text/css" media="screen" />
+</head><body>
+<div class="top">
+<div class="masthead"><a href="/"><img border="0" src="http://www.mysociety.org/mslogo.gif" alt="mySociety.org"/></a></div>
+</div>
+
+<%
+require 'open-uri'
+open("http://www.mysociety.org/menu.html") {|f|
+  f.each_line {|line| 
+  %><%= line %><% } 
+  }
+ %>
+ 
+ <div id="content" class="narrowcolumn">	
+		 				      
+ <%= @content_for_layout %>
+ 
+ </div></body></html>

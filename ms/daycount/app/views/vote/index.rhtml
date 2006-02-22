@@ -1,0 +1,84 @@
+<div class="item_head">Vote</div>
+<% if @flash[:notice] %><div class="item"><%= @flash[:notice] %></div><% end %>
+<div class="item">
+ <form action="/dayofmonthvote/create" method="post">
+ <p>
+ <b>Day of month:</b><br/>
+ <select name="dayofmonthvote[value]">
+ <% (1..31).each do |num| %>
+ <option value="<%= num %>"> 
+ <%= num %>
+  </option>
+ <% end %>
+ </select>
+ <input type="submit" value="Vote"/>
+ </form> 
+
+<p>
+                
+<form action="/dayofweekvote/create" method="post">
+ <p>
+ <b>Day of week:</b><br/>
+ <select name="dayofweekvote[value]">
+<option value="Sunday">Sunday</option>
+<option value="Monday">Monday</option>
+<option value="Tuesday">Tuesday</option>
+<option value="Wednesday">Wednesday</option>
+<option value="Thursday">Thursday</option>
+<option value="Friday">Friday</option>
+<option value="Saturday">Saturday</option>
+ </select>
+ <input type="submit" value="Vote"/>
+ </form> 
+<p>
+
+<h2>Results so far...</h2>
+<p>
+Day of month                
+<table border="1">
+ <tr>
+   <td width="40%"><p align="center"><i><b>Day</b></i></td>
+   <td width="40%"><p align="center"><i><b>Count</b></i></td>
+ </tr>
+<%@counts = Hash.new(nil) 
+  @monthvotes.each do |vote| 
+ 		@counts[vote.value] = 0 if @counts[vote.value].nil?
+        @counts[vote.value] += 1
+ end 
+ %>
+    
+ <% @counts.each do |key, value|  %>   
+     <tr>
+      <td><%= key %>
+      </td>
+      <td><%= value %></td>
+     </tr>
+ <% end %>
+</table>
+<P>
+<P>
+
+Day of week 
+<table border="1">
+ <tr>
+   <td width="40%"><p align="center"><i><b>Day</b></i></td>
+   <td width="40%"><p align="center"><i><b>Count</b></i></td>
+ </tr>
+<%@counts = Hash.new(nil) 
+  @weekvotes.each do |vote| 
+ 		@counts[vote.value] = 0 if @counts[vote.value].nil?
+        @counts[vote.value] += 1
+ end 
+ %>
+    
+ <% @counts.each do |key, value|  %>   
+     <tr>
+      <td><%= h(key) %>
+      </td>
+      <td><%= h(value) %></td>
+     </tr>
+ <% end %>
+</table>
+</div>
+
+<div class="item_foot"></div>
