@@ -9,6 +9,7 @@
 <div class="masthead"><a href="/"><img border="0" src="http://www.mysociety.org/mslogo.gif" alt="mySociety.org"/></a></div>
 </div>
 
+<div id="content" class="page-body">
 <%
 require 'open-uri'
 open("http://www.mysociety.org/menu.html") {|f|
@@ -17,7 +18,7 @@ open("http://www.mysociety.org/menu.html") {|f|
   }
  %>
  
- <div id="content" class="narrowcolumn">	
+ 	
 		 				      
  <%= @content_for_layout %>
  

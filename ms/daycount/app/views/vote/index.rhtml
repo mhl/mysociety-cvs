@@ -1,11 +1,11 @@
 <div class="item_head">Vote</div>
 <% if @flash[:notice] %><div class="item"><%= @flash[:notice] %></div><% end %>
 <div class="item">
- <form action="/dayofmonthvote/create" method="post">
+ <form action="/daycount/dayofmonthvote/create" method="post">
  <p>
- <b>Day of month:</b><br/>
+ <b>Week of month:</b><br/>
  <select name="dayofmonthvote[value]">
- <% (1..31).each do |num| %>
+ <% (1..4).each do |num| %>
  <option value="<%= num %>"> 
  <%= num %>
   </option>
@@ -16,7 +16,7 @@
 
 <p>
                 
-<form action="/dayofweekvote/create" method="post">
+<form action="/daycount/dayofweekvote/create" method="post">
  <p>
  <b>Day of week:</b><br/>
  <select name="dayofweekvote[value]">
@@ -34,10 +34,10 @@
 
 <h2>Results so far...</h2>
 <p>
-Day of month                
+Week of month                
 <table border="1">
  <tr>
-   <td width="40%"><p align="center"><i><b>Day</b></i></td>
+   <td width="40%"><p align="center"><i><b>Week</b></i></td>
    <td width="40%"><p align="center"><i><b>Count</b></i></td>
  </tr>
 <%@counts = Hash.new(nil) 
