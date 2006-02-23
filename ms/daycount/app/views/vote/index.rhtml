@@ -5,7 +5,7 @@ We're planning on having a monthly MySociety drop in hacking/talking/drinking af
 <br></br>
 </div>
 <% require 'error_messages_for_custom' %>
-<% if @flash[:notice] %><div class="item"><%= @flash[:notice] %></div><% end %>
+<% if @flash[:notice] %><div class="item"><br></br><%= @flash[:notice] %></div><% end %>
 <div class="item">
 <br></br>
  You have <%= pluralize(@vote.count_votes_remaining, 'vote') %> remaining. 
