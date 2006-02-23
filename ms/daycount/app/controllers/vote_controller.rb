@@ -5,7 +5,7 @@ class VoteController < ApplicationController
   include ActionView::Helpers::TagHelper
   layout "mysociety"  
 
-  DaysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  DaysOfWeek = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
   WeeksOfMonth = ['1st','2nd','3rd','4th','last']
 
   def index
@@ -15,6 +15,8 @@ class VoteController < ApplicationController
         @counts[[vote.dayofweek,vote.weekofmonth]] = 0 if @counts[[vote.dayofweek,vote.weekofmonth]].nil?
         @counts[[vote.dayofweek,vote.weekofmonth]] += 1
     end
+    @counts =  @counts.sort {|a,b| a[1]<=>b[1]}
+    @counts.reverse!
     @vote = Meetupvote.new
     @weeksofmonth = WeeksOfMonth
     @daysofweek = DaysOfWeek

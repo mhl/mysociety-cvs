@@ -1,11 +1,22 @@
-<div class="item_head">Vote</div>
+<div class="item_head">Monthly drop in meeting</div>
+<div class="item">
+<br></br>
+We're planning on having a monthly MySociety drop in hacking/talking/drinking afternoon where volunteers can show up and meet the core team and each other, have a chat and build things. Please vote here for what week of the month/day of the week you'd prefer this to happen on (everyone gets three votes). 
+<br></br>
+</div>
 <% require 'error_messages_for_custom' %>
 <% if @flash[:notice] %><div class="item"><%= @flash[:notice] %></div><% end %>
 <div class="item">
+<br></br>
  You have <%= pluralize(@vote.count_votes_remaining, 'vote') %> remaining. 
 <form action="/daycount/vote/create" method="post">
  <p>
+ <table border="0">
+ <tr>
+ <td>
  <b>Week of month:</b><br/>
+ </td>
+ <td>
  <select name="meetupvote[weekofmonth]">
  <% @weeksofmonth.each do |num| %>
  <option value="<%= num %>"> 
@@ -13,38 +24,48 @@
   </option>
  <% end %>
  </select>
-</p>
-<p>
+ </td>
+ <td width="10">
+ </td>
+ <td>
  <b>Day of week:</b><br/>
+ </td>
+ <td>
 <select name="meetupvote[dayofweek]">
   <% @daysofweek.each do |day| %>
 
      <option value="<%= day %>"><%= day %></option>
   <% end %>
  </select>
+ </td>
+ <td width="10">
+ </td>
+ <td>
  <input type="submit" value="Vote"/>
  </form> 
+ </td>
+ </tr>
+ </table>
 </p>
 <p>
-
-<h2>Results so far...</h2>
+<h3>Results so far...</h3>
 <p> 
 </p>               
-<table border="1">
+<table class="item" border="0" align="center">
  <tr>
    <td width="40%"><p align="center"><i><b>Day</b></i></td>
    <td width="40%"><p align="center"><i><b>Week</b></i></td>
-   <td width="40%"><p align="center"><i><b>Count</b></i></td>
+   <td width="20%"><p align="center"><i><b>Votes</b></i></td>
  </tr>
     
  <% @counts.each do |key, value|  %>   
 	<% dayofweek, weekofmonth = key %>
      <tr>
-      <td><%= h(dayofweek) %>
+      <td align="center"><%= h(dayofweek) %>
       </td>
-      <td><%= h(weekofmonth) %>
+      <td align="center"><%= h(weekofmonth) %>
       </td>
-      <td><%= value %></td>
+      <td align="center"><%= value %></td>
      </tr>
  <% end %>
 </table>
