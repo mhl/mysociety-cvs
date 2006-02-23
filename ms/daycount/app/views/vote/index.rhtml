@@ -1,81 +1,50 @@
 <div class="item_head">Vote</div>
+<% require 'error_messages_for_custom' %>
 <% if @flash[:notice] %><div class="item"><%= @flash[:notice] %></div><% end %>
 <div class="item">
- <form action="/daycount/dayofmonthvote/create" method="post">
+ You have <%= pluralize(@vote.count_votes_remaining, 'vote') %> remaining. 
+<form action="/daycount/vote/create" method="post">
  <p>
  <b>Week of month:</b><br/>
- <select name="dayofmonthvote[value]">
- <% (1..4).each do |num| %>
+ <select name="meetupvote[weekofmonth]">
+ <% @weeksofmonth.each do |num| %>
  <option value="<%= num %>"> 
  <%= num %>
   </option>
  <% end %>
  </select>
- <input type="submit" value="Vote"/>
- </form> 
-
+</p>
 <p>
-                
-<form action="/daycount/dayofweekvote/create" method="post">
- <p>
  <b>Day of week:</b><br/>
- <select name="dayofweekvote[value]">
-<option value="Sunday">Sunday</option>
-<option value="Monday">Monday</option>
-<option value="Tuesday">Tuesday</option>
-<option value="Wednesday">Wednesday</option>
-<option value="Thursday">Thursday</option>
-<option value="Friday">Friday</option>
-<option value="Saturday">Saturday</option>
+<select name="meetupvote[dayofweek]">
+  <% @daysofweek.each do |day| %>
+
+     <option value="<%= day %>"><%= day %></option>
+  <% end %>
  </select>
  <input type="submit" value="Vote"/>
  </form> 
+</p>
 <p>
 
 <h2>Results so far...</h2>
-<p>
-Week of month                
-<table border="1">
- <tr>
-   <td width="40%"><p align="center"><i><b>Week</b></i></td>
-   <td width="40%"><p align="center"><i><b>Count</b></i></td>
- </tr>
-<%@counts = Hash.new(nil) 
-  @monthvotes.each do |vote| 
- 		@counts[vote.value] = 0 if @counts[vote.value].nil?
-        @counts[vote.value] += 1
- end 
- %>
-    
- <% @counts.each do |key, value|  %>   
-     <tr>
-      <td><%= key %>
-      </td>
-      <td><%= value %></td>
-     </tr>
- <% end %>
-</table>
-<P>
-<P>
-
-Day of week 
+<p> 
+</p>               
 <table border="1">
  <tr>
    <td width="40%"><p align="center"><i><b>Day</b></i></td>
+   <td width="40%"><p align="center"><i><b>Week</b></i></td>
    <td width="40%"><p align="center"><i><b>Count</b></i></td>
  </tr>
-<%@counts = Hash.new(nil) 
-  @weekvotes.each do |vote| 
- 		@counts[vote.value] = 0 if @counts[vote.value].nil?
-        @counts[vote.value] += 1
- end 
- %>
     
  <% @counts.each do |key, value|  %>   
+	<% dayofweek, weekofmonth = key %>
      <tr>
-      <td><%= h(key) %>
+      <td><%= h(dayofweek) %>
       </td>
-      <td><%= h(value) %></td>
+      <td><%= h(weekofmonth) %>
+      </td>
+      <td><%= value %></td>
      </tr>
  <% end %>
 </table>
