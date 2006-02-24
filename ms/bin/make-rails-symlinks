@@ -1,0 +1,15 @@
+#!/bin/sh
+
+
+cd ms/web
+ln -s -f ../daycount/public/ daycount
+cd ../..
+
+mkdir -p ms/daycount/vendor
+cd ms/daycount/vendor
+for X in actionmailer actionpack actionwebservice activerecord activesupport railties;
+do
+    ln -s -f /usr/share/rails/$X $X
+done
+
+
