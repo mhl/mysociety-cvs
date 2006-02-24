@@ -7,10 +7,11 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org. WWW: http://www.mysociety.org
  *
- * $Id: make-rails-config,v 1.1 2006-02-24 12:25:57 francis Exp $
+ * $Id: make-rails-config,v 1.2 2006-02-24 12:29:16 francis Exp $
  * 
  */
 
+chdir(dirname($_SERVER['SCRIPT_FILENAME']));
 require_once '../../phplib/cli.php';
 require_once '../conf/general';
 
