@@ -257,11 +257,12 @@ function wp_get_archives($args = '') {
 	if (!isset($r['format'])) $r['format'] = 'html';
 	if (!isset($r['before'])) $r['before'] = '';
 	if (!isset($r['after'])) $r['after'] = '';
+	if (!isset($r['cat'])) $r['cat'] = 1;
 	if (!isset($r['show_post_count'])) $r['show_post_count'] = false;
-	get_archives($r['type'], $r['limit'], $r['format'], $r['before'], $r['after'], $r['show_post_count']);
+	get_archives($r['type'], $r['limit'], $r['format'], $r['before'], $r['after'], $r['show_post_count'], $r['cat']);
 }
 
-function get_archives($type='', $limit='', $format='html', $before = '', $after = '', $show_post_count = false) {
+function get_archives($type='', $limit='', $format='html', $before = '', $after = '', $show_post_count = false, $cat = 1) {
     global $month, $wpdb;
 
     if ('' == $type) {
@@ -272,6 +273,9 @@ function get_archives($type='', $limit='', $format='html', $before = '', $after 
         $limit = (int) $limit;
         $limit = ' LIMIT '.$limit;
     }
+
+    $cat = (int) $cat;
+
     // this is what will separate dates on weekly archive links
     $archive_week_separator = '&#8211;';
 
@@ -302,11 +306,13 @@ function get_archives($type='', $limit='', $format='html', $before = '', $after 
     $now = current_time('mysql');
 
     if ('monthly' == $type) {
-        $arcresults = $wpdb->get_results("SELECT DISTINCT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $wpdb->posts WHERE post_date < '$now' AND post_status = 'publish' GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date DESC" . $limit);
+        $lquery = "SELECT DISTINCT YEAR(post_date) AS `year`, MONTH(post_date) AS `month`, count(ID) as posts FROM $wpdb->posts LEFT JOIN $wpdb->post2cat ON $wpdb->posts.ID = post_id WHERE post_date < '$now' AND post_status = 'publish' AND category_id = $cat GROUP BY YEAR(post_date), MONTH(post_date) ORDER BY post_date DESC" . $limit;
+        $arcresults = $wpdb->get_results($lquery);
         if ($arcresults) {
             $afterafter = $after;
             foreach ($arcresults as $arcresult) {
                 $url  = get_month_link($arcresult->year,   $arcresult->month);
+                $url .= "&cat=$cat";
                 if ($show_post_count) {
                     $text = sprintf('%s %d', $month[zeroise($arcresult->month,2)], $arcresult->year);
                     $after = '&nbsp;('.$arcresult->posts.')' . $afterafter;

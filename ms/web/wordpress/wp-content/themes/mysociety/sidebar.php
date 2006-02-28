@@ -1,7 +1,7 @@
 	<div id="sidebar">
 			
 			<?php /* If this is a category archive */ if (is_category() && $cat!=1) { ?>
-			<p>You are currently browsing the archives for the <?php single_cat_title(''); ?> category.</p>
+	<!--		<p>You are currently browsing the archives for the <?php single_cat_title(''); ?> category.</p>-->
 			
 			<?php /* If this is a daily archive */ } elseif (is_day()) { ?>
 			<p>You are currently browsing the <a href="<?php echo get_settings('siteurl'); ?>"><?php echo bloginfo('name'); ?></a> weblog archives
@@ -34,10 +34,14 @@
 				<div class="item_foot"></div>
 			<?php } ?>
 
-			<div class="item_head"><?php _e('Archives'); ?></div>
+			<div class="item_head"><?php 
+                    if (is_category())
+                        print single_cat_title('') . ' ';
+                    _e('Archives'); 
+            ?></div>
             <div class="item">
 				<ul>
-				<?php wp_get_archives(); ?>
+				<?php wp_get_archives("cat=$cat"); ?>
 				</ul>
             </div>
             <div class="item_foot">
