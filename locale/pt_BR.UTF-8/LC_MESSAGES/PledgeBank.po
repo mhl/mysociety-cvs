@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-03-01 22:04+0000\n"
+"POT-Creation-Date: 2006-03-02 06:41+0000\n"
 "PO-Revision-Date: 2006-02-26 11:34-0300\n"
 "Last-Translator: Creso Moraes <creso@enfoque.com>\n"
 "Language-Team: pt_BR <team@pledgebank.com>\n"
@@ -1801,7 +1801,7 @@ msgstr "promessa Protegida por PIN"
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "Esta promessa é protegida. Digite o PIN para continuar."
 
-#: pb/phplib/pledge.php:592 pb/web/abuse.php:150 pb/web/ref-picture.php:180
+#: pb/phplib/pledge.php:592 pb/web/abuse.php:151 pb/web/ref-picture.php:180
 #: pb/web/sms.php:235 pb/web/your.php:111
 msgid "Submit"
 msgstr "Submeter"
@@ -1928,6 +1928,14 @@ msgstr "A %s não foi encontrada. Provavelmente já foi apagada."
 msgid "Please enter a valid email address"
 msgstr "Digite um endereço válido de email"
 
+#: pb/web/abuse.php:69
+msgid "together"
+msgstr ""
+
+#: pb/web/abuse.php:70
+msgid "Please enter the word 'together' in the <strong>magic word</strong> box. We ask you to do this because there are people who run software which crawls the internet and automatically posts adverts. Asking you to enter the word is a reliable and unobtrusive way of making sure you are a human, not a piece of software."
+msgstr ""
+
 #: pb/web/abuse.php:87
 msgid "PledgeBank abuse report"
 msgstr ""
@@ -1977,6 +1985,11 @@ msgstr "<strong>Minha meta</strong> é "
 #, fuzzy, php-format
 msgid "<strong>Reason for reporting this %s</strong>:"
 msgstr "<strong>Breve razão</strong> para denunciar este %s:"
+
+#: pb/web/abuse.php:147
+#, php-format
+msgid "<strong>Enter the magic word</strong>, which is 'together':"
+msgstr ""
 
 #: pb/web/alert.php:51
 msgid "New pledge alerts"
@@ -2223,8 +2236,8 @@ msgstr "Mensagem para"
 msgid "PledgeBank Team"
 msgstr "Equipe PledgeBank"
 
-#: pb/web/contact.php:53 pb/web/ref-announce.php:258
-#: pb/web/ref-announcearchive.php:73
+#: pb/web/contact.php:53 pb/web/ref-announcearchive.php:73
+#: pb/web/ref-announce.php:258
 msgid "Subject"
 msgstr "Assunto"
 
@@ -3999,6 +4012,56 @@ msgstr ""
 "realmente apóia, ligue sua impressora, memorize os detalhes da mensagem\n"
 "de texto, e leve-a ao Mundo inteiro."
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:25
+msgid "Invalid parameters, please try again"
+msgstr "Parâmetros inválidos, tente outra vez"
+
+#: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
+#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
+msgid "Enter PIN"
+msgstr "Digite o PIN"
+
+#: pb/web/ref-announcearchive.php:40
+#, fuzzy
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Para ver mensagens anunciando promessa, temos que checar se V. a assinou"
+
+#: pb/web/ref-announcearchive.php:41
+msgid "Then you will be able to view announcement messages."
+msgstr "Aí V. poderá visualizar mensagens de anúncio."
+
+#: pb/web/ref-announcearchive.php:42
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Visualizar o arquivo de seus anúncios de promessas no PledgeBank.com "
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers: "
+msgstr "Mensagens enviadas pelo criador aos apoiadores: "
+
+#: pb/web/ref-announcearchive.php:63
+msgid "Messages sent by creator to signers"
+msgstr "Mensagens enviadas pelo criador aos apoiadores"
+
+#: pb/web/ref-announcearchive.php:71
+msgid "From"
+msgstr "De"
+
+#: pb/web/ref-announcearchive.php:75
+msgid "Date"
+msgstr "Data"
+
+#: pb/web/ref-announcearchive.php:85
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "O criador da promessa ainda não mandou anúncios."
+
+#: pb/web/ref-announcearchive.php:88
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr ""
+"As mensagens só podem ser mostradas a pessoas que tenham apoiado\n"
+"    a promessa. "
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 msgid "Missing pledge reference"
 msgstr "Falta a referência à promessa "
@@ -4309,56 +4372,6 @@ msgstr ""
 "(Lembre-se: ao enviar esta mensagem,<strong>seu endereço de email será\n"
 "fornecido a qualquer um</strong> que já tenha apoiado, ou apoiar no futuro,\n"
 "por email, a sua promessa)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:25
-msgid "Invalid parameters, please try again"
-msgstr "Parâmetros inválidos, tente outra vez"
-
-#: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
-#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
-msgid "Enter PIN"
-msgstr "Digite o PIN"
-
-#: pb/web/ref-announcearchive.php:40
-#, fuzzy
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Para ver mensagens anunciando promessa, temos que checar se V. a assinou"
-
-#: pb/web/ref-announcearchive.php:41
-msgid "Then you will be able to view announcement messages."
-msgstr "Aí V. poderá visualizar mensagens de anúncio."
-
-#: pb/web/ref-announcearchive.php:42
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Visualizar o arquivo de seus anúncios de promessas no PledgeBank.com "
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers: "
-msgstr "Mensagens enviadas pelo criador aos apoiadores: "
-
-#: pb/web/ref-announcearchive.php:63
-msgid "Messages sent by creator to signers"
-msgstr "Mensagens enviadas pelo criador aos apoiadores"
-
-#: pb/web/ref-announcearchive.php:71
-msgid "From"
-msgstr "De"
-
-#: pb/web/ref-announcearchive.php:75
-msgid "Date"
-msgstr "Data"
-
-#: pb/web/ref-announcearchive.php:85
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "O criador da promessa ainda não mandou anúncios."
-
-#: pb/web/ref-announcearchive.php:88
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr ""
-"As mensagens só podem ser mostradas a pessoas que tenham apoiado\n"
-"    a promessa. "
 
 #: pb/web/ref-email.php:26
 msgid "Emailing friends"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-03-01 22:04+0000\n"
+"POT-Creation-Date: 2006-03-02 06:41+0000\n"
 "PO-Revision-Date: 2006-02-20 14:54+0200\n"
 "Last-Translator: АВМ <pledgebank@avmgroup.com.ua>\n"
 "Language-Team: AVM-group <pledgebank@avmgroup.com.ua>\n"
@@ -1783,7 +1783,7 @@ msgstr "Защищенное PIN-кодом обещание"
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "Это обещание защищено.  Пожалуйста, введите PIN для продолжения."
 
-#: pb/phplib/pledge.php:592 pb/web/abuse.php:150 pb/web/ref-picture.php:180
+#: pb/phplib/pledge.php:592 pb/web/abuse.php:151 pb/web/ref-picture.php:180
 #: pb/web/sms.php:235 pb/web/your.php:111
 msgid "Submit"
 msgstr "OK"
@@ -1902,6 +1902,14 @@ msgstr "Невозможно найти %s. Возможно оно уже уд�
 msgid "Please enter a valid email address"
 msgstr "Пожалуйста, введите правильный email"
 
+#: pb/web/abuse.php:69
+msgid "together"
+msgstr ""
+
+#: pb/web/abuse.php:70
+msgid "Please enter the word 'together' in the <strong>magic word</strong> box. We ask you to do this because there are people who run software which crawls the internet and automatically posts adverts. Asking you to enter the word is a reliable and unobtrusive way of making sure you are a human, not a piece of software."
+msgstr ""
+
 #: pb/web/abuse.php:87
 msgid "PledgeBank abuse report"
 msgstr "Отчет о некорректных обещаниях"
@@ -1948,6 +1956,11 @@ msgstr "<strong>Необходимое к-во человек</strong> "
 #, fuzzy, php-format
 msgid "<strong>Reason for reporting this %s</strong>:"
 msgstr "Укажите, <strong>коротко, причину</strong> проблемы с %s:"
+
+#: pb/web/abuse.php:147
+#, php-format
+msgid "<strong>Enter the magic word</strong>, which is 'together':"
+msgstr ""
 
 #: pb/web/alert.php:51
 msgid "New pledge alerts"
@@ -2158,8 +2171,8 @@ msgstr "Сообщение для"
 msgid "PledgeBank Team"
 msgstr "Комманда PledgeBank"
 
-#: pb/web/contact.php:53 pb/web/ref-announce.php:258
-#: pb/web/ref-announcearchive.php:73
+#: pb/web/contact.php:53 pb/web/ref-announcearchive.php:73
+#: pb/web/ref-announce.php:258
 msgid "Subject"
 msgstr "Тема"
 
@@ -3883,6 +3896,55 @@ msgstr ""
 " включите принтер, запомните рекоммендации по распространению,\n"
 " и откройте обещанию двери в огромный мир."
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:25
+msgid "Invalid parameters, please try again"
+msgstr "Неправильные параметры, пожалуйста, попытайтесь еще раз"
+
+#: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
+#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
+msgid "Enter PIN"
+msgstr "Введите PIN"
+
+#: pb/web/ref-announcearchive.php:40
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Чтобы показать сообщения автора обещания, нам необходимо проверить, подключены ли Вы к нему."
+
+#: pb/web/ref-announcearchive.php:41
+msgid "Then you will be able to view announcement messages."
+msgstr "Затем Вы сможете просмотреть сообщения автора обещания."
+
+#: pb/web/ref-announcearchive.php:42
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Просмотр архива сообщений обещания на PledgeBank.com"
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers: "
+msgstr "Сообщения отосланные автором обещания подписчикам: "
+
+#: pb/web/ref-announcearchive.php:63
+msgid "Messages sent by creator to signers"
+msgstr "Сообщения отосланные автором обещания подписчикам"
+
+#: pb/web/ref-announcearchive.php:71
+msgid "From"
+msgstr "От"
+
+#: pb/web/ref-announcearchive.php:75
+msgid "Date"
+msgstr "Дата"
+
+#: pb/web/ref-announcearchive.php:85
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "Автор обещания еще не отсылал сообщений."
+
+#: pb/web/ref-announcearchive.php:88
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr ""
+"Сообщение будет доступно только тем, кто подключился к\n"
+"    обещанию."
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 msgid "Missing pledge reference"
 msgstr "Не указана ссылка"
@@ -4184,55 +4246,6 @@ msgstr "<h3>Отправка сообщения</h3>"
 #: pb/web/ref-announce.php:303
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(Помните о том, что когда Вы отошлете данное сообщение, то <strong>Ваш email-адрес узнают все</strong>, кто подключен, или подключиться в будущем к Вашему обещанию)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:25
-msgid "Invalid parameters, please try again"
-msgstr "Неправильные параметры, пожалуйста, попытайтесь еще раз"
-
-#: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
-#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
-msgid "Enter PIN"
-msgstr "Введите PIN"
-
-#: pb/web/ref-announcearchive.php:40
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Чтобы показать сообщения автора обещания, нам необходимо проверить, подключены ли Вы к нему."
-
-#: pb/web/ref-announcearchive.php:41
-msgid "Then you will be able to view announcement messages."
-msgstr "Затем Вы сможете просмотреть сообщения автора обещания."
-
-#: pb/web/ref-announcearchive.php:42
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Просмотр архива сообщений обещания на PledgeBank.com"
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers: "
-msgstr "Сообщения отосланные автором обещания подписчикам: "
-
-#: pb/web/ref-announcearchive.php:63
-msgid "Messages sent by creator to signers"
-msgstr "Сообщения отосланные автором обещания подписчикам"
-
-#: pb/web/ref-announcearchive.php:71
-msgid "From"
-msgstr "От"
-
-#: pb/web/ref-announcearchive.php:75
-msgid "Date"
-msgstr "Дата"
-
-#: pb/web/ref-announcearchive.php:85
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "Автор обещания еще не отсылал сообщений."
-
-#: pb/web/ref-announcearchive.php:88
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr ""
-"Сообщение будет доступно только тем, кто подключился к\n"
-"    обещанию."
 
 #: pb/web/ref-email.php:26
 msgid "Emailing friends"

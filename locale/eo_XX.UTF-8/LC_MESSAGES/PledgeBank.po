@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-03-01 22:04+0000\n"
+"POT-Creation-Date: 2006-03-02 06:41+0000\n"
 "PO-Revision-Date: 2006-01-12 15:32+0000\n"
 "Last-Translator: Tim Morley <t_morley@argonet.co.uk>\n"
 "Language-Team: Esperanto <team@pledgebank.com>\n"
@@ -1790,7 +1790,7 @@ msgstr "PIN-e Protektita Promeso"
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "Tiu ĉi promeso estas protektita. Bonvolu entajpi la PIN-on por daŭrigi."
 
-#: pb/phplib/pledge.php:592 pb/web/abuse.php:150 pb/web/ref-picture.php:180
+#: pb/phplib/pledge.php:592 pb/web/abuse.php:151 pb/web/ref-picture.php:180
 #: pb/web/sms.php:235 pb/web/your.php:111
 msgid "Submit"
 msgstr "Sendi"
@@ -1910,6 +1910,14 @@ msgstr "La %s ne estas trovita. Verŝajne ĝi jam estas forigita."
 msgid "Please enter a valid email address"
 msgstr "Bonvolu entajpi validan retadreson"
 
+#: pb/web/abuse.php:69
+msgid "together"
+msgstr ""
+
+#: pb/web/abuse.php:70
+msgid "Please enter the word 'together' in the <strong>magic word</strong> box. We ask you to do this because there are people who run software which crawls the internet and automatically posts adverts. Asking you to enter the word is a reliable and unobtrusive way of making sure you are a human, not a piece of software."
+msgstr ""
+
 #: pb/web/abuse.php:87
 msgid "PledgeBank abuse report"
 msgstr "Fiuzoraporto de PledgeBank"
@@ -1958,6 +1966,11 @@ msgstr "<strong>Mia celo</strong> estas "
 #, fuzzy, php-format
 msgid "<strong>Reason for reporting this %s</strong>:"
 msgstr "<strong>Mallonga kialo</strong> por via raporto pri tiu %s."
+
+#: pb/web/abuse.php:147
+#, php-format
+msgid "<strong>Enter the magic word</strong>, which is 'together':"
+msgstr ""
 
 #: pb/web/alert.php:51
 msgid "New pledge alerts"
@@ -2168,8 +2181,8 @@ msgstr "Mesaĝo al"
 msgid "PledgeBank Team"
 msgstr "Skipo PledgeBank"
 
-#: pb/web/contact.php:53 pb/web/ref-announce.php:258
-#: pb/web/ref-announcearchive.php:73
+#: pb/web/contact.php:53 pb/web/ref-announcearchive.php:73
+#: pb/web/ref-announce.php:258
 msgid "Subject"
 msgstr "Temo"
 
@@ -3857,6 +3870,53 @@ msgstr ""
 "kiun vi vere apogas, ŝalti vian presilon, enmemorigu la informojn pri\n"
 "la tekstmesaĝoj, kaj disdonu vian mesaĝon al la mondo."
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:25
+msgid "Invalid parameters, please try again"
+msgstr "Nevalidaj argumentoj, bonvolu reprovi"
+
+#: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
+#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
+msgid "Enter PIN"
+msgstr "Entajpu la sekretan kodnumeron"
+
+#: pb/web/ref-announcearchive.php:40
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Por vidi anoncmesaĝoj por iu promeso, ni devas kontroli, ke vi jam subskribis ĝin."
+
+#: pb/web/ref-announcearchive.php:41
+msgid "Then you will be able to view announcement messages."
+msgstr "Tiam vi rajtos vidi la mesaĝojn."
+
+#: pb/web/ref-announcearchive.php:42
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Vidi la arkivon de promesanoncoj de PledgeBank.com"
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers: "
+msgstr "Mesaĝoj senditaj de la kreinto al subskribintoj:"
+
+#: pb/web/ref-announcearchive.php:63
+msgid "Messages sent by creator to signers"
+msgstr "Mesaĝoj senditaj de la kreinto al subskribintoj"
+
+#: pb/web/ref-announcearchive.php:71
+msgid "From"
+msgstr "De"
+
+#: pb/web/ref-announcearchive.php:75
+msgid "Date"
+msgstr "Dato"
+
+#: pb/web/ref-announcearchive.php:85
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "La promeskreinto ne ankoraŭ sendis anoncojn."
+
+#: pb/web/ref-announcearchive.php:88
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr "La mesaĝojn rajtas vidi nur subskribintoj de la promeso."
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 msgid "Missing pledge reference"
 msgstr "Mankas promesoreferenco"
@@ -4147,53 +4207,6 @@ msgid "(Remember, when you send this message <strong>your email address will be 
 msgstr ""
 "(Memoru, ke kiam vi sendos tiun ĉi mesaĝon, <strong>via retadreso estos donita\n"
 "al ĉiuj viaj subskribintoj kaj subskribontoj</strong>)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:25
-msgid "Invalid parameters, please try again"
-msgstr "Nevalidaj argumentoj, bonvolu reprovi"
-
-#: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
-#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
-msgid "Enter PIN"
-msgstr "Entajpu la sekretan kodnumeron"
-
-#: pb/web/ref-announcearchive.php:40
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Por vidi anoncmesaĝoj por iu promeso, ni devas kontroli, ke vi jam subskribis ĝin."
-
-#: pb/web/ref-announcearchive.php:41
-msgid "Then you will be able to view announcement messages."
-msgstr "Tiam vi rajtos vidi la mesaĝojn."
-
-#: pb/web/ref-announcearchive.php:42
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Vidi la arkivon de promesanoncoj de PledgeBank.com"
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers: "
-msgstr "Mesaĝoj senditaj de la kreinto al subskribintoj:"
-
-#: pb/web/ref-announcearchive.php:63
-msgid "Messages sent by creator to signers"
-msgstr "Mesaĝoj senditaj de la kreinto al subskribintoj"
-
-#: pb/web/ref-announcearchive.php:71
-msgid "From"
-msgstr "De"
-
-#: pb/web/ref-announcearchive.php:75
-msgid "Date"
-msgstr "Dato"
-
-#: pb/web/ref-announcearchive.php:85
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "La promeskreinto ne ankoraŭ sendis anoncojn."
-
-#: pb/web/ref-announcearchive.php:88
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr "La mesaĝojn rajtas vidi nur subskribintoj de la promeso."
 
 #: pb/web/ref-email.php:26
 msgid "Emailing friends"

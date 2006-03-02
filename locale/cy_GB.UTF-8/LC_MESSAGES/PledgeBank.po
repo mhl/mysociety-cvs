@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-03-01 22:04+0000\n"
+"POT-Creation-Date: 2006-03-02 06:41+0000\n"
 "PO-Revision-Date: 2005-08-15 10:02-0000\n"
 "Last-Translator: Nic Dafis <nicdafis@gmail.com>\n"
 "Language-Team: Welsh <LL@pledgebank.com>\n"
@@ -1778,7 +1778,7 @@ msgstr "Addewid ag Amddiffyniad Rhif Adnabod Personol (PIN)"
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "Mae'r addewid hwn dan warchod. Rhowch y Rhif Adnabod Personol (PIN) i fynd yn eich blaen."
 
-#: pb/phplib/pledge.php:592 pb/web/abuse.php:150 pb/web/ref-picture.php:180
+#: pb/phplib/pledge.php:592 pb/web/abuse.php:151 pb/web/ref-picture.php:180
 #: pb/web/sms.php:235 pb/web/your.php:111
 msgid "Submit"
 msgstr "Anfonwch"
@@ -1896,6 +1896,14 @@ msgstr "Ddim yn gallu ffeindio'r %s. Mae'n debyg ei fod wedi'i ddileu eisioes."
 msgid "Please enter a valid email address"
 msgstr "Rhowch cyfeiriad ebost dilys"
 
+#: pb/web/abuse.php:69
+msgid "together"
+msgstr ""
+
+#: pb/web/abuse.php:70
+msgid "Please enter the word 'together' in the <strong>magic word</strong> box. We ask you to do this because there are people who run software which crawls the internet and automatically posts adverts. Asking you to enter the word is a reliable and unobtrusive way of making sure you are a human, not a piece of software."
+msgstr ""
+
 #: pb/web/abuse.php:87
 msgid "PledgeBank abuse report"
 msgstr "Adroddiad abiws PledgeBank"
@@ -1941,6 +1949,11 @@ msgstr "<strong>Fy nharged</strong> yw"
 #: pb/web/abuse.php:144
 #, php-format
 msgid "<strong>Reason for reporting this %s</strong>:"
+msgstr ""
+
+#: pb/web/abuse.php:147
+#, php-format
+msgid "<strong>Enter the magic word</strong>, which is 'together':"
 msgstr ""
 
 #: pb/web/alert.php:51
@@ -2155,8 +2168,8 @@ msgstr "Neges"
 msgid "PledgeBank Team"
 msgstr "T&icirc;m PledgeBank"
 
-#: pb/web/contact.php:53 pb/web/ref-announce.php:258
-#: pb/web/ref-announcearchive.php:73
+#: pb/web/contact.php:53 pb/web/ref-announcearchive.php:73
+#: pb/web/ref-announce.php:258
 msgid "Subject"
 msgstr "Pwnc"
 
@@ -3798,6 +3811,53 @@ msgstr ""
 "sydd yn mynd at eich dant, taniwch yr argraffydd, dysgwch manylion y neges\n"
 "destun ar eich cof, ac ewch &acirc;'ch neges at bedwar ban y byd."
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:25
+msgid "Invalid parameters, please try again"
+msgstr "Paramedrau annilys"
+
+#: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
+#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
+msgid "Enter PIN"
+msgstr "Rhowch Rhif Adnabod Personol (PIN)"
+
+#: pb/web/ref-announcearchive.php:40
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Cyn i chi weld y datganiadau i'r addewid hwn, mae rhaid i ni sieco eich bod chi wedi'i lofnodi."
+
+#: pb/web/ref-announcearchive.php:41
+msgid "Then you will be able to view announcement messages."
+msgstr "Wedyn, gallwch chi weld y datganiadau."
+
+#: pb/web/ref-announcearchive.php:42
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Gweld archif datganiadau addewidion ar PledgeBank.com"
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers: "
+msgstr "Negeseuon anfonwyd gan greadwyr at lofnodwyr: "
+
+#: pb/web/ref-announcearchive.php:63
+msgid "Messages sent by creator to signers"
+msgstr "Negeseuon anfonwyd gan greadwyr at lofnodwyr: "
+
+#: pb/web/ref-announcearchive.php:71
+msgid "From"
+msgstr "Oddi wrth"
+
+#: pb/web/ref-announcearchive.php:75
+msgid "Date"
+msgstr "Dyddiad"
+
+#: pb/web/ref-announcearchive.php:85
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "Dyw cr&euml;wr yr addewid ddim wedi anfon datganiadau hyd yn hyn."
+
+#: pb/web/ref-announcearchive.php:88
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr "Dim ond pobl sy wedi llofnodi'r addewid sy'n cael gweld y negeseuon."
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 msgid "Missing pledge reference"
 msgstr "Allweddair addewid colledig"
@@ -4080,53 +4140,6 @@ msgstr "<h3>Anfonwch Ddatganiad</h3>"
 #: pb/web/ref-announce.php:303
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(Cofiwch, wrth anfon y neges hon <strong>bydd eich cyfeiriad ebost yn mynd at bawb sy wedi llofnodi, a phawb y bydd yn llofnodi</strong>, eich addewid trwy ebost)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:25
-msgid "Invalid parameters, please try again"
-msgstr "Paramedrau annilys"
-
-#: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
-#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
-msgid "Enter PIN"
-msgstr "Rhowch Rhif Adnabod Personol (PIN)"
-
-#: pb/web/ref-announcearchive.php:40
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Cyn i chi weld y datganiadau i'r addewid hwn, mae rhaid i ni sieco eich bod chi wedi'i lofnodi."
-
-#: pb/web/ref-announcearchive.php:41
-msgid "Then you will be able to view announcement messages."
-msgstr "Wedyn, gallwch chi weld y datganiadau."
-
-#: pb/web/ref-announcearchive.php:42
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Gweld archif datganiadau addewidion ar PledgeBank.com"
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers: "
-msgstr "Negeseuon anfonwyd gan greadwyr at lofnodwyr: "
-
-#: pb/web/ref-announcearchive.php:63
-msgid "Messages sent by creator to signers"
-msgstr "Negeseuon anfonwyd gan greadwyr at lofnodwyr: "
-
-#: pb/web/ref-announcearchive.php:71
-msgid "From"
-msgstr "Oddi wrth"
-
-#: pb/web/ref-announcearchive.php:75
-msgid "Date"
-msgstr "Dyddiad"
-
-#: pb/web/ref-announcearchive.php:85
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "Dyw cr&euml;wr yr addewid ddim wedi anfon datganiadau hyd yn hyn."
-
-#: pb/web/ref-announcearchive.php:88
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr "Dim ond pobl sy wedi llofnodi'r addewid sy'n cael gweld y negeseuon."
 
 #: pb/web/ref-email.php:26
 msgid "Emailing friends"
