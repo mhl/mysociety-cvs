@@ -15,7 +15,9 @@
                 title="Permanent Link to <?php the_title(); ?>"><?php
                 the_title(); ?> &mdash; 
                 <?php the_time('jS F Y')?></a></div>
+                <? if ($cat != 3) { ?>
 				<div class="meta">Posted by <?php the_author() ?>  </div> 
+                <? } ?>
 					
 				<div class="item">
 					<?php the_content('Read the rest of this entry &raquo;'); ?>

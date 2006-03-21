@@ -35,4 +35,17 @@ if ($_SERVER['HTTP_HOST'] != 'www.mysociety.org') {
 
 <div class="page-body">
 
-<?= file_get_contents("http://www.mysociety.org/menu.html"); ?>
+<?
+global $menu_proposals2006;
+if ($menu_proposals2006) {
+    print '<div class="menu">';
+    print '<a href="/proposals2006/guidelines">Guidelines</a> | ';
+    print '<a href="/proposals2006/submit">Submit a Proposal</a> | ';
+    print '<a href="/proposals2006/view">View all Proposals</a> | ';
+    print '<a href="/">mySociety Homepage</a>';
+    print '</div>';
+} else 
+    print file_get_contents("http://www.mysociety.org/menu.html"); 
+?>
+
+

@@ -56,17 +56,15 @@ launched.
 Sites In Testing
 </div>-->
 
-<div class="item_head">
+<!---<div class="item_head">
 Sites Being Built
 </div>
 <div class="item_inner_head">
-<a href="/moin.cgi/GiveItAway">Give It Away - to be built late 2005 / early 2006</a>
 </div>
 <div class="item">
-A site to make it as easy to give something unwanted away to charity as it is to throw it away.
 </div>
 <div class="item_foot">
-</div>
+</div>-->
 
 
 <?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
