@@ -353,7 +353,7 @@ function get_archives($type='', $limit='', $format='html', $before = '', $after 
             }
         }
     } elseif ('postbypost' == $type) {
-        $arcresults = $wpdb->get_results("SELECT ID, post_date, post_title FROM $wpdb->posts WHERE post_date < '$now' AND post_status = 'publish' ORDER BY post_date DESC" . $limit);
+        $arcresults = $wpdb->get_results("SELECT ID, post_date, post_title FROM $wpdb->posts LEFT JOIN $wpdb->post2cat ON $wpdb->posts.ID = post_id WHERE post_date < '$now' AND post_status = 'publish' AND category_id = $cat ORDER BY post_date DESC" . $limit);
         if ($arcresults) {
             foreach ($arcresults as $arcresult) {
                 if ($arcresult->post_date != '0000-00-00 00:00:00') {

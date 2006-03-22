@@ -1,4 +1,14 @@
-<?php get_header(); ?>
+<?php 
+// Spot we are just showing a proposals2006 post, and set menu etc.
+global $menu_proposals2006;
+foreach ($posts as $catcheck) 
+{ 
+    if ($catcheck->post_category == 3) { 
+        $cat = 3; 
+        $menu_proposals2006 = true;
+    } 
+}
+get_header(); ?>
 
 	<div id="content" class="widecolumn">
 				
