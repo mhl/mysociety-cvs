@@ -30,7 +30,6 @@ if ($page == 'submit') {
 
         if (!$errors) {
             $joined_post = 
-                "<strong>FROM: " . get_http_var('name') . "</strong>\n\n" .
                 "<strong>What NEED does this meet?</strong>\n\n" . get_http_var('body_need') . "\n\n" .
                 "<strong>What is the APPROACH?</strong>\n\n" . get_http_var('body_approach') . "\n\n" .
                 "<strong>What are the BENEFITS to people?</strong>\n\n" . get_http_var('body_benefit') . "\n\n" .
@@ -40,9 +39,13 @@ if ($page == 'submit') {
             $title = apply_filters("the_title", get_http_var('title'));
 
             if (get_http_var("submitfinal")) {
+                $dummy_user_name = bin2hex(random_bytes(8));
+                $wpdb->query("INSERT INTO `wp_users` (`user_login`, `user_pass`, `user_firstname`, `user_lastname`, `user_nickname`, `user_icq`, `user_email`, `user_url`, `user_ip`, `user_domain`, `user_browser`, `dateYMDhour`, `user_level`, `user_aim`, `user_msn`, `user_yim`, `user_idmode`, `user_description`, `user_activation_key`, `user_status`, `user_nicename`, `user_registered`) 
+                    VALUES ('$dummy_user_name','NOPASSWORD','".$wpdb->escape(get_http_var('name'))."','','$dummy_user_name',0,'".$wpdb->escape(get_http_var('email'))."','','','','',now(),0,'','','','namefl','','',0,'$dummy_user_name',now())");
+                $proposal_user_id = $wpdb->insert_id;
                 $post_data = array('post_content' => $joined_post,
                     'post_title' => $title,
-                    'post_author' => -1, 
+                    'post_author' => $proposal_user_id, 
                     'post_category' => array(3) /* category for proposals 2006 */, 
                     'post_status' => 'publish');
                 $post_ID = wp_insert_post($post_data);
@@ -213,24 +216,6 @@ exit;
     include "wordpress/wp-blog-header.php";
     include "wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
-
-    <div class="item_head">
-        mySociety's Call for Proposals 2006
-    </div>
-    <div class="item">
-        <p>It's two and a half years since our 
-        <a href="http://news.bbc.co.uk/2/hi/technology/3228339.stm">last call for proposals</a>. 
-        Since then we've built <a href="/projects.php">four of the projects</a>
-        that you suggested. This year we're looking for one new winning idea.
-        Here's what to do:</p>
-        <ul>
-        <li>First read the guidelines below. Then either</li>
-        <li><a href="/proposals2006/submit">Submit your own proposal</a> OR </li>
-        <li><a href="/proposals2006/view">Read and comment</a> on other people's proposals.</li>
-    </div>
-    <div class="item_foot">
-    </div>
-
     <div class="item_head">
         mySociety.org supports projects that have three broad attributes:
     </div>
@@ -278,6 +263,34 @@ exit;
     </div>
     <div class="item_foot">
     </div>
+<?
+    include "wordpress/wp-content/themes/mysociety/footer.php";
+} elseif ($page == 'about') {
+    include "wordpress/wp-blog-header.php";
+    include "wordpress/wp-content/themes/mysociety/header.php"; 
+?>
+
+    <div class="item_head">
+        mySociety's Call for Proposals 2006
+    </div>
+    <div class="item">
+        <p>mySociety builds websites which give people simple, tangible
+        benefits in the civic and community aspects of their lives.
+        It's two and a half years since our 
+        <a href="http://news.bbc.co.uk/2/hi/technology/3228339.stm">last call for proposals</a>. 
+        Since then we've built <a href="/projects.php">four of the projects</a>
+        that you suggested. This year we're looking for one new winning idea.
+        </p>
+        <p>Here's what to do:</p>
+        <ul>
+        <li>First <a href="/proposals2006/guidelines">read the guidelines</a>. Then either</li>
+        <li><a href="/proposals2006/submit">Submit your own proposal</a> OR </li>
+        <li><a href="/proposals2006/view">Read and comment</a> on other people's proposals.</li>
+    </div>
+    <div class="item_foot">
+    </div>
+
+
 <?
     include "wordpress/wp-content/themes/mysociety/footer.php";
 } else {
