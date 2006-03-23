@@ -2,13 +2,14 @@
 # Copyright (C) 2005 UK Citizens Online Democracy.
 # This file is distributed under the same license as the main PledgeBank code.
 # Matthew Somerville <matthew@mysociety.org>, 2005-06-28.
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
 "POT-Creation-Date: 2006-03-23 11:19+0000\n"
-"PO-Revision-Date: 2006-03-15 16:57-0300\n"
+"PO-Revision-Date: 2006-03-23 08:31-0300\n"
 "Last-Translator: Creso Moraes <creso@enfoque.com>\n"
 "Language-Team: pt_BR <team@pledgebank.com>\n"
 "MIME-Version: 1.0\n"
@@ -1238,7 +1239,7 @@ msgstr "Postar comentário"
 
 #: pb/phplib/fns.php:92
 msgid "exceeded"
-msgstr "excedido"
+msgstr "cumprida com folga"
 
 #: pb/phplib/fns.php:92
 msgid "met"
@@ -1708,12 +1709,12 @@ msgstr "Eu, %s, prometo %s desde que <strong>%s</strong> %s também %s."
 #: pb/phplib/pledge.php:454
 #, php-format
 msgid "I will %s but only if <strong>%s</strong> %s will %s."
-msgstr "Irei %s mas só se <strong>%s</strong> %s também %s."
+msgstr "Prometo %s mas só se <strong>%s</strong> %s também %s."
 
 #: pb/phplib/pledge.php:457
 #, php-format
 msgid "%s will %s but only if <strong>%s</strong> %s will %s."
-msgstr "%s irei %s mas só se <strong>%s</strong> %s forem %s."
+msgstr "%s promete %s mas só se <strong>%s</strong> %s fizerem %s."
 
 #: pb/phplib/pledge.php:486
 msgid "Target met, pledge open until midnight tonight, London time."
@@ -2320,7 +2321,7 @@ msgid ""
 "your friends, or in your street, please take a look at PledgeBank.com\n"
 "and create a pledge right now.  Thank you."
 msgstr ""
-"O PledgeBank é grátis, fácil de usar, e precisa da sua participação.\n"
+"O PledgeBank (BancoDePromessas) é grátis, fácil de usar, e precisa da sua participação.\n"
 "Assim, se há algo que V. gostaria de conseguir que aconteça em sua\n"
 "comunidade, seu local de trabalho, sua escola, entre seus amigos ou\n"
 "vizinhos, dê uma olhada neste site e crie logo uma promessa. Obrigado!"
@@ -3313,11 +3314,11 @@ msgstr ""
 
 #: pb/web/new.php:132 pb/web/new.php:446 pb/web/ref-index.php:245
 msgid "I will"
-msgstr "Eu prometo"
+msgstr "Eu"
 
 #: pb/web/new.php:132
 msgid "Pledge"
-msgstr "Promessa"
+msgstr "Pledge"
 
 #: pb/web/new.php:134
 msgid "but only if"
@@ -5426,7 +5427,7 @@ msgstr "Eu"
 #: pb/web/poster.cgi:201
 #, python-format
 msgid " will %s."
-msgstr " irei %s."
+msgstr " prometo %s."
 
 #: pb/web/poster.cgi:208
 msgid "More details:"
@@ -5475,7 +5476,7 @@ msgstr ". Obrigado!"
 #: pb/web/poster.cgi:237 pb/web/poster.cgi:385
 #, python-format
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
-msgstr "Lembre-se, V. só precisa agir se %d outras pessoas assinarem - é como funciona o PledgeBank."
+msgstr "Lembre-se, V. só precisa agir se %d outras pessoas aderirem -- é como funciona o PledgeBank."
 
 #: pb/web/poster.cgi:317
 msgid "<font color=\"#ffffff\">Pledge</font>Bank.com"
@@ -5490,8 +5491,8 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"            <b>Se</b> <font color=\"#522994\">%s</font> %s irá %s, \n"
-"            então <font color=\"#522994\">Eu</font> irá %s.\n"
+"            <b>Se</b> <font color=\"#522994\">%s</font> %s %s, \n"
+"            então <font color=\"#522994\">Eu</font> %s.\n"
 "            "
 
 #: pb/web/poster.cgi:359
@@ -5920,10 +5921,13 @@ msgid ""
 msgstr ""
 "Subject: <?=$values['reason_email_subject']?>\n"
 "\n"
+"Clique no link abaixo para confirmar seu endereço de email.\n"
 "<?=$values['reason_email']?>\n"
 "\n"
 "<?=$values['url']?>\n"
 "\n"
+"Nunca cederemos ou venderemos seu endereço de email\n"
+"sem que nos autorize.\n"
 "\n"
 "<?=$values['signature']?>\n"
 
@@ -5976,11 +5980,11 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Cadastrando-se '<?=$values['title']?>' no PledgeBank.com\n"
+"Subject: Dando apoio '<?=$values['title']?>' no PledgeBank.com\n"
 "\n"
 "<?=$values['user_name']?>,\n"
 "\n"
-"Favor clicar no link abaixo para confirmar seu apoio Ã \n"
+"Favor clicar no link abaixo para confirmar seu apoio à\n"
 "promessa que aparece ao final desta mensagem.\n"
 "\n"
 "<?=$values['url']?>\n"
@@ -6014,7 +6018,7 @@ msgstr ""
 "<?=$values['user_name']?>,\n"
 "\n"
 "Favor clicar no link abaixo para confirmar seu apoio à \n"
-"promessa que está no final desta mensagem. Mandaremos um\n"
+"promessa que está ao final desta mensagem. Mandaremos um\n"
 "email em vez de mensagem SMS quando a promessa tiver êxito ou falhar.\n"
 "\n"
 "<?=$values['url']?>\n"
@@ -6048,11 +6052,11 @@ msgstr ""
 "\n"
 "Parabéns!\n"
 "\n"
-"Com prazer informamos que sua promessa <?=$values['exceeded_or_met']?>a\n"
-"meta no prazo marcado.  Ela diz: '<?=$values['sentence_first']?>'\n"
+"Com prazer informamos que foi <?=$values['exceeded_or_met']?> a \n"
+"meta de sua promessa, no prazo marcado. Ela diz: '<?=$values['sentence_first']?>'\n"
 "\n"
-"Agora, clique no link abaixo para escrever uma mensagem a todos os que a\n"
-"apoiaram, bem como o que devem fazer a seguir.\n"
+"Agora, clique no link abaixo para escrever mensagem a todos os que a\n"
+"apoiaram para lhes dizer o que devem fazer a seguir.\n"
 "\n"
 "<?=$values['url']?>\n"
 "\n"
@@ -6124,8 +6128,11 @@ msgstr ""
 "\n"
 "A promessa, criada por <?=$values['creator_name']?>, diz:\n"
 "'<?=$values['sentence_first']?>' A <?=$values['signers_ordinal']?> pessoa\n"
+"manifestou apoio à promessa, há poucos minutos.\n"
 "\n"
-"fotos que mostrem o PledgeBank em movimento :)\n"
+"Agora é sua vez de voltar ao que prometeu.  <?=$values['creator_name']?> vai\n"
+"lhe escrever em breve para dar informações adicionais.  Por que não tirar algumas\n"
+"fotos do cumprimento da promessa -- nós adoramos fotos :)\n"
 "\n"
 "<?=$values['signature']?>\n"
 "\n"
