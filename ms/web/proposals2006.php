@@ -117,6 +117,33 @@ exit;
 
 ?>
     <div class="item_head">
+        Guidelines for proposals
+    </div>
+    <div class="item">
+        <p>mySociety projects have three broad attributes:
+        <ol class="proposals">
+            <li><B>Founded on electronic networks.</B> This includes the internet, mobile and
+            telephone networks, wireless, fax and anything related.</LI>
+            <li><B>Real world impact on democratic and community aspects of
+            people's lives.</B>  The internet is full of excellent commerce
+            and entertainment sites: we are not about building more of those.
+            It is also full of great information sites: we aren't about building
+            these either. We want sites that users visit and leave
+            having gained something tangible: a nascent relationship wth
+            their MP, or the knowledge that they can achieve something with
+            other people near them.
+            </li>
+            <li><B>Low or zero cost scalability.</B> This is key. We are looking for
+            projects that cost the same (or virtually the same) to run for ten or a
+            million users. This doesn't exclude the possibility of SMS based services,
+            but it does rule out one-on-one tuition or building a site just for your
+            community.  Projects that are as reliable as a trusty screwdriver
+            are desirable. Simple tools that can go online and never be thought
+            about again will have an advantage.</li>
+    </div>
+    <div class="item_foot">
+    </div>
+    <div class="item_head">
         Submit your proposal for a new mySociety project
     </div>
     <div class="item">
@@ -127,139 +154,34 @@ exit;
         print '</li></ul></div>';
     }
 ?>
-        <TABLE CELLSPACING="0" CELLPADDING="2" BORDER="0" BGCOLOR="#f0f0ff">
-            <TR>
-            <TD VALIGN="top">
-                        <TABLE CELLSPACING="0" CELLPADDING="8" BORDER="0" BGCOLOR="#f0f0ff">
-                <TR><TD COLSPAN="2" CLASS="smallb">
-        <p><strong>PLEASE!</strong> Make sure you've <a href="/proposals2006/guidelines">read the guidelines</a> first.
-        </TD></TR>
-                <TR><FORM METHOD="POST" NAME="">
-                <TD VALIGN="top">
-            </TD>
-                <TD VALIGN="top" ALIGN="right">
-                    <TABLE CELLPADDING="2" CELLSPACING="0" BORDER="0">
-                    <TR>
-                    <TD CLASS="smallb">your name (will be public):</TD>
-                    <TD><INPUT <? if (array_key_exists('name', $errors)) print ' class="error"' ?> NAME="name" VALUE="<?=htmlspecialchars(get_http_var('name'))?>" TYPE="text" SIZE="30"></TD>
-                    </TR>
+                <FORM METHOD="POST" NAME="">
+                    <p><strong>Please!</strong> Make sure you've read the guidelines (above) first.
+                    <P>Your name:
+                    <INPUT <? if (array_key_exists('name', $errors)) print ' class="error"' ?> NAME="name" VALUE="<?=htmlspecialchars(get_http_var('name'))?>" TYPE="text" SIZE="30"> (will be public)
+                    <P>Your email:
+                    <INPUT <? if (array_key_exists('email', $errors)) print ' class="error"' ?> NAME="email" VALUE="<?=htmlspecialchars(get_http_var('email'))?>" TYPE="text" SIZE="30"> (just for our records)
+                    <p>Now describe your proposal:
+                    <p><strong>Title:</strong>
+                    <INPUT <? if (array_key_exists('title', $errors)) print ' class="error"' ?> NAME="title" VALUE="<?=htmlspecialchars(get_http_var('title'))?>" TYPE="text" SIZE="60">
+                
+                <P><strong>1. Need:</strong> What need are you serving? What itch does your idea scratch? If it's not obvious, can you define the group of
+        people this will help?"</P>
+                <TEXTAREA <? if (array_key_exists('body_need', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_need" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_need'))?></TEXTAREA>
+                <P><strong>2. Approach:</strong>    What's the plan, Stan? How is your approach distinctive?</P>
+                <TEXTAREA <? if (array_key_exists('body_approach', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_approach" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_approach'))?></TEXTAREA>
+                <P><strong>3. Benefit:</strong> What is  it about your idea that will make people's lives easier?</P>
+                <TEXTAREA <? if (array_key_exists('body_benefit', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_benefit" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_benefit'))?></TEXTAREA>
+                <P><strong>4. Competition:</strong>  Any other similar services out there? Why must your idea win out?</P>
+                <TEXTAREA <? if (array_key_exists('body_competition', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_competition" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_competition'))?></TEXTAREA>
 
-                    <TR>
-                    <TD CLASS="smallb">your email (just for our records):</TD>
-                    <TD><INPUT <? if (array_key_exists('email', $errors)) print ' class="error"' ?> NAME="email" VALUE="<?=htmlspecialchars(get_http_var('email'))?>" TYPE="text" SIZE="30">
-                    </TD>
-                    </TR>
-                    </TABLE><BR></TD>
-                </TR>
-                <TR>
-                <TD COLSPAN="2" CLASS="smallb">
-                    Now describe your proposal:</SPAN>
-                </TD>
-                </TR>
-                            <TR>
-                    <TD CLASS="smallb">Title:</TD>
-                    <TD><INPUT <? if (array_key_exists('title', $errors)) print ' class="error"' ?> NAME="title" VALUE="<?=htmlspecialchars(get_http_var('title'))?>" TYPE="text" SIZE="60">
-                    </TD>
-                    </TR>
+                <P><strong>5. Budget &amp; Logistics:</strong>  How expensive and difficult will it be to build your idea?</P>
+                <TEXTAREA <? if (array_key_exists('body_logistics', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_logistics" TEXTWRAP="physical" VALUE="body_logistics"><?=htmlspecialchars(get_http_var('body_logistics'))?></TEXTAREA>
                 
-                <TR>
-                <TD COLSPAN="2">
-                NEED: What need are you serving? What itch does your idea scratch? If it's not obvious, can you define the group of
-        people this will help?"<BR>
-                <TEXTAREA <? if (array_key_exists('body_need', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_need" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_need'))?></TEXTAREA></TD>
-                </TR>
-                        <TR>
-                <TD COLSPAN="2">
-                APPROACH:    What's the plan, Stan? How is your approach distinctive?<BR>
-                <TEXTAREA <? if (array_key_exists('body_approach', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_approach" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_approach'))?></TEXTAREA></TD>
-                </TR>
-                        <TR>
-                <TD COLSPAN="2">
-                BENEFIT: What is  it about your idea that will make people's lives easier?<BR>
-                <TEXTAREA <? if (array_key_exists('body_benefit', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_benefit" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_benefit'))?></TEXTAREA></TD>
-                </TR>
-                        <TR>
-                <TD COLSPAN="2">
-                COMPETITION:  Any other similar services out there? Why must your idea win out?<BR>
-                <TEXTAREA <? if (array_key_exists('body_competition', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_competition" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_competition'))?></TEXTAREA></TD>
-                </TR>
-                                
-                <TR>
-                <TD COLSPAN="2">
-                BUDGET &amp; LOGISTICS:  How expensive and difficult will it be to build your idea?<BR>
-                <TEXTAREA <? if (array_key_exists('body_logistics', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_logistics" TEXTWRAP="physical" VALUE="body_logistics"><?=htmlspecialchars(get_http_var('body_logistics'))?></TEXTAREA></TD>
-                </TR>
-                
-                <TR>
-                <TD ALIGN="left">&nbsp;</TD>
-                <TD ALIGN="right">
         <INPUT TYPE="hidden" NAME="proposal_submit" VALUE="1">
-        <INPUT TYPE="submit" NAME="SUBMIT" VALUE="Next step - Preview your proposal &gt;&gt;"><BR></TD>
-                </TR></FORM>
-                </TABLE>
-            </TD>
-            </TR>
-            </TABLE>
+        <P><INPUT TYPE="submit" NAME="SUBMIT" VALUE="Next step - Preview your proposal &gt;&gt;"><BR>
         <P> 
         <P>
         <P>&nbsp;
-        
-        </TD>
-        </TR>
-        </TABLE>
-    </div>
-    <div class="item_foot">
-    </div>
-<?
-    include "wordpress/wp-content/themes/mysociety/footer.php";
-} elseif ($page == 'guidelines') {
-    include "wordpress/wp-blog-header.php";
-    include "wordpress/wp-content/themes/mysociety/header.php"; 
-?>
-    <div class="item_head">
-        mySociety.org supports projects that have three broad attributes:
-    </div>
-    <div class="item">
-        <ol>
-            <li><B>Founded on electronic networks.</B> This includes the internet, mobile and
-            telephone networks, wireless, fax and anything related.</LI>
-            <li><B>Real world impact.</B>  The projects must have an impact which is above and
-            beyond helping users to use their computers or mobiles more efficiently. We
-            understand that there is a degree of philosophical ambiguity here (isn't
-            faster browsing a real life impact?), so we've developed the following list
-            of desirable outcomes from projects. 
-            <UL>
-                <LI><a href="http://www.bowlingalone.com/socialcapital.php3">Increased social
-                capital</a>, preferably bridging between groups.</LI>
-                <LI> <a
-                href="http://www.google.com/search?q=define:Social+Exclusion">Reduced social exclusion</a></LI>
-                <LI> Improved human capital and employment prospects</LI>
-                <LI> Decreased occurrence of common social problems</LI>
-            </UL>
-            NB Projects are not limited to these
-            outcomes - if you've got something good which doesn't fit in here,
-            please <a href="mailto:tom@mysociety.org">let us know anyway</a>.</li>
-            <li><B>Low or zero cost scalability.</B> This is key. We are looking for
-            projects that cost the same (or virtually the same) to run for ten or a
-            million users. This doesn't exclude the possibility of SMS based services,
-            but it does rule out one-on-one tuition or building a site just for your
-            community.</li>
-        </ol>
-    </div>
-    <div class="item_foot">
-    </div>
-    <div class="item_head">
-        Other Lower Priority Attributes That Would Be Nice
-    </div>
-    <div class="item">
-        <ul>
-            <LI> Development Community. The possibility that projects will attract self
-            sustaining development communities.</LI>
-            <LI> Low maintenance. Projects that are as reliable as a trusty screwdriver are
-            desirable. Simple tools than can go online and never be thought about again
-            will have an advantage.</LI>
-            <LI>Things People Already Do, Done Better.</LI>
-        </ul>
     </div>
     <div class="item_foot">
     </div>
@@ -294,9 +216,8 @@ exit;
         to the right place.</p>
 
         </p>
-        <p>Here's what to do:</p>
+        <p>Here's what to do. Either:</p>
         <ul>
-        <li>First <a href="/proposals2006/guidelines">read the guidelines</a>. Then either</li>
         <li><a href="/proposals2006/submit">Submit your own proposal</a> OR </li>
         <li><a href="/proposals2006/view">Read and comment</a> on other people's proposals.</li>
     </div>

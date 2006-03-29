@@ -1,3 +1,5 @@
+<? global $menu_proposals2006; ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -30,23 +32,31 @@ if ($_SERVER['HTTP_HOST'] != 'www.mysociety.org') {
 ?>
 
 <div class="top">
-<div class="masthead"><a href="/"><img border="0" src="/mslogo.gif" alt="mySociety.org"/></a></div>
+<?
+if ($menu_proposals2006) {
+?>
+<div class="masthead masthead_proposals">
+mySociety Call for Proposals 2006
+</div>
 </div>
 
 <div class="page-body">
-
 <?
-global $menu_proposals2006;
-if ($menu_proposals2006) {
     print '<div class="menu">';
     print '<a href="/proposals2006/about">About</a> | ';
-    print '<a href="/proposals2006/guidelines">Guidelines</a> | ';
     print '<a href="/proposals2006/submit">Submit Your Proposal</a> | ';
     print '<a href="/proposals2006/view">Read All Proposals</a> | ';
     print '<a href="/">mySociety Homepage</a>';
     print '</div>';
-} else 
-    print file_get_contents("http://www.mysociety.org/menu.html"); 
+} else {
+?>
+<div class="masthead"><a href="/"><img border="0" src="/mslogo.gif" alt="mySociety.org"/></a></div>
+</div>
+
+<div class="page-body">
+<?
+        print file_get_contents("http://www.mysociety.org/menu.html"); 
+    }
 ?>
 
 
