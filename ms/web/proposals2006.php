@@ -274,12 +274,25 @@ exit;
         mySociety's Call for Proposals 2006
     </div>
     <div class="item">
-        <p>mySociety builds websites which give people simple, tangible
-        benefits in the civic and community aspects of their lives.
-        It's two and a half years since our 
-        <a href="http://news.bbc.co.uk/2/hi/technology/3228339.stm">last call for proposals</a>. 
-        Since then we've built <a href="/projects.php">four of the projects</a>
-        that you suggested. This year we're looking for one new winning idea.
+        <p>It's two and a half years since our 
+        <a href="http://news.bbc.co.uk/2/hi/technology/3228339.stm">last call for proposals</a>, 
+        which led to us building <a href="/projects.php">four projects</a>
+        including <a href="http://www.pledgebank.com">PledgeBank.com</a> and 
+        <a href="http://www.writetothem.com">WriteToThem.com</a>. At the time
+        we had almost no funding and could only promise to try and raise money
+        to build the projects. That worked, and now we've got a little bit of a
+        surplus (charity language for a profit) left over from our government
+        support.</p>
+
+        <p>The time has come to open the call for proposals up again, this time
+        with one difference: we pledge to build the winning project, using a
+        combination of some of the leftover cash and the help of any willing
+        volunteers.</p>
+
+        <p>So, whether you have an idea you'd like to propose, or whether you'd
+        just like to read and comment on other people's proposals, you've come
+        to the right place.</p>
+
         </p>
         <p>Here's what to do:</p>
         <ul>
