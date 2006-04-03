@@ -1,47 +1,58 @@
 <?php 
 $menu_proposals2006 = true;
 require_once "../../phplib/utility.php";
-$page = get_http_var('page');
 
-if ($page == 'submit') {
+# Get all variables before we include WordPress
+$q_page = get_http_var('page');
+$q_name = get_http_var('name');
+$q_email = get_http_var('email');
+$q_title = get_http_var('title');
+$q_body_need = get_http_var('body_need');
+$q_body_approach = get_http_var('body_approach');
+$q_body_benefit = get_http_var('body_benefit');
+$q_body_competition = get_http_var('body_competition');
+$q_body_logistics = get_http_var('body_logistics');
+
+if ($q_page == 'submit') {
     include "wordpress/wp-blog-header.php";
     include "wordpress/wp-content/themes/mysociety/header.php";     
 
     $errors = array();
     if ($_POST['proposal_submit'] && !get_http_var("submitreedit")) {
-        if (strlen(trim(get_http_var('name'))) == 0)
+        if (strlen(trim($q_name)) == 0)
             $errors['name'] = 'Please fill in your name.';
-        if (strlen(trim(get_http_var('email'))) == 0)
+        if (strlen(trim($q_email)) == 0)
             $errors['email'] = 'Please fill in your email address.';
-        elseif (!validate_email($_POST['email'])) 
+        elseif (!validate_email($q_email)) 
             $errors['email'] = 'The email address doesn\'t look right.';
-        if (strlen(trim(get_http_var('title'))) == 0)
+        if (strlen(trim($q_title)) == 0)
             $errors['title'] = 'Please fill in the title of your proposal.';
-        if (strlen(trim(get_http_var('body_need'))) == 0)
+        if (strlen(trim($q_body_need)) == 0)
             $errors['body_need'] = 'Please fill in the NEED section.';
-        if (strlen(trim(get_http_var('body_approach'))) == 0)
+        if (strlen(trim($q_body_approach)) == 0)
             $errors['body_approach'] = 'Please fill in the APPROACH section.';
-        if (strlen(trim(get_http_var('body_benefit'))) == 0)
+        if (strlen(trim($q_body_benefit)) == 0)
             $errors['body_benefit'] = 'Please fill in the BENEFIT section.';
-        if (strlen(trim(get_http_var('body_competition'))) == 0)
+        if (strlen(trim($q_body_competition)) == 0)
             $errors['body_competition'] = 'Please fill in the COMPETITION section.';
-        if (strlen(trim(get_http_var('body_logistics'))) == 0)
+        if (strlen(trim($q_body_logistics)) == 0)
             $errors['body_logistics'] = 'Please fill in the BUDGET &amp; LOGISTICS section.';
 
         if (!$errors) {
             $joined_post = 
-                "<strong>What NEED does this meet?</strong>\n\n" . get_http_var('body_need') . "\n\n" .
-                "<strong>What is the APPROACH?</strong>\n\n" . get_http_var('body_approach') . "\n\n" .
-                "<strong>What are the BENEFITS to people?</strong>\n\n" . get_http_var('body_benefit') . "\n\n" .
-                "<strong>What is the COMPETITION?</strong>\n\n" . get_http_var('body_competition') . "\n\n" .
-                "<strong>What BUDGETS &amp; LOGISTICS are required?</strong>\n\n" . get_http_var('body_logistics') . "\n\n";
+                "<strong>What NEED does this meet?</strong>\n\n" . $q_body_need . "\n\n" .
+                "<strong>What is the APPROACH?</strong>\n\n" . $q_body_approach . "\n\n" .
+                "<strong>What are the BENEFITS to people?</strong>\n\n" . $q_body_benefit . "\n\n" .
+                "<strong>What is the COMPETITION?</strong>\n\n" . $q_body_competition . "\n\n" .
+                "<strong>What BUDGETS &amp; LOGISTICS are required?</strong>\n\n" . $q_body_logistics . "\n\n";
             $preview_post = apply_filters("the_content", $joined_post);
-            $title = apply_filters("the_title", get_http_var('title'));
+            $title = apply_filters("the_title", $q_title);
+
 
             if (get_http_var("submitfinal")) {
                 $dummy_user_name = bin2hex(random_bytes(8));
                 $wpdb->query("INSERT INTO `wp_users` (`user_login`, `user_pass`, `user_firstname`, `user_lastname`, `user_nickname`, `user_icq`, `user_email`, `user_url`, `user_ip`, `user_domain`, `user_browser`, `dateYMDhour`, `user_level`, `user_aim`, `user_msn`, `user_yim`, `user_idmode`, `user_description`, `user_activation_key`, `user_status`, `user_nicename`, `user_registered`) 
-                    VALUES ('$dummy_user_name','NOPASSWORD','".$wpdb->escape(get_http_var('name'))."','','$dummy_user_name',0,'".$wpdb->escape(get_http_var('email'))."','','','','',now(),0,'','','','namefl','','',0,'$dummy_user_name',now())");
+                 VALUES ('$dummy_user_name','NOPASSWORD','".$wpdb->escape($q_name)."','','$dummy_user_name',0,'".$wpdb->escape($q_email)."','','','','',now(),0,'','','','namefl','','',0,'$dummy_user_name',now())");
                 $proposal_user_id = $wpdb->insert_id;
                 $post_data = array('post_content' => $joined_post,
                     'post_title' => $title,
@@ -93,14 +104,14 @@ if ($page == 'submit') {
             </div>
             <div class="item">
                 <FORM METHOD="POST" NAME="">
-                    <INPUT TYPE="hidden" NAME="name" VALUE="<?=htmlspecialchars(get_http_var('name'))?>">
-                    <INPUT TYPE="hidden" NAME="email" VALUE="<?=htmlspecialchars(get_http_var('email'))?>">
-                    <INPUT TYPE="hidden" NAME="title" VALUE="<?=htmlspecialchars(get_http_var('title'))?>">
-                    <INPUT TYPE="hidden" NAME="body_need" VALUE="<?=htmlspecialchars(get_http_var('body_need'))?>">
-                    <INPUT TYPE="hidden" NAME="body_approach" VALUE="<?=htmlspecialchars(get_http_var('body_approach'))?>">
-                    <INPUT TYPE="hidden" NAME="body_benefit" VALUE="<?=htmlspecialchars(get_http_var('body_benefit'))?>">
-                    <INPUT TYPE="hidden" NAME="body_competition" VALUE="<?=htmlspecialchars(get_http_var('body_competition'))?>">
-                    <INPUT TYPE="hidden" NAME="body_logistics" VALUE="<?=htmlspecialchars(get_http_var('body_logistics'))?>">
+                    <INPUT TYPE="hidden" NAME="name" VALUE="<?=htmlspecialchars($q_name)?>">
+                    <INPUT TYPE="hidden" NAME="email" VALUE="<?=htmlspecialchars($q_email)?>">
+                    <INPUT TYPE="hidden" NAME="title" VALUE="<?=htmlspecialchars($q_title)?>">
+                    <INPUT TYPE="hidden" NAME="body_need" VALUE="<?=htmlspecialchars($q_body_need)?>">
+                    <INPUT TYPE="hidden" NAME="body_approach" VALUE="<?=htmlspecialchars($q_body_approach)?>">
+                    <INPUT TYPE="hidden" NAME="body_benefit" VALUE="<?=htmlspecialchars($q_body_benefit)?>">
+                    <INPUT TYPE="hidden" NAME="body_competition" VALUE="<?=htmlspecialchars($q_body_competition)?>">
+                    <INPUT TYPE="hidden" NAME="body_logistics" VALUE="<?=htmlspecialchars($q_body_logistics)?>">
                     <INPUT TYPE="hidden" NAME="proposal_submit" VALUE="1">
                     <INPUT TYPE="submit" NAME="submitreedit" VALUE="&lt;&lt; Make some corrections">
                     <P><INPUT TYPE="submit" NAME="submitfinal" VALUE="Final step - Submit your proposal &gt;&gt;">
@@ -115,6 +126,13 @@ exit;
         }
     }
 
+?>
+<?
+    if ($errors) {
+        print '<p><div id="errors"><ul><li>';
+        print join ('</li><li>', array_values($errors));
+        print '</li></ul></div>';
+    }
 ?>
     <div class="item_head">
         Guidelines for proposals
@@ -147,35 +165,28 @@ exit;
         Submit your proposal for a new mySociety project
     </div>
     <div class="item">
-<?
-    if ($errors) {
-        print '<div id="errors"><ul><li>';
-        print join ('</li><li>', array_values($errors));
-        print '</li></ul></div>';
-    }
-?>
                 <FORM METHOD="POST" NAME="">
                     <p><strong>Please!</strong> Make sure you've read the guidelines (above) first.
                     <P>Your name:
-                    <INPUT <? if (array_key_exists('name', $errors)) print ' class="error"' ?> NAME="name" VALUE="<?=htmlspecialchars(get_http_var('name'))?>" TYPE="text" SIZE="30"> (will be public)
+                    <INPUT <? if (array_key_exists('name', $errors)) print ' class="error"' ?> NAME="name" VALUE="<?=htmlspecialchars($q_name)?>" TYPE="text" SIZE="30"> (will be public)
                     <P>Your email:
-                    <INPUT <? if (array_key_exists('email', $errors)) print ' class="error"' ?> NAME="email" VALUE="<?=htmlspecialchars(get_http_var('email'))?>" TYPE="text" SIZE="30"> (just for our records)
+                    <INPUT <? if (array_key_exists('email', $errors)) print ' class="error"' ?> NAME="email" VALUE="<?=htmlspecialchars($q_email)?>" TYPE="text" SIZE="30"> (just for our records)
                     <p>Now describe your proposal:
                     <p><strong>Title:</strong>
-                    <INPUT <? if (array_key_exists('title', $errors)) print ' class="error"' ?> NAME="title" VALUE="<?=htmlspecialchars(get_http_var('title'))?>" TYPE="text" SIZE="60">
+                    <INPUT <? if (array_key_exists('title', $errors)) print ' class="error"' ?> NAME="title" VALUE="<?=htmlspecialchars($q_title)?>" TYPE="text" SIZE="60">
                 
                 <P><strong>1. Need:</strong> What need are you serving? What itch does your idea scratch? If it's not obvious, can you define the group of
         people this will help?"</P>
-                <TEXTAREA <? if (array_key_exists('body_need', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_need" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_need'))?></TEXTAREA>
+                <TEXTAREA <? if (array_key_exists('body_need', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_need" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars($q_body_need)?></TEXTAREA>
                 <P><strong>2. Approach:</strong>    What's the plan, Stan? How is your approach distinctive?</P>
-                <TEXTAREA <? if (array_key_exists('body_approach', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_approach" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_approach'))?></TEXTAREA>
+                <TEXTAREA <? if (array_key_exists('body_approach', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_approach" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars($q_body_approach)?></TEXTAREA>
                 <P><strong>3. Benefit:</strong> What is  it about your idea that will make people's lives easier?</P>
-                <TEXTAREA <? if (array_key_exists('body_benefit', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_benefit" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_benefit'))?></TEXTAREA>
+                <TEXTAREA <? if (array_key_exists('body_benefit', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_benefit" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars($q_body_benefit)?></TEXTAREA>
                 <P><strong>4. Competition:</strong>  Any other similar services out there? Why must your idea win out?</P>
-                <TEXTAREA <? if (array_key_exists('body_competition', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_competition" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars(get_http_var('body_competition'))?></TEXTAREA>
+                <TEXTAREA <? if (array_key_exists('body_competition', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_competition" TEXTWRAP="physical" VALUE=""><?=htmlspecialchars($q_body_competition)?></TEXTAREA>
 
                 <P><strong>5. Budget &amp; Logistics:</strong>  How expensive and difficult will it be to build your idea?</P>
-                <TEXTAREA <? if (array_key_exists('body_logistics', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_logistics" TEXTWRAP="physical" VALUE="body_logistics"><?=htmlspecialchars(get_http_var('body_logistics'))?></TEXTAREA>
+                <TEXTAREA <? if (array_key_exists('body_logistics', $errors)) print ' class="error"' ?>ROWS="8" COLS="80" MAXLENGTH="2000" NAME="body_logistics" TEXTWRAP="physical" VALUE="body_logistics"><?=htmlspecialchars($q_body_logistics)?></TEXTAREA>
                 
         <INPUT TYPE="hidden" NAME="proposal_submit" VALUE="1">
         <P><INPUT TYPE="submit" NAME="SUBMIT" VALUE="Next step - Preview your proposal &gt;&gt;"><BR>
@@ -187,7 +198,7 @@ exit;
     </div>
 <?
     include "wordpress/wp-content/themes/mysociety/footer.php";
-} elseif ($page == 'about') {
+} elseif ($q_page == 'about') {
     include "wordpress/wp-blog-header.php";
     include "wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
