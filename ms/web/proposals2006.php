@@ -193,9 +193,10 @@ exit;
 ?>
 
     <div class="item_head">
-        mySociety's Call for Proposals 2006
+        mySociety's will build the best site submitted
     </div>
     <div class="item">
+        <img style="float:right" src="/proposals-radio.png" alt="">
         <p>It's two and a half years since our 
         <a href="http://news.bbc.co.uk/2/hi/technology/3228339.stm">last call for proposals</a>, 
         which led to us building <a href="/projects.php">four projects</a>

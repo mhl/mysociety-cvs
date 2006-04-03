@@ -36,7 +36,7 @@ if ($_SERVER['HTTP_HOST'] != 'www.mysociety.org') {
 if ($menu_proposals2006) {
 ?>
 <div class="masthead masthead_proposals">
-mySociety Call for Proposals 2006
+mySociety Call for Proposals 2006 
 </div>
 </div>
 
