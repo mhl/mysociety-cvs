@@ -13,6 +13,11 @@ $q_body_benefit = get_http_var('body_benefit');
 $q_body_competition = get_http_var('body_competition');
 $q_body_logistics = get_http_var('body_logistics');
 
+# Make sure we are in proposals category
+if (empty($_GET['cat'])) {
+    $cat = 3;
+}
+
 if ($q_page == 'submit') {
     include "wordpress/wp-blog-header.php";
     include "wordpress/wp-content/themes/mysociety/header.php";     
@@ -240,9 +245,6 @@ exit;
 <?
     include "wordpress/wp-content/themes/mysociety/footer.php";
 } else {
-    if (empty($_GET['cat'])) {
-        $cat = 3;
-    }
     /* Short and sweet */
     define('WP_USE_THEMES', true);
     require('wordpress/wp-blog-header.php');

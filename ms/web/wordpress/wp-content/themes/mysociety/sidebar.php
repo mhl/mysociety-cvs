@@ -50,13 +50,22 @@
 			<?php if ($cat!=3) { ?>
                 <div class="item_head">Categories</div>
                 <div class="item">
-<ul><?php wp_list_cats('feed=XML&use_desc_for_title=0');?></ul>
+<ul><?php wp_list_cats('feed=XML&use_desc_for_title=0&feed_image=/rss.gif');?></ul>
+</div>
+<div class="item_foot">
+</div>
+            <?php } else { ?>
+                <div class="item_head">RSS Feed</div>
+                <div class="item">
+
+	<a href="<?php bloginfo('rss_url'); ?>?cat=<?=$cat?>">New proposals <img border="0" src="/rss.gif" alt="RSS"valign="bottom"></a> 
 </div>
 <div class="item_foot">
 </div>
             <?php } ?>
 
             <?php include (TEMPLATEPATH . '/searchform.php'); ?>
+
 
 <!--			<h2><?php _e('Categories'); ?></h2>
 				<ul>
