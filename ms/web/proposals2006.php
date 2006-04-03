@@ -28,15 +28,15 @@ if ($q_page == 'submit') {
         if (strlen(trim($q_title)) == 0)
             $errors['title'] = 'Please fill in the title of your proposal.';
         if (strlen(trim($q_body_need)) == 0)
-            $errors['body_need'] = 'Please fill in the NEED section.';
+            $errors['body_need'] = 'Please fill in the Need section.';
         if (strlen(trim($q_body_approach)) == 0)
-            $errors['body_approach'] = 'Please fill in the APPROACH section.';
+            $errors['body_approach'] = 'Please fill in the Approach section.';
         if (strlen(trim($q_body_benefit)) == 0)
-            $errors['body_benefit'] = 'Please fill in the BENEFIT section.';
+            $errors['body_benefit'] = 'Please fill in the Benefit section.';
         if (strlen(trim($q_body_competition)) == 0)
-            $errors['body_competition'] = 'Please fill in the COMPETITION section.';
+            $errors['body_competition'] = 'Please fill in the Competition section.';
         if (strlen(trim($q_body_logistics)) == 0)
-            $errors['body_logistics'] = 'Please fill in the BUDGET &amp; LOGISTICS section.';
+            $errors['body_logistics'] = 'Please fill in the Budget &amp; Logistics section.';
 
         if (!$errors) {
             $joined_post = 
