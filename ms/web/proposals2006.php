@@ -193,7 +193,7 @@ exit;
 ?>
 
     <div class="item_head">
-        mySociety's will build the best site submitted
+        mySociety will build the best site submitted
     </div>
     <div class="item">
         <img style="float:right" src="/proposals-radio.png" alt="">
