@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-03-23 11:19+0000\n"
+"POT-Creation-Date: 2006-04-04 16:53+0100\n"
 "PO-Revision-Date: 2006-02-19 19:32+0100\n"
 "Last-Translator: Leo De Cooman <Leo.De.Cooman@pandora.be>\n"
 "Language-Team: Esperanto <team@pledgebank.com>\n"
@@ -1022,8 +1022,8 @@ msgstr "tijdlijn"
 msgid "Language:"
 msgstr "Taal:"
 
-#: pb/phplib/admin-pb.php:260 pb/phplib/fns.php:581 pb/phplib/pledge.php:316
-#: pb/phplib/pledge.php:319 pb/web/alert.php:205
+#: pb/phplib/admin-pb.php:260 pb/phplib/fns.php:599 pb/phplib/pledge.php:346
+#: pb/phplib/pledge.php:349 pb/web/alert.php:205
 msgid "Country:"
 msgstr "Land:"
 
@@ -1204,31 +1204,36 @@ msgstr "%s van %s, over %s om %s"
 msgid "<h2>Latest comments</h2>"
 msgstr "<h2>Laatse commentaar</h2>"
 
-#: pb/phplib/comments.php:209
+#: pb/phplib/comments.php:210
+#, fuzzy
+msgid "This pledge is closed for new comments."
+msgstr "Deze belofte wordt afgelsoten op "
+
+#: pb/phplib/comments.php:213
 msgid "<h2>Add Comment</h2>"
 msgstr "<h2>Commentaar toevoegen</h2>"
 
-#: pb/phplib/comments.php:212 pb/web/contact.php:51
+#: pb/phplib/comments.php:215 pb/web/contact.php:52
 msgid "Your name"
 msgstr "Uw naam"
 
-#: pb/phplib/comments.php:217 pb/phplib/pledge.php:666 pb/web/contact.php:52
+#: pb/phplib/comments.php:220 pb/phplib/pledge.php:699 pb/web/contact.php:53
 msgid "Your email"
 msgstr "Uw e-adres"
 
-#: pb/phplib/comments.php:222
+#: pb/phplib/comments.php:225
 msgid "Your web site"
 msgstr "Uw website"
 
-#: pb/phplib/comments.php:222
+#: pb/phplib/comments.php:225
 msgid "(optional)"
 msgstr "(niet verplicht)"
 
-#: pb/phplib/comments.php:226
+#: pb/phplib/comments.php:229
 msgid "Your comment"
 msgstr "Uw commentaar"
 
-#: pb/phplib/comments.php:234
+#: pb/phplib/comments.php:237
 msgid ""
 "Your name and web site, if given, will be shown on your comment,\n"
 "but your email address will not be."
@@ -1238,15 +1243,15 @@ msgstr ""
 
 # Meant to be a leading space here? (Tim Morley, 2005-11-22)
 # Hmm, no, probably not, though it doesn't matter. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000093.html)
-#: pb/phplib/comments.php:237
+#: pb/phplib/comments.php:240
 msgid " Email me future comments on this pledge"
 msgstr " Zend me e-berichten over toekomende commentaar over deze belofte"
 
-#: pb/phplib/comments.php:239 pb/web/new.php:407
+#: pb/phplib/comments.php:242 pb/web/new.php:407
 msgid "Preview"
 msgstr "Vooraf bekijken"
 
-#: pb/phplib/comments.php:241
+#: pb/phplib/comments.php:244
 msgid "Post comment"
 msgstr "Commentaar tonen"
 
@@ -1286,7 +1291,7 @@ msgstr "Voeg een bericht bij als u dat wil:"
 msgid "Your name:"
 msgstr "Uw naam:"
 
-#: pb/phplib/fns.php:368 pb/phplib/fns.php:580 pb/web/alert.php:201
+#: pb/phplib/fns.php:368 pb/phplib/fns.php:594 pb/web/alert.php:201
 #: pb/web/new.php:158 pb/web/sms.php:233
 msgid "Email:"
 msgstr "e-adres:"
@@ -1336,23 +1341,28 @@ msgstr "Of, alleen voor het Verenigd Koninkrijk, kan u een postgebied-code opgev
 msgid "(just the start of the postcode, such as WC1)"
 msgstr "(alleen het begin van de postcode, bvb. WC1)"
 
-#: pb/phplib/fns.php:579
+#: pb/phplib/fns.php:589
 msgid "Sign up for emails when people make pledges in your local area"
 msgstr "Schrijf in voor e-berichten als mensen beloften doen in uw omgeving"
 
-#: pb/phplib/fns.php:579
+#: pb/phplib/fns.php:591
 msgid "Works in any country!"
 msgstr "Gaat in elk land!"
 
-#: pb/phplib/fns.php:582 pb/web/pb.js:125 pb/web/pb.js:128
+#: pb/phplib/fns.php:597
+#, fuzzy
+msgid "Postcode:"
+msgstr "Postcode van de omgeving"
+
+#: pb/phplib/fns.php:600 pb/web/pb.js:125 pb/web/pb.js:128
 msgid "Town:"
 msgstr "Stad:"
 
-#: pb/phplib/fns.php:583 pb/web/alert.php:214
+#: pb/phplib/fns.php:602 pb/web/alert.php:214
 msgid "Subscribe"
 msgstr "Onderschrijf"
 
-#: pb/phplib/fns.php:595
+#: pb/phplib/fns.php:614
 msgid "the UK"
 msgstr "het Verenigd Koninkrijk"
 
@@ -1360,88 +1370,88 @@ msgstr "het Verenigd Koninkrijk"
 # Yes, it's choose website. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #. TRANS: i.e. "choose website" or "choose local place where action will be taken?" I've assumed the former. (Tim Morley, 2005-11-21)
 #. Yes, it's choose website. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/fns.php:611
+#: pb/phplib/fns.php:630
 msgid "choose site"
 msgstr "kies een website"
 
-#: pb/phplib/fns.php:613
+#: pb/phplib/fns.php:632
 msgid "change country"
 msgstr "wijzig land"
 
-#: pb/phplib/fns.php:615
+#: pb/phplib/fns.php:634
 msgid "choose country"
 msgstr "kies een land"
 
-#: pb/phplib/fns.php:623
+#: pb/phplib/fns.php:642
 msgid "change language"
 msgstr "kies een taal"
 
-#: pb/phplib/fns.php:630
+#: pb/phplib/fns.php:649
 msgid "Available in"
 msgstr "Beschikbaar in"
 
-#: pb/phplib/fns.php:647
+#: pb/phplib/fns.php:666
 msgid "and"
 msgstr "en"
 
-#: pb/phplib/fns.php:650
+#: pb/phplib/fns.php:669
 msgid "Translate PledgeBank into your language"
 msgstr "PledgeBank in uw taal vertalen"
 
-#: pb/phplib/fns.php:741
+#: pb/phplib/fns.php:754
 #, php-format
 msgid "%s (%s) pledges listed"
 msgstr "%s (%s) beloften in de lijst"
 
-#: pb/phplib/fns.php:743
+#: pb/phplib/fns.php:756
 #, php-format
 msgid "%s (%s) pledges only listed"
 msgstr "slechts %s (%s) beloften in de lijst"
 
 # Worth thinking about word order here. The English reads e.g. "UK (change country) pledges and global English (change language) pledges listed. Even in English, and certainly in other languages, it'd probably be clearer as something like: "Listed below are pledges for the UK (change country) and global pledges written in English (change language)." (Tim Morley, 2005-11-27)
-#: pb/phplib/fns.php:748
+#: pb/phplib/fns.php:761
 #, php-format
 msgid "%s (%s) pledges and global %s (%s) pledges listed"
 msgstr "Er staan beloften op een lijst in %s (%s) en wereldwijde beloften staan in %s (%s)"
 
-#: pb/phplib/fns.php:750
+#: pb/phplib/fns.php:763
 #, php-format
 msgid "%s (%s) pledges in %s (%s) only listed"
 msgstr "slechts %s (%s) beloften in %s (%s) op de lijst"
 
-#: pb/phplib/fns.php:757
+#: pb/phplib/fns.php:770
 #, php-format
 msgid "There are no featured pledges for %s (%s) at the moment."
 msgstr "Er zijn op dit ogenblik geen benadrukte beloften voor  %s (%s)."
 
-#: pb/phplib/fns.php:810 pb/phplib/fns.php:812
+#: pb/phplib/fns.php:823 pb/phplib/fns.php:825
 msgid "less than 1 mile away"
 msgstr "minder dan 1 mijl ver"
 
-#: pb/phplib/fns.php:814
+#: pb/phplib/fns.php:827
 msgid "less than 1 km away"
 msgstr "minder dan 1 km ver"
 
-#: pb/phplib/fns.php:816 pb/phplib/fns.php:819
+#: pb/phplib/fns.php:829 pb/phplib/fns.php:832
 #, php-format
 msgid "%d mile away"
 msgid_plural "%d miles away"
 msgstr[0] "%d mijl ver"
 msgstr[1] "km for"
 
-#: pb/phplib/fns.php:817 pb/phplib/fns.php:820
+#: pb/phplib/fns.php:830 pb/phplib/fns.php:833
 #, php-format
 msgid "%d mile"
 msgid_plural "%d miles"
 msgstr[0] "%d mijl"
 msgstr[1] "km for"
 
-#: pb/phplib/fns.php:822
+#: pb/phplib/fns.php:835
 #, php-format
 msgid "%d km away"
 msgstr "%d km ver"
 
-#: pb/phplib/fns.php:822
+#: pb/phplib/fns.php:835
 #, php-format
 msgid "%d km"
 msgstr "%d km "
@@ -1450,27 +1460,32 @@ msgstr "%d km "
 msgid "Everywhere"
 msgstr "Overal"
 
-#: pb/phplib/microsites.php:22
+#: pb/phplib/microsites.php:23
 msgid "Everywhere &mdash; all countries in all languages"
 msgstr "Overal &mdash; alle landen in alle talen"
 
-#: pb/phplib/microsites.php:23
+#: pb/phplib/microsites.php:24
+#, fuzzy
+msgid "London (United Kingdom)"
+msgstr "Verenigd Koninkrijk"
+
+#: pb/phplib/microsites.php:25
 msgid "365 Ways to Change the World"
 msgstr "365 manieren om de wereld te veranderen"
 
-#: pb/phplib/microsites.php:42 pb/phplib/microsites.php:67
+#: pb/phplib/microsites.php:44 pb/phplib/microsites.php:74
 msgid "(change)"
 msgstr "(wijzigen)"
 
-#: pb/phplib/microsites.php:58
+#: pb/phplib/microsites.php:60
 msgid "(other PledgeBanks)"
 msgstr "(andere PledgeBank-en)"
 
-#: pb/phplib/microsites.php:115 pb/web/pb.js:38 pb/web/pb.js:40
+#: pb/phplib/microsites.php:126 pb/web/pb.js:38 pb/web/pb.js:40
 msgid "other local people"
 msgstr "andere plaatselijke personen"
 
-#: pb/phplib/microsites.php:154
+#: pb/phplib/microsites.php:181
 msgid ""
 "\"We all know what it is like to feel powerless, that our own\n"
 "        actions can't really change the things that we want to change.\n"
@@ -1479,20 +1494,20 @@ msgstr ""
 "\"Wij weten allen hoe machteloos we ons voelen omdat we door ons eigen handelen er niet in slagen de dingen te veranderen, die we willen veranderen.\n"
 "         PledgeBank gaat daaraan veranderen...\""
 
-#: pb/phplib/microsites.php:161
+#: pb/phplib/microsites.php:188
 msgid "Tell the world &#8220;I&#8217;ll do it, but only if you&#8217;ll help me do it&#8221;"
 msgstr "Zeg aan de wereld &#8220;Ik beloof dat te doen, maar enkel als u helpt &#8221;"
 
 # The tags here are just all wrong, aren't they? (Tim Morley, 2005-11-22)
 # No, that's correct, the starting <a...> and the finishing </a> are outside the translated string - I remember we took the starting <a> out because some translators translated it. :) (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000093.html)
-#: pb/phplib/microsites.php:172
+#: pb/phplib/microsites.php:199
 msgid ""
 "Listen to how PledgeBank\n"
 "works</a>, as explained by mySociety's director Tom Steinberg.\n"
 "Or <a href=\"/explain\">read a full transcript"
 msgstr "Luister </a> naar de uitleg van Tom Steinberg, de directeur van mySociety, hoe PledgeBank werkt. Of <a href=\"/explain\">lees</a> het geheel."
 
-#: pb/phplib/microsites.php:176
+#: pb/phplib/microsites.php:203
 msgid ""
 "<a href=\"/explain\">Find out how PledgeBank\n"
 "works</a>, as explained by mySociety's director Tom Steinberg."
@@ -1500,23 +1515,23 @@ msgstr ""
 "Lees of beluister de uitleg over de werking van PledgeBank\n"
 "works</a>, door de directeur van mySociety, Tom Steinberg <a href=\"/explain\"> </a>."
 
-#: pb/phplib/page.php:51
+#: pb/phplib/page.php:57
 msgid "Tell the world \"I'll do it, but only if you'll help\""
 msgstr "Zeg aan de wereld \"Ik ga dat doen, maar enkel indien u zal helpen\""
 
-#: pb/phplib/page.php:93
+#: pb/phplib/page.php:99
 msgid "This pledge's permanent location: "
 msgstr "De blijvende locatie van deze belofte is: "
 
-#: pb/phplib/page.php:112
+#: pb/phplib/page.php:118
 msgid "Hello, "
 msgstr "Gegroet, "
 
-#: pb/phplib/page.php:118
+#: pb/phplib/page.php:124
 msgid "this isn't you?  click here"
 msgstr "Bent u dat niet? klik hier"
 
-#: pb/phplib/page.php:128
+#: pb/phplib/page.php:134
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
@@ -1524,101 +1539,101 @@ msgstr ""
 "Dit is een voorlopige bladzijde, enkel voor ontwikkelwerk. U zoekt waarschijnlijk\n"
 "<a href=\"http://www.pledgebank.com/\">de echte website</a>."
 
-#: pb/phplib/page.php:133
+#: pb/phplib/page.php:139
 msgid "Note: On this test site, the date is faked to be"
 msgstr "Nota: Op deze proefsite wordt de datum nagebootst als"
 
-#: pb/phplib/page.php:153
+#: pb/phplib/page.php:160
 msgid "Navigation"
 msgstr "Navigatie"
 
-#: pb/phplib/page.php:155
+#: pb/phplib/page.php:162
 msgid "Search"
 msgstr "Zoeken"
 
-#: pb/phplib/page.php:156 pb/phplib/page.php:285
+#: pb/phplib/page.php:163 pb/phplib/page.php:297
 msgid "Go"
 msgstr "Doe maar"
 
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "Home"
 msgstr "Beginblad"
 
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "All Pledges"
 msgstr "Alle beloften"
 
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "Start a Pledge"
 msgstr "Een belofte creëren"
 
-#: pb/phplib/page.php:159 pb/web/faq.php:13 pb/web/faq.php:17
+#: pb/phplib/page.php:166 pb/web/faq.php:13 pb/web/faq.php:17
 msgid "Frequently Asked Questions"
 msgstr "Vaak gestelde vragen"
 
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "FAQ"
 msgstr "FAQ VGV"
 
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "Contact"
 msgstr "Contact"
 
-#: pb/phplib/page.php:159 pb/web/your.php:22
+#: pb/phplib/page.php:166 pb/web/your.php:22
 msgid "Your Pledges"
 msgstr "Uw beloften"
 
-#: pb/phplib/page.php:162
+#: pb/phplib/page.php:169
 msgid "Logout"
 msgstr "Afmelden"
 
-#: pb/phplib/page.php:169
+#: pb/phplib/page.php:176
 msgid "Built by mySociety"
 msgstr "Gemaakt door mySociety"
 
-#: pb/phplib/page.php:255
+#: pb/phplib/page.php:267
 msgid "We couldn't find that pledge"
 msgstr "We konden die belofte niet vinden"
 
-#: pb/phplib/page.php:258
+#: pb/phplib/page.php:270
 #, php-format
 msgid "We couldn't find any pledge with a reference like \"%s\". Try the following: "
 msgstr "We vonden geen belofte met dezelfde referentie als \"%s\". Probeer dit: "
 
-#: pb/phplib/page.php:260
+#: pb/phplib/page.php:272
 #, php-format
 msgid "We couldn't find the pledge with reference \"%s\". Did you mean one of these pledges?"
 msgstr "We hebben de belofte met referentie \"%s\" niet gevonden. Wilt u één van deze beloften aanduiden?"
 
-#: pb/phplib/page.php:275
+#: pb/phplib/page.php:287
 msgid "If none of those look like what you want, try the following:"
 msgstr "Als u daar niet vindt wat u zoekt, probeer het volgende:"
 
-#: pb/phplib/page.php:279
+#: pb/phplib/page.php:291
 msgid "If you typed in the location, check it carefully and try typing it again."
 msgstr "Als u de plaats ingetypt hebt, zie ze zorgvuldig na en tracht door ze opnieuw te typen."
 
-#: pb/phplib/page.php:280
+#: pb/phplib/page.php:292
 msgid "Look for the pledge on <a href=\"/all\">the list of all pledges</a>."
 msgstr "Zoek de belofte op <a href=\"/all\">de lijst van alle beloften</a>."
 
-#: pb/phplib/page.php:281
+#: pb/phplib/page.php:293
 msgid "Search for the pledge you want by entering words below."
 msgstr "Zoek de belofte die u bedoelt door hieronder woorden in te typen."
 
-#: pb/phplib/page.php:284
+#: pb/phplib/page.php:296
 msgid "Search for a pledge"
 msgstr "Zoek een belofte"
 
-#: pb/phplib/pb.php:47 pb/phplib/pb.php:157
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:159
 msgid "Sorry! Something's gone wrong."
 msgstr "Neem ons niet kwalijk! Er is iets mis gelopen."
 
-#: pb/phplib/pb.php:56
+#: pb/phplib/pb.php:57
 msgid "Please try again later, or <a href=\"mailto:team@pledgebank.com\">email us</a> for help resolving the problem."
 msgstr "Gelieve straks opnieuw te proberen, of <a href=\"mailto:team@pledgebank.com\">zend ons een e-bericht</a> om hulp voor het probleem."
 
-#: pb/phplib/pb.php:158
+#: pb/phplib/pb.php:160
 msgid "<h2>Sorry!  Something's gone wrong.</h2>"
 msgstr "<h2>Het sijt ons! Er liep iets mis.</h2>"
 
@@ -1634,228 +1649,240 @@ msgstr "We konden die belofte niet vinden. Gelieve de URL zorgvuldig na te zien.
 msgid "Pledge is not present in database"
 msgstr "Belofte zit niet in database"
 
-#: pb/phplib/pledge.php:219
+#: pb/phplib/pledge.php:220
 msgid "Place"
 msgstr "Plaats"
 
-#: pb/phplib/pledge.php:221
+#: pb/phplib/pledge.php:222
 msgid "Postcode area"
 msgstr "Postcode van de omgeving"
 
-#: pb/phplib/pledge.php:286
+#: pb/phplib/pledge.php:311
+msgid "Roughly translate the pledge into your language (using Altavista's Babel Fish machine translator)"
+msgstr ""
+
+#: pb/phplib/pledge.php:311
+msgid "translate"
+msgstr ""
+
+#: pb/phplib/pledge.php:316
 msgid "Deadline to sign up by:"
 msgstr "Einddatum voor onderschrijving:"
 
-#: pb/phplib/pledge.php:291
+#: pb/phplib/pledge.php:321
 #, php-format
 msgid "%s person signed up"
 msgid_plural "%s people signed up"
 msgstr[0] "%s persoon heeft onderschreven "
 msgstr[1] "%s personen hebben onderschreven "
 
-#: pb/phplib/pledge.php:293
+#: pb/phplib/pledge.php:323
 #, php-format
 msgid "%s person has signed up"
 msgid_plural "%s people have signed up"
 msgstr[0] "%s persoon heeft onderschreven"
 msgstr[1] "%s personen hebben onderschreven"
 
-#: pb/phplib/pledge.php:296
+#: pb/phplib/pledge.php:326
 #, php-format
 msgid "(%d over target)"
 msgstr "(%d meer dan het doel)"
 
-#: pb/phplib/pledge.php:300
+#: pb/phplib/pledge.php:330
 #, php-format
 msgid "%d more was needed"
 msgid_plural "%d more were needed"
 msgstr[0] "nog %d was nodig"
 msgstr[1] "nog %d waren nodig"
 
-#: pb/phplib/pledge.php:302
+#: pb/phplib/pledge.php:332
 #, php-format
 msgid "%d more needed"
 msgid_plural "%d more needed"
 msgstr[0] "nog %d nodig"
 msgstr[1] "nog %d nodig"
 
-#: pb/phplib/pledge.php:314
+#: pb/phplib/pledge.php:344
+msgid "Show where exactly this place is (using Google Maps)"
+msgstr ""
+
+#: pb/phplib/pledge.php:344
 msgid "view map"
 msgstr "zie kaart"
 
-#: pb/phplib/pledge.php:329
+#: pb/phplib/pledge.php:359
 msgid "More details"
 msgstr "Meer details"
 
-#: pb/phplib/pledge.php:334
+#: pb/phplib/pledge.php:364
 msgid "Anything wrong with this pledge?  Tell us!"
 msgstr "Is er iets mis met die belofte? Zeg het ons!"
 
-#: pb/phplib/pledge.php:388
+#: pb/phplib/pledge.php:418
 msgid "Success"
 msgstr "Succes"
 
-#: pb/phplib/pledge.php:391
+#: pb/phplib/pledge.php:421
 msgid "That pledge has already finished"
 msgstr "Die belofte is al ten einde"
 
-#: pb/phplib/pledge.php:394
+#: pb/phplib/pledge.php:424
 msgid "That pledge is already full"
 msgstr "Die belofte is al vol"
 
-#: pb/phplib/pledge.php:397
+#: pb/phplib/pledge.php:427
 msgid "You've already signed that pledge"
 msgstr "U heeft die belofte al onderschreven"
 
-#: pb/phplib/pledge.php:400 pb/web/comment.php:45 pb/web/ref-sign.php:58
+#: pb/phplib/pledge.php:430 pb/web/comment.php:48 pb/web/ref-sign.php:58
 #: pb/web/sms.php:65
 msgid "Permission denied"
 msgstr "Niet toegestaan"
 
-#: pb/phplib/pledge.php:404
+#: pb/phplib/pledge.php:434
 msgid "Something went wrong unexpectedly"
 msgstr "Iets liep onverwachts mis"
 
-#: pb/phplib/pledge.php:452
+#: pb/phplib/pledge.php:485
 #, php-format
 msgid "I, %s, will %s but only if <strong>%s</strong> %s will %s."
 msgstr "Ik, %s, beloof %s maar enkel indien <strong>%s</strong> %s ook beloven %s."
 
-#: pb/phplib/pledge.php:454
+#: pb/phplib/pledge.php:487
 #, php-format
 msgid "I will %s but only if <strong>%s</strong> %s will %s."
 msgstr "Ik zal %s maar enkel indien <strong>%s</strong> %s ook beloven %s."
 
-#: pb/phplib/pledge.php:457
+#: pb/phplib/pledge.php:490
 #, php-format
 msgid "%s will %s but only if <strong>%s</strong> %s will %s."
 msgstr "%s beloven %s maar enkel indien <strong>%s</strong> %s ook beloven %s."
 
-#: pb/phplib/pledge.php:486
+#: pb/phplib/pledge.php:519
 msgid "Target met, pledge open until midnight tonight, London time."
 msgstr "Doel bereikt, belofte open tot middernacht, Londense tijd."
 
-#: pb/phplib/pledge.php:488
+#: pb/phplib/pledge.php:521
 msgid "Target met, pledge closed."
 msgstr "Doel bereikt, belofte gesloten."
 
-#: pb/phplib/pledge.php:490
+#: pb/phplib/pledge.php:523
 #, php-format
 msgid "Target met, pledge still open for %d day."
 msgid_plural "Target met, pledge still open for %d days."
 msgstr[0] "Doel bereikt, belofte open gedurende nog %d dag."
 msgstr[1] "Doel bereikt, belofte open gedurende nog %d dagen."
 
-#: pb/phplib/pledge.php:494
+#: pb/phplib/pledge.php:527
 #, php-format
 msgid "(needs %d more by midnight tonight, London time)"
 msgstr "(heeft nog %d voor middernacht, Londense tijd"
 
-#: pb/phplib/pledge.php:496
+#: pb/phplib/pledge.php:529
 msgid "Deadline expired, pledge failed."
 msgstr "Vervaldag verlopen, belofte mislukt."
 
-#: pb/phplib/pledge.php:500
+#: pb/phplib/pledge.php:533
 #, php-format
 msgid "just %d day left"
 msgid_plural "just %d days left"
 msgstr[0] "er blijft slechts %d dag"
 msgstr[1] "er blijven slechts %d dagen"
 
-#: pb/phplib/pledge.php:502
+#: pb/phplib/pledge.php:535
 #, php-format
 msgid "%d day left"
 msgid_plural "%d days left"
 msgstr[0] "blijft %d dag"
 msgstr[1] "blijven %d dagen"
 
-#: pb/phplib/pledge.php:504
+#: pb/phplib/pledge.php:537
 #, php-format
 msgid ", %d more signature needed)"
 msgid_plural ", %d more signatures needed)"
 msgstr[0] ", nog %d onderschrijver nodig)"
 msgstr[1] ", nog %d onderschrijvers nodig)"
 
-#: pb/phplib/pledge.php:588
+#: pb/phplib/pledge.php:621
 msgid "Incorrect PIN!"
 msgstr "Onjuiste PIN!"
 
-#: pb/phplib/pledge.php:591
+#: pb/phplib/pledge.php:624
 msgid "PIN Protected Pledge"
 msgstr "PIN- Beveiligde Belofte"
 
-#: pb/phplib/pledge.php:591
+#: pb/phplib/pledge.php:624
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "Deze belofte is beveiligd. Gelieve de PIN in te typen om door te gaan."
 
-#: pb/phplib/pledge.php:592 pb/web/abuse.php:151 pb/web/ref-picture.php:180
+#: pb/phplib/pledge.php:625 pb/web/abuse.php:151 pb/web/ref-picture.php:180
 #: pb/web/sms.php:235 pb/web/your.php:111
 msgid "Submit"
 msgstr "Verzenden"
 
-#: pb/phplib/pledge.php:661
+#: pb/phplib/pledge.php:694
 msgid "Sign up now"
 msgstr "Nu onderschrijven"
 
-#: pb/phplib/pledge.php:665
+#: pb/phplib/pledge.php:698
 #, php-format
 msgid "I, %s, sign up to the pledge."
 msgstr "Ik, %s, onderschrijf deze belofte."
 
-#: pb/phplib/pledge.php:667
+#: pb/phplib/pledge.php:700
 msgid "(we need this so we can tell you when the pledge is completed and let the pledge creator get in touch)"
 msgstr "(we hebben dat nodig om u aan te duiden wanneer de belofte zal eindigen, en om de beloftemaker met u in contact te laten komen)"
 
-#: pb/phplib/pledge.php:669 pb/web/sms.php:234
+#: pb/phplib/pledge.php:702 pb/web/sms.php:234
 msgid "Show my name on this pledge"
 msgstr "Toon mijn naam op die belofte"
 
-#: pb/phplib/pledge.php:670
+#: pb/phplib/pledge.php:703
 msgid "Sign Pledge"
 msgstr "Belofte Onderschrijven"
 
 # I've translated this as "In order to massively increase the chance of this pledge succeeding, " because what follows is "print this page out" (entry immediately below) in the imperative. See comment there. (Tim Morley, 2005-11-27)
 #. TRANS: Esperanto translated this as "In order to massive increase the chance of this pledge succeeding, " to keep it in the imperative
-#: pb/phplib/pledge.php:694
+#: pb/phplib/pledge.php:727
 msgid "You will massively increase the chance of this pledge succeeding if you "
 msgstr "Om de kans op slagen van deze belofte sterk te verhogen, moet u "
 
 # This phrase is used on two different pages, in two grammatically different ways (one present tense, one imperative), which doesn't matter in English, but does in Esperanto. I've translated it as imperative, and changed the translation of the entry above (msgid "You will massively increase the chance of this pledge succeeding if you "). (Tim Morley, 2005-11-27)
 #. TRANS: This phrase is used in two different places, once in present tense, once in imperative. Shout if this is a problem.
-#: pb/phplib/pledge.php:697 pb/web/ref-flyers.php:70
+#: pb/phplib/pledge.php:730 pb/web/ref-flyers.php:70
 msgid "print this page out"
 msgstr "deze bladzijde afdrukken"
 
-#: pb/phplib/pledge.php:698
+#: pb/phplib/pledge.php:731
 msgid "these more attractive PDF and RTF (Word) versions"
 msgstr "deze mooiere PDF en RTF versies (voor Word of OpenOffice.org)"
 
 # Use the imperative here to go with msgid "You will massively increase......." and msgid "print this page out". (Tim Morley, 2005-11-30)
 #. TRANS: Use the imperative here to go with msgid "You will massively increase......." and msgid "print this page out". (Tim Morley, 2005-11-30)
-#: pb/phplib/pledge.php:700
+#: pb/phplib/pledge.php:733
 #, php-format
 msgid "(or use %s), cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr "(of gebruik %s), knip de vlugschriften uit en steek ze in de bus van de buren."
 
-#: pb/phplib/pledge.php:705
+#: pb/phplib/pledge.php:738
 msgid "print these pages out"
 msgstr "print deze bladen uit"
 
-#: pb/phplib/pledge.php:706
+#: pb/phplib/pledge.php:739
 msgid ", cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr ", knip de vlugschriften uit en steek ze in de brievenbus van uw buren."
 
-#: pb/phplib/pledge.php:709
+#: pb/phplib/pledge.php:742
 msgid ""
 "We cannot emphasise this enough &mdash; print them NOW and post them next time you\n"
 "go out to the shops or your pledge is unlikely to succeed."
 msgstr "Wij kunnen niet genoeg benadrukken &mdash; druk ze NU uit en post ze volgende keer als u gaat winkelen of uw belofte zal waarschijnlijk niet slagen."
 
-#: pb/phplib/pledge.php:715 pb/web/ref-flyers.php:73
+#: pb/phplib/pledge.php:748 pb/web/ref-flyers.php:73
 msgid "Graphic of flyers for printing"
 msgstr "Tekeningen om te printen op de vlugschriften"
 
-#: pb/phplib/pledge.php:725
+#: pb/phplib/pledge.php:758
 #, php-format
 msgid ""
 "<p class=\"noprint\"><strong>Take your Pledge to the pub</strong> &ndash; next time you're out and about,\n"
@@ -1903,7 +1930,7 @@ msgstr "ondertekening"
 msgid "The %s couldn't be found.  It has probably been deleted already."
 msgstr "De %s werd niet gevonden. Waarschijnlijk reeds verwijderd."
 
-#: pb/web/abuse.php:67 pb/web/alert.php:81 pb/web/contact.php:69
+#: pb/web/abuse.php:67 pb/web/alert.php:81 pb/web/contact.php:71
 #: pb/web/login.php:190 pb/web/login.php:216 pb/web/new.php:573
 msgid "Please enter a valid email address"
 msgstr "Gelieve een geldig e-adres in te typen"
@@ -1992,7 +2019,7 @@ msgstr "Misschien zou u graag <a href=\"/alert/\">aansluiten bij een nieuwe plaa
 msgid "Thanks!  You are already unsubscribed from that alert."
 msgstr "Dank u! U was reeds uitgeschreven uit deze waarschuwing."
 
-#: pb/web/alert.php:80 pb/web/comment.php:81 pb/web/contact.php:68
+#: pb/web/alert.php:80 pb/web/comment.php:84 pb/web/contact.php:70
 #: pb/web/login.php:186 pb/web/login.php:212 pb/web/new.php:572
 #: pb/web/ref-email.php:49
 msgid "Please enter your email address"
@@ -2092,66 +2119,70 @@ msgstr "Er ontbreekt een identificatie voor commentaar"
 msgid "Sorry -- something seems to have gone wrong. "
 msgstr "Het spijt ons -- er lijkt iets verkeerd te lopen."
 
-#: pb/web/comment.php:49
+#: pb/web/comment.php:44
+msgid "Sorry, this pledge is now closed for new comments."
+msgstr ""
+
+#: pb/web/comment.php:52
 #, php-format
 msgid "Commenting on '%s'"
 msgstr "Commentaar over '%s'"
 
-#: pb/web/comment.php:65
+#: pb/web/comment.php:68
 msgid "Sorry -- something seems to have gone wrong"
 msgstr "Neem ons niet kwalijk -- er lijkt iets mis te gaan"
 
-#: pb/web/comment.php:83
+#: pb/web/comment.php:86
 #, php-format
 msgid "'%s' is not a valid email address; please check it carefully"
 msgstr "'%s' is geen geldig e-adres; gelieve het zorgvuldig na te zien"
 
-#: pb/web/comment.php:86 pb/web/contact.php:67 pb/web/new.php:571
+#: pb/web/comment.php:89 pb/web/contact.php:69 pb/web/new.php:571
 #: pb/web/ref-email.php:48 pb/web/sms.php:78
 msgid "Please enter your name"
 msgstr "Gelieve uw naam in te typen"
 
-#: pb/web/comment.php:89
+#: pb/web/comment.php:92
 msgid "Please enter a message"
 msgstr "Gelieve een bericht in te typen"
 
-#: pb/web/comment.php:99
+#: pb/web/comment.php:102
 msgid "Before adding your comment to the pledge, we need to check that your email is working."
 msgstr "Vooraleer we uw commentaar toevoegen aan de belofte moeten we nagaan of uw e-adres goed werkt."
 
-#: pb/web/comment.php:100
+#: pb/web/comment.php:103
 msgid "Your comment will then be displayed on the pledge page."
 msgstr "Uw commentaar zal later te zien zijn op het blad van de belofte."
 
-#: pb/web/comment.php:101
+#: pb/web/comment.php:104
 msgid "Adding your comment to a pledge at PledgeBank.com"
 msgstr "We voegen uw commentaar toe aan de belofte bij PledgeBank.com"
 
-#: pb/web/comment.php:124
+#: pb/web/comment.php:127
 msgid "Thank you! Your comment has now been posted."
 msgstr "Bedankt! Uw commentaar wordt nu getoond."
 
-#: pb/web/comment.php:126
+#: pb/web/comment.php:129
 msgid "You will be emailed when anyone adds a comment to the pledge."
 msgstr "We zullen uw een e-bericht zenden telkens iemand commentaar toevoegt aan de belofte."
 
-#: pb/web/comment.php:129
+#: pb/web/comment.php:132
 msgid "Go back to the pledge comments"
 msgstr "Terugkeren naar de commentaren bij de belofte"
 
-#: pb/web/comment.php:134
+#: pb/web/comment.php:137
 msgid "Go back to the pledge"
 msgstr "Terugkeren naar de belofte"
 
-#: pb/web/comment.php:147
+#: pb/web/comment.php:150
 msgid "<h2>Here's how your comment will appear</h2>"
 msgstr "<h2>Zo ziet uw commentaar er uit</h2>"
 
-#: pb/web/contact.php:16 pb/web/contact.php:37
+#: pb/web/contact.php:16 pb/web/contact.php:38
 msgid "Contact Us"
 msgstr "Contacteer ons"
 
-#: pb/web/contact.php:38
+#: pb/web/contact.php:39
 #, php-format
 msgid ""
 "Was it useful?  How could it be better?\n"
@@ -2164,62 +2195,62 @@ msgstr ""
 "Gebruik dit formulier om ons te contacteren.\n"
 "Als u dat liever heeft mag u een e-bericht zenden aan %s in plaats van het formulier te gebruiken."
 
-#: pb/web/contact.php:42
+#: pb/web/contact.php:43
 msgid "If you would like to contact the Pledge Creator, please use the 'comments' section on the pledge.  These messages go to the PledgeBank Team, <strong>not</strong> the Pledge Creator."
 msgstr "Als u de maker van een belofte wil contacteren, gelieve het deel 'commentaar' te gebruiken op het blad van de belofte. Deze berichten zullen naar de PledgeBank-ploeg gaan, <strong>niet</strong> naar de beloftemaker."
 
-#: pb/web/contact.php:43
+#: pb/web/contact.php:44
 msgid "<a href=\"/faq\">Read the FAQ</a> first, it might be a quicker way to answer your question."
 msgstr "Eerst moet u <a href=\"/faq\">lezen, </a>; daar vindt u misschien sneller antwoord op uw vraag."
 
-#: pb/web/contact.php:50
+#: pb/web/contact.php:51
 msgid "Message to"
 msgstr "Bericht aan"
 
-#: pb/web/contact.php:50
+#: pb/web/contact.php:51
 msgid "PledgeBank Team"
 msgstr "PledgeBank Ploeg"
 
-#: pb/web/contact.php:53 pb/web/ref-announce.php:258
+#: pb/web/contact.php:54 pb/web/ref-announce.php:258
 #: pb/web/ref-announcearchive.php:73
 msgid "Subject"
 msgstr "Onderwerp"
 
-#: pb/web/contact.php:54
+#: pb/web/contact.php:55
 msgid "Message"
 msgstr "Bericht"
 
-#: pb/web/contact.php:55
+#: pb/web/contact.php:56
 msgid "Did you <a href=\"/faq\">read the FAQ</a> first?"
 msgstr "Heeft u eerst op <a href=\"/faq\">de veelgestelde vragen/antwoorden gelezen</a>?"
 
-#: pb/web/contact.php:56 pb/web/ref-announce.php:237
+#: pb/web/contact.php:57 pb/web/ref-announce.php:237
 #: pb/web/ref-announce.php:304
 msgid "Send"
 msgstr "Verzenden"
 
-#: pb/web/contact.php:62 pb/web/login.php:92 pb/web/new.php:439
+#: pb/web/contact.php:63 pb/web/login.php:92 pb/web/new.php:439
 #: pb/web/ref-sign.php:41 pb/web/pb.js:15
 msgid "<Enter your name>"
 msgstr "<Typ uw naam in>"
 
-#: pb/web/contact.php:70
+#: pb/web/contact.php:72
 msgid "Please enter a subject"
 msgstr "Gelieve een onderwerp in te typen"
 
-#: pb/web/contact.php:71
+#: pb/web/contact.php:73
 msgid "Please enter your message"
 msgstr "Gelieve uw bericht in te typen"
 
-#: pb/web/contact.php:92
+#: pb/web/contact.php:94
 msgid "Please stop sending us spam. Thank you."
 msgstr ""
 
-#: pb/web/contact.php:100
+#: pb/web/contact.php:102
 msgid "Failed to send message.  Please try again, or <a href=\"mailto:team@pledgebank.com\">email us</a>."
 msgstr "Het verzenden is mislukt. Gelieve opnieuw te proberen, of <a href=\"mailto:team@pledgebank.com\">e-schrijf ons</a>."
 
-#: pb/web/contact.php:101
+#: pb/web/contact.php:103
 msgid "Thanks for your feedback.  We'll get back to you as soon as we can!"
 msgstr "Dank voor uw commentaar. We zullen u zo snel mogelijk antwoorden!"
 
@@ -2323,27 +2354,38 @@ msgstr "PledgeBank is gratis, gemakkelijk te gebruiken en heeft uw deelneming no
 msgid "To PledgeBank front page"
 msgstr "Naar PledgeBank startblad"
 
-#: pb/web/faq.php:20
+#: pb/web/faq.php:26
+msgid "What does PledgeBank do for me? Why should I use it?"
+msgstr ""
+
+#: pb/web/faq.php:27
+msgid ""
+"PledgeBank gives you the reassurance that if you decide to do\n"
+"    something for the wider community you won't be doing it alone."
+msgstr ""
+
+#: pb/web/faq.php:30
 msgid "What is PledgeBank for?"
 msgstr "Wat is het doel van PledgeBank?"
 
-#: pb/web/faq.php:21
+#: pb/web/faq.php:31
+#, fuzzy
 msgid ""
 "PledgeBank is a site to help people get things done, especially things\n"
-"that require several people. We think that the world needs such a\n"
-"service: lots of good things don't happen because there aren't enough\n"
-"organised people to do them."
+"    that require several people. We think that the world needs such a\n"
+"    service: lots of good things don't happen because there aren't enough\n"
+"    organised people to do them."
 msgstr ""
 "PledgeBank is een site om mensen aan te sporen tot actie, vooral die welke meerdere personen nodig hebben\n"
 "Wij geloven dat de wereld deze dienst nodig heeft:\n"
 "vele goede zaken gebeuren niet omdat er niet voldoende georganiseerde personen zijn om ze uit te voeren."
 
-#: pb/web/faq.php:25
+#: pb/web/faq.php:37
 msgid "Can you give me some examples?"
 msgstr "Kan u enkele voorbeelden geven?"
 
 # I've changed some of the pledges to target them at the international Esperanto community. Pledges in Esperanto are unlikely to be local, because of the nature of the language and the movement, so pledges about school plays etc. aren't really relevant to this case. (Tim Morley, 2005-11-28)
-#: pb/web/faq.php:26
+#: pb/web/faq.php:38
 msgid ""
 "Sure. 'I will start recycling if 100 people in my town will do the\n"
 "same'; 'I will organise my child's school play if 3 other parents will\n"
@@ -2354,11 +2396,11 @@ msgstr ""
 ". 'Ik beloof een nuttige website op te zetten als 1000\n"
 " personen beloven er aan mee te werken'."
 
-#: pb/web/faq.php:31
+#: pb/web/faq.php:43
 msgid "How does it work?"
 msgstr "Hoe werkt het?"
 
-#: pb/web/faq.php:33
+#: pb/web/faq.php:45
 msgid ""
 "PledgeBank allows users to set up pledges and then encourages other\n"
 "people to sign up to them. A pledge is a statement of the form 'I will\n"
@@ -2374,36 +2416,38 @@ msgstr ""
 "indien een zeker aantal personen mij daarbij zullen helpen'. De beloftemaker maakt er later publiciteit voor en spoort anderen aan ze te onderschrijven.\n"
 "Een van twee resultaten kan voorkomen; ofwel slaagt de belofte er niet in voldoende onderschrijvers te lokken voor de vervaldag. In dat geval zullen we allen contacteren en schrijven 'een volgende keer beter'. Maar waarschijnlijk zal de belofte voldoende steun krijgen en zullen ze allen een bericht krijgen, dat luidt 'Gefeliciteerd - en nu aan het werk!' "
 
-#: pb/web/faq.php:43
+#: pb/web/faq.php:55
 msgid "What can I ask people to pledge?"
 msgstr "Wat kan ik vragen dat men zou steunen?"
 
-#: pb/web/faq.php:45
+#: pb/web/faq.php:57
 msgid ""
 "Pretty much anything which isn't illegal, and which doesn't incite\n"
 "people to commit illegal actions. Anything too obscene might also be\n"
 "taken down - this is a family friendly site!"
 msgstr "Min of meer alles, wat niet tegen de wet is en anderen niet aanspoort onwettige dingen te doen. Ook obsceniteiten riskeren verwijderd te worden - het gaat over een gezinssite!"
 
-#: pb/web/faq.php:49
+#: pb/web/faq.php:61
 msgid "How can you be sure people will bother to carry out the pledge?"
 msgstr "Hoe kan u nagaan, dat de onderschrijvers wel zullen doen wat ze beloofd hebben?"
 
-#: pb/web/faq.php:51
+#: pb/web/faq.php:63
+#, fuzzy
 msgid ""
 "We can't; PledgeBank is based on a psychological bet. We believe that\n"
-"if a person posesses a slight desire to do something, and then we help\n"
+"if a person possesses a slight desire to do something, and then we help\n"
 "connect them to a bunch of  people who also want to do the same thing\n"
-"then that first person is much more likely to act. Our guess is that\n"
-"this will work rather well in some areas of activity and not at all in\n"
-"others - such is human nature."
+"then that first person is much more likely to act.  Update: we have now\n"
+"surveyed a load of money based pledges that have succeeded, and found that\n"
+"payment rates vary from 50% to well over 150%, with three-quarters of \n"
+"people paying being typical."
 msgstr "Dat kunnen we niet; PledgeBank baseert zich op een psychologische weddenschap. We geloven dat, als een persoon de wil heeft iets te doen, en als we hem bewust maken van een groep anderen, die hetzelfde willen, dan die persoon veel meer geneigd is tot actie. We veronderstellen dat dit voldoende goed zal werken in enkele sferen en niet in andere &mdash; zo is de menselijke natuur."
 
-#: pb/web/faq.php:58
+#: pb/web/faq.php:71
 msgid "What do I get out of it?"
 msgstr "Hoe wordt ik beloond?"
 
-#: pb/web/faq.php:60
+#: pb/web/faq.php:73
 msgid ""
 "As a well intentioned subscriber, you get insurance against being the\n"
 "only person to show up to the demo the freezing rain or against being\n"
@@ -2414,11 +2458,11 @@ msgstr ""
 "Als onderschrijver met goede intenties,zal u een 'verzekering' hebben tegen het feit de enige te aanwezige te zijn bij een demonstratie onder de koude stortbui, of tegen de enige ouder te zijn die zich net voorgesteld heeft om alles alleen te doen voor het toneelstukje van de school.\n"
 "Als beloftemaker vergroot u sterk de kans datgene te bereiken wat u wil."
 
-#: pb/web/faq.php:66
+#: pb/web/faq.php:79
 msgid "Is it free?"
 msgstr "Is het gratis?"
 
-#: pb/web/faq.php:68
+#: pb/web/faq.php:81
 #, php-format
 msgid ""
 "The site is free to use, no matter how big a pledge you create. PledgeBank\n"
@@ -2430,15 +2474,15 @@ msgstr ""
 "De website wordt wel beheerd door een weldadige organisatie, dus als u een bijzonder grote belofte wil doen\n"
 "en iets zou willen bijdragen, wil ons dan contacteren. SMS-berichten (enkel beschikbaar in %s) kosten de normale prijs."
 
-#: pb/web/faq.php:77
+#: pb/web/faq.php:90
 msgid "Organisation Questions"
 msgstr "Vragen over organisatie"
 
-#: pb/web/faq.php:80
+#: pb/web/faq.php:93
 msgid "Who built PledgeBank?"
 msgstr "Wie heeft PledgeBank gesticht?"
 
-#: pb/web/faq.php:82
+#: pb/web/faq.php:95
 msgid ""
 "This site was built by <a href=\"http://www.mysociety.org\">mySociety</a>. \n"
 "mySociety is a charitable organisation which has grown out of this community of\n"
@@ -2454,12 +2498,12 @@ msgstr ""
 "Het hoofddoel van mySociety is het creëren van internetprojecten, die aan mensen eenvoudige, voelbare voordelen bieden in het kader van de burger- en gemeenschapsaspecten van hun leven. Ons eerste project was\n"
 "<a href=\"http://www.writetothem.com\">WriteToThem.com</a>, waar het publiek gratis kan schrijven naar zijn verkozen vertegenwoordigers."
 
-#: pb/web/faq.php:91
+#: pb/web/faq.php:104
 msgid "Who pays for it?"
 msgstr "Wie betaalt dat?"
 
 # added a short explanation (only a translation, really) of "ODPM". (Tim Morley, 2005-11-22)
-#: pb/web/faq.php:93
+#: pb/web/faq.php:106
 msgid ""
 "PledgeBank has been built by mySociety thanks to the effort\n"
 "of a combination of paid core developers and unpaid volunteers. The\n"
@@ -2471,11 +2515,11 @@ msgstr ""
 "<acronym title=\"Office of the Deputy Prime Minister\">ODPM</acronym> \n"
 "(d.w.z. het Bureau van de Britse Vicepremier), samen met de Provincieraad van WestSussex."
 
-#: pb/web/faq.php:99
+#: pb/web/faq.php:115
 msgid "Do you need any help with the project?"
 msgstr "Heeft u hulp nodig bij het project?"
 
-#: pb/web/faq.php:101
+#: pb/web/faq.php:117
 msgid ""
 "Yes, we can use help in all sorts of ways, technical or non-technical.\n"
 "Please <a href=\"/contact\">contact us</a> if you want to get in touch."
@@ -2483,7 +2527,7 @@ msgstr ""
 "Ja, we kunnen allerlei soorten hulpacties gebruiken, technische of andere. Gelieve\n"
 "<a href=\"/contact\">ons te contacteren</a> indien u een voorstel heeft."
 
-#: pb/web/faq.php:104
+#: pb/web/faq.php:120
 msgid "Where's the \"source code\" to PledgeBank?"
 msgstr "Waar is de \"brontekst\" van PledgeBank?"
 
@@ -2492,7 +2536,7 @@ msgstr "Waar is de \"brontekst\" van PledgeBank?"
 # s, because looking at the website where this text is used, it doesn't correspond to a linebreak in the output.
 # Second thought: is the space that's sometimes at the end of a line critical? (Tim Morlely, 2005-11-22)
 # gettext joins strings together without adding any spaces or newlines, so you definitely need one or the other, otherwise you'd get "copiedcorrectly", "you'llhave" and so on. For web strings, it doesn't matter if you have spaces or newlines,as they're equivalent in the HTML; it might matter for the email translations. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000093.html)
-#: pb/web/faq.php:106
+#: pb/web/faq.php:122
 msgid ""
 "The software behind PledgeBank is open source, and available to you\n"
 "mainly under the Affero GPL software license. You can <a\n"
@@ -2502,11 +2546,11 @@ msgid ""
 "any such projects.\n"
 msgstr "De programmatie achter PledgeBank is vrij en werd uitgegeven vooral door de GPL-vergunning van Affero. U kan<a href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\"> de broncode ophalen </a> (zoek onder 'pb') en ons helpen ze verder te ontwikkelen. Het staat u helemaal vrij ze te gebruiken in uw eigen projecten, maar u moet altijd de broncode van die projecten ter beschikking stellen.\n"
 
-#: pb/web/faq.php:114
+#: pb/web/faq.php:130
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr ""
 
-#: pb/web/faq.php:116
+#: pb/web/faq.php:132
 msgid ""
 "OK, we are\n"
 "Mike Bracken,\n"
@@ -2525,6 +2569,8 @@ msgid ""
 "Hugo Caballero Figueroa (Spanish),\n"
 "Tim Morley (Esperanto),\n"
 "Diego Galli (Italian),\n"
+"LaPingvino and Leo De Cooman (Dutch),\n"
+"Creso Moraes (Brazilian Portuguese),\n"
 "Alexander Markushin (Russian),\n"
 "maidan.org.ua team (Ukrainian).\n"
 "\n"
@@ -2540,15 +2586,15 @@ msgid ""
 "\n"
 msgstr ""
 
-#: pb/web/faq.php:153
+#: pb/web/faq.php:171
 msgid "Pledge Creators' Questions"
 msgstr "Vragen van Beloftemakers"
 
-#: pb/web/faq.php:156
+#: pb/web/faq.php:174
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Welke soort beloften doen het goed, en welke mislukken?"
 
-#: pb/web/faq.php:158
+#: pb/web/faq.php:176
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
 "which will apply. First, the lower a pledge target (in terms of\n"
@@ -2562,11 +2608,11 @@ msgstr ""
 "Wij zijn er nog niet zeker van, maar door na te denken geloven we dat er enkele algemene regels te volgen zijn. Ten eerste, hoe lager het beoogde doel is, des te waarschijnlijker dat het zal slagen. Ten tweede, die slaagkans hangt ook rechtstreeks af van de energie, die u inzet voor een grootse belofte,\n"
 "zowel die van u zelf, als die van een onderschrijver. Indien u met een draagbare computer van deur tot deur gaat om personen aan te sporen onmiddellijk te onderschrijven, is uw succes veel waarschijnlijker dan voor wie zijn belofte opstelt en ze daarna vergeet."
 
-#: pb/web/faq.php:167
+#: pb/web/faq.php:185
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Hoeveel personen moet ik vragen?</a>"
 
-#: pb/web/faq.php:169
+#: pb/web/faq.php:187
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
 "Choose the number of people for which you could only just be bothered to carry\n"
@@ -2579,11 +2625,11 @@ msgstr ""
 "Kies het aantal personen, waarmee u nauwelijks de aansporing zou vinden om uw deel van de belofte te doen. Kies één meer dan dat getal, dat u zou doen opgeven. \n"
 "Vraag niet meer dan dat. Zo heeft u de grootste kans op slagen en niets verhindert dat eventueel meer personen onderschrijven."
 
-#: pb/web/faq.php:184
+#: pb/web/faq.php:202
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Waarom verschijnt mijn nieuwe belote niet op het blad Alle Beloften?"
 
-#: pb/web/faq.php:186
+#: pb/web/faq.php:204
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
 "the site, until a few people have signed up to them. This is to make\n"
@@ -2592,13 +2638,13 @@ msgid ""
 "neighbours about your pledge!"
 msgstr "Nieuwe beloften worden getoond op een apart blad en niet elders tot wanneer enkele personen ze onderschreven hebben. Zo zijn we er zeker van dat we enkel kwaliteitsbeloften tonen, die een actieve maker hebben en enige steun. Informeer dus zeker uw vrienden en buren over de belofte! "
 
-#: pb/web/faq.php:192
+#: pb/web/faq.php:210
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Verwijdert u domme of onwettige beloften?"
 
 # Translated your neologism "backpage" as simply "hide", because that's what it seems to mean. (Tim Morley, 2005-11-22)
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:195
+#: pb/web/faq.php:213
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "consider to be inappropriate. This means that your pledge will work, but will\n"
@@ -2612,11 +2658,11 @@ msgstr ""
 " Normaal zullen we beloften verbergen, die gewoon reklame of propaganda zijn of die niets betekenen.\n"
 "Bovendien zullen we alle beloften volledig verwijderen, die onwettige acties steunen of er toe aanzetten."
 
-#: pb/web/faq.php:202
+#: pb/web/faq.php:220
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Waarom mag ik mijn belofte niet wijzigen nadat ik ze gemaakt heb?</a>"
 
-#: pb/web/faq.php:204
+#: pb/web/faq.php:222
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "the pledge.  If you change the wording, then their signatures would no longer\n"
@@ -2629,11 +2675,11 @@ msgstr ""
 "ons</a> contacteren als er een te verbeteren foutje in staat. Voor grotere wijzigingen moet u een nieuwe belofte maken en vragen dat uw onderschrijvers de nieuwe zouden onderschrijven. Er is een verwijzing \n"
 "om dat te doen in het deel 'Bekendmaking' van uw belofteblad."
 
-#: pb/web/faq.php:211
+#: pb/web/faq.php:229
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Kan ik mijn onderschrijvers contacteren?"
 
-#: pb/web/faq.php:213
+#: pb/web/faq.php:231
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
 "to your pledge's page, and follow the link under 'Spread the word'.  For cost\n"
@@ -2648,11 +2694,11 @@ msgstr ""
 "Ga naar uw belofteblad en volg de verwijzing onder 'Bekendmaking'. Omwille van de kost zullen die berichten niet diegenen bereiken die per SMS onderschreven hebben. Als uw belofte slaagt zal u een verwijzing krijgen, waarmee u een bericht zal kunnen zenden naar iedereen die u steunt, inbegrepen die onderschreven via een SMS.\n"
 "U zou uw contactinformatie moeten geven en de hunne vragen om het contact te laten duren nadat u samen in actie gekomen bent. Ook eventuele latere onderschrijvers zullen uw berichten krijgen."
 
-#: pb/web/faq.php:222
+#: pb/web/faq.php:240
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Kan men per SMS onderschrijven (een tekstbericht per zaktelefoon)? Hoe?"
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:242
 #, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -2668,26 +2714,26 @@ msgstr ""
 "gelieve met ons contact op te nemen. De vlugschriften voor uw belofte leggen uit hoe te onderschrijven per SMS, druk er dus een stapeltje van en neem ze altijd bij u in uw tas. U zal de vlugschriften vinden in het deel 'Bekendmaking' van uw belofteblad. U kan ook aan de geïnteresserden zeggen dat ze een bericht <strong>pledge REFERENTIE</strong> zenden naar <strong>\n"
 "%s</strong>, waarin ze REFERENTIE vervangen door de korte referentie van uw belofte, die u gekozen hebt toen u ze maakte en die verschijnt aan het einde van haar internetadres."
 
-#: pb/web/faq.php:234
+#: pb/web/faq.php:252
 msgid "How do I add a picture to my pledge?"
 msgstr "Hoe voeg ik een afbeelding bij mijn belofte?"
 
-#: pb/web/faq.php:236
+#: pb/web/faq.php:254
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
 "(creator only)' under 'Spread the word on and offline'. Either find a picture\n"
 "of something to do with your pledge, or even just use a photo of yourself!"
 msgstr "Klik op de verwijzing 'Een afbeelding bijvoegen bij uw belofte (enkel voor de maker)' in het deel 'Bekendmaking' van uw belofteblad. Zoek een afbeelding van iets, wat te maken heeft met uw belofte, of eenvoudig een foto van uzelf."
 
-#: pb/web/faq.php:244
+#: pb/web/faq.php:262
 msgid "International Questions"
 msgstr "Internationale Vragen"
 
-#: pb/web/faq.php:247
+#: pb/web/faq.php:265
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Mag ik beloften doen in andere talen?"
 
-#: pb/web/faq.php:249
+#: pb/web/faq.php:267
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
 "If your browser is configured to use one of those languages, PledgeBank will \n"
@@ -2700,11 +2746,11 @@ msgstr ""
 "maar we kunnen ze maar maken met medewerking van anderstaligen. Als u zich wil voorstellen als vertaler,  <a href=\"/translate\">lees dan\n"
 "onze bladzijde daarover</a>."
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:274
 msgid "What countries does PledgeBank work in?"
 msgstr "In welke landen werkt PledgeBank?"
 
-#: pb/web/faq.php:258
+#: pb/web/faq.php:276
 msgid ""
 "All of them. We try to detect which country you are in\n"
 "automatically, and show you only pledges relevant to your country. To see what\n"
@@ -2716,11 +2762,11 @@ msgstr ""
 "en tonen u enkel beloften die uw land betreffen. Om te zien hoe PledgeBank er uit ziet in andere landen, klik op '(change)' bovenaan eender welk blad, rechts naast het PledgeBank-logo. Wil <a href=\"/ons contacteren\">contact\n"
 "us</a> als u anderen in uw land PledgeBank zou willen helpen gebruiken."
 
-#: pb/web/faq.php:264
+#: pb/web/faq.php:282
 msgid "Why do you only have UK postcodes?"
 msgstr "Waarom heeft u enkel UK postcodes?"
 
-#: pb/web/faq.php:266
+#: pb/web/faq.php:284
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
 "the postcode search overseas - please <a\n"
@@ -2730,25 +2776,25 @@ msgstr ""
 "We zouden blij zijn met iemand te spreken die ons kan helpen de postcode te zoeken in het buitenland - gelieve <a\n"
 "href=\"http://www.mysociety.org/mailman/listinfo/mysociety-i18n\"> deze e-post lijst email list</a> te vervoegen om ons daarbij te helpen.\n"
 
-#: pb/web/faq.php:272
+#: pb/web/faq.php:290
 msgid "... and SMS?"
 msgstr "... en SMS?"
 
-#: pb/web/faq.php:274
+#: pb/web/faq.php:292
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "can help add text messaging in your country."
 msgstr "Wil ons opnieuw <a href=\"/contact\">contacteren</a> als u kan helpen tekstberichten toe te voegen un uw land. "
 
-#: pb/web/faq.php:281
+#: pb/web/faq.php:299
 msgid "Privacy Questions"
 msgstr "Vragen over het private karakter"
 
-#: pb/web/faq.php:284
+#: pb/web/faq.php:302
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Ik wil mijn naam niet laten zien als ik een belofte onderschrijf!"
 
-#: pb/web/faq.php:286
+#: pb/web/faq.php:304
 #, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -2758,11 +2804,11 @@ msgid ""
 "view the pledge page."
 msgstr "U kan in het geheim een belofte onderschrijven, door 'Mijn naam tonen voor deze belofte' uit te schakelen bij het onderschrijven. Anders kan u onderschrijven via een SMS (enkel in %s). Indien u van plan bent een delicate, misschien hinderlijke belofte te doen, overweeg de mogelijkheid ze privé te maken; zo kunnen alleen zij, aan wie u de PIN gegeven hebt (geheim codenummer) het blad kunnen zien."
 
-#: pb/web/faq.php:292
+#: pb/web/faq.php:310
 msgid "Who gets to see my email address?"
 msgstr "Wie mag mijn e-adres zien?"
 
-#: pb/web/faq.php:294
+#: pb/web/faq.php:312
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
 "creator of your pledge. We do let the pledge creators send emails to pledge\n"
@@ -2772,11 +2818,11 @@ msgid ""
 "email address - please be aware!"
 msgstr "Wj zullen nooit uw e-adres aan iemand geven, ook niet aan de maker van uw belofte. Wij staan wel toe dat de maker e-berichten zendt aan onderschrijvers om hen aan te moedigen verder nieuws te geven, enz. Maar wij tonen aan de beloftemaker nooit de adressen van wie het bericht zal krijgen. Pas op: als u zou op een bericht van een beloftemaker zou antwoorden, zou u hem/haar zelf uw e-adres geven. "
 
-#: pb/web/faq.php:301
+#: pb/web/faq.php:319
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "Gaat u afschuwelijke spam zenden naar mijn e-adres?"
 
-#: pb/web/faq.php:303
+#: pb/web/faq.php:321
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
 "relation to your pledge. These will be a mixture of status emails from\n"
@@ -2821,24 +2867,35 @@ msgstr "Een schaar, een telefon en een printer &mdash; "
 msgid "Find out why these things are the secret of a successful pledge"
 msgstr "Ontdek waarom die dingen het geheim zijn van een geslaagde belofte"
 
-#: pb/web/index.php:110
+#: pb/web/index.php:114
 msgid "RSS feed of new pledges"
 msgstr "RSS-dienst over nieuwe beloften"
 
-#: pb/web/index.php:111
+#: pb/web/index.php:115
 msgid "Why not sign a live pledge?"
 msgstr "Waarom niet een huidige belofte onderschrijven?"
 
-#: pb/web/index.php:180
+#: pb/web/index.php:193
 msgid "Interesting pledges from other countries"
 msgstr "Interesante beloften uit andere landen"
 
-#: pb/web/index.php:187
+# See comment immediately above.
+#: pb/web/index.php:199
+#, fuzzy
+msgid "More pledges to sign..."
+msgstr "Aan belofte %s van %s."
+
+#: pb/web/index.php:204
 msgid "RSS feed of successful pledges"
 msgstr "RSS-dienst over geslaagde beloften"
 
-#: pb/web/index.php:188
+#: pb/web/index.php:205
 msgid "Recent successful pledges"
+msgstr "Recente geslaagde beloften"
+
+#: pb/web/index.php:227
+#, fuzzy
+msgid "More successful pledges..."
 msgstr "Recente geslaagde beloften"
 
 #: pb/web/lang.php:17 pb/web/lang.php:18
@@ -3202,7 +3259,7 @@ msgstr "Uw Belofte"
 msgid "(if you'd like your pledge in a language other than %s, <a href=\"%s\">click here</a>)"
 msgstr "(als u uw belofte wil schrijven in een andere taal dan %s, <a href=\"%s\">klik hier</a>.)"
 
-#: pb/web/new.php:132 pb/web/new.php:446 pb/web/ref-index.php:245
+#: pb/web/new.php:132 pb/web/new.php:446 pb/web/ref-index.php:254
 msgid "I will"
 msgstr "Ik zal"
 
@@ -3222,7 +3279,7 @@ msgstr "Doelcijfer onderschrijvers"
 msgid "will"
 msgstr "zal"
 
-#: pb/web/new.php:138 pb/web/poster.cgi:561
+#: pb/web/new.php:138 pb/web/poster.cgi:593
 msgid "do the same"
 msgstr "hetzelfde doen"
 
@@ -4028,7 +4085,7 @@ msgid "Invalid parameters, please try again"
 msgstr "Ongeldige argumenten, gelieve opnieuw te proberen"
 
 #: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
-#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
+#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:26 pb/web/ref-info.php:32
 msgid "Enter PIN"
 msgstr "Typ het geheime codenummer in"
 
@@ -4167,144 +4224,152 @@ msgstr "Een juiste PINcode is nodig"
 msgid "Deadline for pledge \"%s\""
 msgstr "Einddatum voor de belofte \"%s\""
 
-#: pb/web/ref-index.php:36
+#: pb/web/ref-index.php:41
 msgid "This pledge is now closed, as its deadline has passed."
 msgstr "Deze belofte is niet afgesloten, omdat haar einddatum reeds verstreken is."
 
-#: pb/web/ref-index.php:40
+#: pb/web/ref-index.php:45
 msgid "This pledge is now closed, as its target has been reached."
 msgstr "Deze belofte is nu afgesloten omdat haar doel bereikt is."
 
-#: pb/web/ref-index.php:42
+#: pb/web/ref-index.php:47
 msgid "This pledge has been successful!"
 msgstr "Deze belofte is geslaagd!"
 
-#: pb/web/ref-index.php:44
+#: pb/web/ref-index.php:49
 msgid "<strong>You can still add your name to it</strong>, because the deadline hasn't been reached yet."
 msgstr "<strong>U kan nog uw naam bijvoegen</strong>, want de einddatum is nog niet verstreken."
 
-#: pb/web/ref-index.php:54
+#: pb/web/ref-index.php:59
 msgid "Spread the word on and offline"
 msgstr "Uw belofte bekend maken elektronisch en persoonlijk"
 
-#: pb/web/ref-index.php:56
+#: pb/web/ref-index.php:61
 msgid "Things to do with this pledge"
 msgstr "Mogelijke taken bij deze belofte"
 
-#: pb/web/ref-index.php:60
+#: pb/web/ref-index.php:65
 msgid "Email pledge to your friends"
 msgstr "De belofte naar uw vrienden zenden per e-bericht"
 
-#: pb/web/ref-index.php:61
+#: pb/web/ref-index.php:66
 msgid "Add deadline to your calendar"
 msgstr "Een einddatum toevoegen aan uw kalender"
 
-#: pb/web/ref-index.php:62
+#: pb/web/ref-index.php:67
 msgid "Stick them places!"
 msgstr "Hang ze overal op!"
 
-#: pb/web/ref-index.php:62
+#: pb/web/ref-index.php:67
 msgid "Print out customised flyers"
 msgstr "Aangepaste vlugschriften printen"
 
-#: pb/web/ref-index.php:64
+#: pb/web/ref-index.php:69
 msgid "Create a local version of this pledge"
 msgstr "Een plaatselijke versie aanmaken van deze belofte"
 
-#: pb/web/ref-index.php:65 pb/web/ref-index.php:68
+#: pb/web/ref-index.php:70 pb/web/ref-index.php:73
 msgid "Only if you made this pledge"
 msgstr "Alleen als u deze belofte gemaakt heeft"
 
-#: pb/web/ref-index.php:65
+#: pb/web/ref-index.php:70
 msgid "Send message to signers"
 msgstr "Een bericht zenden aan uw onderschrijvers"
 
-#: pb/web/ref-index.php:65 pb/web/ref-index.php:74
+#: pb/web/ref-index.php:70 pb/web/ref-index.php:79
 msgid "(creator only)"
 msgstr "(alleen de maker)"
 
-#: pb/web/ref-index.php:70
+#: pb/web/ref-index.php:75
 msgid "Change the pledge picture"
 msgstr "De afbeelding van de belofte wijzigen"
 
-#: pb/web/ref-index.php:72 pb/web/ref-picture.php:173
+#: pb/web/ref-index.php:77 pb/web/ref-picture.php:173
 msgid "Add a picture to your pledge"
 msgstr "Een afbeelding toevoegen aan uw belofte"
 
-#: pb/web/ref-index.php:88
+#: pb/web/ref-index.php:93
 msgid "Current signatories"
 msgstr "Onderschijvers tot nog toe"
 
-#: pb/web/ref-index.php:93
+#: pb/web/ref-index.php:98
 #, php-format
 msgid "So far, only %s, the Pledge Creator, has signed this pledge."
 msgstr "Tot nu toe heeft alleen %s, de beloftemaker, deze belofte ondertekend."
 
-#: pb/web/ref-index.php:106
+#: pb/web/ref-index.php:111
 #, php-format
 msgid "Because there are so many signers, only the most recent %d are shown on this page."
 msgstr "Wegens het groot aantal onderschrijvers worden slechts de laatste %d getoond op dit blad."
 
-#: pb/web/ref-index.php:109
+#: pb/web/ref-index.php:114
 msgid "Show all signers"
 msgstr "Alle onderschrijvers tonen"
 
-#: pb/web/ref-index.php:122
+#: pb/web/ref-index.php:127
 #, php-format
 msgid "%s, the Pledge Creator, joined by:"
 msgstr "%s, de beloftemaker, samen met:"
 
-#: pb/web/ref-index.php:156
+#: pb/web/ref-index.php:161
 #, php-format
 msgid "%d person who did not want to give their name"
 msgid_plural "%d people who did not want to give their names"
 msgstr[0] "%d persoon, die zijn naam niet wilde geven"
 msgstr[1] "%d personen, die hun naam niet wilden geven"
 
-#: pb/web/ref-index.php:161
+#: pb/web/ref-index.php:166
 #, php-format
 msgid ", and %d who signed up via mobile"
 msgid_plural ", and %d who signed up via mobile"
 msgstr[0] ", en %d, die onderschreven per zaktelefoon"
 msgstr[1] ", en %d, die per zaktelefoon onderschreven"
 
-#: pb/web/ref-index.php:163
+#: pb/web/ref-index.php:168
 #, php-format
 msgid "%d person who signed up via mobile"
 msgid_plural "%d people who signed up via mobile"
 msgstr[0] "%d persoon, die per zaktelefon onderschreven"
 msgstr[1] "%d personen, die per zaktelefoon onderschreven"
 
-#: pb/web/ref-index.php:174
+#: pb/web/ref-index.php:179
 msgid "View signup rate graph"
 msgstr "De onderschrijfsnelheidsgrafiek zien"
 
-#: pb/web/ref-index.php:181
+#: pb/web/ref-index.php:186
 msgid "RSS feed of comments on this pledge"
 msgstr "RSS-dienst van commentaren over deze belofte"
 
-#: pb/web/ref-index.php:182
+#: pb/web/ref-index.php:187
 msgid "Comments on this pledge"
 msgstr "Commentaren over deze belofte"
 
-#: pb/web/ref-index.php:190
+#: pb/web/ref-index.php:195
 #, php-format
 msgid "Because there are so many comments, only the most recent %d are shown on this page."
 msgstr "Wegens het grote aantal commentaren zijn enkel de laatste %d te zien op dit blad"
 
-#: pb/web/ref-index.php:193
+#: pb/web/ref-index.php:198
 msgid "Show all comments"
 msgstr "Alle commentaren tonen"
 
-#: pb/web/ref-index.php:232 pb/web/your.php:61
+#: pb/web/ref-index.php:237 pb/web/your.php:61
 msgid "Suggested pledges"
 msgstr "Voorgestelde beloften"
 
-#: pb/web/ref-index.php:233
-msgid "People who signed this pledge also signed these..."
+#: pb/web/ref-index.php:238
+#, fuzzy
+msgid "Some of the people who signed this pledge also signed these pledges..."
 msgstr "Wie deze belofte onderschreven ondertekenden ook deze..."
 
-#: pb/web/ref-index.php:248
+#: pb/web/ref-index.php:244
+#, fuzzy, php-format
+msgid "%s person"
+msgid_plural "%s people"
+msgstr[0] "%s persoon heeft onderschreven "
+msgstr[1] "%s personen hebben onderschreven "
+
+#: pb/web/ref-index.php:257
 #, php-format
 msgid "Comments on Pledge '%s'"
 msgstr "Commentaren over belofte '%s'"
@@ -4995,11 +5060,11 @@ msgstr "Elektu vian landon"
 msgid "Choose your country ..."
 msgstr "Kies uw land"
 
-#: pb/web/where.php:81
+#: pb/web/where.php:82
 msgid "Your country isn't there? <a href=\"/new\">Make a pledge</a> specific to your country, and get people to sign up to it."
 msgstr ""
 
-#: pb/web/where.php:86
+#: pb/web/where.php:87
 msgid "... or choose a special site"
 msgstr "... of kies een speciale site"
 
@@ -5063,12 +5128,12 @@ msgstr "U onderschreef geen beloften."
 msgid "Why not <a href=\"mailto:team@pledgebank.com\">send us photos</a> of yourself carrying out successful pledges?"
 msgstr "Waarom ons geen<a href=\"mailto:team@pledgebank.com\">fotos zenden</a> waarop u bezig bent uw geslaagde beloften uit te voeren?"
 
-#: pb/bin/frequentupdate:192
+#: pb/bin/frequentupdate:238
 #, php-format
 msgid "PledgeBank here. Sorry, the %s pledge has failed. Better luck next time!"
 msgstr "Hier PledgeBank. Wij vinden het spijtig dat uw belofte %s mislukte. Volgende keer beter!"
 
-#: pb/bin/frequentupdate:373
+#: pb/bin/frequentupdate:454
 #, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone who signed your pledge %s ]\n"
@@ -5079,28 +5144,28 @@ msgstr ""
 "\n"
 "%s"
 
-#: pb/bin/frequentupdate:508
+#: pb/bin/frequentupdate:589
 #, php-format
 msgid "%d days ago"
 msgstr "%d dagen geleden"
 
-#: pb/bin/frequentupdate:510
+#: pb/bin/frequentupdate:591
 #, php-format
 msgid "%d hours ago"
 msgstr "%d uren geleden"
 
-#: pb/bin/frequentupdate:512
+#: pb/bin/frequentupdate:593
 #, php-format
 msgid "%d minutes ago"
 msgstr "%d minuten geleden"
 
-#: pb/bin/frequentupdate:514
+#: pb/bin/frequentupdate:595
 msgid "a minute ago"
 msgstr "een minuut geleden"
 
 # According to the source code file pb/bin/frequentupdate, the first %s here is replaced by one of the above expressions (%d days ago, one minute ago, etc.) (Tim Morley, 2005-11-23)
 #. TRANS: The first %s is one of the time strings above.
-#: pb/bin/frequentupdate:517
+#: pb/bin/frequentupdate:598
 #, php-format
 msgid "[ You signed this pledge after this message was sent to the other signers. They will have received copies of this message %s. You can read older messages from the pledge creator that you missed here: %s ]"
 msgstr "[ U onderschreef deze belofte nadat dit bericht was verzonden aan de andere ondergetekenden. Zij hebben kopie ontvangen hebben van dit bericht %s. Hier kan U oudere berichten lezen van de persoon die de belofte aanmaakte, die u gemist heeft: %s ]"
@@ -5113,57 +5178,57 @@ msgstr "Klik hier voor meer informatie:"
 msgid "SMS operated by charity UKCOD. Available in UK only. Sign-up message costs your normal text rate. Further messages are free. "
 msgstr "SMS opgezet door de weldaadstichting UKCOD. Is alleen in het Verenigd Koninkrijk beschikbaar. Een bericht onderschrijven kost evenveel als een gewone SMS, volgens uw telefooncontract. Alle latere berichten zijn gratis."
 
-#: pb/web/poster.cgi:197
+#: pb/web/poster.cgi:207
 msgid "If"
 msgstr "Indien"
 
-#: pb/web/poster.cgi:199
+#: pb/web/poster.cgi:209
 #, python-format
 msgid " %s will %s, then "
 msgstr " %s belooft %s, dan"
 
-#: pb/web/poster.cgi:200
+#: pb/web/poster.cgi:210
 msgid "I"
 msgstr "ik"
 
-#: pb/web/poster.cgi:201
+#: pb/web/poster.cgi:211
 #, python-format
 msgid " will %s."
 msgstr " belooft %s."
 
-#: pb/web/poster.cgi:208
+#: pb/web/poster.cgi:218
 msgid "More details:"
 msgstr "Meer details:"
 
 # OK, even having found this in the source code, I can't work out what its context is! I gather it's part of a SMS message, but I can't get any more. Please help. What follows "at"? Is it a time, a date, or something else? (Tim Morley, 2005-11-23)
 # It's on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:216 pb/web/poster.cgi:363
+#: pb/web/poster.cgi:226 pb/web/poster.cgi:378
 msgid "Pledge at "
 msgstr "Onderschrijf bij "
 
-#: pb/web/poster.cgi:218 pb/web/poster.cgi:365
+#: pb/web/poster.cgi:228 pb/web/poster.cgi:380
 msgid " pin "
 msgstr " geheim codenummer "
 
 # I think from the context in poster.cgi that this is an instruction (i.e. verb in the imperative), not the noun 'text', is that right? (Tim Morley, 2005-11-23)
 # Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: Text is an instruction (verb in the imperative)
-#: pb/web/poster.cgi:223
+#: pb/web/poster.cgi:233
 msgid "Text"
 msgstr "Zend een tekstbericht"
 
 # Should 'pledge' be translated here or not? If it's part of an automatic system for picking up and counting SMS messages, does it have to stay in English? (Tim Morley, 2005-11-23)
 # Yes, this needs to stay in English, it's the SMS shortcode. I guess it should stay in translation in case we get more shortcodes, but I should also add comments to the .po file with things like this. Thanks again. :) (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: Do not translate 'pledge' here, it is the SMS shortcode we use
-#: pb/web/poster.cgi:226
+#: pb/web/poster.cgi:236
 #, python-format
 msgid "pledge %s"
 msgstr "belofte %s"
 
 # This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
 #. TRANS: This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:228
+#: pb/web/poster.cgi:238
 msgid "to"
 msgstr "aan"
 
@@ -5171,88 +5236,88 @@ msgstr "aan"
 # Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: I think 'pledge' here means 'sign up to', as part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
 #. Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:232
+#: pb/web/poster.cgi:242
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr " (slechts %s) of onderschrijf bij "
 
-#: pb/web/poster.cgi:236
+#: pb/web/poster.cgi:246
 msgid "This pledge closes on "
 msgstr "Deze belofte wordt afgelsoten op "
 
-#: pb/web/poster.cgi:236
+#: pb/web/poster.cgi:246
 msgid ". Thanks!"
 msgstr ". Dank u!"
 
 # Some characters seem corrupted in the original .po file. I think they're meant to be em-dashes, but is it OK to put the HTML code &mdash; in their place? A Google search for '"you only have to act" site:pledgebank.com' suggests that this code is used to create pdf's, not webpages, so maybe HTML codes are no use. Oh yeah, the fact that this is all in a file called "poster.cgi" suggests it might be used for generating, er, posters. What to do then? (Tim Morley, 2005-11-23)
 # Hmm, yes. The poster.cgi file is indeed for creating PDF and RTF posters in Python, and the RTF generation library we use (or RTF standard itself) requires the characters to be in, I believe, Win-1252. As the .po file says it's in UTF-8, it's encoded e.g. \x96 as \xc2 \x96. If you just copy that identically (\x96 and \x97 are dashes, \x92 is apostrophe), it should be okay. I know that's not perfect, sorry. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:237 pb/web/poster.cgi:385
+#: pb/web/poster.cgi:247 pb/web/poster.cgi:400
 #, python-format
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr "Onthoud dat u aan de slag moet alleen als %d andere personen onderschrijven – dat is de ethiek van PledgeBank."
 
-#: pb/web/poster.cgi:317
+#: pb/web/poster.cgi:332
 msgid "<font color=\"#ffffff\">Pledge</font>Bank.com"
 msgstr "<font color=\"#ffffff\">Pledge</font>Bank.com"
 
-#: pb/web/poster.cgi:343
+#: pb/web/poster.cgi:358
 #, python-format
 msgid ""
 "\n"
-"            <b>If</b> <font color=\"#522994\">%s</font> %s will %s, \n"
-"            then <font color=\"#522994\">I</font> will %s.\n"
+"            <b>If</b> <font color=\"%s\">%s</font> %s will %s, \n"
+"            then <font color=\"%s\">I</font> will %s.\n"
 "            "
 msgstr ""
 "\n"
-"            <b>Se</b> <font color=\"#522994\">%s</font> %s belooft %s, \n"
-"            dan beloof<font color=\"#522994\">ik</font> %s.\n"
+"            <b>Se</b> <font color=\"%s\">%s</font> %s belooft %s, \n"
+"            dan beloof<font color=\"%s\">ik</font> %s.\n"
 "            "
 
-#: pb/web/poster.cgi:359
+#: pb/web/poster.cgi:374
 #, python-format
 msgid "<b>More details:</b> %s"
 msgstr "<b>Meer details:</b> %s"
 
-#: pb/web/poster.cgi:371
+#: pb/web/poster.cgi:386
 msgid "pledge at "
 msgstr "onderschrijf bij"
 
 # Translate "pledge" here or not (as part of text message to be automatically interpreted as a signing up)? (Tim Morley, 2005-11-23)
 # No, we only have use of the word "pledge" currently. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: Again, please don't translate "pledge" in this one
-#: pb/web/poster.cgi:374
+#: pb/web/poster.cgi:389
 #, python-format
 msgid ""
-"<font size=\"+2\">Text</font> <font size=\"+8\" color=\"#522994\">\n"
-"            <b>pledge %s</b></font> to <font color=\"#522994\"><b>%s</b></font> \n"
+"<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
+"            <b>pledge %s</b></font> to <font color=\"%s\"><b>%s</b></font> \n"
 "            (%s only) or "
 msgstr ""
-"<font size=\"+2\">Zend tekst</font> <font size=\"+8\" color=\"#522994\">\n"
-"            <b>pledge %s</b></font> al <font color=\"#522994\"><b>%s</b></font> \n"
+"<font size=\"+2\">Zend tekst</font> <font size=\"+8\" color=\"%s\">\n"
+"            <b>pledge %s</b></font> al <font color=\"%s\"><b>%s</b></font> \n"
 "            (alleen in %s) of "
 
-#: pb/web/poster.cgi:382
+#: pb/web/poster.cgi:397
 #, python-format
 msgid ""
 "\n"
-"            This pledge closes on <font color=\"#522994\">%s</font>. Thanks!\n"
+"            This pledge closes on <font color=\"%s\">%s</font>. Thanks!\n"
 "            "
 msgstr ""
 "\n"
-"            Deze belofte zal afgesloten worden op <font color=\"#522994\">%s</font>. Dank u!\n"
+"            Deze belofte zal afgesloten worden op <font color=\"%s\">%s</font>. Dank u!\n"
 "            "
 
-#: pb/web/poster.cgi:551
+#: pb/web/poster.cgi:583
 msgid "UK"
 msgstr "Verenigd Koninkrijk"
 
 # I've translated this as "with you", because putting "too" at the end of a sentence doesn't really work in Esperanto; it's inelegant anyway. I think I'm right in saying that this word forms the end of a sentence like "...only if xx people sign up too", so if I can't change the word order, a workaround could be to change the end of the sentence to "to you". How's that? (Tim Morley, 2005-11-23)
 # What the code does here is change the last word of the sentence to "too" if it currently ends "do the same". If you want, you could translate this "too" to "do the same" to not do this. Or "with you", I guess either is fine. :) This should probably be a better-constructed sentence. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:562
+#: pb/web/poster.cgi:594
 msgid "too"
 msgstr "met u"
 
-#: pb/web/poster.cgi:702
+#: pb/web/poster.cgi:743
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"

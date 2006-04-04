@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.8\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-03-23 11:19+0000\n"
+"POT-Creation-Date: 2006-04-04 16:53+0100\n"
 "PO-Revision-Date: 2006-03-08 17:47+0300\n"
 "Last-Translator: devrand <devrand@gmail.com>\n"
 "Language-Team: Ukrainian <novyny@maidan.org.ua>\n"
@@ -1035,8 +1035,8 @@ msgstr "хронологія"
 msgid "Language:"
 msgstr "Мова:"
 
-#: pb/phplib/admin-pb.php:260 pb/phplib/fns.php:581 pb/phplib/pledge.php:316
-#: pb/phplib/pledge.php:319 pb/web/alert.php:205
+#: pb/phplib/admin-pb.php:260 pb/phplib/fns.php:599 pb/phplib/pledge.php:346
+#: pb/phplib/pledge.php:349 pb/web/alert.php:205
 msgid "Country:"
 msgstr "Країна:"
 
@@ -1218,31 +1218,36 @@ msgstr "%s від %s, щодо %s, %s"
 msgid "<h2>Latest comments</h2>"
 msgstr "<h2>Останні коментарі</h2>"
 
-#: pb/phplib/comments.php:209
+#: pb/phplib/comments.php:210
+#, fuzzy
+msgid "This pledge is closed for new comments."
+msgstr "Можливість підтримати цю ініціативу триває до "
+
+#: pb/phplib/comments.php:213
 msgid "<h2>Add Comment</h2>"
 msgstr "<h2>Додати коментар</h2>"
 
-#: pb/phplib/comments.php:212 pb/web/contact.php:51
+#: pb/phplib/comments.php:215 pb/web/contact.php:52
 msgid "Your name"
 msgstr "Ваше ім’я"
 
-#: pb/phplib/comments.php:217 pb/phplib/pledge.php:666 pb/web/contact.php:52
+#: pb/phplib/comments.php:220 pb/phplib/pledge.php:699 pb/web/contact.php:53
 msgid "Your email"
 msgstr "Ваш email"
 
-#: pb/phplib/comments.php:222
+#: pb/phplib/comments.php:225
 msgid "Your web site"
 msgstr "Ваш веб-сайт"
 
-#: pb/phplib/comments.php:222
+#: pb/phplib/comments.php:225
 msgid "(optional)"
 msgstr "(необов’язково)"
 
-#: pb/phplib/comments.php:226
+#: pb/phplib/comments.php:229
 msgid "Your comment"
 msgstr "Ваш коментар"
 
-#: pb/phplib/comments.php:234
+#: pb/phplib/comments.php:237
 msgid ""
 "Your name and web site, if given, will be shown on your comment,\n"
 "but your email address will not be."
@@ -1250,15 +1255,15 @@ msgstr ""
 "Адреса електронної пошти, зазначена вами, не відображатиметься,\n"
 "всі бачитимуть лише Ваше ім’я і веб-сайт, якщо його вкажете."
 
-#: pb/phplib/comments.php:237
+#: pb/phplib/comments.php:240
 msgid " Email me future comments on this pledge"
 msgstr " Надсилати мені коментарі до цієї обіцянки"
 
-#: pb/phplib/comments.php:239 pb/web/new.php:407
+#: pb/phplib/comments.php:242 pb/web/new.php:407
 msgid "Preview"
 msgstr "Спробувати"
 
-#: pb/phplib/comments.php:241
+#: pb/phplib/comments.php:244
 msgid "Post comment"
 msgstr "Відправити"
 
@@ -1298,7 +1303,7 @@ msgstr "Додайте повідомлення, якщо хочете:"
 msgid "Your name:"
 msgstr "Ваше ім’я:"
 
-#: pb/phplib/fns.php:368 pb/phplib/fns.php:580 pb/web/alert.php:201
+#: pb/phplib/fns.php:368 pb/phplib/fns.php:594 pb/web/alert.php:201
 #: pb/web/new.php:158 pb/web/sms.php:233
 msgid "Email:"
 msgstr "Email:"
@@ -1353,59 +1358,64 @@ msgid "(just the start of the postcode, such as WC1)"
 msgstr "(лише його початок, наприклад, WC1)"
 
 # вгорі на домашній сторінці, внизу інших сторінок
-#: pb/phplib/fns.php:579
+#: pb/phplib/fns.php:589
 msgid "Sign up for emails when people make pledges in your local area"
 msgstr "Хочеш знати про місцеві ініціативи? Підпишись"
 
 # продовження (через тире)
-#: pb/phplib/fns.php:579
+#: pb/phplib/fns.php:591
 msgid "Works in any country!"
 msgstr "географічна розсилка!"
 
-#: pb/phplib/fns.php:582 pb/web/pb.js:125 pb/web/pb.js:128
+#: pb/phplib/fns.php:597
+#, fuzzy
+msgid "Postcode:"
+msgstr "Поштовий індекс"
+
+#: pb/phplib/fns.php:600 pb/web/pb.js:125 pb/web/pb.js:128
 msgid "Town:"
 msgstr "Місто"
 
-#: pb/phplib/fns.php:583 pb/web/alert.php:214
+#: pb/phplib/fns.php:602 pb/web/alert.php:214
 msgid "Subscribe"
 msgstr "Підписатися"
 
-#: pb/phplib/fns.php:595
+#: pb/phplib/fns.php:614
 msgid "the UK"
 msgstr "Британія"
 
 #. TRANS: i.e. "choose website" or "choose local place where action will be taken?" I've assumed the former. (Tim Morley, 2005-11-21)
 #. Yes, it's choose website. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/fns.php:611
+#: pb/phplib/fns.php:630
 msgid "choose site"
 msgstr "виберіть сайт"
 
 # у текстах в різних місцях, лінк після слова "Ukraine"
-#: pb/phplib/fns.php:613
+#: pb/phplib/fns.php:632
 msgid "change country"
 msgstr "змініть на вашу"
 
-#: pb/phplib/fns.php:615
+#: pb/phplib/fns.php:634
 msgid "choose country"
 msgstr "оберіть вашу країну"
 
 # у текстах в різних місцях, лінк після слова "English"
-#: pb/phplib/fns.php:623
+#: pb/phplib/fns.php:642
 msgid "change language"
 msgstr "ваша мова"
 
 # внизу сторінки, перераховуються доступні мови
-#: pb/phplib/fns.php:630
+#: pb/phplib/fns.php:649
 msgid "Available in"
 msgstr "Іншими мовами"
 
 # перед останньою названою мовою
-#: pb/phplib/fns.php:647
+#: pb/phplib/fns.php:666
 msgid "and"
 msgstr "та"
 
 # внизу сторінки
-#: pb/phplib/fns.php:650
+#: pb/phplib/fns.php:669
 msgid "Translate PledgeBank into your language"
 msgstr "Як перекласти PledgeBank своєю мовою"
 
@@ -1413,13 +1423,13 @@ msgstr "Як перекласти PledgeBank своєю мовою"
 # msgstr "показано лише  %s (%s) обіцянок"
 # підозрюю, що це заголовок, який має бути з великої літери (в оригіналі, гадаю, підставляється назва країни або мови – ясно, що речення вийде з великої літери)
 # в оригіналі немає "лише"
-#: pb/phplib/fns.php:741
+#: pb/phplib/fns.php:754
 #, php-format
 msgid "%s (%s) pledges listed"
 msgstr "Перелік ініціатив: %s (%s)"
 
 # ??? перекладаю наосліп, потрібен контекст для уточнення
-#: pb/phplib/fns.php:743
+#: pb/phplib/fns.php:756
 #, php-format
 msgid "%s (%s) pledges only listed"
 msgstr "Лише ініціативи: %s (%s)"
@@ -1427,33 +1437,33 @@ msgstr "Лише ініціативи: %s (%s)"
 # ??? перекладаю наосліп, потрібен контекст для уточнення
 # msgstr "Дивіться список ініциатив,  країною походження яких є  %s (%s), та глобальних ініциатив,  мовою яких є %s (%s) "
 # "країна походження" не згоден, бо можна з України створити пледж стосовно Канади і навпаки.
-#: pb/phplib/fns.php:748
+#: pb/phplib/fns.php:761
 #, php-format
 msgid "%s (%s) pledges and global %s (%s) pledges listed"
 msgstr "Ініціативи для країни %s (%s) та глобальні ініціативи, мовою яких є %s (%s)"
 
 # ??? перекладаю наосліп, потрібен контекст для уточнення
 # <країна><мова>
-#: pb/phplib/fns.php:750
+#: pb/phplib/fns.php:763
 #, php-format
 msgid "%s (%s) pledges in %s (%s) only listed"
 msgstr "Ініціативи для країни %s (%s), мовою яких є %s (%s)"
 
 # ??? перекладаю наосліп, потрібен контекст для уточнення
-#: pb/phplib/fns.php:757
+#: pb/phplib/fns.php:770
 #, php-format
 msgid "There are no featured pledges for %s (%s) at the moment."
 msgstr "На даний момент немає обіцянок  для %s (%s)."
 
-#: pb/phplib/fns.php:810 pb/phplib/fns.php:812
+#: pb/phplib/fns.php:823 pb/phplib/fns.php:825
 msgid "less than 1 mile away"
 msgstr "меньш ніж 1.8 км. звідси"
 
-#: pb/phplib/fns.php:814
+#: pb/phplib/fns.php:827
 msgid "less than 1 km away"
 msgstr "меньш ніж 1 км. звідси "
 
-#: pb/phplib/fns.php:816 pb/phplib/fns.php:819
+#: pb/phplib/fns.php:829 pb/phplib/fns.php:832
 #, php-format
 msgid "%d mile away"
 msgid_plural "%d miles away"
@@ -1461,7 +1471,7 @@ msgstr[0] "%d миля звідси"
 msgstr[1] "%d  милі звідси"
 msgstr[2] "%d миль звідси"
 
-#: pb/phplib/fns.php:817 pb/phplib/fns.php:820
+#: pb/phplib/fns.php:830 pb/phplib/fns.php:833
 #, php-format
 msgid "%d mile"
 msgid_plural "%d miles"
@@ -1469,12 +1479,12 @@ msgstr[0] "%d миля звідси"
 msgstr[1] "%d милі звідси"
 msgstr[2] "%d  миль звідси"
 
-#: pb/phplib/fns.php:822
+#: pb/phplib/fns.php:835
 #, php-format
 msgid "%d km away"
 msgstr "%d км. звідси"
 
-#: pb/phplib/fns.php:822
+#: pb/phplib/fns.php:835
 #, php-format
 msgid "%d km"
 msgstr "%d км."
@@ -1483,29 +1493,34 @@ msgstr "%d км."
 msgid "Everywhere"
 msgstr "Глобальні"
 
-#: pb/phplib/microsites.php:22
+#: pb/phplib/microsites.php:23
 msgid "Everywhere &mdash; all countries in all languages"
 msgstr "Глобально &mdash; всі країни, всі мови"
 
-#: pb/phplib/microsites.php:23
+#: pb/phplib/microsites.php:24
+#, fuzzy
+msgid "London (United Kingdom)"
+msgstr "Велика Британія"
+
+#: pb/phplib/microsites.php:25
 msgid "365 Ways to Change the World"
 msgstr "365 Способів Змінити Світ"
 
-#: pb/phplib/microsites.php:42 pb/phplib/microsites.php:67
+#: pb/phplib/microsites.php:44 pb/phplib/microsites.php:74
 msgid "(change)"
 msgstr "(вибрати)"
 
-#: pb/phplib/microsites.php:58
+#: pb/phplib/microsites.php:60
 msgid "(other PledgeBanks)"
 msgstr "(Я маю PledgeBank)"
 
 # ??? перекладаю наосліп, потрібен контекст для уточнення
-#: pb/phplib/microsites.php:115 pb/web/pb.js:38 pb/web/pb.js:40
+#: pb/phplib/microsites.php:126 pb/web/pb.js:38 pb/web/pb.js:40
 msgid "other local people"
 msgstr "інших людей"
 
 # на домашній сторінці
-#: pb/phplib/microsites.php:154
+#: pb/phplib/microsites.php:181
 msgid ""
 "\"We all know what it is like to feel powerless, that our own\n"
 "        actions can't really change the things that we want to change.\n"
@@ -1515,11 +1530,11 @@ msgstr ""
 "        наших власних потуг замало для втілення задуманого.\n"
 "        PledgeBank саме для того, щоб долати це відчуття…”"
 
-#: pb/phplib/microsites.php:161
+#: pb/phplib/microsites.php:188
 msgid "Tell the world &#8220;I&#8217;ll do it, but only if you&#8217;ll help me do it&#8221;"
 msgstr "Дай звістку &#8220;Ми зможемо це зробити разом, єднаймося!&#8221;"
 
-#: pb/phplib/microsites.php:172
+#: pb/phplib/microsites.php:199
 msgid ""
 "Listen to how PledgeBank\n"
 "works</a>, as explained by mySociety's director Tom Steinberg.\n"
@@ -1529,7 +1544,7 @@ msgstr ""
 "роботу якого пояснює директор проекту mySociety Том Стайнберг.\n"
 "Читайте також <a href=\"/explain\">транскрипт цього аудіозапису"
 
-#: pb/phplib/microsites.php:176
+#: pb/phplib/microsites.php:203
 msgid ""
 "<a href=\"/explain\">Find out how PledgeBank\n"
 "works</a>, as explained by mySociety's director Tom Steinberg."
@@ -1537,23 +1552,23 @@ msgstr ""
 "<a href=\"/explain\">Що таке PledgeBank і як він працює</a>, \n"
 "розповідає директор проекту mySociety Том Стайнберг."
 
-#: pb/phplib/page.php:51
+#: pb/phplib/page.php:57
 msgid "Tell the world \"I'll do it, but only if you'll help\""
 msgstr "Скажи людям ”Я зможу, якщо ви мене підтримаєте”"
 
-#: pb/phplib/page.php:93
+#: pb/phplib/page.php:99
 msgid "This pledge's permanent location: "
 msgstr "Постійна адреса цієї ініціативи: "
 
-#: pb/phplib/page.php:112
+#: pb/phplib/page.php:118
 msgid "Hello, "
 msgstr "Привіт, "
 
-#: pb/phplib/page.php:118
+#: pb/phplib/page.php:124
 msgid "this isn't you?  click here"
 msgstr "ой, це не ти? тоді виходь"
 
-#: pb/phplib/page.php:128
+#: pb/phplib/page.php:134
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
@@ -1562,45 +1577,45 @@ msgstr ""
 "<a href=\"http://www.pledgebank.com/\">дійсний сайт</a>."
 
 # можливо, потрібне узгодження останнього слова, далі може підставлятися ще одна фраза
-#: pb/phplib/page.php:133
+#: pb/phplib/page.php:139
 msgid "Note: On this test site, the date is faked to be"
 msgstr "Увага: На цьому тестовому сайті дата несправжня"
 
 # блок навігації по сайту внизу сторінки, заголовок
-#: pb/phplib/page.php:153
+#: pb/phplib/page.php:160
 msgid "Navigation"
 msgstr "Навігація"
 
-#: pb/phplib/page.php:155
+#: pb/phplib/page.php:162
 msgid "Search"
 msgstr "Шукати"
 
 # на кнопці після поля аргументів пошуку
-#: pb/phplib/page.php:156 pb/phplib/page.php:285
+#: pb/phplib/page.php:163 pb/phplib/page.php:297
 msgid "Go"
 msgstr "Давай!"
 
 # або "Вйо"
 # на головній сторінці
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "Home"
 msgstr "Домашня"
 
 # на головній сторінці
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "All Pledges"
 msgstr "Всі Ініціативи"
 
 # на головній сторінці
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "Start a Pledge"
 msgstr "Створити"
 
-#: pb/phplib/page.php:159 pb/web/faq.php:13 pb/web/faq.php:17
+#: pb/phplib/page.php:166 pb/web/faq.php:13 pb/web/faq.php:17
 msgid "Frequently Asked Questions"
 msgstr "Типові Питання-Відповіді"
 
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "FAQ"
 msgstr "FAQ"
 
@@ -1608,69 +1623,69 @@ msgstr "FAQ"
 # або "Часті питання", "Типові питання", "Першочергові питання", "Найважливіші запитання", "Головні питання", "Актуальні питання"
 # або "Основні часті питання" ~> ОЧП
 # на головній сторінці, перехід на сторінку контактів з організаторами сайту
-#: pb/phplib/page.php:159
+#: pb/phplib/page.php:166
 msgid "Contact"
 msgstr "Зв’язок"
 
 # на головній сторінці
-#: pb/phplib/page.php:159 pb/web/your.php:22
+#: pb/phplib/page.php:166 pb/web/your.php:22
 msgid "Your Pledges"
 msgstr "Ваші ініціативи"
 
-#: pb/phplib/page.php:162
+#: pb/phplib/page.php:169
 msgid "Logout"
 msgstr "Вийти"
 
 # внизу кожної сторінки
-#: pb/phplib/page.php:169
+#: pb/phplib/page.php:176
 msgid "Built by mySociety"
 msgstr "Проект доброчинної організації mySociety"
 
-#: pb/phplib/page.php:255
+#: pb/phplib/page.php:267
 msgid "We couldn't find that pledge"
 msgstr "Не знайшлося такої обіцянки"
 
 # EOF 9.po.part
 # 10.po.part, saha
-#: pb/phplib/page.php:258
+#: pb/phplib/page.php:270
 #, php-format
 msgid "We couldn't find any pledge with a reference like \"%s\". Try the following: "
 msgstr "Неможливо знайти жодної обіцянки  з посиланням схожим на  \"%s\". Спробуйте наступне:"
 
-#: pb/phplib/page.php:260
+#: pb/phplib/page.php:272
 #, php-format
 msgid "We couldn't find the pledge with reference \"%s\". Did you mean one of these pledges?"
 msgstr "Неможливо знайти жодної обіцянки з посиланням схожим на  \"%s\". Ви маєте на увазі одне з цих зобов'язань?"
 
-#: pb/phplib/page.php:275
+#: pb/phplib/page.php:287
 msgid "If none of those look like what you want, try the following:"
 msgstr "Якщо ні одне не схоже на те, що Ви хочете, спробуйте наступне:"
 
-#: pb/phplib/page.php:279
+#: pb/phplib/page.php:291
 msgid "If you typed in the location, check it carefully and try typing it again."
 msgstr "Якщо ви ввели місцезнаходження, перевірте його  уважно та спробуйте ще раз."
 
-#: pb/phplib/page.php:280
+#: pb/phplib/page.php:292
 msgid "Look for the pledge on <a href=\"/all\">the list of all pledges</a>."
 msgstr "Шукати ініціативу в <a href=\"/all\">списку всіх ініціатив</a>."
 
-#: pb/phplib/page.php:281
+#: pb/phplib/page.php:293
 msgid "Search for the pledge you want by entering words below."
 msgstr "Шукати ініціативу, використовуючи нижче введені слова."
 
-#: pb/phplib/page.php:284
+#: pb/phplib/page.php:296
 msgid "Search for a pledge"
 msgstr "Пошук ініціативи"
 
-#: pb/phplib/pb.php:47 pb/phplib/pb.php:157
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:159
 msgid "Sorry! Something's gone wrong."
 msgstr "Шкодуємо! Але щось пішло не так."
 
-#: pb/phplib/pb.php:56
+#: pb/phplib/pb.php:57
 msgid "Please try again later, or <a href=\"mailto:team@pledgebank.com\">email us</a> for help resolving the problem."
 msgstr "Спробуйте ще раз, чи <a href=\"mailto:team@pledgebank.com\">напишіть нам</a> для допомоги у вирішенні проблеми"
 
-#: pb/phplib/pb.php:158
+#: pb/phplib/pb.php:160
 msgid "<h2>Sorry!  Something's gone wrong.</h2>"
 msgstr "<h2>Шкодуємо! Але щось пішло не так.</h2>"
 
@@ -1686,19 +1701,27 @@ msgstr "Неможливо знайти обіцянку. Будь ласка,  
 msgid "Pledge is not present in database"
 msgstr "Обіцянка відсутня в базі даних"
 
-#: pb/phplib/pledge.php:219
+#: pb/phplib/pledge.php:220
 msgid "Place"
 msgstr "Місце"
 
-#: pb/phplib/pledge.php:221
+#: pb/phplib/pledge.php:222
 msgid "Postcode area"
 msgstr "Поштовий індекс"
 
-#: pb/phplib/pledge.php:286
+#: pb/phplib/pledge.php:311
+msgid "Roughly translate the pledge into your language (using Altavista's Babel Fish machine translator)"
+msgstr ""
+
+#: pb/phplib/pledge.php:311
+msgid "translate"
+msgstr ""
+
+#: pb/phplib/pledge.php:316
 msgid "Deadline to sign up by:"
 msgstr "Кінцевий термін, щоб підписатись:"
 
-#: pb/phplib/pledge.php:291
+#: pb/phplib/pledge.php:321
 #, php-format
 msgid "%s person signed up"
 msgid_plural "%s people signed up"
@@ -1706,7 +1729,7 @@ msgstr[0] "%s особа підписувала"
 msgstr[1] "%s особи підписували"
 msgstr[2] "%s осіб підписували"
 
-#: pb/phplib/pledge.php:293
+#: pb/phplib/pledge.php:323
 #, php-format
 msgid "%s person has signed up"
 msgid_plural "%s people have signed up"
@@ -1714,12 +1737,12 @@ msgstr[0] "%s особа підписала"
 msgstr[1] "%s особи підписали"
 msgstr[2] "%s осіб підписали"
 
-#: pb/phplib/pledge.php:296
+#: pb/phplib/pledge.php:326
 #, php-format
 msgid "(%d over target)"
 msgstr "(Учасників більше запланованого, на %d)"
 
-#: pb/phplib/pledge.php:300
+#: pb/phplib/pledge.php:330
 #, php-format
 msgid "%d more was needed"
 msgid_plural "%d more were needed"
@@ -1727,7 +1750,7 @@ msgstr[0] "Потрібно %d "
 msgstr[1] "Потрібно %d "
 msgstr[2] "Потрібно %d "
 
-#: pb/phplib/pledge.php:302
+#: pb/phplib/pledge.php:332
 #, php-format
 msgid "%d more needed"
 msgid_plural "%d more needed"
@@ -1735,63 +1758,67 @@ msgstr[0] "%d не вистачає"
 msgstr[1] "Не вистачає %d"
 msgstr[2] "Не вистачає %d"
 
-#: pb/phplib/pledge.php:314
+#: pb/phplib/pledge.php:344
+msgid "Show where exactly this place is (using Google Maps)"
+msgstr ""
+
+#: pb/phplib/pledge.php:344
 msgid "view map"
 msgstr "подивитися карту"
 
-#: pb/phplib/pledge.php:329
+#: pb/phplib/pledge.php:359
 msgid "More details"
 msgstr "Переглянути деталі"
 
-#: pb/phplib/pledge.php:334
+#: pb/phplib/pledge.php:364
 msgid "Anything wrong with this pledge?  Tell us!"
 msgstr "Щось не так з обіцянкою? Повідомте нас!"
 
-#: pb/phplib/pledge.php:388
+#: pb/phplib/pledge.php:418
 msgid "Success"
 msgstr "Успіх"
 
-#: pb/phplib/pledge.php:391
+#: pb/phplib/pledge.php:421
 msgid "That pledge has already finished"
 msgstr "Строк дії ініціативи закінчився"
 
-#: pb/phplib/pledge.php:394
+#: pb/phplib/pledge.php:424
 msgid "That pledge is already full"
 msgstr "Необхідна кількість людей для обіцянки вже досягнута"
 
-#: pb/phplib/pledge.php:397
+#: pb/phplib/pledge.php:427
 msgid "You've already signed that pledge"
 msgstr "Ви вже взяли зобов'язання"
 
-#: pb/phplib/pledge.php:400 pb/web/comment.php:45 pb/web/ref-sign.php:58
+#: pb/phplib/pledge.php:430 pb/web/comment.php:48 pb/web/ref-sign.php:58
 #: pb/web/sms.php:65
 msgid "Permission denied"
 msgstr "Відмовлено у доступі"
 
-#: pb/phplib/pledge.php:404
+#: pb/phplib/pledge.php:434
 msgid "Something went wrong unexpectedly"
 msgstr "Несподівано дещо пішло не так"
 
-#: pb/phplib/pledge.php:452
+#: pb/phplib/pledge.php:485
 #, php-format
 msgid "I, %s, will %s but only if <strong>%s</strong> %s will %s."
 msgstr "Я, %s, обіцяю  %s за умови, що <strong>%s</strong> %s %s."
 
-#: pb/phplib/pledge.php:454
+#: pb/phplib/pledge.php:487
 #, php-format
 msgid "I will %s but only if <strong>%s</strong> %s will %s."
 msgstr "Я обіцяю %s за умови, що <strong>%s</strong> %s  %s."
 
-#: pb/phplib/pledge.php:457
+#: pb/phplib/pledge.php:490
 #, php-format
 msgid "%s will %s but only if <strong>%s</strong> %s will %s."
 msgstr "%s обіцяю  %s за умови, що <strong>%s</strong> %s  %s."
 
-#: pb/phplib/pledge.php:486
+#: pb/phplib/pledge.php:519
 msgid "Target met, pledge open until midnight tonight, London time."
 msgstr "Необхідна кількість учасників зібрались, зобов'язання ще буде відкрито до опівночі сьогоднішнього вечора за Лондонським часом"
 
-#: pb/phplib/pledge.php:488
+#: pb/phplib/pledge.php:521
 msgid "Target met, pledge closed."
 msgstr "Учасники зібрались, збір підписів закінчено."
 
@@ -1800,7 +1827,7 @@ msgstr "Учасники зібрались, збір підписів закі�
 # не було третьої форми
 # помилка "це", треба "ще"
 # помилка "мету досягнуто" (знах. відм.), треба "мети досягнуто" (перевірка за підруч. укр. мови: "досягнуто великих успіхів, великого успіху", род. відм.) або наз. "мета досягнута"
-#: pb/phplib/pledge.php:490
+#: pb/phplib/pledge.php:523
 #, php-format
 msgid "Target met, pledge still open for %d day."
 msgid_plural "Target met, pledge still open for %d days."
@@ -1808,16 +1835,16 @@ msgstr[0] "Мети досягнуто, до обіцянки можна дол�
 msgstr[1] "Мети досягнуто, до обіцянки можна долучатися ще протягом %d  днів."
 msgstr[2] "Мети досягнуто, до обіцянки можна долучатися ще протягом %d  днів."
 
-#: pb/phplib/pledge.php:494
+#: pb/phplib/pledge.php:527
 #, php-format
 msgid "(needs %d more by midnight tonight, London time)"
 msgstr "(треба ще %d людей до опівночі, за Грінвічем)"
 
-#: pb/phplib/pledge.php:496
+#: pb/phplib/pledge.php:529
 msgid "Deadline expired, pledge failed."
 msgstr "Термін на збір обіцянок вичерпано, мету не досягнуто."
 
-#: pb/phplib/pledge.php:500
+#: pb/phplib/pledge.php:533
 #, php-format
 msgid "just %d day left"
 msgid_plural "just %d days left"
@@ -1825,7 +1852,7 @@ msgstr[0] "лишився тільки %d день"
 msgstr[1] "лишилося тільки %d дні"
 msgstr[2] "лишилося тільки %d днів"
 
-#: pb/phplib/pledge.php:502
+#: pb/phplib/pledge.php:535
 #, php-format
 msgid "%d day left"
 msgid_plural "%d days left"
@@ -1833,7 +1860,7 @@ msgstr[0] "лишився %d день"
 msgstr[1] "лишилося %d дні"
 msgstr[2] "лишилося %d днів"
 
-#: pb/phplib/pledge.php:504
+#: pb/phplib/pledge.php:537
 #, php-format
 msgid ", %d more signature needed)"
 msgid_plural ", %d more signatures needed)"
@@ -1841,73 +1868,73 @@ msgstr[0] ", ще треба %d підпис"
 msgstr[1] ", ще треба %d підписи"
 msgstr[2] ", ще треба %d підписів"
 
-#: pb/phplib/pledge.php:588
+#: pb/phplib/pledge.php:621
 msgid "Incorrect PIN!"
 msgstr "Неправильний PIN!"
 
-#: pb/phplib/pledge.php:591
+#: pb/phplib/pledge.php:624
 msgid "PIN Protected Pledge"
 msgstr "Ця обіцянка захищена PIN-ом"
 
-#: pb/phplib/pledge.php:591
+#: pb/phplib/pledge.php:624
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "Ця обіцянка захищена. Будь ласка, введіть PIN, щоб продовжити."
 
-#: pb/phplib/pledge.php:592 pb/web/abuse.php:151 pb/web/ref-picture.php:180
+#: pb/phplib/pledge.php:625 pb/web/abuse.php:151 pb/web/ref-picture.php:180
 #: pb/web/sms.php:235 pb/web/your.php:111
 msgid "Submit"
 msgstr "Натисніть"
 
-#: pb/phplib/pledge.php:661
+#: pb/phplib/pledge.php:694
 msgid "Sign up now"
 msgstr "Підписатись"
 
-#: pb/phplib/pledge.php:665
+#: pb/phplib/pledge.php:698
 #, php-format
 msgid "I, %s, sign up to the pledge."
 msgstr "Я, %s, долучаюся до цієї обіцянки."
 
-#: pb/phplib/pledge.php:667
+#: pb/phplib/pledge.php:700
 msgid "(we need this so we can tell you when the pledge is completed and let the pledge creator get in touch)"
 msgstr "(надайте ваш е-мейл щоб автор ініціативи міг вам написати, та щоб  ми могли  повідомити вас, якщо ініціатива буде успішною )\" "
 
-#: pb/phplib/pledge.php:669 pb/web/sms.php:234
+#: pb/phplib/pledge.php:702 pb/web/sms.php:234
 msgid "Show my name on this pledge"
 msgstr "Показати моє ім'я  під ініціативою"
 
-#: pb/phplib/pledge.php:670
+#: pb/phplib/pledge.php:703
 msgid "Sign Pledge"
 msgstr "Приєднатися до ініціативи"
 
 #. TRANS: Esperanto translated this as "In order to massive increase the chance of this pledge succeeding, " to keep it in the imperative
-#: pb/phplib/pledge.php:694
+#: pb/phplib/pledge.php:727
 msgid "You will massively increase the chance of this pledge succeeding if you "
 msgstr "Ви суттєво підвищите шанси на виконання цієї обіцянки, якщо"
 
 #. TRANS: This phrase is used in two different places, once in present tense, once in imperative. Shout if this is a problem.
-#: pb/phplib/pledge.php:697 pb/web/ref-flyers.php:70
+#: pb/phplib/pledge.php:730 pb/web/ref-flyers.php:70
 msgid "print this page out"
 msgstr " надрукуєте цю сторінку"
 
-#: pb/phplib/pledge.php:698
+#: pb/phplib/pledge.php:731
 msgid "these more attractive PDF and RTF (Word) versions"
 msgstr "більш привабливі PDF та RTF (Word) версії"
 
 #. TRANS: Use the imperative here to go with msgid "You will massively increase......." and msgid "print this page out". (Tim Morley, 2005-11-30)
-#: pb/phplib/pledge.php:700
+#: pb/phplib/pledge.php:733
 #, php-format
 msgid "(or use %s), cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr "(або використаєте %s), наріжте листівок і покладіть їх у поштові скриньки сусідів"
 
-#: pb/phplib/pledge.php:705
+#: pb/phplib/pledge.php:738
 msgid "print these pages out"
 msgstr "надрукувати ці сторінки"
 
-#: pb/phplib/pledge.php:706
+#: pb/phplib/pledge.php:739
 msgid ", cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr ", надрукуйте листівок і покладіть їх у поштові скриньки сусідів"
 
-#: pb/phplib/pledge.php:709
+#: pb/phplib/pledge.php:742
 msgid ""
 "We cannot emphasise this enough &mdash; print them NOW and post them next time you\n"
 "go out to the shops or your pledge is unlikely to succeed."
@@ -1915,11 +1942,11 @@ msgstr ""
 "Ми ще раз рекомендуємо &mdash; - надрукуйте їх просто ЗАРАЗ і негайно поширте,\n"
 "інакше до вашої  ініціативи не долучиться необхідна кількість людей."
 
-#: pb/phplib/pledge.php:715 pb/web/ref-flyers.php:73
+#: pb/phplib/pledge.php:748 pb/web/ref-flyers.php:73
 msgid "Graphic of flyers for printing"
 msgstr "Листівки для друку"
 
-#: pb/phplib/pledge.php:725
+#: pb/phplib/pledge.php:758
 #, php-format
 msgid ""
 "<p class=\"noprint\"><strong>Take your Pledge to the pub</strong> &ndash; next time you're out and about,\n"
@@ -1967,7 +1994,7 @@ msgstr "підпис"
 msgid "The %s couldn't be found.  It has probably been deleted already."
 msgstr "Неможливо знайти %s. Можливо це вже витерли."
 
-#: pb/web/abuse.php:67 pb/web/alert.php:81 pb/web/contact.php:69
+#: pb/web/abuse.php:67 pb/web/alert.php:81 pb/web/contact.php:71
 #: pb/web/login.php:190 pb/web/login.php:216 pb/web/new.php:573
 msgid "Please enter a valid email address"
 msgstr "Будь ласка, введіть дійсну електронну адресу"
@@ -2054,7 +2081,7 @@ msgstr "Можливо ви хочете  <a href=\"/alert/\">підписати
 msgid "Thanks!  You are already unsubscribed from that alert."
 msgstr "Дякуємо! Ви вже відписались від цих оголошень."
 
-#: pb/web/alert.php:80 pb/web/comment.php:81 pb/web/contact.php:68
+#: pb/web/alert.php:80 pb/web/comment.php:84 pb/web/contact.php:70
 #: pb/web/login.php:186 pb/web/login.php:212 pb/web/new.php:572
 #: pb/web/ref-email.php:49
 msgid "Please enter your email address"
@@ -2156,68 +2183,72 @@ msgstr "Не введений  id  коментаря"
 msgid "Sorry -- something seems to have gone wrong. "
 msgstr "Перепрошуємо --  щось, здається, пішло не так. "
 
-#: pb/web/comment.php:49
+#: pb/web/comment.php:44
+msgid "Sorry, this pledge is now closed for new comments."
+msgstr ""
+
+#: pb/web/comment.php:52
 #, php-format
 msgid "Commenting on '%s'"
 msgstr "Коментар до %s"
 
 # EOF 12.po.part
 # 13.po.part, pobot
-#: pb/web/comment.php:65
+#: pb/web/comment.php:68
 msgid "Sorry -- something seems to have gone wrong"
 msgstr "Вибачте — здається, щось відбулося не так як треба"
 
-#: pb/web/comment.php:83
+#: pb/web/comment.php:86
 #, php-format
 msgid "'%s' is not a valid email address; please check it carefully"
 msgstr "адреса <strong>%s</strong> не допустима; перевірте правильність, будь ласка"
 
-#: pb/web/comment.php:86 pb/web/contact.php:67 pb/web/new.php:571
+#: pb/web/comment.php:89 pb/web/contact.php:69 pb/web/new.php:571
 #: pb/web/ref-email.php:48 pb/web/sms.php:78
 msgid "Please enter your name"
 msgstr "Введіть ваше ім’я, будь ласка"
 
-#: pb/web/comment.php:89
+#: pb/web/comment.php:92
 msgid "Please enter a message"
 msgstr "Введіть повідомлення, будь ласка"
 
-#: pb/web/comment.php:99
+#: pb/web/comment.php:102
 msgid "Before adding your comment to the pledge, we need to check that your email is working."
 msgstr "До того як додати ваш коментар до зобов’язання, ми маємо перевірити чи ваша пошта працює"
 
-#: pb/web/comment.php:100
+#: pb/web/comment.php:103
 msgid "Your comment will then be displayed on the pledge page."
 msgstr "Після цього ваш коментар з’явиться на сторінці зобов’язання"
 
-#: pb/web/comment.php:101
+#: pb/web/comment.php:104
 msgid "Adding your comment to a pledge at PledgeBank.com"
 msgstr "Додаємо ваш коментар до зобов’язання на PledgeBank.com"
 
-#: pb/web/comment.php:124
+#: pb/web/comment.php:127
 msgid "Thank you! Your comment has now been posted."
 msgstr "Дякуємо! Ваш коментар опубліковано."
 
-#: pb/web/comment.php:126
+#: pb/web/comment.php:129
 msgid "You will be emailed when anyone adds a comment to the pledge."
 msgstr "Ви отримаєте повідомлення поштою, коли хтось прокоментує ваше зобов’язання"
 
-#: pb/web/comment.php:129
+#: pb/web/comment.php:132
 msgid "Go back to the pledge comments"
 msgstr "Повернутись до коментарів"
 
-#: pb/web/comment.php:134
+#: pb/web/comment.php:137
 msgid "Go back to the pledge"
 msgstr "Повернутись до зобов’язання"
 
-#: pb/web/comment.php:147
+#: pb/web/comment.php:150
 msgid "<h2>Here's how your comment will appear</h2>"
 msgstr "<h2>Ось так матиме вигляд ваш коментар</h2>"
 
-#: pb/web/contact.php:16 pb/web/contact.php:37
+#: pb/web/contact.php:16 pb/web/contact.php:38
 msgid "Contact Us"
 msgstr "Зв’яжіться з нами"
 
-#: pb/web/contact.php:38
+#: pb/web/contact.php:39
 #, php-format
 msgid ""
 "Was it useful?  How could it be better?\n"
@@ -2230,62 +2261,62 @@ msgstr ""
 "Скористайтесь цим полем, щоб зв’язатись з нами.\n"
 "Також ви можете написати листа на %s, якщо вам так зручніше."
 
-#: pb/web/contact.php:42
+#: pb/web/contact.php:43
 msgid "If you would like to contact the Pledge Creator, please use the 'comments' section on the pledge.  These messages go to the PledgeBank Team, <strong>not</strong> the Pledge Creator."
 msgstr "Якщо вам потрібно зв’язатись з автором зобов’язання, використовуйте розділ коментарів на сторінці відповідного зобов’яання. Повідомлення написані за допомогою форми, що нижче, отримує команда PledgeBank, але <strong>не</strong> автор зобов’язання."
 
-#: pb/web/contact.php:43
+#: pb/web/contact.php:44
 msgid "<a href=\"/faq\">Read the FAQ</a> first, it might be a quicker way to answer your question."
 msgstr "Спочатку <a href=\"/faq\">прочитайте відповіді на часті запитання</a>, можливо тоді ви отримаєте відповідь на своє запитання одразу."
 
-#: pb/web/contact.php:50
+#: pb/web/contact.php:51
 msgid "Message to"
 msgstr "Повідомлення для"
 
-#: pb/web/contact.php:50
+#: pb/web/contact.php:51
 msgid "PledgeBank Team"
 msgstr "команда PledgeBank"
 
-#: pb/web/contact.php:53 pb/web/ref-announce.php:258
+#: pb/web/contact.php:54 pb/web/ref-announce.php:258
 #: pb/web/ref-announcearchive.php:73
 msgid "Subject"
 msgstr "Тема"
 
-#: pb/web/contact.php:54
+#: pb/web/contact.php:55
 msgid "Message"
 msgstr "Повідомлення"
 
-#: pb/web/contact.php:55
+#: pb/web/contact.php:56
 msgid "Did you <a href=\"/faq\">read the FAQ</a> first?"
 msgstr "Чи <a href=\"/faq\">прочитали ви відповіді на часті запитання</a> спочатку?"
 
-#: pb/web/contact.php:56 pb/web/ref-announce.php:237
+#: pb/web/contact.php:57 pb/web/ref-announce.php:237
 #: pb/web/ref-announce.php:304
 msgid "Send"
 msgstr "Відправити"
 
-#: pb/web/contact.php:62 pb/web/login.php:92 pb/web/new.php:439
+#: pb/web/contact.php:63 pb/web/login.php:92 pb/web/new.php:439
 #: pb/web/ref-sign.php:41 pb/web/pb.js:15
 msgid "<Enter your name>"
 msgstr "<Вкажіть ваше ім’я>"
 
-#: pb/web/contact.php:70
+#: pb/web/contact.php:72
 msgid "Please enter a subject"
 msgstr "Введіть тему, будь ласка"
 
-#: pb/web/contact.php:71
+#: pb/web/contact.php:73
 msgid "Please enter your message"
 msgstr "Введіть повідомлення, будь ласка"
 
-#: pb/web/contact.php:92
+#: pb/web/contact.php:94
 msgid "Please stop sending us spam. Thank you."
 msgstr "Просимо не надсилати нам спам. Дякуємо."
 
-#: pb/web/contact.php:100
+#: pb/web/contact.php:102
 msgid "Failed to send message.  Please try again, or <a href=\"mailto:team@pledgebank.com\">email us</a>."
 msgstr "Не вдалося надіслати повідомлення. Спробуйте, будь ласка, пізніше, або <a href=\"mailto:team@pledgebank.com\">напишіть нам</a>."
 
-#: pb/web/contact.php:101
+#: pb/web/contact.php:103
 msgid "Thanks for your feedback.  We'll get back to you as soon as we can!"
 msgstr "Дякуємо за внесок. Ми зв’яжемось з вами як тільки зможемо!"
 
@@ -2425,27 +2456,38 @@ msgstr ""
 msgid "To PledgeBank front page"
 msgstr "На першу сторінку PledgeBank"
 
-#: pb/web/faq.php:20
+#: pb/web/faq.php:26
+msgid "What does PledgeBank do for me? Why should I use it?"
+msgstr ""
+
+#: pb/web/faq.php:27
+msgid ""
+"PledgeBank gives you the reassurance that if you decide to do\n"
+"    something for the wider community you won't be doing it alone."
+msgstr ""
+
+#: pb/web/faq.php:30
 msgid "What is PledgeBank for?"
 msgstr "Для чого створено PledgeBank?"
 
-#: pb/web/faq.php:21
+#: pb/web/faq.php:31
+#, fuzzy
 msgid ""
 "PledgeBank is a site to help people get things done, especially things\n"
-"that require several people. We think that the world needs such a\n"
-"service: lots of good things don't happen because there aren't enough\n"
-"organised people to do them."
+"    that require several people. We think that the world needs such a\n"
+"    service: lots of good things don't happen because there aren't enough\n"
+"    organised people to do them."
 msgstr ""
 "PledgeBank є сайтом, що допомагає людям виконати справу,  особливо\n"
 "якщо вона потребує участі декілька людей. Ми думаємо, що світ\n"
 "потребує такого сервісу, бо багато добрих справ не виконуються через  те,\n"
 "що недостатня кількість  організованих людей долучаються до них."
 
-#: pb/web/faq.php:25
+#: pb/web/faq.php:37
 msgid "Can you give me some examples?"
 msgstr "Чи не могли б ви надати декілька прикладів?"
 
-#: pb/web/faq.php:26
+#: pb/web/faq.php:38
 msgid ""
 "Sure. 'I will start recycling if 100 people in my town will do the\n"
 "same'; 'I will organise my child's school play if 3 other parents will\n"
@@ -2457,11 +2499,11 @@ msgstr ""
 "'Я створю дуже корисний сайт, якщо тисяча людей пообіцяють \n"
 "зробити пожертви на це'."
 
-#: pb/web/faq.php:31
+#: pb/web/faq.php:43
 msgid "How does it work?"
 msgstr "Як це працює?"
 
-#: pb/web/faq.php:33
+#: pb/web/faq.php:45
 msgid ""
 "PledgeBank allows users to set up pledges and then encourages other\n"
 "people to sign up to them. A pledge is a statement of the form 'I will\n"
@@ -2488,11 +2530,11 @@ msgstr ""
 "достатньо охочих її пітримати, і тоді всі хто побажав виконати  справу\n"
 "отримують повідомлення: 'Добре зроблено! Пора виконувати обіцяне!'"
 
-#: pb/web/faq.php:43
+#: pb/web/faq.php:55
 msgid "What can I ask people to pledge?"
 msgstr "Які ініціативи я можу попросити підтримати у інших людей?"
 
-#: pb/web/faq.php:45
+#: pb/web/faq.php:57
 msgid ""
 "Pretty much anything which isn't illegal, and which doesn't incite\n"
 "people to commit illegal actions. Anything too obscene might also be\n"
@@ -2502,18 +2544,20 @@ msgstr ""
 "Непристойні обіцянки також повинні виключатися, тому що сайт орієнтований \n"
 "для родинного доступу!"
 
-#: pb/web/faq.php:49
+#: pb/web/faq.php:61
 msgid "How can you be sure people will bother to carry out the pledge?"
 msgstr "Як я можу бути впевнений, що люди виконають свої обіцянки?"
 
-#: pb/web/faq.php:51
+#: pb/web/faq.php:63
+#, fuzzy
 msgid ""
 "We can't; PledgeBank is based on a psychological bet. We believe that\n"
-"if a person posesses a slight desire to do something, and then we help\n"
+"if a person possesses a slight desire to do something, and then we help\n"
 "connect them to a bunch of  people who also want to do the same thing\n"
-"then that first person is much more likely to act. Our guess is that\n"
-"this will work rather well in some areas of activity and not at all in\n"
-"others - such is human nature."
+"then that first person is much more likely to act.  Update: we have now\n"
+"surveyed a load of money based pledges that have succeeded, and found that\n"
+"payment rates vary from 50% to well over 150%, with three-quarters of \n"
+"people paying being typical."
 msgstr ""
 "Ніяк ;) PledgeBank ґрунтується на психології обіцянки або парІ.\n"
 "Ми віримо, що, якщо особа має (не дуже велику) волю щось зробити,тоді ми допомагаємо їй приєднатися до групи людей, які бажають\n"
@@ -2522,11 +2566,11 @@ msgstr ""
 "у одних областях діяльності і зовсім не працювати в інших -\n"
 "така вже людська природа."
 
-#: pb/web/faq.php:58
+#: pb/web/faq.php:71
 msgid "What do I get out of it?"
 msgstr "Що я з цього отримаю?"
 
-#: pb/web/faq.php:60
+#: pb/web/faq.php:73
 msgid ""
 "As a well intentioned subscriber, you get insurance against being the\n"
 "only person to show up to the demo the freezing rain or against being\n"
@@ -2540,11 +2584,11 @@ msgstr ""
 "Як ініціатор справи,  ви  маєте значно збільшені шанси\n"
 "досягнути поставленої мети, якою б вона не була."
 
-#: pb/web/faq.php:66
+#: pb/web/faq.php:79
 msgid "Is it free?"
 msgstr "Чи є цей сервіс вільним?"
 
-#: pb/web/faq.php:68
+#: pb/web/faq.php:81
 #, php-format
 msgid ""
 "The site is free to use, no matter how big a pledge you create. PledgeBank\n"
@@ -2557,15 +2601,15 @@ msgstr ""
 "та налаштовані зробити пожертвування, будь ласка зв'яжіться із нами.\n"
 "Вартість SMS повідомлень для PledgeBank (доступні тільки в %s) є звичайною."
 
-#: pb/web/faq.php:77
+#: pb/web/faq.php:90
 msgid "Organisation Questions"
 msgstr "Організаційні питання"
 
-#: pb/web/faq.php:80
+#: pb/web/faq.php:93
 msgid "Who built PledgeBank?"
 msgstr "Хто створив PledgeBank?"
 
-#: pb/web/faq.php:82
+#: pb/web/faq.php:95
 msgid ""
 "This site was built by <a href=\"http://www.mysociety.org\">mySociety</a>. \n"
 "mySociety is a charitable organisation which has grown out of this community of\n"
@@ -2587,11 +2631,11 @@ msgstr ""
 
 # EOF 14.po.part
 # 15.po.part, Mary
-#: pb/web/faq.php:91
+#: pb/web/faq.php:104
 msgid "Who pays for it?"
 msgstr "Хто за це заплатив?"
 
-#: pb/web/faq.php:93
+#: pb/web/faq.php:106
 msgid ""
 "PledgeBank has been built by mySociety thanks to the effort\n"
 "of a combination of paid core developers and unpaid volunteers. The\n"
@@ -2605,11 +2649,11 @@ msgstr ""
 "фонд електронних інновацій <acronym title=\"Office of the Deputy Prime Minister\">ODPM</acronym>\n"
 "спільно з West Sussex County Council."
 
-#: pb/web/faq.php:99
+#: pb/web/faq.php:115
 msgid "Do you need any help with the project?"
 msgstr "Чи потрібна вам допомога?"
 
-#: pb/web/faq.php:101
+#: pb/web/faq.php:117
 msgid ""
 "Yes, we can use help in all sorts of ways, technical or non-technical.\n"
 "Please <a href=\"/contact\">contact us</a> if you want to get in touch."
@@ -2617,11 +2661,11 @@ msgstr ""
 "Так, нам нам не зашкодить всіляка допомога, як технічна, так і нетехнічна.\n"
 "Ви можете <a href=\"/contact\">написати нам</a>, якщо хочете зв'язатися з нами."
 
-#: pb/web/faq.php:104
+#: pb/web/faq.php:120
 msgid "Where's the \"source code\" to PledgeBank?"
 msgstr "Де знаходиться \"вихідний код\" до PledgeBank?"
 
-#: pb/web/faq.php:106
+#: pb/web/faq.php:122
 msgid ""
 "The software behind PledgeBank is open source, and available to you\n"
 "mainly under the Affero GPL software license. You can <a\n"
@@ -2637,11 +2681,11 @@ msgstr ""
 "Ви вільні використовувати його у своїх власних проектах, за умови що також\n"
 "зробите доступ до кодів цих ваших проектів відкритим.\n"
 
-#: pb/web/faq.php:114
+#: pb/web/faq.php:130
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr ""
 
-#: pb/web/faq.php:116
+#: pb/web/faq.php:132
 msgid ""
 "OK, we are\n"
 "Mike Bracken,\n"
@@ -2660,6 +2704,8 @@ msgid ""
 "Hugo Caballero Figueroa (Spanish),\n"
 "Tim Morley (Esperanto),\n"
 "Diego Galli (Italian),\n"
+"LaPingvino and Leo De Cooman (Dutch),\n"
+"Creso Moraes (Brazilian Portuguese),\n"
 "Alexander Markushin (Russian),\n"
 "maidan.org.ua team (Ukrainian).\n"
 "\n"
@@ -2675,16 +2721,16 @@ msgid ""
 "\n"
 msgstr ""
 
-#: pb/web/faq.php:153
+#: pb/web/faq.php:171
 msgid "Pledge Creators' Questions"
 msgstr "Запитання авторів обіцянок"
 
 # Творчий переклад :-)
-#: pb/web/faq.php:156
+#: pb/web/faq.php:174
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Які обіцянки спрацьовують, а які приречені на тиху загибель? "
 
-#: pb/web/faq.php:158
+#: pb/web/faq.php:176
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
 "which will apply. First, the lower a pledge target (in terms of\n"
@@ -2704,11 +2750,11 @@ msgstr ""
 "та піти з ним від дверей до дверей, збираючи підписи людей \"тут і тепер\",\n"
 "у вас набагато кращі шанси, ніж у того, хто вивісив свою обіцянку на сайті і забув про неї."
 
-#: pb/web/faq.php:167
+#: pb/web/faq.php:185
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Яку  кількість учасників виставляти?</a>"
 
-#: pb/web/faq.php:169
+#: pb/web/faq.php:187
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
 "Choose the number of people for which you could only just be bothered to carry\n"
@@ -2724,11 +2770,11 @@ msgstr ""
 "крім того, якась кількість людей \n"
 "може підписатися понад плану"
 
-#: pb/web/faq.php:184
+#: pb/web/faq.php:202
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Чому моя нова обіцянка не з'являється на сторінці з списком усіх ініціатив?"
 
-#: pb/web/faq.php:186
+#: pb/web/faq.php:204
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
 "the site, until a few people have signed up to them. This is to make\n"
@@ -2743,7 +2789,7 @@ msgstr ""
 "та сусідам про свій заклик!"
 
 # тут і у відповіді нелегальні замінила на протиправні
-#: pb/web/faq.php:192
+#: pb/web/faq.php:210
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Чи витираються дурнуваті або протиправні обіцянки?"
 
@@ -2751,7 +2797,7 @@ msgstr "Чи витираються дурнуваті або протиправ
 # inappropriate переклала як невідповідний, бо непристойний якось надто моралістично, але це теж під знаком питання
 # якщо є гарний переклад слова фривольний - велкам замінити
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:195
+#: pb/web/faq.php:213
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "consider to be inappropriate. This means that your pledge will work, but will\n"
@@ -2767,11 +2813,11 @@ msgstr ""
 "фривольними. Ми витираємо ініціативи які стверджують або закликають\n"
 "до протиправних дій."
 
-#: pb/web/faq.php:202
+#: pb/web/faq.php:220
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Чому я не можу змінити мою обіцянку після того, як я її зробив?</a>"
 
-#: pb/web/faq.php:204
+#: pb/web/faq.php:222
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "the pledge.  If you change the wording, then their signatures would no longer\n"
@@ -2787,11 +2833,11 @@ msgstr ""
 "нову ініціативу  та запросити учасників перейти туди.\n"
 "Для цього є лінк у частині 'Поширюй слово!' вашої обіцянки."
 
-#: pb/web/faq.php:211
+#: pb/web/faq.php:229
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Чи можу я написати людям, які підписались під моєю ініціативою?"
 
-#: pb/web/faq.php:213
+#: pb/web/faq.php:231
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
 "to your pledge's page, and follow the link under 'Spread the word'.  For cost\n"
@@ -2812,11 +2858,11 @@ msgstr ""
 "Якщо хтось підпише обіцянку пізніше, вони автоматично отримають всі повідомлення\n"
 "досі вислані вами."
 
-#: pb/web/faq.php:222
+#: pb/web/faq.php:240
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Чи можна підписатися за допомогою SMS (текстового повідомлення), і якщо так, тоді як це зробити?"
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:242
 #, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -2839,11 +2885,11 @@ msgstr ""
 
 # EOF 15.po.part
 # 16.po.part, Quasigiraffe
-#: pb/web/faq.php:234
+#: pb/web/faq.php:252
 msgid "How do I add a picture to my pledge?"
 msgstr "Чи можу я додати картинку до моєї обіцянки?"
 
-#: pb/web/faq.php:236
+#: pb/web/faq.php:254
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
 "(creator only)' under 'Spread the word on and offline'. Either find a picture\n"
@@ -2853,15 +2899,15 @@ msgstr ""
 "(можливість надана тільки автору) під словами 'Поширюйте слово в реалі та в інтернеті'\n"
 "Або додайте картинку, що стосується теми Вашої обіцянки, або просто Ваше фото!"
 
-#: pb/web/faq.php:244
+#: pb/web/faq.php:262
 msgid "International Questions"
 msgstr "Міжнародні питання"
 
-#: pb/web/faq.php:247
+#: pb/web/faq.php:265
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Чи можу я викладати обіцянку  не українською?"
 
-#: pb/web/faq.php:249
+#: pb/web/faq.php:267
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
 "If your browser is configured to use one of those languages, PledgeBank will \n"
@@ -2875,11 +2921,11 @@ msgstr ""
 "Якщо ви зацікавлені в перекладі своєю мовою, -будь ласка,\n"
 "<a href=\"/translate\"> читайте сторінку, присвячену перекладу</a>."
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:274
 msgid "What countries does PledgeBank work in?"
 msgstr "У яких країнах працює  PledgeBank?"
 
-#: pb/web/faq.php:258
+#: pb/web/faq.php:276
 msgid ""
 "All of them. We try to detect which country you are in\n"
 "automatically, and show you only pledges relevant to your country. To see what\n"
@@ -2893,11 +2939,11 @@ msgstr ""
 "поруч з лого  PledgeBank.  Будь ласка <a href=\"/contact\">зв\"яжіться\n"
 "з нами</a> якщо ви хочете допомогти більшій кількості людей з вашої країни використовувати PledgeBank"
 
-#: pb/web/faq.php:264
+#: pb/web/faq.php:282
 msgid "Why do you only have UK postcodes?"
 msgstr "У вас що, лише поштовий код UK?"
 
-#: pb/web/faq.php:266
+#: pb/web/faq.php:284
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
 "the postcode search overseas - please <a\n"
@@ -2909,11 +2955,11 @@ msgstr ""
 "<a href=\"http://www.mysociety.org/mailman/listinfo/mysociety-i18n\">додайте до списку свій email\n"
 "</a> \n"
 
-#: pb/web/faq.php:272
+#: pb/web/faq.php:290
 msgid "... and SMS?"
 msgstr "...  а SMS?"
 
-#: pb/web/faq.php:274
+#: pb/web/faq.php:292
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "can help add text messaging in your country."
@@ -2921,15 +2967,15 @@ msgstr ""
 "Наголосимо ще раз, будь ласка <a href=\"/contact\">повідомте нам</a> якщо ви\n"
 "можете допомогти зробити текстові повідомлення у вашій країні."
 
-#: pb/web/faq.php:281
+#: pb/web/faq.php:299
 msgid "Privacy Questions"
 msgstr "Питання приватності"
 
-#: pb/web/faq.php:284
+#: pb/web/faq.php:302
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Я б не хотів відкривати своє ім'я при підписанні обіцянки!"
 
-#: pb/web/faq.php:286
+#: pb/web/faq.php:304
 #, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -2944,11 +2990,11 @@ msgstr ""
 "більш приватною, задавши можливість бачити її тільки людям, яким Ви надасте\n"
 "спеціальний PIN-код, на сторінці з Вашою pledge"
 
-#: pb/web/faq.php:292
+#: pb/web/faq.php:310
 msgid "Who gets to see my email address?"
 msgstr "Хто зможе побачити мою email адресу?"
 
-#: pb/web/faq.php:294
+#: pb/web/faq.php:312
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
 "creator of your pledge. We do let the pledge creators send emails to pledge\n"
@@ -2964,11 +3010,11 @@ msgstr ""
 "Втім, якщо Ви надсилаєте йому відповідь на листа, що він написав зі своєї адреси,\n"
 "будьте обережні, він вашу адресу побачить :)"
 
-#: pb/web/faq.php:301
+#: pb/web/faq.php:319
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "Чи будете Ви надсилати набридливий брутальний спам на мою адресу?"
 
-#: pb/web/faq.php:303
+#: pb/web/faq.php:321
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
 "relation to your pledge. These will be a mixture of status emails from\n"
@@ -3018,24 +3064,34 @@ msgstr "Ножиці, телефон та листівки &mdash; "
 msgid "Find out why these things are the secret of a successful pledge"
 msgstr "Як  за допомогою цих речей зробити вашу ініціативу успішною"
 
-#: pb/web/index.php:110
+#: pb/web/index.php:114
 msgid "RSS feed of new pledges"
 msgstr "RSS знайомить з найновішими обіцянками"
 
-#: pb/web/index.php:111
+#: pb/web/index.php:115
 msgid "Why not sign a live pledge?"
 msgstr "Чому б  не підписатися під  діючою ініціативою?"
 
-#: pb/web/index.php:180
+#: pb/web/index.php:193
 msgid "Interesting pledges from other countries"
 msgstr "Цікаві обіцянки з інших країн"
 
-#: pb/web/index.php:187
+#: pb/web/index.php:199
+#, fuzzy
+msgid "More pledges to sign..."
+msgstr "Стосовно обіцянки  %s від %s."
+
+#: pb/web/index.php:204
 msgid "RSS feed of successful pledges"
 msgstr "RSS для останніх успішно виконаних обіцянок"
 
-#: pb/web/index.php:188
+#: pb/web/index.php:205
 msgid "Recent successful pledges"
+msgstr "Останні успішні ініціативи, які залучили необхідну підтримку"
+
+#: pb/web/index.php:227
+#, fuzzy
+msgid "More successful pledges..."
 msgstr "Останні успішні ініціативи, які залучили необхідну підтримку"
 
 # 17.po.part, Kuzkar
@@ -3412,7 +3468,7 @@ msgstr "Ваша Ініціатива"
 msgid "(if you'd like your pledge in a language other than %s, <a href=\"%s\">click here</a>)"
 msgstr "Якщо вам хочеться зробити обіцянку на іншій мові, ніж   %s, <a href=\"%s\">натисніть тут</a>)"
 
-#: pb/web/new.php:132 pb/web/new.php:446 pb/web/ref-index.php:245
+#: pb/web/new.php:132 pb/web/new.php:446 pb/web/ref-index.php:254
 msgid "I will"
 msgstr "Я обіцяю"
 
@@ -3432,7 +3488,7 @@ msgstr "Бажана кількість людей"
 msgid "will"
 msgstr "зможуть"
 
-#: pb/web/new.php:138 pb/web/poster.cgi:561
+#: pb/web/new.php:138 pb/web/poster.cgi:593
 msgid "do the same"
 msgstr "взяти участь, підтримати мене, зробити те ж саме"
 
@@ -4300,7 +4356,7 @@ msgid "Invalid parameters, please try again"
 msgstr "Невірні параметри, повторіть спробу"
 
 #: pb/web/ref-announcearchive.php:33 pb/web/ref-email.php:20
-#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:21 pb/web/ref-info.php:32
+#: pb/web/ref-flyers.php:20 pb/web/ref-index.php:26 pb/web/ref-info.php:32
 msgid "Enter PIN"
 msgstr "Введіть PIN"
 
@@ -4438,96 +4494,96 @@ msgstr "Введіть вірно PIN-код"
 msgid "Deadline for pledge \"%s\""
 msgstr "Крайній термін для пропозиції \"%s\""
 
-#: pb/web/ref-index.php:36
+#: pb/web/ref-index.php:41
 msgid "This pledge is now closed, as its deadline has passed."
 msgstr "Цю пропозицію закрито, бо її крайній термін пройшов."
 
 # EOF 24.po.part
 # 25.po.part, MentBuster
-#: pb/web/ref-index.php:40
+#: pb/web/ref-index.php:45
 msgid "This pledge is now closed, as its target has been reached."
 msgstr "Ця обіцянка закрита,  її було виконано"
 
-#: pb/web/ref-index.php:42
+#: pb/web/ref-index.php:47
 msgid "This pledge has been successful!"
 msgstr "Ця обіцянка виявилася успішною!"
 
-#: pb/web/ref-index.php:44
+#: pb/web/ref-index.php:49
 msgid "<strong>You can still add your name to it</strong>, because the deadline hasn't been reached yet."
 msgstr "<strong>Ти ще можеш приєднатись до цієї обіцянки</strong>, тому що крайній строк ще не настав."
 
-#: pb/web/ref-index.php:54
+#: pb/web/ref-index.php:59
 msgid "Spread the word on and offline"
 msgstr "Поширюй цю інфу в мережі та в реалі"
 
-#: pb/web/ref-index.php:56
+#: pb/web/ref-index.php:61
 msgid "Things to do with this pledge"
 msgstr "Що саме обіцяно зробити"
 
-#: pb/web/ref-index.php:60
+#: pb/web/ref-index.php:65
 msgid "Email pledge to your friends"
 msgstr "Надійшли е-майл про цю обіцянку друзям"
 
-#: pb/web/ref-index.php:61
+#: pb/web/ref-index.php:66
 msgid "Add deadline to your calendar"
 msgstr "Додати дату крайнього строку до свого календаря"
 
-#: pb/web/ref-index.php:62
+#: pb/web/ref-index.php:67
 msgid "Stick them places!"
 msgstr "Заліпи все навколо стікерами!"
 
-#: pb/web/ref-index.php:62
+#: pb/web/ref-index.php:67
 msgid "Print out customised flyers"
 msgstr "Роздрукувати листівки"
 
-#: pb/web/ref-index.php:64
+#: pb/web/ref-index.php:69
 msgid "Create a local version of this pledge"
 msgstr "Створити локальну версію цієї обіцянки"
 
-#: pb/web/ref-index.php:65 pb/web/ref-index.php:68
+#: pb/web/ref-index.php:70 pb/web/ref-index.php:73
 msgid "Only if you made this pledge"
 msgstr "тільки якщо ти виконав цю обіцянку"
 
-#: pb/web/ref-index.php:65
+#: pb/web/ref-index.php:70
 msgid "Send message to signers"
 msgstr "Надіслати повідомлення тим, хто підписався"
 
-#: pb/web/ref-index.php:65 pb/web/ref-index.php:74
+#: pb/web/ref-index.php:70 pb/web/ref-index.php:79
 msgid "(creator only)"
 msgstr "тільки ініціатор обіцянки"
 
-#: pb/web/ref-index.php:70
+#: pb/web/ref-index.php:75
 msgid "Change the pledge picture"
 msgstr "Змінити картинку обіцянки"
 
-#: pb/web/ref-index.php:72 pb/web/ref-picture.php:173
+#: pb/web/ref-index.php:77 pb/web/ref-picture.php:173
 msgid "Add a picture to your pledge"
 msgstr "Додати картинку до твоєї обіцянки"
 
-#: pb/web/ref-index.php:88
+#: pb/web/ref-index.php:93
 msgid "Current signatories"
 msgstr "Вже підписалися"
 
-#: pb/web/ref-index.php:93
+#: pb/web/ref-index.php:98
 #, php-format
 msgid "So far, only %s, the Pledge Creator, has signed this pledge."
 msgstr "На цей момент, лише %s, ініціатор обіцянки, підписався під нею."
 
-#: pb/web/ref-index.php:106
+#: pb/web/ref-index.php:111
 #, php-format
 msgid "Because there are so many signers, only the most recent %d are shown on this page."
 msgstr "Через велику кількість підписантів, лише декілька останніх %d показані на цій сторінці."
 
-#: pb/web/ref-index.php:109
+#: pb/web/ref-index.php:114
 msgid "Show all signers"
 msgstr "Показати всіх підписантів"
 
-#: pb/web/ref-index.php:122
+#: pb/web/ref-index.php:127
 #, php-format
 msgid "%s, the Pledge Creator, joined by:"
 msgstr "%s, ініціатор обіцянки, до якого приєдналися:"
 
-#: pb/web/ref-index.php:156
+#: pb/web/ref-index.php:161
 #, php-format
 msgid "%d person who did not want to give their name"
 msgid_plural "%d people who did not want to give their names"
@@ -4535,7 +4591,7 @@ msgstr[0] "%d особа, що не побажала залишити своє �
 msgstr[1] "%d особи, що не побажали залишити свої імена"
 msgstr[2] "%d осіб, що не побажали залишити свої імена"
 
-#: pb/web/ref-index.php:161
+#: pb/web/ref-index.php:166
 #, php-format
 msgid ", and %d who signed up via mobile"
 msgid_plural ", and %d who signed up via mobile"
@@ -4543,7 +4599,7 @@ msgstr[0] ", та %d який підписався за допомогою мо�
 msgstr[1] ", та %d які підписалися за допомогою мобільника"
 msgstr[2] ", та %d які підписалися за допомогою мобільника"
 
-#: pb/web/ref-index.php:163
+#: pb/web/ref-index.php:168
 #, php-format
 msgid "%d person who signed up via mobile"
 msgid_plural "%d people who signed up via mobile"
@@ -4551,36 +4607,45 @@ msgstr[0] "%d особа, яка підписалася за допомогою 
 msgstr[1] "%d особи, які підписалися за допомогою мобільника"
 msgstr[2] "%d осіб, які підписалися за допомогою мобільника"
 
-#: pb/web/ref-index.php:174
+#: pb/web/ref-index.php:179
 msgid "View signup rate graph"
 msgstr "Подивитись графік приєднань до обіцянки"
 
-#: pb/web/ref-index.php:181
+#: pb/web/ref-index.php:186
 msgid "RSS feed of comments on this pledge"
 msgstr "RSS feed коментарів до цієї обіцянки"
 
-#: pb/web/ref-index.php:182
+#: pb/web/ref-index.php:187
 msgid "Comments on this pledge"
 msgstr "Коментарі до цієї обіцянки"
 
-#: pb/web/ref-index.php:190
+#: pb/web/ref-index.php:195
 #, php-format
 msgid "Because there are so many comments, only the most recent %d are shown on this page."
 msgstr "Через велику кількість коментарів, лише %d останніх показані на цій сторінці."
 
-#: pb/web/ref-index.php:193
+#: pb/web/ref-index.php:198
 msgid "Show all comments"
 msgstr "Показати всі коментарі"
 
-#: pb/web/ref-index.php:232 pb/web/your.php:61
+#: pb/web/ref-index.php:237 pb/web/your.php:61
 msgid "Suggested pledges"
 msgstr "Обіцянки, що пропонуються до приєднання"
 
-#: pb/web/ref-index.php:233
-msgid "People who signed this pledge also signed these..."
+#: pb/web/ref-index.php:238
+#, fuzzy
+msgid "Some of the people who signed this pledge also signed these pledges..."
 msgstr "Особи, які підписалися під цією обіцянкою, також підписалися під..."
 
-#: pb/web/ref-index.php:248
+#: pb/web/ref-index.php:244
+#, fuzzy, php-format
+msgid "%s person"
+msgid_plural "%s people"
+msgstr[0] "%s особа підписувала"
+msgstr[1] "%s особи підписували"
+msgstr[2] "%s осіб підписували"
+
+#: pb/web/ref-index.php:257
 #, php-format
 msgid "Comments on Pledge '%s'"
 msgstr "Коментарі до обіцянки '%s'"
@@ -5323,11 +5388,11 @@ msgstr "Оберіть вашу країну"
 msgid "Choose your country ..."
 msgstr "Оберіть вашу країну ..."
 
-#: pb/web/where.php:81
+#: pb/web/where.php:82
 msgid "Your country isn't there? <a href=\"/new\">Make a pledge</a> specific to your country, and get people to sign up to it."
 msgstr ""
 
-#: pb/web/where.php:86
+#: pb/web/where.php:87
 msgid "... or choose a special site"
 msgstr "... або виберіть спеціальний сайт"
 
@@ -5391,12 +5456,12 @@ msgstr "Ви не приєднались до жодної обіцянки."
 msgid "Why not <a href=\"mailto:team@pledgebank.com\">send us photos</a> of yourself carrying out successful pledges?"
 msgstr "Чому б вам не <a href=\"mailto:team@pledgebank.com\">надіслати ваші фото</a> під час того, як ви виконуєте вашу успішну обіцянку?"
 
-#: pb/bin/frequentupdate:192
+#: pb/bin/frequentupdate:238
 #, php-format
 msgid "PledgeBank here. Sorry, the %s pledge has failed. Better luck next time!"
 msgstr "PledgeBank тут. Вибачте,  обіцянка %s не вийшла. Успіху наступного разу!"
 
-#: pb/bin/frequentupdate:373
+#: pb/bin/frequentupdate:454
 #, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone who signed your pledge %s ]\n"
@@ -5407,27 +5472,27 @@ msgstr ""
 "\n"
 "%s"
 
-#: pb/bin/frequentupdate:508
+#: pb/bin/frequentupdate:589
 #, php-format
 msgid "%d days ago"
 msgstr "%d  днів тому"
 
-#: pb/bin/frequentupdate:510
+#: pb/bin/frequentupdate:591
 #, php-format
 msgid "%d hours ago"
 msgstr "лишилось %d годин"
 
-#: pb/bin/frequentupdate:512
+#: pb/bin/frequentupdate:593
 #, php-format
 msgid "%d minutes ago"
 msgstr "лишилось %d хвилин"
 
-#: pb/bin/frequentupdate:514
+#: pb/bin/frequentupdate:595
 msgid "a minute ago"
 msgstr "хвилина тому"
 
 #. TRANS: The first %s is one of the time strings above.
-#: pb/bin/frequentupdate:517
+#: pb/bin/frequentupdate:598
 #, php-format
 msgid "[ You signed this pledge after this message was sent to the other signers. They will have received copies of this message %s. You can read older messages from the pledge creator that you missed here: %s ]"
 msgstr "[ Ви підписали цю обіцянку після того як це повідомлення було надіслано іншим учасникам. Вони отримали копію цього повідомлення  %s. Ви можете прочитати попередні повідомлення від автора обіцянки тут: You c: %s ]"
@@ -5440,131 +5505,131 @@ msgstr "Натисніть для додаткової інфи"
 msgid "SMS operated by charity UKCOD. Available in UK only. Sign-up message costs your normal text rate. Further messages are free. "
 msgstr "SMS працює як UKCOD пожертви. Доступні лише в UK. Повідомлення для того щоб підписатися, коштують вам як звичайні. Наступні повідомлення - безкоштовні."
 
-#: pb/web/poster.cgi:197
+#: pb/web/poster.cgi:207
 msgid "If"
 msgstr "Якщо"
 
-#: pb/web/poster.cgi:199
+#: pb/web/poster.cgi:209
 #, python-format
 msgid " %s will %s, then "
 msgstr " %s буде %s, тоді "
 
-#: pb/web/poster.cgi:200
+#: pb/web/poster.cgi:210
 msgid "I"
 msgstr "Я"
 
-#: pb/web/poster.cgi:201
+#: pb/web/poster.cgi:211
 #, python-format
 msgid " will %s."
 msgstr " зможу %s."
 
-#: pb/web/poster.cgi:208
+#: pb/web/poster.cgi:218
 msgid "More details:"
 msgstr "Переглянути деталі"
 
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:216 pb/web/poster.cgi:363
+#: pb/web/poster.cgi:226 pb/web/poster.cgi:378
 msgid "Pledge at "
 msgstr "Обіцянка"
 
-#: pb/web/poster.cgi:218 pb/web/poster.cgi:365
+#: pb/web/poster.cgi:228 pb/web/poster.cgi:380
 msgid " pin "
 msgstr "pin"
 
 #. TRANS: Text is an instruction (verb in the imperative)
-#: pb/web/poster.cgi:223
+#: pb/web/poster.cgi:233
 msgid "Text"
 msgstr "Текст"
 
 #. TRANS: Do not translate 'pledge' here, it is the SMS shortcode we use
-#: pb/web/poster.cgi:226
+#: pb/web/poster.cgi:236
 #, python-format
 msgid "pledge %s"
 msgstr "обіцянка %s"
 
 #. TRANS: This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:228
+#: pb/web/poster.cgi:238
 msgid "to"
 msgstr "до"
 
 #. TRANS: I think 'pledge' here means 'sign up to', as part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
 #. Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:232
+#: pb/web/poster.cgi:242
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr "(%s тільки) або  обіцянка про"
 
-#: pb/web/poster.cgi:236
+#: pb/web/poster.cgi:246
 msgid "This pledge closes on "
 msgstr "Можливість підтримати цю ініціативу триває до "
 
-#: pb/web/poster.cgi:236
+#: pb/web/poster.cgi:246
 msgid ". Thanks!"
 msgstr ". Дякую!"
 
-#: pb/web/poster.cgi:237 pb/web/poster.cgi:385
+#: pb/web/poster.cgi:247 pb/web/poster.cgi:400
 #, python-format
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr "Запам\"ятайте, ви повинні бути діяти лише якщо інші  %d людей підпишуться  – в цьому і є ідея PledgeBank."
 
-#: pb/web/poster.cgi:317
+#: pb/web/poster.cgi:332
 msgid "<font color=\"#ffffff\">Pledge</font>Bank.com"
 msgstr "<font color=\"#ffffff\">Pledge</font>Bank.com"
 
-#: pb/web/poster.cgi:343
+#: pb/web/poster.cgi:358
 #, python-format
 msgid ""
 "\n"
-"            <b>If</b> <font color=\"#522994\">%s</font> %s will %s, \n"
-"            then <font color=\"#522994\">I</font> will %s.\n"
+"            <b>If</b> <font color=\"%s\">%s</font> %s will %s, \n"
+"            then <font color=\"%s\">I</font> will %s.\n"
 "            "
 msgstr ""
 "\n"
-"            <b>Якщо</b> <font color=\"#522994\">%s</font> %s  %s приєднаються до мене , \n"
-"            тоді <font color=\"#522994\">я</font>  обіцяю %s.\n"
+"            <b>Якщо</b> <font color=\"%s\">%s</font> %s  %s приєднаються до мене , \n"
+"            тоді <font color=\"%s\">я</font>  обіцяю %s.\n"
 "            "
 
-#: pb/web/poster.cgi:359
+#: pb/web/poster.cgi:374
 #, python-format
 msgid "<b>More details:</b> %s"
 msgstr "<b>Більш детально:</b> %s"
 
-#: pb/web/poster.cgi:371
+#: pb/web/poster.cgi:386
 msgid "pledge at "
 msgstr "обіцянка "
 
 #. TRANS: Again, please don't translate "pledge" in this one
-#: pb/web/poster.cgi:374
+#: pb/web/poster.cgi:389
 #, python-format
 msgid ""
-"<font size=\"+2\">Text</font> <font size=\"+8\" color=\"#522994\">\n"
-"            <b>pledge %s</b></font> to <font color=\"#522994\"><b>%s</b></font> \n"
+"<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
+"            <b>pledge %s</b></font> to <font color=\"%s\"><b>%s</b></font> \n"
 "            (%s only) or "
 msgstr ""
-"<font size=\"+2\">Текст</font> <font size=\"+8\" color=\"#522994\">\n"
-"            <b>обіцянка %s</b></font> до <font color=\"#522994\"><b>%s</b></font> \n"
+"<font size=\"+2\">Текст</font> <font size=\"+8\" color=\"%s\">\n"
+"            <b>обіцянка %s</b></font> до <font color=\"%s\"><b>%s</b></font> \n"
 "            (%s тільки) або "
 
-#: pb/web/poster.cgi:382
+#: pb/web/poster.cgi:397
 #, python-format
 msgid ""
 "\n"
-"            This pledge closes on <font color=\"#522994\">%s</font>. Thanks!\n"
+"            This pledge closes on <font color=\"%s\">%s</font>. Thanks!\n"
 "            "
 msgstr ""
 "\n"
-"            Ця обіцянка дійсна до  <font color=\"#522994\">%s</font>. Дякуємо!\n"
+"            Ця обіцянка дійсна до  <font color=\"%s\">%s</font>. Дякуємо!\n"
 "            "
 
-#: pb/web/poster.cgi:551
+#: pb/web/poster.cgi:583
 msgid "UK"
 msgstr "Великобританія"
 
-#: pb/web/poster.cgi:562
+#: pb/web/poster.cgi:594
 msgid "too"
 msgstr "також"
 
-#: pb/web/poster.cgi:702
+#: pb/web/poster.cgi:743
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"
