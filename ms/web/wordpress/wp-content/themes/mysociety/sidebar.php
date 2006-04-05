@@ -43,7 +43,7 @@
             ?></div>
             <div class="item">
 				<ul>
-				<?php wp_get_archives("cat=$cat"); ?>
+				<?php ($cat == 3) ? wp_get_archives("cat=$cat&type=postbypost") : wp_get_archives("cat=$cat"); ?>
 				</ul>
             </div>
             <div class="item_foot">
