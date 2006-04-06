@@ -42,7 +42,7 @@
                     _e('Archives'); 
             ?></div>
             <div class="item">
-				<ul>
+				<ul class="archive_list">
 				<?php ($cat == 3) ? wp_get_archives("cat=$cat&type=postbypost") : wp_get_archives("cat=$cat"); ?>
 				</ul>
             </div>
