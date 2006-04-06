@@ -1,4 +1,14 @@
+<?php
+function indent_recommendations($content) {
+    $content = preg_replace("/^(.*)<p><strong>What is the APPROACH?(.*)$/is", "\\1", $content);
+    return $content;
+}
+if ($cat == 3) 
+    add_filter('the_content', 'indent_recommendations');
+?>
+
 <?php get_header(); ?>
+
 
 	<div id="content" class="narrowcolumn">
 
@@ -53,7 +63,10 @@
 				</div>
 		
 				<div class="item_foot"><!--Posted in <?php the_category(',
-                ') ?> <strong>|</strong> --><?php
+                ') ?> <strong>|</strong> -->
+                <a href="<?php the_permalink() ?>">Read full proposal &#187</a> |
+            <?php
+
                 edit_post_link('Edit','','<strong>|</strong>'); ?>
                 <?php comments_popup_link('No Comments &#187;', '1
                 Comment &#187;', '% Comments &#187;'); ?></div> 
