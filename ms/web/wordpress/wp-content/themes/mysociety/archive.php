@@ -1,6 +1,6 @@
 <?php
 function indent_recommendations($content) {
-    $content = preg_replace("/^(.*)<p><strong>What is the APPROACH?(.*)$/is", "\\1", $content);
+    $content = preg_replace("/\<p\>\<strong\>What NEED does this meet\?\<\/strong\>\<\/p\>(.*)<p><strong>What is the APPROACH?(.*)$/is", "\\1", $content);
     return $content;
 }
 if ($cat == 3) 
@@ -64,7 +64,9 @@ if ($cat == 3)
 		
 				<div class="item_foot"><!--Posted in <?php the_category(',
                 ') ?> <strong>|</strong> -->
+                <? if ($cat ==3 ) { ?>
                 <a href="<?php the_permalink() ?>">Read full proposal &#187</a> |
+                <? } ?>
             <?php
 
                 edit_post_link('Edit','','<strong>|</strong>'); ?>
@@ -79,8 +81,13 @@ if ($cat == 3)
 		<?php endwhile; ?>
 
 		<div class="navigation">
-			<div class="alignleft"><?php posts_nav_link('','','&laquo; Previous Entries') ?></div>
-			<div class="alignright"><?php posts_nav_link('','Next Entries &raquo;','') ?></div>
+            <? if ($cat ==3 ) { ?>
+			<div class="alignleft"><?php posts_nav_link('','','&laquo; Older Proposals') ?></div>
+			<div class="alignright"><?php posts_nav_link('','Newer Proposals &raquo;','') ?></div>
+            <? } else { ?>
+			<div class="alignleft"><?php posts_nav_link('','','&laquo; Older Posts') ?></div>
+			<div class="alignright"><?php posts_nav_link('','Newer Posts &raquo;','') ?></div>
+            <? } ?>
 		</div>
 	
 	<?php else : ?>
