@@ -82,8 +82,41 @@ if ($cat == 3)
 
 		<div class="navigation">
             <? if ($cat ==3 ) { ?>
-			<div class="alignleft"><?php posts_nav_link('','','&laquo; Older Proposals') ?></div>
-			<div class="alignright"><?php posts_nav_link('','Newer Proposals &raquo;','') ?></div>
+			<div class="alignleft"><?php
+			# XXX: Very ugly, but I can't find a better way - basically copy posts_nav_link and subfunctions
+			#      Trying ob_* didn't work at all
+			$nxtlabel = '&laquo; Older Proposals';
+			$prelabel = 'Newer Proposals &raquo;';
+			if (! is_single()) {
+				if (get_query_var('what_to_show') == 'posts') {
+					preg_match('#FROM (.*) GROUP BY#', $request, $matches);
+					$fromwhere = $matches[1];
+					$numposts = $wpdb->get_var("SELECT COUNT(ID) FROM $fromwhere");
+					$max_page = ceil($numposts / $posts_per_page);
+				} else {
+					$max_page = 999999;
+				}
+				if ($max_page > 1) {
+					if ($paged > 1) {
+						$nextpage = intval($paged) - 1;
+						if ($nextpage < 1) $nextpage = 1;
+						echo '<a href="';
+						echo str_replace('index.php', 'proposals2006/view', get_pagenum_link($nextpage));
+						echo '">'. $prelabel .'</a>';
+					}
+					print '</div> <div class="alignright">';
+					if (!$paged)
+						$paged = 1;
+					$nextpage = intval($paged) + 1;
+					if ($nextpage <= $max_page) {
+						echo '<a href="';
+						echo str_replace('index.php', 'proposals2006/view', get_pagenum_link($nextpage));
+						echo '">'. $nxtlabel .'</a>';
+					}
+
+				}
+			}
+			?></div>
             <? } else { ?>
 			<div class="alignleft"><?php posts_nav_link('','','&laquo; Older Posts') ?></div>
 			<div class="alignright"><?php posts_nav_link('','Newer Posts &raquo;','') ?></div>
