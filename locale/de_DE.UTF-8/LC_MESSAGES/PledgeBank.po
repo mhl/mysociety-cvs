@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: PledgeBank.2006-04-14\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
 "POT-Creation-Date: 2006-04-10 12:16+0100\n"
-"PO-Revision-Date: 2006-04-17 15:49+0200\n"
+"PO-Revision-Date: 2006-04-24 15:29+0200\n"
 "Last-Translator: Felix Zesch <post@felix-zesch.de>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1000,7 +1000,7 @@ msgstr "Wenn Sie die E-Mail vor mehr als einem Jahr erhalten haben, ist Ihre Anf
 
 #: phplib/utility.php:614
 msgid "today"
-msgstr "Heute"
+msgstr "heute"
 
 #: pb/phplib/admin-pb.php:44
 msgid "Pledges and Signers"
@@ -1029,7 +1029,7 @@ msgstr "Sprache:"
 #: pb/phplib/admin-pb.php:260 pb/phplib/fns.php:600 pb/phplib/pledge.php:346
 #: pb/phplib/pledge.php:349 pb/web/alert.php:205
 msgid "Country:"
-msgstr "Land"
+msgstr "Land:"
 
 #: pb/phplib/admin-pb.php:376
 msgid "Messages"
@@ -1141,7 +1141,7 @@ msgstr "neue Versprechen in Großbritannien in der Nähe des Postleitzahlenberei
 #: pb/phplib/alert.php:154
 #, php-format
 msgid "new pledges near %s%s"
-msgstr "Neue Versprechen nahe '%s'%s"
+msgstr "Neue Versprechen in der Nähe von %s %s"
 
 #: pb/phplib/alert.php:156
 #, php-format
@@ -1158,7 +1158,7 @@ msgstr "Sie werden eine E-Mail erhalten, wenn: <UL>"
 
 #: pb/phplib/alert.php:188
 msgid "Unsubscribe"
-msgstr "Absagen"
+msgstr "Kündigen"
 
 #: pb/phplib/alert.php:194
 msgid "To add a new place, <a href=\"/alert\">click here</a>."
@@ -1178,7 +1178,7 @@ msgstr "verspreche %s von %s"
 #: pb/phplib/comments.php:57
 #, php-format
 msgid "%s at %s."
-msgstr "%s bei %s"
+msgstr "%s um %s"
 
 #: pb/phplib/comments.php:64
 msgid "Abusive? Report it!"
@@ -1236,8 +1236,7 @@ msgid ""
 "Your name and web site, if given, will be shown on your comment,\n"
 "but your email address will not be."
 msgstr ""
-"Ihr Name und Ihre Website, falls angegeben, werden in Ihrem Eintragsfeld "
-"erscheinen,\n"
+"Ihr Name und Ihre Internetseiten, falls angegeben, werden mit Ihrem Kommentar angezeigt,\n"
 "Ihre E-Mail-Adresse wird jedoch nicht angezeigt werden."
 
 #: pb/phplib/comments.php:240
@@ -1402,7 +1401,7 @@ msgstr "Übersetzen Sie Pledgebank in Ihre Sprache"
 #: pb/phplib/fns.php:755
 #, php-format
 msgid "%s (%s) pledges listed"
-msgstr "%s (%s) Versprechen angezeigt"
+msgstr "Es werden Versprechen aus %s (%s) angezeigt."
 
 #: pb/phplib/fns.php:757
 #, php-format
@@ -1523,7 +1522,7 @@ msgstr ""
 
 #: pb/phplib/page.php:57
 msgid "Tell the world \"I'll do it, but only if you'll help\""
-msgstr "Sagen Sie der Welt \"Ich werde es tun, wenn Sie mithelfen\""
+msgstr "Sagen Sie der Welt \"Ich werde es tun, wenn ihr mir dabei helft.\""
 
 #: pb/phplib/page.php:99
 msgid "This pledge's permanent location: "
@@ -1820,7 +1819,7 @@ msgstr[1] "noch %d Tage"
 msgid ", %d more signature needed)"
 msgid_plural ", %d more signatures needed)"
 msgstr[0] "%d Unterschrift wird noch benötigt)"
-msgstr[1] "%d Unterschriften werden noch benötigt)"
+msgstr[1] ", %d Unterschriften werden noch benötigt)"
 
 #: pb/phplib/pledge.php:621
 msgid "Incorrect PIN!"
@@ -1853,9 +1852,9 @@ msgid ""
 "(we need this so we can tell you when the pledge is completed and let the "
 "pledge creator get in touch)"
 msgstr ""
-"(wir brauchen dies damit wir Ihnen Bescheid geben können, wenn das Versprechen "
+"(Wir brauchen dies damit wir Ihnen Bescheid geben können, wenn das Versprechen "
 "vollständig unterzeichnet ist und damit der Inititor des Versprechens Sie "
-"kontaktieren kann)"
+"kontaktieren kann.)"
 
 #: pb/phplib/pledge.php:702 pb/web/sms.php:234
 msgid "Show my name on this pledge"
@@ -1868,7 +1867,7 @@ msgstr "Unterschreibe das Versprechen"
 #. TRANS: Esperanto translated this as "In order to massive increase the chance of this pledge succeeding, " to keep it in the imperative
 #: pb/phplib/pledge.php:727
 msgid "You will massively increase the chance of this pledge succeeding if you "
-msgstr "Sie werden die Erfolgswahrscheinlichkeit dieses Versprechens enorm erhöhen, wenn Sie"
+msgstr "Sie werden die Erfolgswahrscheinlichkeit dieses Versprechens enorm erhöhen, wenn Sie "
 
 #. TRANS: This phrase is used in two different places, once in present tense, once in imperative. Shout if this is a problem.
 #: pb/phplib/pledge.php:730 pb/web/ref-flyers.php:70
@@ -1903,7 +1902,7 @@ msgid ""
 "time you\n"
 "go out to the shops or your pledge is unlikely to succeed."
 msgstr ""
-"Wir können es nicht oft genug betonen; drucken Sie sie JETZT aus und verteilen Sie sie, wenn Sie das nächste Mal\n"
+"Wir können es nicht oft genug betonen &mdash; drucken Sie sie JETZT aus und verteilen Sie sie, wenn Sie das nächste Mal\n"
 "einkaufen gehen, oder Ihr Versprechen wird nicht erfolgreich sein."
 
 #: pb/phplib/pledge.php:748 pb/web/ref-flyers.php:73
@@ -2255,7 +2254,7 @@ msgstr ""
 
 #: pb/web/comment.php:132
 msgid "Go back to the pledge comments"
-msgstr "Zurückgehen zu den Kommentaren"
+msgstr "Zurück zu den Kommentaren"
 
 #: pb/web/comment.php:137
 msgid "Go back to the pledge"
@@ -2298,7 +2297,7 @@ msgid ""
 "<a href=\"/faq\">Read the FAQ</a> first, it might be a quicker way to answer "
 "your question."
 msgstr ""
-"<a href=\"faq\"> Lesen Sie zuerst die häufig gestellten Fragen</a>, es ist wahrscheinlich der "
+"<a href=\"faq\"> Lesen Sie zuerst die häufig gestellten Fragen</a>, das ist wahrscheinlich der "
 "schnellere Weg, um Ihre zu beantworten."
 
 #: pb/web/contact.php:51
@@ -2320,7 +2319,7 @@ msgstr "Nachricht"
 
 #: pb/web/contact.php:56
 msgid "Did you <a href=\"/faq\">read the FAQ</a> first?"
-msgstr "Haben Sie schon das FAQ gelesen?"
+msgstr "Haben Sie schon die häufig gestellten Fragen gelesen?"
 
 #: pb/web/contact.php:57 pb/web/ref-announce.php:237
 #: pb/web/ref-announce.php:304
@@ -2364,7 +2363,7 @@ msgstr "Was ist Pledgebank?"
 
 #: pb/web/explain.php:15
 msgid "Tell the world \"I'll do it, but only if you'll help me do it\""
-msgstr "Sagen Sie der Welt \" Ich werde es tun, aber nur, wenn Sie mithelfen\""
+msgstr "Sagen Sie der Welt \" Ich werde es tun, wenn ihr mir dabei helft\""
 
 #: pb/web/explain.php:19
 msgid ""
@@ -2425,12 +2424,12 @@ msgid ""
 msgstr ""
 "Es ist ganz einfach: Sie entwerfen ein Versprechen, das nach dem "
 "Grundmuster\n"
-"'Ich werde etwas Bestimmtes tun, aber nur wenn andere Menschen versprechen,\n"
-"das Gleiche zu tun' funktioniert. Wenn Sie zum Beispiel schon immer ein "
+"\"Ich werde etwas Bestimmtes tun, wenn andere versprechen,\n"
+"das Gleiche zu tun\" funktioniert. Wenn Sie zum Beispiel schon immer ein "
 "Straßenfest organisieren wollten\n"
-"könnten Sie ein Versprechen initiieren, das lautet 'Ich werde ein "
+"könnten Sie ein Versprechen initiieren, das lautet \"Ich werde ein "
 "Straßenfest organisieren,\n"
-"aber nur wenn drei Leute aus meiner Straße mir dabei helfen.'"
+"wenn mir drei Leute aus meiner Straße dabei helfen.'\""
 
 #: pb/web/explain.php:46
 msgid ""
@@ -2441,13 +2440,12 @@ msgid ""
 "come along'."
 msgstr ""
 "Die Anwendungsgebiete von PledgeBank sind unbegrenzt. Wenn Sie Kinder haben\n"
-"könnten Sie sagen 'Ich werde nach Feierabend helfen, eine Sportgruppe zu "
-"betreuen, aber nur\n"
+"könnten Sie sagen \"Ich werde nach Feierabend helfen, eine Sportgruppe zu "
+"betreuen,\n"
 "wenn sich fünf andere Elternteile einen Abend in der Woche freihalten, um "
-"mitzumachen'. Wenn Sie\n"
-"in einer Band spielen, könnten Sie sagen 'Ich werde ein Konzert geben, aber "
-"nur, wenn 40 Leute\n"
-"kommen.'"
+"mitzumachen\". Wenn Sie\n"
+"in einer Band spielen, könnten Sie sagen \"Ich werde ein Konzert geben, wenn 40 Leute versprechen zu\n"
+"kommen.\""
 
 #: pb/web/explain.php:51
 msgid ""
@@ -2550,13 +2548,13 @@ msgid ""
 "help'; 'I will build a useful website if 1000 people promise to\n"
 "contribute to it'."
 msgstr ""
-"Klar. 'Ich werde anfangen, meinen Müll zu trennen, wenn mindestens 100 "
+"Klar. \"Ich werde anfangen, meinen Müll zu trennen, wenn mindestens 100 "
 "Leute\n"
-"in meiner Stadt das gleiche tun.'; 'Ich werde die Spielgruppe im "
+"in meiner Stadt das Gleiche tun.\"; \"Ich werde die Spielgruppe im "
 "Kindergarten meines Kindes\n"
-"organisieren, wenn mit 3 Eltern dabei helfen.'; 'Ich werde eine nützliche "
+"organisieren, wenn mir 3 Eltern dabei helfen.\"; \"Ich werde eine nützliche "
 "Internetseite\n"
-"bauen, wenn 1000 Leute versprechen, etwas dazu beizutragen.''"
+"bauen, wenn 1000 Leute versprechen, etwas dazu beizutragen.\""
 
 #: pb/web/faq.php:43
 msgid "How does it work?"
@@ -2578,21 +2576,21 @@ msgstr ""
 "einzustellen und ermutigt\n"
 "dann andere, sie zu unterschreiben. Ein Versprechen ist eine Aussage in der "
 "Form: \n"
-"'Ich werde etwas tun, wenn eine bestimmte Anzahl Leute mir dabei hilft.'\n"
+"\"Ich werde etwas tun, wenn eine bestimmte Anzahl Leute mir dabei hilft.\"\n"
 "Der Ersteller des Versprechens veröffentlicht dieses Versprechen und "
 "ermutigt andere, ihm beizutreten.\n"
 "Es gibt dann zwei Möglichkeiten: Entweder das Versprechen bekommt nicht "
 "genug\n"
 "Unterzeichner bis zu seinem Verfallsdatum. Dann kontaktieren wir jeden und "
 "sagen:\n"
-"'Viel Glück für den nächsten Versuch!' Im anderen Fall, wenn ein Versprechen "
-"genügend\n"
-"Leute angezogen hat, schicken wir allen eine E-Mail, in der 'Prima! Jetzt "
-"fangt an!' steht."
+"\"Viel Glück für den nächsten Versuch!\" Ansonsten "
+"schicken wir allen\n eine E-Mail, in der \"Prima! Jetzt "
+"fangt an!\" steht, wenn ein Versprechen "
+"genügend Leute angezogen hat."
 
 #: pb/web/faq.php:55
 msgid "What can I ask people to pledge?"
-msgstr "Um welche Art Versprechen kann ich die Leute bitten?"
+msgstr "Um welche Art von Versprechen kann ich die Leute bitten?"
 
 #: pb/web/faq.php:57
 msgid ""
@@ -2623,7 +2621,7 @@ msgstr ""
 "aufgebaut: \n"
 "Wir halten es für sehr wahrscheinlich dass, wenn eine Person etwas "
 "tun will\n"
-"und wir ihr dann helfen, einen Haufen andere Leute zu finden, die das gleiche tun "
+"und wir ihr dann helfen, einen Haufen andere Leute zu finden, die das Gleiche tun "
 "wollen,\n"
 "sie dann auch handeln wird. Wir haben eine Reihe von auf Geldzahlungen basierten Versprechen, die Erfolg hatten, beobachtet und kamen zu dem Ergebnis, dass die tatsächlichen Zahlungen zwischen 50% und weit über 150% des versprochenen Betrags schwanken\n, wobei drei Viertel der Leute ihr Versprechen genau erfüllen."
 
@@ -2751,7 +2749,7 @@ msgstr ""
 "Die Software hinter PledgeBank ist Open Source. Sie wurde unter der\n"
 "Affero GPL Softwarelizenz veröffentlicht.\n"
 "Sie können <a href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety"
-"\">den Quelltext hier herunterladen</a> (schauen Sie nach 'pb')\n"
+"\">den Quelltext hier herunterladen</a> (schauen Sie nach \"pb\")\n"
 "und uns helfen, sie weiterzuentwickeln. Sie dürfen Sie für Ihre eigenen\n"
 "Projekte einsetzen, müssen den Quelltext aber für andere solche Projekte\n"
 "bereitstellen.\n"
@@ -2861,7 +2859,7 @@ msgstr ""
 
 #: pb/web/faq.php:185
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
-msgstr "Nach wie vielen Unterzeichnern sollte ich fragen?"
+msgstr "<a name=\"targets\">Wie viele Unterzeichner sollte ich fordern?</a>"
 
 #: pb/web/faq.php:187
 msgid ""
@@ -2961,7 +2959,7 @@ msgid ""
 "the short reference for your pledge which you chose when you made it, and "
 "which\n"
 "appears at the end of its address."
-msgstr "Ja, aber nur in %s. Wenn Sie uns helfen möchten, SMS-Dienste für andere Länder zu organisieren, nehmen Sie bitte mit uns Kontakt auf. Die Flugblätter für Ihr Versprechen beschreiben, wie man per SMS unterzeichnen kann. Der einfachste Weg sich das zu merken, ist sie auszudrucken und immer ein paar dabei zu haben. Sie können die Flugblätter im Bereich \"Weitersagen\" auf Ihrer Versprechensseite finden. Oder sagen Sie den Leuten, <strong>pledge REFERENCE</strong> an <strong>%s</strong> zu schicken. Dabei ist REFERENCE das Kürzel, das Sie für Ihr Versprechen gewählt haben, als Sie es abgegeben haben, und das am Ende der Adresse erscheint."
+msgstr "Ja, aber nur in %s. Wenn Sie uns helfen möchten, SMS-Dienste für andere Länder zu organisieren, nehmen Sie bitte mit uns Kontakt auf. Die Flugblätter für Ihr Versprechen beschreiben, wie man per SMS unterzeichnen kann. Der einfachste Weg sich das zu merken, ist sie auszudrucken und immer ein paar dabei zu haben. Sie können die Flugblätter im Bereich \"Weitersagen\" auf Ihrer Versprechensseite finden. Oder sagen Sie den Leuten, <strong>pledge VERSPRECHENSKÜRZEL</strong> an die <strong>%s</strong> zu schicken. Dabei ist VERSPRECHENSKÜRZEL das Kürzel, das Sie für Ihr Versprechen gewählt haben, als Sie es abgegeben haben, und das am Ende der Adresse erscheint."
 
 #: pb/web/faq.php:252
 msgid "How do I add a picture to my pledge?"
@@ -2977,7 +2975,7 @@ msgstr "Gehen Sie zu Ihrer Versprechensseite und klicken Sie auf \"Dem Versprech
 
 #: pb/web/faq.php:262
 msgid "International Questions"
-msgstr "Internationale Fragen"
+msgstr "Fragen zu Internationalem"
 
 #: pb/web/faq.php:265
 msgid "Can I put up pledges in languages other than English?"
@@ -3326,7 +3324,7 @@ msgstr "Ich habe PledgeBank noch nie benutzt"
 
 #: pb/web/login.php:313
 msgid "(we'll send an email, click the link in it to confirm your email is working)"
-msgstr "(wir werden eine E-Mail schicken, klicken Sie auf die Adresse darin, um zu bestätigen, dass Ihre E-Mail-Adresse gültig ist)"
+msgstr "(Wir werden Ihnen eine E-Mail schicken. Klicken Sie auf die Adresse darin, um zu bestätigen, dass Ihre E-Mail-Adresse gültig ist.)"
 
 #: pb/web/login.php:318
 msgid "I have a PledgeBank <strong>password</strong>"
@@ -3350,7 +3348,7 @@ msgstr "Ich habe mein Passwort vergessen oder es nicht gesetzt."
 
 #: pb/web/login.php:331
 msgid "(we'll send an email, click the link in it to confirm your email)"
-msgstr "(wir werden eine E-Mail schicken, klicken Sie auf die Adresse darin, um Ihr Konte zu bestätigen)"
+msgstr "(Wir werden Ihnen eine E-Mail schicken, klicken Sie auf die Adresse darin, um Ihr Konto zu bestätigen.)"
 
 #: pb/web/login.php:363 pb/web/your.php:93
 msgid "Please type your new password twice"
@@ -3539,7 +3537,7 @@ msgstr "werden"
 
 #: pb/web/new.php:138 pb/web/poster.cgi:593
 msgid "do the same"
-msgstr "das gleiche tun"
+msgstr "das Gleiche tun"
 
 #: pb/web/new.php:140
 msgid "The other people must sign up before"
@@ -3916,7 +3914,7 @@ msgid ""
 "By creating your pledge you also consent to the syndication of your pledge "
 "to other sites &mdash; this means that other people will be able to display "
 "your pledge and your name"
-msgstr "Indem Sie das Versprechen erstellen, erklären Sie sich auch mit der Weitergabe des Versprechens an andere Stellen einverstanden. &mdash; das bedeutet, dass es diesen möglich ist Ihr Versprechen und Ihren Namen anzuzeigen."
+msgstr "Indem Sie das Versprechen erstellen, erklären Sie sich auch mit der Weitergabe des Versprechens an andere Stellen einverstanden &mdash; das bedeutet, dass es diesen möglich ist Ihr Versprechen und Ihren Namen anzuzeigen."
 
 #: pb/web/new.php:776
 msgid ""
@@ -4019,7 +4017,7 @@ msgstr ""
 
 #: pb/web/offline.php:30
 msgid "Example PledgeBank flyer"
-msgstr "Beispielflyer PledgeBank"
+msgstr "Beispielflugblatt PledgeBank"
 
 #: pb/web/offline.php:31 pb/web/ref-flyers.php:26
 msgid "Flyers"
@@ -4212,17 +4210,17 @@ msgstr ""
 #: pb/web/ref-announce.php:106
 #, php-format
 msgid "Sorry - pledge failed - '%s'"
-msgstr "Schade - Versprechen gescheitert - '%s'"
+msgstr "Schade - Versprechen gescheitert - \"%s\""
 
 #: pb/web/ref-announce.php:114
 #, php-format
 msgid "Pledge success! - '%s' at PledgeBank.com"
-msgstr "Versprechen erfolgreich! - '%s' bei PledgeBank.com"
+msgstr "Versprechen erfolgreich! - \"%s\" bei PledgeBank.com"
 
 #: pb/web/ref-announce.php:117
 #, php-format
 msgid "Update on pledge - '%s' at PledgeBank.com"
-msgstr "Update bei Versprechen - '%s' bei PledgeBank.com"
+msgstr "Update bei Versprechen - \"%s\" bei PledgeBank.com"
 
 #: pb/web/ref-announce.php:130
 msgid "ADD INSTRUCTIONS FOR PLEDGE SIGNERS HERE, INCLUDING YOUR CONTACT INFO"
@@ -4233,7 +4231,7 @@ msgstr ""
 #: pb/web/ref-announce.php:133
 #, php-format
 msgid "Send %s to signers of '%s'"
-msgstr "Sende %s an Unterzeichner von '%s'"
+msgstr "Sende %s an Unterzeichner von \"%s\""
 
 #: pb/web/ref-announce.php:139
 #, php-format
@@ -4253,7 +4251,7 @@ msgstr ""
 "\n"
 "Hallo, und danke für das Unterzeichnen unseres erfolgreichen Versprechens!\n"
 "\n"
-"'%s'\n"
+"\"%s\"\n"
 "\n"
 "<%s>\n"
 "\n"
@@ -4285,7 +4283,7 @@ msgstr ""
 "\n"
 "Hallo. Leider ist unser Versprechen gescheitert.\n"
 "\n"
-"'%s'\n"
+"\"%s\"\n"
 "\n"
 "<%s>\n"
 "\n"
@@ -4323,7 +4321,7 @@ msgstr ""
 "\n"
 "%s\n"
 "\n"
-"Das Versprechen lautet: '%s'\n"
+"Das Versprechen lautet: \"%s\"\n"
 "\n"
 
 #: pb/web/ref-announce.php:162
@@ -4344,7 +4342,7 @@ msgid ""
 "Unfortunately, we can't send the character '%s' in an SMS message; please "
 "rewrite your message without it"
 msgstr ""
-"Leider können wir das Zeichen '%s' nicht in einer SMS senden. Bitte ändern "
+"Leider können wir das Zeichen \"%s\" nicht in einer SMS senden. Bitte ändern "
 "Sie den Text entsprechend"
 
 #: pb/web/ref-announce.php:182
@@ -4513,11 +4511,11 @@ msgstr "Schreiben Sie Ihren Freunden"
 
 #: pb/web/ref-email.php:43
 msgid "Please correct the email address '"
-msgstr "Bitte korrigieren Sie die E-Mail-Adresse '"
+msgstr "Bitte korrigieren Sie die E-Mail-Adresse \""
 
 #: pb/web/ref-email.php:43
 msgid "', which is not a valid address."
-msgstr "' ist keine gültige Adresse."
+msgstr "\" ist keine gültige Adresse."
 
 #: pb/web/ref-email.php:47
 msgid ""
@@ -4631,7 +4629,7 @@ msgstr "Dieses Versprechen ist jetzt geschlossen, da das Ziel erreicht wurde."
 
 #: pb/web/ref-index.php:48
 msgid "This pledge has been successful!"
-msgstr "Das %s Versprechen war erfolgreich! <%s>"
+msgstr "Das Versprechen war erfolgreich!"
 
 #: pb/web/ref-index.php:50
 msgid ""
@@ -4774,7 +4772,7 @@ msgstr[1] "%s Leute"
 #: pb/web/ref-index.php:258
 #, php-format
 msgid "Comments on Pledge '%s'"
-msgstr "Kommentare zum Versprechen '%s'"
+msgstr "Kommentare zum Versprechen \"%s\""
 
 #: pb/web/ref-info.php:38
 msgid "More information: "
@@ -5097,7 +5095,7 @@ msgstr ""
 
 #: pb/web/search.php:124
 msgid "RSS feed of search for '"
-msgstr "RSS für die Suche nach'"
+msgstr "RSS für die Suche nach\""
 
 #: pb/web/search.php:139
 #, php-format
@@ -5219,7 +5217,7 @@ msgid ""
 "\"),\n"
 "        something like \"1234-abcd\"."
 msgstr ""
-"Wir können die Postleitzahl '%s' nicht zuordnen. Bitte\n"
+"Wir können die Postleitzahl \"%s\" nicht zuordnen. Bitte\n"
 "\t überpüfen Sie die angegebene Adresse."
 
 #: pb/web/sms.php:172
@@ -5386,8 +5384,7 @@ msgstr ""
 "(normalerweise Rechtsklick auf die Verknüpfung und dann \"Ziel speichern unter...\"  oder \"Verknüpfung speichern unter...\"):\n"
 "<a href=\"https://secure.mysociety.org/cvstrac/getfile/mysociety/locale/"
 "PledgeBank.po\">Übersetzungsdateien</a>.\n"
-"(Wenn Sie mit der linken Maustaste auf die Verknüpfung klicken, können Sie Datei-&gt;Speichern unter... machen und dann mit der Zurücktaste  hierher zurückkommen.)"
-"Back to get back here.)"
+"(Wenn Sie mit der linken Maustaste auf die Verknüpfung klicken, können Sie Datei-&gt;Speichern unter... machen und dann mit der Zurücktaste  hierher zurückkommen."
 
 #: pb/web/translate.php:60
 msgid ""
@@ -5894,11 +5891,11 @@ msgid ""
 "this link: <?=$values['unsubscribe_url']?>\n"
 "\n"
 msgstr ""
-"Subject: Neuer Kommentar zu dem Versprechen - '<?=$values['title']?>' auf PledgeBank.com\n"
+"Subject: Neuer Kommentar zu dem Versprechen - \"<?=$values['title']?>\" auf PledgeBank.com\n"
 "\n"
 "<?=$values['comment_author_name']?> hat einen Kommentar abgegeben:\n"
 "\n"
-"'<?=$values['comment_text']?>'\n"
+"\"<?=$values['comment_text']?>\"\n"
 "\n"
 "Schauen Sie sich den Kommentar an oder antworten Sie darauf: <?=$values['comment_url']?>\n"
 "\n"
@@ -5953,11 +5950,11 @@ msgid ""
 "<?=$values['alert_description']?>, click this link:\n"
 "<?=$values['unsubscribe_url']?>\n"
 msgstr ""
-"Subject: Neues Versprechen in Ihrer Nähe! - '<?=$values['title']?>' auf PledgeBank.com\n"
+"Subject: Neues Versprechen in Ihrer Nähe! - \"<?=$values['title']?>\" auf PledgeBank.com\n"
 "\n"
 "Es gibt ein neues Versprechen in der Nähe von <?=$values['alert_description']?>.\n"
 "\n"
-"<?=$values['distance_string']?>: '<?=$values['sentence_first']?>' -- <?="
+"<?=$values['distance_string']?>: \"<?=$values['sentence_first']?>\" -- <?="
 "$values['creator_name']?>\n"
 "\n"
 "Klicken Sie für mehr Informationen oder um das Versprechen zu unterschreiben. <?=$values['pledge_url']?>\n"
@@ -5983,7 +5980,7 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Senden Sie eine Nachricht an die Unterzeichner - '<?=$values['title']?>' auf "
+"Subject: Senden Sie eine Nachricht an die Unterzeichner - \"<?=$values['title']?>\" auf "
 "PledgeBank.com\n"
 "\n"
 "Um eine Nachricht an alle zu schicken, die bisher unterzeichnet haben, folgen Sie dieser\n Verknüpfung. Vielleicht möchten Sie sie anspornen das Versprechen bekannter zu machen, indem Sie es auf Flugblättern ausdrucken\n oder es Ihren Freunden per E-Mail schicken.\n"
@@ -6039,12 +6036,12 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Sie müssen Ihr Versprechen bekannt machen, damit es erfolgreich wird  - '<?=$values"
-"['title']?>' auf PledgeBank.com\n"
+"Subject: Sie müssen Ihr Versprechen bekannt machen, damit es erfolgreich wird  - \"<?=$values"
+"['title']?>\" auf PledgeBank.com\n"
 "\n"
 "Hallo, wir haben festgestellt, dass die Unterschriften unter dem Versprechen, dass Sie abgeben haben, sich eher schleppend vermehren.\n"
-"Es geht uns um '<?=$values"
-"['sentence_first']?>'\n"
+"Es geht uns um \"<?=$values"
+"['sentence_first']?>\"\n"
 "at <?=$values['pledge_url']?>\n"
 "\n"
 "PledgeBank verlässt sich bei der Bekanntmachung und Werbung für das Versprechen auf Sie, den Ersteller."
@@ -6106,8 +6103,8 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Ihr Versprechen läuft gut, aber es braucht noch einen Schub! - '<?=$values"
-"['title']?>' auf PledgeBank.com\n"
+"Subject: Ihr Versprechen läuft gut, aber es braucht noch einen Schub! - \"<?=$values"
+"['title']?>\" auf PledgeBank.com\n"
 "\n"
 "Hallo, uns ist aufgefallen, dass das Versprechen, das Sie auf PledgeBank.com gegeben haben \n"
 "<?=$values['pledge_url']?> nicht schnell genug unterschrieben wird um Erfolg zu haben.\n"
@@ -6162,8 +6159,8 @@ msgstr ""
 "Subject: <?=$values['from_name']?> hat dieses Versprechen gesehen und an Sie gedacht\n"
 "\n"
 "<?=$values['from_name']?> <<?=$values['from_email']?>> hat gedacht, dass Sie sich vielleicht\n"
-"für dieses Versprechen von <?=$values['creator_name']?> interessieren: '<?=$values"
-"['title']?>'.\n"
+"für dieses Versprechen von <?=$values['creator_name']?> interessieren: \"<?=$values"
+"['title']?>\".\n"
 "Sie können einfach auf <?=$values['pledge_url']?> klicken und der Welt zeigen, dass Sie gemeinsam\n mit Gleichgesinnten bereit sind etwas zu verändern."
 "\n"
 "\n"
@@ -6205,7 +6202,7 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Schade, Ihr Versprechen ist gescheitert - <?=$values['title']?>' auf PledgeBank.com.\n"
+"Subject: Schade, Ihr Versprechen ist gescheitert - \"<?=$values['title']?>\" auf PledgeBank.com.\n"
 "\n"
 "Leider müssen wir Sie informieren, dass Ihr Versprechen sein Ziel nicht innerhalb der geplanten Zeit erreicht hat."
 "\n"
@@ -6213,7 +6210,7 @@ msgstr ""
 "> überzeugen,\n"
 "aber es haben nur <?=$values['actual']?> unterschrieben.\n"
 "\n"
-"Das Versprechen lautete: '<?=$values['sentence_first']?>'\n"
+"Das Versprechen lautete: \"<?=$values['sentence_first']?>\"\n"
 "\n"
 "Dumm gelaufen, aber lassen Sie sich dadurch nicht entmutigen! Mit dieser Verknüpfung können Sie allen Unterzeichnern schreiben.\n"
 "Fragen Sie sie, was sie jetzt machen wollen, was Sie beim nächsten Mal besser machen können,\n"
@@ -6245,14 +6242,14 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Versprechen gescheitert - '<?=$values['title']?>' auf PledgeBank.com\n"
+"Subject: Versprechen gescheitert - \"<?=$values['title']?>\" auf PledgeBank.com\n"
 "\n"
 "Leider müssen wir Sie informieren, dass das Versprechen, das Sie unterzeichnet haben,\n"
 "sein Ziel nicht in der vorgesehenen Zeit erreicht hat. Es waren <?=$values['target']?> nötig\n"
 "<?=$values['type']?>, aber nur <?=$values['actual']?> haben unterschrieben.\n"
 "\n"
 "Das Versprechen, das von <?=$values['creator_name']?> erstellt wurde, lautete:\n"
-"'<?=$values['sentence_first']?>'\n"
+"\"<?=$values['sentence_first']?>\"\n"
 "\n"
 "Das bedeutet, dass Sie Ihren Teil des Versprechens nicht erfüllen müssen. Aber warum abonnieren Sie nicht die Lokalmeldungen auf <?=$values['pledgebank_url']?>alert um auf dem Laufenden zu bleiben, wenn jemand in Ihrer Nähe ein Versprechen erstellt.\n"
 "Stöbern Sie in den Versprechen auf\n"
@@ -6303,7 +6300,7 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Bestätigen Sie Ihr neues Versprechen - '<?=$values['title']?>' auf PledgeBank."
+"Subject: Bestätigen Sie Ihr neues Versprechen - \"<?=$values['title']?>\" auf PledgeBank."
 "com\n"
 "\n"
 "Bitte klicken Sie auf die unten stehende Verknüpfung um zu bestätigen, dass Sie PledgeBank.com\n"
@@ -6313,7 +6310,7 @@ msgstr ""
 "\n"
 "Ihr Versprechen lautet:\n"
 "\n"
-"'<?=$values['sentence_first']?>'\n"
+"\"<?=$values['sentence_first']?>\"\n"
 "\n"
 "Danke, dass Sie Ihr Versprechen auf PledgeBank.com veröffentlicht haben.\n"
 "\n"
@@ -6336,7 +6333,7 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Versprechen unterschreiben: '<?=$values['title']?>' auf PledgeBank.com\n"
+"Subject: Versprechen unterschreiben: \"<?=$values['title']?>\" auf PledgeBank.com\n"
 "\n"
 "Hallo <?=$values['user_name']?>,\n"
 "\n"
@@ -6346,7 +6343,7 @@ msgstr ""
 "\n"
 "Das Versprechen wurde von <?=$values['creator_name']?> erstellt und lautet:\n"
 "\n"
-"'<?=$values['sentence_first']?>'\n"
+"\"<?=$values['sentence_first']?>\"\n"
 "\n"
 "<?=$values['signature']?>\n"
 
@@ -6368,7 +6365,7 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Versprechen unterschreiben: '<?=$values['title']?>' auf PledgeBank.com\n"
+"Subject: Versprechen unterschreiben: \"<?=$values['title']?>\" auf PledgeBank.com\n"
 "\n"
 "Hallo <?=$values['user_name']?>,\n"
 "\n"
@@ -6378,7 +6375,7 @@ msgstr ""
 "\n"
 "Das Versprechen wurde von <?=$values['creator_name']?> erstellt und lautet:\n"
 "\n"
-"'<?=$values['sentence_first']?>'\n"
+"\"<?=$values['sentence_first']?>\"\n"
 "\n"
 "<?=$values['signature']?>\n"
 
@@ -6404,14 +6401,14 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Versprechen erfolgreich - '<?=$values['title']?>' auf PledgeBank.com\n"
+"Subject: Versprechen erfolgreich - \"<?=$values['title']?>\" auf PledgeBank.com\n"
 "\n"
 "Glückwunsch!\n"
 "\n"
 "Wir freuen uns sehr Ihnen mitteilen zu können, dass Ihr Versprechen "
 "sein Ziel\n"
-"in der vorgesehenen Zeit  <?=$values['exceeded_or_met']?> hat. Es lautet: '<?=$values"
-"['sentence_first']?>'\n"
+"in der vorgesehenen Zeit  <?=$values['exceeded_or_met']?> hat. Es lautet: \"<?=$values"
+"['sentence_first']?>\"\n"
 "\n"
 "Bitte klicken Sie jetzt auf die Adresse unten und schreiben Sie eine Nachricht um allen, die unterschrieben haben,\n"
 "zu sagen, wie das weitere Vorgehen ist.\n"
@@ -6441,8 +6438,8 @@ msgid ""
 "\n"
 "<?=$values['signature']?>\n"
 msgstr ""
-"Subject: Erinnerung - Bitte senden Sie eine Nachricht an die Unterzeichner Ihres Versprechens - '<?="
-"$values['title']?>'\n"
+"Subject: Erinnerung - Bitte senden Sie eine Nachricht an die Unterzeichner Ihres Versprechens - \"<?="
+"$values['title']?>\"\n"
 "\n"
 "Glückwunsch!\n"
 "\n"
@@ -6573,7 +6570,7 @@ msgid ""
 "something wrong with it."
 msgstr ""
 "Sie berichten über folgende %s, sie seien missbräuchlich, verdächtig oder in "
-"irgendeier Form fehlerhaft."
+"irgendeiner Form fehlerhaft."
 
 msgid "Email me any replies to my comment"
 msgstr "Mailen Sie mir alle Antworten auf meinen Eintrag zu"
