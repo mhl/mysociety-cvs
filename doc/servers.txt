@@ -49,19 +49,23 @@ Installing new software
 
 Type "apt-get install $packagename".
 
-Installed software for each server is listed in /etc/package-list-$hostname.
+Installed software for each server is listed in /data/servers/state/*/packages.
 This is our own file, made by dumping the list of Debian packages from a simple
 cron script /etc/cron.daily/save-package-list.
 
 To leave a comment with a software installation, run /etc/cron.daily/save-package-list, 
-then commit the file /data/servers/$classname/etc/package-list-$hosthame.
+then commit the file /data/servers/state/$hostname/packages.
 
 If software you would like to install is not in the Debian stable archive, or
 if it is compiled in an unusable way in the archive, then our policy is to make
 a new Debian package. These should be put in debian.mysociety.org, which apt is
-already configured to read from. It's fine to use dh-make-perl to make Perl
-Debian packages, or to download somebody else's backport and add it to
-debian.mysociety.org.
+already configured to read from.  
+
+Build such packages in /data/vhost/debian.mysociety.org/build on bitter.  It's
+fine to use dh-make-perl to make Perl Debian packages, or to just download
+somebody else's backport. Put binary package files in docs/binary, and source
+code in docs/source. Then run bin/update-index to update the Packages.gz and
+similar files.
 
 Deploying new vhosts
 --------------------
