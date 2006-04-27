@@ -9,6 +9,7 @@ LICENSE.txt - Details of open source licensing terms, mainly the Affero GPL
 ycml - HearFromYourMP (internal name YourConstituencyMailingList)
 pb - PledgeBank
 fyr - WriteToThem (internal name FaxYourRepresentative)
+twfy - TheyWorkForYou
 gia - GiveItAway
 na - NotApathetic codebase
 na2005 - NotApathetic 2005 UK General Election, static file version
@@ -16,6 +17,7 @@ ivfyb - I Voted For You Because
 yhh - YourHistoryHere
 placeopedia - Placeopedia
 ms - mySociety.org
+cop - Comment on Power
 
 services - Everything which runs under services.mysociety.org, being:
 services/MaPit - Find voting areas for a given postcode
