@@ -6,11 +6,11 @@
  * Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org. WWW: http://www.mysociety.org
  *
- * $Id: admin-ratty.php,v 1.39 2006-02-22 22:47:19 francis Exp $
+ * $Id: admin-ratty.php,v 1.1 2006-05-02 13:36:15 francis Exp $
  * 
  */
 
-require_once "ratty.php";
+require_once "../../phplib/ratty.php";
 
 class ADMIN_PAGE_RATTY {
     /* ADMIN_PAGE_RATTY SCOPE WHAT DESCRIPTION MESSAGEBLURB
