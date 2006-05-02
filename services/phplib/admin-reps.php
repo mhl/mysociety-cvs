@@ -5,14 +5,14 @@
  * Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org. WWW: http://www.mysociety.org
  *
- * $Id: admin-reps.php,v 1.35 2006-04-10 15:46:12 francis Exp $
+ * $Id: admin-reps.php,v 1.1 2006-05-02 13:32:44 francis Exp $
  * 
  */
 
-require_once "dadem.php";
-require_once "mapit.php";
-require_once "votingarea.php";
-require_once "utility.php";
+require_once "../../phplib/dadem.php";
+require_once "../../phplib/mapit.php";
+require_once "../../phplib/votingarea.php";
+require_once "../../phplib/utility.php";
 
 class ADMIN_PAGE_REPS {
     function ADMIN_PAGE_REPS () {
