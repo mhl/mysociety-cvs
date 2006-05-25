@@ -1,12 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>
-Travel time maps
-</title>
-</head>
-<body>
+<?php 
+/* XXX can't override the title easily, which will make us look like total
+ * morons. For this page it should be, "Travel-time maps". */
+include "wordpress/wp-blog-header.php";
+include "wordpress/wp-content/themes/mysociety/header.php"; 
+?>
 
 <h1>Summarising public transport information with travel-time maps</h1>
 
@@ -348,5 +345,4 @@ done what we've done years ago, with no cost to the taxpayer. We'd love it if
 others extend the work that we've done, but realistically there aren't very
 many people in a position to do this cheaply.</p>
 
-</body>
-</html>
+<?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>

@@ -1,12 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>
-Travel time maps: methods
-</title>
-</head>
-<body>
+<?php 
+/* XXX can't override the title easily, which will make us look like total
+ * morons. For this page it should be, "Travel-time maps: methods". */
+include "wordpress/wp-blog-header.php";
+include "wordpress/wp-content/themes/mysociety/header.php"; 
+?>
 
 <h1>Summarising public transport information with travel-time maps: Methods</h1>
 
@@ -198,5 +195,4 @@ Scale Colour Raster Maps</a> (Ordnance Survey)</dt>
 <p>These data were kindly supplied by agreement with the
 <a href="http://www.dft.gov.uk/">Department&nbsp;for&nbsp;Transport</a>.</p>
 
-</body>
-</html>
+<?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
