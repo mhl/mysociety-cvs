@@ -322,6 +322,12 @@ services in each area, rather than relying entirely on outside services. This
 is an attractive idea, although it would be expensive to build.</dd>
 </dl>
 
+<p>Please contact us (email addresses at the top of the page) if you have
+any questions or comments. If you're interested in this area, please also
+sign up to the (fairly low-traffic)
+<a href="http://www.mysociety.org/mailman/listinfo/mysociety-maps">mysociety-maps
+mailing list</a>.</p>
+
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>
 
 <p>This work was funded by the
