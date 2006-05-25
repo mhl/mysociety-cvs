@@ -1,13 +1,17 @@
 <?php 
 /* XXX can't override the title easily, which will make us look like total
  * morons. For this page it should be, "Travel-time maps: methods". */
-include "wordpress/wp-blog-header.php";
-include "wordpress/wp-content/themes/mysociety/header.php"; 
+include "../../wordpress/wp-blog-header.php";
+include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
 
-<h1>Summarising public transport information with travel-time maps: Methods</h1>
+<h1>Travel-time Maps: Methods</h1>
 
-<p>Chris Lightfoot, mySociety<br>&lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;</p>
+<p>Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;</p>
+
+<p>This work was funded and supported by the <a href="http://www.dft.gov.uk/">Department&nbsp;for&nbsp;Transport</a>.</p>
+
+<p>(See also: <a href="index.php">main report</a>.)</p>
 
 <p>Clearly the travel-time for a particular journey is a function of the origin
 and destination points, the time of travel (whether of departure or arrival),
@@ -21,15 +25,15 @@ useful to users in some context, and (b) it is practical to compute.</p>
 planners:</p>
 
 <dl>
-<dt><a href="http://www.travelinfosystems.com/productrail.php">RailPlanner</a></dt>
+<dt style="font-weight: bold; padding-top: 0.5em;"><a href="http://www.travelinfosystems.com/productrail.php">RailPlanner</a></dt>
 <dd>This is off-the-shelf desktop software for planning rail journeys on the national
 rail network. It includes a full timetable for rail services in Great Britain.</dd>
-<dt><a href="http://www.transportdirect.info/TransportDirect/en/Home.aspx">Transport Direct</a></dt>
+<dt style="font-weight: bold; padding-top: 0.5em;"><a href="http://www.transportdirect.info/TransportDirect/en/Home.aspx">Transport Direct</a></dt>
 <dd>This is a website which provides uniform access to regional journey planner
 services operated by local councils and others in different parts of the
 country. It will give routes by all modes of public transport and road journeys
 throughout the country.</dd>
-<dt><a href="http://journeyplanner.tfl.gov.uk/user/XSLT_TRIP_REQUEST2?language=en&ptOptionsActive=1">Transport for London's journey planner</a></dt>
+<dt style="font-weight: bold; padding-top: 0.5em;"><a href="http://journeyplanner.tfl.gov.uk/user/XSLT_TRIP_REQUEST2?language=en&ptOptionsActive=1">Transport for London's journey planner</a></dt>
 <dd>This is a website which provides the same service as TransportDirect for the
 London area.</dd>
 </dl>
@@ -156,20 +160,25 @@ maps).</p>
 <h2>Software used</h2>
 
 <dl>
-<dt>custom software in C,
+<dt style="font-weight: bold; padding-top: 0.5em;">custom software in C,
 <a href="http://www.mingw.org/">mingw and msys</a>,
 Windows 2000,
 VMWare,
 <a href="http://www.railplanner.co.uk/productrail.php">RailPlanner</a></dt>
 <dd>For computing rail travel-times.</dd>
-<dt>custom software in <a href="http://www.perl.com/">perl</a>,
+<dt style="font-weight: bold; padding-top: 0.5em;">custom software in <a href="http://www.perl.com/">perl</a>,
 <a href="http://search.cpan.org/~petdance/WWW-Mechanize-1.18/lib/WWW/Mechanize.pm">WWW::Mechanize</a></dt>
 <dd>For computing multimodal travel-times.</dd>
-<dt><a href="http://gmt.soest.hawaii.edu/">GMT</a>,
+<dt style="font-weight: bold; padding-top: 0.5em;"><a href="http://gmt.soest.hawaii.edu/">GMT</a>,
 custom software written in C,
 <a href="http://www.gimp.org/">GIMP</a></dt>
 <dd>For producing maps.</dd>
 </dl>
+
+<p>If you'd like a copy of the custom software we wrote, or if you have any
+other questions or comments, please email me at
+<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>. Our software is
+available under the terms of the Affero GPL.</p>
 
 <h2>Summary of data used</h2>
 
@@ -177,17 +186,17 @@ custom software written in C,
 planning websites.</p>
 
 <dl>
-<dt><a href="http://www.naptan.org.uk/">NaPTAN</a> (National Public Transport
+<dt style="font-weight: bold; padding-top: 0.5em;"><a href="http://www.naptan.org.uk/">NaPTAN</a> (National Public Transport
 Access Node database)</dt>
 <dd>For locations of railway stations, bus stops etc.</dd>
-<dt><a href="http://www.ordnancesurvey.co.uk/products/codepoint/">CodePoint</a>
+<dt style="font-weight: bold; padding-top: 0.5em;"><a href="http://www.ordnancesurvey.co.uk/products/codepoint/">CodePoint</a>
 (Ordnance Survey database of postcode centroid locations)</dt>
 <dd>Postcodes were used to describe origin and destination points as input to
 the two web scrapers, as described above.</dd>
-<dt><a href="http://www.ordnancesurvey.co.uk/products/25kraster/">1:25,000
+<dt style="font-weight: bold; padding-top: 0.5em;"><a href="http://www.ordnancesurvey.co.uk/products/25kraster/">1:25,000
 Scale Colour Raster Maps</a> (Ordnance Survey)</dt>
 <dd>For use as large-scale base mapping.</dd>
-<dt><a href="http://www.ordnancesurvey.co.uk/products/250kraster/">1:250,000
+<dt style="font-weight: bold; padding-top: 0.5em;"><a href="http://www.ordnancesurvey.co.uk/products/250kraster/">1:250,000
 Scale Colour Raster Maps</a> (Ordnance Survey)</dt>
 <dd>For use as small-scale base mapping.</dd>
 </dl>

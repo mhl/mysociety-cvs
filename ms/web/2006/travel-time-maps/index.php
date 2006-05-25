@@ -5,9 +5,11 @@ include "../../wordpress/wp-blog-header.php";
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
 
-<h1>Summarising public transport information with travel-time maps</h1>
+<h1>Travel-time Maps and their Uses</h1>
 
-<p>Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;</p>
+<p>Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;<br>
+Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.org</a>&gt;<br>
+</p>
 
 <p>This work was funded and supported by the <a href="http://www.dft.gov.uk/">Department&nbsp;for&nbsp;Transport</a>.</p>
 
@@ -24,6 +26,9 @@ include "../../wordpress/wp-content/themes/mysociety/header.php";
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 <li><a href="#data">The data we used</a></li>
 </ul>
+
+<p>(See also: <a href="methods.php">description of methods</a>;
+<a href="slides.pdf">presentation slides</a>)</p>
 
 <h2><a name="introduction"></a>Introduction</h2>
 
@@ -60,7 +65,7 @@ at seven o'clock on a weekday morning. This could be useful if you lived in
 Cambridge, and were wondering where you might go for a long weekend away and
 didn't want to travel more than 4 hours. We assume that people will take a taxi
 from a convenient train station to their destination, so long as that journey
-is no more than an hour. (Please see our <a href="methods.html">methods
+is no more than an hour. (Please see our <a href="methods.php">methods
 page</a> for a more detailed description of our assumptions.) You can click on
 any of the maps on this page to see a larger version.</p>
 
@@ -97,7 +102,7 @@ well-connected, but areas further north are much less accessible, or even
 inaccessible where there are no stations within an hour's drive of a given
 destination.</p>
 
-<h3>Edinburgh</h3>
+<h4>Edinburgh</h4>
 
 <p>The next map is for journeys starting from Edinburgh Waverley station, but
 otherwise it is the same as the Cambridge map.</p>
@@ -110,7 +115,7 @@ otherwise it is the same as the Cambridge map.</p>
 map; it appears as a tendril of red and pink stretching south from Edinburgh
 down to London.</p>
 
-<h3>Comparing car and train travel</h3>
+<h4>Comparing car and train travel</h4>
 
 <p>Again considering journeys starting from Cambridge, this map shows which
 parts of the country are quicker to get to by train (red and orange), and which
