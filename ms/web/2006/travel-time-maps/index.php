@@ -28,7 +28,9 @@ Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.or
 </ul>
 
 <p>(See also: <a href="methods.php">description of methods</a>;
-<a href="slides.pdf">presentation slides</a>)</p>
+<a href="slides.pdf">presentation slides</a>. You may also be interested in
+<a href="http://www.mysociety.org/mailman/listinfo/mysociety-maps">the
+mysociety-maps mailing list</a>.)</p>
 
 <h2><a name="introduction"></a>Introduction</h2>
 
