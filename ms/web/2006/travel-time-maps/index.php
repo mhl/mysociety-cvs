@@ -1,8 +1,8 @@
 <?php 
 /* XXX can't override the title easily, which will make us look like total
  * morons. For this page it should be, "Travel-time maps". */
-include "wordpress/wp-blog-header.php";
-include "wordpress/wp-content/themes/mysociety/header.php"; 
+include "../../wordpress/wp-blog-header.php";
+include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
 
 <h1>Summarising public transport information with travel-time maps</h1>
@@ -247,7 +247,7 @@ maps above.</p>
 contour lines are at half-hour intervals:</p>
 
 <p>
-<a href="multimodal-london-big-1177px"><img src="multimodal-london-big-589px.png" width="589" height="608" alt="Map of Greater London and surrounds showing times of departure to reach the Department for Transport by 9 o'clock on a weekday morning"></a>
+<a href="multimodal-london-big-1177px.png"><img src="multimodal-london-big-589px.png" width="589" height="608" alt="Map of Greater London and surrounds showing times of departure to reach the Department for Transport by 9 o'clock on a weekday morning"></a>
 </p>
 
 <p>At this scale the suburbs of London appear to be arranged along a
@@ -265,20 +265,20 @@ keen to talk to anyone else interested in the work so far, or any of these
 ideas:</p>
 
 <dl>
-<dt>Relating journey times to house prices</dt>
+<dt style="font-weight: bold; padding-top: 0.5em;">Relating journey times to house prices</dt>
 <dd>An obvious application for travel time data are to people's decisions about
 where to live. By comparing journey time data for particular locations to house
 prices in areas nearby it would be possible to tabulate the cheapest areas to
 live in within a certain travel time of a desired location, for instance a
 person's place of work.</dd>
-<dt>Improving the road travel model to better reflect comparative rail and road
+<dt style="font-weight: bold; padding-top: 0.5em;">Improving the road travel model to better reflect comparative rail and road
 journey times</dt>
 <dd>At the moment our rail travel model assumes that the final stage of each
 journey is by taxi, under the assumption of a uniform and isotropic road
 network. This is clearly inadequate; we would like to extend it using journey
 planning software (preferably including traffic and time-of-day effects) to
 produce more reliable travel time and modal comparison maps.</dd>
-<dt>Cost</dt>
+<dt style="font-weight: bold; padding-top: 0.5em;">Cost</dt>
 <dd>At the moment the maps are constructed on the assumption that users will
 always choose the quickest journey under the imposed constraints. Of course in
 reality users also respond to other incentives, of which one of the most
@@ -286,13 +286,13 @@ importantly is price. If we could obtain fare data we could show journey costs
 rather than times, use more realistic constraints (for instance, choosing the
 shortest journey cheaper than a certain amount), or comparing the prices for
 tickets bought on the day to those bought at varying intervals before travel. 
-<dt>Improving the readability of the maps</dt>
+<dt style="font-weight: bold; padding-top: 0.5em;">Improving the readability of the maps</dt>
 <dd>The maps could be made much easier to understand. Improvements could be
 made by refinement of the colours used and by replacing the current (OS
 Explorer and 1:250,000) base maps with simpler ones showing sufficient
 information to allow the viewer to understand the placement of the map without
 extraneous detail such as building lines etc.</dd>
-<dt>Incorporating reliability information</dt>
+<dt style="font-weight: bold; padding-top: 0.5em;">Incorporating reliability information</dt>
 <dd>Presently we assume that all public transport services run according to
 their published timetable. This means that we are more optimistic about total
 travel times than would be regular users of those services, who will know how
@@ -303,7 +303,7 @@ users' tolerance for unpunctuality could be incorporated, so that users could
 state the tolerance they have for late arrival at their destination (for
 instance, no more than once every month) and journey times computed so as to
 meet that target on average.</dd>
-<dt>A real-time web service</dt>
+<dt style="font-weight: bold; padding-top: 0.5em;">A real-time web service</dt>
 <dd>While our approach uses only published data and services (existing public
 sector journey planners such as
 <a href="http://www.transportdirect.info/TransportDirect/en/Home.aspx">TransportDirect</a>),
