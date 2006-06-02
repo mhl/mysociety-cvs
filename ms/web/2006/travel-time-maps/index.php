@@ -71,7 +71,9 @@ is no more than an hour. (Please see our <a href="methods.php">methods
 page</a> for a more detailed description of our assumptions.) You can click on
 any of the maps on this page to see a larger version.</p>
 
-<p><a href="rail-cambridge-1500px.png"><img src="rail-cambridge-500px.png" width="288" height="500" alt="Map showing travel times by rail and taxi from Cambridge to other points in Great Britain, starting at 7 o'clock on a weekday morning"></a></p>
+<p><a href="rail-cambridge-1500px.png"><img src="rail-cambridge-500px.png" width="288" height="500" alt="Map showing travel times by rail and taxi from Cambridge to other points in Great Britain, starting at 7 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
+</p>
 
 <p>The white contour lines are drawn at one-hour intervals, so the innermost,
 almost circular contour shows destinations up to an hour from Cambridge, the
@@ -111,6 +113,7 @@ otherwise it is the same as the Cambridge map.</p>
 
 <p>
 <a href="rail-edinburgh-1500px.png"><img src="rail-edinburgh-500px.png" width="288" height="500" alt="Map showing travel times by rail and taxi from Edinburgh to other points in Great Britain, starting at 7 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
 </p>
 
 <p>Here the East Coast Main Line is even more obvious than in the preceding
@@ -128,6 +131,7 @@ for a particular trip.</p>
 
 <p>
 <a href="rail-differences-cambridge-1500px.png"><img src="rail-differences-cambridge-500px.png" width="288" height="500" alt="Map showing the difference in journey times by rail and taxi, and by road alone, from Cambridge to other points in Great Britain, starting at 7 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
 </p>
 
 <p>This time, contours are drawn for each hour of <em>difference</em> in travel
@@ -162,6 +166,7 @@ Site</a>, which is also home to a number of commercial employers including
 
 <p>
 <a href="multimodal-cambridge-center-700px.png"><img src="multimodal-cambridge-center-350px.png" width="350" height="300" alt="Map of Cambridge showing times of departure to reach the West Cambridge site by 9 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
 </p>
 
 <p>This map shows the city center of Cambridge, and the area around the
@@ -181,6 +186,7 @@ villages are labelled for orientation purposes)</p>
 
 <p>
 <a href="multimodal-cambridge-surrounds-1333px.png"><img src="multimodal-cambridge-surrounds-666px.png" width="666" height="500" alt="Map of Cambridge and surrounds showing times of departure to reach the West Cambridge site by 9 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
 </p>
 
 <p>The larger map clearly shows the differing level of service to various
@@ -201,6 +207,7 @@ Hardwick).</p>
 
 <p>
 <a href="multimodal-cambridgeshire-1000px.png"><img src="multimodal-cambridgeshire-500px.png" width="500" height="578" alt="Map of Cambridgeshire and surrounds showing times of departure to reach the West Cambridge site by 9 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
 </p>
 
 <p>This map shares the same colour scheme as the previous one&mdash;warm
@@ -221,6 +228,7 @@ Westminster. Starting with the most local map:</p>
 
 <p>
 <a href="multimodal-london-10km-1000px.png"><img src="multimodal-london-10km-500px.png" width="500" height="500" alt="Map of central London showing times of departure to reach the Department for Transport building by 9 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
 </p>
 
 <p>Again, warm colours indicate short journeys and cool ones longer journeys.
@@ -237,6 +245,7 @@ such islands:</p>
 
 <p>
 <a href="multimodal-london-20km-1196px.png"><img src="multimodal-london-20km-598px.png" width="598" height="569" alt="Map of central London and suburbs showing times of departure to reach the Department for Transport building by 9 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
 </p>
 
 <p>On this scale, particular ill-connected areas of London are clearly visible:
@@ -255,6 +264,7 @@ contour lines are at half-hour intervals:</p>
 
 <p>
 <a href="multimodal-london-big-1177px.png"><img src="multimodal-london-big-589px.png" width="589" height="608" alt="Map of Greater London and surrounds showing times of departure to reach the Department for Transport by 9 o'clock on a weekday morning"></a>
+<br>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006
 </p>
 
 <p>At this scale the suburbs of London appear to be arranged along a
