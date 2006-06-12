@@ -137,7 +137,6 @@ if ( !empty($error) && '404' == $error ) {
 	    (($client_last_modified == $wp_last_modified) || ($client_etag == $wp_etag)) ) {
 		if ( preg_match('/cgi/',php_sapi_name()) ) {
 		    header('Status: 304 Not Modified');
-		    echo "\r\n\r\n";
 		    exit;
 		} else {
 		    if ( version_compare(phpversion(), '4.3.0', '>=') ) {
