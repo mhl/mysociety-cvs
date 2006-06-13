@@ -3,24 +3,13 @@ require_once('admin.php');
 
 $title = __('Posts');
 $parent_file = 'edit.php';
+$list_js = true;
 require_once('admin-header.php');
 
 $_GET['m'] = (int) $_GET['m'];
 
-get_currentuserinfo();
-
-$drafts = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_status = 'draft' AND post_author = $user_ID");
-if (1 < $user_level) {
-	$editable = $wpdb->get_col("SELECT ID FROM $wpdb->users WHERE user_level <= '$user_level' AND ID != $user_ID");
-	if( is_array( $editable ) == false )
-			$other_drafts = '';
-	else {
-		$editable = join(',', $editable);
-		$other_drafts = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_status = 'draft' AND post_author IN ($editable) ");
-	}
-} else {
-	$other_drafts = false;
-}
+$drafts = get_users_drafts( $user_ID );
+$other_drafts = get_others_drafts( $user_ID);
 
 if ($drafts || $other_drafts) {
 ?> 
@@ -66,12 +55,23 @@ if ($drafts || $other_drafts) {
 <div class="wrap">
 <h2>
 <?php
-if ( $_GET['m'] ) {
-	echo $month[substr( $_GET['m'], 4, 2 )] . ' ' . substr( $_GET['m'], 0, 4 );
-} elseif ( isset( $_GET['s'] ) ) {
+$what_to_show = 'posts';
+$posts_per_page = 15;
+$posts_per_archive_page = -1;
+
+wp();
+
+if ( is_month() ) {
+	single_month_title(' ');
+} elseif ( is_search() ) {
 	printf(__('Search for &#8220;%s&#8221;'), wp_specialchars($_GET['s']) );
 } else {
-	_e('Last 15 Posts');
+	if ( is_single() )
+		printf(__('Comments on %s'), $post->post_title);
+	elseif ( ! is_paged() || get_query_var('paged') == 1 )
+		_e('Last 15 Posts');
+	else
+		_e('Previous Posts');
 }
 ?>
 </h2>
@@ -79,17 +79,20 @@ if ( $_GET['m'] ) {
 <form name="searchform" action="" method="get" style="float: left; width: 16em; margin-right: 3em;"> 
   <fieldset> 
   <legend><?php _e('Search Posts&hellip;') ?></legend> 
-  <input type="text" name="s" value="<?php if (isset($s)) echo $s; ?>" size="17" /> 
+  <input type="text" name="s" value="<?php if (isset($s)) echo wp_specialchars($s, 1); ?>" size="17" /> 
   <input type="submit" name="submit" value="<?php _e('Search') ?>"  /> 
   </fieldset>
 </form>
+
+<?php $arc_result = $wpdb->get_results("SELECT DISTINCT YEAR(post_date) AS yyear, MONTH(post_date) AS mmonth FROM $wpdb->posts WHERE post_date != '0000-00-00 00:00:00' ORDER BY post_date DESC");
+
+if ( count($arc_result) ) { ?>
 
 <form name="viewarc" action="" method="get" style="float: left; width: 20em; margin-bottom: 1em;">
 	<fieldset>
 	<legend><?php _e('Browse Month&hellip;') ?></legend>
     <select name='m'>
 	<?php
-		$arc_result=$wpdb->get_results("SELECT DISTINCT YEAR(post_date) AS yyear, MONTH(post_date) AS mmonth FROM $wpdb->posts ORDER BY post_date DESC");
 		foreach ($arc_result as $arc_row) {			
 			$arc_year  = $arc_row->yyear;
 			$arc_month = $arc_row->mmonth;
@@ -108,6 +111,8 @@ if ( $_GET['m'] ) {
 		<input type="submit" name="submit" value="<?php _e('Show Month') ?>"  /> 
 	</fieldset>
 </form>
+
+<?php } ?>
 
 <br style="clear:both;" />
 
@@ -131,7 +136,7 @@ $posts_columns['control_delete'] = '';
 
 ?>
 
-<table width="100%" cellpadding="3" cellspacing="3"> 
+<table id="the-list-x" width="100%" cellpadding="3" cellspacing="3"> 
 	<tr>
 
 <?php foreach($posts_columns as $column_display_name) { ?>
@@ -140,21 +145,12 @@ $posts_columns['control_delete'] = '';
 
 	</tr>
 <?php
-$what_to_show = 'posts';
-if ( empty($_GET['m']) || 0 == $_GET['m'] && empty($_GET['s']) ) {
-  $showposts = 15;
-} else {
-  $nopaging = true;
-}
-
-include(ABSPATH.'wp-blog-header.php');
-
 if ($posts) {
 $bgcolor = '';
 foreach ($posts as $post) { start_wp();
 $class = ('alternate' == $class) ? '' : 'alternate';
 ?> 
-	<tr class='<?php echo $class; ?>'>
+	<tr id='post-<?php echo $id; ?>' class='<?php echo $class; ?>'>
 
 <?php
 
@@ -208,13 +204,13 @@ foreach($posts_columns as $column_name=>$column_display_name) {
 
 	case 'control_edit':
 		?>
-		<td><?php if ( user_can_edit_user($user_ID,$authordata->ID) ) { echo "<a href='post.php?action=edit&amp;post=$id' class='edit'>" . __('Edit') . "</a>"; } ?></td>
+		<td><?php if ( current_user_can('edit_post',$post->ID) ) { echo "<a href='post.php?action=edit&amp;post=$id' class='edit'>" . __('Edit') . "</a>"; } ?></td>
 		<?php
 		break;
 
 	case 'control_delete':
 		?>
-		<td><?php if ( user_can_edit_user($user_ID,$authordata->ID) ) { echo "<a href='post.php?action=delete&amp;post=$id' class='delete' onclick=\"return confirm('" . sprintf(__("You are about to delete this post \'%s\'\\n  \'OK\' to delete, \'Cancel\' to stop."), wp_specialchars(get_the_title('', ''), 1) ) . "')\">" . __('Delete') . "</a>"; } ?></td>
+		<td><?php if ( current_user_can('edit_post',$post->ID) ) { echo "<a href='" . wp_nonce_url("post.php?action=delete&amp;post=$id", 'delete-post_' . $post->ID) . "' class='delete' onclick=\"return deleteSomething( 'post', " . $id . ", '" . sprintf(__("You are about to delete this post &quot;%s&quot;.\\n&quot;OK&quot; to delete, &quot;Cancel&quot; to stop."), js_escape(get_the_title())) . "' );\">" . __('Delete') . "</a>"; } ?></td>
 		<?php
 		break;
 
@@ -237,7 +233,15 @@ foreach($posts_columns as $column_name=>$column_display_name) {
 <?php
 } // end if ($posts)
 ?> 
-</table> 
+</table>
+
+<div id="ajax-response"></div>
+
+<div class="navigation">
+<div class="alignleft"><?php next_posts_link(__('&laquo; Previous Entries')) ?></div>
+<div class="alignright"><?php previous_posts_link(__('Next Entries &raquo;')) ?></div>
+</div>
+
 <?php
 if ( 1 == count($posts) ) {
 
@@ -256,14 +260,15 @@ $comment_status = wp_get_comment_status($comment->comment_ID);
   @
   <?php comment_time('g:m:s a') ?> 
   <?php 
-			if (($user_level > $authordata->user_level) or ($user_login == $authordata->user_login)) {
+			if ( current_user_can('edit_post', $post->ID) ) {
 				echo "[ <a href=\"post.php?action=editcomment&amp;comment=".$comment->comment_ID."\">" .  __('Edit') . "</a>";
-				echo " - <a href=\"post.php?action=deletecomment&amp;p=".$post->ID."&amp;comment=".$comment->comment_ID."\" onclick=\"return confirm('" . sprintf(__("You are about to delete this comment by \'%s\'\\n  \'OK\' to delete, \'Cancel\' to stop."), $comment->comment_author) . "')\">" . __('Delete') . "</a> ";
-				if ( ('none' != $comment_status) && ($user_level >= 3) ) {
+				echo ' - <a href="' . wp_nonce_url('post.php?action=deletecomment&amp;p=' . $post->ID . '&amp;comment=' . $comment->comment_ID, 'delete-comment_' . $comment->comment_ID) . '" onclick="return confirm(\'' . __("You are about to delete this comment.\\n&quot;Cancel&quot; to stop, &quot;OK&quot; to delete.") . "');\">" . __('Delete') . '</a> ';
+
+				if ( ('none' != $comment_status) && ( current_user_can('moderate_comments') ) ) {
 					if ('approved' == wp_get_comment_status($comment->comment_ID)) {
-						echo " - <a href=\"post.php?action=unapprovecomment&amp;p=".$post->ID."&amp;comment=".$comment->comment_ID."\">" . __('Unapprove') . "</a> ";
+						echo ' - <a href="' . wp_nonce_url('post.php?action=unapprovecomment&amp;p=' . $post->ID . '&amp;comment=' . $comment->comment_ID, 'unapprove-comment_' . $comment->comment_ID) . '">' . __('Unapprove') . '</a> ';
 					} else {
-						echo " - <a href=\"post.php?action=approvecomment&amp;p=".$post->ID."&amp;comment=".$comment->comment_ID."\">" . __('Approve') . "</a> ";
+						echo ' - <a href="' . wp_nonce_url('post.php?action=approvecomment&amp;p=' . $post->ID . '&amp;comment=' . $comment->comment_ID, 'approve-comment_' . $comment->comment_ID) . '">' . __('Approve') . '</a> ';
 					}
 				}
 				echo "]";

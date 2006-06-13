@@ -1,12 +1,9 @@
 <?php
 $mode = 'sidebar';
 
-$standalone = 1;
-require_once('admin-header.php');
+require_once('admin.php');
 
-get_currentuserinfo();
-
-if ($user_level == 0)
+if ( ! current_user_can('edit_posts') )
 	die ("Cheatin' uh ?");
 
 if ('b' == $_GET['a']) {
@@ -18,7 +15,7 @@ if ('b' == $_GET['a']) {
 <meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=UTF-8" />
 <link rel="stylesheet" href="wp-admin.css" type="text/css" />
 </head>
-<body
+<body>
 	<p>Posted !</p>
 	<p><a href="sidebar.php">Click here</a> to post again.</p>
 </body>
@@ -50,7 +47,7 @@ form {
 </style>
 </head>
 <body id="sidebar">
-<h1 id="wphead"><a href="http://wordpress.org" rel="external">WordPress</a></h1>
+<h1 id="wphead"><a href="http://wordpress.org/" rel="external">WordPress</a></h1>
 <form name="post" action="post.php" method="POST">
 <div><input type="hidden" name="action" value="post" />
 <input type="hidden" name="user_ID" value="<?php echo $user_ID ?>" />
@@ -69,8 +66,9 @@ Post:
 </p>
 <p>
     <input name="saveasdraft" type="submit" id="saveasdraft" tabindex="9" value="Save as Draft" /> 
+<?php if ( current_user_can('publish_posts') ) : ?>
     <input name="publish" type="submit" id="publish" tabindex="6" style="font-weight: bold;" value="Publish" /> 
-  
+<?php endif; ?>
 </p>
 </div>
 </form>

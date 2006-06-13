@@ -10,14 +10,15 @@ function wptexturize($text) {
 
 		if (isset($curl{0}) && '<' != $curl{0} && $next) { // If it's not a tag
 			$curl = str_replace('---', '&#8212;', $curl);
-			$curl = preg_replace('/(\s)--(\s)/', '$1&#8212;$2', $curl);
+			$curl = str_replace(' -- ', ' &#8212; ', $curl);
 			$curl = str_replace('--', '&#8211;', $curl);
+			$curl = str_replace('xn&#8211;', 'xn--', $curl);
 			$curl = str_replace('...', '&#8230;', $curl);
 			$curl = str_replace('``', '&#8220;', $curl);
 
 			// This is a hack, look at this more later. It works pretty well though.
-			$cockney = array("'tain't","'twere","'twas","'tis","'twill","'til","'bout","'nuff","'round");
-			$cockneyreplace = array("&#8217;tain&#8217;t","&#8217;twere","&#8217;twas","&#8217;tis","&#8217;twill","&#8217;til","&#8217;bout","&#8217;nuff","&#8217;round");
+			$cockney = array("'tain't","'twere","'twas","'tis","'twill","'til","'bout","'nuff","'round","'cause");
+			$cockneyreplace = array("&#8217;tain&#8217;t","&#8217;twere","&#8217;twas","&#8217;tis","&#8217;twill","&#8217;til","&#8217;bout","&#8217;nuff","&#8217;round","&#8217;cause");
 			$curl = str_replace($cockney, $cockneyreplace, $curl);
 
 			$curl = preg_replace("/'s/", '&#8217;s', $curl);
@@ -32,7 +33,7 @@ function wptexturize($text) {
 			$curl = preg_replace("/ \(tm\)/i", ' &#8482;', $curl);
 			$curl = str_replace("''", '&#8221;', $curl);
 			
-			$curl = preg_replace('/(d+)x(\d+)/', "$1&#215;$2", $curl);
+			$curl = preg_replace('/(\d+)x(\d+)/', "$1&#215;$2", $curl);
 
 		} elseif (strstr($curl, '<code') || strstr($curl, '<pre') || strstr($curl, '<kbd' || strstr($curl, '<style') || strstr($curl, '<script'))) {
 			// strstr is fast
@@ -40,7 +41,7 @@ function wptexturize($text) {
 		} else {
 			$next = true;
 		}
-		$curl = preg_replace('/&([^#])(?![a-z12]{1,8};)/', '&#038;$1', $curl);
+		$curl = preg_replace('/&([^#])(?![a-zA-Z1-4]{1,8};)/', '&#038;$1', $curl);
 		$output .= $curl;
 	}
 	return $output;
@@ -57,22 +58,22 @@ function wpautop($pee, $br = 1) {
 	$pee = $pee . "\n"; // just to make things a little easier, pad the end
 	$pee = preg_replace('|<br />\s*<br />|', "\n\n", $pee);
 	// Space things out a little
-	$pee = preg_replace('!(<(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)!', "\n$1", $pee); 
-	$pee = preg_replace('!(</(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])>)!', "$1\n", $pee);
+	$pee = preg_replace('!(<(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|address|math|p|h[1-6])[^>]*>)!', "\n$1", $pee); 
+	$pee = preg_replace('!(</(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|address|math|p|h[1-6])>)!', "$1\n\n", $pee);
 	$pee = str_replace(array("\r\n", "\r"), "\n", $pee); // cross-platform newlines 
 	$pee = preg_replace("/\n\n+/", "\n\n", $pee); // take care of duplicates
-	$pee = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "\t<p>$1</p>\n", $pee); // make paragraphs, including one at the end 
+	$pee = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "<p>$1</p>\n", $pee); // make paragraphs, including one at the end 
 	$pee = preg_replace('|<p>\s*?</p>|', '', $pee); // under certain strange conditions it could create a P of entirely whitespace 
-    $pee = preg_replace('!<p>\s*(</?(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|hr|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*</p>!', "$1", $pee); // don't pee all over a tag
+	$pee = preg_replace('!<p>\s*(</?(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|hr|pre|select|form|blockquote|address|math|p|h[1-6])[^>]*>)\s*</p>!', "$1", $pee); // don't pee all over a tag
 	$pee = preg_replace("|<p>(<li.+?)</p>|", "$1", $pee); // problem with nested lists
 	$pee = preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $pee);
 	$pee = str_replace('</blockquote></p>', '</p></blockquote>', $pee);
-	$pee = preg_replace('!<p>\s*(</?(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|hr|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)!', "$1", $pee);
-	$pee = preg_replace('!(</?(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*</p>!', "$1", $pee); 
+	$pee = preg_replace('!<p>\s*(</?(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|hr|pre|select|form|blockquote|address|math|p|h[1-6])[^>]*>)!', "$1", $pee);
+	$pee = preg_replace('!(</?(?:table|thead|tfoot|caption|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|address|math|p|h[1-6])[^>]*>)\s*</p>!', "$1", $pee); 
 	if ($br) $pee = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $pee); // optionally make line breaks
-	$pee = preg_replace('!(</?(?:table|thead|tfoot|caption|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*<br />!', "$1", $pee);
+	$pee = preg_replace('!(</?(?:table|thead|tfoot|caption|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|address|math|p|h[1-6])[^>]*>)\s*<br />!', "$1", $pee);
 	$pee = preg_replace('!<br />(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)!', '$1', $pee);
-	$pee = preg_replace('!(<pre.*?>)(.*?)</pre>!ise', " stripslashes('$1') .  clean_pre('$2')  . '</pre>' ", $pee);
+	$pee = preg_replace('!(<pre.*?>)(.*?)</pre>!ise', " stripslashes('$1') .  stripslashes(clean_pre('$2'))  . '</pre>' ", $pee);
 	
 	return $pee; 
 }
@@ -97,7 +98,7 @@ function seems_utf8($Str) { # by bmorel at ssi dot fr
 
 function wp_specialchars( $text, $quotes = 0 ) {
 	// Like htmlspecialchars except don't double-encode HTML entities
-	$text = preg_replace('/&([^#])(?![a-z12]{1,8};)/', '&#038;$1', $text);-
+	$text = preg_replace('/&([^#])(?![a-z1-4]{1,8};)/', '&#038;$1', $text);-
 	$text = str_replace('<', '&lt;', $text);
 	$text = str_replace('>', '&gt;', $text);
 	if ( $quotes ) {
@@ -141,42 +142,104 @@ function utf8_uri_encode( $utf8_string ) {
 
 function remove_accents($string) {
 	if (seems_utf8($string)) {
-		$chars = array(// Decompositions for Latin-1 Supplement
-									 chr(195).chr(128) => 'A', chr(195).chr(129) => 'A',
-									 chr(195).chr(130) => 'A', chr(195).chr(131) => 'A',
-									 chr(195).chr(132) => 'A', chr(195).chr(133) => 'A',
-									 chr(195).chr(135) => 'C', chr(195).chr(136) => 'E',
-									 chr(195).chr(137) => 'E', chr(195).chr(138) => 'E',
-									 chr(195).chr(139) => 'E', chr(195).chr(140) => 'I',
-									 chr(195).chr(141) => 'I', chr(195).chr(142) => 'I',
-									 chr(195).chr(143) => 'I', chr(195).chr(145) => 'N',
-									 chr(195).chr(146) => 'O', chr(195).chr(147) => 'O',
-									 chr(195).chr(148) => 'O', chr(195).chr(149) => 'O',
-									 chr(195).chr(150) => 'O', chr(195).chr(153) => 'U',
-									 chr(195).chr(154) => 'U', chr(195).chr(155) => 'U',
-									 chr(195).chr(156) => 'U', chr(195).chr(157) => 'Y',
-									 chr(195).chr(160) => 'a', chr(195).chr(161) => 'a',
-									 chr(195).chr(162) => 'a', chr(195).chr(163) => 'a',
-									 chr(195).chr(164) => 'a', chr(195).chr(165) => 'a',
-									 chr(195).chr(167) => 'c', chr(195).chr(168) => 'e',
-									 chr(195).chr(169) => 'e', chr(195).chr(170) => 'e',
-									 chr(195).chr(171) => 'e', chr(195).chr(172) => 'i',
-									 chr(195).chr(173) => 'i', chr(195).chr(174) => 'i',
-									 chr(195).chr(175) => 'i', chr(195).chr(177) => 'n',
-									 chr(195).chr(178) => 'o', chr(195).chr(179) => 'o',
-									 chr(195).chr(180) => 'o', chr(195).chr(181) => 'o',
-									 chr(195).chr(182) => 'o', chr(195).chr(182) => 'o',
-									 chr(195).chr(185) => 'u', chr(195).chr(186) => 'u',
-									 chr(195).chr(187) => 'u', chr(195).chr(188) => 'u',
-									 chr(195).chr(189) => 'y', chr(195).chr(191) => 'y',
-									 // Decompositions for Latin Extended-A
-									 // TODO: Finish me.
-									 chr(197).chr(146) => 'OE', chr(197).chr(147) => 'oe',
-									 chr(197).chr(160) => 'S', chr(197).chr(161) => 's',
-									 chr(197).chr(189) => 'Z', chr(197).chr(190) => 'z',
-									 // Euro Sign
-									 chr(226).chr(130).chr(172) => 'E');
-
+		$chars = array(
+		// Decompositions for Latin-1 Supplement
+		chr(195).chr(128) => 'A', chr(195).chr(129) => 'A',
+		chr(195).chr(130) => 'A', chr(195).chr(131) => 'A',
+		chr(195).chr(132) => 'A', chr(195).chr(133) => 'A',
+		chr(195).chr(135) => 'C', chr(195).chr(136) => 'E',
+		chr(195).chr(137) => 'E', chr(195).chr(138) => 'E',
+		chr(195).chr(139) => 'E', chr(195).chr(140) => 'I',
+		chr(195).chr(141) => 'I', chr(195).chr(142) => 'I',
+		chr(195).chr(143) => 'I', chr(195).chr(145) => 'N',
+		chr(195).chr(146) => 'O', chr(195).chr(147) => 'O',
+		chr(195).chr(148) => 'O', chr(195).chr(149) => 'O',
+		chr(195).chr(150) => 'O', chr(195).chr(153) => 'U',
+		chr(195).chr(154) => 'U', chr(195).chr(155) => 'U',
+		chr(195).chr(156) => 'U', chr(195).chr(157) => 'Y',
+		chr(195).chr(159) => 's', chr(195).chr(160) => 'a',
+		chr(195).chr(161) => 'a', chr(195).chr(162) => 'a',
+		chr(195).chr(163) => 'a', chr(195).chr(164) => 'a',
+		chr(195).chr(165) => 'a', chr(195).chr(167) => 'c',
+		chr(195).chr(168) => 'e', chr(195).chr(169) => 'e',
+		chr(195).chr(170) => 'e', chr(195).chr(171) => 'e',
+		chr(195).chr(172) => 'i', chr(195).chr(173) => 'i',
+		chr(195).chr(174) => 'i', chr(195).chr(175) => 'i',
+		chr(195).chr(177) => 'n', chr(195).chr(178) => 'o',
+		chr(195).chr(179) => 'o', chr(195).chr(180) => 'o',
+		chr(195).chr(181) => 'o', chr(195).chr(182) => 'o',
+		chr(195).chr(182) => 'o', chr(195).chr(185) => 'u',
+		chr(195).chr(186) => 'u', chr(195).chr(187) => 'u',
+		chr(195).chr(188) => 'u', chr(195).chr(189) => 'y',
+		chr(195).chr(191) => 'y',
+		// Decompositions for Latin Extended-A
+		chr(196).chr(128) => 'A', chr(196).chr(129) => 'a',
+		chr(196).chr(130) => 'A', chr(196).chr(131) => 'a',
+		chr(196).chr(132) => 'A', chr(196).chr(133) => 'a',
+		chr(196).chr(134) => 'C', chr(196).chr(135) => 'c',
+		chr(196).chr(136) => 'C', chr(196).chr(137) => 'c',
+		chr(196).chr(138) => 'C', chr(196).chr(139) => 'c',
+		chr(196).chr(140) => 'C', chr(196).chr(141) => 'c',
+		chr(196).chr(142) => 'D', chr(196).chr(143) => 'd',
+		chr(196).chr(144) => 'D', chr(196).chr(145) => 'd',
+		chr(196).chr(146) => 'E', chr(196).chr(147) => 'e',
+		chr(196).chr(148) => 'E', chr(196).chr(149) => 'e',
+		chr(196).chr(150) => 'E', chr(196).chr(151) => 'e',
+		chr(196).chr(152) => 'E', chr(196).chr(153) => 'e',
+		chr(196).chr(154) => 'E', chr(196).chr(155) => 'e',
+		chr(196).chr(156) => 'G', chr(196).chr(157) => 'g',
+		chr(196).chr(158) => 'G', chr(196).chr(159) => 'g',
+		chr(196).chr(160) => 'G', chr(196).chr(161) => 'g',
+		chr(196).chr(162) => 'G', chr(196).chr(163) => 'g',
+		chr(196).chr(164) => 'H', chr(196).chr(165) => 'h',
+		chr(196).chr(166) => 'H', chr(196).chr(167) => 'h',
+		chr(196).chr(168) => 'I', chr(196).chr(169) => 'i',
+		chr(196).chr(170) => 'I', chr(196).chr(171) => 'i',
+		chr(196).chr(172) => 'I', chr(196).chr(173) => 'i',
+		chr(196).chr(174) => 'I', chr(196).chr(175) => 'i',
+		chr(196).chr(176) => 'I', chr(196).chr(177) => 'i',
+		chr(196).chr(178) => 'IJ',chr(196).chr(179) => 'ij',
+		chr(196).chr(180) => 'J', chr(196).chr(181) => 'j',
+		chr(196).chr(182) => 'K', chr(196).chr(183) => 'k',
+		chr(196).chr(184) => 'k', chr(196).chr(185) => 'L',
+		chr(196).chr(186) => 'l', chr(196).chr(187) => 'L',
+		chr(196).chr(188) => 'l', chr(196).chr(189) => 'L',
+		chr(196).chr(190) => 'l', chr(196).chr(191) => 'L',
+		chr(197).chr(128) => 'l', chr(197).chr(129) => 'L',
+		chr(197).chr(130) => 'l', chr(197).chr(131) => 'N',
+		chr(197).chr(132) => 'n', chr(197).chr(133) => 'N',
+		chr(197).chr(134) => 'n', chr(197).chr(135) => 'N',
+		chr(197).chr(136) => 'n', chr(197).chr(137) => 'N',
+		chr(197).chr(138) => 'n', chr(197).chr(139) => 'N',
+		chr(197).chr(140) => 'O', chr(197).chr(141) => 'o',
+		chr(197).chr(142) => 'O', chr(197).chr(143) => 'o',
+		chr(197).chr(144) => 'O', chr(197).chr(145) => 'o',
+		chr(197).chr(146) => 'OE',chr(197).chr(147) => 'oe',
+		chr(197).chr(148) => 'R',chr(197).chr(149) => 'r',
+		chr(197).chr(150) => 'R',chr(197).chr(151) => 'r',
+		chr(197).chr(152) => 'R',chr(197).chr(153) => 'r',
+		chr(197).chr(154) => 'S',chr(197).chr(155) => 's',
+		chr(197).chr(156) => 'S',chr(197).chr(157) => 's',
+		chr(197).chr(158) => 'S',chr(197).chr(159) => 's',
+		chr(197).chr(160) => 'S', chr(197).chr(161) => 's',
+		chr(197).chr(162) => 'T', chr(197).chr(163) => 't',
+		chr(197).chr(164) => 'T', chr(197).chr(165) => 't',
+		chr(197).chr(166) => 'T', chr(197).chr(167) => 't',
+		chr(197).chr(168) => 'U', chr(197).chr(169) => 'u',
+		chr(197).chr(170) => 'U', chr(197).chr(171) => 'u',
+		chr(197).chr(172) => 'U', chr(197).chr(173) => 'u',
+		chr(197).chr(174) => 'U', chr(197).chr(175) => 'u',
+		chr(197).chr(176) => 'U', chr(197).chr(177) => 'u',
+		chr(197).chr(178) => 'U', chr(197).chr(179) => 'u',
+		chr(197).chr(180) => 'W', chr(197).chr(181) => 'w',
+		chr(197).chr(182) => 'Y', chr(197).chr(183) => 'y',
+		chr(197).chr(184) => 'Y', chr(197).chr(185) => 'Z',
+		chr(197).chr(186) => 'z', chr(197).chr(187) => 'Z',
+		chr(197).chr(188) => 'z', chr(197).chr(189) => 'Z',
+		chr(197).chr(190) => 'z', chr(197).chr(191) => 's',
+		// Euro Sign
+		chr(226).chr(130).chr(172) => 'E');
+		
 		$string = strtr($string, $chars);
 	} else {
 		// Assume ISO-8859-1 if not UTF-8
@@ -200,6 +263,20 @@ function remove_accents($string) {
 	}
 
 	return $string;
+}
+
+function sanitize_user( $username, $strict = false ) {
+	$raw_username = $username;
+	$username = strip_tags($username);
+	// Kill octets
+	$username = preg_replace('|%([a-fA-F0-9][a-fA-F0-9])|', '', $username);
+	$username = preg_replace('/&.+?;/', '', $username); // Kill entities
+
+	// If strict, reduce to ASCII for max portability.
+	if ( $strict )
+		$username = preg_replace('|[^a-z0-9 _.\-@]|i', '', $username);
+
+	return apply_filters('sanitize_user', $username, $raw_username, $strict);
 }
 
 function sanitize_title($title, $fallback_title = '') {
@@ -282,7 +359,7 @@ function convert_chars($content, $flag = 'obsolete') {
 	$content = preg_replace('/<category>(.+?)<\/category>/','',$content);
 
 	// Converts lone & characters into &#38; (a.k.a. &amp;)
-	$content = preg_replace('/&([^#])(?![a-z]{1,8};)/i', '&#038;$1', $content);
+	$content = preg_replace('/&([^#])(?![a-z1-4]{1,8};)/i', '&#038;$1', $content);
 
 	// Fix Word pasting
 	$content = strtr($content, $wp_htmltranswinuni);
@@ -325,9 +402,8 @@ function funky_javascript_fix($text) {
 */
 function balanceTags($text, $is_comment = 0) {
 	
-	if (get_settings('use_balanceTags') == 0) {
+	if ( get_option('use_balanceTags') == 0)
 		return $text;
-	}
 
 	$tagstack = array(); $stacksize = 0; $tagqueue = ''; $newtext = '';
 
@@ -426,9 +502,10 @@ function balanceTags($text, $is_comment = 0) {
 }
 
 
-function format_to_edit($content) {
+function format_to_edit($content, $richedit = false) {
 	$content = apply_filters('format_to_edit', $content);
-	$content = htmlspecialchars($content);
+	if (! $richedit )
+		$content = htmlspecialchars($content);
 	return $content;
 }
 
@@ -456,10 +533,23 @@ function trailingslashit($string) {
 }
 
 function addslashes_gpc($gpc) {
-	if (!get_magic_quotes_gpc()) {
-		$gpc = addslashes($gpc);
+	global $wpdb;
+
+	if (get_magic_quotes_gpc()) {
+		$gpc = stripslashes($gpc);
 	}
-	return $gpc;
+
+	return $wpdb->escape($gpc);
+}
+
+
+function stripslashes_deep($value)
+{
+   $value = is_array($value) ?
+               array_map('stripslashes_deep', $value) :
+               stripslashes($value);
+
+   return $value;
 }
 
 function antispambot($emailaddy, $mailto=0) {
@@ -483,7 +573,7 @@ function make_clickable($ret) {
 	$ret = ' ' . $ret . ' ';
 	$ret = preg_replace("#([\s>])(https?)://([^\s<>{}()]+[^\s.,<>{}()])#i", "$1<a href='$2://$3' rel='nofollow'>$2://$3</a>", $ret);
 	$ret = preg_replace("#(\s)www\.([a-z0-9\-]+)\.([a-z0-9\-.\~]+)((?:/[^ <>{}()\n\r]*[^., <>{}()\n\r]?)?)#i", "$1<a href='http://www.$2.$3$4' rel='nofollow'>www.$2.$3$4</a>", $ret);
-	$ret = preg_replace("#(\s)([a-z0-9\-_.]+)@([^,< \n\r]+)#i", "$1<a href=\"mailto:$2@$3\">$2@$3</a>", $ret);
+	$ret = preg_replace("#(\s)([a-z0-9\-_.]+)@([a-z0-9\-_.]+)\.([^,< \n\r]+)#i", "$1<a href=\"mailto:$2@$3.$4\">$2@$3.$4</a>", $ret);
 	$ret = trim($ret);
 	return $ret;
 }
@@ -527,20 +617,6 @@ function is_email($user_email) {
 		return false;
 	}
 }
-
-
-function strip_all_but_one_link($text, $mylink) {
-	$match_link = '#(<a.+?href.+?'.'>)(.+?)(</a>)#';
-	preg_match_all($match_link, $text, $matches);
-	$count = count($matches[0]);
-	for ($i=0; $i<$count; $i++) {
-		if (!strstr($matches[0][$i], $mylink)) {
-			$text = str_replace($matches[0][$i], $matches[2][$i], $text);
-		}
-	}
-	return $text;
-}
-
 
 // used by wp-mail to handle charsets in email subjects
 function wp_iso_descrambler($string) {
@@ -619,7 +695,7 @@ function sanitize_email($email) {
 function human_time_diff( $from, $to = '' ) {     
 	if ( empty($to) )
 		$to = time();
-	$diff = (int) ($to - $from);
+	$diff = (int) abs($to - $from);
 	if ($diff <= 3600) {
 		$mins = round($diff / 60);
 		if ($mins <= 1)
@@ -642,28 +718,306 @@ function human_time_diff( $from, $to = '' ) {
 	return $since;
 }
 
-function wp_trim_excerpt( $text ) { // Fakes an excerpt if needed
+function wp_trim_excerpt($text) { // Fakes an excerpt if needed
 	global $post;
 	if ( '' == $text ) {
 		$text = $post->post_content;
-		$text = strip_tags( $text );
-		$blah = explode(' ', $text);
+		$text = apply_filters('the_content', $text);
+		$text = str_replace(']]>', ']]&gt;', $text);
+		$text = strip_tags($text);
 		$excerpt_length = 55;
-		if (count($blah) > $excerpt_length) {
-		$k = $excerpt_length;
-		$use_dotdotdot = 1;
-		} else {
-		$k = count($blah);
-		$use_dotdotdot = 0;
+		$words = explode(' ', $text, $excerpt_length + 1);
+		if (count($words) > $excerpt_length) {
+			array_pop($words);
+			array_push($words, '[...]');
+			$text = implode(' ', $words);
 		}
-		$excerpt = '';
-		for ($i=0; $i<$k; $i++) {
-		$excerpt .= $blah[$i].' ';
-		}
-		$excerpt .= ($use_dotdotdot) ? '[...]' : '';
-		$text = $excerpt;
-	} // end if no excerpt
+	}
 	return $text;
 }
 
+function ent2ncr($text) {
+	$to_ncr = array(
+		'&quot;' => '&#34;',
+		'&amp;' => '&#38;',
+		'&frasl;' => '&#47;',
+		'&lt;' => '&#60;',
+		'&gt;' => '&#62;',
+		'|' => '&#124;',
+		'&nbsp;' => '&#160;',
+		'&iexcl;' => '&#161;',
+		'&cent;' => '&#162;',
+		'&pound;' => '&#163;',
+		'&curren;' => '&#164;',
+		'&yen;' => '&#165;',
+		'&brvbar;' => '&#166;',
+		'&brkbar;' => '&#166;',
+		'&sect;' => '&#167;',
+		'&uml;' => '&#168;',
+		'&die;' => '&#168;',
+		'&copy;' => '&#169;',
+		'&ordf;' => '&#170;',
+		'&laquo;' => '&#171;',
+		'&not;' => '&#172;',
+		'&shy;' => '&#173;',
+		'&reg;' => '&#174;',
+		'&macr;' => '&#175;',
+		'&hibar;' => '&#175;',
+		'&deg;' => '&#176;',
+		'&plusmn;' => '&#177;',
+		'&sup2;' => '&#178;',
+		'&sup3;' => '&#179;',
+		'&acute;' => '&#180;',
+		'&micro;' => '&#181;',
+		'&para;' => '&#182;',
+		'&middot;' => '&#183;',
+		'&cedil;' => '&#184;',
+		'&sup1;' => '&#185;',
+		'&ordm;' => '&#186;',
+		'&raquo;' => '&#187;',
+		'&frac14;' => '&#188;',
+		'&frac12;' => '&#189;',
+		'&frac34;' => '&#190;',
+		'&iquest;' => '&#191;',
+		'&Agrave;' => '&#192;',
+		'&Aacute;' => '&#193;',
+		'&Acirc;' => '&#194;',
+		'&Atilde;' => '&#195;',
+		'&Auml;' => '&#196;',
+		'&Aring;' => '&#197;',
+		'&AElig;' => '&#198;',
+		'&Ccedil;' => '&#199;',
+		'&Egrave;' => '&#200;',
+		'&Eacute;' => '&#201;',
+		'&Ecirc;' => '&#202;',
+		'&Euml;' => '&#203;',
+		'&Igrave;' => '&#204;',
+		'&Iacute;' => '&#205;',
+		'&Icirc;' => '&#206;',
+		'&Iuml;' => '&#207;',
+		'&ETH;' => '&#208;',
+		'&Ntilde;' => '&#209;',
+		'&Ograve;' => '&#210;',
+		'&Oacute;' => '&#211;',
+		'&Ocirc;' => '&#212;',
+		'&Otilde;' => '&#213;',
+		'&Ouml;' => '&#214;',
+		'&times;' => '&#215;',
+		'&Oslash;' => '&#216;',
+		'&Ugrave;' => '&#217;',
+		'&Uacute;' => '&#218;',
+		'&Ucirc;' => '&#219;',
+		'&Uuml;' => '&#220;',
+		'&Yacute;' => '&#221;',
+		'&THORN;' => '&#222;',
+		'&szlig;' => '&#223;',
+		'&agrave;' => '&#224;',
+		'&aacute;' => '&#225;',
+		'&acirc;' => '&#226;',
+		'&atilde;' => '&#227;',
+		'&auml;' => '&#228;',
+		'&aring;' => '&#229;',
+		'&aelig;' => '&#230;',
+		'&ccedil;' => '&#231;',
+		'&egrave;' => '&#232;',
+		'&eacute;' => '&#233;',
+		'&ecirc;' => '&#234;',
+		'&euml;' => '&#235;',
+		'&igrave;' => '&#236;',
+		'&iacute;' => '&#237;',
+		'&icirc;' => '&#238;',
+		'&iuml;' => '&#239;',
+		'&eth;' => '&#240;',
+		'&ntilde;' => '&#241;',
+		'&ograve;' => '&#242;',
+		'&oacute;' => '&#243;',
+		'&ocirc;' => '&#244;',
+		'&otilde;' => '&#245;',
+		'&ouml;' => '&#246;',
+		'&divide;' => '&#247;',
+		'&oslash;' => '&#248;',
+		'&ugrave;' => '&#249;',
+		'&uacute;' => '&#250;',
+		'&ucirc;' => '&#251;',
+		'&uuml;' => '&#252;',
+		'&yacute;' => '&#253;',
+		'&thorn;' => '&#254;',
+		'&yuml;' => '&#255;',
+		'&OElig;' => '&#338;',
+		'&oelig;' => '&#339;',
+		'&Scaron;' => '&#352;',
+		'&scaron;' => '&#353;',
+		'&Yuml;' => '&#376;',
+		'&fnof;' => '&#402;',
+		'&circ;' => '&#710;',
+		'&tilde;' => '&#732;',
+		'&Alpha;' => '&#913;',
+		'&Beta;' => '&#914;',
+		'&Gamma;' => '&#915;',
+		'&Delta;' => '&#916;',
+		'&Epsilon;' => '&#917;',
+		'&Zeta;' => '&#918;',
+		'&Eta;' => '&#919;',
+		'&Theta;' => '&#920;',
+		'&Iota;' => '&#921;',
+		'&Kappa;' => '&#922;',
+		'&Lambda;' => '&#923;',
+		'&Mu;' => '&#924;',
+		'&Nu;' => '&#925;',
+		'&Xi;' => '&#926;',
+		'&Omicron;' => '&#927;',
+		'&Pi;' => '&#928;',
+		'&Rho;' => '&#929;',
+		'&Sigma;' => '&#931;',
+		'&Tau;' => '&#932;',
+		'&Upsilon;' => '&#933;',
+		'&Phi;' => '&#934;',
+		'&Chi;' => '&#935;',
+		'&Psi;' => '&#936;',
+		'&Omega;' => '&#937;',
+		'&alpha;' => '&#945;',
+		'&beta;' => '&#946;',
+		'&gamma;' => '&#947;',
+		'&delta;' => '&#948;',
+		'&epsilon;' => '&#949;',
+		'&zeta;' => '&#950;',
+		'&eta;' => '&#951;',
+		'&theta;' => '&#952;',
+		'&iota;' => '&#953;',
+		'&kappa;' => '&#954;',
+		'&lambda;' => '&#955;',
+		'&mu;' => '&#956;',
+		'&nu;' => '&#957;',
+		'&xi;' => '&#958;',
+		'&omicron;' => '&#959;',
+		'&pi;' => '&#960;',
+		'&rho;' => '&#961;',
+		'&sigmaf;' => '&#962;',
+		'&sigma;' => '&#963;',
+		'&tau;' => '&#964;',
+		'&upsilon;' => '&#965;',
+		'&phi;' => '&#966;',
+		'&chi;' => '&#967;',
+		'&psi;' => '&#968;',
+		'&omega;' => '&#969;',
+		'&thetasym;' => '&#977;',
+		'&upsih;' => '&#978;',
+		'&piv;' => '&#982;',
+		'&ensp;' => '&#8194;',
+		'&emsp;' => '&#8195;',
+		'&thinsp;' => '&#8201;',
+		'&zwnj;' => '&#8204;',
+		'&zwj;' => '&#8205;',
+		'&lrm;' => '&#8206;',
+		'&rlm;' => '&#8207;',
+		'&ndash;' => '&#8211;',
+		'&mdash;' => '&#8212;',
+		'&lsquo;' => '&#8216;',
+		'&rsquo;' => '&#8217;',
+		'&sbquo;' => '&#8218;',
+		'&ldquo;' => '&#8220;',
+		'&rdquo;' => '&#8221;',
+		'&bdquo;' => '&#8222;',
+		'&dagger;' => '&#8224;',
+		'&Dagger;' => '&#8225;',
+		'&bull;' => '&#8226;',
+		'&hellip;' => '&#8230;',
+		'&permil;' => '&#8240;',
+		'&prime;' => '&#8242;',
+		'&Prime;' => '&#8243;',
+		'&lsaquo;' => '&#8249;',
+		'&rsaquo;' => '&#8250;',
+		'&oline;' => '&#8254;',
+		'&frasl;' => '&#8260;',
+		'&euro;' => '&#8364;',
+		'&image;' => '&#8465;',
+		'&weierp;' => '&#8472;',
+		'&real;' => '&#8476;',
+		'&trade;' => '&#8482;',
+		'&alefsym;' => '&#8501;',
+		'&crarr;' => '&#8629;',
+		'&lArr;' => '&#8656;',
+		'&uArr;' => '&#8657;',
+		'&rArr;' => '&#8658;',
+		'&dArr;' => '&#8659;',
+		'&hArr;' => '&#8660;',
+		'&forall;' => '&#8704;',
+		'&part;' => '&#8706;',
+		'&exist;' => '&#8707;',
+		'&empty;' => '&#8709;',
+		'&nabla;' => '&#8711;',
+		'&isin;' => '&#8712;',
+		'&notin;' => '&#8713;',
+		'&ni;' => '&#8715;',
+		'&prod;' => '&#8719;',
+		'&sum;' => '&#8721;',
+		'&minus;' => '&#8722;',
+		'&lowast;' => '&#8727;',
+		'&radic;' => '&#8730;',
+		'&prop;' => '&#8733;',
+		'&infin;' => '&#8734;',
+		'&ang;' => '&#8736;',
+		'&and;' => '&#8743;',
+		'&or;' => '&#8744;',
+		'&cap;' => '&#8745;',
+		'&cup;' => '&#8746;',
+		'&int;' => '&#8747;',
+		'&there4;' => '&#8756;',
+		'&sim;' => '&#8764;',
+		'&cong;' => '&#8773;',
+		'&asymp;' => '&#8776;',
+		'&ne;' => '&#8800;',
+		'&equiv;' => '&#8801;',
+		'&le;' => '&#8804;',
+		'&ge;' => '&#8805;',
+		'&sub;' => '&#8834;',
+		'&sup;' => '&#8835;',
+		'&nsub;' => '&#8836;',
+		'&sube;' => '&#8838;',
+		'&supe;' => '&#8839;',
+		'&oplus;' => '&#8853;',
+		'&otimes;' => '&#8855;',
+		'&perp;' => '&#8869;',
+		'&sdot;' => '&#8901;',
+		'&lceil;' => '&#8968;',
+		'&rceil;' => '&#8969;',
+		'&lfloor;' => '&#8970;',
+		'&rfloor;' => '&#8971;',
+		'&lang;' => '&#9001;',
+		'&rang;' => '&#9002;',
+		'&larr;' => '&#8592;',
+		'&uarr;' => '&#8593;',
+		'&rarr;' => '&#8594;',
+		'&darr;' => '&#8595;',
+		'&harr;' => '&#8596;',
+		'&loz;' => '&#9674;',
+		'&spades;' => '&#9824;',
+		'&clubs;' => '&#9827;',
+		'&hearts;' => '&#9829;',
+		'&diams;' => '&#9830;'
+	);
+
+	return str_replace( array_keys($to_ncr), array_values($to_ncr), $text );
+}
+
+function wp_richedit_pre($text) {
+	// Filtering a blank results in an annoying <br />\n
+	if ( empty($text) ) return apply_filters('richedit_pre', '');
+
+	$output = $text;
+	$output = convert_chars($output);
+	$output = wpautop($output);
+
+	// These must be double-escaped or planets will collide.
+	$output = str_replace('&lt;', '&amp;lt;', $output);
+	$output = str_replace('&gt;', '&amp;gt;', $output);
+
+	return apply_filters('richedit_pre', $output);
+}
+
+// Escape single quotes, specialchar double quotes, and fix line endings.
+function js_escape($text) {
+	$text = wp_specialchars($text, 'double');
+	return preg_replace("/\r?\n/", "\\n", addslashes($text));	
+}
 ?>

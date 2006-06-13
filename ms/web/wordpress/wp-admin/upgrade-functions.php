@@ -4,12 +4,38 @@ require_once(ABSPATH . '/wp-admin/admin-functions.php');
 require_once(ABSPATH . '/wp-admin/upgrade-schema.php');
 // Functions to be called in install and upgrade scripts
 function upgrade_all() {
+	global $wp_current_db_version, $wp_db_version, $wp_rewrite;
+	$wp_current_db_version = __get_option('db_version');
+
+	// We are up-to-date.  Nothing to do.
+	if ( $wp_db_version == $wp_current_db_version )
+		return;
+
+	// If the version is not set in the DB, try to guess the version.
+	if ( empty($wp_current_db_version) ) {
+		$wp_current_db_version = 0;
+
+		// If the template option exists, we have 1.5.
+		$template = __get_option('template');
+		if ( !empty($template) )
+			$wp_current_db_version = 2541;
+	}
+	
 	populate_options();
-	upgrade_100();
-	upgrade_101();
-	upgrade_110();
-	upgrade_130();
-	save_mod_rewrite_rules();
+
+	if ( $wp_current_db_version < 2541 ) {
+		upgrade_100();
+		upgrade_101();
+		upgrade_110();
+		upgrade_130();
+	}
+	
+	if ( $wp_current_db_version < 3308 )
+		upgrade_160();
+
+	$wp_rewrite->flush_rules();
+	
+	update_option('db_version', $wp_db_version);
 }
 
 function upgrade_100() {
@@ -81,16 +107,16 @@ function upgrade_101() {
 
 
 function upgrade_110() {
-  global $wpdb;
+	global $wpdb;
 	
     // Set user_nicename.
 	$users = $wpdb->get_results("SELECT ID, user_nickname, user_nicename FROM $wpdb->users");
-	foreach ($users as $user) {
-		if ('' == $user->user_nicename) { 
-			$newname = sanitize_title($user->user_nickname);
-			$wpdb->query("UPDATE $wpdb->users SET user_nicename = '$newname' WHERE ID = '$user->ID'");
-		}
-	}
+ 	foreach ($users as $user) {
+ 		if ('' == $user->user_nicename) { 
+ 			$newname = sanitize_title($user->user_nickname);
+ 			$wpdb->query("UPDATE $wpdb->users SET user_nicename = '$newname' WHERE ID = '$user->ID'");
+ 		}
+ 	}
 
 	$users = $wpdb->get_results("SELECT ID, user_pass from $wpdb->users");
 	foreach ($users as $row) {
@@ -131,7 +157,7 @@ function upgrade_110() {
 		$wpdb->query("UPDATE $wpdb->posts SET post_modified = post_date");
 		$wpdb->query("UPDATE $wpdb->posts SET post_modified_gmt = DATE_ADD(post_modified, INTERVAL '$add_hours:$add_minutes' HOUR_MINUTE) WHERE post_modified != '0000-00-00 00:00:00'");
 		$wpdb->query("UPDATE $wpdb->comments SET comment_date_gmt = DATE_ADD(comment_date, INTERVAL '$add_hours:$add_minutes' HOUR_MINUTE)");
-		$wpdb->query("UPDATE $wpdb->users SET user_registered = DATE_ADD(dateYMDhour, INTERVAL '$add_hours:$add_minutes' HOUR_MINUTE)");
+		$wpdb->query("UPDATE $wpdb->users SET user_registered = DATE_ADD(user_registered, INTERVAL '$add_hours:$add_minutes' HOUR_MINUTE)");
 	}
 
 }
@@ -180,10 +206,14 @@ function upgrade_130() {
         $wpdb->query("UPDATE $wpdb->options SET option_value = 'posts' WHERE option_name = 'what_to_show'");
     }
 
-	if ( !is_array( get_settings('active_plugins') ) ) {
-		$plugins = explode("\n", trim(get_settings('active_plugins')) );
-		update_option('active_plugins', $plugins);
-	}
+		$active_plugins = __get_option('active_plugins');
+
+		// If plugins are not stored in an array, they're stored in the old
+		// newline separated format.  Convert to new format.
+		if ( !is_array( $active_plugins ) ) {
+			$active_plugins = explode("\n", trim($active_plugins));
+			update_option('active_plugins', $active_plugins);
+		}
 
 	// Obsolete tables
 	$wpdb->query('DROP TABLE IF EXISTS ' . $table_prefix . 'optionvalues');
@@ -207,6 +237,93 @@ function upgrade_130() {
 	}
 
 	make_site_theme();
+}
+
+function upgrade_160() {
+	global $wpdb, $table_prefix, $wp_current_db_version;
+
+	populate_roles_160();
+
+	$users = $wpdb->get_results("SELECT * FROM $wpdb->users");
+	foreach ( $users as $user ) :
+		if ( !empty( $user->user_firstname ) )
+			update_usermeta( $user->ID, 'first_name', $wpdb->escape($user->user_firstname) );
+		if ( !empty( $user->user_lastname ) )
+			update_usermeta( $user->ID, 'last_name', $wpdb->escape($user->user_lastname) );
+		if ( !empty( $user->user_nickname ) )
+			update_usermeta( $user->ID, 'nickname', $wpdb->escape($user->user_nickname) );
+		if ( !empty( $user->user_level ) )
+			update_usermeta( $user->ID, $table_prefix . 'user_level', $user->user_level );
+		if ( !empty( $user->user_icq ) )
+			update_usermeta( $user->ID, 'icq', $wpdb->escape($user->user_icq) );
+		if ( !empty( $user->user_aim ) )
+			update_usermeta( $user->ID, 'aim', $wpdb->escape($user->user_aim) );
+		if ( !empty( $user->user_msn ) )
+			update_usermeta( $user->ID, 'msn', $wpdb->escape($user->user_msn) );
+		if ( !empty( $user->user_yim ) )
+			update_usermeta( $user->ID, 'yim', $wpdb->escape($user->user_icq) );
+		if ( !empty( $user->user_description ) )
+			update_usermeta( $user->ID, 'description', $wpdb->escape($user->user_description) );
+
+		if ( isset( $user->user_idmode ) ):
+			$idmode = $user->user_idmode;
+			if ($idmode == 'nickname') $id = $user->user_nickname;
+			if ($idmode == 'login') $id = $user->user_login;
+			if ($idmode == 'firstname') $id = $user->user_firstname;
+			if ($idmode == 'lastname') $id = $user->user_lastname;
+			if ($idmode == 'namefl') $id = $user->user_firstname.' '.$user->user_lastname;
+			if ($idmode == 'namelf') $id = $user->user_lastname.' '.$user->user_firstname;
+			if (!$idmode) $id = $user->user_nickname;
+			$id = $wpdb->escape( $id );
+			$wpdb->query("UPDATE $wpdb->users SET display_name = '$id' WHERE ID = '$user->ID'");
+		endif;
+		
+		// FIXME: RESET_CAPS is temporary code to reset roles and caps if flag is set.
+		$caps = get_usermeta( $user->ID, $table_prefix . 'capabilities');
+		if ( empty($caps) || defined('RESET_CAPS') ) {
+			$level = get_usermeta($user->ID, $table_prefix . 'user_level');
+			$role = translate_level_to_role($level);
+			update_usermeta( $user->ID, $table_prefix . 'capabilities', array($role => true) );
+		}
+			
+	endforeach;
+	$old_user_fields = array( 'user_firstname', 'user_lastname', 'user_icq', 'user_aim', 'user_msn', 'user_yim', 'user_idmode', 'user_ip', 'user_domain', 'user_browser', 'user_description', 'user_nickname', 'user_level' );
+	$wpdb->hide_errors();
+	foreach ( $old_user_fields as $old )
+		$wpdb->query("ALTER TABLE $wpdb->users DROP $old");
+	$wpdb->show_errors();
+	
+	if ( 0 == $wpdb->get_var("SELECT SUM(category_count) FROM $wpdb->categories") ) { // Create counts
+		$categories = $wpdb->get_col("SELECT cat_ID FROM $wpdb->categories");
+		foreach ( $categories as $cat_id ) {
+			$count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->post2cat, $wpdb->posts WHERE $wpdb->posts.ID=$wpdb->post2cat.post_id AND post_status='publish' AND category_id = '$cat_id'");
+			$wpdb->query("UPDATE $wpdb->categories SET category_count = '$count' WHERE cat_ID = '$cat_id'");
+		}
+	}
+
+	// populate comment_count field of posts table
+	$comments = $wpdb->get_results( "SELECT comment_post_ID, COUNT(*) as c FROM $wpdb->comments WHERE comment_approved = '1' GROUP BY comment_post_ID" );
+	if( is_array( $comments ) ) {
+		foreach ($comments as $comment) {
+			$wpdb->query( "UPDATE $wpdb->posts SET comment_count = $comment->c WHERE ID = '$comment->comment_post_ID'" );
+		}
+	}
+
+	// Some alpha versions used a post status of object instead of attachment and put
+	// the mime type in post_type instead of post_mime_type.
+	if ( $wp_current_db_version > 2541 && $wp_current_db_version <= 3091 ) {
+		$objects = $wpdb->get_results("SELECT ID, post_type FROM $wpdb->posts WHERE post_status = 'object'");
+		foreach ($objects as $object) {
+			$wpdb->query("UPDATE $wpdb->posts SET post_status = 'attachment',
+			post_mime_type = '$object->post_type',
+			post_type = ''
+			WHERE ID = $object->ID");
+			
+			$meta = get_post_meta($object->ID, 'imagedata', true);
+			if ( ! empty($meta['file']) )
+				add_post_meta($object->ID, '_wp_attached_file', $meta['file']);
+		}
+	}
 }
 
 // The functions we use to actually do stuff
@@ -289,6 +406,25 @@ function get_alloptions_110() {
 		}
 	}
 	return $all_options;
+}
+
+// Version of get_option that is private to install/upgrade.
+function __get_option($setting) {
+	global $wpdb;
+
+	$option = $wpdb->get_var("SELECT option_value FROM $wpdb->options WHERE option_name = '$setting'");
+
+	if ( 'home' == $setting && '' == $option )
+		return __get_option('siteurl');
+
+	if ( 'siteurl' == $setting || 'home' == $setting || 'category_base' == $setting )
+		$option = preg_replace('|/+$|', '', $option);
+
+	@ $kellogs = unserialize($option);
+	if ($kellogs !== FALSE)
+		return $kellogs;
+	else
+		return $option;
 }
 
 function deslash($content) {
@@ -561,13 +697,13 @@ function make_site_theme_from_oldschool($theme_name, $template) {
 		$lines = explode("\n", implode('', file("$site_dir/$newfile")));
 		if ($lines) {
 			$f = fopen("$site_dir/$newfile", 'w');
-			
+
 			foreach ($lines as $line) {
 				if (preg_match('/require.*wp-blog-header/', $line))
 					$line = '//' . $line;
 
 				// Update stylesheet references.
-				$line = str_replace("<?php echo get_settings('siteurl'); ?>/wp-layout.css", "<?php bloginfo('stylesheet_url'); ?>", $line);
+				$line = str_replace("<?php echo __get_option('siteurl'); ?>/wp-layout.css", "<?php bloginfo('stylesheet_url'); ?>", $line);
 
 				// Update comments template inclusion.
 				$line = str_replace("<?php include(ABSPATH . 'wp-comments.php'); ?>", "<?php comments_template(); ?>", $line);
@@ -579,7 +715,7 @@ function make_site_theme_from_oldschool($theme_name, $template) {
 	}
 
 	// Add a theme header.
-	$header = "/*\nTheme Name: $theme_name\nTheme URI: " . get_option('siteurl') . "\nDescription: A theme automatically created by the upgrade.\nVersion: 1.0\nAuthor: Moi\n*/\n";
+	$header = "/*\nTheme Name: $theme_name\nTheme URI: " . __get_option('siteurl') . "\nDescription: A theme automatically created by the upgrade.\nVersion: 1.0\nAuthor: Moi\n*/\n";
 
 	$stylelines = file_get_contents("$site_dir/style.css");
 	if ($stylelines) {
@@ -618,7 +754,7 @@ function make_site_theme_from_default($theme_name, $template) {
 
 		foreach ($stylelines as $line) {
 			if (strstr($line, "Theme Name:")) $line = "Theme Name: $theme_name";
-			elseif (strstr($line, "Theme URI:")) $line = "Theme URI: " . get_option('siteurl');
+			elseif (strstr($line, "Theme URI:")) $line = "Theme URI: " . __get_option('siteurl');
 			elseif (strstr($line, "Description:")) $line = "Description: Your theme";
 			elseif (strstr($line, "Version:")) $line = "Version: 1";
 			elseif (strstr($line, "Author:")) $line = "Author: You";
@@ -648,7 +784,7 @@ function make_site_theme_from_default($theme_name, $template) {
 // Create a site theme from the default theme.
 function make_site_theme() {
 	// Name the theme after the blog.
-	$theme_name = get_option('blogname');
+	$theme_name = __get_option('blogname');
 	$template = sanitize_title($theme_name);
 	$site_dir = ABSPATH . "wp-content/themes/$template";
 
@@ -679,11 +815,33 @@ function make_site_theme() {
 	}
 
 	// Make the new site theme active.
-	$current_template = get_option('template');
+	$current_template = __get_option('template');
 	if ($current_template == 'default') {
 		update_option('template', $template);
 		update_option('stylesheet', $template);
 	}
 	return $template;
 }
+
+function translate_level_to_role($level) {
+	switch ($level) {
+	case 10:
+	case 9:
+	case 8:
+		return 'administrator';
+	case 7:
+	case 6:
+	case 5:
+		return 'editor';
+	case 4:
+	case 3:
+	case 2:
+		return 'author';
+	case 1:
+		return 'contributor';
+	case 0:
+		return 'subscriber';
+	}
+}
+
 ?>

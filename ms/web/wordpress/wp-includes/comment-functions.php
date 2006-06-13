@@ -7,25 +7,225 @@ function comments_template( $file = '/comments.php' ) {
 
 	if ( is_single() || is_page() || $withcomments ) :
 		$req = get_settings('require_name_email');
-		$comment_author = isset($_COOKIE['comment_author_'.COOKIEHASH]) ? trim(stripslashes($_COOKIE['comment_author_'.COOKIEHASH])) : '';
-		$comment_author_email = isset($_COOKIE['comment_author_email_'.COOKIEHASH]) ? trim(stripslashes($_COOKIE['comment_author_email_'.COOKIEHASH])) : '';
-		$comment_author_url = isset($_COOKIE['comment_author_url_'.COOKIEHASH]) ? trim(stripslashes($_COOKIE['comment_author_url_'.COOKIEHASH])) : '';
+		$comment_author = '';
+		if ( isset($_COOKIE['comment_author_'.COOKIEHASH]) ) {
+			$comment_author = apply_filters('pre_comment_author_name', $_COOKIE['comment_author_'.COOKIEHASH]);
+			$comment_author = stripslashes($comment_author);
+			$comment_author = wp_specialchars($comment_author, true);
+		}
+		$comment_author_email = '';
+		if ( isset($_COOKIE['comment_author_email_'.COOKIEHASH]) ) {
+			$comment_author_email = apply_filters('pre_comment_author_email', $_COOKIE['comment_author_email_'.COOKIEHASH]);
+			$comment_author_email = stripslashes($comment_author_email);
+			$comment_author_email = wp_specialchars($comment_author_email, true);		
+		}
+		$comment_author_url = '';
+		if ( isset($_COOKIE['comment_author_url_'.COOKIEHASH]) ) {
+			$comment_author_url = apply_filters('pre_comment_author_url', $_COOKIE['comment_author_url_'.COOKIEHASH]);
+			$comment_author_url = stripslashes($comment_author_url);
+			$comment_author_url = wp_specialchars($comment_author_url, true);		
+		}
+
 	if ( empty($comment_author) ) {
 		$comments = $wpdb->get_results("SELECT * FROM $wpdb->comments WHERE comment_post_ID = '$post->ID' AND comment_approved = '1' ORDER BY comment_date");
 	} else {
-		$author_db = addslashes($comment_author);
-		$email_db  = addslashes($comment_author_email);
+		$author_db = $wpdb->escape($comment_author);
+		$email_db  = $wpdb->escape($comment_author_email);
 		$comments = $wpdb->get_results("SELECT * FROM $wpdb->comments WHERE comment_post_ID = '$post->ID' AND ( comment_approved = '1' OR ( comment_author = '$author_db' AND comment_author_email = '$email_db' AND comment_approved = '0' ) ) ORDER BY comment_date");
 	}
 
-	get_currentuserinfo();
-
-	if ( file_exists( TEMPLATEPATH . $file ) )
-		require( TEMPLATEPATH . $file );
+	define('COMMENTS_TEMPLATE', true);
+	$include = apply_filters('comments_template', TEMPLATEPATH . $file );
+	if ( file_exists( $include ) )
+		require( $include );
 	else
 		require( ABSPATH . 'wp-content/themes/default/comments.php');
 
 	endif;
+}
+
+function wp_new_comment( $commentdata ) {
+	$commentdata = apply_filters('preprocess_comment', $commentdata);
+
+	$commentdata['comment_post_ID'] = (int) $commentdata['comment_post_ID'];
+	$commentdata['user_ID']         = (int) $commentdata['user_ID'];
+
+	$commentdata['comment_author_IP'] = $_SERVER['REMOTE_ADDR'];
+	$commentdata['comment_agent']     = $_SERVER['HTTP_USER_AGENT'];
+
+	$commentdata['comment_date']     = current_time('mysql');
+	$commentdata['comment_date_gmt'] = current_time('mysql', 1);
+	
+
+	$commentdata = wp_filter_comment($commentdata);
+
+	$commentdata['comment_approved'] = wp_allow_comment($commentdata);
+
+	$comment_ID = wp_insert_comment($commentdata);
+
+	do_action('comment_post', $comment_ID, $commentdata['comment_approved']);
+
+	if ( 'spam' !== $commentdata['comment_approved'] ) { // If it's spam save it silently for later crunching
+		if ( '0' == $commentdata['comment_approved'] )
+			wp_notify_moderator($comment_ID);
+
+		$post = &get_post($commentdata['comment_post_ID']); // Don't notify if it's your own comment
+
+		if ( get_settings('comments_notify') && $commentdata['comment_approved'] && $post->post_author != $commentdata['user_ID'] )
+			wp_notify_postauthor($comment_ID, $commentdata['comment_type']);
+	}
+
+	return $comment_ID;
+}
+
+function wp_insert_comment($commentdata) {
+	global $wpdb;
+	extract($commentdata);
+
+	if ( ! isset($comment_author_IP) )
+		$comment_author_IP = $_SERVER['REMOTE_ADDR'];
+	if ( ! isset($comment_date) )
+		$comment_date = current_time('mysql');
+	if ( ! isset($comment_date_gmt) )
+		$comment_date_gmt = gmdate('Y-m-d H:i:s', strtotime($comment_date) );
+	if ( ! isset($comment_parent) )
+		$comment_parent = 0;
+	if ( ! isset($comment_approved) )
+		$comment_approved = 1;
+
+	$result = $wpdb->query("INSERT INTO $wpdb->comments 
+	(comment_post_ID, comment_author, comment_author_email, comment_author_url, comment_author_IP, comment_date, comment_date_gmt, comment_content, comment_approved, comment_agent, comment_type, comment_parent, user_id)
+	VALUES 
+	('$comment_post_ID', '$comment_author', '$comment_author_email', '$comment_author_url', '$comment_author_IP', '$comment_date', '$comment_date_gmt', '$comment_content', '$comment_approved', '$comment_agent', '$comment_type', '$comment_parent', '$user_id')
+	");
+
+	$id = $wpdb->insert_id;
+
+	if ( $comment_approved == 1) {
+		$count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->comments WHERE comment_post_ID = '$comment_post_ID' AND comment_approved = '1'");
+		$wpdb->query( "UPDATE $wpdb->posts SET comment_count = $count WHERE ID = '$comment_post_ID'" );
+	}
+	return $id;
+}
+
+function wp_filter_comment($commentdata) {
+	$commentdata['user_id']              = apply_filters('pre_user_id', $commentdata['user_ID']);
+	$commentdata['comment_agent']        = apply_filters('pre_comment_user_agent', $commentdata['comment_agent']);
+	$commentdata['comment_author']       = apply_filters('pre_comment_author_name', $commentdata['comment_author']);
+	$commentdata['comment_content']      = apply_filters('pre_comment_content', $commentdata['comment_content']);
+	$commentdata['comment_author_IP']    = apply_filters('pre_comment_user_ip', $commentdata['comment_author_IP']);
+	$commentdata['comment_author_url']   = apply_filters('pre_comment_author_url', $commentdata['comment_author_url']);
+	$commentdata['comment_author_email'] = apply_filters('pre_comment_author_email', $commentdata['comment_author_email']);
+	$commentdata['filtered'] = true;
+	return $commentdata;
+}
+
+function wp_allow_comment($commentdata) {
+	global $wpdb;
+	extract($commentdata);
+
+	$comment_user_domain = apply_filters('pre_comment_user_domain', gethostbyaddr($comment_author_IP) );
+
+	// Simple duplicate check
+	$dupe = "SELECT comment_ID FROM $wpdb->comments WHERE comment_post_ID = '$comment_post_ID' AND ( comment_author = '$comment_author' ";
+	if ( $comment_author_email )
+		$dupe .= "OR comment_author_email = '$comment_author_email' ";
+	$dupe .= ") AND comment_content = '$comment_content' LIMIT 1";
+	if ( $wpdb->get_var($dupe) )
+		die( __('Duplicate comment detected; it looks as though you\'ve already said that!') );
+
+	// Simple flood-protection
+	if ( $lasttime = $wpdb->get_var("SELECT comment_date_gmt FROM $wpdb->comments WHERE comment_author_IP = '$comment_author_IP' OR comment_author_email = '$comment_author_email' ORDER BY comment_date DESC LIMIT 1") ) {
+		$time_lastcomment = mysql2date('U', $lasttime);
+		$time_newcomment  = mysql2date('U', $comment_date_gmt);
+		if ( ($time_newcomment - $time_lastcomment) < 15 ) {
+			do_action('comment_flood_trigger', $time_lastcomment, $time_newcomment);
+			die( __('Sorry, you can only post a new comment once every 15 seconds. Slow down cowboy.') );
+		}
+	}
+
+	if ( $user_id ) {
+		$userdata = get_userdata($user_id);
+		$user = new WP_User($user_id);
+		$post_author = $wpdb->get_var("SELECT post_author FROM $wpdb->posts WHERE ID = '$comment_post_ID' LIMIT 1");
+	}
+
+	// The author and the admins get respect.
+	if ( $userdata && ( $user_id == $post_author || $user->has_cap('level_9') ) ) {
+		$approved = 1;
+	}
+
+	// Everyone else's comments will be checked.
+	else {
+		if ( check_comment($comment_author, $comment_author_email, $comment_author_url, $comment_content, $comment_author_IP, $comment_agent, $comment_type) )
+			$approved = 1;
+		else
+			$approved = 0;
+		if ( wp_blacklist_check($comment_author, $comment_author_email, $comment_author_url, $comment_content, $comment_author_IP, $comment_agent) )
+			$approved = 'spam';
+	}
+
+	$approved = apply_filters('pre_comment_approved', $approved);
+	return $approved;
+}
+
+
+function wp_update_comment($commentarr) {
+	global $wpdb;
+
+	// First, get all of the original fields
+	$comment = get_comment($commentarr['comment_ID'], ARRAY_A);
+
+	// Escape data pulled from DB.
+	foreach ($comment as $key => $value)
+		$comment[$key] = $wpdb->escape($value);
+
+	// Merge old and new fields with new fields overwriting old ones.
+	$commentarr = array_merge($comment, $commentarr);
+
+	$commentarr = wp_filter_comment( $commentarr );
+
+	// Now extract the merged array.
+	extract($commentarr);
+
+	$comment_content = apply_filters('comment_save_pre', $comment_content);
+
+	$result = $wpdb->query(
+		"UPDATE $wpdb->comments SET
+			comment_content = '$comment_content',
+			comment_author = '$comment_author',
+			comment_author_email = '$comment_author_email',
+			comment_approved = '$comment_approved',
+			comment_author_url = '$comment_author_url',
+			comment_date = '$comment_date'
+		WHERE comment_ID = $comment_ID" );
+
+	$rval = $wpdb->rows_affected;
+
+	$c = $wpdb->get_row( "SELECT count(*) as c FROM {$wpdb->comments} WHERE comment_post_ID = '$comment_post_ID' AND comment_approved = '1'" );
+	if( is_object( $c ) )
+		$wpdb->query( "UPDATE $wpdb->posts SET comment_count = '$c->c' WHERE ID = '$comment_post_ID'" );
+
+	do_action('edit_comment', $comment_ID);
+
+	return $rval;
+}
+
+function wp_delete_comment($comment_id) {
+	global $wpdb;
+	do_action('delete_comment', $comment_id);
+
+	$comment = get_comment($comment_id);
+
+	if ( ! $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_ID='$comment_id' LIMIT 1") )
+		return false;
+
+	$post_id = $comment->comment_post_ID;
+	if ( $post_id && $comment->comment_approved == 1 )
+		$wpdb->query( "UPDATE $wpdb->posts SET comment_count = comment_count - 1 WHERE ID = '$post_id'" );
+
+	do_action('wp_set_comment_status', $comment_id, 'delete');
+	return true;
 }
 
 function clean_url( $url ) {
@@ -37,14 +237,17 @@ function clean_url( $url ) {
 	return $url;
 }
 
-function get_comments_number( $comment_id ) {
-	global $wpdb, $comment_count_cache;
-	$comment_id = (int) $comment_id;
-	if (!isset($comment_count_cache[$comment_id])) 
-		$number =  $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->comments WHERE comment_post_ID = '$comment_id' AND comment_approved = '1'");
-	else 
-		$number =  $comment_count_cache[$comment_id];
-	return apply_filters('get_comments_number', $number);
+function get_comments_number( $post_id = 0 ) {
+	global $wpdb, $comment_count_cache, $id;
+	$post_id = (int) $post_id;
+
+	if ( !$post_id )
+		$post_id = $id;
+
+	if ( !isset($comment_count_cache[$post_id]) )
+		$comment_count_cache[$id] = $wpdb->get_var("SELECT comment_count FROM $wpdb->posts WHERE ID = '$post_id'");
+	
+	return apply_filters('get_comments_number', $comment_count_cache[$post_id]);
 }
 
 function comments_number( $zero = 'No Comments', $one = '1 Comment', $more = '% Comments', $number = '' ) {
@@ -88,45 +291,47 @@ function comments_popup_script($width=400, $height=400, $file='') {
 }
 
 function comments_popup_link($zero='No Comments', $one='1 Comment', $more='% Comments', $CSSclass='', $none='Comments Off') {
-    global $id, $wpcommentspopupfile, $wpcommentsjavascript, $post, $wpdb;
-    global $comment_count_cache;
-
+	global $id, $wpcommentspopupfile, $wpcommentsjavascript, $post, $wpdb;
+	global $comment_count_cache;
+	
 	if (! is_single() && ! is_page()) {
-    if ('' == $comment_count_cache["$id"]) {
-        $number = $wpdb->get_var("SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_post_ID = $id AND comment_approved = '1';");
-    } else {
-        $number = $comment_count_cache["$id"];
-    }
-    if (0 == $number && 'closed' == $post->comment_status && 'closed' == $post->ping_status) {
-        echo $none;
-        return;
-    } else {
-        if (!empty($post->post_password)) { // if there's a password
-            if ($_COOKIE['wp-postpass_'.COOKIEHASH] != $post->post_password) {  // and it doesn't match the cookie
-                echo('Enter your password to view comments');
-                return;
-            }
-        }
-        echo '<a href="';
-        if ($wpcommentsjavascript) {
-					if ( empty($wpcommentspopupfile) )
-						$home = get_settings('home');
-					else
-						$home = get_settings('siteurl');
-					echo $home . '/' . $wpcommentspopupfile.'?comments_popup='.$id;
-					echo '" onclick="wpopen(this.href); return false"';
-        } else {
-            // if comments_popup_script() is not in the template, display simple comment link
-            comments_link();
-            echo '"';
-        }
-        if (!empty($CSSclass)) {
-            echo ' class="'.$CSSclass.'"';
-        }
-        echo '>';
-        comments_number($zero, $one, $more, $number);
-        echo '</a>';
-    }
+	if ( !isset($comment_count_cache[$id]) )
+		$comment_count_cache[$id] = $wpdb->get_var("SELECT COUNT(comment_ID) FROM $wpdb->comments WHERE comment_post_ID = $id AND comment_approved = '1';");
+	
+	$number = $comment_count_cache[$id];
+	
+	if (0 == $number && 'closed' == $post->comment_status && 'closed' == $post->ping_status) {
+		echo $none;
+		return;
+	} else {
+		if (!empty($post->post_password)) { // if there's a password
+			if ($_COOKIE['wp-postpass_'.COOKIEHASH] != $post->post_password) {  // and it doesn't match the cookie
+				echo(__('Enter your password to view comments'));
+				return;
+			}
+		}
+		echo '<a href="';
+		if ($wpcommentsjavascript) {
+			if ( empty($wpcommentspopupfile) )
+				$home = get_settings('home');
+			else
+				$home = get_settings('siteurl');
+			echo $home . '/' . $wpcommentspopupfile.'?comments_popup='.$id;
+			echo '" onclick="wpopen(this.href); return false"';
+		} else { // if comments_popup_script() is not in the template, display simple comment link
+			if ( 0 == $number )
+				echo get_permalink() . '#respond';
+			else
+				comments_link();
+			echo '"';
+		}
+		if (!empty($CSSclass)) {
+			echo ' class="'.$CSSclass.'"';
+		}
+		echo ' title="' . sprintf( __('Comment on %s'), $post->post_title ) .'">';
+		comments_number($zero, $one, $more, $number);
+		echo '</a>';
+	}
 	}
 }
 
@@ -142,7 +347,7 @@ function comment_ID() {
 function get_comment_author() {
 	global $comment;
 	if ( empty($comment->comment_author) )
-		$author = 'Anonymous';
+		$author = __('Anonymous');
 	else
 		$author = $comment->comment_author;
 	return apply_filters('get_comment_author', $author);
@@ -167,7 +372,7 @@ function get_comment_author_link() {
 	$url    = get_comment_author_url();
 	$author = get_comment_author();
 
-	if ( empty( $url ) )
+	if ( empty( $url ) || 'http://' == $url )
 		$return = $author;
 	else
 		$return = "<a href='$url' rel='external nofollow'>$author</a>";
@@ -287,12 +492,13 @@ function comment_date( $d = '' ) {
 	echo get_comment_date( $d );
 }
 
-function get_comment_time( $d = '' ) {
+function get_comment_time( $d = '', $gmt = false ) {
 	global $comment;
+	$comment_date = $gmt? $comment->comment_date_gmt : $comment->comment_date;
 	if ( '' == $d )
-		$date = mysql2date(get_settings('time_format'), $comment->comment_date);
+		$date = mysql2date(get_settings('time_format'), $comment_date);
 	else
-		$date = mysql2date($d, $comment->comment_date);
+		$date = mysql2date($d, $comment_date);
 	return apply_filters('get_comment_time', $date);
 }
 
@@ -353,20 +559,20 @@ function pings_open() {
 // Non-template functions
 
 function get_lastcommentmodified($timezone = 'server') {
-	global $tablecomments, $cache_lastcommentmodified, $pagenow, $wpdb;
+	global $cache_lastcommentmodified, $pagenow, $wpdb;
 	$add_seconds_blog = get_settings('gmt_offset') * 3600;
 	$add_seconds_server = date('Z');
 	$now = current_time('mysql', 1);
 	if ( !isset($cache_lastcommentmodified[$timezone]) ) {
 		switch(strtolower($timezone)) {
 			case 'gmt':
-				$lastcommentmodified = $wpdb->get_var("SELECT comment_date_gmt FROM $tablecomments WHERE comment_date_gmt <= '$now' ORDER BY comment_date_gmt DESC LIMIT 1");
+				$lastcommentmodified = $wpdb->get_var("SELECT comment_date_gmt FROM $wpdb->comments WHERE comment_date_gmt <= '$now' ORDER BY comment_date_gmt DESC LIMIT 1");
 				break;
 			case 'blog':
-				$lastcommentmodified = $wpdb->get_var("SELECT comment_date FROM $tablecomments WHERE comment_date_gmt <= '$now' ORDER BY comment_date_gmt DESC LIMIT 1");
+				$lastcommentmodified = $wpdb->get_var("SELECT comment_date FROM $wpdb->comments WHERE comment_date_gmt <= '$now' ORDER BY comment_date_gmt DESC LIMIT 1");
 				break;
 			case 'server':
-				$lastcommentmodified = $wpdb->get_var("SELECT DATE_ADD(comment_date_gmt, INTERVAL '$add_seconds_server' SECOND) FROM $tablecomments WHERE comment_date_gmt <= '$now' ORDER BY comment_date_gmt DESC LIMIT 1");
+				$lastcommentmodified = $wpdb->get_var("SELECT DATE_ADD(comment_date_gmt, INTERVAL '$add_seconds_server' SECOND) FROM $wpdb->comments WHERE comment_date_gmt <= '$now' ORDER BY comment_date_gmt DESC LIMIT 1");
 				break;
 		}
 		$cache_lastcommentmodified[$timezone] = $lastcommentmodified;
@@ -437,7 +643,8 @@ function pingback($content, $post_ID) {
 	// We don't wanna ping first and second types, even if they have a valid <link/>
 
 	foreach($post_links_temp[0] as $link_test) :
-		if ( !in_array($link_test, $pung) ) : // If we haven't pung it already
+		if ( !in_array($link_test, $pung) && (url_to_postid($link_test) != $post_ID) // If we haven't pung it already and it isn't a link to itself
+				&& !is_local_attachment($link_test) ) : // Also, let's never ping local attachments.
 			$test = parse_url($link_test);
 			if (isset($test['query']))
 				$post_links[] = $link_test;
@@ -446,12 +653,14 @@ function pingback($content, $post_ID) {
 		endif;
 	endforeach;
 
+	do_action('pre_ping',  array(&$post_links, &$pung));
+
 	foreach ($post_links as $pagelinkedto){
 		debug_fwrite($log, "Processing -- $pagelinkedto\n");
 		$pingback_server_url = discover_pingback_server_uri($pagelinkedto, 2048);
 
 		if ($pingback_server_url) {
-                        set_time_limit( 60 ); 
+			@ set_time_limit( 60 ); 
 			 // Now, the RPC call
 			debug_fwrite($log, "Page Linked To: $pagelinkedto \n");
 			debug_fwrite($log, 'Page Linked From: ');
@@ -465,12 +674,11 @@ function pingback($content, $post_ID) {
 
 			// when set to true, this outputs debug messages by itself
 			$client->debug = false;
-			$client->query('pingback.ping', array($pagelinkedfrom, $pagelinkedto)); 
 			
-			if ( !$client->query('pingback.ping', array($pagelinkedfrom, $pagelinkedto) ) )
-				debug_fwrite($log, "Error.\n Fault code: ".$client->getErrorCode()." : ".$client->getErrorMessage()."\n");
-			else
+			if ( $client->query('pingback.ping', $pagelinkedfrom, $pagelinkedto ) )
 				add_ping( $post_ID, $pagelinkedto );
+			else
+				debug_fwrite($log, "Error.\n Fault code: ".$client->getErrorCode()." : ".$client->getErrorMessage()."\n");
 		}
 	}
 
@@ -479,6 +687,7 @@ function pingback($content, $post_ID) {
 }
 
 function discover_pingback_server_uri($url, $timeout_bytes = 2048) {
+	global $wp_version;
 
 	$byte_count = 0;
 	$contents = '';
@@ -507,8 +716,8 @@ function discover_pingback_server_uri($url, $timeout_bytes = 2048) {
 	}
 
 	// Send the GET request
-	$request = "GET $path HTTP/1.1\r\nHost: $host\r\nUser-Agent: WordPress/$wp_version PHP/" . phpversion() . "\r\n\r\n";
-	ob_end_flush();
+	$request = "GET $path HTTP/1.1\r\nHost: $host\r\nUser-Agent: WordPress/$wp_version \r\n\r\n";
+//	ob_end_flush();
 	fputs($fp, $request);
 
 	// Let's check for an X-Pingback header first
@@ -567,6 +776,18 @@ function discover_pingback_server_uri($url, $timeout_bytes = 2048) {
 	return false;
 }
 
+function is_local_attachment($url) {
+	if ( !strstr($url, get_bloginfo('home') ) )
+		return false;
+	if ( strstr($url, get_bloginfo('home') . '/?attachment_id=') )
+		return true;
+	if ( $id = url_to_postid($url) ) {
+		$post = & get_post($id);
+		if ( 'attachment' == $post->post_status )
+			return true;
+	}		
+	return false;
+}
 
 function wp_set_comment_status($comment_id, $comment_status) {
     global $wpdb;
@@ -582,7 +803,7 @@ function wp_set_comment_status($comment_id, $comment_status) {
  			$query = "UPDATE $wpdb->comments SET comment_approved='spam' WHERE comment_ID='$comment_id' LIMIT 1";
  		break;
 		case 'delete':
-			$query = "DELETE FROM $wpdb->comments WHERE comment_ID='$comment_id' LIMIT 1";
+			return wp_delete_comment($comment_id);
 		break;
 		default:
 			return false;
@@ -590,12 +811,17 @@ function wp_set_comment_status($comment_id, $comment_status) {
     
     if ($wpdb->query($query)) {
 		do_action('wp_set_comment_status', $comment_id, $comment_status);
+		
+		$comment = get_comment($comment_id);
+		$comment_post_ID = $comment->comment_post_ID;
+		$c = $wpdb->get_row( "SELECT count(*) as c FROM {$wpdb->comments} WHERE comment_post_ID = '$comment_post_ID' AND comment_approved = '1'" );
+		if( is_object( $c ) )
+			$wpdb->query( "UPDATE $wpdb->posts SET comment_count = '$c->c' WHERE ID = '$comment_post_ID'" );
 		return true;
     } else {
 		return false;
     }
 }
-
 
 function wp_get_comment_status($comment_id) {
 	global $wpdb;
@@ -614,110 +840,6 @@ function wp_get_comment_status($comment_id) {
 	}
 }
 
-if ( ! function_exists('wp_notify_postauthor') ) {
-function wp_notify_postauthor($comment_id, $comment_type='') {
-    global $wpdb;
-    
-    $comment = $wpdb->get_row("SELECT * FROM $wpdb->comments WHERE comment_ID='$comment_id' LIMIT 1");
-    $post = $wpdb->get_row("SELECT * FROM $wpdb->posts WHERE ID='$comment->comment_post_ID' LIMIT 1");
-    $user = $wpdb->get_row("SELECT * FROM $wpdb->users WHERE ID='$post->post_author' LIMIT 1");
-
-    if ('' == $user->user_email) return false; // If there's no email to send the comment to
-
-	$comment_author_domain = gethostbyaddr($comment->comment_author_IP);
-
-	$blogname = get_settings('blogname');
-	
-	if ( empty( $comment_type ) ) $comment_type = 'comment';
-	
-	if ('comment' == $comment_type) {
-		$notify_message  = "New comment on your post #$comment->comment_post_ID \"".$post->post_title."\"\r\n\r\n";
-		$notify_message .= "Author : $comment->comment_author (IP: $comment->comment_author_IP , $comment_author_domain)\r\n";
-		$notify_message .= "E-mail : $comment->comment_author_email\r\n";
-		$notify_message .= "URI    : $comment->comment_author_url\r\n";
-		$notify_message .= "Whois  : http://ws.arin.net/cgi-bin/whois.pl?queryinput=$comment->comment_author_IP\r\n";
-		$notify_message .= "Comment:\r\n $comment->comment_content \r\n\r\n";
-		$notify_message .= "You can see all comments on this post here: \r\n";
-		$subject = '[' . $blogname . '] Comment: "' .$post->post_title.'"';
-	} elseif ('trackback' == $comment_type) {
-		$notify_message  = "New trackback on your post #$comment_post_ID \"".$post->post_title."\"\r\n\r\n";
-		$notify_message .= "Website: $comment->comment_author (IP: $comment->comment_author_IP , $comment_author_domain)\r\n";
-		$notify_message .= "URI    : $comment->comment_author_url\r\n";
-		$notify_message .= "Excerpt: \n $comment->comment_content \r\n\r\n";
-		$notify_message .= "You can see all trackbacks on this post here: \r\n";
-		$subject = '[' . $blogname . '] Trackback: "' .$post->post_title.'"';
-	} elseif ('pingback' == $comment_type) {
-		$notify_message  = "New pingback on your post #$comment_post_ID \"".$post->post_title."\"\r\n\r\n";
-		$notify_message .= "Website: $comment->comment_author\r\n";
-		$notify_message .= "URI    : $comment->comment_author_url\r\n";
-		$notify_message .= "Excerpt: \n[...] $comment->comment_content [...]\r\n\r\n";
-		$notify_message .= "You can see all pingbacks on this post here: \r\n";
-		$subject = '[' . $blogname . '] Pingback: "' .$post->post_title.'"';
-	}
-	$notify_message .= get_permalink($comment->comment_post_ID) . '#comments';
-	$notify_message .= "\r\n\r\nTo delete this comment:\r\n" . get_settings('siteurl') . "/wp-admin/post.php?action=confirmdeletecomment&p=".$comment->comment_post_ID."&comment=$comment_id";
-
-	if ('' == $comment->comment_author_email || '' == $comment->comment_author) {
-		$from = "From: \"$blogname\" <wordpress@" . $_SERVER['SERVER_NAME'] . '>';
-	} else {
-		$from = 'From: "' . $comment->comment_author . "\" <$comment->comment_author_email>";
-	}
-
-	$message_headers = "MIME-Version: 1.0\n"
-		. "$from\n"
-		. "Content-Type: text/plain; charset=\"" . get_settings('blog_charset') . "\"\n";
-
-	@wp_mail($user->user_email, $subject, $notify_message, $message_headers);
-   
-    return true;
-}
-}
-
-/* wp_notify_moderator
-   notifies the moderator of the blog (usually the admin)
-   about a new comment that waits for approval
-   always returns true
- */
-if ( !function_exists('wp_notify_moderator') ) {
-function wp_notify_moderator($comment_id) {
-    global $wpdb;
-
-    if( get_settings( "moderation_notify" ) == 0 )
-        return true; 
-    
-    $comment = $wpdb->get_row("SELECT * FROM $wpdb->comments WHERE comment_ID='$comment_id' LIMIT 1");
-    $post = $wpdb->get_row("SELECT * FROM $wpdb->posts WHERE ID='$comment->comment_post_ID' LIMIT 1");
-    $user = $wpdb->get_row("SELECT * FROM $wpdb->users WHERE ID='$post->post_author' LIMIT 1");
-
-    $comment_author_domain = gethostbyaddr($comment->comment_author_IP);
-    $comments_waiting = $wpdb->get_var("SELECT count(comment_ID) FROM $wpdb->comments WHERE comment_approved = '0'");
-
-    $notify_message  = "A new comment on the post #$post->ID \"$post->post_title\" is waiting for your approval\r\n";
-	$notify_message .= get_permalink($comment->comment_post_ID);
-    $notify_message .= "\n\nAuthor : $comment->comment_author (IP: $comment->comment_author_IP , $comment_author_domain)\r\n";
-    $notify_message .= "E-mail : $comment->comment_author_email\r\n";
-    $notify_message .= "URL    : $comment->comment_author_url\r\n";
-    $notify_message .= "Whois  : http://ws.arin.net/cgi-bin/whois.pl?queryinput=$comment->comment_author_IP\r\n";
-    $notify_message .= "Comment:\r\n".$comment->comment_content."\r\n\r\n";
-    $notify_message .= "To approve this comment, visit: " . get_settings('siteurl') . "/wp-admin/post.php?action=mailapprovecomment&p=".$comment->comment_post_ID."&comment=$comment_id\r\n";
-    $notify_message .= "To delete this comment, visit: " . get_settings('siteurl') . "/wp-admin/post.php?action=confirmdeletecomment&p=".$comment->comment_post_ID."&comment=$comment_id\r\n";
-    $notify_message .= "Currently $comments_waiting comments are waiting for approval. Please visit the moderation panel:\r\n";
-    $notify_message .= get_settings('siteurl') . "/wp-admin/moderation.php\r\n";
-
-    $subject = '[' . get_settings('blogname') . '] Please moderate: "' .$post->post_title.'"';
-    $admin_email = get_settings("admin_email");
-    $from  = "From: $admin_email";
-
-    $message_headers = "MIME-Version: 1.0\n"
-    	. "$from\n"
-    	. "Content-Type: text/plain; charset=\"" . get_settings('blog_charset') . "\"\n";
-
-    @wp_mail($admin_email, $subject, $notify_message, $message_headers);
-    
-    return true;
-}
-}
-
 function check_comment($author, $email, $url, $comment, $user_ip, $user_agent, $comment_type) {
 	global $wpdb;
 
@@ -727,27 +849,27 @@ function check_comment($author, $email, $url, $comment, $user_ip, $user_agent, $
 		return false; // Check # of external links
 
 	$mod_keys = trim( get_settings('moderation_keys') );
-	if ('' == $mod_keys )
-		return true; // If moderation keys are empty
-	$words = explode("\n", $mod_keys );
+	if ( !empty($mod_keys) ) {
+		$words = explode("\n", $mod_keys );
 
-	foreach ($words as $word) {
-		$word = trim($word);
+		foreach ($words as $word) {
+			$word = trim($word);
 
-		// Skip empty lines
-		if (empty($word)) { continue; }
+			// Skip empty lines
+			if (empty($word)) { continue; }
 
-		// Do some escaping magic so that '#' chars in the 
-		// spam words don't break things:
-		$word = preg_quote($word, '#');
+			// Do some escaping magic so that '#' chars in the 
+			// spam words don't break things:
+			$word = preg_quote($word, '#');
 		
-		$pattern = "#$word#i"; 
-		if ( preg_match($pattern, $author) ) return false;
-		if ( preg_match($pattern, $email) ) return false;
-		if ( preg_match($pattern, $url) ) return false;
-		if ( preg_match($pattern, $comment) ) return false;
-		if ( preg_match($pattern, $user_ip) ) return false;
-		if ( preg_match($pattern, $user_agent) ) return false;
+			$pattern = "#$word#i"; 
+			if ( preg_match($pattern, $author) ) return false;
+			if ( preg_match($pattern, $email) ) return false;
+			if ( preg_match($pattern, $url) ) return false;
+			if ( preg_match($pattern, $comment) ) return false;
+			if ( preg_match($pattern, $user_ip) ) return false;
+			if ( preg_match($pattern, $user_agent) ) return false;
+		}
 	}
 
 	// Comment whitelisting:
@@ -755,12 +877,17 @@ function check_comment($author, $email, $url, $comment, $user_ip, $user_agent, $
 		if ( 'trackback' == $comment_type || 'pingback' == $comment_type ) { // check if domain is in blogroll
 			$uri = parse_url($url);
 			$domain = $uri['host'];
-			if ( $wpdb->get_var("SELECT link_id FROM $wpdb->links WHERE link_url LIKE ('%$domain%') LIMIT 1") )
+			$uri = parse_url( get_option('home') );
+			$home_domain = $uri['host'];
+			if ( $wpdb->get_var("SELECT link_id FROM $wpdb->links WHERE link_url LIKE ('%$domain%') LIMIT 1") || $domain == $home_domain )
 				return true;
+			else
+				return false;
 		} elseif( $author != '' && $email != '' ) {
-			$ok_to_comment = $wpdb->get_var("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = '$author' AND comment_author_email = '$email' and comment_approved = '1' ");
-			if ( 1 == $ok_to_comment && false === strpos( $email, get_settings('moderation_keys')) )
-				return true;
+			$ok_to_comment = $wpdb->get_var("SELECT comment_approved FROM $wpdb->comments WHERE comment_author = '$author' AND comment_author_email = '$email' and comment_approved = '1' LIMIT 1");
+			if ( ( 1 == $ok_to_comment ) &&
+				( empty($mod_keys) || false === strpos( $email, $mod_keys) ) )
+					return true;
 			else
 				return false;
 		} else {
@@ -769,6 +896,13 @@ function check_comment($author, $email, $url, $comment, $user_ip, $user_agent, $
 	}
 
 	return true;
+}
+
+function get_approved_comments($post_id) {
+	global $wpdb;
+
+	$post_id = (int) $post_id;
+	return $wpdb->get_results("SELECT * FROM $wpdb->comments WHERE comment_post_ID = $post_id AND comment_approved = '1' ORDER BY comment_date");
 }
 
 ?>

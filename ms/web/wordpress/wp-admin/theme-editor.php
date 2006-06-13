@@ -24,7 +24,13 @@ $themes = get_themes();
 
 if (empty($theme)) {
 	$theme = get_current_theme();
-}
+} else {
+	$theme = stripslashes($theme);
+ }
+
+
+if ( ! isset($themes[$theme]) )
+	die(__('The requested theme does not exist.'));
 
 $allowed_files = array_merge($themes[$theme]['Stylesheet Files'], $themes[$theme]['Template Files']);
 
@@ -35,13 +41,16 @@ if (empty($file)) {
 $file = validate_file_to_edit($file, $allowed_files);
 $real_file = get_real_file_to_edit($file);
 
+$file_show = basename( $file );
+
 switch($action) {
 
 case 'update':
 
-	if ($user_level < 5) {
-		die(__('<p>You have do not have sufficient permissions to edit templates for this blog.</p>'));
-	}
+	check_admin_referer('edit-theme_' . $file . $theme);
+
+	if ( !current_user_can('edit_themes') )
+	die('<p>'.__('You have do not have sufficient permissions to edit templates for this blog.').'</p>');
 
 	$newcontent = stripslashes($_POST['newcontent']);
 	$theme = urlencode($theme);
@@ -61,16 +70,15 @@ break;
 default:
 	
 	require_once('admin-header.php');
-	if ($user_level <= 5) {
-		die(__('<p>You have do not have sufficient permissions to edit themes for this blog.</p>'));
-	}
+	if ( !current_user_can('edit_themes') )
+	die('<p>'.__('You have do not have sufficient permissions to edit themes for this blog.').'</p>');
 
 	update_recently_edited($file);
 	
 	if (!is_file($real_file))
 		$error = 1;
 	
-	if (!$error) {
+	if (!$error && filesize($real_file) > 0) {
 		$f = fopen($real_file, 'r');
 		$content = fread($f, filesize($real_file));
 		$content = htmlspecialchars($content);
@@ -78,7 +86,7 @@ default:
 
 	?>
 <?php if (isset($_GET['a'])) : ?>
- <div class="updated"><p><?php _e('File edited successfully.') ?></p></div>
+ <div id="message" class="updated fade"><p><?php _e('File edited successfully.') ?></p></div>
 <?php endif; ?>
  <div class="wrap">
   <form name="theme" action="theme-editor.php" method="post"> 
@@ -89,7 +97,8 @@ default:
 		$theme_name = $a_theme['Name'];
 		if ($theme_name == $theme) $selected = " selected='selected'";
 		else $selected = '';
-		echo "\n\t<option value='$theme_name' $selected>$theme_name</option>";
+		$theme_name = wp_specialchars($theme_name, true);
+		echo "\n\t<option value=\"$theme_name\" $selected>$theme_name</option>";
 	}
 ?>
  </select>
@@ -99,10 +108,10 @@ default:
 
  <div class="wrap"> 
   <?php
-	if (is_writeable($real_file)) {
-		echo '<h2>' . sprintf(__('Editing <code>%s</code>'), $file) . '</h2>';
+	if ( is_writeable($real_file) ) {
+		echo '<h2>' . sprintf(__('Editing <code>%s</code>'), $file_show) . '</h2>';
 	} else {
-		echo '<h2>' . sprintf(__('Browsing <code>%s</code>'), $file) . '</h2>';
+		echo '<h2>' . sprintf(__('Browsing <code>%s</code>'), $file_show) . '</h2>';
 	}
 	?>
 	<div id="templateside">
@@ -122,6 +131,7 @@ if ($allowed_files) :
 	if (!$error) {
 	?> 
   <form name="template" id="template" action="theme-editor.php" method="post">
+  <?php wp_nonce_field('edit-theme_' . $file . $theme) ?>
 		 <div><textarea cols="70" rows="25" name="newcontent" id="newcontent" tabindex="1"><?php echo $content ?></textarea> 
      <input type="hidden" name="action" value="update" /> 
      <input type="hidden" name="file" value="<?php echo $file ?>" /> 
@@ -134,14 +144,15 @@ if ($allowed_files) :
 ?>
 </p>
 <?php else : ?>
-<p><em><?php _e('If this file was writable you could edit it.'); ?></em></p>
+<p><em><?php _e('If this file were writable you could edit it.'); ?></em></p>
 <?php endif; ?>
    </form> 
   <?php
 	} else {
 		echo '<div class="error"><p>' . __('Oops, no such file exists! Double check the name and try again, merci.') . '</p></div>';
 	}
-	?> 
+	?>
+<div class="clear"> &nbsp; </div>
 </div> 
 <?php
 break;

@@ -25,7 +25,6 @@ add_filter('pre_comment_author_url', 'trim');
 add_filter('pre_comment_author_url', 'clean_url');
 
 add_filter('pre_comment_content', 'stripslashes', 1);
-add_filter('pre_comment_content', 'wp_filter_kses');
 add_filter('pre_comment_content', 'wp_rel_nofollow', 15);
 add_filter('pre_comment_content', 'balanceTags', 30);
 add_filter('pre_comment_content', 'addslashes', 50);
@@ -48,20 +47,50 @@ add_filter('comment_text', 'make_clickable');
 add_filter('comment_text', 'wpautop', 30);
 add_filter('comment_text', 'convert_smilies', 20);
 
-add_filter('comment_text_rss', 'htmlspecialchars');
-
 add_filter('comment_excerpt', 'convert_chars');
-add_filter('the_excerpt_rss', 'convert_chars');
+
+// Categories
+add_filter('pre_category_name', 'strip_tags');
+add_filter('pre_category_name', 'trim');
+add_filter('pre_category_name', 'wp_filter_kses');
+add_filter('pre_category_name', 'wp_specialchars', 30);
+add_filter('pre_category_description', 'wp_filter_kses');
+
+// Users
+add_filter('pre_user_display_name', 'strip_tags');
+add_filter('pre_user_display_name', 'trim');
+add_filter('pre_user_display_name', 'wp_filter_kses');
+add_filter('pre_user_display_name', 'wp_specialchars', 30);
+add_filter('pre_user_first_name', 'strip_tags');
+add_filter('pre_user_first_name', 'trim');
+add_filter('pre_user_first_name', 'wp_filter_kses');
+add_filter('pre_user_first_name', 'wp_specialchars', 30);
+add_filter('pre_user_last_name', 'strip_tags');
+add_filter('pre_user_last_name', 'trim');
+add_filter('pre_user_last_name', 'wp_filter_kses');
+add_filter('pre_user_last_name', 'wp_specialchars', 30);
+add_filter('pre_user_nickname', 'strip_tags');
+add_filter('pre_user_nickname', 'trim');
+add_filter('pre_user_nickname', 'wp_filter_kses');
+add_filter('pre_user_nickname', 'wp_specialchars', 30);
+add_filter('pre_user_description', 'strip_tags');
+add_filter('pre_user_description', 'trim');
+add_filter('pre_user_description', 'wp_filter_kses');
+add_filter('pre_user_description', 'wp_specialchars', 30);
+add_filter('pre_user_url', 'strip_tags');
+add_filter('pre_user_url', 'trim');
+add_filter('pre_user_url', 'clean_url');
+add_filter('pre_user_email', 'trim');
+add_filter('pre_user_email', 'sanitize_email');
 
 // Places to balance tags on input
 add_filter('content_save_pre', 'balanceTags', 50);
 add_filter('excerpt_save_pre', 'balanceTags', 50);
 add_filter('comment_save_pre', 'balanceTags', 50);
 
+// Misc. title, content, and excerpt filters
 add_filter('the_title', 'convert_chars');
 add_filter('the_title', 'trim');
-
-add_filter('the_title_rss', 'strip_tags');
 
 add_filter('the_content', 'convert_smilies');
 add_filter('the_content', 'convert_chars');
@@ -70,11 +99,24 @@ add_filter('the_content', 'wpautop');
 add_filter('the_excerpt', 'convert_smilies');
 add_filter('the_excerpt', 'convert_chars');
 add_filter('the_excerpt', 'wpautop');
-
 add_filter('get_the_excerpt', 'wp_trim_excerpt');
 
 add_filter('sanitize_title', 'sanitize_title_with_dashes');
 
+// RSS filters
+add_filter('the_title_rss', 'strip_tags');
+add_filter('the_title_rss', 'ent2ncr', 8);
+add_filter('the_content_rss', 'ent2ncr', 8);
+add_filter('the_excerpt_rss', 'convert_chars');
+add_filter('the_excerpt_rss', 'ent2ncr', 8);
+add_filter('comment_author_rss', 'ent2ncr', 8);
+add_filter('comment_text_rss', 'htmlspecialchars');
+add_filter('comment_text_rss', 'ent2ncr', 8);
+add_filter('bloginfo_rss', 'ent2ncr', 8);
+add_filter('the_author', 'ent2ncr', 8);
+
+// Actions
 add_action('publish_post', 'generic_ping');
+add_action('wp_head', 'rsd_link');
 
 ?>

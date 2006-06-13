@@ -47,6 +47,14 @@ function printr($var, $do_not_echo = false) {
 	return $code;
 }
 
+/* compatibility with PHP versions older than 4.3 */
+if ( !function_exists('file_get_contents') ) {
+	function file_get_contents( $file ) {
+		$file = file($file);
+		return !$file ? false : implode('', $file);
+	}
+}
+
 if (!defined('CASE_LOWER')) {
     define('CASE_LOWER', 0);
 }
@@ -64,7 +72,7 @@ if (!defined('CASE_UPPER')) {
  * @link        http://php.net/function.array_change_key_case
  * @author      Stephan Schmidt <schst@php.net>
  * @author      Aidan Lister <aidan@php.net>
- * @version     $Revision: 1.1 $
+ * @version     $Revision: 1.2 $
  * @since       PHP 4.2.0
  * @require     PHP 4.0.0 (user_error)
  */
@@ -89,4 +97,17 @@ if (!function_exists('array_change_key_case')) {
     }
 }
 
+// From php.net
+if(!function_exists('http_build_query')) {
+   function http_build_query( $formdata, $numeric_prefix = null, $key = null ) {
+       $res = array();
+       foreach ((array)$formdata as $k=>$v) {
+           $tmp_key = urlencode(is_int($k) ? $numeric_prefix.$k : $k);
+           if ($key) $tmp_key = $key.'['.$tmp_key.']';
+           $res[] = ( ( is_array($v) || is_object($v) ) ? http_build_query($v, null, $tmp_key) : $tmp_key."=".urlencode($v) );
+       }
+       $separator = ini_get('arg_separator.output');
+       return implode($separator, $res);
+   }
+}
 ?>

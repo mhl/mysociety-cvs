@@ -30,8 +30,8 @@
 
 
 		<div class="navigation">
-			<div class="alignleft"><?php posts_nav_link('','','&laquo; Previous Entries') ?></div>
-			<div class="alignright"><?php posts_nav_link('','Next Entries &raquo;','') ?></div>
+			<div class="alignleft"><?php next_posts_link('&laquo; Previous Entries') ?></div>
+			<div class="alignright"><?php previous_posts_link('Next Entries &raquo;') ?></div>
 		</div>
 
 		<?php while (have_posts()) : the_post(); ?>
@@ -40,21 +40,18 @@
 				<small><?php the_time('l, F jS, Y') ?></small>
 				
 				<div class="entry">
-					<?php the_excerpt() ?>
+					<?php the_content() ?>
 				</div>
 		
-				<p class="postmetadata">Posted in <?php the_category(', ') ?> <strong>|</strong> <?php edit_post_link('Edit','','<strong>|</strong>'); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?></p> 
-				
-				<!--
-				<?php trackback_rdf(); ?>
-				-->
+				<p class="postmetadata">Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?></p> 
+
 			</div>
 	
 		<?php endwhile; ?>
 
 		<div class="navigation">
-			<div class="alignleft"><?php posts_nav_link('','','&laquo; Previous Entries') ?></div>
-			<div class="alignright"><?php posts_nav_link('','Next Entries &raquo;','') ?></div>
+			<div class="alignleft"><?php next_posts_link('&laquo; Previous Entries') ?></div>
+			<div class="alignright"><?php previous_posts_link('Next Entries &raquo;') ?></div>
 		</div>
 	
 	<?php else : ?>

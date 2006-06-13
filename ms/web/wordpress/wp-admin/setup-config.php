@@ -1,8 +1,8 @@
 <?php
-$_wp_installing = 1;
+define('WP_INSTALLING', true);
 
 if (file_exists('../wp-config.php')) 
-	die("The file 'wp-config.php' already exists. If you need to reset any of the configuration items in this file, please delete it first.");
+	die("The file 'wp-config.php' already exists. If you need to reset any of the configuration items in this file, please delete it first. You may try <a href='install.php'>installing now</a>.");
 
 if (!file_exists('../wp-config-sample.php'))
     die('Sorry, I need a wp-config-sample.php file to work from. Please re-upload this file from your WordPress installation.');
@@ -12,6 +12,7 @@ if (!is_writable('../')) die("Sorry, I can't write to the directory. You'll have
 
 $step = 0;
 if(isset($_GET['step'])) $step = $_GET['step'];
+header( 'Content-Type: text/html; charset=utf-8' );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,7 +48,7 @@ if(isset($_GET['step'])) $step = $_GET['step'];
 	</style>
 </head>
 <body> 
-<h1 id="logo"><a href="http://wordpress.org"><span>WordPress</span></a></h1> 
+<h1 id="logo"><a href="http://wordpress.org/"><span>WordPress</span></a></h1> 
 <?php
 
 switch($step) {
@@ -104,11 +105,11 @@ switch($step) {
 	break;
 	
 	case 2:
-	$dbname = $_POST['dbname'];
-    $uname = $_POST['uname'];
-    $passwrd = $_POST['pwd'];
-    $dbhost = $_POST['dbhost'];
-	$prefix = $_POST['prefix'];
+	$dbname  = trim($_POST['dbname']);
+    $uname   = trim($_POST['uname']);
+    $passwrd = trim($_POST['pwd']);
+    $dbhost  = trim($_POST['dbhost']);
+	$prefix  = trim($_POST['prefix']);
 	if (empty($prefix)) $prefix = 'wp_';
 
     // Test the db connection.

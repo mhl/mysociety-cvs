@@ -44,7 +44,7 @@ class wpdb {
 		if (!$this->dbh) {
 			$this->bail("
 <h1>Error establishing a database connection</h1>
-<p>This either means that the username and password information in your <code>wp-config.php</code> file is incorrect or we can't contact the database server at <code>$dbhost</code>.</p>
+<p>This either means that the username and password information in your <code>wp-config.php</code> file is incorrect or we can't contact the database server at <code>$dbhost</code>. This could mean your host's database server is down.</p>
 <ul>
 	<li>Are you sure you have the correct username and password?</li>
 	<li>Are you sure that you have typed the correct hostname?</li>
@@ -69,15 +69,19 @@ class wpdb {
 <li>Are you sure it exists?</li>
 <li>On some systems the name of your database is prefixed with your username, so it would be like username_wordpress. Could that be the problem?</li>
 </ul>
-<p>If you continue to have connection problems you should contact your host. If all else fails you may find help at the <a href='http://wordpress.org/support/'>WordPress Support Forums</a>.</p>");
+<p>If you don't know how to setup a database you should <strong>contact your host</strong>. If all else fails you may find help at the <a href='http://wordpress.org/support/'>WordPress Support Forums</a>.</p>");
 		}
 	}
 
 	// ====================================================================
 	//	Format a string correctly for safe insert under all PHP conditions
 	
-	function escape($str) {
-		return addslashes($str);				
+	function escape($string) {
+		return addslashes( $string ); // Disable rest for now, causing problems
+		if( !$this->dbh || version_compare( phpversion(), '4.3.0' ) == '-1' )
+			return mysql_escape_string( $string );
+		else
+			return mysql_real_escape_string( $string, $this->dbh );
 	}
 
 	// ==================================================================
@@ -301,6 +305,7 @@ class wpdb {
 	function bail($message) { // Just wraps errors in a nice header and footer
 	if ( !$this->show_errors )
 		return false;
+	header( 'Content-Type: text/html; charset=utf-8');		
 	echo <<<HEAD
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">

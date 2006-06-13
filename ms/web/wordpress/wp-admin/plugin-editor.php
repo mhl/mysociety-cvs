@@ -34,9 +34,10 @@ switch($action) {
 
 case 'update':
 
-	if ($user_level < 5) {
-		die(__('<p>You have do not have sufficient permissions to edit templates for this blog.</p>'));
-	}
+	check_admin_referer('edit-plugin_' . $file);
+
+	if ( !current_user_can('edit_plugins') )
+	die('<p>'.__('You have do not have sufficient permissions to edit templates for this blog.').'</p>');
 
 	$newcontent = stripslashes($_POST['newcontent']);
 	if (is_writeable($real_file)) {
@@ -55,9 +56,8 @@ break;
 default:
 	
 	require_once('admin-header.php');
-	if ($user_level <= 5) {
-		die(__('<p>You have do not have sufficient permissions to edit plugins for this blog.</p>'));
-	}
+	if ( !current_user_can('edit_plugins') )
+	die('<p>'.__('You have do not have sufficient permissions to edit plugins for this blog.').'</p>');
 
 	update_recently_edited("wp-content/plugins/$file");
 	
@@ -67,12 +67,12 @@ default:
 	if (!$error) {
 		$f = fopen($real_file, 'r');
 		$content = fread($f, filesize($real_file));
-		$content = wp_specialchars($content);
+		$content = htmlspecialchars($content);
 	}
 
 	?>
 <?php if (isset($_GET['a'])) : ?>
- <div class="updated"><p><?php _e('File edited successfully.') ?></p></div>
+ <div id="message" class="updated fade"><p><?php _e('File edited successfully.') ?></p></div>
 <?php endif; ?>
  <div class="wrap"> 
   <?php
@@ -97,6 +97,7 @@ if ($plugin_files) :
 </div>
 	<?php	if (!$error) { ?> 
   <form name="template" id="template" action="plugin-editor.php" method="post">
+  <?php wp_nonce_field('edit-plugin_' . $file) ?>
 		 <div><textarea cols="70" rows="25" name="newcontent" id="newcontent" tabindex="1"><?php echo $content ?></textarea> 
      <input type="hidden" name="action" value="update" /> 
      <input type="hidden" name="file" value="<?php echo $file ?>" /> 
@@ -108,14 +109,15 @@ if ($plugin_files) :
 ?>
 </p>
 <?php else : ?>
-<p><em><?php _e('If this file was writable you could edit it.'); ?></em></p>
+<p><em><?php _e('If this file were writable you could edit it.'); ?></em></p>
 <?php endif; ?>
    </form> 
   <?php
 	} else {
 		echo '<div class="error"><p>' . __('Oops, no such file exists! Double check the name and try again, merci.') . '</p></div>';
 	}
-	?> 
+	?>
+<div class="clear"> &nbsp; </div>
 </div> 
 <?php
 break;

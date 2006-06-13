@@ -5,6 +5,7 @@ require_once('admin.php');
 $title = __('Link Categories');
 $this_file='link-categories.php';
 $parent_file = 'link-manager.php';
+$list_js = true;
 
 $wpvarstoreset = array('action', 'cat', 'auto_toggle');
 for ($i=0; $i<count($wpvarstoreset); $i += 1) {
@@ -25,7 +26,9 @@ for ($i=0; $i<count($wpvarstoreset); $i += 1) {
 switch ($action) {
   case 'addcat':
   {
-      if ($user_level < 5)
+      check_admin_referer('add-link-category');
+
+      if ( !current_user_can('manage_links') )
           die (__("Cheatin' uh ?"));
 
       $cat_name = wp_specialchars($_POST['cat_name']);
@@ -60,9 +63,9 @@ switch ($action) {
       if ($sort_desc != 'Y') {
           $sort_desc = 'N';
       }
-      $text_before_link = addslashes($_POST['text_before_link']);
-      $text_after_link = addslashes($_POST['text_after_link']);
-      $text_after_all = addslashes($_POST['text_after_all']);
+      $text_before_link = $_POST['text_before_link'];
+      $text_after_link = $_POST['text_after_link'];
+      $text_after_all = $_POST['text_after_all'];
 
       $list_limit = $_POST['list_limit'];
       if ($list_limit == '')
@@ -79,13 +82,15 @@ switch ($action) {
   } // end addcat
   case 'Delete':
   {
-    $cat_id = (int) $_GET['cat_id'];
+   	$cat_id = (int) $_GET['cat_id'];
+    check_admin_referer('delete-link-category_' . $cat_id);
+
     $cat_name=get_linkcatname($cat_id);
 
     if ($cat_id=="1")
         die(sprintf(__("Can't delete the <strong>%s</strong> link category: this is the default one"), $cat_name));
 
-    if ($user_level < 5)
+    if ( !current_user_can('manage_links') )
       die (__("Cheatin' uh ?"));
 
     $wpdb->query("DELETE FROM $wpdb->linkcategories WHERE cat_id='$cat_id'");
@@ -108,9 +113,10 @@ switch ($action) {
 ?>
 
 <div class="wrap">
-  <h2>Edit &#8220;<?php echo wp_specialchars($row->cat_name)?>&#8221; Category </h2>
+  <h2><?php printf(__('Edit &#8220%s&#8221; Category'), wp_specialchars($row->cat_name)); ?></h2>
 
   <form name="editcat" method="post">
+  <?php wp_nonce_field('update-link-category_' . $row->cat_id) ?>
       <input type="hidden" name="action" value="editedcat" />
       <input type="hidden" name="cat_id" value="<?php echo $row->cat_id ?>" />
 <fieldset class="options">
@@ -198,13 +204,14 @@ switch ($action) {
   } // end Edit
   case "editedcat":
   {
-    if ($user_level < 5)
+    $cat_id = (int)$_POST["cat_id"];
+    check_admin_referer('update-link-category_' . $cat_id);
+
+    if ( !current_user_can('manage_links') )
       die (__("Cheatin' uh ?"));
 
     $submit=$_POST["submit"];
     if (isset($submit)) {
-
-    $cat_id = (int)$_POST["cat_id"];
 
     $cat_name= wp_specialchars($_POST["cat_name"]);
     $auto_toggle = $_POST["auto_toggle"];
@@ -238,9 +245,9 @@ switch ($action) {
     if ($sort_desc != 'Y') {
         $sort_desc = 'N';
     }
-    $text_before_link = addslashes($_POST["text_before_link"]);
-    $text_after_link = addslashes($_POST["text_after_link"]);
-    $text_after_all = addslashes($_POST["text_after_all"]);
+    $text_before_link = $_POST["text_before_link"];
+    $text_after_link = $_POST["text_after_link"];
+    $text_after_all = $_POST["text_after_all"];
 
     $list_limit = $_POST["list_limit"];
     if ($list_limit == '')
@@ -270,14 +277,13 @@ switch ($action) {
   default:
   {
     include_once ("admin-header.php");
-    if ($user_level < 5) {
+    if ( !current_user_can('manage_links') )
       die(__("You have do not have sufficient permissions to edit the link categories for this blog. :)"));
-    }
 ?>
 
 <div class="wrap">
             <h2><?php _e('Link Categories:') ?></h2>
-            <table width="100%" cellpadding="5" cellspacing="0" border="0">
+            <table id="the-list" width="100%" cellpadding="5" cellspacing="0" border="0">
               <tr>
  	        <th rowspan="2" valign="bottom"><?php _e('Name') ?></th>
                 <th rowspan="2" valign="bottom"><?php _e('ID') ?></th>
@@ -305,26 +311,52 @@ $results = $wpdb->get_results("SELECT cat_id, cat_name, auto_toggle, show_images
 $i = 1;
 foreach ($results as $row) {
     if ($row->list_limit == -1) {
-        $row->list_limit = 'none';
+        $row->list_limit = __('none');
     }
     $style = ($i % 2) ? ' class="alternate"' : '';
+    /*
+    	Manually internationalize every sort order option.
+    */
+    switch ($row->sort_order) {
+    	case 'name':
+    		$row->sort_order = __('name');
+    		break;
+    	case 'id':
+    		$row->sort_order = __('id');
+    		break;
+    	case 'url':
+    		$row->sort_order = __('url');
+    		break;
+    	case 'rating':
+    		$row->sort_order = __('rating');
+    		break;
+    	case 'updated':
+    		$row->sort_order = __('updated');
+    		break;
+    	case 'rand':
+    		$row->sort_order = __('rand');
+    		break;
+    	case 'length':
+    		$row->sort_order = __('length');
+    		break;
+    }
 ?>
-              <tr valign="middle" align="center" <?php echo $style ?> style="border-bottom: 1px dotted #9C9A9C;">
+              <tr id="link-category-<?php echo $row->cat_id; ?>" valign="middle" align="center" <?php echo $style ?> style="border-bottom: 1px dotted #9C9A9C;">
                 <td><?php echo wp_specialchars($row->cat_name)?></td>
 				<td ><?php echo $row->cat_id?></td>
-                <td><?php echo $row->auto_toggle?></td>
-                <td><?php echo $row->show_images?></td>
-                <td><?php echo $row->show_description?></td>
-                <td><?php echo $row->show_rating?></td>
-                <td><?php echo $row->show_updated?></td>
-                <td><?php echo $row->sort_order?></td>
-                <td><?php echo $row->sort_desc?></td>
+                <td><?php echo $row->auto_toggle == 'Y' ? __('Yes') : __('No') ?></td>
+                <td><?php echo $row->show_images == 'Y' ? __('Yes') : __('No') ?></td>
+                <td><?php echo $row->show_description == 'Y' ? __('Yes') : __('No') ?></td>
+                <td><?php echo $row->show_rating == 'Y' ? __('Yes') : __('No') ?></td>
+                <td><?php echo $row->show_updated == 'Y' ? __('Yes') : __('No') ?></td>
+                <td><?php echo $row->sort_order ?></td>
+                <td><?php echo $row->sort_desc == 'Y' ? __('Yes') : __('No') ?></td>
                 <td nowrap="nowrap"><?php echo htmlentities($row->text_before_link)?>&nbsp;</td>
                 <td nowrap="nowrap"><?php echo htmlentities($row->text_after_link)?>&nbsp;</td>
                 <td nowrap="nowrap"><?php echo htmlentities($row->text_after_all)?></td>
-                <td><?php echo $row->list_limit?></td>
+                <td><?php echo $row->list_limit ?></td>
                 <td><a href="link-categories.php?cat_id=<?php echo $row->cat_id?>&amp;action=Edit" class="edit"><?php _e('Edit') ?></a></td>
-                <td><a href="link-categories.php?cat_id=<?php echo $row->cat_id?>&amp;action=Delete" onclick="return confirm('<?php _e("You are about to delete this category.\\n  \'Cancel\' to stop, \'OK\' to delete.") ?>');" class="delete"><?php _e('Delete') ?></a></td>
+                <td><a href="<?php echo wp_nonce_url("link-categories.php?cat_id=$row->cat_id?>&amp;action=Delete", 'delete-link-category_' . $row->cat_id) ?>" "onclick="return deleteSomething( 'link category', <?php echo $row->cat_id . ", '" . sprintf(__("You are about to delete the &quot;%s&quot; link category.\\n&quot;Cancel&quot; to stop, &quot;OK&quot; to delete."), wp_specialchars($row->cat_name,1)); ?>' );" class="delete"><?php _e('Delete') ?></a></td>
               </tr>
 <?php
         ++$i;
@@ -333,10 +365,13 @@ foreach ($results as $row) {
             </table>
 <p><?php _e('These are the defaults for when you call a link category with no additional arguments. All of these settings may be overwritten.') ?></p>
 
+<div id="ajax-response"></div>
+
 </div>
 
 <div class="wrap">
     <form name="addcat" method="post">
+    <?php wp_nonce_field('add-link-category'); ?>
       <input type="hidden" name="action" value="addcat" />
 	  <h2><?php _e('Add a Link Category:') ?></h2>
 <fieldset class="options">
@@ -417,9 +452,7 @@ foreach ($results as $row) {
 </div>
 <div class="wrap">
     <h3><?php _e('Note:') ?></h3>
-    <?php printf(__('<p>Deleting a link category does not delete links from that category.<br />
-    It will just set them back to the default category <b>%s</b>.'), get_linkcatname(1)) ?>
-    </p>
+	<p><?php printf(__('Deleting a link category does not delete links from that category.<br />It will just set them back to the default category <strong>%s</strong>.'), get_linkcatname(1)) ?></p>
 </div>
 <?php
     break;

@@ -1,10 +1,8 @@
 <?php
 
-if (empty($feed)) {
-    $blog = 1;
-		$feed = 'rss';
-    $doing_rss = 1;
-    require('wp-blog-header.php');
+if (empty($wp)) {
+	require_once('wp-config.php');
+	wp('feed=rss');
 }
 
 header('Content-type: text/xml; charset=' . get_settings('blog_charset'), true);
@@ -18,9 +16,10 @@ $more = 1;
 	<title><?php bloginfo_rss('name') ?></title>
 	<link><?php bloginfo_rss('url') ?></link>
 	<description><?php bloginfo_rss('description') ?></description>
-	<lastBuildDate><?php echo mysql2date('D, d M Y H:i:s +0000', get_lastpostmodified('GMT'), 0); ?></lastBuildDate>
+	<lastBuildDate><?php echo mysql2date('D, d M Y H:i:s +0000', get_lastpostmodified('GMT'), false); ?></lastBuildDate>
 	<docs>http://backend.userland.com/rss092</docs>
 	<language><?php echo get_option('rss_language'); ?></language>
+	<?php do_action('rss_head'); ?>
 
 <?php $items_count = 0; if ($posts) { foreach ($posts as $post) { start_wp(); ?>
 	<item>
@@ -31,6 +30,7 @@ $more = 1;
 		<description><?php the_content_rss('', 0, '', get_settings('rss_excerpt_length')) ?></description>
 <?php } ?>
 		<link><?php permalink_single_rss() ?></link>
+		<?php do_action('rss_item'); ?>
 	</item>
 <?php $items_count++; if (($items_count == get_settings('posts_per_rss')) && empty($m)) { break; } } } ?>
 </channel>

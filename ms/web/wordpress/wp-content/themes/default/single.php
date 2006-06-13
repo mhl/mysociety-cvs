@@ -5,12 +5,12 @@
   <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 	
 		<div class="navigation">
-			<div class="alignleft"><?php previous_post('&laquo; %','','yes') ?></div>
-			<div class="alignright"><?php next_post(' % &raquo;','','yes') ?></div>
+			<div class="alignleft"><?php previous_post_link('&laquo; %link') ?></div>
+			<div class="alignright"><?php next_post_link('%link &raquo;') ?></div>
 		</div>
 	
-		<div class="post">
-			<h2 id="post-<?php the_ID(); ?>"><a href="<?php echo get_permalink() ?>" rel="bookmark" title="Permanent Link: <?php the_title(); ?>"><?php the_title(); ?></a></h2>
+		<div class="post" id="post-<?php the_ID(); ?>">
+			<h2><a href="<?php echo get_permalink() ?>" rel="bookmark" title="Permanent Link: <?php the_title(); ?>"><?php the_title(); ?></a></h2>
 	
 			<div class="entrytext">
 				<?php the_content('<p class="serif">Read the rest of this entry &raquo;</p>'); ?>
@@ -30,11 +30,11 @@
 						
 						<?php if (('open' == $post-> comment_status) && ('open' == $post->ping_status)) {
 							// Both Comments and Pings are open ?>
-							You can <a href="#respond">leave a response</a>, or <a href="<?php trackback_url(display); ?>">trackback</a> from your own site.
+							You can <a href="#respond">leave a response</a>, or <a href="<?php trackback_url(true); ?>" rel="trackback">trackback</a> from your own site.
 						
 						<?php } elseif (!('open' == $post-> comment_status) && ('open' == $post->ping_status)) {
 							// Only Pings are Open ?>
-							Responses are currently closed, but you can <a href="<?php trackback_url(display); ?> ">trackback</a> from your own site.
+							Responses are currently closed, but you can <a href="<?php trackback_url(true); ?> " rel="trackback">trackback</a> from your own site.
 						
 						<?php } elseif (('open' == $post-> comment_status) && !('open' == $post->ping_status)) {
 							// Comments are open, Pings are not ?>
@@ -56,7 +56,7 @@
 	
 	<?php endwhile; else: ?>
 	
-		<p><?php _e('Sorry, no posts matched your criteria.'); ?></p>
+		<p>Sorry, no posts matched your criteria.</p>
 	
 <?php endif; ?>
 	
