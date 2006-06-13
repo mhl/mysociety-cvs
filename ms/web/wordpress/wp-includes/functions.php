@@ -2188,7 +2188,7 @@ function status_header( $header ) {
 	elseif ( 410 == $header )
 		$text = 'Gone';
 
-	@header("HTTP/1.1 $header $text");
+	//@header("HTTP/1.1 $header $text");
 	@header("Status: $header $text");
 }
 
