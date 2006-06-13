@@ -56,9 +56,14 @@ if ($q_page == 'submit') {
 
             if (get_http_var("submitfinal")) {
                 $dummy_user_name = bin2hex(random_bytes(8));
-                $wpdb->query("INSERT INTO `wp_users` (`user_login`, `user_pass`, `user_firstname`, `user_lastname`, `user_nickname`, `user_icq`, `user_email`, `user_url`, `user_ip`, `user_domain`, `user_browser`, `dateYMDhour`, `user_level`, `user_aim`, `user_msn`, `user_yim`, `user_idmode`, `user_description`, `user_activation_key`, `user_status`, `user_nicename`, `user_registered`) 
-                 VALUES ('$dummy_user_name','NOPASSWORD','".$wpdb->escape($q_name)."','','$dummy_user_name',0,'".$wpdb->escape($q_email)."','','','','',now(),0,'','','','namefl','','',0,'$dummy_user_name',now())");
+                $wpdb->query("INSERT INTO `wp_users` (`user_login`, `user_pass`, `user_email`, `user_url`, `dateYMDhour`,
+                `user_activation_key`, `user_status`, `display_name`, `user_registered`, `user_nicename`)
+                 VALUES ('$dummy_user_name','NOPASSWORD','".$wpdb->escape($q_email)."','',now(),
+                 '',0,'".$wpdb->escape($q_name)."',now(),'$dummy_user_name')");
                 $proposal_user_id = $wpdb->insert_id;
+                $wpdb->query("INSERT INTO `wp_usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('$proposal_user_id', 'wp_user_level', 0)");
+                $wpdb->query("INSERT INTO `wp_usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('$proposal_user_id', 'wp_capabilities', 'a:1:{s:10:\"subscriber\";b:1;}')");
+                $wpdb->query("INSERT INTO `wp_usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('$proposal_user_id', 'first_name', '".$wpdb->escape($q_name)."')");
                 $post_data = array('post_content' => $joined_post,
                     'post_title' => $title,
                     'post_author' => $proposal_user_id, 
