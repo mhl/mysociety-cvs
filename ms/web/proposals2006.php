@@ -43,6 +43,8 @@ if ($q_page == 'submit') {
         if (strlen(trim($q_body_logistics)) == 0)
             $errors['body_logistics'] = 'Please fill in the Budget &amp; Logistics section.';
 
+        $errors['any'] = 'New submissions are now closed, sorry!';
+
         if (!$errors) {
             $joined_post = 
                 "<strong>What NEED does this meet?</strong>\n\n" . $q_body_need . "\n\n" .
@@ -171,6 +173,20 @@ exit;
     </div>
     <div class="item_foot">
     </div>
+
+
+    <div class="item_head">
+        New submissions for 2006 are now closed
+    </div>
+    <div class="item">
+        <p>Now we've just got to decide which one wins.</p>
+        <p>You can help out by <a href="/proposals2006/view">adding
+        your thoughts</a> to the proposals which were submitted.
+        </p>
+    </div>
+    <div class="item_foot">
+    </div>
+<!--
     <div class="item_head">
         Submit your proposal for a new mySociety project
     </div>
@@ -206,12 +222,29 @@ exit;
     </div>
     <div class="item_foot">
     </div>
+-->
 <?
     include "wordpress/wp-content/themes/mysociety/footer.php";
 } elseif ($q_page == 'about') {
     include "wordpress/wp-blog-header.php";
     include "wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
+
+    <div class="item_head">
+        New submissions for 2006 are now closed
+    </div>
+    <div class="item">
+        <p><a href="/proposals2006/view">Head on over here</a> to
+        read all the proposals. Thanks everyone for submitting lots
+        of great ideas!
+        </p>
+        
+        <p>We'll announce the winner when we've properly read and considered
+        them all.  Help out by leaving your comments as to what is good or bad
+        about them.</p>
+    </div>
+    <div class="item_foot">
+    </div>
 
     <div class="item_head">
         mySociety will build the best site submitted
