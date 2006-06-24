@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# mailman-example:
+# Information about the local Mailman configuration, read by the corresponding
+# shell scripts in web-admin. Copy this to "mailman" and alter it to suit your
+# local configuration. (But if you are using Debian sarge, the values below
+# will be right, so you can just symlink it.)
+#
+# Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
+# Email: chris@mysociety.org; WWW: http://www.mysociety.org/
+#
+# $Id: mailman-example,v 1.1 2006-06-24 01:53:02 chris Exp $
+#
+
+# Where Mailman's admin CGI scripts live. These must be the Python scripts
+# themselves, not the wrapper programs which Mailman installs (which do various
+# UID and GID checks that won't be compatible with sane suexec setups).
+MAILMAN_CGI_DIR=/usr/lib/mailman/Mailman/Cgi
+
+# What suffix the scripts have.
+MAILMAN_CGI_SUFFIX=.py
+
+# Which Python interpreter is used to run the scripts.
+MAILMAN_CGI_PYTHON=/usr/bin/python
+
