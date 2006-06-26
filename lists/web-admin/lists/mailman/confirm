@@ -1,3 +1,5 @@
 #!/bin/sh
-. ../conf/mailman
-exec $MAILMAN_PYTHON $MAILMAN_CGI_PATH/confirm$MAILMAN_CGI_SUFFIX
+script=$( basename $0 )
+dir=$( dirname $0 )
+. $dir/../../conf/mailman
+exec $MAILMAN_PYTHON $MAILMAN_CGI_DIR/$script$MAILMAN_CGI_SUFFIX
