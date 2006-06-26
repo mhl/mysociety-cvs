@@ -2,4 +2,4 @@
 script=$( basename $0 )
 dir=$( dirname $0 )
 . $dir/../../conf/mailman
-exec $MAILMAN_CGI_PYTHON $MAILMAN_CGI_DIR/$script$MAILMAN_CGI_SUFFIX
+PYTHONPATH=$MAILMAN_CGI_PYTHONPATH exec $MAILMAN_CGI_PYTHON $MAILMAN_CGI_DIR/$script$MAILMAN_CGI_SUFFIX
