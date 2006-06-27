@@ -1,5 +1,5 @@
 #!/bin/sh
 script=$( basename $0 )
 dir=$( dirname $0 )
-. $dir/../../conf/mailman
+. $dir/../../../conf/mailman
 PYTHONPATH=$MAILMAN_CGI_PYTHONPATH exec $MAILMAN_CGI_PYTHON $MAILMAN_CGI_DIR/driver $script
