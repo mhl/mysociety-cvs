@@ -12,7 +12,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.2 2006-06-28 11:08:47 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.3 2006-06-28 12:58:08 chris Exp $';
 
 use strict;
 
@@ -25,6 +25,8 @@ use CGI::Fast;
 use WWW::Mechanize;
 
 my $M = new WWW::Mechanize(agent => "mailmanlogin $rcsid");
+my $hh = new HTTP::Headers();
+$M->default_headers($hh);
 
 # Details of the local Mailman installation.
 my $mailman_login_url = 'http://lists.mysociety.org/admin/lists/mailman/admin/mailman';
@@ -70,7 +72,8 @@ while (my $q = new CGI::Fast()) {
         print $q->redirect('/admin/lists/mailman/admin');
         next;
     }
-    # XXX should not do this if user is not authenticated....
+
+    $hh->header(Authorization => $ENV{HTTP_AUTHORIZATION});
 
     my $cookie = get_mailman_cookie();
     if ($cookie) {
