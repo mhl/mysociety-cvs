@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl -w -I../../../perllib
 #
 # mailmanlogin.cgi:
 # Log in to part of the Mailman admin interface and obtain a cookie, which we
@@ -12,9 +12,14 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.1 2006-06-27 13:15:14 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.2 2006-06-28 11:08:47 chris Exp $';
 
 use strict;
+
+BEGIN {
+    use mySociety::Config;
+    mySociety::Config::set_file('../../conf/general');
+}
 
 use CGI::Fast;
 use WWW::Mechanize;
