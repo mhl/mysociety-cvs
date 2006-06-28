@@ -12,7 +12,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.3 2006-06-28 12:58:08 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.4 2006-06-28 13:04:56 chris Exp $';
 
 use strict;
 
@@ -69,6 +69,12 @@ sub get_mailman_cookie () {
 while (my $q = new CGI::Fast()) {
     my $url = $q->param('url');
     if (!defined($url)) {
+        print $q->redirect('/admin/lists/mailman/admin');
+        next;
+    }
+
+    if (!defined($ENV{HTTP_AUTHORIZATION})) {
+        warn "no credentials passed in environment";
         print $q->redirect('/admin/lists/mailman/admin');
         next;
     }
