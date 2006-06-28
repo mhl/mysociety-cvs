@@ -12,7 +12,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.4 2006-06-28 13:04:56 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.5 2006-06-28 13:13:10 chris Exp $';
 
 use strict;
 
@@ -90,6 +90,8 @@ while (my $q = new CGI::Fast()) {
                         -path => '/',
                         -expires => '+365d'
                     );
+    } else {
+        warn "unable to get a cookie out of Mailman";
     }
 
     print $q->redirect(
