@@ -12,7 +12,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.5 2006-06-28 13:13:10 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.6 2006-06-28 13:16:16 chris Exp $';
 
 use strict;
 
@@ -29,8 +29,8 @@ my $hh = new HTTP::Headers();
 $M->default_headers($hh);
 
 # Details of the local Mailman installation.
-my $mailman_login_url = 'http://lists.mysociety.org/admin/lists/mailman/admin/mailman';
-my $mailman_site_password = 'secret';
+my $mailman_login_url = mySociety::Config::get('MAILMAN_LOGIN_URL');
+my $mailman_site_password = mySociety::Config::get('MAILMAN_SITE_PASSWORD');
 
 # get_mailman_cookie
 # Obtain a site-wide login cookie for Mailman, by filling out the admin
