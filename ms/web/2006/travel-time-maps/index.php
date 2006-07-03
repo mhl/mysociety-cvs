@@ -29,8 +29,8 @@ Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.or
 
 <p>(See also: <a href="methods.php">description of methods</a>;
 <a href="slides.pdf">presentation slides</a>. You may also be interested in
-<a href="http://www.mysociety.org/mailman/listinfo/mysociety-maps">the
-mysociety-maps mailing list</a>.)</p>
+<a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/maps">the
+mySociety maps mailing list</a>.)</p>
 
 <h2><a name="introduction"></a>Introduction</h2>
 
@@ -337,7 +337,7 @@ is an attractive idea, although it would be expensive to build.</dd>
 <p>Please contact us (email addresses at the top of the page) if you have
 any questions or comments. If you're interested in this area, please also
 sign up to the (fairly low-traffic)
-<a href="http://www.mysociety.org/mailman/listinfo/mysociety-maps">mysociety-maps
+<a href="http://secure.mysociety.org/admin/lists/mailman/listinfo/maps">mySociety maps
 mailing list</a>.</p>
 
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>
