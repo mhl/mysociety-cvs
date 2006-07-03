@@ -6,7 +6,7 @@ include "wordpress/wp-blog-header.php";
 include "wordpress/wp-content/themes/mysociety/header.php"; 
 
 function send_email ($from) {
-    $to = "mysociety-news-request@mysociety.org";
+    $to = "news-request@lists.mysociety.org";
     $subject = "Subscribe";
     $message = "Subscribing from web form.";
 

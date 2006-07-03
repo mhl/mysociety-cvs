@@ -54,7 +54,7 @@ A.</b> In March 2004 we were awarded £250,000 in a joint bid with West Sussex C
         me?<br/>A.</b> Yes! Whilst our home country is the UK, we do not see ourselves as limited to it in any way. We will gladly speak to and work with people from outside the UK, and it is our hope and expectation that people around the world will be able to use and adopt the open source tools and services we develop for use in their own countries. We will even consider developing projects based in other countries, if appropriate funding can be found.</p>
 
 		<p><b>Q. Do you have a political agenda?<br/>A.</b> No, we are not party political, and this project is neither left or right-wing. It is about building useful digital tools for anyone who wants to use them.</p>
-		<p><b>Q. How can I be kept up to date with the project?<br/>A.</b> Please join our <a href="http://www.mysociety.org/mailman/listinfo/mysociety-news">mailing list</a>. All normal no-moronic-spamming policies apply.</p>
+		<p><b>Q. How can I be kept up to date with the project?<br/>A.</b> Please join our <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/news">mailing list</a>. All normal no-moronic-spamming policies apply.</p>
         </div>
 
 <div class="item_foot">
