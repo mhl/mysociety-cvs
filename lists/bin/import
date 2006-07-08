@@ -1,0 +1,289 @@
+#!/usr/bin/perl -w
+#
+# import:
+# Import messages into the database.
+#
+# Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
+# Email: chris@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: import,v 1.1 2006-07-08 18:48:22 chris Exp $';
+
+use strict;
+
+package Oops;
+
+@Oops::ISA = qw(Error::Simple);
+
+package main;
+
+# Horrible boilerplate to set up appropriate library paths.
+use FindBin;
+use lib "$FindBin::Bin/../perllib";
+use lib "$FindBin::Bin/../../perllib";
+
+use Data::Dumper;
+use DateTime;
+use DateTime::Format::Strptime;
+use Encode;
+use Error qw(:try);
+use Fcntl qw(:seek);
+use Mail::Field;
+use MIME::Parser;
+use MIME::Words;
+use POSIX qw();
+
+use List;
+
+# trim STRING
+# Remove leading and trailing whitespace from STRING.
+sub trim ($) {
+    $_[0] =~ s/^\s+//s;
+    $_[0] =~ s/\s+$//s;
+}
+
+# hdr_convert_utf8 HEADER
+# Return a version of the HEADER, which may contains MIME-words or non-ASCII
+# characters, into a Unicode representation.
+sub hdr_convert_utf8 ($) {
+    my $hdr = shift;
+
+    return $hdr if (!defined($hdr));
+
+    # If the header contains high-bit characters, then decode them according to
+    # an assumed character set.
+    $hdr = Encode::decode('cp1252', $hdr) if ($hdr =~ /[^\x20-\x7f]/);
+
+    # Now decode any MIME-words.
+    my @r = MIME::Words::decode_mimewords($hdr);
+    my $res = '';
+
+    foreach (@r) {
+        my ($text, $charset) = @$_;
+        if (!defined($charset)) {
+            $res .= $text;
+        } else {
+            $res .= Encode::decode($charset, $text, Encode::FB_DEFAULT);
+        }
+    }
+
+    return $res;
+}
+
+# entity_to_text ENTITY
+# Convert a MIME ENTITY into a textual representation in UTF-8, suitable for
+# display to the user.
+sub entity_to_text ($);
+sub entity_to_text ($) {
+    my $ent = shift;
+
+    my $res = '';
+    our %encodings;
+    %encodings = map { $_ => 1 } Encode->encodings(':all') unless (%encodings);
+
+    # Try to decide how to represent the body part of the message. The
+    # implementation is pretty minimal. If it's text/plain, then convert it to
+    # UTF-8 and use it without further ado. If it's text/html, then convert it
+    # to plain text using lynx and use that. If it's multipart/alternative,
+    # then search for a text/plain part, or failing that a text/html part, and
+    # treat as above. For multipart/related and /signed we pick the first part
+    # and treat as above; for multipart/mixed and all other multipart types, we
+    # iterate over all of the contained entities and render those; for
+    # message/rfc822 we print a small selection of headers and parse the entity
+    # as otherwis; for any other non-multipart types we bail and just return a
+    # note that something was missed.
+
+    my $type = lc($ent->mime_type());
+
+    if ($type =~ m#^multipart/(.*)$#) {
+        my $subtype = $1;
+        my $body_ent;
+        if ($subtype eq 'alternative') {
+            # Search for most suitable part.
+            foreach my $part ($ent->parts()) {
+                $type = lc($part->mime_type());
+                if ($type eq 'text/plain') {
+                    $body_ent = $part;
+                    last;
+                } elsif ($type eq 'text/html') {
+                    $body_ent = $part;
+                }
+            }
+            if ($body_ent) {
+                $res .= entity_to_text($body_ent);
+            } else {
+                $res .= "[ multitype/alternative message had no acceptable representation ]\n";
+            }
+        } elsif ($subtype =~ /^(related|signed)$/) {
+            # Use first part
+            $res .= entity_to_text($ent->parts(0));
+        } else {
+            # Treat as multipart/mixed.
+            my $n = 0;
+            foreach my $part ($ent->parts()) {
+                $res .= "\n - - - - - - - -\n" if ($n++);
+                $res .= entity_to_text($part);
+            }
+        }
+    } elsif ($type =~ m#^message/rfc2?822$#) {
+        # The parser will have extracted this as a single part under the
+        # message, even though it's not multipart as such.
+        my $msg = $ent->parts(0);
+        foreach my $hdr (qw(From To Cc Subject Date Message-ID)) {
+            my $text = $msg->head()->get($hdr);
+            next if (!$text);
+            $res .= "$hdr: " . hdr_convert_utf8($text) . "\n";
+        }
+        $res .= "\n";
+        $res .= entity_to_text($msg);
+    } elsif ($type =~ m#^(text/plain|text/html)$#) {
+        # Turn this into straight text.
+        my $charset = $ent->head()->mime_attr('content-type.charset');
+        if (!$charset) {
+            $charset = $type eq 'text/html' ? 'iso-8859-1' : 'us-ascii';
+        }
+        $charset = 'cp1252' if (!exists($encodings{$charset}));
+        my $bodytext = Encode::decode($charset, $ent->bodyhandle()->as_string(), Encode::FB_DEFAULT);
+        if ($type eq 'text/html') {
+            # Also need to invoke lynx to do the conversion.
+            my $html = IO::File->new_tmpfile();
+            my $text = IO::File->new_tmpfile();
+            binmode($html, ':utf8');
+            $html->print($bodytext);
+            $html->sysseek(0, SEEK_SET);
+            binmode($text, ':bytes');
+            my $pid;
+            if (!defined($pid = fork())) {
+                die "fork: $!";
+            } elsif (0 == $pid) {
+                POSIX::close(0);
+                POSIX::close(1);
+                POSIX::dup($html->fileno());
+                POSIX::lseek(0, 0, SEEK_SET);
+                POSIX::dup($text->fileno());
+                $ENV{LYNX_CFG} = "$FindBin::Bin/../conf/lynx.cfg";
+                $ENV{COLUMNS} = 80;
+                { exec(qw(lynx -dump -force_html -stdin -nolist)); }
+                die "exec: lynx: $!";
+            } else {
+                $html->close();
+                waitpid($pid, 0);
+                die "wait result $?" if ($?);
+                $text->seek(0, SEEK_SET);
+                $res = Encode::decode_utf8(join('', $text->getlines()));
+                # perhaps strip the indentation lynx puts on each line?
+                $text->close();
+            }
+        } else {
+            # Perhaps ought to wrap it here?
+            $res = $bodytext;
+        }
+    } else {
+        $res = "[ unable to represent part of type '$type' as text ]\n";
+    }
+
+    return $res;
+}
+
+# import_message LINES
+# Import a single message into the database.
+sub import_message ($) {
+    my $lines = shift;
+    our $parser;
+    $parser ||= new MIME::Parser();
+    $parser->output_to_core(1);     # no temporary files!
+
+    my $ent = $parser->parse_data($lines)
+        or throw Oops("mail could not be parsed at all");
+
+    # Message-ID: shouldn't contain any non-ASCII characters, but why take
+    # chances?
+    my $message_id = hdr_convert_utf8($ent->head()->get("Message-ID"));
+
+    if (!$message_id) {
+        # Assign our own. Perhaps this should hash the content and envelope or
+        # something?
+        $message_id = sprintf('<%08x.%08x.%08x@x.invalid>', int(rand(0xffffffff)), int(rand(0xffffffff)), int(rand(0xffffffff)));
+    }
+    trim($message_id);
+
+    my %extracted_hdrs = (message_id => $message_id);
+    
+    foreach (qw(subject from to cc date)) {
+        my $x = $ent->head()->get($_);
+        if ($x) {
+            $x = hdr_convert_utf8($x);
+            trim($x);
+        }
+        $extracted_hdrs{$_} = $x;
+    }
+
+    # Try to figure out the arrival time of the message. Do this from the top
+    # Received: line, if any; failing that, from the Date: header; or finally
+    # using the current time.
+    #
+    # Received: from bitter.ukcod.org.uk ([82.111.230.101])
+    #         by sphinx.mythic-beasts.com with esmtp (Exim 4.51)
+    #         id 1Fy50O-0003zH-HM
+    #         for chris@ex-parrot.com; Wed, 05 Jul 2006 11:53:16 +0100
+
+    our $date_parser;
+    $date_parser ||= new DateTime::Format::Strptime(
+                                # NB %z is nonstandard
+                                pattern => '%a, %d %b %Y %H:%M:%S %z',
+                                locale => 'C'
+                        );
+
+    my $whenreceived;
+    foreach ($ent->head()->get("Received")) {
+        my $date = $_;
+        $date =~ s/^.*; //;
+        $whenreceived = $date_parser->parse_datetime($date);
+        last if (defined($whenreceived));
+    }
+
+    if (!defined($whenreceived)) {
+        my $date = $ent->head()->get("Date");
+        trim($date);
+        $whenreceived = $date_parser->parse_datetime($date) if ($date);
+    }
+
+    $whenreceived = DateTime->now() if (!defined($whenreceived));
+
+    print "*** $whenreceived\n";
+    foreach (sort keys %extracted_hdrs) {
+        next unless ($extracted_hdrs{$_});
+        print "$_ $extracted_hdrs{$_}\n";
+    }
+
+    my $bodytext = entity_to_text($ent);
+    print "$bodytext";
+}
+
+
+binmode(STDIN, ':bytes');
+binmode(STDOUT, ':utf8');
+
+my $n = 0;
+my $folder = 0;
+my $prev_line_blank = 0;
+my @lines = ( );
+
+while (defined(my $line = <STDIN>)) {
+    ++$n;
+#    chomp();
+
+    # Try to autodetect a BSD-style mail folder.
+    $folder = 1 if ($n == 1 && $line =~ /^From /);
+
+    # If we are parsing a folder and this is the end of a message, submit it.
+    if ($folder && $prev_line_blank && $line =~ /^From /) {
+        import_message(\@lines);
+        @lines = ( );
+    }
+
+    $prev_line_blank = ($line =~ /^$/m);
+    push(@lines, $line);
+}
+
+import_message(\@lines);
