@@ -5,7 +5,7 @@
 -- Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
 -- Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.1 2006-07-08 18:48:39 chris Exp $
+-- $Id: schema.sql,v 1.2 2006-07-09 14:35:17 chris Exp $
 --
 
 create sequence global_seq;
@@ -26,6 +26,8 @@ create table message (
     hdr_to text,
     hdr_cc text,
     hdr_date text,
+    -- parent message-ID, if any
+    parent text,
     -- extracted text form, if any
     bodytext text
     -- best estimate of the time we got the message
