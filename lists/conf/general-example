@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
- * $Id: general-example,v 1.3 2006-06-28 13:22:06 chris Exp $
+ * $Id: general-example,v 1.4 2006-07-09 15:58:43 chris Exp $
  * 
  */
 
@@ -17,5 +17,12 @@ define('OPTION_MAILMAN_SITE_PASSWORD', 'secret');
 
 /* And the corresponding login URL. */
 define('OPTION_MAILMAN_LOGIN_URL', 'http://lists.mysociety.org/admin/lists/mailman/admin/mailman');
+
+/* Archive database. */
+define('OPTION_LIST_DB_HOST', 'localhost');
+define('OPTION_LIST_DB_PORT', '5432');
+define('OPTION_LIST_DB_NAME', 'list');
+define('OPTION_LIST_DB_USER', 'list');
+define('OPTION_LIST_DB_PASS', '');
 
 ?>
