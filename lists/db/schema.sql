@@ -5,7 +5,7 @@
 -- Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
 -- Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.3 2006-07-09 14:46:43 chris Exp $
+-- $Id: schema.sql,v 1.4 2006-07-09 15:20:03 chris Exp $
 --
 
 create sequence global_seq;
@@ -44,13 +44,3 @@ create table list_message (
 create index list_message_list_id_idx on list_message(list_id);
 create index list_message_message_id_idx on list_message(message_id);
 
-create table threadlink (
-    parent_id integer not null references message(id),
-    child_id integer not null references message(id),
-    check(parent_id <> child_id)
-);
--- XXX message typically can't have >1 parent, though actually there's nothing
--- in the standard to enforce that
-
-create index threadlink_parent_id_idx on threadlink(parent_id);
-create index threadlink_child_id_idx on threadlink(child_id);
