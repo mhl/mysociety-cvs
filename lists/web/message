@@ -1,0 +1,70 @@
+#!/usr/bin/perl -w -I../perllib
+#
+# message:
+# Display a single message.
+#
+# Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
+# Email: chris@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: message,v 1.1 2006-07-09 17:18:30 chris Exp $';
+
+use strict;
+
+use CGI::Fast;
+use HTML::Entities;
+
+use mySociety::Config;
+BEGIN {
+    mySociety::Config::set_file("../config/general");
+}
+
+use List;
+
+sub error ($$$) {
+    my ($q, $status, $text) = @_;
+    print $q->header(-status => $status, -type => 'text/plain'), "$text\n";
+}
+
+while (my $q = new CGI::Fast()) {
+    # Script callable with path_info = LISTNAME/MESSAGE-ID (so that
+    # authentication can be at the list level).
+    my $path_info = $q->path_info();
+    if (defined($path_info) && $path_info =~ m#([^/]+)/([1-9]\d*)#) {
+        my $listname = $1;
+        my $m_id = $2;
+        
+        my $l_id = dbh()->selectrow_array('select id from list where name = ?', {}, $1);
+        if (!defined($l_id)) {
+            error($q, 404, "No such list '$1'");
+            next;
+        }
+
+        # Check that the message exists in the list.
+        my $m = dbh()->selectrow_array('select message_id from list_message where list_id = ? and message_id = ?', {}, $l_id, $m_id);
+        if (!defined($m)) {
+            error($q, 404, "No such message in list '$1'"); # XXX leaks information?
+            next;
+        }
+
+        my $msg = dbh()->selectrow_hashref('select * from message where id = ?', $m_id);
+
+        print $q->header(-type => "text/html; charset=utf-8"),
+                $q->start_html("$list_name: $msg->{hdr_subject}"),
+                $q->start_table();
+
+        foreach (qw(Subject From To Cc Message-ID)) {
+            my $t = lc($_);
+            $t =~ s/-/_/g;
+            next unless (defined($msg->{"hdr_$t"}));
+            print $q->Tr($q->th("$_:"), $q->td(encode_entities($msg->{"hdr_$t"}, "<>&")));
+        }
+
+        print $q->end_table(),
+            $q->pre(encode_entities($msg->{bodytext}));
+
+        print $q->end_html();
+    } else {
+        error($q, 400, "Bad URL");
+    }
+}
