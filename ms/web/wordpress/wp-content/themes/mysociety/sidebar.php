@@ -1,4 +1,6 @@
 	<div id="sidebar">
+            <?php include (TEMPLATEPATH . '/searchform.php'); ?>
+
 			
 			<?php /* If this is a category archive */ if (is_category() && $cat!=1) { ?>
 	<!--		<p>You are currently browsing the archives for the <?php single_cat_title(''); ?> category.</p>-->
@@ -65,8 +67,6 @@
 <div class="item_foot">
 </div>
             <?php } ?>
-
-            <?php include (TEMPLATEPATH . '/searchform.php'); ?>
 
 
 <!--			<h2><?php _e('Categories'); ?></h2>

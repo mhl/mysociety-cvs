@@ -449,7 +449,7 @@ class WP_Query {
 
 		if ((empty($q['cat'])) || ($q['cat'] == '0') || 
 				// Bypass cat checks if fetching specific posts
-				( $this->is_single || $this->is_page )) {
+				( $this->is_single || $this->is_page || $this->is_search )) {
 			$whichcat='';
 		} else {
 			$q['cat'] = ''.urldecode($q['cat']).'';
