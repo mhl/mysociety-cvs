@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+<head> 
+  <title>mySociety &amp; Open Source</title> 
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="../slidy.css"> 
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="style.css"> 
+  <script src="../slidy.js" type="text/javascript"></script> 
+</head>
+<body>
+<div class="background"> 
+    <img alt="mySociety" src="http://www.mysociety.org/mslogo.gif" align="right">
+</div>
+
+<div class="slide cover"> 
+ <h1>mySociety &amp; Open Source</h1> 
+ <p>Matthew Somerville
+ <br>LUGRadio Live
+ <br>22<sup>nd</sup> July 2006</p> 
+</div> 
+
+<div class="slide">
+<h1>mySociety</h1>
+<ul>
+<li>Founded in September 2003, with two missions:
+<ul>
+<li>To be a charitable project which builds websites that give people simple, tangible benefits in the civic and community aspects of their lives. 
+<li>To teach the public and voluntary sectors, through demonstration, how to most efficiently use the internet to improve lives.
+</ul>
+</li>
+<li>A mixture of paid people and volunteers
+<li>Initial funding from the <acronym title="Office of the Deputy Prime Minister">ODPM</acronym> (<acronym title="Rest In Peace">RIP</acronym>)
+<li>As much code as possible released as Open Source; all servers and programming are Open Source
+</ul>
+</div>
+
+<div class="slide">
+<h1>WriteToThem</h1>
+<ul>
+<li>Successor to FaxYourMP.com
+<li>(Nearly) all levels of elected representatives from councillors to MEPs &ndash; simply enter your postcode and send your message
+<li>Over 36,000 messages sent so far this year, compared with a total of 42,515 last year
+<li>Recently added the House of Lords, to contact your unelected representatives too
+<li>Perl and PHP, with a dash of C; our user support is RT combined with RTFM
+</ul>
+</div>
+
+<div class="slide">
+<h1>HearFromYourMP</h1>
+<img align="right" src="shoupsm.png" alt="">
+<ul>
+<li>The flip-side to WriteToThem
+<li>People sign up on the site (again, by postcode), and MPs can choose to post messages for them
+<li>Responses can be private, via WriteToThem, or public underneath the message
+<li>Drip, drip, drip
+</ul>
+</div>
+
+<div class="slide">
+<h1>TheyWorkForYou</h1>
+<img align="right" src="hansard.jpeg" alt="">
+<ul>
+<li>Set up by volunteers and launched at NotCon in June 2004; recently brought under the mySociety wing
+<li>Daily updated (when Parliament is in session) from parliament.uk by a Python scraper and parser
+<li>Changes at their end can prove&hellip; frustrating, but some things make it all worthwhile
+<li>Runs on its own FreeBSD server, with Xapian as its search engine, a PHP front-end and various bits of Perl and Python behind the scenes.
+</ul>
+</div>
+
+<div class="slide">
+<h1>TheyWorkForYou (2)</h1>
+<ul>
+<li>Currently working on an API, so everyone can access our data
+<li>My favourite thing so far, the <em>Hansard prettifier</em>. Should you find yourself on the official site, a simple click on this bookmarklet and you&rsquo;ll be taken to the equivalent page on TheyWorkForYou, if it can be done:
+<br><img alt="Official Hansard on parliament.uk" hspace="5" align="middle" src="hansard_before.png"> &rarr; <img align="middle" src="hansard_after.png" hspace="5" alt="The same page on TheyWorkForYou">
+<li>We were blamed by Jack Straw this Thursday for an increase in Written Questions by MPs &ndash; more on that later
+</ul>
+</div>
+
+<div class="slide">
+<h1>PledgeBank</h1>
+<ul>
+<li>A site to overcome the collective action dilemma
+<li>Or in English, <em>I&rsquo;ll do something, but only if N other people will as well</em>
+<li>PDF posters with <a href="http://www.reportlab.org/">ReportLab</a>&rsquo;s open source PDF Toolkit</li>
+<li>Translations with GNU&rsquo;s <kbd>gettext</kbd>
+<li>Date parsing with my <kbd>datetime_parse_local_date()</kbd> &ndash; we&rsquo;ve accepted things including: 
+<ul>
+<li>22nd June 2006
+<li>september 30th
+<li>7/1/2006 (twice, once by an American, once by a Brit)
+<li>31 августа 2006
+</ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Maps &ndash; very un-OS</h1>
+<img align="right" src="rail-differences-cambridge-500px.png" alt="Map of the UK, showing difference in journey times by car or train from Edinburgh">
+<ul>
+<li>Open sourced code, mostly closed source data
+<li>Ordnance Survey
+<ul>
+<li>BoundaryLine &ndash; constituency boundaries
+<li>CodePoint &ndash; postcodes
+<li>Actual maps themselves
+</ul>
+</li>
+<li><strong>Gaze</strong>, our public web gazeteer service, with a simple REST interface
+</li>
+</ul>
+</div>
+
+<div class="slide map">
+<h1>Maps &ndash; Helmert Transform</h1>
+<p>Maps are complicated things. Take railway station locations, for example.</p>
+<h2>Cheltenham</h2>
+<p class="map"><img src="rail_chelt.png" alt="Map of Cheltenham, with an area to the left and up a bit from the station marked with a red circle"></p>
+</div>
+<div class="slide map">
+<h1>Maps &ndash; Helmert Transform</h1>
+<h2>Manchester</h2>
+<p class="map"><img src="rail_man.png" alt="Map of Manchester, with an area to the left and up a bit from the station marked with a red circle"></p>
+</div>
+<div class="slide map">
+<h1>Maps &ndash; Helmert Transform</h1>
+<h2>Or Wolverhampton&hellip;</h2>
+<p class="map"><img src="rail_wolv.png" alt="Map of Wolverhampton, with an area to the left and up a bit from the station marked with a red circle"></p>
+</div>
+<div class="slide">
+<h1>Maps &ndash; Helmert Transform</h1>
+<ul>
+<li>Multimap&rsquo;s red-circle programmer understood co-ordinate transforms
+<li>Multimap&rsquo;s data entry people did not
+<li>Railway stations&rsquo; co-ordinates miss out the reverse Helmert Transformation
+<li>Our <kbd>Geo::HelmertTransform</kbd> should be of use to everyone.
+</ul>
+</div>
+
+<div class="slide">
+<h1>The Future</h1>
+<ul>
+<li>Usability improvements, using the world&rsquo;s most honest web bug
+<li>Number 10 petitions
+<li>Called for proposals
+<li>TheyWorkForYou public event, November 7th, London &ndash; email to book a place
+</ul>
+</div>
+
+<div class="slide">
+<h1>The End</h1>
+<img align="left" src="nooka.jpeg" style="margin-right: 1em" alt="" title="Little owl">
+<p>It&rsquo;s all open source, so help, bug reports and patches are very welcome. :-)</p>
+
+<p id="footer">
+Matthew Somerville
+<br><a href="mailto:matthew&#64;mysociety.org">matthew&#64;mysociety.org</a>
+<br><br>
+<a href="http://www.mysociety.org/volunteertasks">http://www.mysociety.org/volunteertasks</a>
+<br>(our Open Source-d simple front end to cvstrac)
+</p>
+</div>
+
+</body>
+</html>
+
