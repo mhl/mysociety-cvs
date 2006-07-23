@@ -2,6 +2,11 @@
 
 function get_bloginfo_rss($show = '') {
 	$info = strip_tags(get_bloginfo($show));
+    if ($show == 'url') {
+        # add category to main link
+        if (array_key_exists('cat', $_GET))
+            $info .= "?cat=".$_GET['cat'];
+    }
 	return convert_chars($info);
 }
 
