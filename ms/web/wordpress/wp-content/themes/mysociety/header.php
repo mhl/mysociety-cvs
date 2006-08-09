@@ -27,7 +27,7 @@
 <body>
 <?php
 if ($_SERVER['HTTP_HOST'] != 'www.mysociety.org') {
-	print '<p align="center">This is a test site, the real site is <a href="http://www.mysociety.org">over here</a>.<br>mySociety developers test new things here, you can <a href="http://www.mysociety.org/volunteertasks">join us</a> if you like.';
+	print '<p align="center">This is a test site, the real site is <a href="http://www.mysociety.org">over here</a>.<br />mySociety developers test new things here, you can <a href="http://www.mysociety.org/volunteertasks">join us</a> if you like.</p>';
 }
 ?>
 
