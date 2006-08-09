@@ -44,13 +44,11 @@ if ($email == "your e-mail address") {
 if (!$ok) {
 
 ?>
-<p>
 <form method="post" action="/subscribe.php">
 Subscribe for occasional <strong>mySociety news updates</strong> 
 <input type="text" name="subv" value="your e-mail address" onfocus="this.value=''" />
 <input type="submit" name="sub" value="go!" />
 </form>
-</p>
 
 <?
 } else {
