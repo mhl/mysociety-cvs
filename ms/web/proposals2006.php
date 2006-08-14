@@ -125,8 +125,8 @@ if ($q_page == 'submit') {
                     <INPUT TYPE="hidden" NAME="body_competition" VALUE="<?=htmlspecialchars($q_body_competition)?>">
                     <INPUT TYPE="hidden" NAME="body_logistics" VALUE="<?=htmlspecialchars($q_body_logistics)?>">
                     <INPUT TYPE="hidden" NAME="proposal_submit" VALUE="1">
-                    <INPUT TYPE="submit" NAME="submitreedit" VALUE="&lt;&lt; Make some corrections">
-                    <P><INPUT TYPE="submit" NAME="submitfinal" VALUE="Final step - Submit your proposal &gt;&gt;">
+                    <INPUT TYPE="submit" NAME="submitreedit" VALUE="Make some corrections">
+                    <P><INPUT TYPE="submit" NAME="submitfinal" VALUE="Final step - Submit your proposal">
                 </FORM>
             </div>
             <div class="item_foot">
