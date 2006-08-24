@@ -3,10 +3,15 @@
 global $menu_proposals2006;
 foreach ($posts as $catcheck) 
 { 
-    if ($catcheck->post_category == 3) { 
-        $cat = 3; 
-        $menu_proposals2006 = true;
-    } 
+    $catcheck_cats = wp_get_post_cats('', $catcheck->ID);
+    if( is_array( $catcheck_cats ) ) {
+        foreach ( $catcheck_cats as $cat_id ) {
+            if ($cat_id == 3) { 
+                $cat = 3; 
+                $menu_proposals2006 = true;
+            } 
+        }
+    }
 }
 get_header(); ?>
 
