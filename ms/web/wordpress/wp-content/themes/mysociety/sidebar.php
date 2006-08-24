@@ -62,7 +62,7 @@
                 <div class="item_head">RSS Feed</div>
                 <div class="item">
 
-	<a href="<?php bloginfo('rss2_url'); ?>&cat=<?=$cat?>">New proposals <img border="0" src="/rss.gif" alt="RSS"valign="bottom"></a> 
+	<a href="/category/proposals-2006/feed/">New proposals <img border="0" src="/rss.gif" alt="RSS"valign="bottom"></a> 
 </div>
 <div class="item_foot">
 </div>

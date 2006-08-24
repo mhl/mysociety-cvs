@@ -337,7 +337,7 @@ function get_archives($type='', $limit='', $format='html', $before = '', $after 
 			$afterafter = $after;
 			foreach ( $arcresults as $arcresult ) {
 				$url	= get_month_link($arcresult->year,	$arcresult->month);
-                $url .= "&cat=$cat";
+                $url .= "?cat=$cat";
 				if ( $show_post_count ) {
 					$text = sprintf('%s %d', $month[zeroise($arcresult->month,2)], $arcresult->year);
 					$after = '&nbsp;('.$arcresult->posts.')' . $afterafter;
