@@ -26,6 +26,7 @@ include "wordpress/wp-content/themes/mysociety/header.php";
   of service which we aim to foster. But it is exactly the rarity of such
   really useful, effective, cheap civic sites that led to mySociety's
   creation</p>
+
 <p><b>Q. What have you been doing for the last three years?<br/>
   A.</b> mySociety was founded in September 2003.  We spent the first year
   raising money, getting a substantial grant from a Government department
@@ -55,6 +56,13 @@ include "wordpress/wp-content/themes/mysociety/header.php";
         registration for you, you know who you are <a href="http://www.unfortu.net/~james/">James</a>.
 </p>
 
+    <p><b> Q. Can I help?<br/>A.</b> Yes! We are looking for
+    help of all kinds. Anything from marketing, to fund
+    raising, to graphic design, to programming, human computer interface
+    work, anything. If you're interested, please <a
+    href="mailto:tom@mysociety.org?subject=Help">email</a> us or check
+    out our <a href="/volunteertasks">volunteer tasks</a> page.  </p>
+
         <p><b>Q. Are you a registered charity?<br/>A.</b> mySociety is the
 project of a registered charity. The charity is called UK Citizens Online Democracy and is <a href="http://www.charity-commission.gov.uk/registeredcharities/showcharity.asp?remchar=&chyno=1076346">charity number 1076346</a>. UKCOD doesn't do much else these days, so don't worry if you get confused between the two. We do as well!
 
@@ -79,7 +87,7 @@ project of a registered charity. The charity is called UK Citizens Online Democr
 		
 		<p><b>Q. Why don't you leave projects like this up to the Open source community?<br/>A.</b> The Open source and free software communities have a formidable track record of creating powerful and useful tools without which the internet would probably not exist. Most, if not all of the projects developed here will have their Source code released under open source licences, and we will be hoping to build voluntary development communities around all our projects. However, we feel that the track-record of the voluntary development community when it comes to developing socially focussed tools with off line impacts is perhaps less than it might be. There are all sorts of reasons for this, but the upshot is that we feel that a supportive structure and perhaps some paid key developers are crucial to innovation in a sector which is a terra incognita for many in the open source world. After all, even Linus Torvalds had the security of his academic studies to pay the bills...</p>
 
-        <p><b>Q. Are users be expected to pay for services?<br/>A.</b> No.
+        <p><b>Q. Do end users pay for services?<br/>A.</b> No.
         There would have to be a very unusual and compelling basis for charging
         to become part of a project's structure. Sometimes partners who want to
         syndicate our sites will be asked to contribute.</p>
@@ -87,13 +95,13 @@ project of a registered charity. The charity is called UK Citizens Online Democr
 		<a name="why" id="why"></a>
 		
 		<a name="pay" id="pay"></a>
-		<p><b>Q. What is this about people getting paid?<br/>
-        A.</b> We believe that in order to deliver polished, highly usable
-        social tools, developers need at least a short period of financially
-        stable full time employment. We pay rates which are living wages, but
-        which well below the market rate, especially for people of the talent
-        we employ. The gratitude of the director (Tom Steinberg) and all the
-        project's Trustees goes to the developers for working on these terms.
+		<p><b>Q. Do the full time people get paid?<br/>  A.</b> Yes. We 
+        believe that in order to deliver polished, highly usable social tools,
+        developers need at least a short period of financially stable full time
+        employment. We pay rates which are living wages, but which well below
+        the market rate, especially for people of the talent we employ. The
+        gratitude of the director (Tom Steinberg) and all the project's
+        Trustees goes to the developers for working on these terms.
 
 				<p><b>Q. I'm not in Britain - does any of this matter to
         me?<br/>A.</b> Yes! Whilst our home country is the UK, we do not see
@@ -116,17 +124,10 @@ project of a registered charity. The charity is called UK Citizens Online Democr
         near as London, Cambridge and Cheltenham. But really we work online, come and say hello
         in our <a href="http://www.irc.mysociety.org">public Internet chat room</a>.</p>
 
-     <p><b>Q. How can I contact you?<br />A.</b> See our <a href="/contact.php">contact page</a>.
-
 		<p><b>Q. How can I be kept up to date with the projects?<br/>A.</b> Please join our <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/news">mailing list</a>. All normal no-moronic-spamming policies apply.
         If you use RSS, you can subscribe to our <a href="/">news</a> or <a href="/category/developers">developers</a> blogs.</p>
 
-        <p><b> Q. Can I help?<br/>A.</b> Yes! We are looking for
-        help of all kinds. Anything from marketing, to fund
-        raising, to graphic design, to programming, human computer interface
-        work, anything. If you're interested, please <a
-        href="mailto:tom@mysociety.org?subject=Help">email</a> us or check
-        out our <a href="/volunteertasks">volunteer tasks</a> page.  </p>
+        <p><b>Q. How can I contact you?<br />A.</b> See our <a href="/contact.php">contact page</a>.
 
      </div>
 
