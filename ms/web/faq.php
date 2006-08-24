@@ -95,13 +95,6 @@ project of a registered charity. The charity is called UK Citizens Online Democr
         we employ. The gratitude of the director (Tom Steinberg) and all the
         project's Trustees goes to the developers for working on these terms.
 
-        <p><b> Q. Can I help?<br/>A.</b> Yes! We are looking for
-        help of all kinds at the moment. Anything from marketing, to fund
-        raising, to graphic design, to programming, human computer interface
-        work, anything. If you're interested, please <a
-        href="mailto:tom@mysociety.org?subject=Help">email</a> us or check
-        out our <a href="/volunteertasks">volunteer tasks</a> page.  </p>
-
 				<p><b>Q. I'm not in Britain - does any of this matter to
         me?<br/>A.</b> Yes! Whilst our home country is the UK, we do not see
         ourselves as limited to it in any way.  We gladly speak to and work
@@ -117,11 +110,25 @@ project of a registered charity. The charity is called UK Citizens Online Democr
         <p><b>Q. Who built this website, www.mysociety.org?<br/>A.</b> 
         <a href="http://www.tomski.com/">Tomski</a> and <a
         href="http://www.j-dom.org">Jason Kitcat</a> hacked together the first
-        version in a real hurry. We've been rebuilding it ever since. 
+        version in a real hurry a few years ago. We've been rebuilding it ever since. 
 
-		<p><b>Q. How can I be kept up to date with the project?<br/>A.</b> Please join our <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/news">mailing list</a>. All normal no-moronic-spamming policies apply.</p>
+           <p><b>Q. Where do you work?<br />A.</b> Physically, we all work from home, scattered as
+        near as London, Cambridge and Cheltenham. But really we work online, come and say hello
+        in our <a href="http://www.irc.mysociety.org">public Internet chat room</a>.</p>
 
-        </div>
+     <p><b>Q. How can I contact you?<br />A.</b> See our <a href="/contact.php">contact page</a>.
+
+		<p><b>Q. How can I be kept up to date with the projects?<br/>A.</b> Please join our <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/news">mailing list</a>. All normal no-moronic-spamming policies apply.
+        If you use RSS, you can subscribe to our <a href="/">news</a> or <a href="/category/developers">developers</a> blogs.</p>
+
+        <p><b> Q. Can I help?<br/>A.</b> Yes! We are looking for
+        help of all kinds. Anything from marketing, to fund
+        raising, to graphic design, to programming, human computer interface
+        work, anything. If you're interested, please <a
+        href="mailto:tom@mysociety.org?subject=Help">email</a> us or check
+        out our <a href="/volunteertasks">volunteer tasks</a> page.  </p>
+
+     </div>
 
 
 <div class="item_foot">
