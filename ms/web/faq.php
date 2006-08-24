@@ -9,12 +9,18 @@ include "wordpress/wp-content/themes/mysociety/header.php";
  <div class="item">
   <a name="moo" id="moo"></a>
   <p><b>Q. What is mySociety.org?<br/>
-  A.</b> mySociety has two missions. The first is to be a charitable project which builds websites that give people simple, tangible benefits in the civic and community aspects of their lives. The second is to teach the public and voluntary sectors, through demonstration, how to most efficiently use the internet to improve lives.</p>
+  A.</b> mySociety has two missions. The first is to be a charitable project
+  which builds websites that give people simple, tangible benefits in the civic
+  and community aspects of their lives. The second is to teach the public and
+  voluntary sectors, through demonstration, how to most efficiently use the
+  internet to improve lives.</p>
   <p><b>Q. How do I get in contact with you in person?<br/>
   A.</b> Email <a href="mailto:tom@mysociety.org">Tom Steinberg</a> or call 07811 082158.</p>
   <a name="do" id="do"></a>
   <p><b>Q. What exactly are you doing?<br/>
-  A.</b> We are building five sites, our <a href="projects.php">launch projects</a>. </p>
+  A.</b> We are supporting and improving our <a href="projects.php">launch projects</a>. 
+  And lots of other things as <a href="http://www.mysociety.org/2006/07/21/summer-daze/">described
+  in this post</a> on our developers' blog.</p>
   <p><b>Q. Can you give us any examples of the types of project you're on about?<br/>
   A.</b> <a href="http://www.theyworkforyou.com">TheyWorkForYou.com</a>, <a
   href="http://writetothem.com">WriteToThem</a> (which used to be called FaxYourMP) and <a

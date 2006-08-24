@@ -60,9 +60,17 @@ Parliament, as well as useful pages providing clear, non-biased information on
 a range of different measures of activities by MPs.  Originally built by
 volunteers while mySociety was getting started, it is now part of mySociety.
 </div>
+<div class="item_foot">
+</div>
 
+<div class="item_head">
+What now?
+</div>
 <div class="item">
-<strong>We appreciate feedback on all our live sites, so please tell us what we can improve.</strong>
+<ul>
+<li>We appreciate feedback on all our live sites, so please <a href="mailto:team@mysociety.org">tell us</a> what we can improve.</li>
+<li>Non-techy, graphic designer, programmer? <a href="/volunteertasks">Help build, publicise and improve</a> our sites.</li>
+</ul>
 </div>
 <div class="item_foot">
 </div>
