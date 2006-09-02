@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+<head> 
+  <title>TheyWorkForYou API</title> 
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="slidy.css"> 
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="style.css"> 
+  <script src="slidy.js" type="text/javascript"></script> 
+</head>
+<body>
+<div class="background"> 
+    <img alt="mySociety" src="mslogo.gif" align="right">
+</div>
+
+<div class="slide cover"> 
+<h1>TheyWorkForYou API</h1> 
+<h2>Playing games with MPs</h2>
+<p>Matthew Somerville
+<br>BarCamp London
+<br>2&ndash;3 September 2006</p> 
+</div> 
+
+<div class="slide">
+<h1>A History</h1>
+<img align="right" src="hansard.jpeg" alt="">
+<ul>
+<li>Murmured beginnings around August 2003
+<li>Set up almost entirely by volunteers
+<li>Launched at NotCon in June 2004
+<li>Winner of the Contribution to Civic Society Award at the New Statesman New Media Awards 2005
+<li>Now part of mySociety
+</ul>
+</div>
+
+<div class="slide">
+<h1>Current Scope</h1>
+<img src="theyworkforyou.png" align="right">
+<ul>
+<li><em>House of Commons, since May 2001:</em>
+Debates,
+Westminster Hall debates,
+Written answers,
+Written ministerial statements,
+Register of Members&rsquo; Interests,
+Select committee memberships,
+Ministerialships
+</li>
+<li><em>House of Lords, since 1999:</em> Debates, Written answers,
+Written ministerial statements
+<li>Both: Voting history, external links, various statistics, and more
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Staying on top</h1>
+<ul>
+<li>Daily updated (when Parliament is in session) from parliament.uk by a Python scraper and parser
+<li>Changes at their end can prove&hellip; frustrating, but some things make it all worthwhile
+<li>In the House of Lords, Lord Gould said we (well, mySociety) were the &ldquo;probably the biggest single catalyst for political change in this country&rdquo;
+<li>In the House of Commons, Jack Straw blamed us this July for an increase in Written Questions by MPs, saying it &ldquo;seems to measure Members' work in quantitative rather than qualitative terms&rdquo;
+</ul>
+</div>
+
+<div class="slide">
+<h1>The API</h1>
+<ul>
+<li>Awarded funding by the Department for Constitutional Affairs
+<li>Build an API, and hold developer events
+<li>Provide access to the data we have, for unthought-of ideas
+</ul>
+</div>
+
+<div class="slide">
+<h1>Functions</h1>
+<dl>
+<dt>getDebates, getWrans, getWMS</dt>
+<dd>
+Meaty functions to return actual sections of Hansard. Results by date, year, search, person.
+</dd>
+
+<dt>getMPs, getMP, getMPinfo, getLords, getLord</dt>
+<dd>Fetch lists of MPs or Lords, or information about particular ones.
+Individual MPs can be looked up by id, constituency, or postcode
+</dd>
+
+<dt>getConstituency</dt>
+<dd>Given a postcode, this returns the constituency that postcode is in. 
+</dd>
+
+<dt>getConstituencies</dt>
+<dd>Returns list of constituencies, filtered by date, search term, or proximity to a particular location
+</dd>
+
+<dt>getCommittee</dt>
+<dd>Fetches information on select committees, and their current members
+</dd>
+
+<dt>getGeometry, getBoundary</dt>
+<dd>
+These functions return geographical information for constituencies, such as
+bounding box, centre, area in square metres, and coordinates of its boundary.
+</dd>
+
+<dt>getComments</dt>
+<dd>
+Search/filter comments people have left.
+</dd>
+</div>
+
+<div class="slide cover">
+<h1>Examples</h1>
+</div>
+
+<div class="slide">
+<h1>convertURL</h1>
+<ul>
+<li>Given a parliament.uk URL, returns an equivalent TheyWorkForYou URL
+<li>This leads to the obvious bookmarklet, the <em>Hansard prettifier</em>.
+Should you find yourself on the official site, a simple click on this
+and you&rsquo;ll be taken to the equivalent page on TheyWorkForYou,
+if it can be done:
+<br><img alt="Official Hansard on parliament.uk" hspace="5" align="middle" src="hansard_before.png"> &rarr; <img align="middle" src="hansard_after.png" hspace="5" alt="The same page on TheyWorkForYou">
+<li>Niche perhaps, but I find it very useful!
+</ul>
+</div>
+
+<div class="slide">
+<h1>Postcode lookup</h1>
+<p><a href="http://www.dracos.co.uk/work/theyworkforyou/api/postcode/">http://www.dracos.co.uk/work/theyworkforyou/api/postcode/</a></p>
+<p align="center"><img src="api_postcode.png" alt="Simple postcode lookup"></p>
+</div>
+
+<div class="slide">
+<h1>Maps</h1>
+<p><a href="http://www.dracos.co.uk/work/theyworkforyou/api/map/">http://www.dracos.co.uk/work/theyworkforyou/api/map/</a></p>
+<p align="center"><img src="api_map.png" alt="Map showing every constituency">
+</div>
+
+<div class="slide">
+<h1>Telnet MP Fight</h1>
+<ul>
+<li><a href="telnet://seagrass.goatchurch.org.uk:646/">telnet://seagrass.goatchurch.org.uk:646</a>
+<li><a href="http://caesious.beasts.org/~chris/scripts/mpfight">Web version</a>
+<li>Get to Sedgefield and vanquish Tony Blair
+</ul>
+<p align="center"><img src="api_telnet.png" alt="Telnet MP Fight game">
+</div>
+
+<div class="slide">
+<h1>MP Fab Farts</h1>
+<ul>
+<li><a href="http://www.dracos.co.uk/work/theyworkforyou/api/fabfarts/">http://www.dracos.co.uk/work/theyworkforyou/api/fabfarts/</a>
+<li>Like a certain popular game with a similar name
+<li>One and two player versions
+</ul>
+<p align="center"><img src="api_fabfarts.png" alt="MP Fab Farts">
+</div>
+
+<div class="slide">
+<h1>Nearby constituencies</h1>
+<ul>
+<li>TheyWorkForYou is already using some of the new features internally
+<li>Each MP&rsquo;s page now shows a list of nearby constituencies:
+</ul>
+<p align="center"><img src="api_nearby.png" alt="Nearby constituencies">
+</div>
+
+<div class="slide">
+<h1>Future</h1>
+<ul>
+<li>Hopefully more (useful?) things using the API
+<li>Developer events, in Liverpool (29th September), London and one other to be decided
+<li>TheyWorkForYou public event, November 7th, London &ndash; email to book a place
+<li>The last 200 years
+<li>Scotland, Wales, who knows?
+</ul>
+</div>
+
+<div class="slide">
+<h1>The End</h1>
+<img align="left" src="eagleowl.jpeg" style="margin-right: 1em" alt="" title="Eagle owl">
+<p>It&rsquo;s all open source, so help, bug reports and patches are very welcome. :-)</p>
+
+<p id="footer">
+Matthew Somerville
+<br><a href="mailto:matthew&#64;mysociety.org">matthew&#64;mysociety.org</a>
+<br><br>
+<a href="http://www.mysociety.org/volunteertasks">http://www.mysociety.org/volunteertasks</a>
+</p>
+</div>
+
+</body>
+</html>
+
