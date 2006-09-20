@@ -117,7 +117,7 @@ Call test databases with a suffix e.g. "pb-staging" or "pb-matthew".
 5. As postgresql, give the user permissions:
         grant all on database "<databasename>" to "<databasename>";
 6. If you want it backed up, add the database to 
-    /data/servers/bitter/etc/cron.daily/backup-database
+    /data/servers/bitter/etc/cron.daily/backup-databases
    Or, if you don't want it backed up, add it explicitly to the "don't back up"
    place there as well (or else cron will warn about it). Then deploy config
    with that on both servers.
