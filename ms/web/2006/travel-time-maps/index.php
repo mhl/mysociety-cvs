@@ -343,7 +343,7 @@ mailing list</a>.</p>
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>
 
 <p>This work was funded by the
-<a href="http://www.dft.co.uk/">Department&nbsp;for&nbsp;Transport</a>, who
+<a href="http://www.dft.gov.uk/">Department&nbsp;for&nbsp;Transport</a>, who
 also made it possible for us to use
 <a href="http://www.ordsvy.co.uk/">Ordnance Survey</a> maps and data through
 their licence; without this assistance we would have had to pay expensive fees
