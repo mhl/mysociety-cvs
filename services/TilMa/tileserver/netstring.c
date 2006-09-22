@@ -7,7 +7,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: netstring.c,v 1.2 2006-09-20 13:24:08 chris Exp $";
+static const char rcsid[] = "$Id: netstring.c,v 1.1 2006-09-22 13:57:01 francis Exp $";
 
 #include <sys/types.h>
 #include <stdio.h>

@@ -7,7 +7,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: util.c,v 1.1 2006-09-20 15:45:51 chris Exp $";
+static const char rcsid[] = "$Id: util.c,v 1.1 2006-09-22 13:57:01 francis Exp $";
 
 #include <errno.h>
 #include <stdio.h>

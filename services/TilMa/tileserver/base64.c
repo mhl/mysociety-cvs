@@ -7,7 +7,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: base64.c,v 1.1 2006-09-20 10:25:14 chris Exp $";
+static const char rcsid[] = "$Id: base64.c,v 1.1 2006-09-22 13:57:01 francis Exp $";
 
 #include <stdbool.h>
 #include <stdint.h>

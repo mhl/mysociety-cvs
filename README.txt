@@ -26,6 +26,7 @@ services/Ratty - Rate limit web page accesses
 services/EvEl - Email formatter and sender
 services/NeWs - Directory of local newspapers
 services/Gaze - Gazeteer, look up place names (runs under gaze.mysociety.org)
+services/TilMa - Map tile server
 services/Queue - General queuing system (UNFINISHED)
 track - Conversion tracking (UNFINISHED)
 

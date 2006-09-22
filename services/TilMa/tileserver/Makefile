@@ -5,7 +5,7 @@
 # Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.1 2006-09-20 15:45:51 chris Exp $
+# $Id: Makefile,v 1.1 2006-09-22 13:57:01 francis Exp $
 #
 
 CFLAGS = -Wall -g -O99 -I/software/include
