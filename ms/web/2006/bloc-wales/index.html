@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"> 
+<head> 
+  <title>Poking the Beast</title> 
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="slidy.css"> 
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="style.css"> 
+  <script src="slidy.js" type="text/javascript"></script> 
+</head>
+<body>
+<div class="background"> 
+    <img alt="mySociety" src="http://www.mysociety.org/mslogo.gif" align="right">
+</div>
+
+<!--
+
+Who is your MP? 
+% of people who know answer to that
+
+Announcement of German surrender
+Dead guy voted "In yesterdays Hansard, Jim Marshall appears to have voted in two
+divisions, and yet he is dead."
+Lord Gould vs. Jack Straw saying what they think of the site
+PledgeBank photos
+
+Building websites that deliver simple, tangible benefits to civil society at very low cost per person helped
+
+Based on an electronic network.
+Some kind of offline, positive impact.
+Must have potential for high usage at a fixed cost.
+
+Ask forgiveness, not permission
+
+Tiny cost per transaction
+No expensive support staff
+Everyone in UK is a potential user
+Ultra usable
+Written in Human
+Helps both MPs and citizens
+Same cost regardless of traffic
+
+Email alerts
+Google juice
+
+Zoom in TWFY picture on face
+On voting record
+
+MPs cheat by    
+    - asking wrans, speaking in debates
+    - writing themselves letters
+
+Random Lord is too much fun
+
+History of TheyWorkForYou, overview of mySociety as a whole
+How it was set up
+How it worked - voluntary nature of team
+how it works - publicly available data
+technical information - particulularly your comments about how non-
+technical people can use and access the publicly available data.
+impacts in the real world
+whether the model could be applied in a welsh context - Welsh
+Assembly Govt
+-->
+
+<!-- 
+    Poking the Beast
+
+    Francis Irving, from charity mySociety, will explain how the new
+    computer technology that we all have lets small groups of volunteer
+    programmers and usability experts build tools which everyone
+    can use to change politics and society.
+
+    Francis will introduce websites such as TheyWorkForYou.com,
+    WriteToThem.com, HearFromYourMP.com and PledgeBank.com. He will give
+    examples of how they have been used for change in the real world,
+    including in Wales, and how they have led some MPs to cheat the new
+    system.
+
+    These websites make extensive new uses of old data from lots of
+    different sources. Francis will explain the joys of dealing with
+    Government copyright, and when to ask forgiveness not permission.
+
+    And finally a call to action, how can you help make it easier for
+    individuals to understand what is happening in the Welsh Assembly,
+    and lobby it more effectively?
+
+-->
+
+<div class="slide cover"> 
+ <br><img src="whip.png" alt="" width="200" style="float:left; margin-top: 5em; margin-left: 2em;"
+ <h1>Poking the Beast</h1> 
+ <p>Francis Irving, mySociety
+ <br><br>Bloc Seminar
+ <br>10<sup>th</sup> October 2006</p> 
+</div> 
+
+<div class="slide">
+<h1>mySociety</h1>
+<ul>
+<li>Founded in September 2003, with two missions:
+<ul>
+<li>To be a charitable project which builds websites that give people simple, tangible benefits in the civic and community aspects of their lives. 
+<li>To teach the public and voluntary sectors, through demonstration, how to most efficiently use the internet to improve lives.
+</ul>
+</li>
+<li>A mixture of paid people and volunteers
+<li>Initial funding from the <acronym title="Office of the Deputy Prime Minister">ODPM</acronym> (<acronym title="Rest In Peace">RIP</acronym>)
+<li>As much code as possible released as Open Source; all servers and programming are Open Source
+</ul>
+</div>
+
+<div class="slide">
+<h1>WriteToThem</h1>
+<ul>
+<li>Successor to FaxYourMP.com
+<li>(Nearly) all levels of elected representatives from councillors to MEPs &ndash; simply enter your postcode and send your message
+<li>Over 36,000 messages sent so far this year, compared with a total of 42,515 last year
+<li>Recently added the House of Lords, to contact your unelected representatives too
+<li>Perl and PHP, with a dash of C; our user support is RT combined with RTFM
+</ul>
+</div>
+
+<div class="slide">
+<h1>HearFromYourMP</h1>
+<img align="right" src="shoupsm.png" alt="">
+<ul>
+<li>The flip-side to WriteToThem
+<li>People sign up on the site (again, by postcode), and MPs can choose to post messages for them
+<li>Responses can be private, via WriteToThem, or public underneath the message
+<li>Drip, drip, drip
+</ul>
+</div>
+
+<div class="slide">
+<h1>TheyWorkForYou</h1>
+<img align="right" src="hansard.jpeg" alt="">
+<ul>
+<li>Set up by volunteers and launched at NotCon in June 2004; recently brought under the mySociety wing
+<li>Daily updated (when Parliament is in session) from parliament.uk by a Python scraper and parser
+<li>Changes at their end can prove&hellip; frustrating, but some things make it all worthwhile
+<li>Runs on its own FreeBSD server, with Xapian as its search engine, a PHP front-end and various bits of Perl and Python behind the scenes.
+</ul>
+</div>
+
+<div class="slide">
+<h1>Before TheyWorkForYou</h1>
+<img alt="Official Hansard on parliament.uk" align="middle" src="parliament-original.png" width="100%"> 
+</div>
+
+<div class="slide">
+<h1>After TheyWorkForYou</h1>
+<img alt="Hansard on theyworkforyou.com" align="middle" src="parliament-improved.png" width="100%"> 
+</div>
+
+
+<div class="slide">
+<h1>PledgeBank</h1>
+<ul>
+<li>A site to overcome the collective action dilemma
+<li>Or in English, <em>I&rsquo;ll do something, but only if N other people will as well</em>
+<li>PDF posters with <a href="http://www.reportlab.org/">ReportLab</a>&rsquo;s open source PDF Toolkit</li>
+<li>Translations with GNU&rsquo;s <kbd>gettext</kbd>
+<li>Date parsing with my <kbd>datetime_parse_local_date()</kbd> &ndash; we&rsquo;ve accepted things including: 
+<ul>
+<li>22nd June 2006
+<li>september 30th
+<li>7/1/2006 (twice, once by an American, once by a Brit)
+<li>31 августа 2006
+</ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>A History</h1>
+<img align="right" src="hansard.jpeg" alt="">
+<ul>
+<li>Murmured beginnings around August 2003
+<li>Set up almost entirely by volunteers
+<li>Launched at NotCon in June 2004
+<li>Winner of the Contribution to Civic Society Award at the New Statesman New Media Awards 2005
+<li>Now part of mySociety
+</ul>
+</div>
+
+<div class="slide">
+<h1>Current Scope</h1>
+<img src="theyworkforyou.png" align="right">
+<ul>
+<li><em>House of Commons, since May 2001:</em>
+Debates,
+Westminster Hall debates,
+Written answers,
+Written ministerial statements,
+Register of Members&rsquo; Interests,
+Select committee memberships,
+Ministerialships
+</li>
+<li><em>House of Lords, since 1999:</em> Debates, Written answers,
+Written ministerial statements
+<li>Both: Voting history, external links, various statistics, and more
+</ul>
+
+</div>
+
+<div class="slide">
+<h1>Staying on top</h1>
+<ul>
+<li>Daily updated (when Parliament is in session) from parliament.uk by a Python scraper and parser
+<li>Changes at their end can prove&hellip; frustrating, but some things make it all worthwhile
+<li>In the House of Lords, Lord Gould said we (well, mySociety) were the &ldquo;probably the biggest single catalyst for political change in this country&rdquo;
+<li>In the House of Commons, Jack Straw blamed us this July for an increase in Written Questions by MPs, saying it &ldquo;seems to measure Members' work in quantitative rather than qualitative terms&rdquo;
+</ul>
+</div>
+
+<div class="slide">
+<h1>Telnet MP Fight</h1>
+<ul>
+<li><a href="telnet://seagrass.goatchurch.org.uk:646/">telnet://seagrass.goatchurch.org.uk:646</a>
+<li><a href="http://caesious.beasts.org/~chris/scripts/mpfight">Web version</a>
+<li>Get to Sedgefield and vanquish Tony Blair
+</ul>
+<p align="center"><img src="api_telnet.png" alt="Telnet MP Fight game">
+</div>
+
+<div class="slide">
+<h1>MP Fab Farts</h1>
+<ul>
+<li><a href="http://www.dracos.co.uk/work/theyworkforyou/api/fabfarts/">http://www.dracos.co.uk/work/theyworkforyou/api/fabfarts/</a>
+<li>Like a certain popular game with a similar name
+<li>One and two player versions
+</ul>
+<p align="center"><img src="api_fabfarts.png" alt="MP Fab Farts">
+</div>
+
+<div class="slide">
+<h1>Future</h1>
+<ul>
+<li>Scotland, Wales, who knows?
+<li>Media
+<li>Freedom of Information
+<li>United Nations
+</ul>
+</div>
+
+<div class="slide">
+<h1>The End</h1>
+<img align="left" src="eagleowl.jpeg" style="margin-right: 1em" alt="" title="Eagle owl">
+<p>It&rsquo;s all open source, so help, bug reports and patches are very welcome. :-)</p>
+<p id="footer">
+Matthew Somerville
+<br><a href="mailto:matthew&#64;mysociety.org">matthew&#64;mysociety.org</a>
+<br><br>
+<a href="http://www.mysociety.org/volunteertasks">http://www.mysociety.org/volunteertasks</a>
+<br>(our Open Source-d simple front end to cvstrac)
+</p>
+</div>
+
+</body>
+</html>
+
+
