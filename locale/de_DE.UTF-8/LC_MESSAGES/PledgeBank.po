@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PledgeBank.2006-04-14\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-09-18 23:15+0100\n"
+"POT-Creation-Date: 2006-10-09 22:50+0100\n"
 "PO-Revision-Date: 2006-05-20 22:48+0200\n"
 "Last-Translator: Felix Zesch <post@felix-zesch.de>\n"
 "Language-Team:  <de@li.org>\n"
@@ -1221,11 +1221,11 @@ msgstr "Zu diesem Versprechen können keine weiteren Kommentare hinzugefügt wer
 msgid "<h2>Add public comment</h2>"
 msgstr "<h2>Einen Kommentar hinzufügen</h2>"
 
-#: pb/phplib/comments.php:275 pb/web/contact.php:91
+#: pb/phplib/comments.php:275 pb/web/contact.php:92
 msgid "Your name"
 msgstr "Ihr Name"
 
-#: pb/phplib/comments.php:280 pb/phplib/pledge.php:656 pb/web/contact.php:92
+#: pb/phplib/comments.php:280 pb/phplib/pledge.php:656 pb/web/contact.php:93
 msgid "Your email"
 msgstr "Ihre E-Mail"
 
@@ -1705,7 +1705,8 @@ msgid "Sorry! Something's gone wrong."
 msgstr "Verzeihung! Etwas ist schief gelaufen."
 
 #: pb/phplib/pb.php:57
-msgid "Please try again later, or <a href=\"mailto:team@pledgebank.com\">email us</a> for help resolving the problem."
+#, fuzzy
+msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
 msgstr "Bitte versuchen Sie es später noch einmal, oder <a href=\"mailto:team@pledgebank.com\">schicken Sie uns eine E-Mail</a> dann helfen wir Ihnen, das Problem zu beheben."
 
 #: pb/phplib/pb.php:178
@@ -2065,13 +2066,13 @@ msgstr "Sie können sich für <a href=\"/alert/\">einen neuen lokalen Alarm eint
 msgid "Thanks!  You are already unsubscribed from that alert."
 msgstr "Danke! Sie sind für diesen Alarm bereits ausgetragen worden."
 
-#: pb/web/alert.php:59 pb/web/comment.php:87 pb/web/contact.php:117
+#: pb/web/alert.php:59 pb/web/comment.php:87 pb/web/contact.php:118
 #: pb/web/login.php:187 pb/web/login.php:213 pb/web/new.php:537
 #: pb/web/ref-email.php:51
 msgid "Please enter your email address"
 msgstr "Bitte geben Sie Ihre E-Mail-Adresse ein"
 
-#: pb/web/alert.php:60 pb/web/contact.php:118 pb/web/login.php:191
+#: pb/web/alert.php:60 pb/web/contact.php:119 pb/web/login.php:191
 #: pb/web/login.php:217 pb/web/new.php:538
 msgid "Please enter a valid email address"
 msgstr "Bitte geben Sie eine gültige E-Mail-Adresse ein"
@@ -2150,7 +2151,7 @@ msgstr "Verzeihung - anscheinend ist etwas schiefgelaufen"
 msgid "'%s' is not a valid email address; please check it carefully"
 msgstr "'%s' ist keine gültige E-Mail-Adresse; bitte überprüfen Sie Ihre Eingabe"
 
-#: pb/web/comment.php:92 pb/web/contact.php:116 pb/web/new.php:536
+#: pb/web/comment.php:92 pb/web/contact.php:117 pb/web/new.php:536
 #: pb/web/ref-email.php:50 pb/web/sms.php:78
 msgid "Please enter your name"
 msgstr "Bitte geben Sie Ihren Namen ein"
@@ -2225,76 +2226,77 @@ msgstr ""
 "Benutzen Sie dieses Formular, um uns zu kontaktieren.\n"
 "Wenn Sie möchten können Sie uns statt des Formulars eine E-Mail schicken %s."
 
-#: pb/web/contact.php:75
+#: pb/web/contact.php:76
 #, php-format
 msgid "If you prefer, you can email %s instead of using the form."
 msgstr ""
 
-#: pb/web/contact.php:79
+#: pb/web/contact.php:80
 #, fuzzy
 msgid "If you would like to contact the Pledge Creator, please use the 'comments' section on the pledge. The form below is for messages to the PledgeBank Team only, <strong>not</strong> the Pledge Creator."
 msgstr "Wenn Sie den Initiator des Versprechens kontaktieren möchten, benutzen Sie bitte die Kommentarfunktion beim jeweiligen Versprechen. Diese Nachricht geht an das Pledgebank-Team, <strong>nicht</strong> an den Initiator des Versprechens."
 
-#: pb/web/contact.php:81
+#: pb/web/contact.php:82
 msgid "<a href=\"/faq\">Read the FAQ</a> first, it might be a quicker way to answer your question."
 msgstr "<a href=\"faq\"> Lesen Sie zuerst die häufig gestellten Fragen</a>, das ist wahrscheinlich der schnellere Weg, um Ihre zu beantworten."
 
-#: pb/web/contact.php:89
+#: pb/web/contact.php:90
 msgid "Message to"
 msgstr "Nachricht an"
 
-#: pb/web/contact.php:89
+#: pb/web/contact.php:90
 msgid "PledgeBank Team"
 msgstr "PledgeBank Team"
 
-#: pb/web/contact.php:94 pb/web/ref-announce.php:315
+#: pb/web/contact.php:95 pb/web/ref-announce.php:315
 #: pb/web/ref-announcearchive.php:73
 msgid "Subject"
 msgstr "Betreff"
 
-#: pb/web/contact.php:96
+#: pb/web/contact.php:97
 #, fuzzy
 msgid "Write your message"
 msgstr "Bitte geben Sie Ihre Nachricht ein"
 
-#: pb/web/contact.php:99
+#: pb/web/contact.php:100
 msgid "Did you <a href=\"/faq\">read the FAQ</a> first?"
 msgstr "Haben Sie schon die häufig gestellten Fragen gelesen?"
 
-#: pb/web/contact.php:100 pb/web/ref-announce.php:284
+#: pb/web/contact.php:101 pb/web/ref-announce.php:284
 #: pb/web/ref-announce.php:361
 msgid "Send"
 msgstr "Abschicken"
 
-#: pb/web/contact.php:106 pb/web/login.php:93 pb/web/new.php:395
+#: pb/web/contact.php:107 pb/web/login.php:93 pb/web/new.php:395
 #: pb/web/ref-sign.php:65 pb/web/pb.js:15
 msgid "<Enter your name>"
 msgstr "<IHR NAME>"
 
-#: pb/web/contact.php:119
+#: pb/web/contact.php:120
 msgid "Please enter a subject"
 msgstr "Bitte geben Sie ein Thema an"
 
-#: pb/web/contact.php:120
+#: pb/web/contact.php:121
 msgid "Please enter your message"
 msgstr "Bitte geben Sie Ihre Nachricht ein"
 
-#: pb/web/contact.php:141
+#: pb/web/contact.php:142
 msgid "Please stop sending us spam. Thank you."
 msgstr "Bitte hören Sie auf uns unerwünschte Werbe-E-Mails zu schicken. Danke."
 
-#: pb/web/contact.php:162
-msgid "Failed to send message.  Please try again, or <a href=\"mailto:team@pledgebank.com\">email us</a>."
+#: pb/web/contact.php:163
+#, fuzzy
+msgid "Failed to send message.  Please try again, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a>."
 msgstr "Die Nachricht konnte nicht versendet werden. Bitte versuchen Sie es noch einmal, oder < a href=\"mailto:team@pledgebank.com\" emailen Sie uns</a>."
 
-#: pb/web/contact.php:164
+#: pb/web/contact.php:165
 #, fuzzy
 msgid "<strong>Thank you!</strong> One of our team will investigate that comment as soon as possible"
 msgstr ""
 "<strong>Vielen Dank!</strong> Jemand aus unseren Team wird der Sache %s so schnell wie möglich\n"
 "nachgehen."
 
-#: pb/web/contact.php:166
+#: pb/web/contact.php:167
 msgid "Thanks for your feedback.  We'll get back to you as soon as we can!"
 msgstr "Vielen Dank für Ihren Hinweis. Wir werden uns so bald als möglich wieder bei Ihnen melden!"
 
@@ -3627,12 +3629,12 @@ msgid "Please enter a valid date"
 msgstr "Bitte geben Sie ein gültiges Datum ein. "
 
 #: pb/web/new.php:530
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "Please change your deadline so it is less than %d years into the\n"
 "        future. You must change the deadline in order to proceed with creating\n"
 "        your pledge. If you want a longer deadline, please create your pledge\n"
-"        with a short deadline, and drop us an email to <a href=\"mailto:team@pledgebank.com\">team@pledgebank.com</a>\n"
+"        with a short deadline, and drop us an email to <a href=\"mailto:team&#64;pledgebank.com\">team&#64;pledgebank.com</a>\n"
 "        asking for an alteration."
 msgstr "Bitte ändern Sie das Ablaufdatum so, dass es weniger als %d Jahre in der Zukunft liegt. Sie müssen das Ablaufdatum ändern um fortfahren zu können. Wenn Sie ein Versprechen über einen längeren Zeitraum abgeben wollen, erstellen Sie bitte ein Versprechen mit einer kürzeren Laufzeit und schicken Sie uns eine kurze E-Mail an <a href=\"mailto:team@pledgebank.com\">team@pledgebank.com</a>, in der Sie um eine Änderungen bitten."
 
@@ -5410,78 +5412,78 @@ msgstr "Klicken Sie hier, um mehr zu erfahren:"
 msgid "SMS operated by charity UKCOD. Available in UK only. Sign-up message costs your normal text rate. Further messages are free. "
 msgstr "SMS Versand mit Ünterstützung von UKCOD. Nur in Grossbritannien erhältlich. Die Anmeldungs-SMS wird zum üblichen Tarif verrechnet. Weitere Nachrichten sind kostenlos. "
 
-#: pb/web/poster.cgi:211
+#: pb/web/poster.cgi:214
 msgid "If"
 msgstr "Wenn"
 
-#: pb/web/poster.cgi:213
+#: pb/web/poster.cgi:216
 #, python-format
 msgid " %s will %s, then "
 msgstr " %s %s, dann "
 
-#: pb/web/poster.cgi:214
+#: pb/web/poster.cgi:217
 msgid "I"
 msgstr "Ich"
 
-#: pb/web/poster.cgi:215
+#: pb/web/poster.cgi:218
 #, python-format
 msgid " will %s."
 msgstr " werde %s."
 
-#: pb/web/poster.cgi:222
+#: pb/web/poster.cgi:225
 msgid "More details:"
 msgstr "Mehr Information:"
 
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:230 pb/web/poster.cgi:382
+#: pb/web/poster.cgi:233 pb/web/poster.cgi:385
 msgid "Pledge at "
 msgstr "Versprechen auf "
 
-#: pb/web/poster.cgi:232 pb/web/poster.cgi:384
+#: pb/web/poster.cgi:235 pb/web/poster.cgi:387
 msgid " pin "
 msgstr " anheften "
 
 #. TRANS: Text is an instruction (verb in the imperative)
-#: pb/web/poster.cgi:237
+#: pb/web/poster.cgi:240
 msgid "Text"
 msgstr "SMS an"
 
 #. TRANS: Do not translate 'pledge' here, it is the SMS shortcode we use
-#: pb/web/poster.cgi:240
+#: pb/web/poster.cgi:243
 #, python-format
 msgid "pledge %s"
 msgstr "verspreche %s"
 
 #. TRANS: This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:242
+#: pb/web/poster.cgi:245
 msgid "to"
 msgstr "zu"
 
 #. TRANS: I think 'pledge' here means 'sign up to', as part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
 #. Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:246
+#: pb/web/poster.cgi:249
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr " (nur %s) oder unterschreiben Sie für "
 
-#: pb/web/poster.cgi:250
+#: pb/web/poster.cgi:253
 msgid "This pledge closes on "
 msgstr "Dieses Versprechen endet am "
 
-#: pb/web/poster.cgi:250
+#: pb/web/poster.cgi:253
 msgid ". Thanks!"
 msgstr ". Danke!"
 
-#: pb/web/poster.cgi:251 pb/web/poster.cgi:404
+#: pb/web/poster.cgi:254 pb/web/poster.cgi:407
 #, python-format
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr "Denken Sie daran: Sie müssen nur aktiv werden, wenn %d andere Personen auch unterzeichnen  Darum geht es bei PledgeBank."
 
-#: pb/web/poster.cgi:336
+#: pb/web/poster.cgi:339
 msgid "<font color=\"#ffffff\">Pledge</font>Bank.com"
 msgstr "<font color=\"#ffffff\">Pledge</font>Bank.com"
 
-#: pb/web/poster.cgi:362
+#: pb/web/poster.cgi:365
 #, python-format
 msgid ""
 "\n"
@@ -5494,17 +5496,17 @@ msgstr ""
 "            dann werde <font color=\"%s\">ich</font> %s.\n"
 "            "
 
-#: pb/web/poster.cgi:378
+#: pb/web/poster.cgi:381
 #, python-format
 msgid "<b>More details:</b> %s"
 msgstr "<b>Mehr Information:</b> %s"
 
-#: pb/web/poster.cgi:390
+#: pb/web/poster.cgi:393
 msgid "pledge at "
 msgstr "Versprechen auf"
 
 #. TRANS: Again, please don't translate "pledge" in this one
-#: pb/web/poster.cgi:393
+#: pb/web/poster.cgi:396
 #, python-format
 msgid ""
 "<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
@@ -5515,7 +5517,7 @@ msgstr ""
 "            <b>  %s</b></font> an <font color=\"%s\"><b>%s</b></font> \n"
 "            (nur %s) oder "
 
-#: pb/web/poster.cgi:401
+#: pb/web/poster.cgi:404
 #, python-format
 msgid ""
 "\n"
@@ -5526,11 +5528,11 @@ msgstr ""
 "            Dieses Versprechen endet am <font color=\"%s\">%s</font>. Danke!\n"
 "            "
 
-#: pb/web/poster.cgi:587
+#: pb/web/poster.cgi:590
 msgid "UK"
 msgstr "UK"
 
-#: pb/web/poster.cgi:747
+#: pb/web/poster.cgi:750
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"
