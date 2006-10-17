@@ -146,6 +146,21 @@ exit;
         print '</li></ul></div>';
     }
 ?>
+
+    <div class="item_head">
+        New submissions for 2006 are now closed
+    </div>
+    <div class="item">
+        <p>The winner was <a href="http://www.mysociety.org/2006/09/27/the-mysociety-call-for-proposals-the-winner-and-runners-up/">announced in our main news blog</a>
+        on 27th September 2006.
+        You can also <a href="/proposals2006/view">read
+        all the proposals</a> that were submitted.
+        </p>
+    </div>
+    <div class="item_foot">
+    </div>
+
+
     <div class="item_head">
         Guidelines for proposals
     </div>
@@ -175,17 +190,6 @@ exit;
     </div>
 
 
-    <div class="item_head">
-        New submissions for 2006 are now closed
-    </div>
-    <div class="item">
-        <p>Now we've just got to decide which one wins.</p>
-        <p>You can help out by <a href="/proposals2006/view">adding
-        your thoughts</a> to the proposals which were submitted.
-        </p>
-    </div>
-    <div class="item_foot">
-    </div>
 <!--
     <div class="item_head">
         Submit your proposal for a new mySociety project
@@ -231,18 +235,16 @@ exit;
 ?>
 
     <div class="item_head">
-        New submissions for 2006 are now closed
+        New submissions for 2006 are now closed, and the winner has been announced
     </div>
     <div class="item">
+        <p>The winner was <a href="http://www.mysociety.org/2006/09/27/the-mysociety-call-for-proposals-the-winner-and-runners-up/">announced in our main news blog</a>
+        on 27th September 2006.</p>
         <p><a href="/proposals2006/view">Head on over here</a> to
         read all the proposals. Thanks everyone for submitting lots
         of great ideas!
         </p>
-        
-        <p>We'll announce the winner when we've properly read and considered
-        them all.  Help out by leaving your comments as to what is good or bad
-        about them.</p>
-    </div>
+     </div>
     <div class="item_foot">
     </div>
 

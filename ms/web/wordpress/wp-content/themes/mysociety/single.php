@@ -13,7 +13,24 @@ foreach ($posts as $catcheck)
         }
     }
 }
-get_header(); ?>
+get_header(); 
+
+if ($cat == 3) {
+    ?>
+<div class="item_head">What is this all about?</div>
+<div class="item">
+<p>The idea described below was a submission to the mySociety Call for Proposals 2006. It is a 
+suggestion for a website which meets our <a href="/proposals2006/submit">criteria</a>, to have a tangible benefit to the civic and community aspects of people's lives.
+The winning
+proposal <a href="http://www.mysociety.org/2006/09/27/the-mysociety-call-for-proposals-the-winner-and-runners-up/">was announced on 27th September 2006</a>; that is the one we are going to implement. You can still read, discuss and add comments to the idea below, or <a href="/proposals2006/view">browse all the proposals</a>. Maybe you and/or someone else can get together to implement one.
+Read more <a href="/faq.php">about mySociety</a>.
+</p></div>
+<div class="item_foot"></div>
+
+    <?
+}
+
+?>
 
 	<div id="content" class="widecolumn">
 				
