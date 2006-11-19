@@ -104,7 +104,7 @@
 
 <p><textarea name="comment" id="comment" style="width:100%" cols="60" rows="10" tabindex="4"></textarea></p>
 
-<p>Enter the magic word, which is 'tangible':
+<p>Enter the magic word, which is 'simple':
 <input name="magicword" type="input" id="magicword" tabindex="5"
 value="" />
 
