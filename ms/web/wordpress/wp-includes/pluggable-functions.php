@@ -265,7 +265,7 @@ function wp_redirect($location, $status = 302) {
 	if ( $is_IIS ) {
 		header("Refresh: 0;url=$location");
 	} else {
-		status_header($status); // This causes problems on IIS
+		// status_header($status); // This causes problems on IIS
 		header("Location: $location");
 	}
 }
