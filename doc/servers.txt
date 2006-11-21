@@ -15,7 +15,13 @@ it is always on the path.
 
 Servers are sorted into classes, named like ships after the first instance of
 the class. Currently we only have one class "bitter", of which tea.ukcod.org.uk
-and bitter.ukcod.org.uk are instances.
+and bitter.ukcod.org.uk are instances. Each server's root account has 
+passphraseless SSH keys to log into servers of the same class, and only to ones
+of the same class.
+
+You can run commands on all servers of a class like this, e.g.
+    mysociety class "apt-get dist-upgrade"
+to do all security fixes.
 
 Editing server-wide config (/etc and similar)
 ---------------------------------------------
@@ -89,6 +95,12 @@ Template files for the conf/general files are in /data/servers/vhosts/pb_conf_ge
 and so on.  Crontabs are installed in /etc/cron.d/ as separate files for each
 instance of each vhost.  Apache configuration lines are made from the template
 in /data/servers/vhosts/single-vhost.conf.ugly.  
+
+To install a vhost on all the servers, do 
+    mysociety class "mysociety vhost staging.pledgebank.com"
+This will run "mysociety vhost staging.pledgebank.com" on each server in the class.
+It will install it only on the servers it is configured to run on in vhosts.pl,
+the others will ignore the command and print a message. 
 
 It's OK, but discouraged!, to add other vhosts manually in /data/vhosts.  In
 that case, edit Apache configuration here:
