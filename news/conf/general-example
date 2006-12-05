@@ -1,0 +1,33 @@
+<?php
+/*
+ * general-example
+ *
+ * Configuration parameters, in PHP syntax. Configuration parameters are set
+ * using the PHP define('OPTION_...', '...') function. Both perl and PHP code
+ * parse this properly, so you can use comments and conditionals and whatnot,
+ * but unless essential it's better to keep it simple....
+ *
+ * Copy this file to one called config in the same directory.  Or
+ * have multiple config files and use a symlink to change between them.
+ * 
+ * Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
+ * Email: francis@mysociety.org; WWW: http://www.mysociety.org
+ *
+ * $Id: general-example,v 1.1 2006-12-05 13:46:07 louise Exp $
+ * 
+ */
+
+
+// RABX URLs for when one service calls another (e.g. DaDem now calls MaPit)
+define('OPTION_MAPIT_URL', 'http://services.mysociety.org/mapit');
+define('OPTION_DADEM_URL', 'http://services.mysociety.org/dadem');
+define('OPTION_GAZE_URL', 'http://gaze.mysociety.org/gaze');
+define('OPTION_NEWS_URL', 'http://services.mysociety.org/news');
+
+// Number of people contained in search radius
+define('OPTION_NEWS_SEARCH_POPULATION', '200000');
+
+
+
+
+?>
