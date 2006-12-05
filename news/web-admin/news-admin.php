@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
  *
- * $Id: news-admin.php,v 1.1 2006-12-05 13:38:20 louise Exp $
+ * $Id: news-admin.php,v 1.1 2006-12-05 13:59:08 louise Exp $
  * 
  */
 
