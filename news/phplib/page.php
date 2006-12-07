@@ -5,7 +5,7 @@
 // Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 // Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
 //
-// $Id: page.php,v 1.1 2006-12-05 13:32:21 louise Exp $
+// $Id: page.php,v 1.2 2006-12-07 15:53:56 louise Exp $
 
 
 /* page_header TITLE [PARAMS]
@@ -27,8 +27,10 @@ function page_header($title='', $params = array()) {
     if ($title)
         print htmlspecialchars($title);
 ?></title>
+<link rel="stylesheet" type="text/css" media="all" href="/news.css">
 </head>
 <body>
+<h1 id="heading"><a href="/">NeWs</a></h1> 
 <div id="content">
 <?
 }
@@ -38,7 +40,8 @@ function page_header($title='', $params = array()) {
 function page_footer($params = array()) {
 ?>
 </div>
-<p id="footer">Built by <a href="http://www.mysociety.org/">mySociety</a>
+<p id="footer">Built by <a href="http://www.mysociety.org/">mySociety</a> | 
+Powered by <a href="http://www.easynet.net/publicsector/">Easynet</a>
 </body>
 </html>
 <?  }
