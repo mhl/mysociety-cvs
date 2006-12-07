@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
  *
- * $Id: newspaper.php,v 1.2 2006-12-07 15:56:32 louise Exp $
+ * $Id: newspaper.php,v 1.3 2006-12-07 16:13:09 louise Exp $
  * 
  */
 
@@ -59,7 +59,9 @@ function newspaper_info($newspaper){
         $ret .= $newspaper['editor'];
         $ret .= '<br />';
 	$ret .= '<b>Website:</b> ';
-        $ret .= $newspaper['website'];
+        if ($newspaper['website']){
+		$ret .= ' <a href="' . $newspaper['website'] . '">' . $newspaper['website'] . '</a>';
+	}
         $ret .= '<br />';
 	$ret .= '<b>Email:</b> ';
         $ret .= $newspaper['email'];
