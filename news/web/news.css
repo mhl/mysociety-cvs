@@ -1,0 +1,94 @@
+/*
+ * news.css
+ * Top-level style sheet for the News UI.
+ * 
+ * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
+ * Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
+ *
+ * $Id: news.css,v 1.1 2006-12-07 15:58:33 louise Exp $
+ * 
+ */
+
+body {
+    color: #000000;
+    background-color: #ffffff;
+    font-family: Trebuchet MS, Helvetica, Arial;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+}
+
+#content {
+    margin: 0 auto;
+    width: expression(document.body.clientWidth > (904/12) * parseInt(document.body.currentStyle.fontSize)?"55em":"auto");
+    max-width: 55em;
+    padding: 10px;
+}
+
+#footer {
+    padding: 3px;
+    border-top: solid 1px #000000;
+    font-size: 90%;
+    text-align: center;
+    width: 75%;
+    margin: 1em auto 0;
+    clear: both;
+}
+
+h1#heading {
+    color: #000000;
+    background-color: #eeeeee;
+    border-bottom: solid 2px #000000;
+    font-size: 200%;
+    padding: 0.4em 1em;
+    text-align: left;
+    margin: 0 auto;
+}
+h1#heading a, h1#heading a:link, h1#heading a:visited {
+    color: #000000; 
+    text-decoration: none;
+}
+h1#heading a:hover {
+    text-decoration: underline;
+}
+
+h2,h3,h4 {
+    text-align: center;
+}
+h2 {    font-size: 150%; }
+h3 {    font-size: 120%; }
+
+h3#small-heading{
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#newspaper-info-box, #journalist-info-box, #coverage-info-box, #one-journalist-info-box, #search-box {
+    _width: 1px;
+    display: table;
+    margin: 0 auto;
+    border: solid 2px #C0C0C0;
+    padding: 8px;
+    background-color: #eeeeee;
+    color: #000000;
+}
+
+#newspaper-info-box, #one-journalist-info-box {
+	width: 25em;
+}
+
+#one-journalist-info-box {
+        text-align: center;
+}
+
+#search-box {
+	width: 50em;
+}
+
+input.error, input[type=text].error, select.error, input[type=radio].error, textarea.error {
+    border: solid 2px #990000;
+    background-color: #ffdddd;
+}
+.errortext {
+    color: #ff0000;
+}
