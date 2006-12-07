@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
  *
- * $Id: admin-news.php,v 1.1 2006-12-05 13:32:21 louise Exp $
+ * $Id: admin-news.php,v 1.2 2006-12-07 15:53:09 louise Exp $
  * 
  */
 
@@ -93,7 +93,7 @@ class ADMIN_PAGE_NEWS_NEWSPAPERS {
 		$news['isdeleted']= 0;	
 		
 		#update through the web service
-		news_publish_update($newspaper_id, http_auth_user(), $news);
+		news_publish_newspaper_update($newspaper_id, http_auth_user(), $news);
 		
 		print "The newspaper has been updated";
 	    }
@@ -104,7 +104,7 @@ class ADMIN_PAGE_NEWS_NEWSPAPERS {
 <h2>Coverage</h2>
 <?
 	   #get the coverage info
-	   $coverage = news_get_coverage($newspaper_id);
+	   $coverage = news_get_newspaper_coverage($newspaper_id);
 	
            print "<table>";
 	   print "<tr>";
@@ -134,7 +134,7 @@ class ADMIN_PAGE_NEWS_NEWSPAPERS {
 <? 
 		
             # get the edit history
-            $history = news_get_history($newspaper_id);
+            $history = news_get_newspaper_history($newspaper_id);
 
 	    foreach($history as $edit){            	
                print "Edited on: $edit[lastchange] <br />\n";
@@ -181,7 +181,6 @@ class ADMIN_PAGE_NEWS_NEWSPAPERS {
 <tr><th>Name</th></tr>
 <?
 	    foreach($q as $r){
-
 	        print "<tr><td><a href=\"/news-admin.php?page=newspapers&newspaper_id=$r[0]\">$r[1]</a></td></tr>\n";
             
             }
