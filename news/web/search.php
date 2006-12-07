@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
  *
- * $Id: search.php,v 1.1 2006-12-05 13:27:44 louise Exp $
+ * $Id: search.php,v 1.2 2006-12-07 15:57:36 louise Exp $
  * 
  */
 
@@ -21,9 +21,14 @@ require_once "../phplib/page.php";
 require_once "../phplib/news.php";
 
 $search = trim(get_http_var('q', true));
+if ($search == '') {
+    header('Location: /');
+    exit();
+}
+
 $heading = sprintf(_("Search results for '%s'"), htmlspecialchars($search));
-page_header($heading);
-news_general_heading();
+page_header("NeWs - " . $heading);
+print '<h2>' . $heading . '</h2>';
 search($search);
 page_footer();
 
@@ -50,7 +55,9 @@ function search($search){
 			list($newspaper_results, $radius) = get_newspaper_results($location['wgs84_lat'], $location['wgs84_lon']);
 			print sprintf('<p>Results for <strong>newspapers</strong> with coverage within %s of UK postcode <strong>%s</strong>:</p>', news_pretty_distance($radius, false),  htmlspecialchars(strtoupper($search)) );
                 	if ($newspaper_results) {
+                                print "<ul>";
                     		print $newspaper_results;
+				print "</ul>";
                	 } else {
                    		print "<ul><li>". _("No nearby newspapers.")."</li></ul>";
                 	}
@@ -73,10 +80,10 @@ function search($search){
 			if ($newspaper_results) {
 				$out .= $newspaper_results;
 			} else {
-				$out .= "<ul><li>". _("No nearby newspapers")."</li></ul>";
+				$out .= "<li>". _("No nearby newspapers")."</li>";
 			}
 			print p(sprintf(_("Results for <strong>newspapers</strong> with coverage within %s of <strong>%s</strong>:"), news_pretty_distance($radius, false), htmlspecialchars($desc)));
-				print "<ul>";
+			print "<ul>";
 			print $out;
 			print "</ul>";
 		}
@@ -84,10 +91,19 @@ function search($search){
 
 	
 	//Search for the name of a newspaper? 
+	$newspapers = news_get_newspapers_by_name($search);
+	if (count($newspapers) > 0 ){
+		$success = 1;
+		$text = generate_newspaper_list($newspapers);
+		print p(sprintf(_("Results for <strong>newspapers</strong> with names matching <strong>%s</strong>:"), htmlspecialchars($search)));
+		print "<ul>";
+		print $text;
+		print "</ul>";
+	}
 
 	if ($success == 0){
+		print "Sorry, we couldn't find anything matching ";
 		print htmlspecialchars($search);
-		print " not recognized as a place or postcode.";
 	}
 
 
@@ -99,7 +115,7 @@ function search($search){
 function get_location_results($lat, $lon){
 	$radius = gaze_get_radius_containing_population($lat, $lon, OPTION_NEWS_SEARCH_POPULATION);
 	
-	$locations = news_get_locations($lat, $lon, $radius);
+	$locations = news_get_locations_by_location($lat, $lon, $radius);
 	$ret = "";
 	foreach($locations as $location){
 	        $ret .= '<li>';
@@ -118,18 +134,29 @@ function get_location_results($lat, $lon){
 function get_newspaper_results($lat, $lon){
         $radius = gaze_get_radius_containing_population($lat, $lon, OPTION_NEWS_SEARCH_POPULATION);
         $newspapers = news_get_newspapers_by_location($lat, $lon, $radius);
+        return array(generate_newspaper_list($newspapers), $radius);
+}
+
+/* generate_newspaper_list
+ * For an array of newspapers, generate an HTML listing with links to details pages*/ 
+function generate_newspaper_list($newspapers){
 	$ret = "";
         foreach($newspapers as $newspaper){
                 $ret .= '<li><a href="/newspaper?id=';
                 $ret .= $newspaper['id'];
                 $ret .= '">';
                 $ret .= $newspaper['name'];
-                $ret .= '</a> (coverage in area: ';
-		$ret .= $newspaper['coverage'];
-                $ret .= ')</li>';
+                $ret .= '</a>'; 
+		if (array_key_exists('coverage', $newspaper)){
+			$ret .= ' (coverage in area: ';
+                	$ret .= $newspaper['coverage'];
+			$ret .= ')';
+		}
+                $ret .= '</li>';
 
         }
-        return array($ret, $radius);
+        return $ret;
+
 }
 
 ?>
