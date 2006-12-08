@@ -11,8 +11,8 @@ if( $stagingsite="yes" )
 	/* STAGING settings */
 	$paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 	$business = "bob@evilmysociety.org";
-	$return_url = "http://staging.mysociety.org/donatethanks.php";
-	$cancel_url = "http://staging.mysociety.org/donatecancel.php";
+	$return_url = "http://staging.mysociety.org/donatethanks";
+	$cancel_url = "http://staging.mysociety.org/donatecancel";
 }
 else
 {
@@ -23,8 +23,8 @@ else
 	// TODO!!!!
 	
 	$paypal_url = "https://www.paypal.com/cgi-bin/webscr";
-	$return_url = "http://mysociety.org/donatethanks.php";
-	$cancel_url = "http://mysociety.org/donatecancel.php";
+	$return_url = "http://mysociety.org/donatethanks";
+	$cancel_url = "http://mysociety.org/donatecancel";
 }
 
 
@@ -95,6 +95,19 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 <option value="GBP">UK Sterling &pound;</option>
 <option value="USD">US Dollars $</option>
 <option value="EUR">Euro &euro;</option>
+<option value="AUD">Australian Dollar</option>
+<option value="CAD">Canadian Dollar</option>
+<option value="CHF">Swiss Franc</option>
+<option value="CZK">Czech Koruna</option>
+<option value="DKK">Danish Krone</option>
+<option value="HKD">Hong Kong Dollar</option>
+<option value="HUF">Hungarian Forint</option>
+<option value="JPY">Japanese Yen</option>
+<option value="NOK">Norwegian Krone</option>
+<option value="NZD">New Zealand Dollar</option>
+<option value="PLN">Polish Zloty</option>
+<option value="SEK">Swedish Krona</option>
+<option value="SGD">Singapore Dollar</option>
 </select>
 <input name="amount" size="5" />
 </p>
@@ -135,6 +148,19 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 <option value="GBP">UK Sterling &pound;</option>
 <option value="USD">US Dollars $</option>
 <option value="EUR">Euro &euro;</option>
+<option value="AUD">Australian Dollar</option>
+<option value="CAD">Canadian Dollar</option>
+<option value="CHF">Swiss Franc</option>
+<option value="CZK">Czech Koruna</option>
+<option value="DKK">Danish Krone</option>
+<option value="HKD">Hong Kong Dollar</option>
+<option value="HUF">Hungarian Forint</option>
+<option value="JPY">Japanese Yen</option>
+<option value="NOK">Norwegian Krone</option>
+<option value="NZD">New Zealand Dollar</option>
+<option value="PLN">Polish Zloty</option>
+<option value="SEK">Swedish Krona</option>
+<option value="SGD">Singapore Dollar</option>
 </select>
 
 <input name="a3" size="5" /> once a month, starting tomorrow, until I cancel the payments.</p>
