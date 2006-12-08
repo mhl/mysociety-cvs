@@ -15,10 +15,10 @@ include "wordpress/wp-content/themes/mysociety/header.php";
   voluntary sectors, through demonstration, how to most efficiently use the
   internet to improve lives.</p>
   <p><b>Q. How do I get in contact with you in person?<br/>
-  A.</b> Email <a href="mailto:tom@mysociety.org">Tom Steinberg</a> or call 07811 082158.</p>
+  A.</b> Email <a href="mailto:tom&#64;mysociety.org">Tom Steinberg</a> or call 07811 082158.</p>
   <a name="do" id="do"></a>
   <p><b>Q. What exactly are you doing?<br/>
-  A.</b> We are supporting and improving our <a href="projects.php">launch projects</a>.</p>
+  A.</b> We are supporting and improving our <a href="projects">launch projects</a>.</p>
   <p><b>Q. Can you give us any examples of the types of project you're on about?<br/>
   A.</b> <a href="http://www.theyworkforyou.com">TheyWorkForYou.com</a>, <a
   href="http://writetothem.com">WriteToThem</a> (which used to be called FaxYourMP) and <a
@@ -32,7 +32,7 @@ include "wordpress/wp-content/themes/mysociety/header.php";
   raising money, getting a substantial grant from a Government department
   called ODPM, in partnership with West Sussex County Council. The money
   actually arrived in September 2004. We raced along for a year, building
-  all of our <a href="projects.php">launch projects</a>. Since then we've
+  all of our <a href="projects">launch projects</a>. Since then we've
   been improving our existing projects, and starting new ones, some <a
   href="http://www.mysociety.org/2006/07/21/summer-daze/">described in this
   post</a> on our developers' blog. We're getting money from 
@@ -60,7 +60,7 @@ include "wordpress/wp-content/themes/mysociety/header.php";
     help of all kinds. Anything from marketing, to fund
     raising, to graphic design, to programming, human computer interface
     work, anything. If you're interested, please <a
-    href="mailto:tom@mysociety.org?subject=Help">email</a> us or check
+    href="mailto:tom&#64;mysociety.org?subject=Help">email</a> us or check
     out our <a href="/volunteertasks">volunteer tasks</a> page.  </p>
 
         <p><b>Q. Are you a registered charity?<br/>A.</b> mySociety is the
@@ -127,7 +127,7 @@ project of a registered charity. The charity is called UK Citizens Online Democr
 		<p><b>Q. How can I be kept up to date with the projects?<br/>A.</b> Please join our <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/news">mailing list</a>. All normal no-moronic-spamming policies apply.
         If you use RSS, you can subscribe to our <a href="/">news</a> or <a href="/category/developers">developers</a> blogs.</p>
 
-        <p><b>Q. How can I contact you?<br />A.</b> See our <a href="/contact.php">contact page</a>.
+        <p><b>Q. How can I contact you?<br />A.</b> See our <a href="/contact">contact page</a>.
 
      </div>
 

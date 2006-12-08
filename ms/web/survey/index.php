@@ -500,7 +500,7 @@ escalate complaints as required.
     Sussex county council, but we are keen to work with further partners.
 
     <p>For more details on the organisation, its aims and ambitions, please
-    <a href="http://www.mysociety.org/faq.php" target="_blank">click here</a>.
+    <a href="http://www.mysociety.org/faq" target="_blank">click here</a>.
 
     <? } elseif ($page == 4) { ?>
     <h1>E-Innovations Fund</h1>

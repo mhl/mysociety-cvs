@@ -8,8 +8,8 @@ mySociety.org - Contact us
 </div>
 <div class="item">
   <p><b>By email<br/>
-  </b> Email the mySociety team <a href="mailto:team@mysociety.org">team@mysociety.org</a>,
-  or just Tom Steinberg <a href="mailto:tom@mysociety.org">tom@mysociety.org</a>, 
+  </b> Email the mySociety team <a href="mailto:team&#64;mysociety.org">team&#64;mysociety.org</a>,
+  or just Tom Steinberg <a href="mailto:tom&#64;mysociety.org">tom&#64;mysociety.org</a>, 
 
   <p><b>By phone<br/>
   </b> Call Tom Steinberg on <b>07811 082158</b>.</p>

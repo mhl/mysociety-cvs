@@ -68,7 +68,7 @@ What now?
 </div>
 <div class="item">
 <ul>
-<li>We appreciate feedback on all our live sites, so please <a href="mailto:team@mysociety.org">tell us</a> what we can improve.</li>
+<li>We appreciate feedback on all our live sites, so please <a href="mailto:team&#64;mysociety.org">tell us</a> what we can improve.</li>
 <li>Non-techy, graphic designer, programmer? <a href="/volunteertasks">Help build, publicise and improve</a> our sites.</li>
 <li>If you're a techy, you might be interested in our <a href="https://secure.mysociety.org/cvstrac/dir?d=mysociety">source code</a>.
 </ul>
