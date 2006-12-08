@@ -37,11 +37,14 @@ USD U.S. Dollar
 <div class="item_inner_head">Are you from the UK? Gift Aid it!</div>
 <div class="item">
 <p>
-To increase the value your donations at no extra cost to yourself, if you are a UK tax payer, please tick the 'I want my donation to be a Gift Aid donation' box below. You must pay an amount of Income Tax and/or Capital Gains Tax at least equal to the tax that we'll reclaim on your donations (currently 28p for each &pound;1 you give).
+To increase the value your donations at no extra cost to yourself,
+if you are a UK tax payer, please select the appropriate option below.
+You must pay an amount of Income
+Tax and/or Capital Gains Tax at least equal to the tax that we'll
+reclaim on your donations (currently 28p for each &pound;1 you give).
 </p>
 </div>
 <div class="item_inner_head">Make a one off donation</div>
-
 
 <div class="item">
 
@@ -56,29 +59,26 @@ To increase the value your donations at no extra cost to yourself, if you are a 
 <input type="hidden" name="lc" value="GB">
 <input type="hidden" name="bn" value="PP-DonationsBF">
 
-<label for="currency">I would like to donate</label>
+<p><label for="currency">I would like to donate</label>
 <select id="currency" name="currency_code">
 <option value="GBP">UK Sterling &pound;</option>
 <option value="USD">US Dollars $</option>
 </select>
-<input name="amount" />
-<br />
+<input name="amount" size="5" />
+</p>
 
 <input type="hidden" name="on0" value="Donation with Gift Aid" />
-<label for="giftaid">I want all donations I make to UK Citizens Online Democracy from this date until further notice to be Gift Aid donations</label>
-Yes: <input type="radio" id="giftaid" name="os0" value="Yes" />
-No: <input type="radio" id="giftaid" name="os0" value="No" checked="checked" />
-<br />
+<p>I want all donations I make to UK Citizens Online Democracy from this date until further notice to be Gift Aid donations:
+<label for="giftaid_yes">Yes:</label> <input type="radio" id="giftaid_yes" name="os0" value="Yes" />
+<label for="giftaid_no">No:</label> <input type="radio" id="giftaid_no" name="os0" value="No" checked="checked" />
+</p>
 
-<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
-<img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+<p><input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!"></p>
 </form>
 
 </div>
 
 <div class="item_inner_head">Set up a regular monthly payment</div>
-
-
 
 <div  class="item">
 
@@ -95,24 +95,23 @@ No: <input type="radio" id="giftaid" name="os0" value="No" checked="checked" />
 <input type="hidden" name="src" value="1">
 <input type="hidden" name="sra" value="1">
 
-
 <p>I would like to donate
 <select name="currency_code">
 <option value="GBP">UK Sterling &pound;</option>
 <option value="USD">US Dollars $</option>
 </select>
 
-<input name="a3" /> once a month, starting tomorrow, until I cancel the payments.</p>
-<br />
+<input name="a3" size="5" /> once a month, starting tomorrow, until I cancel the payments.</p>
 
 <input type="hidden" name="on0" value="Donation with Gift Aid" />
-<label for="giftaid">I want all donations I make to UK Citizens Online Democracy from this date until further notice to be Gift Aid donations</label>
-Yes: <input type="radio" id="giftaid" name="os0" value="Yes" />
-No: <input type="radio" id="giftaid" name="os0" value="No" checked="checked" />
-<br />
+<p>I want all donations I make to UK Citizens Online Democracy from this date until further notice to be Gift Aid donations
+<label for="giftaid_yes_s">Yes:</label>
+<input type="radio" id="giftaid_yes_s" name="os0" value="Yes" />
+<label for="giftaid_no_s">No:</label>
+<input type="radio" id="giftaid_no_s" name="os0" value="No" checked="checked" />
+</p>
 
-<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-subscribe.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
-<img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+<p><input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-subscribe.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!"></p>
 </form>
 
 </div>
@@ -120,7 +119,3 @@ No: <input type="radio" id="giftaid" name="os0" value="No" checked="checked" />
 </div>
 
 <?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
-
-
-
-
