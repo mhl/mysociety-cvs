@@ -49,6 +49,7 @@ USD U.S. Dollar
 
 <div id="donatebox">
 
+<img src="/ccs_sm.gif" align="right" width="75" height="49" alt="" />
 <h3 class="f">Make a one off donation</h3>
 
 <form action="<?php echo $paypal_url; ?>" method="post">
@@ -97,17 +98,11 @@ USD U.S. Dollar
 (<a href="#giftaid">?</a>)</p>
 
 <p align="right">
-<img src="logo_ccVisa.gif" alt="" width="37" height="21" align="middle">
-<img src="logo_ccMC.gif" alt="" width="37" height="21" align="middle">
 <input type="submit" value="Donate" /></p>
 </form>
 
-<?
-/*
 <p>Or simply transfer money to our bank account! Our sort code is
 40-03-28, our account number 31546341.</p>
-*/
-?>
 
 <h3 class="d">Set up a regular monthly payment</h3>
 
@@ -162,8 +157,6 @@ Gift Aid donations:
 (<a href="#giftaid">?</a>)</p>
 
 <p align="right">
-<img src="logo_ccVisa.gif" alt="" width="37" height="21" align="middle">
-<img src="logo_ccMC.gif" alt="" width="37" height="21" align="middle">
 <input type="submit" value="Donate" /></p>
 </form>
 
