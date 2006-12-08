@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>Give us lots of money!</title>
+</head>
+<body>
+
+<h1>Welcome to EvilTwinOfMySociety</h1>
+
+<em>NOTE: Most of this is ripped off wholesale from <a href="http://www.avert.org/online-donations.htmi">http://www.avert.org/online-donations.htm</a></em>
+
+
+<p>Please give us lots of money.</p>
+
+
+
+
+<!--
+
+Paypal currency codes:
+
+AUD Australian Dollar
+CAD Canadian Dollar
+CHF Swiss Franc
+CZK Czech Koruna
+DKK Danish Krone
+EUR Euro
+GBP Pound Sterling
+HKD Hong Kong Dollar
+HUF Hungarian Forint
+JPY Japanese Yen
+NOK Norwegian Krone
+NZD New Zealand Dollar
+PLN Polish Zloty
+SEK Swedish Krona
+SGD Singapore Dollar
+THB Thai Baht
+USD U.S. Dollar
+-->
+
+
+<h3>Are you from the UK? Gift Aid it!</h3>
+
+To increase your donations at no extra cost, if you are a UK tax payer, please tick the 'GIFT AID' box below. For each &pound;1 of your donation we receive an extra 28p from the Inland Revenue.
+
+
+<h3>Make a one off donation</h3>
+
+
+<div style="border-style: solid; padding: 1em;">
+
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="bob@evilmysociety.org">
+<input type="hidden" name="item_name" value="Donation to mySociety">
+<input type="hidden" name="no_shipping" value="2">
+<input type="hidden" name="no_note" value="1">
+<!-- <input type="hidden" name="currency_code" value="GBP"> -->
+<input type="hidden" name="tax" value="0">
+<input type="hidden" name="lc" value="GB">
+<input type="hidden" name="bn" value="PP-DonationsBF">
+
+<label for="currency">I would like to donate</label>
+<select id="currency" name="currency_code">
+<option value="GBP">UK Sterling &pound;</option>
+<option value="USD">US Dollars $</option>
+</select>
+<input name="amount" />
+<br />
+
+<input type="hidden" name="on0" value="Donation with Gift Aid" />
+<label for="giftaid">May we claim Gift Aid on your donation?</label>
+Yes: <input type="radio" id="giftaid" name="os0" value="Yes" />
+No: <input type="radio" id="giftaid" name="os0" value="No" checked="checked" />
+<br />
+
+<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+</div>
+
+<h3>Set up a regular monthly payment</h3>
+
+
+
+
+
+<div style="border-style: solid; padding: 1em;">
+
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick-subscriptions">
+<input type="hidden" name="business" value="bob@evilmysociety.org">
+<input type="hidden" name="item_name" value="Monthly Donation to mySociety">
+<input type="hidden" name="no_shipping" value="1">
+<input type="hidden" name="no_note" value="1">
+<input type="hidden" name="lc" value="GB">
+<input type="hidden" name="bn" value="PP-SubscriptionsBF">
+<input type="hidden" name="p3" value="1">
+<input type="hidden" name="t3" value="M">
+<input type="hidden" name="src" value="1">
+<input type="hidden" name="sra" value="1">
+
+
+<p>I would like to donate
+<select name="currency_code">
+<option value="GBP">UK Sterling &pound;</option>
+<option value="USD">US Dollars $</option>
+</select>
+
+<input name="a3" /> once a month, starting tommorow, until I cancel the payments.</p>
+<br />
+
+<input type="hidden" name="on0" value="Donation with Gift Aid" />
+<label for="giftaid">May we claim Gift Aid on your donation?</label>
+Yes: <input type="radio" id="giftaid" name="os0" value="Yes" />
+No: <input type="radio" id="giftaid" name="os0" value="No" checked="checked" />
+<br />
+
+<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-subscribe.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+</div>
+
+</body>
+</html>
+
