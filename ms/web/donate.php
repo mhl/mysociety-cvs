@@ -1,16 +1,35 @@
 <?php
 include "wordpress/wp-blog-header.php";
 include "wordpress/wp-content/themes/mysociety/header.php";
-?>
+
+/* TODO: I'm sure there's some clever mySociety Staging/Testing var somewhere I could pick up here... */
+
+$stagingsite = "yes";
+
+if( $stagingsite="yes" )
+{
+	/* STAGING settings */
+	$paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+	$business = "bob@evilmysociety.org";
+	$return_url = "http://staging.mysociety.org/donatethanks.php";
+	$cancel_url = "http://staging.mysociety.org/donatecancel.php";
+}
+else
+{
+	/* LIVE settings */
+	
+	// TODO!!!!
+	$business = "";
+	// TODO!!!!
+	
+	$paypal_url = "https://www.paypal.com/cgi-bin/webscr";
+	$return_url = "http://mysociety.org/donatethanks.php";
+	$cancel_url = "http://mysociety.org/donatecancel.php";
+}
 
 
-<div class="item_head">Support mySociety</div>
 
-<div class="item">
-<p>To support the work of mySociety, you can make a donation to UK Citizens Online Democracy, mySociety's parent charity.</p>
-</div>
-
-<!--
+/*
 
 Paypal currency codes:
 
@@ -31,7 +50,16 @@ SEK Swedish Krona
 SGD Singapore Dollar
 THB Thai Baht
 USD U.S. Dollar
--->
+*/
+
+?>
+
+
+<div class="item_head">Support mySociety</div>
+
+<div class="item">
+<p>To support the work of mySociety, you can make a donation to UK Citizens Online Democracy, mySociety's parent charity.</p>
+</div>
 
 
 <div class="item_inner_head">Are you from the UK? Gift Aid it!</div>
@@ -48,21 +76,25 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 
 <div class="item">
 
-<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+<form action="<?php echo $paypal_url; ?>" method="post">
 <input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="bob@evilmysociety.org">
+<input type="hidden" name="business" value="<?php echo $business; ?>">
 <input type="hidden" name="item_name" value="Donation to mySociety">
 <input type="hidden" name="no_shipping" value="2">
 <input type="hidden" name="no_note" value="1">
-<!-- <input type="hidden" name="currency_code" value="GBP"> -->
 <input type="hidden" name="tax" value="0">
 <input type="hidden" name="lc" value="GB">
 <input type="hidden" name="bn" value="PP-DonationsBF">
+<input type="hidden" name="rm" value="2">
+<input type="hidden" name="return" value="<?php echo $return_url; ?>">
+<input type="hidden" name="cancel_return" value="<?php echo $cancel_url; ?>">
+
 
 <p><label for="currency">I would like to donate</label>
 <select id="currency" name="currency_code">
 <option value="GBP">UK Sterling &pound;</option>
 <option value="USD">US Dollars $</option>
+<option value="EUR">Euro &euro;</option>
 </select>
 <input name="amount" size="5" />
 </p>
@@ -82,9 +114,9 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 
 <div  class="item">
 
-<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+<form action="<?php echo $paypal_url; ?>" method="post">
 <input type="hidden" name="cmd" value="_xclick-subscriptions">
-<input type="hidden" name="business" value="bob@evilmysociety.org">
+<input type="hidden" name="business" value="<?php echo $business; ?>">
 <input type="hidden" name="item_name" value="Monthly Donation to mySociety">
 <input type="hidden" name="no_shipping" value="1">
 <input type="hidden" name="no_note" value="1">
@@ -94,11 +126,15 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 <input type="hidden" name="t3" value="M">
 <input type="hidden" name="src" value="1">
 <input type="hidden" name="sra" value="1">
+<input type="hidden" name="rm" value="2">
+<input type="hidden" name="return" value="<?php echo $return_url; ?>">
+<input type="hidden" name="cancel_return" value="<?php echo $cancel_url; ?>">
 
 <p>I would like to donate
 <select name="currency_code">
 <option value="GBP">UK Sterling &pound;</option>
 <option value="USD">US Dollars $</option>
+<option value="EUR">Euro &euro;</option>
 </select>
 
 <input name="a3" size="5" /> once a month, starting tomorrow, until I cancel the payments.</p>
