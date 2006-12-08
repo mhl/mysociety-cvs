@@ -4,6 +4,12 @@ body	{
     margin: 0 auto;
     max-width: 50em;
 }
+
+label {
+	cursor: pointer;
+	cursor: hand;
+}
+
 .top	{
 	margin: 0 0 1em 20px;
 	padding: 0;
@@ -122,6 +128,7 @@ div.item_foot	{
 div.page-body	{
 	margin: 0 0 2em 20px;
 	background: #FFFFFF;
+    width: expression(document.body.clientWidth > (820/12) * parseInt(document.body.currentStyle.fontSize)?"50em":"auto");
 	}
 div#content {
     float: left;
@@ -165,7 +172,7 @@ a:hover	{
 }
 
 /* This is all rather messy, isn't it? */
-.page-body p {
+.page-body p, .page-body li {
     line-height: 1.4;
 }
 
@@ -538,3 +545,37 @@ Copyright (c) 2001, 2002, 2003 by Juergen Hermann
 .moin .diff-removed span {
 	background-color: #FFFF80;
 }
+
+/* Donations page */
+
+#betteritemdiv {
+    font-size: 14px;
+    padding: 1em;
+    background-color: #f0f0ff;
+    border: dashed 1px black;
+    margin-top: 1em;
+}
+
+#betteritemdiv h2 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+#donatebox {
+    float: right;
+    width: 32%;
+    font-size: 83%;
+    border: solid 1px black;
+    background-color: white;
+    padding: 10px;
+    margin: 0 0 1em 1em;
+}
+
+#donatebox h3.d {
+    border-top: dotted 1px #666666;
+    padding-top: 0.5em;
+}
+#donatebox h3.f {
+    margin-top: 0;
+}
+
