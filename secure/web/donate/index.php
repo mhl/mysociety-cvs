@@ -1,6 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Donate - mySociety</title>
+<link rel="stylesheet" href="global.css" type="text/css" media="screen">
+</head>
+
+<body>
+<div class="top">
+<div class="masthead"><a href="http://www.mysociety.org/"><img border="0" src="/mslogo.gif" alt="mySociety.org"></a></div>
+</div>
+
+<div class="page-body">
+<div class="menu">
+&nbsp;<a href="http://www.mysociety.org/">News</a>&nbsp;|
+&nbsp;<a href="http://www.mysociety.org/faq">FAQ</a> &nbsp;|
+&nbsp;<a href="http://www.mysociety.org/projects">Projects</a>&nbsp;|
+&nbsp;<a href="http://www.mysociety.org/category/developers">Developers' Blog</a>&nbsp;|
+&nbsp;<a href="http://www.mysociety.org/moin.cgi">Wiki</a> |
+&nbsp;<a href="http://www.mysociety.org/volunteertasks">Volunteer</a> |
+&nbsp;<a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/">Email Lists</a> |
+&nbsp;<a href="http://www.mysociety.org/contact">Contact</a>
+</div>
 <?php
-include "wordpress/wp-blog-header.php";
-include "wordpress/wp-content/themes/mysociety/header.php";
 
 if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
     /* STAGING settings */
@@ -22,7 +44,7 @@ if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
 
 <div id="donatebox">
 
-<img src="/ccs_sm.gif" align="right" width="75" height="49" alt="" />
+<img src="ccs_sm.gif" align="right" width="75" height="49" alt="">
 <h3 class="f">Make a one off donation via PayPal</h3>
 
 <form action="<?php echo $paypal_url; ?>" method="post">
@@ -39,7 +61,7 @@ if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
 <input type="hidden" name="cancel_return" value="<?php echo $cancel_url; ?>">
 
 
-<p><label for="amount_donate">I would like to donate</label><br />
+<p><label for="amount_donate">I would like to donate</label><br>
 <select id="currency" name="currency_code">
 <option value="GBP">UK &pound;</option>
 <option value="USD">US Dollar $</option>
@@ -59,19 +81,19 @@ if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
 <option value="SGD">Singapore Dollar</option>
 <option value="THB">Thai Baht</option>
 </select>
-<input id="amount_donate" name="amount" size="10" />
+<input id="amount_donate" name="amount" size="10">
 </p>
 
-<input type="hidden" name="on0" value="Donation with Gift Aid" />
+<input type="hidden" name="on0" value="Donation with Gift Aid">
 <p>I want all donations I make to UK Citizens Online Democracy from this date until further notice to be Gift Aid donations:
-<input type="radio" id="giftaid_yes" name="os0" value="Yes" />
+<input type="radio" id="giftaid_yes" name="os0" value="Yes">
 <label for="giftaid_yes">Yes</label>
-<input type="radio" id="giftaid_no" name="os0" value="No" checked="checked" />
+<input type="radio" id="giftaid_no" name="os0" value="No" checked>
 <label for="giftaid_no">No</label>
 (<a href="#giftaid">?</a>)</p>
 
 <p align="right">
-<input type="submit" value="Donate" /></p>
+<input type="submit" value="Donate"></p>
 </form>
 
 <p>Sorry, but due to money laundering regulations, we can't simply make
@@ -96,7 +118,7 @@ convenient.</p>
 <input type="hidden" name="return" value="<?php echo $return_url; ?>">
 <input type="hidden" name="cancel_return" value="<?php echo $cancel_url; ?>">
 
-<p><label for="amount_regular">I would like to donate</label><br />
+<p><label for="amount_regular">I would like to donate</label><br>
 <select name="currency_code">
 <option value="GBP">UK &pound;</option>
 <option value="USD">US Dollar $</option>
@@ -117,21 +139,21 @@ convenient.</p>
 <option value="THB">Thai Baht</option>
 </select>
 
-<input id="amount_regular" name="a3" size="10" />
+<input id="amount_regular" name="a3" size="10">
 once a month, starting tomorrow, until I cancel the payments.</p>
 
-<input type="hidden" name="on0" value="Donation with Gift Aid" />
+<input type="hidden" name="on0" value="Donation with Gift Aid">
 <p>I want all donations I make to UK Citizens Online
 Democracy from this date until further notice to be
 Gift Aid donations:
-<input type="radio" id="giftaid_yes_s" name="os0" value="Yes" />
+<input type="radio" id="giftaid_yes_s" name="os0" value="Yes">
 <label for="giftaid_yes_s">Yes</label>
-<input type="radio" id="giftaid_no_s" name="os0" value="No" checked="checked" />
+<input type="radio" id="giftaid_no_s" name="os0" value="No" checked>
 <label for="giftaid_no_s">No</label>
 (<a href="#giftaid">?</a>)</p>
 
 <p align="right">
-<input type="submit" value="Donate" /></p>
+<input type="submit" value="Donate"></p>
 </form>
 
 <h3 class="d">Set up a regular donation via Standing Order</h3>
@@ -156,12 +178,16 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 <p>To support the work of mySociety, you can make a donation to UK Citizens Online Democracy, mySociety's parent charity.</p>
 
 <p>Despite being part of a registered charity mySociety has never asked for donations from the public before. But some people might say that when your own users start asking if they can give you cash, it might be churlish to refuse. </p>
-<p>If you love mySociety and its sites with such unbridled passion that you don't need any actual persuading to donate, then please just &lt;go ahead and let rip&gt;. But if you want some reasons, here they are... </p>
+<p>If you love mySociety and its sites with such unbridled passion that you don't need any actual persuading to donate, then please just go ahead and let rip. But if you want some reasons, here they are... </p>
 
 <ul>
-<li>44% of people who used <a href="/moin.cgi/WriteToThem">WriteToThem</a> last year had never written to a politician ever before. mySociety shows that the net can connect normal people with the political process, not just extend the power of those already in the know. </li>
+<li>44% of people who used <a href="http://www.writetothem.com/">WriteToThem</a> last year had never written to a politician ever before. mySociety shows that the net can connect normal people with the political process, not just extend the power of those already in the know. </li>
 
-<li>Over 10,000 people a day visit <a href="/moin.cgi/TheyWorkForYou">TheyWorkForYou</a> to get unbiased, uneditorialised information on what their MPs have been doing, saying and voting on. Also, every day Parliament is in session over 10,000 people get sent personalised emails from <a href="/moin.cgi/TheyWorkForYou">TheyWorkForYou</a> telling them what their MP said the day before, or showing them where an issue they care about was discussed. </li>
+<li>Over 10,000 people a day visit <a href="http://www.theyworkforyou/com/">TheyWorkForYou</a>
+to get unbiased, uneditorialised information on what their MPs have been doing,
+saying and voting on. Also, every day Parliament is in session over 10,000
+people get sent personalised emails from <a href="http://www.theyworkforyou.com/">TheyWorkForYou</a>
+telling them what their MP said the day before, or showing them where an issue they care about was discussed. </li>
 
 <li>mySociety is starting to influence the way in which government and politicians use the net for the better. We've been told of politician's offices who have got better at responding to mail because of our league tables, and we successfully persuaded No10 to run a petition system that is truly transparent and willing to host even harsh criticisms of government policy. Nearly 90 MPs have used
 <a href="http://www.hearfromyourmp.com/">HearFromYourMP</a> to talk with their constituents, even though they're trading off absolute control in exchange for dialogue. </li>
@@ -193,8 +219,11 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 </ol>
 <p>Thanks Alan! </p>
 <p>UPDATE 2 </p>
-<p>Do you work in the House of Commons and use our site every day? Yes? Well GIVE US SOME MONEY TO DO THE COMMITTEES THEN. Thanks <img src="/wiki/mstheme/img/smile.png" alt=":)" height="15" width="15"> </p>
+<p>Do you work in the House of Commons and use our site every day? Yes? Well
+GIVE US SOME MONEY TO DO THE COMMITTEES THEN. Thanks :)</p>
 
 </div>
 
-<?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
+</div>
+</body>
+</html>
