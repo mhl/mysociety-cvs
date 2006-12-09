@@ -10,38 +10,11 @@ if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
     $cancel_url = "http://staging.mysociety.org/donatecancel";
 } else {
     /* LIVE settings */
-    
-    // TODO!!!!
-    $business = "";
-    // TODO!!!!
-    
     $paypal_url = "https://www.paypal.com/cgi-bin/webscr";
+    $business = "mysocietyteam";
     $return_url = "https://secure.mysociety.org/donate/thanks";
     $cancel_url = "https://secure.mysociety.org/donate/cancel";
 }
-
-/*
-
-Paypal currency codes:
-
-AUD Australian Dollar
-CAD Canadian Dollar
-CHF Swiss Franc
-CZK Czech Koruna
-DKK Danish Krone
-EUR Euro
-GBP Pound Sterling
-HKD Hong Kong Dollar
-HUF Hungarian Forint
-JPY Japanese Yen
-NOK Norwegian Krone
-NZD New Zealand Dollar
-PLN Polish Zloty
-SEK Swedish Krona
-SGD Singapore Dollar
-THB Thai Baht
-USD U.S. Dollar
-*/
 
 ?>
 
@@ -50,7 +23,7 @@ USD U.S. Dollar
 <div id="donatebox">
 
 <img src="/ccs_sm.gif" align="right" width="75" height="49" alt="" />
-<h3 class="f">Make a one off donation</h3>
+<h3 class="f">Make a one off donation via PayPal</h3>
 
 <form action="<?php echo $paypal_url; ?>" method="post">
 <input type="hidden" name="cmd" value="_xclick">
@@ -101,10 +74,11 @@ USD U.S. Dollar
 <input type="submit" value="Donate" /></p>
 </form>
 
-<p>Or simply transfer money to our bank account! Our sort code is
-40-03-28, our account number 31546341.</p>
+<p>Sorry, but due to money laundering regulations, we can't simply make
+our BACS information available, even though that would be really
+convenient.</p>
 
-<h3 class="d">Set up a regular monthly payment</h3>
+<h3 class="d">Set up a regular monthly payment via PayPal</h3>
 
 <form action="<?php echo $paypal_url; ?>" method="post">
 <input type="hidden" name="cmd" value="_xclick-subscriptions">
@@ -160,8 +134,11 @@ Gift Aid donations:
 <input type="submit" value="Donate" /></p>
 </form>
 
-<p>Or download a <a href="standing_order.pdf">Standing Order form</a> and fill
-it in if you'd prefer that.</p>
+<h3 class="d">Set up a regular donation via Standing Order</h3>
+
+<p>This needs to be done a slightly more old-fashioned way &mdash; please
+download and fill in our <a href="standing_order.pdf">standing order form</a>.
+</p>
 
 <h3 class="d"><a name="giftaid" id="giftaid"></a>Are you from the UK? Gift Aid it!</h3>
 <p>
@@ -174,7 +151,7 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 
 </div>
 
-<h2>Support mySociety</h2>
+<h2>Donate to mySociety</h2>
 
 <p>To support the work of mySociety, you can make a donation to UK Citizens Online Democracy, mySociety's parent charity.</p>
 
