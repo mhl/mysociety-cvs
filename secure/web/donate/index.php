@@ -57,7 +57,7 @@ if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
 <input type="hidden" name="tax" value="0">
 <input type="hidden" name="lc" value="GB">
 <input type="hidden" name="bn" value="PP-DonationsBF">
-<input type="hidden" name="rm" value="2">
+<input type="hidden" name="rm" value="1">
 <input type="hidden" name="return" value="<?php echo $return_url; ?>">
 <input type="hidden" name="cancel_return" value="<?php echo $cancel_url; ?>">
 
@@ -115,7 +115,7 @@ convenient.</p>
 <input type="hidden" name="t3" value="M">
 <input type="hidden" name="src" value="1">
 <input type="hidden" name="sra" value="1">
-<input type="hidden" name="rm" value="2">
+<input type="hidden" name="rm" value="1">
 <input type="hidden" name="return" value="<?php echo $return_url; ?>">
 <input type="hidden" name="cancel_return" value="<?php echo $cancel_url; ?>">
 
