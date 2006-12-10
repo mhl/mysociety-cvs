@@ -24,6 +24,7 @@
 </div>
 <?php
 
+/* Should be in config file */
 if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
     /* STAGING settings */
     $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
@@ -33,7 +34,7 @@ if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
 } else {
     /* LIVE settings */
     $paypal_url = "https://www.paypal.com/cgi-bin/webscr";
-    $business = "mysocietyteam";
+    $business = 'james' . "@" . 'mysociety.org';
     $return_url = "https://secure.mysociety.org/donate/thanks";
     $cancel_url = "https://secure.mysociety.org/donate/cancel";
 }
