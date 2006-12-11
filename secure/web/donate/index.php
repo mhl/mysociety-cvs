@@ -53,14 +53,13 @@ if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
 <input type="hidden" name="business" value="<?php echo $business; ?>">
 <input type="hidden" name="item_name" value="Donation to mySociety">
 <input type="hidden" name="no_shipping" value="2">
-<input type="hidden" name="no_note" value="1">
 <input type="hidden" name="tax" value="0">
 <input type="hidden" name="lc" value="GB">
 <input type="hidden" name="bn" value="PP-DonationsBF">
 <input type="hidden" name="rm" value="1">
 <input type="hidden" name="return" value="<?php echo $return_url; ?>">
 <input type="hidden" name="cancel_return" value="<?php echo $cancel_url; ?>">
-
+<input type="hidden" name="cn" value="Please tell us why you're donating">
 
 <p><label for="amount_donate">I would like to donate</label><br>
 <select id="currency" name="currency_code">
@@ -108,7 +107,6 @@ convenient.</p>
 <input type="hidden" name="business" value="<?php echo $business; ?>">
 <input type="hidden" name="item_name" value="Monthly Donation to mySociety">
 <input type="hidden" name="no_shipping" value="1">
-<input type="hidden" name="no_note" value="1">
 <input type="hidden" name="lc" value="GB">
 <input type="hidden" name="bn" value="PP-SubscriptionsBF">
 <input type="hidden" name="p3" value="1">
@@ -118,6 +116,7 @@ convenient.</p>
 <input type="hidden" name="rm" value="1">
 <input type="hidden" name="return" value="<?php echo $return_url; ?>">
 <input type="hidden" name="cancel_return" value="<?php echo $cancel_url; ?>">
+<input type="hidden" name="cn" value="Please tell us why you're donating">
 
 <p><label for="amount_regular">I would like to donate</label><br>
 <select name="currency_code">
