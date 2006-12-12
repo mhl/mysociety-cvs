@@ -177,8 +177,8 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 
 <p>To support the work of mySociety, you can make a donation to UK Citizens Online Democracy, mySociety's parent charity.</p>
 
-<p>Despite being part of a registered charity mySociety has never asked for donations from the public before. But some people might say that when your own users start asking if they can give you cash, it might be churlish to refuse. </p>
-<p>If you love mySociety and its sites with such unbridled passion that you don't need any actual persuading to donate, then please just go ahead and let rip. But if you want some reasons, here they are... </p>
+<p>Despite being part of a registered charity mySociety has never asked for donations from the public before. But when your own users start asking if they can give you cash, it would be churlish to refuse. </p>
+<p>If you love mySociety and its sites with such unbridled passion that you don't need any actual persuading to donate, then please just go ahead and let rip (fill in the form to the right). But if you want some reasons, here they are... </p>
 
 <ul>
 <li>44% of people who used <a href="http://www.writetothem.com/">WriteToThem</a> last year had never written to a politician ever before. mySociety shows that the net can connect normal people with the political process, not just extend the power of those already in the know. </li>
@@ -189,10 +189,10 @@ saying and voting on. Also, every day Parliament is in session over 10,000
 people get sent personalised emails from <a href="http://www.theyworkforyou.com/">TheyWorkForYou</a>
 telling them what their MP said the day before, or showing them where an issue they care about was discussed. </li>
 
-<li>mySociety is starting to influence the way in which government and politicians use the net for the better. We've been told of politician's offices who have got better at responding to mail because of our league tables, and we successfully persuaded No10 to run a petition system that is truly transparent and willing to host even harsh criticisms of government policy. Nearly 90 MPs have used
+<li>mySociety is starting to influence the way in which government and politicians use the net for the better. We've been told of politician's offices who have got better at responding to mail because of our league tables, and we successfully persuaded No10 to run a petition system that is truly transparent and willing to host even harsh criticisms of government policy. Just 90 MPs have used
 <a href="http://www.hearfromyourmp.com/">HearFromYourMP</a> to talk with their constituents, even though they're trading off absolute control in exchange for dialogue. </li>
 
-<li>We can use money donated to do all sorts of good things, including:
+<li>We will use money donated to do all sorts of good things, including but not limited to:
 <ul>
 <li>Building new sites</li>
 <li>Keeping the old ones working</li>
