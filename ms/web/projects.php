@@ -4,7 +4,7 @@ include "wordpress/wp-content/themes/mysociety/header.php";
 ?>
 
 <div class="item_head">
-Launched Sites
+Launched sites
 </div>
 
 <div class="item_inner_head">
@@ -63,6 +63,56 @@ volunteers while mySociety was getting started, it is now part of mySociety.
 <div class="item_foot">
 </div>
 
+<!--<div class="item_head">
+Sites In Testing
+</div>-->
+
+<div class="item_head">
+Sites we built for other people
+</div>
+
+<div class="item_inner_head">
+<a href="http://petitions.pm.gov.uk">E-Petitions - Launched 14th November 2006</a>
+</div>
+<div class="item">
+We built the 10 Downing Street e-Petitions site as a civil service commissioned
+project to allow members of the public to petition the Prime Minister about
+whatever issues they see fit. Highly robust and load-tolerant, it is also
+available as open source code for reuse elsewhere.  
+</div>
+
+<div class="item_foot">
+</div>
+
+
+<div class="item_head">
+Sites being built
+</div>
+
+<div class="item_inner_head">
+Neighbourhood Fix-It
+</div>
+<div class="item">
+A site where people can report, view, or discuss local problems like graffiti,
+fly tipping, broken paving slabs, or street lighting. We're making this 
+in collaboration with the <a href="http://www.youngfoundation.org.uk/">Young
+Foundation</a>.  
+</div>
+
+<div class="item_inner_head">
+Freedom of Information Filer and Archive
+</div>
+<div class="item">
+We're building a website to help people make Freedom of Information requests
+from different parts of government. It will then archive the responses on the
+web. We've got <a
+href="http://www.mysociety.org/2006/12/06/funding-for-freedom-of-information/">funding
+from one of Joseph Rowntree's trusts</a> for this (yes, the dead chocolate mogul;
+eat lots of chocolate, it'll help mySociety's successors in the 22nd century).
+</div>
+<div class="item_foot">
+</div>
+
 <div class="item_head">
 What now?
 </div>
@@ -75,20 +125,6 @@ What now?
 </div>
 <div class="item_foot">
 </div>
-
-<!--<div class="item_head">
-Sites In Testing
-</div>-->
-
-<!---<div class="item_head">
-Sites Being Built
-</div>
-<div class="item_inner_head">
-</div>
-<div class="item">
-</div>
-<div class="item_foot">
-</div>-->
 
 
 <?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
