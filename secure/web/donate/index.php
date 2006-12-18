@@ -189,7 +189,12 @@ saying and voting on. Also, every day Parliament is in session over 10,000
 people get sent personalised emails from <a href="http://www.theyworkforyou.com/">TheyWorkForYou</a>
 telling them what their MP said the day before, or showing them where an issue they care about was discussed. </li>
 
-<li>mySociety is starting to influence the way in which government and politicians use the net for the better. We've been told of politician's offices who have got better at responding to mail because of our league tables, and we successfully persuaded No10 to run a petition system that is truly transparent and willing to host even harsh criticisms of government policy. Just 90 MPs have used
+<li>mySociety is starting to influence the way in which government
+and politicians use the net for the better. We've been told of
+politicians' offices who have got better at responding to mail
+because of our league tables, and we successfully persuaded No10
+to run a petition system that is truly transparent and willing to
+host even harsh criticisms of government policy. Just 90 MPs have used
 <a href="http://www.hearfromyourmp.com/">HearFromYourMP</a> to talk with their constituents, even though they're trading off absolute control in exchange for dialogue. </li>
 
 <li>We will use money donated to do all sorts of good things, including but not limited to:
