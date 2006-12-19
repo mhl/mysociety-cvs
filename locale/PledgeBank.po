@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-12-12 14:51+0000\n"
+"POT-Creation-Date: 2006-12-15 08:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <team@pledgebank.com>\n"
@@ -1676,7 +1676,11 @@ msgstr ""
 msgid "If you prefer, you can email %s instead of using the form."
 msgstr ""
 
-#: pb/phplib/microsites.php:665 pb/web/pb.js:38 pb/web/pb.js:40
+#: pb/phplib/microsites.php:595
+msgid "This pledge is now closed, as its deadline has passed."
+msgstr ""
+
+#: pb/phplib/microsites.php:673 pb/web/pb.js:38 pb/web/pb.js:40
 msgid "other local people"
 msgstr ""
 
@@ -4297,18 +4301,18 @@ msgstr ""
 msgid "Trying to use us for SPAMMING!?!?!"
 msgstr ""
 
-#: pb/web/ref-email.php:66
+#: pb/web/ref-email.php:67
 #, php-format
 msgid "%s added this message:"
 msgstr ""
 
-#: pb/web/ref-email.php:71
+#: pb/web/ref-email.php:72
 msgid ""
 "Your message has been sent.  Thanks very much for spreading the word of this "
 "pledge."
 msgstr ""
 
-#: pb/web/ref-email.php:75
+#: pb/web/ref-email.php:76
 msgid ""
 "Unfortunately, something went wrong when trying to send the emails. Please "
 "check that all the email addresses are correct."
@@ -4363,10 +4367,6 @@ msgstr ""
 #: pb/web/ref-flyers.php:71
 #, php-format
 msgid "Alternatively, simply %s to get these flyers."
-msgstr ""
-
-#: pb/web/ref-index.php:70
-msgid "This pledge is now closed, as its deadline has passed."
 msgstr ""
 
 #: pb/web/ref-index.php:76
@@ -5350,13 +5350,13 @@ msgid ""
 "successful pledges?"
 msgstr ""
 
-#: pb/bin/frequentupdate:392 pb/bin/frequentupdate:477
+#: pb/bin/frequentupdate:393 pb/bin/frequentupdate:478
 #, php-format
 msgid ""
 "PledgeBank here. Sorry, the %s pledge has failed. Better luck next time!"
 msgstr ""
 
-#: pb/bin/frequentupdate:828
+#: pb/bin/frequentupdate:830
 #, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone in %s who "
@@ -5365,7 +5365,7 @@ msgid ""
 "%s"
 msgstr ""
 
-#: pb/bin/frequentupdate:830
+#: pb/bin/frequentupdate:832
 #, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone who signed "
@@ -5374,27 +5374,27 @@ msgid ""
 "%s"
 msgstr ""
 
-#: pb/bin/frequentupdate:981
+#: pb/bin/frequentupdate:983
 #, php-format
 msgid "%d days ago"
 msgstr ""
 
-#: pb/bin/frequentupdate:983
+#: pb/bin/frequentupdate:985
 #, php-format
 msgid "%d hours ago"
 msgstr ""
 
-#: pb/bin/frequentupdate:985
+#: pb/bin/frequentupdate:987
 #, php-format
 msgid "%d minutes ago"
 msgstr ""
 
-#: pb/bin/frequentupdate:987
+#: pb/bin/frequentupdate:989
 msgid "a minute ago"
 msgstr ""
 
 #. TRANS: The first %s is one of the time strings above.
-#: pb/bin/frequentupdate:990
+#: pb/bin/frequentupdate:992
 #, php-format
 msgid ""
 "[ You signed this pledge after this message was sent to the other signers. "
@@ -5840,7 +5840,7 @@ msgid ""
 "\n"
 "best,\n"
 "\n"
-"The PledgeBank team\n"
+"<?=$values['signature']?>\n"
 msgstr ""
 
 #: pb/templates/emails/chivvy-creator-nosms
