@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2006-12-08 23:07+0000\n"
+"POT-Creation-Date: 2006-12-21 12:26+0000\n"
 "PO-Revision-Date: 2006-08-10 11:12+0200\n"
 "Last-Translator: Joel Hirv <joelhirv@hotmail.com>\n"
 "Language-Team: ESTONIA <silver@meikar.ee>\n"
@@ -1027,8 +1027,8 @@ msgstr ""
 msgid "Language:"
 msgstr "Keel:"
 
-#: pb/phplib/admin-pb.php:290 pb/phplib/fns.php:505 pb/phplib/pledge.php:475
-#: pb/web/alert.php:133 pb/web/new.php:434
+#: pb/phplib/admin-pb.php:290 pb/phplib/fns.php:507 pb/phplib/pledge.php:475
+#: pb/web/alert.php:133 pb/web/new.php:411
 msgid "Country:"
 msgstr "Riik:"
 
@@ -1188,7 +1188,7 @@ msgstr "%s asukohaga %s."
 msgid "Abusive? Report it!"
 msgstr "Solvang või kuritarvitus? Teata meile!"
 
-#: pb/phplib/comments.php:105 pb/phplib/comments.php:210
+#: pb/phplib/comments.php:105 pb/phplib/comments.php:239
 #, php-format
 msgid "No pledge '%s'"
 msgstr "Lubadust '%s' ei leitud"
@@ -1203,52 +1203,62 @@ msgstr "Kommentaare pole. Ehk soovid lisada?"
 msgid "%s by %s, on %s at %s"
 msgstr "%s isikult %s, kuupäeval %s asukohaga %s"
 
-#: pb/phplib/comments.php:190
+#: pb/phplib/comments.php:158
+#, fuzzy, php-format
+msgid "Comment on %s pledge by %s"
+msgstr "Kommentaarid lubaduse kohta '%s'"
+
+#: pb/phplib/comments.php:217
+#, fuzzy
+msgid "RSS feed of comments on all pledges"
+msgstr "Selle lubaduse RSS-kommentaarivood"
+
+#: pb/phplib/comments.php:218
 msgid "<h2>Latest comments</h2>"
 msgstr "<h2>Viimased kommentaarid</h2>"
 
-#: pb/phplib/comments.php:216
+#: pb/phplib/comments.php:245
 #, fuzzy
 msgid "No comments"
 msgstr "Sinu kommentaar"
 
-#: pb/phplib/comments.php:270
+#: pb/phplib/comments.php:299
 #, fuzzy
 msgid "This pledge is closed for new comments."
 msgstr "See lubadus sulgub"
 
-#: pb/phplib/comments.php:273
+#: pb/phplib/comments.php:302
 #, fuzzy
 msgid "<h2>Add public comment</h2>"
 msgstr "<h2>Lisa kommentaar</h2>"
 
-#: pb/phplib/comments.php:275 pb/web/contact.php:92
+#: pb/phplib/comments.php:304 pb/web/contact.php:86
 msgid "Your name"
 msgstr "Sinu nimi"
 
-#: pb/phplib/comments.php:280 pb/phplib/pledge.php:655 pb/web/contact.php:93
+#: pb/phplib/comments.php:309 pb/phplib/pledge.php:655 pb/web/contact.php:87
 msgid "Your email"
 msgstr "Sinu e-posti aadress"
 
-#: pb/phplib/comments.php:285
+#: pb/phplib/comments.php:314
 #, fuzzy
 msgid "Your web site address"
 msgstr "Sinu koduleht"
 
-#: pb/phplib/comments.php:285
+#: pb/phplib/comments.php:314
 msgid "(optional)"
 msgstr "(valikuline)"
 
-#: pb/phplib/comments.php:289
+#: pb/phplib/comments.php:318
 msgid "Your comment"
 msgstr "Sinu kommentaar"
 
-#: pb/phplib/comments.php:297
+#: pb/phplib/comments.php:326
 #, fuzzy
 msgid "Privacy note:"
 msgstr "Privaatsusstaatus"
 
-#: pb/phplib/comments.php:298
+#: pb/phplib/comments.php:327
 #, fuzzy
 msgid ""
 "Your name (and web site address if given) will be shown publically on this page\n"
@@ -1258,15 +1268,15 @@ msgstr ""
 "Su nimi ja veebileht, kui see on lisatud, kuvatakse Su kommentaari juures,\n"
 "aga e-posti aadress jääb varjatuks."
 
-#: pb/phplib/comments.php:303
+#: pb/phplib/comments.php:332
 msgid " Email me future comments on this pledge"
 msgstr "Saada täiendavad kommentaarid selle lubaduse kohta mulle e-postiga"
 
-#: pb/phplib/comments.php:305 pb/web/new.php:390
+#: pb/phplib/comments.php:334 pb/web/new.php:367
 msgid "Preview"
 msgstr "Eelvaade"
 
-#: pb/phplib/comments.php:307
+#: pb/phplib/comments.php:336
 msgid "Post comment"
 msgstr "Postita kommentaar"
 
@@ -1303,12 +1313,12 @@ msgstr "Teiste isikute e-posti aadressid"
 msgid "Add a message, if you want:"
 msgstr "Lisa teade kui soovid:"
 
-#: pb/phplib/fns.php:226 pb/web/new.php:183
+#: pb/phplib/fns.php:226 pb/web/new.php:160
 msgid "Your name:"
 msgstr "Sinu nimi:"
 
-#: pb/phplib/fns.php:227 pb/phplib/fns.php:500 pb/web/alert.php:130
-#: pb/web/new.php:184 pb/web/sms.php:233
+#: pb/phplib/fns.php:227 pb/phplib/fns.php:502 pb/web/alert.php:130
+#: pb/web/new.php:161 pb/web/sms.php:233
 msgid "Email:"
 msgstr "E-posti aadress:"
 
@@ -1322,109 +1332,109 @@ msgstr "UK"
 
 #. TRANS: i.e. "choose website" or "choose local place where action will be taken?" I've assumed the former. (Tim Morley, 2005-11-21)
 #. Yes, it's choose website. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/fns.php:258
+#: pb/phplib/fns.php:260
 msgid "choose site"
 msgstr "vali lehekülg"
 
-#: pb/phplib/fns.php:260
+#: pb/phplib/fns.php:262
 msgid "change country"
 msgstr "vali riik"
 
-#: pb/phplib/fns.php:262
+#: pb/phplib/fns.php:264
 msgid "choose country"
 msgstr "vali riik"
 
-#: pb/phplib/fns.php:269
+#: pb/phplib/fns.php:271
 msgid "change language"
 msgstr "vali keel"
 
-#: pb/phplib/fns.php:276
+#: pb/phplib/fns.php:278
 msgid "Available in"
 msgstr "Saadaval"
 
-#: pb/phplib/fns.php:293
+#: pb/phplib/fns.php:295
 msgid "and"
 msgstr "ja"
 
-#: pb/phplib/fns.php:296
+#: pb/phplib/fns.php:298
 msgid "Translate PledgeBank into your language"
 msgstr "Tõlgi Lubadustepank oma keelde"
 
-#: pb/phplib/fns.php:382
+#: pb/phplib/fns.php:384
 #, fuzzy, php-format
 msgid "%s (%s) pledges listed"
 msgstr "Ainult %s (%s) lubadust nimekirjas"
 
-#: pb/phplib/fns.php:384
+#: pb/phplib/fns.php:386
 #, php-format
 msgid "%s (%s) pledges only listed"
 msgstr "Ainult %s (%s) lubadust nimekirjas"
 
-#: pb/phplib/fns.php:391
+#: pb/phplib/fns.php:393
 #, php-format
 msgid "%s (%s) pledges and global %s (%s) pledges listed"
 msgstr "%s (%s) lubadust ja ülemaailmset %s (%s) lubadust kirjas"
 
-#: pb/phplib/fns.php:393
+#: pb/phplib/fns.php:395
 #, php-format
 msgid "%s (%s) pledges in %s (%s) only listed"
 msgstr "%s (%s) lubadust %s (%s) kirjas"
 
-#: pb/phplib/fns.php:401
+#: pb/phplib/fns.php:403
 #, php-format
 msgid "There are no featured pledges for %s (%s) at the moment."
 msgstr "Lubadused %s (%s) hetkel puuduvad."
 
-#: pb/phplib/fns.php:444 pb/phplib/fns.php:446
+#: pb/phplib/fns.php:446 pb/phplib/fns.php:448
 msgid "less than 1 mile away"
 msgstr ""
 
-#: pb/phplib/fns.php:448
+#: pb/phplib/fns.php:450
 msgid "less than 1 km away"
 msgstr ""
 
-#: pb/phplib/fns.php:450 pb/phplib/fns.php:453
+#: pb/phplib/fns.php:452 pb/phplib/fns.php:455
 #, fuzzy, php-format
 msgid "%d mile away"
 msgid_plural "%d miles away"
 msgstr[0] "km kaugusel"
 msgstr[1] "km kaugusel"
 
-#: pb/phplib/fns.php:451 pb/phplib/fns.php:454
+#: pb/phplib/fns.php:453 pb/phplib/fns.php:456
 #, php-format
 msgid "%d mile"
 msgid_plural "%d miles"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/fns.php:456
+#: pb/phplib/fns.php:458
 #, fuzzy, php-format
 msgid "%d km away"
 msgstr "km kaugusel"
 
-#: pb/phplib/fns.php:456
+#: pb/phplib/fns.php:458
 #, php-format
 msgid "%d km"
 msgstr ""
 
-#: pb/phplib/fns.php:495
+#: pb/phplib/fns.php:497
 msgid "Sign up for emails when people make pledges in your local area"
 msgstr "Telli teade oma piirkonnas antud lubadustest meilile."
 
-#: pb/phplib/fns.php:497
+#: pb/phplib/fns.php:499
 msgid "Works in any country!"
 msgstr "Töötab igas riigis!"
 
-#: pb/phplib/fns.php:503 pb/web/new.php:432
+#: pb/phplib/fns.php:505 pb/web/new.php:409
 #, fuzzy
 msgid "Postcode:"
 msgstr "Postikood"
 
-#: pb/phplib/fns.php:506 pb/web/new.php:428 pb/web/pb.js:125 pb/web/pb.js:128
+#: pb/phplib/fns.php:508 pb/web/new.php:405 pb/web/pb.js:125 pb/web/pb.js:128
 msgid "Town:"
 msgstr "Linn:"
 
-#: pb/phplib/fns.php:508 pb/web/alert.php:143
+#: pb/phplib/fns.php:510 pb/web/alert.php:143
 msgid "Subscribe"
 msgstr "Telli"
 
@@ -1446,7 +1456,7 @@ msgstr ""
 msgid "If it isn't any of those, try a different spelling, or the name of another nearby town:"
 msgstr "Kui otsitavat pole nimekirjas, siis kontrolli õigekirja või otsi muud lähedalasuvat linna:"
 
-#: pb/phplib/gaze-controls.php:83 pb/web/new.php:352 pb/web/pb.js:107
+#: pb/phplib/gaze-controls.php:83 pb/web/new.php:329 pb/web/pb.js:107
 msgid "(choose one)"
 msgstr "(vali üks)"
 
@@ -1548,7 +1558,7 @@ msgstr "(muuda)"
 msgid "(other PledgeBanks)"
 msgstr "Olen PledgeBanki kasutaja"
 
-#: pb/phplib/microsites.php:200 pb/web/new.php:150
+#: pb/phplib/microsites.php:200 pb/web/new.php:127
 msgid "Pledge"
 msgstr "Lubadus"
 
@@ -1574,27 +1584,28 @@ msgstr "Kõik lubadused"
 msgid "Start a Pledge"
 msgstr "Anna lubadus"
 
-#: pb/phplib/microsites.php:264 pb/web/faq.php:13 pb/web/faq.php:17
+#: pb/phplib/microsites.php:267 pb/web/faq.php:18 pb/web/faq.php:348
+#: pb/web/faq.php:453
 msgid "Frequently Asked Questions"
 msgstr "Korduma Kippuvad Küsimused"
 
-#: pb/phplib/microsites.php:264
+#: pb/phplib/microsites.php:267
 msgid "FAQ"
 msgstr "KKK"
 
-#: pb/phplib/microsites.php:265
+#: pb/phplib/microsites.php:269
 msgid "Contact"
 msgstr "Kontakt"
 
-#: pb/phplib/microsites.php:266 pb/web/your.php:22
+#: pb/phplib/microsites.php:270 pb/web/your.php:22
 msgid "Your Pledges"
 msgstr "Sinu lubadused"
 
-#: pb/phplib/microsites.php:270
+#: pb/phplib/microsites.php:274
 msgid "Logout"
 msgstr "Logi välja"
 
-#: pb/phplib/microsites.php:368
+#: pb/phplib/microsites.php:370
 msgid ""
 "\"We all know what it is like to feel powerless, that our own\n"
 "        actions can't really change the things that we want to change.\n"
@@ -1604,11 +1615,11 @@ msgstr ""
 "        pingutustest ei piisa, et muuta asju mida me sooviksime muuta.\n"
 "        PledgeBank aitab sellest tundest võitu saada...\""
 
-#: pb/phplib/microsites.php:375
+#: pb/phplib/microsites.php:377
 msgid "Tell the world &#8220;I&#8217;ll do it, but only if you&#8217;ll help me do it&#8221;"
 msgstr "Ütle kogu maailmale &#8220;Ma&#8217;teen seda, kuid ainult siis kui&#8217;sa mind aitad&#8221;"
 
-#: pb/phplib/microsites.php:387
+#: pb/phplib/microsites.php:389
 #, fuzzy
 msgid ""
 "Listen to how PledgeBank\n"
@@ -1619,7 +1630,7 @@ msgstr ""
 "tegevust</a>mySociety direktor Tom Steinberg.\n"
 "Või <a href=\"/seleta\">loe kõne tekstiversiooni"
 
-#: pb/phplib/microsites.php:391
+#: pb/phplib/microsites.php:393
 #, fuzzy
 msgid ""
 "<a href=\"/explain\">Find out how PledgeBank\n"
@@ -1628,33 +1639,92 @@ msgstr ""
 "<a href=\"/Seleta\">Uuri kuidas PledgeBank\n"
 "töötab</a>. Seletab mySociety direktor Tom Steinberg."
 
-#: pb/phplib/microsites.php:474
+#: pb/phplib/microsites.php:476
 msgid "Why not sign a live pledge?"
 msgstr "Miks mitte liituda reaalajas lubadusega?"
 
-#: pb/phplib/microsites.php:592 pb/web/pb.js:38 pb/web/pb.js:40
+#: pb/phplib/microsites.php:550
+msgid "Top Tips for Successful Pledges"
+msgstr "Õnnestuva lubaduse tegemise vihjed"
+
+#: pb/phplib/microsites.php:553
+#, fuzzy, php-format
+msgid ""
+"<strong>Keep your ambitions modest</strong> &mdash; why ask for 50 people\n"
+"        to do something when 5 would be enough? Every extra person makes your pledge\n"
+"        harder to meet. Only %0.0f%% of pledges asking for more than 100 people succeed."
+msgstr ""
+"<strong>Ole oma ambitsioonidega mõõdukas</strong> &mdash; miks paluda 50-nel inimesel\n"
+"midagi teha kui tegelikult on ka 5 inimest selleks täiesti piisav? Iga lisainimene muudab sinu soovi\n"
+"raskemalt täituvaks. Statistika näitab, et nenest soovidest, mis vajavad osalemiseks rohkem kui 100 inimest on täitunud vaid %0.0f%%."
+
+#: pb/phplib/microsites.php:557
+#, fuzzy
+msgid ""
+"<strong>Get ready to sell your pledge, hard</strong>. Pledges don't\n"
+"        sell themselves just by sitting on this site. In fact your pledge won't even\n"
+"        appear to general site visitors until you've got a few people to sign up to it\n"
+"        yourself. Think hard about whether people you know would want to sign up to\n"
+"        your pledge!"
+msgstr ""
+"<strong>Ole valmis selleks, et oma lubaduse nö müük võib päris raske olla</strong>. Lubadused ei müü \n"
+" ennast ise. Kui nüüd päris aus olla, siis nad isegi ei ilmu meie kodukal enne kui on saanud sinu aktiivse \n"
+" müügitööga endale vähemalt mõned liitujad. Enne kui sa lubadusele liitujaid otsima hakkad mõtle, kas sinu \n"
+"enda sõbrad sellega üldse liituksid!"
+
+#: pb/phplib/microsites.php:563
+#, fuzzy
+msgid ""
+"<strong>Think about how your pledge reads.</strong> How will it look to\n"
+"        someone who picks up a flyer from their doormat? Read your pledge to the person\n"
+"        next to you, or to your mother, and see if they understand what you're talking\n"
+"        about. If they don't, you need to rewrite it."
+msgstr "<strong>Mõtle, kas sinu lubadus on ka teistele arusaadav. </strong> Kuidas võiks sinu lubadust lugeda mõni inimene, kes leidis selle lubaduse flayeri näiteks oma uksematilt? Loe oma lubadust inimestega, kes on sinu kõrval. Loe teda ette ka oma emale. Kas nad saavad sellest aru? Kui nad ei saa, siis pead sa oma lubaduse ringi kirjutama. "
+
+#: pb/phplib/microsites.php:580
+#, fuzzy
+msgid ""
+"Was it useful?  How could it be better?\n"
+"    We make PledgeBank and thrive off feedback, good and bad.\n"
+"    Use this form to contact us."
+msgstr ""
+"Oli see kasulik?  Kuidas saame me seda parandada?\n"
+"Meie teeme PledgeBanki ja edeneme tänu tagasisidele - heale ja halvale.\n"
+"Kasuta seda vormi, et meiega ühendust võtta.\n"
+"Kui soovid, võid saata e-kirja %s selle asemel, et vormi kasutada."
+
+#: pb/phplib/microsites.php:584
+#, php-format
+msgid "If you prefer, you can email %s instead of using the form."
+msgstr ""
+
+#: pb/phplib/microsites.php:595
+msgid "This pledge is now closed, as its deadline has passed."
+msgstr "See lubadus on nüüd suletud, kuna selle lõpptähtaeg on möödas."
+
+#: pb/phplib/microsites.php:673 pb/web/pb.js:38 pb/web/pb.js:40
 msgid "other local people"
 msgstr "teised kohalikud kasutajad"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:118 pb/phplib/page.php:339
+#: pb/phplib/page.php:126 pb/phplib/page.php:355
 #, fuzzy
 msgid "PledgeBank"
 msgstr "PledgeBank Team-ile UK-s"
 
-#: pb/phplib/page.php:178
+#: pb/phplib/page.php:194
 msgid "This pledge's permanent location: "
 msgstr "Lubaduse püsiasukoht:"
 
-#: pb/phplib/page.php:197
+#: pb/phplib/page.php:213
 msgid "Hello, "
 msgstr "Tere,"
 
-#: pb/phplib/page.php:203
+#: pb/phplib/page.php:219
 msgid "this isn't you?  click here"
 msgstr "See pole Sina? Kliki siia"
 
-#: pb/phplib/page.php:214
+#: pb/phplib/page.php:230
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
@@ -1662,27 +1732,27 @@ msgstr ""
 "See on testlehekülg veebiarendajatele. Tõenäoliselt otsid Sa \n"
 "<a href=\"http://www.pledgebank.com/\">tegelikku lehekülge</a>."
 
-#: pb/phplib/page.php:219
+#: pb/phplib/page.php:235
 msgid "Note: On this test site, the date is faked to be"
 msgstr "Märkus: Sellel testleheküljel olevad andmed on kunstlikud"
 
-#: pb/phplib/page.php:250
+#: pb/phplib/page.php:266
 msgid "Navigation"
 msgstr "Navigatsioon"
 
-#: pb/phplib/page.php:252
+#: pb/phplib/page.php:268
 msgid "Search"
 msgstr "Otsi"
 
-#: pb/phplib/page.php:253 pb/web/bogusref.php:85
+#: pb/phplib/page.php:269 pb/web/bogusref.php:85
 msgid "Go"
 msgstr "Mine"
 
-#: pb/phplib/page.php:275
+#: pb/phplib/page.php:291
 msgid "Built by mySociety"
 msgstr "Rajatud mySociety poolt"
 
-#: pb/phplib/page.php:276
+#: pb/phplib/page.php:292
 msgid "Powered by Easynet"
 msgstr ""
 
@@ -1873,111 +1943,121 @@ msgstr "(nii Saad teada sellest, kui lubadusega liitunute arv on täitunud ja lu
 msgid "Sign Pledge"
 msgstr "Liitu lubadusega"
 
-#: pb/phplib/pledge.php:679
+#: pb/phplib/pledge.php:664
+#, fuzzy, php-format
+msgid "Or, text '<strong>%s %s</strong>' to <strong>%s</strong>"
+msgstr "Tulemused, mis vastavad päringule <strong>%s</strong> <strong>kommentaaride</strong>seas:"
+
+#: pb/phplib/pledge.php:666
+#, fuzzy, php-format
+msgid "(in %s only)"
+msgstr "(ainult algataja)"
+
+#: pb/phplib/pledge.php:689
 #, fuzzy
 msgid "Target met nowhere"
 msgstr "Osalejate arvuline eesmärk"
 
-#: pb/phplib/pledge.php:681
+#: pb/phplib/pledge.php:691
 #, fuzzy, php-format
 msgid "Target met in %d place"
 msgid_plural "Target met in %d places"
 msgstr[0] "Eesmärk täidetud. Ludabusega liitumine lõppenud."
 msgstr[1] "Eesmärk täidetud. Ludabusega liitumine lõppenud."
 
-#: pb/phplib/pledge.php:690 pb/phplib/pledge.php:711
+#: pb/phplib/pledge.php:700 pb/phplib/pledge.php:721
 #, php-format
 msgid "just %d day left"
 msgid_plural "just %d days left"
 msgstr[0] "ainult %d päev jäänud"
 msgstr[1] "ainult %d päeva jäänud"
 
-#: pb/phplib/pledge.php:692 pb/phplib/pledge.php:713
+#: pb/phplib/pledge.php:702 pb/phplib/pledge.php:723
 #, php-format
 msgid "%d day left"
 msgid_plural "%d days left"
 msgstr[0] "%d päev jäänud"
 msgstr[1] "%d päeva jäänud"
 
-#: pb/phplib/pledge.php:698
+#: pb/phplib/pledge.php:708
 msgid "Target met, pledge open until midnight tonight, London time."
 msgstr "Eesmärk täidetud. Lubadusega saab liituda kuni keskööni CET."
 
-#: pb/phplib/pledge.php:700
+#: pb/phplib/pledge.php:710
 #, fuzzy
 msgid "Target met, pledge closed."
 msgstr "Eesmärk täidetud. Ludabusega liitumine lõppenud."
 
-#: pb/phplib/pledge.php:702
+#: pb/phplib/pledge.php:712
 #, php-format
 msgid "Target met, pledge still open for %d day."
 msgid_plural "Target met, pledge still open for %d days."
 msgstr[0] "Eesmärk täidetud, lubadusega liitumine veel võimalik %d päev"
 msgstr[1] "Eesmärk täidetud, lubadusega liitumine veel võimalik %d päeva"
 
-#: pb/phplib/pledge.php:705
+#: pb/phplib/pledge.php:715
 #, php-format
 msgid "(needs %d more by midnight tonight, London time)"
 msgstr "(vajab %d liitujat täna keskööks CET)"
 
-#: pb/phplib/pledge.php:707
+#: pb/phplib/pledge.php:717
 msgid "Deadline expired, pledge failed."
 msgstr "Tähtaeg on möödas, lubadus ebaõnnestus."
 
-#: pb/phplib/pledge.php:715
+#: pb/phplib/pledge.php:725
 #, php-format
 msgid ", %d more signature needed)"
 msgid_plural ", %d more signatures needed)"
 msgstr[0] "%d allkiri veel vaja)"
 msgstr[1] "%d allkirja veel vaja)"
 
-#: pb/phplib/pledge.php:747
+#: pb/phplib/pledge.php:757
 msgid "Success"
 msgstr "Edukas"
 
-#: pb/phplib/pledge.php:750
+#: pb/phplib/pledge.php:760
 msgid "That pledge has already finished"
 msgstr "Selle lubadusega liitumise aeg on lõppenud"
 
-#: pb/phplib/pledge.php:753
+#: pb/phplib/pledge.php:763
 msgid "That pledge is already full"
 msgstr "Selle lubadusega liitujate arv on täitunud"
 
-#: pb/phplib/pledge.php:756
+#: pb/phplib/pledge.php:766
 msgid "You've already signed that pledge"
 msgstr "Sa oled juba selle lubadusega liitunud"
 
-#: pb/phplib/pledge.php:759 pb/web/comment.php:51 pb/web/ref-sign.php:83
+#: pb/phplib/pledge.php:769 pb/web/comment.php:51 pb/web/ref-sign.php:83
 #: pb/web/sms.php:65
 msgid "Permission denied"
 msgstr "Ligipääs keelatud"
 
-#: pb/phplib/pledge.php:763
+#: pb/phplib/pledge.php:773
 msgid "Something went wrong unexpectedly"
 msgstr "Tõrge teadmata põhjusel"
 
-#: pb/phplib/pledge.php:836
+#: pb/phplib/pledge.php:846
 msgid "Incorrect PIN!"
 msgstr "Vale PIN kood"
 
-#: pb/phplib/pledge.php:839
+#: pb/phplib/pledge.php:849
 msgid "PIN Protected Pledge"
 msgstr "PIN koodiga kaitstud lubadus"
 
-#: pb/phplib/pledge.php:839
+#: pb/phplib/pledge.php:849
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "See lubadus on kaitstud. Jätkamiseks palun siseta PIN."
 
-#: pb/phplib/pledge.php:840 pb/web/ref-picture.php:192 pb/web/sms.php:235
+#: pb/phplib/pledge.php:850 pb/web/ref-picture.php:192 pb/web/sms.php:235
 #: pb/web/your.php:113
 msgid "Submit"
 msgstr "Kinnita"
 
-#: pb/phplib/pledge.php:890
+#: pb/phplib/pledge.php:900
 msgid "Pledges only ever succeed when signers encourage other people to sign them:"
 msgstr ""
 
-#: pb/phplib/pledge.php:894
+#: pb/phplib/pledge.php:904
 msgid ""
 "<p>PledgeBank can send you email alerts when people\n"
 "        create local pledges in your area. Sign up - you don't know\n"
@@ -1985,40 +2065,40 @@ msgid ""
 msgstr ""
 
 #. TRANS: Esperanto translated this as "In order to massive increase the chance of this pledge succeeding, " to keep it in the imperative
-#: pb/phplib/pledge.php:910
+#: pb/phplib/pledge.php:920
 msgid "You will massively increase the chance of this pledge succeeding if you "
 msgstr "Sa suurendad märgatavalt lubaduse täitumist, kui saa"
 
 #. TRANS: This phrase is used in two different places, once in present tense, once in imperative. Shout if this is a problem.
-#: pb/phplib/pledge.php:913 pb/web/ref-flyers.php:71
+#: pb/phplib/pledge.php:923 pb/web/ref-flyers.php:71
 msgid "print this page out"
 msgstr "prindi see lehekülg välja"
 
-#: pb/phplib/pledge.php:914
+#: pb/phplib/pledge.php:924
 msgid "these more attractive PDF and RTF (Word) versions"
 msgstr "need veelgi veetlevamad PDF-i ja RTF-i versioonid"
 
 #. TRANS: Use the imperative here to go with msgid "You will massively increase......." and msgid "print this page out". (Tim Morley, 2005-11-30)
-#: pb/phplib/pledge.php:916
+#: pb/phplib/pledge.php:926
 #, php-format
 msgid "(or use %s), cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr "(või kasuta %s), lõika flaierid välja ja kleebi need naabruskonna postidele"
 
-#: pb/phplib/pledge.php:921
+#: pb/phplib/pledge.php:931
 msgid "print these pages out"
 msgstr "prindi need lehed välja"
 
-#: pb/phplib/pledge.php:922
+#: pb/phplib/pledge.php:932
 msgid ", cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr ", lõika flaierid välja ja kleebi need naabruskonna postidele"
 
-#: pb/phplib/pledge.php:925
+#: pb/phplib/pledge.php:935
 msgid ""
 "We cannot emphasise this enough &mdash; print them NOW and post them next time you\n"
 "go out to the shops or your pledge is unlikely to succeed."
 msgstr "On võimatu alahinnata soovitust &mdash; prindi need NÜÜD välja ja jaga neid tänaval. Kui Sa seda ei tee, siis arvatavasti ei saa lubadusega liitunute arv täis"
 
-#: pb/phplib/pledge.php:931 pb/web/ref-flyers.php:74
+#: pb/phplib/pledge.php:941 pb/web/ref-flyers.php:74
 msgid "Graphic of flyers for printing"
 msgstr "Flaierite kujundus"
 
@@ -2051,14 +2131,14 @@ msgstr "Soovitame <a href=\"/alert/\">liituda kohalike lubaduste teavitussüstee
 msgid "Thanks!  You are already unsubscribed from that alert."
 msgstr "Tänan! Sa oled sellest teavitussüsteemist juba lahkunud."
 
-#: pb/web/alert.php:59 pb/web/comment.php:87 pb/web/contact.php:118
-#: pb/web/login.php:187 pb/web/login.php:213 pb/web/new.php:636
+#: pb/web/alert.php:59 pb/web/comment.php:87 pb/web/contact.php:112
+#: pb/web/login.php:187 pb/web/login.php:213 pb/web/new.php:613
 #: pb/web/ref-email.php:52
 msgid "Please enter your email address"
 msgstr "Palun sisesta oma e-posti aadress"
 
-#: pb/web/alert.php:60 pb/web/contact.php:119 pb/web/login.php:191
-#: pb/web/login.php:217 pb/web/new.php:637
+#: pb/web/alert.php:60 pb/web/contact.php:113 pb/web/login.php:191
+#: pb/web/login.php:217 pb/web/new.php:614
 msgid "Please enter a valid email address"
 msgstr "Palun sisesta kehtiv e-posti aadress"
 
@@ -2171,7 +2251,7 @@ msgstr "Vabandust -- midagi läks vist nihu"
 msgid "'%s' is not a valid email address; please check it carefully"
 msgstr "'%s' ei ole kehtiv e-posti aadressi; palun vaata see hoolikalt üle"
 
-#: pb/web/comment.php:92 pb/web/contact.php:117 pb/web/new.php:635
+#: pb/web/comment.php:92 pb/web/contact.php:111 pb/web/new.php:612
 #: pb/web/ref-email.php:51 pb/web/sms.php:78
 msgid "Please enter your name"
 msgstr "Palun sisesta oma nimi"
@@ -2234,87 +2314,70 @@ msgstr "Teade solvav, kahtlane või vale %s"
 msgid "You are reporting the following comment:"
 msgstr "Sa annad teada järgnevast %s"
 
-#: pb/web/contact.php:72
-#, fuzzy
-msgid ""
-"Was it useful?  How could it be better?\n"
-"    We make PledgeBank and thrive off feedback, good and bad.\n"
-"    Use this form to contact us."
-msgstr ""
-"Oli see kasulik?  Kuidas saame me seda parandada?\n"
-"Meie teeme PledgeBanki ja edeneme tänu tagasisidele - heale ja halvale.\n"
-"Kasuta seda vormi, et meiega ühendust võtta.\n"
-"Kui soovid, võid saata e-kirja %s selle asemel, et vormi kasutada."
-
-#: pb/web/contact.php:76
-#, php-format
-msgid "If you prefer, you can email %s instead of using the form."
-msgstr ""
-
-#: pb/web/contact.php:80
+#: pb/web/contact.php:74
 #, fuzzy
 msgid "If you would like to contact the Pledge Creator, please use the 'comments' section on the pledge. The form below is for messages to the PledgeBank Team only, <strong>not</strong> the Pledge Creator."
 msgstr "Kui soovid ühendust võtta lubaduse loojaga, kasuta lubaduse lehel 'kommentaarid' võimalust.Need sõnumid lähevad UK PledgeBank Team-ile, <strong>mitte</strong> lubaduse loojale."
 
-#: pb/web/contact.php:82
+#: pb/web/contact.php:76
 msgid "<a href=\"/faq\">Read the FAQ</a> first, it might be a quicker way to answer your question."
 msgstr "<a href=\"/faq\">Loe kõigepealt KKK</a>, nii võid leida kiiremini vastuse oma küsimusele."
 
-#: pb/web/contact.php:90
+#: pb/web/contact.php:84
 msgid "Message to"
 msgstr "Saada sõnum"
 
-#: pb/web/contact.php:90
+#: pb/web/contact.php:84
 msgid "PledgeBank Team"
 msgstr "PledgeBank Team-ile UK-s"
 
-#: pb/web/contact.php:95 pb/web/ref-announce.php:316
+#: pb/web/contact.php:89 pb/web/ref-announce.php:316
 #: pb/web/ref-announcearchive.php:74
 msgid "Subject"
 msgstr "Teema"
 
-#: pb/web/contact.php:97
+#: pb/web/contact.php:91
 #, fuzzy
 msgid "Write your message"
 msgstr "Palun sisesta oma sõnum"
 
-#: pb/web/contact.php:100
+#: pb/web/contact.php:94
 msgid "Did you <a href=\"/faq\">read the FAQ</a> first?"
 msgstr "Kas sa <a href=\"/faq\">lugesid kõigepealt KKK</a>?"
 
-#: pb/web/contact.php:101 pb/web/ref-announce.php:285
+#: pb/web/contact.php:95 pb/web/ref-announce.php:285
 #: pb/web/ref-announce.php:362
 msgid "Send"
 msgstr "Saada"
 
-#: pb/web/contact.php:107 pb/web/login.php:93 pb/web/new.php:477
+#: pb/web/contact.php:101 pb/web/login.php:93 pb/web/new.php:454
 #: pb/web/ref-sign.php:66 pb/web/pb.js:15
 msgid "<Enter your name>"
 msgstr "<Sisesta oma nimi>"
 
-#: pb/web/contact.php:120
+#: pb/web/contact.php:114
 msgid "Please enter a subject"
 msgstr "Palun sisesta teema"
 
-#: pb/web/contact.php:121
+#: pb/web/contact.php:115
 msgid "Please enter your message"
 msgstr "Palun sisesta oma sõnum"
 
-#: pb/web/contact.php:142
+#: pb/web/contact.php:136
 msgid "Please stop sending us spam. Thank you."
 msgstr ""
 
-#: pb/web/contact.php:163
+#: pb/web/contact.php:157
 #, fuzzy
 msgid "Failed to send message.  Please try again, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a>."
 msgstr "Sõnumi saatmine ebaõnnestus.  Palun proovi uuesti või <a href=\"mailto:team@pledgebank.com\">saada meile e-kiri</a>."
 
-#: pb/web/contact.php:165
+#: pb/web/contact.php:159
 #, fuzzy
 msgid "<strong>Thank you!</strong> One of our team will investigate that comment as soon as possible"
 msgstr "<strong>Tänan!</strong> Uurime juhtumit: \"%s\" esimesel võimalusel."
 
-#: pb/web/contact.php:167
+#: pb/web/contact.php:161
 msgid "Thanks for your feedback.  We'll get back to you as soon as we can!"
 msgstr "Täname tagasiside eest. Vastame sulle esimesel võimalusel."
 
@@ -2417,99 +2480,100 @@ msgstr "PledgeBank-i esilehele"
 msgid "How does Live Simply Promise work?"
 msgstr "Kuidas see töötab?"
 
-#: pb/web/faq.php:26
+#: pb/web/faq.php:28
 msgid "What does PledgeBank do for me? Why should I use it?"
 msgstr ""
 
-#: pb/web/faq.php:27
+#: pb/web/faq.php:29
 msgid ""
 "PledgeBank gives you the reassurance that if you decide to do\n"
-"    something for the wider community you won't be doing it alone."
+"        something for the wider community you won't be doing it alone."
 msgstr ""
 
-#: pb/web/faq.php:30
+#: pb/web/faq.php:32
 msgid "What is PledgeBank for?"
 msgstr "Milleks on PledgeBank loodud?"
 
-#: pb/web/faq.php:31
+#: pb/web/faq.php:33
 #, fuzzy
 msgid ""
 "PledgeBank is a site to help people get things done, especially things\n"
-"    that require several people. We think that the world needs such a\n"
-"    service: lots of good things don't happen because there aren't enough\n"
-"    organised people to do them."
+"        that require several people. We think that the world needs such a\n"
+"        service: lots of good things don't happen because there aren't enough\n"
+"        organised people to do them."
 msgstr "PledgeBank on lehekülg, mis aitab inimestel asjad tehtud saada, eriti juhul, kui see vajab teiste inimeste abi. Me leiame, et maailm vajab sellist teenust: paljud head asjad ei saa kunagi teoks, sest pole piisavalt organiseerunud inimesi selle teostamiseks."
 
-#: pb/web/faq.php:37
+#: pb/web/faq.php:39
 msgid "Can you give me some examples?"
 msgstr "Kas sa saad mõned näited selle kohta tuua?"
 
-#: pb/web/faq.php:38
+#: pb/web/faq.php:40
+#, fuzzy
 msgid ""
 "Sure. 'I will start recycling if 100 people in my town will do the\n"
-"same'; 'I will organise my child's school play if 3 other parents will\n"
-"help'; 'I will build a useful website if 1000 people promise to\n"
-"contribute to it'."
+"    same'; 'I will organise my child's school play if 3 other parents will\n"
+"    help'; 'I will build a useful website if 1000 people promise to\n"
+"    contribute to it'."
 msgstr "Muidugi. 'Ma alustan prügi sorteerimisega, kui sada inimset minu linnas teeb sama'; 'Ma korraldan oma lapse koolietenduse, kui veel kom lapsevanemat aidab mind'; ' Ma loon kasuliku internetilehekülje, kui 1000 inimest panustavad ka sellesse'."
 
-#: pb/web/faq.php:43
+#: pb/web/faq.php:45
 msgid "How does it work?"
 msgstr "Kuidas see töötab?"
 
-#: pb/web/faq.php:45
+#: pb/web/faq.php:47
 #, fuzzy
 msgid ""
 "PledgeBank allows users to set up pledges and then encourages other\n"
-"people to sign up to them. A pledge is a statement of the form 'I will\n"
-"do something, if a certain number of people will help me do it'. The\n"
-"creator of the pledge then publicises their pledge and encourages\n"
-"people to sign up. One of two possible outcomes is possible&mdash;either\n"
-"the pledge fails to get enough subscribers before it expires. In that\n"
-"case, we contact everyone and tell them 'better luck next time'. But\n"
-"the better possibility is that a pledge attracts enough people that\n"
-"they are all sent a message saying 'Well done&mdash;now get going!'"
+"    people to sign up to them. A pledge is a statement of the form 'I will\n"
+"    do something, if a certain number of people will help me do it'. The\n"
+"    creator of the pledge then publicises their pledge and encourages\n"
+"    people to sign up. One of two possible outcomes is possible&mdash;either\n"
+"    the pledge fails to get enough subscribers before it expires. In that\n"
+"    case, we contact everyone and tell them 'better luck next time'. But\n"
+"    the better possibility is that a pledge attracts enough people that\n"
+"    they are all sent a message saying 'Well done&mdash;now get going!'"
 msgstr "PledgeBank võimaldab kasutajatel luua lubadusi ning seejärel julgustab teisi nendega liituma. Lubadus on lause vormis 'Ma teen midagi, kui teatud hulk inimesi aitab mul seda teha'. Lubaduse looja avaldab oma lubaduse ja julgustab inimesi liituma. Võimalikud on kaks tulemust - kas lubadus ebaõnnestub, sest ei suuda leida piisavalt toetajaid enne tähtaja lõppemist, mille puhul võtame kõigiga ühendust ja ütleme, et 'järgmisel korral veab paremini', kuid eelistatum on võimalus, et lubadus äratab piisavalt paljuda inimeste huvi ning neile kõigile saadetakse teada 'Väga hea - hakka nüüd tegutsema!'"
 
-#: pb/web/faq.php:55
+#: pb/web/faq.php:57
 msgid "What can I ask people to pledge?"
 msgstr "Mida ma paluda inimestel lubada?"
 
-#: pb/web/faq.php:57
+#: pb/web/faq.php:59
 #, fuzzy
 msgid ""
 "Pretty much anything which isn't illegal, and which doesn't incite\n"
-"people to commit illegal actions. Anything too obscene might also be\n"
-"taken down&mdash;this is a family friendly site!"
+"    people to commit illegal actions. Anything too obscene might also be\n"
+"    taken down&mdash;this is a family friendly site!"
 msgstr "Põhimõtteliselt kõike, mis ei ole ebaseaduslik ja mis ei ärgita inimesi toime panema ebaseaduslikke tegusid. Sündsusetused võidakse samuti eemaldada - see on peresõbralik lehekülg!"
 
-#: pb/web/faq.php:61
+#: pb/web/faq.php:63
 msgid "How can you be sure people will bother to carry out the pledge?"
 msgstr "Kuidas saan ma kindel olla, et inimesed viitsivad antud lubadusi ka täita?"
 
-#: pb/web/faq.php:63
+#: pb/web/faq.php:65
 #, fuzzy
 msgid ""
 "We can't; PledgeBank is based on a psychological bet. We believe that\n"
-"if a person possesses a slight desire to do something, and then we help\n"
-"connect them to a bunch of  people who also want to do the same thing\n"
-"then that first person is much more likely to act.  Update: we have now\n"
-"surveyed a load of money based pledges that have succeeded, and found that\n"
-"payment rates vary from 50% to well over 150%, with three-quarters of \n"
-"people paying being typical."
+"    if a person possesses a slight desire to do something, and then we help\n"
+"    connect them to a bunch of  people who also want to do the same thing\n"
+"    then that first person is much more likely to act.  Update: we have now\n"
+"    surveyed a load of money based pledges that have succeeded, and found that\n"
+"    payment rates vary from 50% to well over 150%, with three-quarters of \n"
+"    people paying being typical."
 msgstr "Ega ei saagi; PledgeBank põhineb psüholoogilisel kihlveol. Me usume, et kui inimesel on tungiv soov midagi teha ja me aitame tal ühendust võtta teatud hulga inimestega, kes soovivad sama, siis on lubaduse loojal suurem motivatsioon tegutseda. Meie hinnang on, et mõnes valdkonnas toimib see üsna hästi, mõnes teises aga üldse mitte - inimloomus on juba selline."
 
-#: pb/web/faq.php:71
+#: pb/web/faq.php:73
 msgid "What do I get out of it?"
 msgstr "Mida ma selle eest saan?"
 
-#: pb/web/faq.php:73
+#: pb/web/faq.php:75
 #, fuzzy
 msgid ""
 "As a well intentioned subscriber, you get insurance against being the\n"
-"only person to show up to the demo in the freezing rain or against being\n"
-"the parent who discovers they've just volunteered to run the entire\n"
-"school play on their own. As a pledge creator&mdash;you get a greatly\n"
-"improved chance of achieving whatever change it is you want."
+"    only person to show up to the demo in the freezing rain or against being\n"
+"    the parent who discovers they've just volunteered to run the entire\n"
+"    school play on their own. As a pledge creator&mdash;you get a greatly\n"
+"    improved chance of achieving whatever change it is you want."
 msgstr ""
 "As a well intentioned subscriber, you get insurance against being the\n"
 "only person to show up to the demo the freezing rain or against being\n"
@@ -2517,230 +2581,239 @@ msgstr ""
 "school play on their own. As a pledge creator - you get a greatly\n"
 "improved chance of achieving whatever change it is you want."
 
-#: pb/web/faq.php:79
+#: pb/web/faq.php:81
 msgid "Is it free?"
 msgstr "On see tasuta?"
 
-#: pb/web/faq.php:81
-#, php-format
+#: pb/web/faq.php:83
+#, fuzzy, php-format
 msgid ""
 "The site is free to use, no matter how big a pledge you create. PledgeBank\n"
-"is run by a charitable organisation, though, so if you want to run an\n"
-"especially big pledge, and feel like making a contribution, please contact us.\n"
-"SMS messages to PledgeBank (available in %s only) cost your normal text fee."
+"    is run by a charitable organisation, though, so if you want to run an\n"
+"    especially big pledge, and feel like making a contribution, please contact us.\n"
+"    SMS messages to PledgeBank (available in %s only) cost your normal text fee."
 msgstr "See lehekülg on tasuta kasutamiseks, sõltumata sellest, kui suure lubaduse sa lood. PledgeBank-i juhib heategevuslik organisatsioon, seega kui sa tahad luua eriti suure lubaduse ja tunned, et soovid teha annetuse, siis võta meiega ühendust. SMS sõnumite saatmine PledgeBanki (kasutatavad vaid %s) on tavalise tekstisõnumi hinnaga. "
 
-#: pb/web/faq.php:90
+#: pb/web/faq.php:92
 msgid "Organisation Questions"
 msgstr "Korralduslikud küsimused"
 
-#: pb/web/faq.php:93
+#: pb/web/faq.php:95
 msgid "Who built PledgeBank?"
 msgstr "Kes lõi PledgeBank-i?"
 
-#: pb/web/faq.php:95
+#: pb/web/faq.php:97
+#, fuzzy
 msgid ""
 "This site was built by <a href=\"http://www.mysociety.org\">mySociety</a>. \n"
-"mySociety is a charitable organisation which has grown out of this community of\n"
-"volunteers who built sites like <a href=\"http://www.theyworkforyou.com\">TheyWorkForYou.com</a>. \n"
-"mySociety's primary\n"
-"mission is to build Internet projects which give people simple, tangible\n"
-"benefits in the civic and community aspects of their lives. Our first project\n"
-"was <a href=\"http://www.writetothem.com\">WriteToThem.com</a>, where you can write to any of your\n"
-"elected representatives, for free."
+"    mySociety is a charitable organisation which has grown out of this community of\n"
+"    volunteers who built sites like <a href=\"http://www.theyworkforyou.com\">TheyWorkForYou.com</a>. \n"
+"    mySociety's primary\n"
+"    mission is to build Internet projects which give people simple, tangible\n"
+"    benefits in the civic and community aspects of their lives. Our first project\n"
+"    was <a href=\"http://www.writetothem.com\">WriteToThem.com</a>, where you can write to any of your\n"
+"    elected representatives, for free."
 msgstr ""
 "Selle lehekülje lõi <a href=\"http://www.mysociety.org\">mySociety</a>. mySociety on heategevuslik organisatsioon, kasvas välja vabatahtlike kogukonnast, mis koortas lehekülgi nagu <a href=\"http://www.theyworkforyou.com\">TheyWorkForYou.com</a>. \n"
 "mySociety esmane missioon on luua internetiprojekte, mis annavad inimestele lihtsad, käegakatsutavad hüved nende ühiskondlikus tegevuses. Meie esimene projekt oli <a href=\"http://www.writetothem.com\">WriteToThem.com</a>, kus sul on võimalus  tasuta kirjutada ükskõik millisele sinu valimisringkonnast valitud saadikule."
 
-#: pb/web/faq.php:104
+#: pb/web/faq.php:106
 msgid "Who pays for it?"
 msgstr "Kes maksab selle eest?"
 
-#: pb/web/faq.php:106
+#: pb/web/faq.php:108
+#, fuzzy
 msgid ""
 "PledgeBank has been built by mySociety thanks to the effort\n"
-"of a combination of paid core developers and unpaid volunteers. The\n"
-"core developers were paid for by the \n"
-"<acronym title=\"Office of the Deputy Prime Minister\">ODPM</acronym>'s \n"
-"e-innovations fund in partnership with West Sussex County Council."
+"    of a combination of paid core developers and unpaid volunteers. The\n"
+"    core developers were paid for by the \n"
+"    <acronym title=\"Office of the Deputy Prime Minister\">ODPM</acronym>'s \n"
+"    e-innovations fund in partnership with West Sussex County Council."
 msgstr "PledgeBank loodi mySociety poolt tänu tasustatud arendajate ja tasustamata vabatahtlike pingutustele. Arendajatele maksis palka <acronym title=\"Office of the Deputy Prime Minister\">ODPM</acronym>-i e-uueduste fond koostöös West Sussexi maakonna volikoguga."
 
-#: pb/web/faq.php:115
+#: pb/web/faq.php:117
 msgid "Do you need any help with the project?"
 msgstr "Kas sa vajad abi selle projektiga?"
 
-#: pb/web/faq.php:117
+#: pb/web/faq.php:119
+#, fuzzy
 msgid ""
 "Yes, we can use help in all sorts of ways, technical or non-technical.\n"
-"Please <a href=\"/contact\">contact us</a> if you want to get in touch."
+"    Please <a href=\"/contact\">contact us</a> if you want to get in touch."
 msgstr "Jah, meile kulub ära igasugune abi, nii tehniline kui ka mittetehniline. Palun <a href=\"/contact\">võta meiega ühendust</a>."
 
-#: pb/web/faq.php:120
+#: pb/web/faq.php:122
 msgid "Where's the \"source code\" to PledgeBank?"
 msgstr "Kus on PledgeBank-i  \"lähtekood\"?"
 
-#: pb/web/faq.php:122
+#: pb/web/faq.php:124
+#, fuzzy
 msgid ""
 "The software behind PledgeBank is open source, and available to you\n"
-"mainly under the Affero GPL software license. You can <a\n"
-"href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">download the source\n"
-"code</a> (look under 'pb') and help us develop it. You're welcome to use it\n"
-"in your own projects, although you must also make available the source code to\n"
-"any such projects.\n"
+"    mainly under the Affero GPL software license. You can <a\n"
+"    href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">download the source\n"
+"    code</a> (look under 'pb') and help us develop it. You're welcome to use it\n"
+"    in your own projects, although you must also make available the source code to\n"
+"    any such projects.\n"
+"    "
 msgstr ""
 "PledgeBank kasutab avatud lähtekoodi, millel on Affero GPL tarkvaralitsents. Lae<a\n"
 "href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">lähtekood alla</a>\n"
 
-#: pb/web/faq.php:130
+#: pb/web/faq.php:132
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr ""
 
-#: pb/web/faq.php:132
+#: pb/web/faq.php:134
 msgid ""
 "OK, we are\n"
-"Mike Bracken,\n"
-"Edmund von der Burg,\n"
-"James Cronin,\n"
-"Francis Irving,\n"
-"Chris Lightfoot,\n"
-"Etienne Pollard,\n"
-"Richard Pope,\n"
-"Matthew Somerville,\n"
-"Tom Steinberg.\n"
+"    Mike Bracken,\n"
+"    Edmund von der Burg,\n"
+"    James Cronin,\n"
+"    Francis Irving,\n"
+"    Chris Lightfoot,\n"
+"    Etienne Pollard,\n"
+"    Richard Pope,\n"
+"    Matthew Somerville,\n"
+"    Tom Steinberg.\n"
 "\n"
-"<strong>Translations by</strong>\n"
-"Nic Dafis (Welsh),\n"
-"Hugo Caballero Figueroa (Spanish),\n"
-"Tim Morley (Esperanto),\n"
-"Diego Galli (Italian),\n"
-"LaPingvino and Leo De Cooman (Dutch),\n"
-"Creso Moraes (Brazilian Portuguese),\n"
-"Alexander Markushin (Russian),\n"
-"maidan.org.ua team (Ukrainian).\n"
+"    <strong>Translations by</strong>\n"
+"    Nic Dafis (Welsh),\n"
+"    Hugo Caballero Figueroa (Spanish),\n"
+"    Tim Morley (Esperanto),\n"
+"    Diego Galli (Italian),\n"
+"    LaPingvino and Leo De Cooman (Dutch),\n"
+"    Creso Moraes (Brazilian Portuguese),\n"
+"    Alexander Markushin (Russian),\n"
+"    maidan.org.ua team (Ukrainian).\n"
 "\n"
-"<strong>Thanks also to</strong>\n"
-"<a href=\"http://www.c360uk.com/\">c360</a> (for SMS in the UK), \n"
-"the <a href=\"http://earth-info.nga.mil/gns/html/cntry_files.html\">US military</a> (for the world gazetteer),\n"
-"<a href=\"http://sedac.ciesin.columbia.edu/gpw/\">CIESIN</a> (for population density data),\n"
-"<a href=\"http://www.ordnancesurvey.co.uk\">Ordnance Survey</a> (for UK postcodes),\n"
-"Ben Furber for our favicon, \n"
-"the entire free software community (FreeBSD, Linux, PHP, Perl, Python, Apache,\n"
-"MySQL, PostgreSQL, we love and use you all!) and\n"
-"<a href=\"http://www.easynet.net/publicsector/\">Easynet</a> (who kindly host all\n"
-"our servers).\n"
+"    <strong>Thanks also to</strong>\n"
+"    <a href=\"http://www.c360uk.com/\">c360</a> (for SMS in the UK), \n"
+"    the <a href=\"http://earth-info.nga.mil/gns/html/cntry_files.html\">US military</a> (for the world gazetteer),\n"
+"    <a href=\"http://sedac.ciesin.columbia.edu/gpw/\">CIESIN</a> (for population density data),\n"
+"    <a href=\"http://www.ordnancesurvey.co.uk\">Ordnance Survey</a> (for UK postcodes),\n"
+"    Ben Furber for our favicon, \n"
+"    the entire free software community (FreeBSD, Linux, PHP, Perl, Python, Apache,\n"
+"    MySQL, PostgreSQL, we love and use you all!) and\n"
+"    <a href=\"http://www.easynet.net/publicsector/\">Easynet</a> (who kindly host all\n"
+"    our servers).\n"
 "\n"
-"Let us know if we've missed anyone.\n"
+"    Let us know if we've missed anyone.\n"
 "\n"
+"    "
 msgstr ""
 
-#: pb/web/faq.php:173
+#: pb/web/faq.php:175
 msgid "Pledge Creators' Questions"
 msgstr "Lubaduste loojate küsimused"
 
-#: pb/web/faq.php:176
+#: pb/web/faq.php:178
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Millised lubadused töötavad ja millised närbuvad tähtsusetusse?"
 
-#: pb/web/faq.php:178
+#: pb/web/faq.php:180
+#, fuzzy
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
-"which will apply. First, the lower a pledge target (in terms of\n"
-"numbers), the more likely it is to succeed. Second, the sheer energy\n"
-"with which you push a pledge, whether your own or one you've\n"
-"subscribed to, will have a big difference. If you are willing to take\n"
-"a wireless enabled laptop from door to door, and get people to sign up\n"
-"then and there, you're more likely to be successful than someone who\n"
-"puts their pledge up and forgets about it."
+"    which will apply. First, the lower a pledge target (in terms of\n"
+"    numbers), the more likely it is to succeed. Second, the sheer energy\n"
+"    with which you push a pledge, whether your own or one you've\n"
+"    subscribed to, will have a big difference. If you are willing to take\n"
+"    a wireless enabled laptop from door to door, and get people to sign up\n"
+"    then and there, you're more likely to be successful than someone who\n"
+"    puts their pledge up and forgets about it."
 msgstr "Me ei ole veel kindlad, kuid usume, et on mingisugused üldkehtivad tõepärasused. Kõigepealt, mida väiksem on lubaduse eesmärk (inimeste arvu mõttes), seda tõenäolisemalt see õnnestub. Teiseks, sinu siirad pingutused lubaduse õnnestumisele kaasaaitamisel, hoomiata sellest, kas sa lõid ise lubaduse või liitusid sellega, omavad suurt kaalu. Kui sa käid WiFi-ga sülearvutiga ukselt uksele ja kogud lubadusega liitujaid, on õnnestumine märkas tõenäolisem, kui kellegi lubadusel, mille ta üles riputab ja siis ära unustab. "
 
-#: pb/web/faq.php:187
+#: pb/web/faq.php:189
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Kui palju inimesi peaksin ma appi paluma?</a>"
 
-#: pb/web/faq.php:189
+#: pb/web/faq.php:191
+#, fuzzy
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
-"Choose the number of people for which you could only just be bothered to carry\n"
-"out your part of the pledge.  One more than the number where it wouldn't\n"
-"be worth it.  Don't put the value any higher than that.  This makes it\n"
-"most likely your pledge will succeed, and more people than you expected\n"
-"can always sign up."
+"    Choose the number of people for which you could only just be bothered to carry\n"
+"    out your part of the pledge.  One more than the number where it wouldn't\n"
+"    be worth it.  Don't put the value any higher than that.  This makes it\n"
+"    most likely your pledge will succeed, and more people than you expected\n"
+"    can always sign up."
 msgstr "Me soovitame sul valida väikseim võimalik eesmärk, millega sa leppida suudad.Vali selline inimeste arv, mis motiveeriks sind täitma oma osa lubadusest. Üks inimene rohkem kui hulk inimesi, mille puhul poleks üritus seda väärt. Ära pane sellest suuremat inimeste arvu. Sel moel on üsna tõenäoline, et su lubadus õnnestub ja sellega liitub rohkem inimesi kui sa lootsid."
 
-#: pb/web/faq.php:204
+#: pb/web/faq.php:206
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Miks minu uus lubadus ei ilmu lehel 'Kõik lubadused'?"
 
-#: pb/web/faq.php:206
+#: pb/web/faq.php:208
+#, fuzzy
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
-"the site, until a few people have signed up to them. This is to make\n"
-"sure we only show good quality pledges, which have an active creator\n"
-"and some support behind them.  So get out there and tell your friends and\n"
-"neighbours about your pledge!"
+"    the site, until a few people have signed up to them. This is to make\n"
+"    sure we only show good quality pledges, which have an active creator\n"
+"    and some support behind them.  So get out there and tell your friends and\n"
+"    neighbours about your pledge!"
 msgstr "Uutel lubadustel on oma leht, neid ei kuvata mujal sellel lehel enne kui mõned inimesed on nendega liitunud. Sel moel teeme me kindlaks, et näitame üksnes heal tasemel lubadusi, millel on aktiivne looja ja ka mingisugune toetus. Seega teavita ka oma sõpru ja naabreid oma lubadusest!"
 
-#: pb/web/faq.php:212
+#: pb/web/faq.php:214
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Kas Sa eemaldad rumalad või ebaseaduslikud lubadused?"
 
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:215
+#: pb/web/faq.php:217
+#, fuzzy
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
-"consider to be inappropriate. This means that your pledge will work, but will\n"
-"not show up on the all page, or in the search. We will normally backpage\n"
-"pledges which are really nothing more than advertising or propoganda, or which\n"
-"are entirely frivolous. We will also delete pledges which promote or incite\n"
-"illegal behaviour."
+"    consider to be inappropriate. This means that your pledge will work, but will\n"
+"    not show up on the all page, or in the search. We will normally backpage\n"
+"    pledges which are really nothing more than advertising or propoganda, or which\n"
+"    are entirely frivolous. We will also delete pledges which promote or incite\n"
+"    illegal behaviour."
 msgstr "PledgeBank jätab endale õiguse peita lubadused, mida peame ebasobivaks. See tähendab, et Su lubadus töötab, aga seda ei kuvata lehel ega otsingus. Tavaliselt varjame lubadused, mis pole midagi enamat kui reklaam või propaganda või on täiesti asjatud. Me kustutame ka lubadused, mis soodustavad või õhutavad ebaseaduslikku tegevust."
 
-#: pb/web/faq.php:222
+#: pb/web/faq.php:224
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Miks ma ei saa oma lubadust pärast selle loomist muuta?</a>"
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:226
+#, fuzzy
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
-"the pledge.  If you change the wording, then their signatures would no longer\n"
-"be valid.  You can <a href=\"/contact\">contact us</a> if there is a cosmetic\n"
-"change that you need to make.  For larger changes, you can create a new pledge,\n"
-"and ask your subscribers if they want to move across.  There's a link to do\n"
-"this from the 'Spread the word' section of your pledge page."
+"    the pledge.  If you change the wording, then their signatures would no longer\n"
+"    be valid.  You can <a href=\"/contact\">contact us</a> if there is a cosmetic\n"
+"    change that you need to make.  For larger changes, you can create a new pledge,\n"
+"    and ask your subscribers if they want to move across.  There's a link to do\n"
+"    this from the 'Spread the word' section of your pledge page."
 msgstr "Inimesed, kes lubadusega liituvad, võtavad endale kohustuse lubaduse täpse sõnastuse suhtes. Kui Sa muudad sõnastust, siis nende liitumine enam ei kehti. Sa võid meiega ühendust võtta, kui Sa soovid teha mõnd pisiparandust. Suuremate muudatuste puhul saad luua uue lubaduse ja paluda liitunutel üle tulla. Sinu lubaduse lehe 'Saada sõna' osas on selleks link."
 
-#: pb/web/faq.php:231
+#: pb/web/faq.php:233
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Kas ma saan ühendust võtta inimestega, kes on mu lubadusega liitunud?"
 
-#: pb/web/faq.php:233
+#: pb/web/faq.php:235
 #, fuzzy
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
-"to your pledge's page, and follow the link under 'Spread the word'.  For cost\n"
-"reasons, this will not go to SMS signers.  If your pledge succeeds you will be\n"
-"given a link to send a message to all your signers, including those who\n"
-"signed up by text message.  You should give your contact details, and ask for\n"
-"theirs, so you can stay in touch as you carry out your pledge.  If anybody\n"
-"signs your pledge later, the last message that you sent will be automatically\n"
-"forwarded to them, and they will be given a link to read older messages."
+"    to your pledge's page, and follow the link under 'Spread the word'.  For cost\n"
+"    reasons, this will not go to SMS signers.  If your pledge succeeds you will be\n"
+"    given a link to send a message to all your signers, including those who\n"
+"    signed up by text message.  You should give your contact details, and ask for\n"
+"    theirs, so you can stay in touch as you carry out your pledge.  If anybody\n"
+"    signs your pledge later, the last message that you sent will be automatically\n"
+"    forwarded to them, and they will be given a link to read older messages."
 msgstr "Iga kell on Sul võimalus saata sõnum Su lubadusega liitunutele. Mine oma lubaduse lehele, ja järgne lingile, mis asub 'Saada sõna' all. Kuludega seotud põhjustel ei lähe see SMS lühisõnumi teel liitunutele. Kui Su lubadus on edukas, antakse Sulle link, mille kaudu saad saata sõnumi kõigile liitunutele, kaasa arvatud need, kes tegid seda tekstisõnumiga. Sa peaksid neile andma oma kontaktandmed ja küsima nende omasid, et püsida ühenduses lubadust ellu viies. Kui keegi liitub lubadusega hiljem, siis kõik su sõnumid saadetakse neile automaatselt edasi."
 
-#: pb/web/faq.php:242
+#: pb/web/faq.php:244
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Kas inimesed saavad lubadusega liituda SMS lühisõnumi teel ja kui, siis kuidas?"
 
-#: pb/web/faq.php:244
-#, php-format
+#: pb/web/faq.php:246
+#, fuzzy, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
-"SMS for other countries, please contact us. The flyers for your pledge\n"
-"describe how to sign up by SMS. So the easiest way to remember is to print some\n"
-"out and carry them with you.  You can find the flyers from the 'Spread the\n"
-"word' section on your pledge's page.  Otherwise tell people to text\n"
-"<strong>pledge REFERENCE</strong> to <strong>%s</strong>.  Here REFERENCE is\n"
-"the short reference for your pledge which you chose when you made it, and which\n"
-"appears at the end of its address."
+"    SMS for other countries, please contact us. The flyers for your pledge\n"
+"    describe how to sign up by SMS. So the easiest way to remember is to print some\n"
+"    out and carry them with you.  You can find the flyers from the 'Spread the\n"
+"    word' section on your pledge's page.  Otherwise, for people in %s, it says what to text and\n"
+"    where to text it to at the bottom of each relevant pledge signup box."
 msgstr ""
 "Jah, kuid paraku ainult  %s. Kui Sa soovid aidata meil SMS teenust ka teistes riikides sisse seada, võta meiega ühendust. Sinu lubaduse flaieritel on kirjeldus, kuidas liituda SMS lühisõnumi teel. Lihtsaim moodus seda meeles pidada on mõned välja printida ja endaga kaasa kanda. Flaierid leiad Sa oma lubaduse lehe 'Saada sõna' osast. Muidu aga räägi inimestele, et text\n"
 "<strong>pledge REFERENCE</strong>, et <strong>%s</strong>.  Siin REFERENCE on lühike viide Su lubadusele, mille Sa valisid, kui lubaduse lõid ja mis ilmub oma aadressi lõpus."
@@ -2750,10 +2823,11 @@ msgid "How do I add a picture to my pledge?"
 msgstr "Kuidas ma soon oma lubadusele pildi lisada?"
 
 #: pb/web/faq.php:256
+#, fuzzy
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
-"(creator only)' under 'Spread the word on and offline'. Either find a picture\n"
-"of something to do with your pledge, or even just use a photo of yourself!"
+"    (creator only)' under 'Spread the word on and offline'. Either find a picture\n"
+"    of something to do with your pledge, or even just use a photo of yourself!"
 msgstr "Mine oma lubaduse lehele ja kliki 'Lisa oma lubadusele pilt (ainult lubaduse looja) 'Saada sõna ühenduses ja ühenduseta' alt. Leia pilt, mis on Su lubadusega seotud või kasuta lihtsalt oma fotot!"
 
 #: pb/web/faq.php:260
@@ -2763,13 +2837,13 @@ msgstr ""
 #: pb/web/faq.php:262
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
-"colours or complete style to match your branding. We can intimately\n"
-"link PledgeBank with the rest of your site in any way you imagine. \n"
-"We can make it public to the world, or private just for you.\n"
-"We normally charge for doing this, via our commercial subsidiary (any profits\n"
-"go back into mySociety). <a href=\"/contact\">Contact us</a> saying a bit about\n"
-"what you are thinking of doing. There's a list of example special sites at the\n"
-"bottom of <A href=\"/where\">this page</a>."
+"    colours or complete style to match your branding. We can intimately\n"
+"    link PledgeBank with the rest of your site in any way you imagine. \n"
+"    We can make it public to the world, or private just for you.\n"
+"    We normally charge for doing this, via our commercial subsidiary (any profits\n"
+"    go back into mySociety). <a href=\"/contact\">Contact us</a> saying a bit about\n"
+"    what you are thinking of doing. There's a list of example special sites at the\n"
+"    bottom of <A href=\"/where\">this page</a>."
 msgstr ""
 
 #: pb/web/faq.php:275
@@ -2784,11 +2858,11 @@ msgstr "Kas ma saan luua lubadusi ka muudes keeltes, kui inglise keel?"
 #, fuzzy
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
-"If your browser is configured to use one of those languages, PledgeBank will \n"
-"automatically appear in them. Otherwise, follow one of the links at the\n"
-"bottom of each page.  If you are interested in volunteering to help translate\n"
-"the site into your language, please <a href=\"/translate\">read our translation\n"
-"help page</a>."
+"    If your browser is configured to use one of those languages, PledgeBank will \n"
+"    automatically appear in them. Otherwise, follow one of the links at the\n"
+"    bottom of each page.  If you are interested in volunteering to help translate\n"
+"    the site into your language, please <a href=\"/translate\">read our translation\n"
+"    help page</a>."
 msgstr "Sa võid proovida! Täiesti rahvusvahelised PledgeBanki versioonid on enam kui võimalikud, kuid me ei saa neid luua ilma teiste keelte kõnelejateta. Kui Sa oled huvitatud vabatahtlikuna lehte tõlkimast, <a href=\"/translate\">loe meie tõlkeabi lehte. "
 
 #: pb/web/faq.php:287
@@ -2799,10 +2873,10 @@ msgstr "Milleks on PledgeBank loodud?"
 #: pb/web/faq.php:289
 msgid ""
 "All of them. We try to detect which country you are in\n"
-"automatically, and show you only pledges relevant to your country. To see what\n"
-"PledgeBank looks like in other countries, click on '(change)' at the top of any\n"
-"page, just right of the PledgeBank logo.  Please <a href=\"/contact\">contact\n"
-"us</a> if you'd like to help get more people in your country using PledgeBank."
+"    automatically, and show you only pledges relevant to your country. To see what\n"
+"    PledgeBank looks like in other countries, click on '(change)' at the top of any\n"
+"    page, just right of the PledgeBank logo.  Please <a href=\"/contact\">contact\n"
+"    us</a> if you'd like to help get more people in your country using PledgeBank."
 msgstr ""
 
 #: pb/web/faq.php:295
@@ -2813,9 +2887,10 @@ msgstr ""
 #, fuzzy
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
-"the postcode search overseas&mdash;please <a\n"
-"href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">join this\n"
-"email list</a> to help us out.\n"
+"    the postcode search overseas&mdash;please <a\n"
+"    href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">join this\n"
+"    email list</a> to help us out.\n"
+"    "
 msgstr ""
 "Ei, aga Sulle avanevad mõningad käepäraseid lisavõimalused, kui sa elad Ühendkuningriigis,nagu näiteks võimalus otsida lubadusi, mis on loodud sinu asukoha lähedal.Jällegi räägiksime hea meelega kellegagi, kes aitaks meil laieneda välismaale - palun <a\n"
 "href=\"http://www.mysociety.org/mailman/listinfo/mysociety-i18n\">ühine selle listiga</a>, et meid aidata.\n"
@@ -2827,7 +2902,7 @@ msgstr ""
 #: pb/web/faq.php:305
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
-"can help add text messaging in your country."
+"    can help add text messaging in your country."
 msgstr ""
 
 #: pb/web/faq.php:312
@@ -2839,13 +2914,13 @@ msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Ma ei soovi oma nime panna nähtavale, kui ma lubadusega liitun!"
 
 #: pb/web/faq.php:317
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
-"my name on this pledge' box when you sign up.  Alternatively, you can sign\n"
-"up by SMS (in %s only).  If you are about to make a sensitive pledge, you may want to \n"
-"make it private, which means only people with a PIN you give them can\n"
-"view the pledge page."
+"    my name on this pledge' box when you sign up.  Alternatively, you can sign\n"
+"    up by SMS (in %s only).  If you are about to make a sensitive pledge, you may want to \n"
+"    make it private, which means only people with a PIN you give them can\n"
+"    view the pledge page."
 msgstr "Sa saad ennast lisada lubadusele varjatult, kui võtad linnukese 'Näita mu nime sellel lubadusel' kastikesest ära, kui Sa lubadusega liitud. Teine võimalus on liituda SMS lühisõnumi teel (ainult %s). Kui Sa kavatsed luua tundlikumat laadi lubaduse, siis võid selle teha privaatse, mis tähendab, et ainult need inimesed, kellele Sa annad PIN koodi, saavad lubaduse lehte näha"
 
 #: pb/web/faq.php:323
@@ -2856,12 +2931,12 @@ msgstr "Kellel on võimalik bäha mu e-posti aadressi?"
 #, fuzzy
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
-"creator of your pledge, unless we are obliged to by law. We do let the pledge\n"
-"creators send emails to pledge subscribers to explain what's going on, to\n"
-"motivate them etc. However, we don't show the pledge creator the addresses of\n"
-"the subscribers getting his email. If you reply to an email from the pledge\n"
-"creator yourself, you will give them your email address&mdash;please be\n"
-"aware!"
+"    creator of your pledge, unless we are obliged to by law. We do let the pledge\n"
+"    creators send emails to pledge subscribers to explain what's going on, to\n"
+"    motivate them etc. However, we don't show the pledge creator the addresses of\n"
+"    the subscribers getting his email. If you reply to an email from the pledge\n"
+"    creator yourself, you will give them your email address&mdash;please be\n"
+"    aware!"
 msgstr "Me ei avalikusta Su e-posti aadressi mitte kellelegi, kaasa arvatud Sinu lubaduse looja. Ma laseme lubaduste loojatel saata e-kirju lubaduse tellijatele selgitamaks, mis parasjagu toimub, motiveerimaks neid jne. Siiski ei näita me lubaduse loojale tellijate aadresse, kes tema e-kirju saavad. Kui Sa ise vastad lubaduse looja e-kirjale, siis annad Sa talle oma e-posti aadressi - ole sellest teadlik! "
 
 #: pb/web/faq.php:333
@@ -2872,10 +2947,10 @@ msgstr "Kas te saadate vastikut ja elajalikku rämpsposti mu e-posti aadressile?
 #, fuzzy
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
-"relation to your pledge. These will be a mixture of status emails from\n"
-"PledgeBank itself, and missives from the pledge creator, trying to chivvy you\n"
-"into greater support. We will never give or sell your email addresses to anyone\n"
-"else, unless we are obliged to by law."
+"    relation to your pledge. These will be a mixture of status emails from\n"
+"    PledgeBank itself, and missives from the pledge creator, trying to chivvy you\n"
+"    into greater support. We will never give or sell your email addresses to anyone\n"
+"    else, unless we are obliged to by law."
 msgstr "Ei. Pärast lubadusega liitumist saadame Sulle e-kirju, mis on seotud ainult Sinu lubadusega. Need on staatusest teavitavad e-kirjad PledgeBankilt, mis on kombineeritud läkitustega lubaduse loojalt, kes kihutab Sind suuremale toetusele. Ütlematagi on selge, et me ei anna ega müü Su e-posti aadressi kellelegi teisele."
 
 #: pb/web/index.php:20
@@ -2886,11 +2961,16 @@ msgstr "PledgeBank.com - Uued lubadused"
 msgid "Successful Pledges at PledgeBank.com"
 msgstr "PledgeBank.com - Edukad lubadused"
 
-#: pb/web/index.php:51 pb/web/index.php:55
+#: pb/web/index.php:22
+#, fuzzy
+msgid "Comments on All Pledges PledgeBank.com"
+msgstr "PledgeBank.com - Uued lubadused"
+
+#: pb/web/index.php:52 pb/web/index.php:56
 msgid "Start your own pledge"
 msgstr "Loo oma lubadus"
 
-#: pb/web/index.php:52
+#: pb/web/index.php:53
 #, fuzzy
 msgid ""
 "PledgeBank is free and easy to use. Once you've thought of something you'd like\n"
@@ -2898,42 +2978,42 @@ msgid ""
 "only if 5 other people will do the same\"."
 msgstr "Pledgebank on tasuta ja lihtne kasutada. Kui oled mõelnud millelegi, mida soovid korda saata, lihtsalt <a href=\"/new\">loo lubadus</a>, mis ütleb: \"Ma teen seda, aga ainult siis, kui veel viis inimest teeb sama\"."
 
-#: pb/web/index.php:75
+#: pb/web/index.php:76
 msgid ""
 "How scissors, a phone and some printouts\n"
 "can make your pledge succeed &raquo;"
 msgstr "Kuidas käärid, telefon ja mõned väljatrükid teevad Su lubadusest eduka lubaduse &raquo;"
 
-#: pb/web/index.php:78
+#: pb/web/index.php:79
 msgid "Scissors, a phone and some printouts &mdash; "
 msgstr "Käärid, telefon ja mõned väljatrükid &mdash; "
 
-#: pb/web/index.php:79
+#: pb/web/index.php:80
 msgid "Find out why these things are the secret of a successful pledge"
 msgstr "Saa teada, miks need esemed on eduka lubaduse võtmeks"
 
-#: pb/web/index.php:130
+#: pb/web/index.php:131
 msgid "RSS feed of new pledges"
 msgstr "RSS toide uute lubaduste kohta"
 
-#: pb/web/index.php:209
+#: pb/web/index.php:210
 msgid "Interesting pledges from other countries"
 msgstr "Huvitavaid lubadusi teistest riikidest"
 
-#: pb/web/index.php:215
+#: pb/web/index.php:216
 #, fuzzy
 msgid "More pledges to sign..."
 msgstr "Lubadus %s isikult %s."
 
-#: pb/web/index.php:220
+#: pb/web/index.php:221
 msgid "RSS feed of successful pledges"
 msgstr "RSS toide edukate lubaduste kohta"
 
-#: pb/web/index.php:221
+#: pb/web/index.php:222
 msgid "Recent successful pledges"
 msgstr "Hiljutised edukad lubadused"
 
-#: pb/web/index.php:243
+#: pb/web/index.php:244
 #, fuzzy
 msgid "More successful pledges..."
 msgstr "Hiljutised edukad lubadused"
@@ -2955,7 +3035,8 @@ msgid "Pledges which need signers"
 msgstr "Lubadused, millele on liitujaid vaja"
 
 #: pb/web/list.php:121
-msgid "New Pledges"
+#, fuzzy
+msgid "New pledges"
 msgstr "Uued lubadused"
 
 #: pb/web/list.php:123
@@ -3014,7 +3095,7 @@ msgstr "Tähtaeg"
 msgid "Percent signed"
 msgstr "Liitumise protsent"
 
-#: pb/web/list.php:184 pb/web/new.php:819
+#: pb/web/list.php:184 pb/web/new.php:796
 msgid "Category"
 msgstr "Valdkond"
 
@@ -3212,178 +3293,143 @@ msgstr "Nüüd sa logisid välja. Täname, et kasutasid PledgeBanki!"
 msgid "Create a New Pledge"
 msgstr "Loo uus lubadus"
 
-#: pb/web/new.php:63
-msgid "Top Tips for Successful Pledges"
-msgstr "Õnnestuva lubaduse tegemise vihjed"
-
-#: pb/web/new.php:66
-#, php-format
-msgid ""
-"<strong>Keep your ambitions modest</strong> &mdash; why ask for 50 people\n"
-"to do something when 5 would be enough? Every extra person makes your pledge\n"
-"harder to meet. Only %0.0f%% of pledges asking for more than 100 people succeed."
-msgstr ""
-"<strong>Ole oma ambitsioonidega mõõdukas</strong> &mdash; miks paluda 50-nel inimesel\n"
-"midagi teha kui tegelikult on ka 5 inimest selleks täiesti piisav? Iga lisainimene muudab sinu soovi\n"
-"raskemalt täituvaks. Statistika näitab, et nenest soovidest, mis vajavad osalemiseks rohkem kui 100 inimest on täitunud vaid %0.0f%%."
-
-#: pb/web/new.php:70
-msgid ""
-"<strong>Get ready to sell your pledge, hard</strong>. Pledges don't\n"
-"sell themselves just by sitting on this site. In fact your pledge won't even\n"
-"appear to general site visitors until you've got a few people to sign up to it\n"
-"yourself. Think hard about whether people you know would want to sign up to\n"
-"your pledge!"
-msgstr ""
-"<strong>Ole valmis selleks, et oma lubaduse nö müük võib päris raske olla</strong>. Lubadused ei müü \n"
-" ennast ise. Kui nüüd päris aus olla, siis nad isegi ei ilmu meie kodukal enne kui on saanud sinu aktiivse \n"
-" müügitööga endale vähemalt mõned liitujad. Enne kui sa lubadusele liitujaid otsima hakkad mõtle, kas sinu \n"
-"enda sõbrad sellega üldse liituksid!"
-
-#: pb/web/new.php:76
-msgid ""
-"<strong>Think about how your pledge reads.</strong> How will it look to\n"
-"someone who picks up a flyer from their doormat? Read your pledge to the person\n"
-"next to you, or to your mother, and see if they understand what you're talking\n"
-"about. If they don't, you need to rewrite it."
-msgstr "<strong>Mõtle, kas sinu lubadus on ka teistele arusaadav. </strong> Kuidas võiks sinu lubadust lugeda mõni inimene, kes leidis selle lubaduse flayeri näiteks oma uksematilt? Loe oma lubadust inimestega, kes on sinu kõrval. Loe teda ette ka oma emale. Kas nad saavad sellest aru? Kui nad ei saa, siis pead sa oma lubaduse ringi kirjutama. "
-
-#: pb/web/new.php:90
+#: pb/web/new.php:67
 msgid "people in my street"
 msgstr "inimesed minu tänavalt"
 
-#: pb/web/new.php:113
+#: pb/web/new.php:90
 msgid "organise a street party for <MY STREET>"
 msgstr "korralda tänavapidu <MY STREET> tänava rahvale"
 
-#: pb/web/new.php:115
+#: pb/web/new.php:92
 msgid "other people on <MY STREET>"
 msgstr "teised inimesed <MY STREET> tänavalt"
 
-#: pb/web/new.php:116
+#: pb/web/new.php:93
 msgid "help organise it"
 msgstr "aita seda korraldada"
 
-#: pb/web/new.php:117
+#: pb/web/new.php:94
 msgid "resident of <MY STREET>"
 msgstr "<MY STREET> tänava elanik"
 
-#: pb/web/new.php:121
+#: pb/web/new.php:98
 msgid "organise a picnic this summer"
 msgstr "korralda sellel suvel piknik"
 
-#: pb/web/new.php:123
+#: pb/web/new.php:100
 msgid "friends"
 msgstr "sõbrad"
 
-#: pb/web/new.php:124
+#: pb/web/new.php:101
 msgid "pledge to come along and bring food or drink"
 msgstr "luba kaasa tulla ja võta söögid/joogid ka kaasa"
 
-#: pb/web/new.php:125
+#: pb/web/new.php:102
 msgid "picnic lover"
 msgstr "piknikuarmastaja"
 
-#: pb/web/new.php:141 pb/web/new.php:293 pb/web/new.php:347 pb/web/new.php:418
-#: pb/web/new.php:755
+#: pb/web/new.php:118 pb/web/new.php:270 pb/web/new.php:324 pb/web/new.php:395
+#: pb/web/new.php:732
 #, fuzzy, php-format
 msgid "New Pledge &#8211; Step %s of %s"
 msgstr "Uus lubadus &#8211; samm 4/4"
 
-#: pb/web/new.php:144
+#: pb/web/new.php:121
 msgid "Your Pledge"
 msgstr "Sinu lubadus"
 
-#: pb/web/new.php:146
+#: pb/web/new.php:123
 #, php-format
 msgid "(if you'd like your pledge in a language other than %s, <a href=\"%s\">click here</a>)"
 msgstr "(kui sa soovid oma lubaduse kirjutada teises keeles kui %s, <a href=\"%s\">siis kliki siin</a>)"
 
-#: pb/web/new.php:150 pb/web/new.php:484 pb/web/ref-index.php:350
+#: pb/web/new.php:127 pb/web/new.php:461 pb/web/ref-index.php:350
 #: pb/web/ref-plain.php:56
 msgid "I will"
 msgstr "Ma luban"
 
-#: pb/web/new.php:152 pb/web/poster.cgi:280
+#: pb/web/new.php:129 pb/web/poster.cgi:297
 msgid "but only if"
 msgstr "kuid ainult juhul kui"
 
-#: pb/web/new.php:152 pb/web/new.php:249
+#: pb/web/new.php:129 pb/web/new.php:226
 msgid "Target number of people"
 msgstr "Osalejate arvuline eesmärk"
 
-#: pb/web/new.php:157 pb/web/new.php:160
+#: pb/web/new.php:134 pb/web/new.php:137
 msgid "do the same"
 msgstr "tee sama"
 
-#: pb/web/new.php:157 pb/web/new.php:159 pb/web/new.php:485
+#: pb/web/new.php:134 pb/web/new.php:136 pb/web/new.php:462
 msgid "will"
 msgstr "teen"
 
-#: pb/web/new.php:164
+#: pb/web/new.php:141
 msgid "The other people must sign up before"
 msgstr "Teised peavad esmalt registreerima"
 
-#: pb/web/new.php:164
+#: pb/web/new.php:141
 msgid "Deadline date"
 msgstr "Tähtaeg"
 
-#: pb/web/new.php:164
+#: pb/web/new.php:141
 msgid "e.g."
 msgstr "näiteks"
 
-#: pb/web/new.php:174
+#: pb/web/new.php:151
 msgid "Choose a short name for your pledge (6 to 16 letters):"
 msgstr "Vali oma lubadusele sobilik nimi (6-16 tähemärki):"
 
-#: pb/web/new.php:176
+#: pb/web/new.php:153
 #, fuzzy, php-format
 msgid "This gives your pledge an easy web address. e.g. %s/tidyupthepark"
 msgstr "Siin saad sa oma lubadusele lihtsa weebiaadressi. Näiteks www.pledgebank.com/koristamepargipuhtaks"
 
-#: pb/web/new.php:179
+#: pb/web/new.php:156
 msgid "More details about your pledge: (optional)"
 msgstr "Detailid sinu lubadusest (valikuline):"
 
-#: pb/web/new.php:179
-msgid "(links and email addresses will be automatically spotted, no markup needed)"
+#: pb/web/new.php:156
+#, fuzzy
+msgid "(links and email addresses will be automatically made clickable, no \"markup\" needed)"
 msgstr "(lingid ja emaili aadressid märgistatakse automaatselt, eraldi märkimine ei ole vajalik)"
 
-#: pb/web/new.php:182
+#: pb/web/new.php:159
 msgid "About You"
 msgstr "Sinust"
 
-#: pb/web/new.php:185
+#: pb/web/new.php:162
 msgid "(we need your email so we can get in touch with you when your pledge completes, and so on)"
 msgstr "(sinu emaili aadress on vajalik selleks, et sulle teatada sinu lubaduse (pledge) lõppemisest jne)"
 
-#: pb/web/new.php:187
+#: pb/web/new.php:164
 msgid "On flyers and elsewhere, after your name, how would you like to be described? (optional)"
 msgstr "Kuidas sa sooviksid end kirjeldada (ei ole kohustuslik)? Info läheb näiteks flyerite peale. "
 
-#: pb/web/new.php:188
+#: pb/web/new.php:165
 msgid "(e.g. \"resident of Tamilda Road\")"
 msgstr "(näiteks \"Tamme tänava elanik\")"
 
-#: pb/web/new.php:196
+#: pb/web/new.php:173
 #, fuzzy
 msgid "Did you read the tips at the top of the page? They'll help you make a successful pledge."
 msgstr "Kas sa lugesid lehe päises olevaid soovitusi? Need aitavad sul koostada edukat lubadust. "
 
-#: pb/web/new.php:197 pb/web/new.php:259 pb/web/new.php:316 pb/web/new.php:445
+#: pb/web/new.php:174 pb/web/new.php:236 pb/web/new.php:293 pb/web/new.php:422
 #, fuzzy
 msgid "Next step"
 msgstr "Järgmine lehekülg"
 
-#: pb/web/new.php:210 pb/web/new.php:283 pb/web/new.php:337 pb/web/new.php:408
+#: pb/web/new.php:187 pb/web/new.php:260 pb/web/new.php:314 pb/web/new.php:385
 msgid "Your pledge looks like this so far:"
 msgstr "Sinu lubadus on hetkel selline:"
 
-#: pb/web/new.php:226
+#: pb/web/new.php:203
 msgid "Please lower your target!"
 msgstr "Palun vähenda eesmärki!"
 
-#: pb/web/new.php:228
+#: pb/web/new.php:205
 #, php-format
 msgid ""
 "Recruiting more than %d people to a pledge is much harder than\n"
@@ -3392,7 +3438,7 @@ msgid ""
 "    your pledge really need so many people to be worthwhile?"
 msgstr "Rohkem kui %d inimese kaasamine on raskem kui enamik inimesi arvab.<strong>Vaid %0.0f%%</strong> inimesi on õnnestunud tõstes lubaduse osaluseesmärki kõrgemale kui %d - kas see risk on seda väärt? Kas sul on tõesti vaja kaasata niipalju inimesi?"
 
-#: pb/web/new.php:234
+#: pb/web/new.php:211
 #, php-format
 msgid ""
 "In order to encourage people to aim at achievable targets, we don't\n"
@@ -3404,7 +3450,7 @@ msgid ""
 "    is a local pledge)."
 msgstr "Selleks, et julgustada inimesi seadma saavutatavaid eesmärke, ei näita meie kodulehesüsteem automaatselt neid lubadusi, millel on hetkel kaasatud vähem kui 2.5%% vajalikust inimhulgast. Selleks, et sinu lubadus ilmuks 'All Pledges' leheküljel ja otsingusüsteemis ja et see saadetaks kohalikele lubadustepanga liikmetele, peab sellega olema liitunud vähemalt %d vajalikust inimhulgast. "
 
-#: pb/web/new.php:242
+#: pb/web/new.php:219
 msgid ""
 "We've <strong>reduced your target to 10</strong> for now. Please\n"
 "    use this box if you want to change back to another target.  There is \n"
@@ -3415,154 +3461,154 @@ msgstr ""
 "    kasuta seda kasti kui sa soovid oma eesmärki muuta.  Siit leiad \n"
 "    <a href=\"/faq#targets\">rohkem soovitusi</a> eesmärkide seadmise kohta (KKK formaadis)."
 
-#: pb/web/new.php:248
+#: pb/web/new.php:225
 msgid "<strong>My target</strong> is "
 msgstr "<strong>Minu eesmärk</strong> on"
 
-#: pb/web/new.php:252
+#: pb/web/new.php:229
 msgid ""
 "Remember, a small but successful pledge can be the perfect preparation\n"
 "for a larger and more ambitious one. You can mail your subscribers, and ask\n"
 "them to help you with something bigger."
 msgstr "Pea meeles, et väike, kuid väga edukas lubadus on hea ettevalmistus suuremahulisema lubaduse jaoks. Sa võid alati kirjutada oma listiga liitunutele ja paluda nende abi millegi suuremahulisema tegemisel. "
 
-#: pb/web/new.php:259 pb/web/new.php:316
+#: pb/web/new.php:236 pb/web/new.php:293
 msgid "Back to step 1"
 msgstr "Tagasi 1. sammu juurde"
 
-#: pb/web/new.php:295
+#: pb/web/new.php:272
 msgid "Which country does your pledge apply to?"
 msgstr "Millisele riigile sinu lubadus on suunatud?"
 
-#: pb/web/new.php:299
+#: pb/web/new.php:276
 msgid "Within that country, is your pledge specific to a local area or specific place?"
 msgstr "Kas sinu lubadus on selles riigis suunatud teatud piirkonnale või konkreetsele kohale?"
 
-#: pb/web/new.php:300
+#: pb/web/new.php:277
 msgid "If so, we will help people who live nearby find your pledge."
 msgstr "Kui nii, siis me aitame seal lähedal elavatel inimestel sinu lubadust leida. "
 
-#: pb/web/new.php:301
+#: pb/web/new.php:278
 msgid "Yes"
 msgstr "Jah"
 
-#: pb/web/new.php:302
+#: pb/web/new.php:279
 msgid "No"
 msgstr "Ei"
 
-#: pb/web/new.php:306
+#: pb/web/new.php:283
 msgid "If yes, choose where."
 msgstr "Kui jah, siis vali kus."
 
-#: pb/web/new.php:350
+#: pb/web/new.php:327
 msgid "Which category does your pledge best fit into?"
 msgstr "Millisesse kategooriasse sinu lubadus kõige paremini sobib?"
 
-#: pb/web/new.php:374
+#: pb/web/new.php:351
 msgid "(this will be used in future to help more people find your pledge)"
 msgstr "(seda kasutatakse tulevikus lihtsustamaks sinu lubaduse leidmist)"
 
-#: pb/web/new.php:379
+#: pb/web/new.php:356
 msgid "Who do you want to be able to see your pledge?"
 msgstr "Kellele sa tahaksid oma lubaduse vaatamist lubada?"
 
-#: pb/web/new.php:380
+#: pb/web/new.php:357
 msgid "Anyone"
 msgstr "Kõigile"
 
-#: pb/web/new.php:381
+#: pb/web/new.php:358
 msgid "Only people to whom I give this PIN:"
 msgstr "Ainult inimestel, kellele ma olen andnud PIN'i:"
 
-#: pb/web/new.php:390
+#: pb/web/new.php:367
 msgid "Back to step 2"
 msgstr "Tagasi 2. sammu juurde"
 
-#: pb/web/new.php:424
+#: pb/web/new.php:401
 #, fuzzy
 msgid "Your address:"
 msgstr "Sinu koduleht"
 
-#: pb/web/new.php:430
+#: pb/web/new.php:407
 #, fuzzy
 msgid "County:"
 msgstr "Riik:"
 
-#: pb/web/new.php:445
+#: pb/web/new.php:422
 #, fuzzy, php-format
 msgid "Back to step %s"
 msgstr "Tagasi 1. sammu juurde"
 
-#: pb/web/new.php:466
+#: pb/web/new.php:443
 msgid "Transferring the data from previous page failed :("
 msgstr "Eelmiselt lehelt andmete kättesaamine ebaõnnestus :("
 
-#: pb/web/new.php:476 pb/web/pb.js:13
+#: pb/web/new.php:453 pb/web/pb.js:13
 msgid "<Enter your pledge>"
 msgstr "<Sisesta oma lubadus>"
 
-#: pb/web/new.php:581
+#: pb/web/new.php:558
 msgid "Before creating your new pledge, we need to check that your email is working."
 msgstr "Enne kui sa saad oma lubaduse sisestada, peame me kontrollima, kas sinu emaili aadress toimib. "
 
-#: pb/web/new.php:593 pb/web/new.php:657
+#: pb/web/new.php:570 pb/web/new.php:634
 msgid "Please enter a target"
 msgstr "Palun sisesta eesmärk"
 
-#: pb/web/new.php:594
+#: pb/web/new.php:571
 msgid "The target must be a positive number"
 msgstr "Eesmärk peab olema positiivne number"
 
-#: pb/web/new.php:597
+#: pb/web/new.php:574
 msgid "Please enter a short name for your pledge"
 msgstr "Palun sisesta oma lubaduse lühike nimi"
 
-#: pb/web/new.php:598
+#: pb/web/new.php:575
 msgid "The short name must be at least six characters long"
 msgstr "See lühike nimi peab olema vähemalt 6 tähemärki pikk"
 
-#: pb/web/new.php:599
+#: pb/web/new.php:576
 msgid "The short name can be at most 20 characters long"
 msgstr "See lühike nimi saab olla kuni 20 tähemärki pikk"
 
-#: pb/web/new.php:600
+#: pb/web/new.php:577
 msgid "That short name is not allowed."
 msgstr "Lühike nimi vastu võetud."
 
-#: pb/web/new.php:601
+#: pb/web/new.php:578
 msgid "The short name must only contain letters, numbers, or a hyphen.  Spaces are not allowed."
 msgstr "Lühike nimi võib sisaldada tähti, numbreid ja sidekriipse. Tühikud ei ole lubatud. "
 
-#: pb/web/new.php:602
+#: pb/web/new.php:579
 msgid "The short name must contain at least one letter."
 msgstr "Lühike nimi peab sisaldama vähemalt ühte tähte."
 
-#: pb/web/new.php:614
+#: pb/web/new.php:591
 #, php-format
 msgid "You've already made a pledge with short name '%s'. Either go to your <a href=\"/%s\">existing pledge</a>, or edit the short name below to make a new pledge."
 msgstr ""
 
-#: pb/web/new.php:617
+#: pb/web/new.php:594
 msgid "That short name is already taken!"
 msgstr "Selline lühike nimi on juba kasutusel!"
 
-#: pb/web/new.php:619
+#: pb/web/new.php:596
 msgid "Please enter a pledge"
 msgstr "Palun sisesta lubadus"
 
-#: pb/web/new.php:624
+#: pb/web/new.php:601
 msgid "Please enter a deadline"
 msgstr "Palun sisesta tähtaeg"
 
-#: pb/web/new.php:625
+#: pb/web/new.php:602
 msgid "The deadline must be in the future"
 msgstr "Tähtaeg peab olema tulevikus"
 
-#: pb/web/new.php:626
+#: pb/web/new.php:603
 msgid "Please enter a valid date"
 msgstr "Palun sisesta korrektne kuupäev"
 
-#: pb/web/new.php:628
+#: pb/web/new.php:605
 #, fuzzy, php-format
 msgid ""
 "Please change your deadline so it is less than %d years into the\n"
@@ -3572,47 +3618,47 @@ msgid ""
 "        asking for an alteration."
 msgstr "Palun muuda oma lubaduse tähtaega nii, et tähtajani oleks vähemalt %d aastat. Tähtaja muutmine on vajalik lubadusega koostamise jätkamiseks. Kui sa soovid pikemat tähtaega, pane lühike ja kirjuta meile <a href=\"mailto:team@pledgebank.com\">team@pledgebank.com</a> oma soov saada pikemat tähtaega. "
 
-#: pb/web/new.php:639
+#: pb/web/new.php:616
 msgid "Please change <MY STREET> to the name of your street"
 msgstr "Palun muuda <MY STREET> oma tänava nimeks"
 
-#: pb/web/new.php:646
+#: pb/web/new.php:623
 msgid "Unknown language code:"
 msgstr "Tundmatu keelekood:"
 
-#: pb/web/new.php:679
+#: pb/web/new.php:656
 msgid "Please choose which country your pledge applies to"
 msgstr "Palun vali, millisele riigile sinu lubadus suunatakse"
 
 #. TRANS: Ideally "none" will be translated here, but I can't see it as an entry in this .po file. How is this resolved? (Tim Morley, 2005-11-23)
-#: pb/web/new.php:690
+#: pb/web/new.php:667
 #, fuzzy
 msgid "Please choose a country, or \"not specific to any location\" if your pledge applies everywhere"
 msgstr "Palun vali riik, või \"none\" kui sinu lubadus on kuhugile suunatud"
 
-#: pb/web/new.php:692
+#: pb/web/new.php:669
 msgid "Please choose a valid state within that country, or the country name itself"
 msgstr "Palun vali sobiv osariik selles riigis või riigi nimi"
 
-#: pb/web/new.php:703
+#: pb/web/new.php:680
 msgid "Please choose whether the pledge is local or not"
 msgstr "Palun vali, kas lubadus on kohalik või mitte"
 
-#: pb/web/new.php:715
+#: pb/web/new.php:692
 msgid "Please enter a pin"
 msgstr "Palun sisesta PIN-kood"
 
-#: pb/web/new.php:722
+#: pb/web/new.php:699
 #, fuzzy
 msgid "Please enter a valid postcode"
 msgstr "Palun sisesta korrektne kuupäev"
 
-#: pb/web/new.php:747
+#: pb/web/new.php:724
 #, php-format
 msgid "Your pledge, with short name <em>%s</em>, will look like this:"
 msgstr "Sinu lubadus, lühinimega <em>%s</em>, näeb välja nii:"
 
-#: pb/web/new.php:756
+#: pb/web/new.php:733
 #, php-format
 msgid ""
 "\n"
@@ -3625,103 +3671,104 @@ msgstr ""
 "<strong>Loe hoolikalt</strong> - eetilistel põhjustelei saa me lubada Sul %slubaduse sõnastust muuta%s ,kui inimesed on juba\n"
 " hakanud sellega ühinema.   \n"
 
-#: pb/web/new.php:765
+#: pb/web/new.php:742
 msgid "Why can't I modify my pledge after I've made it?"
 msgstr "Miks ei saa ma oma lubadust pärast selle algatamist muuta?"
 
-#: pb/web/new.php:767
+#: pb/web/new.php:744
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "the pledge. If you change the wording, then their signatures would no\n"
 "longer be valid."
 msgstr "Inimesed, kes lubadusega ühinevad, ühinevad lubaduse konkreetse sõnastusega. Kui Sa sõnastust muudad, ei kehti nende allkirjad enam."
 
-#: pb/web/new.php:774
+#: pb/web/new.php:751
 msgid "Change pledge text"
 msgstr "Muuda lubaduse teksti"
 
-#: pb/web/new.php:774
+#: pb/web/new.php:751
 msgid "Change location"
 msgstr "Muuda asukohta"
 
-#: pb/web/new.php:776
+#: pb/web/new.php:753
 msgid "Change category/privacy"
 msgstr "Muuda kategooriat/privaatsust"
 
-#: pb/web/new.php:779
+#: pb/web/new.php:756
 #, fuzzy
 msgid "Change your postal address"
 msgstr "Sisesta oma e-posti aadress"
 
-#: pb/web/new.php:785
+#: pb/web/new.php:762
 msgid "When you're happy with your pledge, <strong>click \"Create\"</strong> to confirm that you wish PledgeBank.com to display the pledge at the top of this page in your name, and that you agree to the terms and conditions below."
 msgstr "Kui Sa oled oma lubadusega rahul, <strong>vajuta \"Loo\"</strong> kinnitamaks, et soovid, et PledgeBank.com kuvaks lubadust selle lehekülje ülaosas Sinu nimel, ja et Sa nõustud alljärgnevate tingimustega."
 
-#: pb/web/new.php:788
+#: pb/web/new.php:765
 #, fuzzy
 msgid "Create pledge"
 msgstr "Loo uus lubadus"
 
-#: pb/web/new.php:791
+#: pb/web/new.php:768
 msgid "The Dull Terms and Conditions"
 msgstr "Igavad tingimused"
 
-#: pb/web/new.php:796
+#: pb/web/new.php:773
 msgid "By creating your pledge you also consent to the syndication of your pledge to other sites &mdash; this means that other people will be able to display your pledge and your name"
 msgstr "Oma lubadust luues nõustud sa ühtlasi selle lubaduse avaldamisega teistel veebilehtedel &mdash; see tähendab, et teised saavad kuvada Su nime ja lubadust"
 
-#: pb/web/new.php:798
+#: pb/web/new.php:775
 msgid ", and use (but not display) your postcode to locate your pledge in the right geographic area"
 msgstr "ja kasutada (aga mitte kuvada) Su postiindeksit, et paigutada Su lubadus geograafiliselt õigele alale"
 
-#: pb/web/new.php:801
+#: pb/web/new.php:778
 msgid ""
 "The purpose of this is simply to give your pledge\n"
 "greater publicity and a greater chance of succeeding."
 msgstr "Selle eesmärk on lihtsalt teha Su lubadusele rohkem reklaami ja anda sellele suurem võimalus õnnestumiseks."
 
-#: pb/web/new.php:805
+#: pb/web/new.php:782
 msgid "Rest assured that we won't ever give or sell anyone your email address."
 msgstr "Võid olla kindel, et me ei anna ega müü kunagi kellelegi Su e-postiaadressi."
 
-#: pb/web/new.php:816
+#: pb/web/new.php:793
 msgid "Other Details"
 msgstr "Muud detailid"
 
-#: pb/web/new.php:821
+#: pb/web/new.php:798
 msgid "None"
 msgstr "Ei ole"
 
-#: pb/web/new.php:825
+#: pb/web/new.php:802
 msgid "Privacy status"
 msgstr "Privaatsusstaatus"
 
-#: pb/web/new.php:826
+#: pb/web/new.php:803
 msgid "Public"
 msgstr "Avalik"
 
-#: pb/web/new.php:827
+#: pb/web/new.php:804
 msgid "Pledge can only be seen by people who I give the PIN to"
 msgstr "Lubadust näevad ainult inimesed, kellele ma annan PIN-koodi"
 
-#: pb/web/new.php:960
+#: pb/web/new.php:937
 msgid "Pledge Created"
 msgstr "Lubadus loodud"
 
-#: pb/web/new.php:965
+#: pb/web/new.php:942
 msgid "Thank you for creating your pledge."
 msgstr "Tänan, et lõid oma lubaduse."
 
-#: pb/web/new.php:966
+#: pb/web/new.php:943
 #, php-format
 msgid "It is now live at %s<br>and people can sign up to it there."
 msgstr "See on nüüd üleval  %s<br>ja inimesed saavad seal sellega ühineda."
 
-#: pb/web/new.php:968
-msgid "Your pledge will <strong>not succeed</strong> unless people find out about it.  So get out there and tell your friends and colleagues about your pledge."
+#: pb/web/new.php:945
+#, fuzzy
+msgid "Your pledge will <strong>not succeed</strong> unless people find out about it.  So get out there and tell your friends and colleagues about your pledge &mdash; for ways to do this check out the \"Spread the Word\" section of your pledge webpage."
 msgstr "Sinu lubadus <strong>ei õnnestu</strong>, kui inimesed sellest teada ei saa.  Nii et mine ja räägi oma  lubadusest sõpradele ja töökaaslastele."
 
-#: pb/web/new.php:970
+#: pb/web/new.php:947
 msgid "Your pledge will <strong>not be publicised</strong> elsewhere on the site until a few people have signed it.  So get out there and tell your friends and neighbours about your pledge."
 msgstr "Sinu lubadust <strong>ei reklaamita</strong> selle veebilehe muudes osades, kuni mõned inimesed pole sellega liitunud. Nii et mine ja räägi oma lubadusest sõpradele ja naabritele."
 
@@ -4247,16 +4294,16 @@ msgstr "Palun sisesta oma e-posti aadressiks töötav aadress"
 msgid "Trying to use us for SPAMMING!?!?!"
 msgstr "Üritad meid kasutada SPÄMMIMISEKS!?!?!"
 
-#: pb/web/ref-email.php:66
+#: pb/web/ref-email.php:67
 #, fuzzy, php-format
 msgid "%s added this message:"
 msgstr "Nad lisasid järgneva sõnumi:"
 
-#: pb/web/ref-email.php:71
+#: pb/web/ref-email.php:72
 msgid "Your message has been sent.  Thanks very much for spreading the word of this pledge."
 msgstr "Sinu sõnum on saadetud. Suur aitäh, et aitad selle lubaduse sõnumit levitada."
 
-#: pb/web/ref-email.php:75
+#: pb/web/ref-email.php:76
 msgid "Unfortunately, something went wrong when trying to send the emails. Please check that all the email addresses are correct."
 msgstr "Kahjuks läks midagi e-kirjade saatmisel valesti. Palun kontrolli, kas kõik aadressid on õiged."
 
@@ -4310,10 +4357,6 @@ msgstr "A4 redigeeritav poster (RTF)"
 #, php-format
 msgid "Alternatively, simply %s to get these flyers."
 msgstr "Teisel juhul lihtsalt %s nende flaierite saamiseks."
-
-#: pb/web/ref-index.php:70
-msgid "This pledge is now closed, as its deadline has passed."
-msgstr "See lubadus on nüüd suletud, kuna selle lõpptähtaeg on möödas."
 
 #: pb/web/ref-index.php:76
 #, fuzzy, php-format
@@ -4747,6 +4790,11 @@ msgstr "Sa oled juba selle lubadusega liitunud!"
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Vabandame &mdash; lubadusega liitumine ei õnnestunud."
 
+#: pb/web/rsscomments.php:13
+#, fuzzy
+msgid "Comments on all pledges"
+msgstr "Kommentaarid selle lubaduse kohta"
+
 #: pb/web/search.php:24
 #, php-format
 msgid "Search results for '%s'"
@@ -4837,16 +4885,16 @@ msgstr "Tulemused, mis vastavad päringule <strong>%s</strong> <strong>lõppenud
 msgid "Results for <strong>comments</strong> matching <strong>%s</strong>:"
 msgstr "Tulemused, mis vastavad päringule <strong>%s</strong> <strong>kommentaaride</strong>seas:"
 
-#: pb/web/search.php:313
+#: pb/web/search.php:318
 #, php-format
 msgid "Results for <strong>people</strong> matching <strong>%s</strong>:"
 msgstr "Tulemused, mis vastavad päringule <strong>%s</strong> <strong>lõppenud lubaduste</strong>seas:"
 
-#: pb/web/search.php:321
+#: pb/web/search.php:326
 msgid " (creator)"
 msgstr "(looja)"
 
-#: pb/web/search.php:329
+#: pb/web/search.php:334
 #, php-format
 msgid "Sorry, we could find nothing that matched \"%s\"."
 msgstr "Otsing \"%s\" ei andnud kahjukstulemusi."
@@ -5218,12 +5266,12 @@ msgstr "Sa ei ole liitunud ühegi lubadusega."
 msgid "Why not <a href=\"mailto:%s\">send us photos</a> of yourself carrying out successful pledges?"
 msgstr "<a href=\"mailto:team@pledgebank.com\">Saada meile pilte</a>, kuidas sa õnnestunud lubadusi ellu viid."
 
-#: pb/bin/frequentupdate:392 pb/bin/frequentupdate:477
+#: pb/bin/frequentupdate:393 pb/bin/frequentupdate:478
 #, php-format
 msgid "PledgeBank here. Sorry, the %s pledge has failed. Better luck next time!"
 msgstr "Siin PledgeBank. Kahjuks ei leidnud sinu lubadus %s küllaldaselt toetajaid. Edu järgmiseks korraks!"
 
-#: pb/bin/frequentupdate:828
+#: pb/bin/frequentupdate:830
 #, fuzzy, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone in %s who signed your pledge %s ]\n"
@@ -5231,7 +5279,7 @@ msgid ""
 "%s"
 msgstr "Koopia Sinu sõnumist saadetakse ka kõigile neile, kes liituvad Sinu lubadusega hiljem."
 
-#: pb/bin/frequentupdate:830
+#: pb/bin/frequentupdate:832
 #, fuzzy, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone who signed your pledge %s ]\n"
@@ -5239,27 +5287,27 @@ msgid ""
 "%s"
 msgstr "Koopia Sinu sõnumist saadetakse ka kõigile neile, kes liituvad Sinu lubadusega hiljem."
 
-#: pb/bin/frequentupdate:981
+#: pb/bin/frequentupdate:983
 #, php-format
 msgid "%d days ago"
 msgstr "%d päeva tagasi"
 
-#: pb/bin/frequentupdate:983
+#: pb/bin/frequentupdate:985
 #, php-format
 msgid "%d hours ago"
 msgstr "%d tundi tagasi"
 
-#: pb/bin/frequentupdate:985
+#: pb/bin/frequentupdate:987
 #, php-format
 msgid "%d minutes ago"
 msgstr "%d minutit tagasi"
 
-#: pb/bin/frequentupdate:987
+#: pb/bin/frequentupdate:989
 msgid "a minute ago"
 msgstr "1 minut tagasi"
 
 #. TRANS: The first %s is one of the time strings above.
-#: pb/bin/frequentupdate:990
+#: pb/bin/frequentupdate:992
 #, php-format
 msgid "[ You signed this pledge after this message was sent to the other signers. They will have received copies of this message %s. You can read older messages from the pledge creator that you missed here: %s ]"
 msgstr "[ Sa liitusid selle lubadusega pärast selle sõnumi saatmist teistele liitujatele. Nad on saanud koopiad sellest sõnumist %s. Sul on võimalik lugeda vanemaid sõnumeid lubaduse loojalt siin: %s ]"
@@ -5268,71 +5316,71 @@ msgstr "[ Sa liitusid selle lubadusega pärast selle sõnumi saatmist teistele l
 msgid "Click for more info:"
 msgstr "Siite leiad lisainfot:"
 
-#: pb/web/poster.cgi:52
+#: pb/web/poster.cgi:49
 msgid "SMS operated by charity UKCOD. Available in UK only. Sign-up message costs your normal text rate. Further messages are free. "
 msgstr "Tekstsõnumeid haldab heategevusorganisatsioon UKCOD. Teenus töötab ainult Suurbritannias. Liitumissõnumid maksavad tavasõnumi hinna. Edasised sõnumid on tasuta."
 
-#: pb/web/poster.cgi:106
+#: pb/web/poster.cgi:103
 msgid "<font color=\"#ffffff\">Pledge</font>Bank.com"
 msgstr "<font color=\"#ffffff\">Pledge</font>Bank.com"
 
-#: pb/web/poster.cgi:278
+#: pb/web/poster.cgi:295
 msgid "I"
 msgstr "Mina"
 
-#: pb/web/poster.cgi:279
+#: pb/web/poster.cgi:296
 #, fuzzy, python-format
 msgid " will %s "
 msgstr "%s."
 
-#: pb/web/poster.cgi:282
+#: pb/web/poster.cgi:299
 #, fuzzy, python-format
 msgid " %s will %s."
 msgstr "%s."
 
-#: pb/web/poster.cgi:290
+#: pb/web/poster.cgi:307
 msgid "More details:"
 msgstr "Lisainfo:"
 
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:298 pb/web/poster.cgi:434
+#: pb/web/poster.cgi:315 pb/web/poster.cgi:441
 msgid "Pledge at "
 msgstr "Lubadus asukohaga"
 
-#: pb/web/poster.cgi:300 pb/web/poster.cgi:436
+#: pb/web/poster.cgi:317 pb/web/poster.cgi:443
 msgid " pin "
 msgstr " pin"
 
 #. TRANS: Text is an instruction (verb in the imperative)
-#: pb/web/poster.cgi:305
+#: pb/web/poster.cgi:322
 msgid "Text"
 msgstr "Tekst"
 
 #. TRANS: This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:309
+#: pb/web/poster.cgi:326
 msgid "to"
 msgstr ", et"
 
 #. TRANS: This is part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
-#: pb/web/poster.cgi:312
+#: pb/web/poster.cgi:329
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr " (ainult %s) või luba "
 
-#: pb/web/poster.cgi:316
+#: pb/web/poster.cgi:333
 msgid "This pledge closes on "
 msgstr "See lubadus sulgub"
 
-#: pb/web/poster.cgi:316
+#: pb/web/poster.cgi:333
 msgid ". Thanks!"
 msgstr ". Täname!"
 
-#: pb/web/poster.cgi:317 pb/web/poster.cgi:455
+#: pb/web/poster.cgi:334 pb/web/poster.cgi:462
 #, fuzzy, python-format
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr "Pea meeles, et pead tegutsema vaid juhul, kui %d inimest lubadusega liituvad â sedaâ PledgeBank tähendabki."
 
-#: pb/web/poster.cgi:415
+#: pb/web/poster.cgi:422
 #, fuzzy, python-format
 msgid "<font color=\"%s\">I</font> will %s <b>but only if</b> <font color=\"%s\">%s</font> %s will %s. "
 msgstr ""
@@ -5341,16 +5389,16 @@ msgstr ""
 "            then <font color=\"#522994\">I</font> will %s.\n"
 "            "
 
-#: pb/web/poster.cgi:430
+#: pb/web/poster.cgi:437
 #, python-format
 msgid "<b>More details:</b> %s"
 msgstr "<b>Lisainfos:</b> %s"
 
-#: pb/web/poster.cgi:442
+#: pb/web/poster.cgi:449
 msgid "pledge at "
 msgstr "lubadus asukohaga"
 
-#: pb/web/poster.cgi:444
+#: pb/web/poster.cgi:451
 #, fuzzy, python-format
 msgid ""
 "<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
@@ -5361,7 +5409,7 @@ msgstr ""
 "            <b>lubadus %s</b></font>, et <font color=\"#522994\"><b>%s</b></font> \n"
 "            (ainult %s) või "
 
-#: pb/web/poster.cgi:452
+#: pb/web/poster.cgi:459
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -5372,11 +5420,11 @@ msgstr ""
 "            See lubadus lõpeb <font color=\"#522994\">%s</font>. Täname!\n"
 "            "
 
-#: pb/web/poster.cgi:651
+#: pb/web/poster.cgi:658
 msgid "UK"
 msgstr "Suurbritannia"
 
-#: pb/web/poster.cgi:807
+#: pb/web/poster.cgi:814
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"
@@ -5645,9 +5693,9 @@ msgid ""
 "\n"
 "All you need to ask them is to visit <?=$values['pledge_url']?> and sign up.\n"
 "\n"
-"all the best,\n"
+"All the best,\n"
 "\n"
-"The PledgeBank Team\n"
+"<?=$values['signature']?>\n"
 msgstr ""
 
 #: pb/templates/emails/chivvy-creator-lowrate-2
@@ -5693,14 +5741,14 @@ msgid ""
 "\n"
 "You can see and print the flyers here <?=$values['pledge_url_flyers']?>\n"
 "\n"
-"all the best,\n"
+"All the best,\n"
 "\n"
-"The PledgeBank Team\n"
+"<?=$values['signature']?>\n"
 msgstr ""
 
 #: pb/templates/emails/chivvy-creator-lowrate-4
 msgid ""
-"Subject: Your pledge needs to grow faster to suceed - here's a suggestion to help.\n"
+"Subject: Your pledge needs to grow faster to succeed - here's a suggestion to help.\n"
 "\n"
 "Hi,\n"
 "\n"
@@ -5717,7 +5765,7 @@ msgid ""
 "\n"
 "Good luck!\n"
 "\n"
-"The PledgeBank Team\n"
+"<?=$values['signature']?>\n"
 msgstr ""
 
 #: pb/templates/emails/chivvy-creator-lowrate-5
@@ -5738,6 +5786,8 @@ msgid ""
 "\n"
 "If you're lucky, they might even send a photographer round, and get\n"
 "your picture in the papers!\n"
+"\n"
+"<?=$values['signature']?>\n"
 msgstr ""
 
 #: pb/templates/emails/chivvy-creator-lowrate-6
@@ -5764,7 +5814,7 @@ msgid ""
 "\n"
 "Best of luck,\n"
 "\n"
-"the PledgeBank Team\n"
+"<?=$values['signature']?>\n"
 msgstr ""
 
 #: pb/templates/emails/chivvy-creator-lowrate-7
@@ -5791,7 +5841,7 @@ msgid ""
 "\n"
 "best,\n"
 "\n"
-"The PledgeBank team\n"
+"<?=$values['signature']?>\n"
 msgstr ""
 
 #: pb/templates/emails/chivvy-creator-nosms
