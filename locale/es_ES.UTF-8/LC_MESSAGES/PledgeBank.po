@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-01-03 14:38+0000\n"
+"POT-Creation-Date: 2007-01-03 18:20+0000\n"
 "PO-Revision-Date: 2006-02-23 23:02+0100\n"
 "Last-Translator: Hugo Caballero Figueroa <hc.figueroa@gmail.com>\n"
 "Language-Team: Spanish <LL@pledgebank.com>\n"
@@ -1029,7 +1029,7 @@ msgstr ""
 msgid "Language:"
 msgstr "Idioma:"
 
-#: pb/phplib/admin-pb.php:291 pb/phplib/fns.php:507 pb/phplib/pledge.php:475
+#: pb/phplib/admin-pb.php:291 pb/phplib/fns.php:514 pb/phplib/pledge.php:475
 #: pb/web/alert.php:135 pb/web/new.php:414
 msgid "Country:"
 msgstr "País:"
@@ -1322,7 +1322,7 @@ msgstr "Añada un comentario si lo desea:"
 msgid "Your name:"
 msgstr "Su nombre:"
 
-#: pb/phplib/fns.php:227 pb/phplib/fns.php:502 pb/web/alert.php:132
+#: pb/phplib/fns.php:227 pb/phplib/fns.php:509 pb/web/alert.php:132
 #: pb/web/new.php:161 pb/web/sms.php:235
 msgid "Email:"
 msgstr "Dirección de correo electrónico:"
@@ -1337,109 +1337,114 @@ msgstr "El Reino Unido"
 
 #. TRANS: i.e. "choose website" or "choose local place where action will be taken?" I've assumed the former. (Tim Morley, 2005-11-21)
 #. Yes, it's choose website. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/fns.php:260
+#: pb/phplib/fns.php:261
 msgid "choose site"
 msgstr "elija una página"
 
-#: pb/phplib/fns.php:262
+#: pb/phplib/fns.php:264
 msgid "change country"
 msgstr "cambiar país"
 
-#: pb/phplib/fns.php:264
+#: pb/phplib/fns.php:266
 msgid "choose country"
 msgstr "elija un país"
 
-#: pb/phplib/fns.php:271
+#: pb/phplib/fns.php:275
 msgid "change language"
 msgstr "cambiar idioma"
 
-#: pb/phplib/fns.php:278
+#: pb/phplib/fns.php:282
 msgid "Available in"
 msgstr "Disponible en"
 
-#: pb/phplib/fns.php:295
+#: pb/phplib/fns.php:299
 msgid "and"
 msgstr "y"
 
-#: pb/phplib/fns.php:298
+#: pb/phplib/fns.php:302
 msgid "Translate PledgeBank into your language"
 msgstr "Traduzca PledgeBank a su idioma"
 
-#: pb/phplib/fns.php:384
+#: pb/phplib/fns.php:388
 #, php-format
-msgid "%s (%s) pledges listed"
-msgstr "Se listarán únicamente los compromisos en %s (%s)"
+msgid "%s%s pledges listed"
+msgstr "Se listarán únicamente los compromisos en %s%s"
 
-#: pb/phplib/fns.php:386
+#: pb/phplib/fns.php:390
 #, php-format
-msgid "%s (%s) pledges only listed"
-msgstr "Tan sólo los compromisos en %s (%s) serán listados"
+msgid "%s%s pledges only listed"
+msgstr "Tan sólo los compromisos en %s%s serán listados"
 
-#: pb/phplib/fns.php:393
+#: pb/phplib/fns.php:397
 #, php-format
-msgid "%s (%s) pledges and global %s (%s) pledges listed"
-msgstr "Listado de compromisos en %s (%s) y compromisos globales en %s (%s)"
+msgid "%s%s pledges and global %s (%s) pledges listed"
+msgstr "Listado de compromisos en %s%s y compromisos globales en %s (%s)"
 
-#: pb/phplib/fns.php:395
+#: pb/phplib/fns.php:399
 #, php-format
-msgid "%s (%s) pledges in %s (%s) only listed"
-msgstr "Tan sólo los compromisos en %s (%s) en %s (%s) serán listados"
+msgid "%s%s pledges in %s (%s) only listed"
+msgstr "Tan sólo los compromisos en %s%s en %s (%s) serán listados"
 
-#: pb/phplib/fns.php:403
+#: pb/phplib/fns.php:408
 #, php-format
-msgid "There are no featured pledges for %s (%s) at the moment."
-msgstr "No existe ningún compromiso activo en %s (%s) en este momento."
+msgid "There are no featured pledges for %s%s at the moment."
+msgstr "No existe ningún compromiso activo en %s%s en este momento."
 
-#: pb/phplib/fns.php:446 pb/phplib/fns.php:448
+#: pb/phplib/fns.php:410
+#, fuzzy
+msgid "There are no featured pledges at the moment."
+msgstr "No existen compromisos recientes de momento"
+
+#: pb/phplib/fns.php:453 pb/phplib/fns.php:455
 msgid "less than 1 mile away"
 msgstr "a menos de 1 milla de distancia"
 
-#: pb/phplib/fns.php:450
+#: pb/phplib/fns.php:457
 msgid "less than 1 km away"
 msgstr "a menos de 1 km de distancia"
 
-#: pb/phplib/fns.php:452 pb/phplib/fns.php:455
+#: pb/phplib/fns.php:459 pb/phplib/fns.php:462
 #, php-format
 msgid "%d mile away"
 msgid_plural "%d miles away"
 msgstr[0] "%d milla de distancia"
 msgstr[1] "%d millas de distancia"
 
-#: pb/phplib/fns.php:453 pb/phplib/fns.php:456
+#: pb/phplib/fns.php:460 pb/phplib/fns.php:463
 #, php-format
 msgid "%d mile"
 msgid_plural "%d miles"
 msgstr[0] "%d milla"
 msgstr[1] "%d millas"
 
-#: pb/phplib/fns.php:458
+#: pb/phplib/fns.php:465
 #, php-format
 msgid "%d km away"
 msgstr "%d km de distancia"
 
-#: pb/phplib/fns.php:458
+#: pb/phplib/fns.php:465
 #, php-format
 msgid "%d km"
 msgstr "%d km"
 
-#: pb/phplib/fns.php:497
+#: pb/phplib/fns.php:504
 msgid "Sign up for emails when people make pledges in your local area"
 msgstr "Reciba una notificación por correo electrónico de los compromisos existentes en su entorno"
 
-#: pb/phplib/fns.php:499
+#: pb/phplib/fns.php:506
 msgid "Works in any country!"
 msgstr "¡Disponible en cualquier país!"
 
-#: pb/phplib/fns.php:505 pb/web/new.php:412
+#: pb/phplib/fns.php:512 pb/web/new.php:412
 #, fuzzy
 msgid "Postcode:"
 msgstr "Código postal"
 
-#: pb/phplib/fns.php:508 pb/web/new.php:408 pb/web/pb.js:125 pb/web/pb.js:128
+#: pb/phplib/fns.php:515 pb/web/new.php:408 pb/web/pb.js:125 pb/web/pb.js:128
 msgid "Town:"
 msgstr "Ciudad:"
 
-#: pb/phplib/fns.php:510 pb/web/alert.php:145
+#: pb/phplib/fns.php:517 pb/web/alert.php:145
 msgid "Subscribe"
 msgstr "Suscríbase"
 
@@ -1554,7 +1559,7 @@ msgid "Catalytic Communities"
 msgstr ""
 
 #: pb/phplib/microsites.php:146 pb/phplib/microsites.php:169
-#: pb/phplib/microsites.php:208
+#: pb/phplib/microsites.php:201
 msgid "(change)"
 msgstr "(cambiar)"
 
@@ -1562,54 +1567,54 @@ msgstr "(cambiar)"
 msgid "(other PledgeBanks)"
 msgstr "(otros PledgeBanks)"
 
-#: pb/phplib/microsites.php:206 pb/web/new.php:127
+#: pb/phplib/microsites.php:199 pb/web/new.php:127
 msgid "Pledge"
 msgstr "Compromiso"
 
-#: pb/phplib/microsites.php:206
+#: pb/phplib/microsites.php:199
 #, fuzzy
 msgid "Bank"
 msgstr "Bután"
 
 #. TRANS: 'PledgeBank' here is the first part of the HTML title which appears on browser windows, and search engines
-#: pb/phplib/microsites.php:221
+#: pb/phplib/microsites.php:214
 msgid "Tell the world \"I'll do it, but only if you'll help\""
 msgstr "Diga al mundo: \"Lo haré, pero sólo si me ayudas\""
 
-#: pb/phplib/microsites.php:264
+#: pb/phplib/microsites.php:257
 msgid "Home"
 msgstr "Inicio"
 
-#: pb/phplib/microsites.php:269
+#: pb/phplib/microsites.php:262
 msgid "All Pledges"
 msgstr "Todos los compromisos"
 
-#: pb/phplib/microsites.php:270
+#: pb/phplib/microsites.php:263
 msgid "Start a Pledge"
 msgstr "Crear un compromiso"
 
-#: pb/phplib/microsites.php:274 pb/web/faq.php:18 pb/web/faq.php:348
+#: pb/phplib/microsites.php:267 pb/web/faq.php:18 pb/web/faq.php:348
 #: pb/web/faq.php:454
 msgid "Frequently Asked Questions"
 msgstr "Ayuda"
 
-#: pb/phplib/microsites.php:274
+#: pb/phplib/microsites.php:267
 msgid "FAQ"
 msgstr "Ayuda"
 
-#: pb/phplib/microsites.php:276
+#: pb/phplib/microsites.php:269
 msgid "Contact"
 msgstr "Contacto"
 
-#: pb/phplib/microsites.php:277 pb/web/your.php:22
+#: pb/phplib/microsites.php:270 pb/web/your.php:22
 msgid "Your Pledges"
 msgstr "Sus compromisos"
 
-#: pb/phplib/microsites.php:281
+#: pb/phplib/microsites.php:274
 msgid "Logout"
 msgstr "Salir"
 
-#: pb/phplib/microsites.php:377
+#: pb/phplib/microsites.php:370
 msgid ""
 "\"We all know what it is like to feel powerless, that our own\n"
 "        actions can't really change the things that we want to change.\n"
@@ -1619,11 +1624,11 @@ msgstr ""
 "no son capaces de lograr aquellos cambios que deseamos.\n"
 "PledgeBank trata de acabar con este sentimiento...\""
 
-#: pb/phplib/microsites.php:384
+#: pb/phplib/microsites.php:377
 msgid "Tell the world &#8220;I&#8217;ll do it, but only if you&#8217;ll help me do it&#8221;"
 msgstr "Diga al mundo: &#8220;Lo haré, pero sólo si me ayudas &#8221;"
 
-#: pb/phplib/microsites.php:396
+#: pb/phplib/microsites.php:389
 #, fuzzy
 msgid ""
 "Listen to how PledgeBank\n"
@@ -1634,7 +1639,7 @@ msgstr ""
 "</a>, tal y como lo explica el director de mySociety, Tom Steinberg.\n"
 "O <a href=\"/explain\">bien lea la transcripción completa"
 
-#: pb/phplib/microsites.php:400
+#: pb/phplib/microsites.php:393
 #, fuzzy
 msgid ""
 "<a href=\"/explain\">Find out how PledgeBank\n"
@@ -1643,15 +1648,15 @@ msgstr ""
 "<a href=\"/explain\">Descubra cómo funciona PledgeBank\n"
 "</a>, tal y como lo explica el director de mySociety, Tom Steinberg."
 
-#: pb/phplib/microsites.php:495
+#: pb/phplib/microsites.php:488
 msgid "Why not sign a live pledge?"
 msgstr "¿Por qué no ofrecerse voluntario para un compromiso en activo?"
 
-#: pb/phplib/microsites.php:563
+#: pb/phplib/microsites.php:556
 msgid "Top Tips for Successful Pledges"
 msgstr "Algunos buenos consejos para crear compromisos con éxito"
 
-#: pb/phplib/microsites.php:566
+#: pb/phplib/microsites.php:559
 #, fuzzy, php-format
 msgid ""
 "<strong>Keep your ambitions modest</strong> &mdash; why ask for 50 people\n"
@@ -1662,7 +1667,7 @@ msgstr ""
 "cuando 5 serían suficientes? Cada voluntario solicitado extra reduce las posibilidades de éxito\n"
 "de su compromiso. Tan sólo el %0.0f%% de los compromisos que han solicitado más de 100 personas han tenido éxito."
 
-#: pb/phplib/microsites.php:570
+#: pb/phplib/microsites.php:563
 #, fuzzy
 msgid ""
 "<strong>Get ready to sell your pledge, hard</strong>. Pledges don't\n"
@@ -1677,7 +1682,7 @@ msgstr ""
 "¡Plantéese seriamente si conoce a personas que desearían suscribirse\n"
 "a su compromiso!"
 
-#: pb/phplib/microsites.php:576
+#: pb/phplib/microsites.php:569
 #, fuzzy
 msgid ""
 "<strong>Think about how your pledge reads.</strong> How will it look to\n"
@@ -1690,7 +1695,7 @@ msgstr ""
 "a gente de confianza como sus familiares, y compruebe que su mensaje ha sido  transmitido\n"
 "correctamente. Si no fuera este el caso, reformule su compromiso."
 
-#: pb/phplib/microsites.php:596
+#: pb/phplib/microsites.php:589
 #, fuzzy
 msgid ""
 "Was it useful?  How could it be better?\n"
@@ -1702,37 +1707,37 @@ msgstr ""
 "Use este formulario para contactarnos.\n"
 "Si lo prefiere, puede enviar un correo electrónico a %s en lugar de hacer uso de este formulario."
 
-#: pb/phplib/microsites.php:600
+#: pb/phplib/microsites.php:593
 #, php-format
 msgid "If you prefer, you can email %s instead of using the form."
 msgstr ""
 
-#: pb/phplib/microsites.php:614
+#: pb/phplib/microsites.php:607
 msgid "This pledge is now closed, as its deadline has passed."
 msgstr "El compromiso ha sido cerrado puesto que la fecha límite ha sido alcanzada"
 
-#: pb/phplib/microsites.php:664 pb/phplib/microsites.php:673
+#: pb/phplib/microsites.php:657 pb/phplib/microsites.php:666
 #, fuzzy
 msgid "Create pledge"
 msgstr "Crear un nuevo compromiso"
 
-#: pb/phplib/microsites.php:670
+#: pb/phplib/microsites.php:663
 msgid "When you're happy with your pledge, <strong>click \"Create\"</strong> to confirm that you wish PledgeBank.com to display the pledge at the top of this page in your name, and that you agree to the terms and conditions below."
 msgstr "Cuando esté satisfecho con su compromiso, <strong>pulse sobre \"Crear\"</strong> para confirmar su deseo de que PledgeBank.com muestre el mismo en la parte alta de esta página en su nombre y su aprobación de los términos y condiciones expuestos más abajo."
 
-#: pb/phplib/microsites.php:676
+#: pb/phplib/microsites.php:669
 msgid "The Dull Terms and Conditions"
 msgstr "Los Aburridos Términos y Condiciones"
 
-#: pb/phplib/microsites.php:683
+#: pb/phplib/microsites.php:676
 msgid "By creating your pledge you also consent to the syndication of your pledge to other sites &mdash; this means that other people will be able to display your pledge and your name"
 msgstr "Creando su compromiso consiente la difusión del mismo en otras páginas &mdash; esto quiere decir que será posible que terceros muestren su compromiso y su nombre"
 
-#: pb/phplib/microsites.php:685
+#: pb/phplib/microsites.php:678
 msgid ", and use (but not display) your postcode to locate your pledge in the right geographic area"
 msgstr ", y use (pero no muestre) su código postal para asignar a su compromiso una región geográfica"
 
-#: pb/phplib/microsites.php:688
+#: pb/phplib/microsites.php:681
 msgid ""
 "The purpose of this is simply to give your pledge\n"
 "greater publicity and a greater chance of succeeding."
@@ -1740,38 +1745,38 @@ msgstr ""
 "El propósito de esta acción es simplemente otorgar a su compromiso\n"
 "una mayor difusión y, con ello, una mayor posibilidad de éxito."
 
-#: pb/phplib/microsites.php:692
+#: pb/phplib/microsites.php:685
 msgid "Rest assured that we won't ever give or sell anyone your email address."
 msgstr "Aseguramos que no venderemos ni distribuiremos a terceros su dirección de correo electrónico"
 
-#: pb/phplib/microsites.php:759 pb/web/pb.js:38 pb/web/pb.js:40
+#: pb/phplib/microsites.php:752 pb/web/pb.js:38 pb/web/pb.js:40
 msgid "other local people"
 msgstr "personas más en mi entorno"
 
-#: pb/phplib/microsites.php:847 pb/phplib/microsites.php:850
+#: pb/phplib/microsites.php:840 pb/phplib/microsites.php:843
 #: pb/web/list.php:141
 msgid "Open pledges"
 msgstr "Compromisos en activo"
 
-#: pb/phplib/microsites.php:848 pb/web/list.php:143
+#: pb/phplib/microsites.php:841 pb/web/list.php:143
 #, fuzzy
 msgid "Closed pledges"
 msgstr "Todos los compromisos concluidos"
 
-#: pb/phplib/microsites.php:850
+#: pb/phplib/microsites.php:843
 msgid "Successful open pledges"
 msgstr "Compromisos con éxito en activo"
 
-#: pb/phplib/microsites.php:851
+#: pb/phplib/microsites.php:844
 msgid "Successful closed pledges"
 msgstr "Compromisos con éxito concluidos"
 
-#: pb/phplib/microsites.php:851 pb/web/list.php:139
+#: pb/phplib/microsites.php:844 pb/web/list.php:139
 msgid "Failed pledges"
 msgstr "Compromisos no logrados"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:126 pb/phplib/page.php:355
+#: pb/phplib/page.php:126 pb/phplib/page.php:359
 #, fuzzy
 msgid "PledgeBank"
 msgstr "El equipo de PledgeBank"
@@ -1812,11 +1817,11 @@ msgstr "Buscar"
 msgid "Go"
 msgstr "Ir"
 
-#: pb/phplib/page.php:291
+#: pb/phplib/page.php:295
 msgid "Built by mySociety"
 msgstr "Llevado a cabo por mySociety"
 
-#: pb/phplib/page.php:292
+#: pb/phplib/page.php:296
 msgid "Powered by Easynet"
 msgstr ""
 
@@ -5069,13 +5074,13 @@ msgstr "No hay compromisos en activo en su entorno. ¿Por qué no <a href=\"/new
 #. TRANS: For example: "Results for <strong>open pledges</strong> near places matching <strong>Bolton</strong>, United Kingdom (<a href="....">change country</a>):"
 #: pb/web/search.php:200
 #, php-format
-msgid "Results for <strong>open pledges</strong> within %s %s of <strong>%s</strong>, %s (%s):"
-msgstr "Resultados de <strong>compromisos en activo</strong> en un radio de %s %s en las cercanías de <strong>%s</strong>, %s (%s):"
+msgid "Results for <strong>open pledges</strong> within %s %s of <strong>%s</strong>, %s%s:"
+msgstr "Resultados de <strong>compromisos en activo</strong> en un radio de %s %s en las cercanías de <strong>%s</strong>, %s%s:"
 
 #: pb/web/search.php:210
 #, php-format
-msgid "Results for <strong>open pledges near</strong> %s places matching <strong>%s</strong>, %s (%s):"
-msgstr "Resultados de <strong>compromisos en activo cerca</strong> %s de lugares que concuerdan con <strong>%s</strong>, %s (%s):"
+msgid "Results for <strong>open pledges near</strong> %s places matching <strong>%s</strong>, %s%s:"
+msgstr "Resultados de <strong>compromisos en activo cerca</strong> %s de lugares que concuerdan con <strong>%s</strong>, %s%s:"
 
 #: pb/web/search.php:223
 #, php-format
@@ -5549,12 +5554,12 @@ msgstr "No se ha suscrito a ningún compromiso."
 msgid "Why not <a href=\"mailto:%s\">send us photos</a> of yourself carrying out successful pledges?"
 msgstr "¿Por qué no <a href=\"mailto:team@pledgebank.com\">nos envía fotos</a> de Vd. llevando a cabo su compromiso?"
 
-#: pb/bin/frequentupdate:393 pb/bin/frequentupdate:479
+#: pb/bin/frequentupdate:392 pb/bin/frequentupdate:478
 #, php-format
 msgid "PledgeBank here. Sorry, the %s pledge has failed. Better luck next time!"
 msgstr "Aquí PledgeBank. Lo sentimos, el compromiso %s no ha tenido éxito. ¡Mejor suerte para la próxima!"
 
-#: pb/bin/frequentupdate:831
+#: pb/bin/frequentupdate:830
 #, fuzzy, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone in %s who signed your pledge %s ]\n"
@@ -5565,7 +5570,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: pb/bin/frequentupdate:833
+#: pb/bin/frequentupdate:832
 #, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone who signed your pledge %s ]\n"
@@ -5576,27 +5581,27 @@ msgstr ""
 "\n"
 "%s"
 
-#: pb/bin/frequentupdate:984
+#: pb/bin/frequentupdate:983
 #, php-format
 msgid "%d days ago"
 msgstr "hace %d días"
 
-#: pb/bin/frequentupdate:986
+#: pb/bin/frequentupdate:985
 #, php-format
 msgid "%d hours ago"
 msgstr "hace %d horas"
 
-#: pb/bin/frequentupdate:988
+#: pb/bin/frequentupdate:987
 #, php-format
 msgid "%d minutes ago"
 msgstr "hace %d minutos"
 
-#: pb/bin/frequentupdate:990
+#: pb/bin/frequentupdate:989
 msgid "a minute ago"
 msgstr "hace un minuto"
 
 #. TRANS: The first %s is one of the time strings above.
-#: pb/bin/frequentupdate:993
+#: pb/bin/frequentupdate:992
 #, php-format
 msgid "[ You signed this pledge after this message was sent to the other signers. They will have received copies of this message %s. You can read older messages from the pledge creator that you missed here: %s ]"
 msgstr "[ Vd. se ha suscrito al compromiso después de que este mensaje hubiese sido enviado a los voluntarios. Ellos también han recibido, por tanto, copias del mismo mensaje %s. En caso de existir, puede leer los mensajes antiguos del creador del compromiso aquí: %s ]"
@@ -7185,9 +7190,6 @@ msgstr "Sus derechos"
 
 #~ msgid "Sign up to one of our five newest pledges"
 #~ msgstr "Suscríbase a uno de nuestros cinco compromisos más recientes"
-
-#~ msgid "There are no new pledges at the moment."
-#~ msgstr "No existen compromisos recientes de momento"
 
 #~ msgid "I've never used PledgeBank before, let me confirm my email address now."
 #~ msgstr "No he usado nunca PledgeBank. Permítame confirmar mi dirección de correo electrónico en este momento."
