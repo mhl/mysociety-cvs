@@ -9,7 +9,7 @@ correctly partitioned.
 
 1. Install some Debian packages
 
-    apt-get install vim less cvs perl libarchive-tar-perl liberror-perl libunix-mknod-perl libstatistics-distributions-perl libnetaddr-ip-perl geoip-bin
+    apt-get install vim less cvs perl libarchive-tar-perl liberror-perl libunix-mknod-perl libstatistics-distributions-perl libnetaddr-ip-perl geoip-bin locales
     apt-get install iproute ntp ntp-server ntp-simple ntpdate tmpreaper cron-apt exim4 exim4-base exim4-config exim4-daemon-heavy clamav clamav-base clamav-daemon clamav-freshclam libclamav1 sysstat
 
 2. Checkout the mysociety and servers modules into /data
@@ -65,6 +65,7 @@ apt-get dist-upgrade
 /etc/init.d/exim4 restart
 /etc/init.d/clamav-daemon restart
 /etc/init.d/clamav-freshclam restart
+locale-gen
 
 Setting up PostgreSQL
 ---------------------
@@ -91,5 +92,12 @@ Now try starting PostgreSQL (/etc/init.d/postgresql start). Check
 limiting a shared memory segment to a certain number of bytes, then you need to
 activate the "kernel.shmmax = 80000000" setting in /etc/sysctl.conf.  You can
 do this with the sysctl command (or by rebooting ;).
+
+Next run these two queries as user postgres in the template1 database:
+    CREATE FUNCTION plpgsql_call_handler()
+        RETURNS OPAQUE AS '$libdir/plpgsql' LANGUAGE 'C';
+    CREATE TRUSTED PROCEDURAL LANGUAGE 'plpgsql' HANDLER plpgsql_call_handler
+        LANCOMPILER 'PL/pgSQL'
+This will enable the PL/pgSQL language for all new databases.
 
 
