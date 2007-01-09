@@ -96,10 +96,6 @@ if ($_SERVER['HTTP_HOST'] != 'secure.mysociety.org') {
 <input type="submit" value="Donate"></p>
 </form>
 
-<p>Sorry, but due to money laundering regulations, we can't simply make
-our BACS information available, even though that would be really
-convenient.</p>
-
 <h3 class="d">Set up a regular monthly payment via PayPal</h3>
 
 <form action="<?php echo $paypal_url; ?>" method="post">
@@ -156,10 +152,21 @@ Gift Aid donations:
 <input type="submit" value="Donate"></p>
 </form>
 
-<h3 class="d">Set up a regular donation via Standing Order</h3>
+<h3 class="d">Donate by BACs or set up a regular donation via Standing Order</h3>
+<form action="details" method="post">
+<p>We'll collect your name and address, and then give you our BACs details or let you download a standing order form.</p>
 
-<p>This needs to be done a slightly more old-fashioned way &mdash; please
-download and fill in our <a href="standing_order.pdf">standing order form</a>.
+<p>I want all donations I make to UK Citizens Online Democracy from this date until further notice to be Gift Aid donations:
+<input type="radio" id="giftaid_yes" name="giftaid" value="Yes">
+<label for="giftaid_yes">Yes</label>
+<input type="radio" id="giftaid_no" name="giftaid" value="No" checked>
+<label for="giftaid_no">No</label>
+(<a href="#giftaid">?</a>)</p>
+
+<p align="right">
+<input type="submit" value="Donate"></p>
+</form>
+
 </p>
 
 <h3 class="d"><a name="giftaid" id="giftaid"></a>Are you from the UK? Gift Aid it!</h3>
