@@ -1,28 +1,34 @@
 <?php 
 include "wordpress/wp-blog-header.php";
 include "wordpress/wp-content/themes/mysociety/header.php"; 
+
+# Needs reorganising to have more important things at the top
 ?>
 
-<div class="item_head">
-  mySociety.org - What's it all about then, eh?
-</div>
- <div class="item">
+<div id="betteritemdiv">
+
+<h2>mySociety.org - What's it all about then, eh?</h2>
+
   <a name="moo" id="moo"></a>
+
   <p><b>Q. What is mySociety.org?<br/>
   A.</b> mySociety has two missions. The first is to be a charitable project
   which builds websites that give people simple, tangible benefits in the civic
   and community aspects of their lives. The second is to teach the public and
   voluntary sectors, through demonstration, how to most efficiently use the
   internet to improve lives.</p>
+
   <p><b>Q. How do I get in contact with you in person?<br/>
   A.</b> Email <a href="mailto:tom&#64;mysociety.org">Tom Steinberg</a> or call 07811 082158.</p>
   <a name="do" id="do"></a>
+
   <p><b>Q. What exactly are you doing?<br/>
   A.</b> We are supporting and improving our <a href="projects">launch projects</a>.</p>
+
   <p><b>Q. Can you give us any examples of the types of project you're on about?<br/>
-  A.</b> <a href="http://www.theyworkforyou.com">TheyWorkForYou.com</a>, <a
-  href="http://writetothem.com">WriteToThem</a> (which used to be called FaxYourMP) and <a
-  href="http://www.pledgebank.com">PledgeBank</a> are all examples of the type
+  A.</b> <a href="http://www.theyworkforyou.com/">TheyWorkForYou.com</a>, <a
+  href="http://writetothem.com/">WriteToThem</a> (which used to be called FaxYourMP) and <a
+  href="http://www.pledgebank.com/">PledgeBank</a> are all examples of the type
   of service which we aim to foster. But it is exactly the rarity of such
   really useful, effective, cheap civic sites that led to mySociety's
   creation</p>
@@ -59,9 +65,10 @@ include "wordpress/wp-content/themes/mysociety/header.php";
     <p><b> Q. Can I help?<br/>A.</b> Yes! We are looking for
     help of all kinds. Anything from marketing, to fund
     raising, to graphic design, to programming, human computer interface
-    work, anything. If you're interested, please <a
-    href="mailto:tom&#64;mysociety.org?subject=Help">email</a> us or check
-    out our <a href="/volunteertasks">volunteer tasks</a> page.  </p>
+    work, anything. If you're interested, please check <a
+    out our <a href="/volunteertasks">volunteer tasks</a> page, and/or
+    <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/developers-public">join
+    our public developer mailing list</a>.
 
         <p><b>Q. Are you a registered charity?<br/>A.</b> mySociety is the
 project of a registered charity. The charity is called UK Citizens Online Democracy and is <a href="http://www.charity-commission.gov.uk/registeredcharities/showcharity.asp?remchar=&chyno=1076346">charity number 1076346</a>. UKCOD doesn't do much else these days, so don't worry if you get confused between the two. We do as well!
@@ -69,6 +76,7 @@ project of a registered charity. The charity is called UK Citizens Online Democr
 		<p><b>Q. Where did the idea come from?<br/>A.</b> mySociety represents the crystallisation of a lot of widely shared thoughts and concerns about the problems facing democracy, government and technology in the UK at the moment. James Crabtree first gave the idea formal shape in an <a href="http://www.opendemocracy.net/debates/article-8-85-1025.jsp">OpenDemocracy article</a>. Then Tom took the idea, gave it a polish, and set up mySociety.</p>
 	        
 		<p><b>Q. So you're an incubator?<br/>A.</b> Not really, although we'd love to work with more partners. mySociety is keen to build sites which embody certain core principles, such as cheap scalability, really tangible outputs, and high usability. We're not a web agency, and won't build anything we don't believe is worthwhile, but if you have an idea and you think we might be able to help, please get in touch.</p>
+
         <p><b>Q. Are the projects open source?<br/>A.</b> Nearly all of our
         code is open source, and will be in the future, unless some 
         compelling situation arises forcing a project not to be. You can find
@@ -103,7 +111,7 @@ project of a registered charity. The charity is called UK Citizens Online Democr
         gratitude of the director (Tom Steinberg) and all the project's
         Trustees goes to the developers for working on these terms.
 
-				<p><b>Q. I'm not in Britain - does any of this matter to
+	<p><b>Q. I'm not in Britain - does any of this matter to
         me?<br/>A.</b> Yes! Whilst our home country is the UK, we do not see
         ourselves as limited to it in any way.  We gladly speak to and work
         with people from outside the UK.  People around the world can use and
@@ -124,15 +132,11 @@ project of a registered charity. The charity is called UK Citizens Online Democr
         near as London, Cambridge and Cheltenham. But really we work online, come and say hello
         in our <a href="http://www.irc.mysociety.org">public Internet chat room</a>.</p>
 
-		<p><b>Q. How can I be kept up to date with the projects?<br/>A.</b> Please join our <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/news">mailing list</a>. All normal no-moronic-spamming policies apply.
+<p><b>Q. How can I be kept up to date with the projects?<br/>A.</b> Please join our <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/news">mailing list</a>. All normal no-moronic-spamming policies apply.
         If you use RSS, you can subscribe to our <a href="/">news</a> or <a href="/category/developers">developers</a> blogs.</p>
 
         <p><b>Q. How can I contact you?<br />A.</b> See our <a href="/contact">contact page</a>.
 
-     </div>
-
-
-<div class="item_foot">
 </div>
-<?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
 
+<?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
