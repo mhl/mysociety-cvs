@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
  *
- * $Id: admin-news.php,v 1.2 2006-12-07 15:53:09 louise Exp $
+ * $Id: admin-news.php,v 1.3 2007-01-18 18:07:11 louise Exp $
  * 
  */
 
@@ -181,7 +181,7 @@ class ADMIN_PAGE_NEWS_NEWSPAPERS {
 <tr><th>Name</th></tr>
 <?
 	    foreach($q as $r){
-	        print "<tr><td><a href=\"/news-admin.php?page=newspapers&newspaper_id=$r[0]\">$r[1]</a></td></tr>\n";
+	        print "<tr><td><a href=\"news-admin.php?page=newspapers&newspaper_id=$r[0]\">$r[1]</a></td></tr>\n";
             
             }
 ?>	
