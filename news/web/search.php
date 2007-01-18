@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
  *
- * $Id: search.php,v 1.2 2006-12-07 15:57:36 louise Exp $
+ * $Id: search.php,v 1.3 2007-01-18 18:22:59 louise Exp $
  * 
  */
 
@@ -148,9 +148,9 @@ function generate_newspaper_list($newspapers){
                 $ret .= $newspaper['name'];
                 $ret .= '</a>'; 
 		if (array_key_exists('coverage', $newspaper)){
-			$ret .= ' (coverage in area: ';
+			$ret .= ' (received by ';
                 	$ret .= $newspaper['coverage'];
-			$ret .= ')';
+			$ret .= ' households in the area)';
 		}
                 $ret .= '</li>';
 
