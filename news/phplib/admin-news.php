@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
  *
- * $Id: admin-news.php,v 1.3 2007-01-18 18:07:11 louise Exp $
+ * $Id: admin-news.php,v 1.4 2007-01-19 15:30:39 louise Exp $
  * 
  */
 
@@ -28,7 +28,7 @@ class ADMIN_PAGE_NEWS_NEWSPAPERS {
             $newspaper = news_get_newspaper($newspaper_id);
 
 	    // Instantiate the HTML_QuickForm object
-            $form = new HTML_QuickForm('newspaper_update');
+            $form = new HTML_QuickForm('newspaper_update', 'POST', 'news-admin.php');
 
 	    // Set defaults for the form elements
 	    $form->setDefaults(array(
