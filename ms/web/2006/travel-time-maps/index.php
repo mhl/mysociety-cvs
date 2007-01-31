@@ -368,4 +368,4 @@ done what we've done years ago, with no cost to the taxpayer. We'd love it if
 others extend the work that we've done, but realistically there aren't very
 many people in a position to do this cheaply.</p>
 
-<?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
+<?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
