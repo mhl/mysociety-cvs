@@ -18,11 +18,11 @@ Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.or
 
 <ul>
 <li><a href="#background">Background</a></li>
-<li><a href="#legibilirty">Improving legibility and clarity</a></li>
+<li><a href="#beware">Buyer beware</a></li>
+<li><a href="#legibility">Improving legibility and clarity</a></li>
 <li><a href="#houseprices">House prices</a></li>
 <li><a href="#cartrain">Car vs. public transport</a></li>
 <li><a href="#traincycle">Public transport vs. cycling</a></li>
-<li><a href="#realtime">Real time maps</a></li>
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 <li><a href="#data">The data we used</a></li>
 </ul>
@@ -49,22 +49,31 @@ London.
 <p>The Department for Transport asked us to show them how this work could be taken
 further, and that is what we are showing here today.
 
+<h2><a name="beware"></a>Buyer beware</h2>
+
+<p>Remember, each of these maps are useful for only <em>one destination</em>.
+They are proof of concept for a system or systems that could deliver custom
+maps for each user. They should not be taken as a basis for making important
+decisions on where to live or work in their current form.
 
 <h2><a name="legibility"></a>Improving legibility and clarity</h2>
-
  
 <p>Many of the maps we produced last time were very pretty, but could be somewhat
 difficult to interpret. One major task was to read up on how to display such
 complex and valuable data in more intellible ways, and the results can be seen
 below.
 
-<p>Old map of London
+<h3>Old map of London</h3>
 
-<p><a href="oldmap.png"><img src="oldmap_small.png" alt="Old map of London from SW1"></a>
+<p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM
 
-<p>New map of London from SW1 
+<p><a href="oldmap.png"><img src="oldmap_small.png" alt="Old map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM"></a>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 
-<p><a href="southlondon.png"><img src="southlondon_small.png" alt=""></a>
+<h3>New map of London</h3>
+<p>Showing travel times to work at the Maudsley Hospital, Denmark Hill also arriving at 9AM
+
+<p><a href="southlondon.png"><img src="southlondon_small.png" alt="New map of London showing travel times to work at the Maudsley Hospital, Denmark Hill also arriving at 9AM"></a>
 <br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 
 <h2><a name="houseprices"></a>House prices</h2>
@@ -74,25 +83,26 @@ your work if you can't afford to live there. So we have produced travel maps
 that show not just where someone working can live if they want to get to work
 swiftly, we can also show what areas they can afford to live in. 
 
-<p>To help with this process we picked a real world case study, an NHS doctor
-working at the Maudsley Hospital in Denmark hill, South London. He's thinking
-about getting a foot on the property ladder and wants to know where he might be
-able to live that would both be a tolerable commute, and which he could afford. 
+<p>The next three maps show different bands of house prices PLUS time travel
+contours to the DfT building. However, in areas which are outside the desired
+price band, the contours are greyed out. Let's start at the bottom of the
+London market, less than &pound;£200,000 median price.
 
-<p>First, here's a map showing where the Maudsley hospital is. 
-
-<p>Next, we overlay the travel time contours assuming that this Doctor wants to
-get to work by 9AM. As the key shows, each band represents 10 minutes extra
-travel time, so the red circle in the middle means he could leave the house at
-8.50-9 and still get to work on time. The next band out he could leave at
-8.40-8.50, and so on. 
-
-<p>Now let's introduce house prices into the equation. Obviously, at first our
-doctor wants to see what's available at the bottom end of the market, less than
-Â£250,000 (the average first time buyer price).
-
-<p><a href="houseprices300400.png"><img src="houseprices300400.png" alt="Journey times to Department for Transport and 300k-400k house prices"></a>
+<p><a href="house-200.png"><img src="house-200_small.png" alt="Travel times to the Department for Transport and house prices less than &pound;200,000"></a>
 <br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+
+<p>Oh dear! It seems there's almost nowhere for under &pound;£200,000 median
+anywhere within 40 minutes of our target. Let's up the price band.
+
+<p><a href="house-300.png"><img src="house-300_small.png" alt="Travel times to the Department for Transport and house prices less than &pound;300,000"></a>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;3007</small>
+
+<p>Now much more is clearly available, although most of it 30-40 minutes away.
+But what if I want to exclude both prices that are too high and too low?  This
+map shows only areas where the median price is between Â£300,000 and Â£400,000
+
+<p><a href="house-300-400.png"><img src="house-300-400_small.png" alt="Travel times to the Department for Transport and median house prices between &pound;300,000 and &pound;400,000"></a>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;300-4007</small>
 
 <h2><a name="cartrain"></a>Car vs. public transport</h2>
 
@@ -100,9 +110,10 @@ doctor wants to see what's available at the bottom end of the market, less than
 reasons varying from congestion, to cost, to environmental impact. But where
 can you live if you want to have the chance of getting to work speedily? 
 
-<p>The following maps show the places you can live in Edinburgh, Cardiff and
-Birmingham if you want to be on optimal commuting routes for the centres
-indicated with the black dots. Click on the maps for larger versions.
+<p>The following maps show the areas around three cities where getting to work
+(shown by the black dot) is faster by car, and where getting to work by public
+transport is better. Such maps would enable people to choose suitable areas
+according to their needs and preferences around transport.
 
 <h3>Edinburgh University</h3>
 <p><a href="ed.png"><img src="ed_small.png" alt="Getting to Edinburgh University by 09:00 - public transport vs road"></a>
@@ -128,12 +139,6 @@ commuting speed is your main concern.
 
 <p><a href="cycling.png"><img width="400" src="cycling_small.png" alt=""></a>
 <br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
-
-<h2><a name="realtime"></a>What next? Further work</h2>
-
-<p>Two places of work (for couples)
-<p>Where should I look for work that I can get to easily?
-<p>Travel time to nearest hospital
 
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>
 
