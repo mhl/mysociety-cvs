@@ -7,7 +7,9 @@ include "../../wordpress/wp-content/themes/mysociety/header.php";
 
 <h1>More travel-time Maps and their Uses</h1>
 
-<p>Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;<br>
+<p>
+Richard Pope, mySociety &lt;<a href="mailto:richard@mysociety.org">richard@mysociety.org</a>&gt;<br>
+Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;<br>
 Francis Irving, mySociety &lt;<a href="mailto:francis@mysociety.org">francis@mysociety.org</a>&gt;<br>
 Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.org</a>&gt;<br>
 </p>
@@ -16,7 +18,7 @@ Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.or
 
 <ul>
 <li><a href="#background">Background</a></li>
-<li><a href="#legibilirty">Improving legibility</a></li>
+<li><a href="#legibilirty">Improving legibility and clarity</a></li>
 <li><a href="#houseprices">House prices</a></li>
 <li><a href="#cartrain">Car vs. public transport</a></li>
 <li><a href="#traincycle">Public transport vs. cycling</a></li>
@@ -32,56 +34,65 @@ mySociety maps mailing list</a>.)</p> -->
 
 <h2><a name="background"></a>Background</h2>
 
-<p>So, the <a href="/2006/travel-time-maps/">first travel time maps</a>,
-built by Chris Lightfoot for mySociety, went down rather well. As well as
-briefly making it into the top three most popular new pages for a while on
-Del.icio.us, the Evening Standard had a 3/4 page splash of the map of London. 
-<p>The Department for Transport then chose to commission us to look into
-various further avenues of this work. This page, launched on 1st Feb 2007 is
-the primary output of that work. We hope you find it useful as well as
-enjoyable.  
+<p>In 2006 Chris Lightfoot produced a series of time travel contour maps, after
+the Department for Transport approached mySociety about experimenting with
+novel ways of re-using public sector data. 
 
-<h2><a name="legibility"></a>Improving legibility</h2>
+<p>If you have not seen this previous work it is important that you now take a <a
+href="/2006/travel-time-maps/">read through the original page</a> to see what
+we were building on. 
 
-<p>Many of the maps we produced last time were very pretty, but could be
-somewhat difficult to interpret. One major task was to read up on how to
-display such complex and valuable data in more intellible ways, and the results
-can be seen below. 
+<p>The original maps were very popular online, and the evening standard even
+published a large article with a copy of one of the maps which covered greater
+London. 
+
+<p>The Department for Transport asked us to show them how this work could be taken
+further, and that is what we are showing here today.
+
+
+<h2><a name="legibility"></a>Improving legibility and clarity</h2>
+
+ 
+<p>Many of the maps we produced last time were very pretty, but could be somewhat
+difficult to interpret. One major task was to read up on how to display such
+complex and valuable data in more intellible ways, and the results can be seen
+below.
 
 <p>Old map of London
 
-<p><a href="/2006/travel-time-maps/multimodal-london-20km-1196px.png"><img src="/2006/travel-time-maps/multimodal-london-20km-1196px.png" width="598" height="569" alt="Old map of London from SW1"></a>
+<p><a href="oldmap.png"><img src="oldmap_small.png" alt="Old map of London from SW1"></a>
 
 <p>New map of London from SW1 
 
-<p>That second map shows travel times to a centre point at the Department for
-Transport headquarters.  Here's a map using a very different part of London as
-its centre, a hospital in the less well connected Denmark Hill.
-
-<p><a href="southlondon.png"><img src="southlondon_small.png" alt="Travel times to Maudsley Hospital in Denmark Hill SE5"></a>
-<br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
-
-<p>Discrete vs. continuous contours. Better mapping backgrounds.
-
-<p>Travelling to work by 9am
+<p><a href="southlondon.png"><img src="southlondon_small.png" alt=""></a>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 
 <h2><a name="houseprices"></a>House prices</h2>
 
-<p>Next, it is clearly no good to be told that a location is very convenient
-for your work if you can't afford to live there. So we have produced travel
-maps that show not just where someone working can live if they want to get to
-work swiftly, we can also show what areas they can afford to live in. 
+<p>Next, it is clearly no good to be told that a location is very convenient for
+your work if you can't afford to live there. So we have produced travel maps
+that show not just where someone working can live if they want to get to work
+swiftly, we can also show what areas they can afford to live in. 
 
-<p>Here is a map which is also centered on the hospital in denmark hill, but
-only showing travel times to locations where the average median houseprice is
-below 200,000k 
+<p>To help with this process we picked a real world case study, an NHS doctor
+working at the Maudsley Hospital in Denmark hill, South London. He's thinking
+about getting a foot on the property ladder and wants to know where he might be
+able to live that would both be a tolerable commute, and which he could afford. 
 
-<p>If you're a bit wealthier, you might be interested in a map of London
-centered on the same place, but focussing only on houses from 200-300k
+<p>First, here's a map showing where the Maudsley hospital is. 
 
-<p><!--<a href="rail-cambridge-1500px.png"><img src="rail-cambridge-500px.png" width="288" height="500" alt="Map showing travel times by rail and taxi from Cambridge to other points in Great Britain, starting at 7 o'clock on a weekday morning"></a>
-<br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2006</small>-->
-</p>
+<p>Next, we overlay the travel time contours assuming that this Doctor wants to
+get to work by 9AM. As the key shows, each band represents 10 minutes extra
+travel time, so the red circle in the middle means he could leave the house at
+8.50-9 and still get to work on time. The next band out he could leave at
+8.40-8.50, and so on. 
+
+<p>Now let's introduce house prices into the equation. Obviously, at first our
+doctor wants to see what's available at the bottom end of the market, less than
+£250,000 (the average first time buyer price).
+
+<p><a href="houseprices300400.png"><img src="houseprices300400.png" alt="Journey times to Department for Transport and 300k-400k house prices"></a>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 
 <h2><a name="cartrain"></a>Car vs. public transport</h2>
 
@@ -95,13 +106,13 @@ indicated with the black dots. Click on the maps for larger versions.
 
 <h3>Edinburgh University</h3>
 <p><a href="ed.png"><img src="ed_small.png" alt="Getting to Edinburgh University by 09:00 - public transport vs road"></a>
-<br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 <h3>Cardiff Central Railway Station</h3>
 <p><a href="cardiff.png"><img src="cardiff_small.png" alt="Getting to Cardiff central railway station by 09:00 - public transport vs road"></a>
-<br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 <h3>Birmingham University</h3>
 <p><a href="birmingham.png"><img src="birmingham_small.png" alt="Getting to Birmingham University by 09:00 - public transport vs road"></a>
-<br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 
 <p>Remember, these are not general maps for the whole city, each map is only
 useful for the specific target place of work or study marked with the black
@@ -115,8 +126,8 @@ between the bicycle and everything else. This maps comprehensively shows that
 if you live anywhere near the centre of this map, it's best to get on a bike if
 commuting speed is your main concern.
 
-<p><a href="cycling-vs-public-transport.png"><img width="450" src="cycling-vs-public-transport.png" alt="Getting to Birmingham University by 09:00 - public transport vs road"></a>
-<br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+<p><a href="cycling.png"><img width="400" src="cycling_small.png" alt=""></a>
+<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 
 <h2><a name="realtime"></a>What next? Further work</h2>
 
