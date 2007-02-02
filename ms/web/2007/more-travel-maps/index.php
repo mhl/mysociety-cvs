@@ -86,12 +86,12 @@ swiftly, we can also show what areas they can afford to live in.
 <p>The next three maps show different bands of house prices PLUS time travel
 contours to the DfT building. However, in areas which are outside the desired
 price band, the contours are greyed out. Let's start at the bottom of the
-London market, less than &pound;£200,000 median price.
+London market, less than &pound;200,000 median price.
 
 <p><a href="house-200.png"><img src="house-200_small.png" alt="Travel times to the Department for Transport and house prices less than &pound;200,000"></a>
 <br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 
-<p>Oh dear! It seems there's almost nowhere for under &pound;£200,000 median
+<p>Oh dear! It seems there's almost nowhere for under &pound;200,000 median
 anywhere within 40 minutes of our target. Let's up the price band.
 
 <p><a href="house-300.png"><img src="house-300_small.png" alt="Travel times to the Department for Transport and house prices less than &pound;300,000"></a>
@@ -99,7 +99,7 @@ anywhere within 40 minutes of our target. Let's up the price band.
 
 <p>Now much more is clearly available, although most of it 30-40 minutes away.
 But what if I want to exclude both prices that are too high and too low?  This
-map shows only areas where the median price is between Â£300,000 and Â£400,000
+map shows only areas where the median price is between &pound;300,000 and &pound;400,000.
 
 <p><a href="house-300-400.png"><img src="house-300-400_small.png" alt="Travel times to the Department for Transport and median house prices between &pound;300,000 and &pound;400,000"></a>
 <br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;300-4007</small>
