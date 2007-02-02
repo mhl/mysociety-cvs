@@ -40,9 +40,9 @@ novel ways of re-using public sector data.
 
 <p>If you have not seen this previous work it is important that you now take a <a
 href="/2006/travel-time-maps/">read through the original page</a> to see what
-we were building on. 
+we are building on. 
 
-<p>The original maps were very popular online, and the evening standard even
+<p>The original maps were very popular online, and the Evening Standard even
 published a large article with a copy of one of the maps which covered greater
 London. 
 
