@@ -5,7 +5,7 @@ include "../../wordpress/wp-blog-header.php";
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
 
-<h1>More travel-time Maps and their Uses</h1>
+<h1>More travel-time maps and their uses</h1>
 
 <p>
 Richard Pope, mySociety &lt;<a href="mailto:richard@mysociety.org">richard@mysociety.org</a>&gt;<br>
