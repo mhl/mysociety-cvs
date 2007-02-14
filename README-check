@@ -1,0 +1,22 @@
+#! /bin/bash
+
+# Display files that aren't documented in README
+
+for X in `
+    ls -1 | 
+        egrep -v "(CVS|_Inline|.cvsignore|.swp|README-check|README.txt)" | 
+        sed "s#./##"
+    `
+do 
+    egrep "^$X/? " README.txt >/dev/null || echo $X
+done
+
+for X in `
+    echo services/* | 
+        sed "s/ /\n/" | 
+        egrep -v "(CVS|_Inline|.cvsignore|.swp|services/bin)"
+    `
+do 
+    egrep "^$X/? " README.txt >/dev/null || echo $X
+done
+
