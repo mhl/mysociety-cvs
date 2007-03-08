@@ -8,7 +8,17 @@ Launched sites
 </div>
 
 <div class="item_inner_head">
-<a href="http://www.hearfromyourmp.com">HearFromYourMP.com - Launched 21st November 2005</a>
+<a href="http://www.neighbourhoodfixit.com/">Neighbourhood Fix-It &ndash; launched 7th March 2007</a>
+</div>
+<div class="item">
+A site where people can report, view, or discuss local problems like graffiti,
+fly tipping, broken paving slabs, or street lighting. We're making this 
+in collaboration with the <a href="http://www.youngfoundation.org.uk/">Young
+Foundation</a>.
+</div>
+
+<div class="item_inner_head">
+<a href="http://www.hearfromyourmp.com">HearFromYourMP.com &ndash; launched 21st November 2005</a>
 </div>
 <div class="item">
 HearFromYourMP encourages and enables MPs to run email lists for their
@@ -18,7 +28,7 @@ launched.
 </div>
 
 <div class="item_inner_head">
-<a href="http://www.pledgebank.com">PledgeBank.com - Launched 13th June 2005</a>
+<a href="http://www.pledgebank.com">PledgeBank.com &ndash; launched 13th June 2005</a>
 </div>
 <div class="item">
 PledgeBank is about reassuring people who want to do something altruistic or
@@ -29,7 +39,7 @@ if 5 other local people will pledge to come and help.
 </div>
 
 <div class="item_inner_head">
-<a href="http://www.notapathetic.com">NotApathetic.com - Launched 7th April 2005</a>
+<a href="http://www.notapathetic.com">NotApathetic.com &ndash; launched 7th April 2005</a>
 </div>
 <div class="item">
 NotApathetic was built so that people who were planning not to vote in
@@ -41,7 +51,7 @@ Zealand to South Africa.
 </div>
 
 <div class="item_inner_head">
-<a href="http://www.writetothem.com">WriteToThem.com - Launched 14th February 2005</a>
+<a href="http://www.writetothem.com">WriteToThem.com &ndash; launched 14th February 2005</a>
 </div>
 <div class="item">
 WriteToThem.com is the definitive place to contact any of your elected
@@ -52,7 +62,7 @@ WriteToThem.com sent 5,000 messages in its first month of operation.
 </div>
 
 <div class="item_inner_head">
-<a href="http://www.theyworkforyou.com">TheyWorkForYou.com - Launched 6th June 2004</a>
+<a href="http://www.theyworkforyou.com">TheyWorkForYou.com &ndash; launched 6th June 2004</a>
 </div>
 <div class="item">
 TheyWorkForYou provides a searchable, annotatable version of what is said in
@@ -72,7 +82,7 @@ Sites we built for other people
 </div>
 
 <div class="item_inner_head">
-<a href="http://petitions.pm.gov.uk">E-Petitions - Launched 14th November 2006</a>
+<a href="http://petitions.pm.gov.uk">E-Petitions &ndash; launched 14th November 2006</a>
 </div>
 <div class="item">
 We built the 10 Downing Street e-Petitions site as a civil service commissioned
@@ -87,16 +97,6 @@ available as open source code for reuse elsewhere.
 
 <div class="item_head">
 Sites being built
-</div>
-
-<div class="item_inner_head">
-Neighbourhood Fix-It
-</div>
-<div class="item">
-A site where people can report, view, or discuss local problems like graffiti,
-fly tipping, broken paving slabs, or street lighting. We're making this 
-in collaboration with the <a href="http://www.youngfoundation.org.uk/">Young
-Foundation</a>.  
 </div>
 
 <div class="item_inner_head">
