@@ -23,7 +23,7 @@ internet to improve lives.</dd>
 
 <dt>How do I get in contact with you in person?</dt>
 
-<dd>Email <a href="mailto:tom&#64;mysociety.org">Tom Steinberg</a> or call
+<dd>Email <a href="mailto:team&#64;mysociety.org">the mySociety team</a> or call
 07811 082158.</dd>
 
 <dt><a name="do" id="do"></a>What exactly are you doing?</dt>

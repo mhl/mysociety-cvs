@@ -12,7 +12,7 @@ include "wordpress/wp-content/themes/mysociety/header.php";
 <dt>By email</dt>
 <dd>
   Email the mySociety team <a href="mailto:team&#64;mysociety.org">team&#64;mysociety.org</a>,
-  or just Tom Steinberg <a href="mailto:tom&#64;mysociety.org">tom&#64;mysociety.org</a>, 
+  or just Tom Steinberg <a href="mailto:tom&#64;mysociety.org">tom&#64;mysociety.org</a>.
 </dd>
 
 <dt>By phone</dt>
