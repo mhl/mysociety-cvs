@@ -137,6 +137,10 @@ Call test databases with a suffix e.g. "pb-staging" or "pb-matthew".
    Or, if you don't want it backed up, add it explicitly to the "don't back up"
    place there as well (or else cron will warn about it). Then deploy config
    with that on both servers.
+7. If it is a test script user which needs to be able to drop and create its
+   own database for testing purposes, then the user also needs the createdb
+   permission.
+        alter user "<databasename>" with createdb;
 
 Passwords are in the following places:
 - inside the database itself, as the configuration for the user/database
