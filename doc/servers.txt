@@ -136,7 +136,9 @@ Call test databases with a suffix e.g. "pb-staging" or "pb-matthew".
     /data/servers/bitter/etc/cron.daily/backup-databases
    Or, if you don't want it backed up, add it explicitly to the "don't back up"
    place there as well (or else cron will warn about it). Then deploy config
-   with that on both servers.
+   with that on both servers. Also, you need to add the database to an entry
+   for root in /data/mysociety/bin/generate-pgpass, and run that script - this
+   is how the backup script authenticates.
 7. If it is a test script user which needs to be able to drop and create its
    own database for testing purposes, then the user also needs the createdb
    permission.
