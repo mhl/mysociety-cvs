@@ -44,7 +44,7 @@ class UKCODTemplate extends QuickTemplate {
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
         
-        include("http://".$_SERVER['HTTP_HOST']."/header.py");
+        include("http://".$_SERVER['HTTP_HOST']."/header.html");
 ?>
 
     <div id="globalWrapper">
@@ -195,7 +195,7 @@ class UKCODTemplate extends QuickTemplate {
     <?php $this->html('reporttime') ?>
 <?php
 	wfRestoreWarnings();
-    include("http://".$_SERVER['HTTP_HOST']."/footer.py");
+    include("http://".$_SERVER['HTTP_HOST']."/footer.html");
 	}
 }
 
