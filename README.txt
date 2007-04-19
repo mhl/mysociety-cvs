@@ -46,6 +46,7 @@ Organisational sites
 
 ms - mySociety.org website
 mscouk - mySociety.co.uk website
+ukcodwww - UKCOD.org.uk website
 
 cvswww - Development infrastructure, cvs.mysociety.org
 secure - Development infrastructure, secure.mysociety.org
