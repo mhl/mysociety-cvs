@@ -10,7 +10,7 @@ correctly partitioned.
 1. Install some Debian packages
 
     apt-get install vim less cvs perl libarchive-tar-perl liberror-perl libunix-mknod-perl libstatistics-distributions-perl libnetaddr-ip-perl geoip-bin locales strace php4-cli libdbd-pg-perl libio-socket-ssl-perl libnet-dns-perl file libfile-slurp-perl
-    apt-get install iproute ntp ntp-server ntp-simple ntpdate tmpreaper cron-apt exim4 exim4-base exim4-config exim4-daemon-heavy clamav clamav-base clamav-daemon clamav-freshclam libclamav1 sysstat
+    apt-get install iproute ntp ntp-server ntp-simple ntpdate tmpreaper cron-apt exim4 exim4-base exim4-config exim4-daemon-heavy clamav clamav-base clamav-daemon clamav-freshclam libclamav1 sysstat bind9 bind9-doc bind9-host
 
     (nasty that we need php4-cli; it is for processing our config files)
 
@@ -67,6 +67,8 @@ apt-get dist-upgrade
 /etc/init.d/exim4 restart
 /etc/init.d/clamav-daemon restart
 /etc/init.d/clamav-freshclam restart
+killall named
+/etc/init.d/bind9 start
 locale-gen
 
 Setting up PostgreSQL
