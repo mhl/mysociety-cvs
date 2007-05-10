@@ -56,7 +56,8 @@ class UKCODTemplate extends QuickTemplate {
 	<a herf="/" id="site-title-link"><h1 class="hiddentext">UK Citizens Online Democracy</h1></a>
 
 	<ul id="menu">
-		<li <?= ($title == 'Main_Page' || $title == 'UK_Citizens_Online_Democracy') ? 'class="selected"' : '' ?> ><a href="/UK_Citizens_Online_Democracy">Structure</a></li>
+		<li <?= ($title == 'Main_Page' || $title == 'UK_Citizens_Online_Democracy') ? 'class="selected"' : '' ?> ><a href="/">Home</a></li>
+		<li <?= ($title == 'Structure') ? 'class="selected"' : '' ?> ><a href="/Structure">Structure</a></li>
 		<li <?= ($title == 'Trustees') ? 'class="selected"' : '' ?> ><a href="/Trustees">Trustees</a></li>
 		<li <?= ($title == 'Board_Members') ? 'class="selected"' : '' ?> ><a href="/Board_Members">Board Members</a></li>
 		<li <?= ($title == 'Finances') ? 'class="selected"' : '' ?> ><a href="/Finances">Finances</a></li>
