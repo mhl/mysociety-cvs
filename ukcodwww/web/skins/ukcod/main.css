@@ -1,3 +1,96 @@
+/*
+ * Layout stuff
+ */
+
+body {
+	margin:0 auto;
+  padding:0 auto;
+  width:700px;
+	background-image:url('/skins/ukcod/images/bg.png');
+	background-repeat:repeat-x;
+}
+
+ul#menu {
+	border-top:1px solid #A4BC50;
+	text-align:center;
+	background-image:url('/skins/ukcod/images/menu_bg.png');
+	background-repeat:no-repeat;
+	background-position:top center;	
+	height:30px;
+	padding:5px;
+}
+
+ul#menu li {
+  display:inline;
+	padding:0 8px;		
+}
+
+#site-title-link {
+  display: block;
+  background-image: url("/skins/ukcod/images/logo.png");
+  height:88px;
+  width:171px;
+  margin:0 0 0 80px;
+}
+
+.hiddentext {
+  margin-left:-100000px;
+  font-size: 0px;
+  position:absolute;
+  height:0;
+}
+
+#footer {
+	border-top:1px solid #F76833;
+	background-image:url('/skins/ukcod/images/footer_bg.png');
+	background-repeat:no-repeat;
+	background-position:top center;
+	height:30px;	
+	padding:8px 0 0 90px;		
+}
+#footer li {
+  display:inline;
+	padding:0 8px;
+}
+
+
+
+/*
+ * Text stuff
+ */
+
+body {
+  font-family: Verdana, Helvetica, Sans-Serif;
+  font-size:14px;	
+}
+
+ul#menu li a {
+  color:black;
+  text-decoration:none;
+}
+
+/* XXX I think mediawiki uses <li class="selected"> for askive menu items. */ 
+ul#menu li.selected, ul#menu li.selected a, #footer li.selected, #footer li.selected a {
+  background-color:#FD5027;
+  color:#FFFFFF;
+}
+
+/* XXX display:none is bad for this - push it way out of sight.  Seems to work on all browsers */
+.hiddentext {
+  margin-left:-100000px;
+  font-size: 0px;
+  position:absolute;
+  height:0;
+}
+
+a {
+	text-decoration:none;
+	color:#FD5027;
+}
+
+#footer a {
+	color:#000000;
+}
 
 .printfooter {
     display: none;

@@ -48,13 +48,28 @@ class UKCODTemplate extends QuickTemplate {
 		wfSuppressWarnings();
 
         include($_SERVER['DOCUMENT_ROOT']."/header.html");
+        global $title;
 
-?>	<div id="globalWrapper">
-		<div id="column-content">
+?>	
+	<a href="#menu" class="hiddentext">Menu</a>
+	<a href="#content" class="hiddentext">Content</a>
+	<a herf="/" id="site-title-link"><h1 class="hiddentext">UK Citizens Online Democracy</h1></a>
+
+	<ul id="menu">
+		<li <?= ($title == 'Main_Page' || $title == 'UK_Citizens_Online_Democracy') ? 'class="selected"' : '' ?> ><a href="/UK_Citizens_Online_Democracy">Structure</a></li>
+		<li <?= ($title == 'Trustees') ? 'class="selected"' : '' ?> ><a href="/Trustees">Trustees</a></li>
+		<li <?= ($title == 'mySociety_Ltd_Board_Members') ? 'class="selected"' : '' ?> ><a href="/mySociety_Ltd_Board_Members">Board Members</a></li>
+		<li <?= ($title == 'Finance') ? 'class="selected"' : '' ?> ><a href="/Finances">Finance</a></li>
+		<li <?= ($title == 'Paid_Staff') ? 'class="selected"' : '' ?> ><a href="/Paid_Staff">Paid Staff</a></li>
+		<li <?= ($title == 'Contact') ? 'class="selected"' : '' ?> ><a href="/Contact">Contact</a></li>
+	</ul>
+
+
 	<div id="content">
 		<a name="top" id="top"></a>
 		<?php if($this->data['sitenotice']) { ?><div id="siteNotice"><?php $this->html('sitenotice') ?></div><?php } ?>
 		<h1 class="firstHeading"><?php $this->data['displaytitle']!=""?$this->html('title'):$this->text('title') ?></h1>
+
 		<div id="bodyContent">
 			<div id="contentSub"><?php $this->html('subtitle') ?></div>
 			<?php if($this->data['undelete']) { ?><div id="contentSub2"><?php     $this->html('undelete') ?></div><?php } ?>
@@ -67,26 +82,22 @@ class UKCODTemplate extends QuickTemplate {
 			<div class="visualClear"></div>
 		</div>
 	</div>
-		</div>
-		<div id="column-one">
-	<div id="p-cactions" class="portlet">
-		<h5><?php $this->msg('views') ?></h5>
-		<div class="pBody">
-			<ul>
+
+	<!--	<li><a href="#">foo</a></li>
+		<li class="selected"><a href="#">foo</a></li>	-->
+	<ul id="footer">
+    <!-- article/edit/history -->
 	<?php			foreach($this->data['content_actions'] as $key => $tab) { ?>
 					 <li id="ca-<?php echo Sanitizer::escapeId($key) ?>"<?php
 					 	if($tab['class']) { ?> class="<?php echo htmlspecialchars($tab['class']) ?>"<?php }
 					 ?>><a href="<?php echo htmlspecialchars($tab['href']) ?>"><?php
 					 echo htmlspecialchars($tab['text']) ?></a></li>
 	<?php			 } ?>
-			</ul>
-		</div>
-	</div>
-	<div class="portlet" id="p-personal">
-		<h5><?php $this->msg('personaltools') ?></h5>
-		<div class="pBody">
-			<ul>
-<?php 			foreach($this->data['personal_urls'] as $key => $item) { ?>
+
+    <!-- login etc. -->
+<?php 			foreach($this->data['personal_urls'] as $key => $item) { 
+                    if ($key == 'anontalk' || $key == 'anonuserpage') continue;
+                ?>
 				<li id="pt-<?php echo Sanitizer::escapeId($key) ?>"<?php
 					if ($item['active']) { ?> class="active"<?php } ?>><a href="<?php
 				echo htmlspecialchars($item['href']) ?>"<?php
@@ -94,24 +105,12 @@ class UKCODTemplate extends QuickTemplate {
 				echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
 				echo htmlspecialchars($item['text']) ?></a></li>
 <?php			} ?>
-			</ul>
-		</div>
-	</div>
+
+	</ul>		
+
+<? /* ?>
+
 	<script type="<?php $this->text('jsmimetype') ?>"> if (window.isMSIE55) fixalpha(); </script>
-	<?php foreach ($this->data['sidebar'] as $bar => $cont) { ?>
-	<div class='portlet' id='p-<?php echo Sanitizer::escapeId($bar) ?>'>
-		<h5><?php $out = wfMsg( $bar ); if (wfEmptyMsg($bar, $out)) echo $bar; else echo $out; ?></h5>
-		<div class='pBody'>
-			<ul>
-<?php 			foreach($cont as $key => $val) { ?>
-				<li id="<?php echo Sanitizer::escapeId($val['id']) ?>"<?php
-					if ( $val['active'] ) { ?> class="active" <?php }
-				?>><a href="<?php echo htmlspecialchars($val['href']) ?>"><?php echo htmlspecialchars($val['text']) ?></a></li>
-<?php			} ?>
-			</ul>
-		</div>
-	</div>
-	<?php } ?>
 	<div id="p-search" class="portlet">
 		<h5><label for="searchInput"><?php $this->msg('search') ?></label></h5>
 		<div id="searchBody" class="pBody">
@@ -126,88 +125,10 @@ class UKCODTemplate extends QuickTemplate {
 			</div></form>
 		</div>
 	</div>
-<? /* ?>
-	<div class="portlet" id="p-tb">
-		<h5><?php $this->msg('toolbox') ?></h5>
-		<div class="pBody">
-			<ul>
-<?php
-		if($this->data['notspecialpage']) { ?>
-				<li id="t-whatlinkshere"><a href="<?php
-				echo htmlspecialchars($this->data['nav_urls']['whatlinkshere']['href'])
-				?>"><?php $this->msg('whatlinkshere') ?></a></li>
-<?php
-			if( $this->data['nav_urls']['recentchangeslinked'] ) { ?>
-				<li id="t-recentchangeslinked"><a href="<?php
-				echo htmlspecialchars($this->data['nav_urls']['recentchangeslinked']['href'])
-				?>"><?php $this->msg('recentchangeslinked') ?></a></li>
-<?php 		}
-		}
-		if(isset($this->data['nav_urls']['trackbacklink'])) { ?>
-			<li id="t-trackbacklink"><a href="<?php
-				echo htmlspecialchars($this->data['nav_urls']['trackbacklink']['href'])
-				?>"><?php $this->msg('trackbacklink') ?></a></li>
-<?php 	}
-		if($this->data['feeds']) { ?>
-			<li id="feedlinks"><?php foreach($this->data['feeds'] as $key => $feed) {
-					?><span id="feed-<?php echo Sanitizer::escapeId($key) ?>"><a href="<?php
-					echo htmlspecialchars($feed['href']) ?>"><?php echo htmlspecialchars($feed['text'])?></a>&nbsp;</span>
-					<?php } ?></li><?php
-		}
 
-		foreach( array('contributions', 'blockip', 'emailuser', 'upload', 'specialpages') as $special ) {
-
-			if($this->data['nav_urls'][$special]) {
-				?><li id="t-<?php echo $special ?>"><a href="<?php echo htmlspecialchars($this->data['nav_urls'][$special]['href'])
-				?>"><?php $this->msg($special) ?></a></li>
-<?php		}
-		}
-
-		if(!empty($this->data['nav_urls']['print']['href'])) { ?>
-				<li id="t-print"><a href="<?php echo htmlspecialchars($this->data['nav_urls']['print']['href'])
-				?>"><?php $this->msg('printableversion') ?></a></li><?php
-		}
-
-		if(!empty($this->data['nav_urls']['permalink']['href'])) { ?>
-				<li id="t-permalink"><a href="<?php echo htmlspecialchars($this->data['nav_urls']['permalink']['href'])
-				?>"><?php $this->msg('permalink') ?></a></li><?php
-		} elseif ($this->data['nav_urls']['permalink']['href'] === '') { ?>
-				<li id="t-ispermalink"><?php $this->msg('permalink') ?></li><?php
-		}
-
-		wfRunHooks( 'UKCODTemplateToolboxEnd', array( &$this ) );
-?>
-			</ul>
-		</div>
-<? */ ?>
-	</div>
-<?php
-		if( $this->data['language_urls'] ) { ?>
-	<div id="p-lang" class="portlet">
-		<h5><?php $this->msg('otherlanguages') ?></h5>
-		<div class="pBody">
-			<ul>
-<?php		foreach($this->data['language_urls'] as $langlink) { ?>
-				<li class="<?php echo htmlspecialchars($langlink['class'])?>"><?php
-				?><a href="<?php echo htmlspecialchars($langlink['href']) ?>"><?php echo $langlink['text'] ?></a></li>
-<?php		} ?>
-			</ul>
-		</div>
-	</div>
-<?php	} ?>
 		</div><!-- end of the left (by default at least) column -->
 			<div class="visualClear"></div>
 			<div id="footer">
-<?php
-/*		if($this->data['poweredbyico']) { ?>
-				<div id="f-poweredbyico"><?php $this->html('poweredbyico') ?></div>
-<?php 	}
-		if($this->data['copyrightico']) { ?>
-				<div id="f-copyrightico"><?php $this->html('copyrightico') ?></div>
-<?php	} */
-
-		// Generate additional footer links
-?>
 			<ul id="f-list">
 <?php
 		$footerlinks = array(
@@ -222,10 +143,9 @@ class UKCODTemplate extends QuickTemplate {
 		}
 ?>
 			</ul>
-		</div>
-		
+<? */ ?>
+
 	<?php $this->html('bottomscripts'); /* JS call to runBodyOnloadHook */ ?>
-</div>
 <?php $this->html('reporttime') ?>
 <?php if ( $this->data['debug'] ): ?>
 <!-- Debug output:

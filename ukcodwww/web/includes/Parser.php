@@ -3400,6 +3400,7 @@ class Parser
 		} else {
 			$showEditLink = $this->mOptions->getEditSection();
 		}
+        $showEditLink = 0; # FAI HACK
 
 		# Inhibit editsection links if requested in the page
 		$esw =& MagicWord::get( 'noeditsection' );

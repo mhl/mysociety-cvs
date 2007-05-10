@@ -119,5 +119,12 @@ $wgDiff3 = "/usr/bin/diff3";
 # sure that cached pages are cleared.
 $configdate = gmdate( 'YmdHis', @filemtime( __FILE__ ) );
 $wgCacheEpoch = max( $wgCacheEpoch, $configdate );
-	
+
+
+# Permissions
+$wgGroupPermissions['*']['edit'] = 0;
+$wgGroupPermissions['*']['createpage'] = 0;
+$wgGroupPermissions['*']['createtalk'] = 0;
+#print "<pre>";print_r($wgGroupPermissions);print"</pre>";
+
 ?>
