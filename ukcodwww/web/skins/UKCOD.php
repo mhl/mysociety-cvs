@@ -88,8 +88,9 @@ class UKCODTemplate extends QuickTemplate {
 		<li class="selected"><a href="#">foo</a></li>	-->
 	<ul id="footer">
     <!-- article/edit/history -->
-	<?php			foreach($this->data['content_actions'] as $key => $tab) { ?>
-					 <li id="ca-<?php echo Sanitizer::escapeId($key) ?>"<?php
+	<?php			foreach($this->data['content_actions'] as $key => $tab) { 
+                    if ($key == 'talk') continue;
+                ?> <li id="ca-<?php echo Sanitizer::escapeId($key) ?>"<?php
 					 	if($tab['class']) { ?> class="<?php echo htmlspecialchars($tab['class']) ?>"<?php }
 					 ?>><a href="<?php echo htmlspecialchars($tab['href']) ?>"><?php
 					 echo htmlspecialchars($tab['text']) ?></a></li>
