@@ -59,9 +59,9 @@ class UKCODTemplate extends QuickTemplate {
 		<li <?= ($title == 'Main_Page' || $title == 'UK_Citizens_Online_Democracy') ? 'class="selected"' : '' ?> ><a href="/">Home</a></li>
 		<li <?= ($title == 'Structure') ? 'class="selected"' : '' ?> ><a href="/Structure">Structure</a></li>
 		<li <?= ($title == 'Trustees') ? 'class="selected"' : '' ?> ><a href="/Trustees">Trustees</a></li>
-		<li <?= ($title == 'Board_Members') ? 'class="selected"' : '' ?> ><a href="/Board_Members">Board Members</a></li>
+		<li <?= ($title == 'Board_Members') ? 'class="selected"' : '' ?> ><a href="/Board_Members">Board</a></li>
 		<li <?= ($title == 'Finances') ? 'class="selected"' : '' ?> ><a href="/Finances">Finances</a></li>
-		<li <?= ($title == 'Paid_Staff') ? 'class="selected"' : '' ?> ><a href="/Paid_Staff">Paid Staff</a></li>
+		<li <?= ($title == 'Paid_Staff') ? 'class="selected"' : '' ?> ><a href="/Paid_Staff">Staff</a></li>
 		<li <?= ($title == 'Contact') ? 'class="selected"' : '' ?> ><a href="/Contact">Contact</a></li>
 	</ul>
 
@@ -109,28 +109,18 @@ class UKCODTemplate extends QuickTemplate {
 
 	</ul>		
 
-<? /* ?>
-
 	<script type="<?php $this->text('jsmimetype') ?>"> if (window.isMSIE55) fixalpha(); </script>
-	<div id="p-search" class="portlet">
-		<h5><label for="searchInput"><?php $this->msg('search') ?></label></h5>
-		<div id="searchBody" class="pBody">
-			<form action="<?php $this->text('searchaction') ?>" id="searchform"><div>
-				<input id="searchInput" name="search" type="text" <?php
+    <div id="search">
+			<form action="<?php $this->text('searchaction') ?>" id="searchform">
+				<input id="searchInput" name="search" size="15" type="text" <?php
 					if($this->haveMsg('accesskey-search')) {
 						?>accesskey="<?php $this->msg('accesskey-search') ?>"<?php }
 					if( isset( $this->data['search'] ) ) {
 						?> value="<?php $this->text('search') ?>"<?php } ?> />
-				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="<?php $this->msg('searcharticle') ?>" />&nbsp;
-				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="<?php $this->msg('searchbutton') ?>" />
-			</div></form>
-		</div>
-	</div>
-
-		</div><!-- end of the left (by default at least) column -->
-			<div class="visualClear"></div>
-			<div id="footer">
-			<ul id="f-list">
+				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="Search" />
+			</form>
+    </div>
+    <div id="lastmodified">
 <?php
 		$footerlinks = array(
 		#	'lastmod', 'viewcount', 'numberofwatchingusers', 'credits', 'copyright',
@@ -139,12 +129,11 @@ class UKCODTemplate extends QuickTemplate {
 		);
 		foreach( $footerlinks as $aLink ) {
 			if( isset( $this->data[$aLink] ) && $this->data[$aLink] ) {
-?>				<li id="<?php echo$aLink?>"><?php $this->html($aLink) ?></li>
+?>				<?php $this->html($aLink) ?>
 <?php 		}
 		}
 ?>
-			</ul>
-<? */ ?>
+    </div>
 
 	<?php $this->html('bottomscripts'); /* JS call to runBodyOnloadHook */ ?>
 <?php $this->html('reporttime') ?>

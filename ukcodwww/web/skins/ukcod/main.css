@@ -4,8 +4,8 @@
 
 body {
 	margin:0 auto;
-  padding:0 auto;
-  width:700px;
+    padding:0 auto;
+    width:70%;
 	background-image:url('/skins/ukcod/images/bg.png');
 	background-repeat:repeat-x;
 }
@@ -53,6 +53,17 @@ ul#menu li {
 	padding:0 8px;
 }
 
+#search {
+    color: #21004a;
+    position: absolute;
+    top: 1em; right: 27%;
+    font-size: 83%;
+}
+#lastmodified {
+    text-align: center;
+    font-size: 83%;
+    font-style: italic;
+}
 
 
 /*
@@ -64,15 +75,35 @@ body {
   font-size:14px;	
 }
 
+a {
+	text-decoration:underline;
+	color:#882515;
+}
+
+a:hover {
+	text-decoration:underline;
+	color:#FD5027;
+}
+
 ul#menu li a {
   color:black;
   text-decoration:none;
 }
 
+#footer a {
+  color:black;
+  text-decoration:none;
+}
+
 /* XXX I think mediawiki uses <li class="selected"> for askive menu items. */ 
+ul#menu li a:hover, #footer li a:hover {
+  text-decoration:none;
+  border-bottom:2px solid #FD5027;
+}
 ul#menu li.selected, ul#menu li.selected a, #footer li.selected, #footer li.selected a {
   background-color:#FD5027;
   color:#FFFFFF;
+  border-bottom:none;
 }
 
 /* XXX display:none is bad for this - push it way out of sight.  Seems to work on all browsers */
@@ -81,15 +112,6 @@ ul#menu li.selected, ul#menu li.selected a, #footer li.selected, #footer li.sele
   font-size: 0px;
   position:absolute;
   height:0;
-}
-
-a {
-	text-decoration:none;
-	color:#FD5027;
-}
-
-#footer a {
-	color:#000000;
 }
 
 .printfooter {
