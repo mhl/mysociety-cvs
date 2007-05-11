@@ -49,11 +49,15 @@ class UKCODTemplate extends QuickTemplate {
 
         global $title;
 
+        $html_title = "UK Citizens Online Democracy - ".htmlspecialchars($this->data['title']);
+        if ($this->data['title'] == 'UK Citizens Online Democracy')
+            $html_title = htmlspecialchars($this->data['title']);
+
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
     <html>
     <head>
-    <title>UK Citizens Online Democracy</title>
+    <title><?=$html_title?></title>
     <style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css?<?php echo $GLOBALS['wgStyleVersion'] ?>"; /*]]>*/</style>
     </head>
     <body>
