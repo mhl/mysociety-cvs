@@ -49,16 +49,19 @@ class UKCODTemplate extends QuickTemplate {
 
         global $title;
 
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
     <html>
     <head>
     <title>UK Citizens Online Democracy</title>
     <style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css?<?php echo $GLOBALS['wgStyleVersion'] ?>"; /*]]>*/</style>
     </head>
     <body>
+    <div>
 	<a href="#menu" class="hiddentext">Menu</a>
 	<a href="#content" class="hiddentext">Content</a>
-	<a herf="/" id="site-title-link"><h1 class="hiddentext">UK Citizens Online Democracy</h1></a>
+    </div>
+	<a href="/" id="site-title-link"><h1 class="hiddentext">UK Citizens Online Democracy</h1></a>
 
 	<ul id="menu">
 		<li <?= ($title == 'Main_Page' || $title == 'UK_Citizens_Online_Democracy') ? 'class="selected"' : '' ?> ><a href="/">Home</a></li>
@@ -118,12 +121,14 @@ class UKCODTemplate extends QuickTemplate {
 	<script type="<?php $this->text('jsmimetype') ?>"> if (window.isMSIE55) fixalpha(); </script>
     <div id="search">
 			<form action="<?php $this->text('searchaction') ?>" id="searchform">
+                <p>
 				<input id="searchInput" name="search" size="15" type="text" <?php
 					if($this->haveMsg('accesskey-search')) {
 						?>accesskey="<?php $this->msg('accesskey-search') ?>"<?php }
 					if( isset( $this->data['search'] ) ) {
 						?> value="<?php $this->text('search') ?>"<?php } ?> />
 				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="Search" />
+                </p>
 			</form>
     </div>
     <div id="lastmodified">
