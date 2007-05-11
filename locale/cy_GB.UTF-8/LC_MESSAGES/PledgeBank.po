@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-01 18:06+0100\n"
+"POT-Creation-Date: 2007-05-11 12:40+0100\n"
 "PO-Revision-Date: 2005-08-15 10:02-0000\n"
 "Last-Translator: Nic Dafis <nicdafis@gmail.com>\n"
 "Language-Team: Welsh <LL@pledgebank.com>\n"
@@ -1169,11 +1169,11 @@ msgstr "C&ocirc;d digwyddiad anhysbys '%s'"
 msgid "Local pledge alerts"
 msgstr "Larymau addewidion newydd"
 
-#: pb/phplib/alert.php:180 pb/phplib/alert.php:210
+#: pb/phplib/alert.php:180
 msgid "You will get email when there are:<ul>"
 msgstr "Cewch chi ebost pan bod:<ul>"
 
-#: pb/phplib/alert.php:188 pb/phplib/alert.php:218
+#: pb/phplib/alert.php:188 pb/phplib/alert.php:219
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Tanysgrifio"
@@ -1186,21 +1186,26 @@ msgstr "I ychwanegu lle newydd, <a href=\"/alert\">rhowch glec yma</a>."
 msgid "Comment alerts"
 msgstr ""
 
+#: pb/phplib/alert.php:210
+#, fuzzy
+msgid "You will get email when there are:"
+msgstr "Cewch chi ebost pan bod:<ul>"
+
 #. TRANS: "blah, blah, this is a comment. - To pledge artnotads by Matthew at 08:00 today." (Matthew Somerville in http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000099.html)
 #: pb/phplib/comments.php:62
-#, fuzzy, php-format
-msgid "To pledge %s by %s at %s."
-msgstr "I addo %s gan %s"
+#, php-format
+msgid "To pledge %s by %s, %s."
+msgstr "I addo %s gan %s, %s."
 
 #: pb/phplib/comments.php:64
-#, fuzzy, php-format
+#, php-format
 msgid "To pledge %s by %s."
-msgstr "I addo %s gan %s am %s."
+msgstr "I addo %s gan %s."
 
 #: pb/phplib/comments.php:69
 #, php-format
-msgid "%s at %s."
-msgstr "%s am %s"
+msgid "%s, %s."
+msgstr "%s, %s"
 
 #: pb/phplib/comments.php:76
 msgid "Abusive? Report it!"
@@ -1218,8 +1223,8 @@ msgstr "Dim sylwadau hyd yn hyn! Beth am ychwanegu sylw?"
 #. TRANS: "<start of comment text...> by <name>, on <pledge reference link> at <time>" - these are the strings under Latest comments on the front page. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #: pb/phplib/comments.php:152
 #, php-format
-msgid "%s by %s, on %s at %s"
-msgstr "%s gan %s, ar addewid %s am %s"
+msgid "%s by %s, on %s, %s"
+msgstr "%s gan %s, ar addewid %s, %s"
 
 #: pb/phplib/comments.php:162
 #, fuzzy, php-format
@@ -1297,6 +1302,38 @@ msgstr "Rhagolwg"
 #: pb/phplib/comments.php:346
 msgid "Post comment"
 msgstr "Anfon sylw"
+
+#: pb/phplib/comments.php:364
+#, fuzzy, php-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d diwrnod ar &ocirc;l"
+msgstr[1] "%d diwrnod ar &ocirc;l"
+
+#: pb/phplib/comments.php:366
+#, fuzzy, php-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d diwrnod ar &ocirc;l"
+msgstr[1] "%d diwrnod ar &ocirc;l"
+
+#: pb/phplib/comments.php:368
+#, fuzzy, php-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d diwrnod ar &ocirc;l"
+msgstr[1] "%d diwrnod ar &ocirc;l"
+
+#: pb/phplib/comments.php:370
+#, php-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: pb/phplib/comments.php:372
+msgid "less than a minute ago"
+msgstr ""
 
 #: pb/phplib/fns.php:115
 msgid "exceeded"
@@ -1618,10 +1655,6 @@ msgstr ""
 #, fuzzy
 msgid "London (United Kingdom)"
 msgstr "Y Deyrnas Unedig"
-
-#: pb/phplib/microsites.php:55
-msgid "Global Cool (One by One, Ton by Ton)"
-msgstr ""
 
 #: pb/phplib/microsites.php:56
 msgid "Catalytic Communities"
@@ -3327,7 +3360,7 @@ msgstr "Addewidion llwyddiannus diweddaraf"
 msgid "Recent successful pledges"
 msgstr "Addewidion llwyddiannus diweddaraf"
 
-#: pb/web/index.php:245
+#: pb/web/index.php:256
 #, fuzzy
 msgid "More successful pledges..."
 msgstr "Addewidion llwyddiannus diweddaraf"

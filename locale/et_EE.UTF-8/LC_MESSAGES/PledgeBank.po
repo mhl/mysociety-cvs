@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-01 18:06+0100\n"
+"POT-Creation-Date: 2007-05-11 12:40+0100\n"
 "PO-Revision-Date: 2006-08-10 11:12+0200\n"
 "Last-Translator: Joel Hirv <joelhirv@hotmail.com>\n"
 "Language-Team: ESTONIA <silver@meikar.ee>\n"
@@ -1169,11 +1169,11 @@ msgstr "Tundmatu sündmus koodiga '%s'"
 msgid "Local pledge alerts"
 msgstr "Kohalike lubaduste teadaanded"
 
-#: pb/phplib/alert.php:180 pb/phplib/alert.php:210
+#: pb/phplib/alert.php:180
 msgid "You will get email when there are:<ul>"
 msgstr "Kui tingimus <ul> on täidetud saad Sa e-postile teate."
 
-#: pb/phplib/alert.php:188 pb/phplib/alert.php:218
+#: pb/phplib/alert.php:188 pb/phplib/alert.php:219
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Telli"
@@ -1186,10 +1186,15 @@ msgstr "Uue asukoha lisamiseks <a href=\"/alert\">kliki siia</a>."
 msgid "Comment alerts"
 msgstr ""
 
+#: pb/phplib/alert.php:210
+#, fuzzy
+msgid "You will get email when there are:"
+msgstr "Kui tingimus <ul> on täidetud saad Sa e-postile teate."
+
 #. TRANS: "blah, blah, this is a comment. - To pledge artnotads by Matthew at 08:00 today." (Matthew Somerville in http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000099.html)
 #: pb/phplib/comments.php:62
-#, php-format
-msgid "To pledge %s by %s at %s."
+#, fuzzy, php-format
+msgid "To pledge %s by %s, %s."
 msgstr "Lubadus %s isikult %s asukohaga %s."
 
 #: pb/phplib/comments.php:64
@@ -1198,8 +1203,8 @@ msgid "To pledge %s by %s."
 msgstr "Lubadus %s isikult %s."
 
 #: pb/phplib/comments.php:69
-#, php-format
-msgid "%s at %s."
+#, fuzzy, php-format
+msgid "%s, %s."
 msgstr "%s asukohaga %s."
 
 #: pb/phplib/comments.php:76
@@ -1217,8 +1222,8 @@ msgstr "Kommentaare pole. Ehk soovid lisada?"
 
 #. TRANS: "<start of comment text...> by <name>, on <pledge reference link> at <time>" - these are the strings under Latest comments on the front page. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #: pb/phplib/comments.php:152
-#, php-format
-msgid "%s by %s, on %s at %s"
+#, fuzzy, php-format
+msgid "%s by %s, on %s, %s"
 msgstr "%s isikult %s, kuupäeval %s asukohaga %s"
 
 #: pb/phplib/comments.php:162
@@ -1297,6 +1302,39 @@ msgstr "Eelvaade"
 #: pb/phplib/comments.php:346
 msgid "Post comment"
 msgstr "Postita kommentaar"
+
+#: pb/phplib/comments.php:364
+#, fuzzy, php-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d minutit tagasi"
+msgstr[1] "%d minutit tagasi"
+
+#: pb/phplib/comments.php:366
+#, fuzzy, php-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d päeva tagasi"
+msgstr[1] "%d päeva tagasi"
+
+#: pb/phplib/comments.php:368
+#, fuzzy, php-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d tundi tagasi"
+msgstr[1] "%d tundi tagasi"
+
+#: pb/phplib/comments.php:370
+#, fuzzy, php-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minutit tagasi"
+msgstr[1] "%d minutit tagasi"
+
+#: pb/phplib/comments.php:372
+#, fuzzy
+msgid "less than a minute ago"
+msgstr "1 minut tagasi"
 
 #: pb/phplib/fns.php:115
 msgid "exceeded"
@@ -1620,10 +1658,6 @@ msgstr ""
 #, fuzzy
 msgid "London (United Kingdom)"
 msgstr "Suurbritannia"
-
-#: pb/phplib/microsites.php:55
-msgid "Global Cool (One by One, Ton by Ton)"
-msgstr ""
 
 #: pb/phplib/microsites.php:56
 msgid "Catalytic Communities"
@@ -3192,7 +3226,7 @@ msgstr "RSS toide edukate lubaduste kohta"
 msgid "Recent successful pledges"
 msgstr "Hiljutised edukad lubadused"
 
-#: pb/web/index.php:245
+#: pb/web/index.php:256
 #, fuzzy
 msgid "More successful pledges..."
 msgstr "Hiljutised edukad lubadused"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-01 18:06+0100\n"
+"POT-Creation-Date: 2007-05-11 12:40+0100\n"
 "PO-Revision-Date: 2007-04-22 16:39+0100\n"
 "Last-Translator: Hugo Caballero Figueroa <hc.figueroa@gmail.com>\n"
 "Language-Team: Spanish <LL@pledgebank.com>\n"
@@ -1165,11 +1165,11 @@ msgstr "Código de evento desconocido: '%s'"
 msgid "Local pledge alerts"
 msgstr "Notificaciones de compromisos locales"
 
-#: pb/phplib/alert.php:180 pb/phplib/alert.php:210
+#: pb/phplib/alert.php:180
 msgid "You will get email when there are:<ul>"
 msgstr "Recibirá una notificación por correo electrónico cuando haya:<ul>"
 
-#: pb/phplib/alert.php:188 pb/phplib/alert.php:218
+#: pb/phplib/alert.php:188 pb/phplib/alert.php:219
 msgid "Unsubscribe"
 msgstr "Cancelar la suscripción"
 
@@ -1181,10 +1181,15 @@ msgstr "Para añadir un nuevo lugar, <a href=\"/alert\">pulse aquí</a>."
 msgid "Comment alerts"
 msgstr "Notificaciones de comentarios"
 
+#: pb/phplib/alert.php:210
+#, fuzzy
+msgid "You will get email when there are:"
+msgstr "Recibirá una notificación por correo electrónico cuando haya:<ul>"
+
 #. TRANS: "blah, blah, this is a comment. - To pledge artnotads by Matthew at 08:00 today." (Matthew Somerville in http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000099.html)
 #: pb/phplib/comments.php:62
-#, php-format
-msgid "To pledge %s by %s at %s."
+#, fuzzy, php-format
+msgid "To pledge %s by %s, %s."
 msgstr "Con relación a %s, creado por %s con fecha y hora %s."
 
 #: pb/phplib/comments.php:64
@@ -1193,8 +1198,8 @@ msgid "To pledge %s by %s."
 msgstr "Con relación a %s, creado por %s."
 
 #: pb/phplib/comments.php:69
-#, php-format
-msgid "%s at %s."
+#, fuzzy, php-format
+msgid "%s, %s."
 msgstr "%s con fecha y hora %s."
 
 #: pb/phplib/comments.php:76
@@ -1212,8 +1217,8 @@ msgstr "¡Aún no existen comentarios! ¿Por qué no añade uno?"
 
 #. TRANS: "<start of comment text...> by <name>, on <pledge reference link> at <time>" - these are the strings under Latest comments on the front page. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #: pb/phplib/comments.php:152
-#, php-format
-msgid "%s by %s, on %s at %s"
+#, fuzzy, php-format
+msgid "%s by %s, on %s, %s"
 msgstr "%s creado por %s, con relación a %s con fecha y hora %s"
 
 #: pb/phplib/comments.php:162
@@ -1286,6 +1291,39 @@ msgstr "Previsualización"
 #: pb/phplib/comments.php:346
 msgid "Post comment"
 msgstr "Enviar un comentario"
+
+#: pb/phplib/comments.php:364
+#, fuzzy, php-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "hace %d minutos"
+msgstr[1] "hace %d minutos"
+
+#: pb/phplib/comments.php:366
+#, fuzzy, php-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "hace %d días"
+msgstr[1] "hace %d días"
+
+#: pb/phplib/comments.php:368
+#, fuzzy, php-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "hace %d horas"
+msgstr[1] "hace %d horas"
+
+#: pb/phplib/comments.php:370
+#, fuzzy, php-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "hace %d minutos"
+msgstr[1] "hace %d minutos"
+
+#: pb/phplib/comments.php:372
+#, fuzzy
+msgid "less than a minute ago"
+msgstr "a menos de 1 milla de distancia"
 
 #: pb/phplib/fns.php:115
 msgid "exceeded"
@@ -1600,10 +1638,6 @@ msgstr "En todas partes &mdash; todos los países en todos los idiomas"
 #: pb/phplib/microsites.php:54
 msgid "London (United Kingdom)"
 msgstr "Londres (Reino Unido)"
-
-#: pb/phplib/microsites.php:55
-msgid "Global Cool (One by One, Ton by Ton)"
-msgstr "Global Cool (One by One, Ton by Ton)"
 
 #: pb/phplib/microsites.php:56
 msgid "Catalytic Communities"
@@ -3338,7 +3372,7 @@ msgstr "Protocolo RSS de compromisos satisfechos"
 msgid "Recent successful pledges"
 msgstr "Compromisos recientes que han tenido éxito"
 
-#: pb/web/index.php:245
+#: pb/web/index.php:256
 msgid "More successful pledges..."
 msgstr "Más compromisos con éxito..."
 
@@ -6689,6 +6723,9 @@ msgstr "Calidad de vida y sociedad"
 #: pb/db/ican-categories.sql
 msgid "Your rights"
 msgstr "Sus derechos"
+
+#~ msgid "Global Cool (One by One, Ton by Ton)"
+#~ msgstr "Global Cool (One by One, Ton by Ton)"
 
 #~ msgid "How does Live Simply Promise work?"
 #~ msgstr "¿Cómo funciona?"

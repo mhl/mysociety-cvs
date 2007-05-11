@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-01 18:06+0100\n"
+"POT-Creation-Date: 2007-05-11 12:40+0100\n"
 "PO-Revision-Date: 2006-01-12 15:32+0000\n"
 "Last-Translator: Tim Morley <t_morley@argonet.co.uk>\n"
 "Language-Team: Esperanto <team@pledgebank.com>\n"
@@ -1170,11 +1170,11 @@ msgstr "Nekonata eventokodo '%s'"
 msgid "Local pledge alerts"
 msgstr "Lokaj promesatentigoj"
 
-#: pb/phplib/alert.php:180 pb/phplib/alert.php:210
+#: pb/phplib/alert.php:180
 msgid "You will get email when there are:<ul>"
 msgstr "Vi ricevos retmesaĝon kiam estos:<ul>"
 
-#: pb/phplib/alert.php:188 pb/phplib/alert.php:218
+#: pb/phplib/alert.php:188 pb/phplib/alert.php:219
 msgid "Unsubscribe"
 msgstr "Malaliĝi"
 
@@ -1186,12 +1186,17 @@ msgstr "Por aldoni novan lokon, <a href=\"/alert\">musklaku ĉi tie</a>"
 msgid "Comment alerts"
 msgstr "Atentigiloj pri komentoj"
 
+#: pb/phplib/alert.php:210
+#, fuzzy
+msgid "You will get email when there are:"
+msgstr "Vi ricevos retmesaĝon kiam estos:<ul>"
+
 # OK, what's the context here? What is each %s replacing? I've translated it as though it's: "To pledge <to do something> by <person> at <time>" but I'm not at all sure. (Tim Morley, 2005-11-21)
 # It doesn't appear to be used anywhere at present, hmm. It looks like it used to be used on the front page under the Latest comments section, so the wider context would be "blah, blah, this is a comment. - To pledge artnotads by Matthew at 08:00 today." but we have a separate comments_latest() function that does that now. (Matthew Somerville in http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000099.html)
 #. TRANS: "blah, blah, this is a comment. - To pledge artnotads by Matthew at 08:00 today." (Matthew Somerville in http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000099.html)
 #: pb/phplib/comments.php:62
-#, php-format
-msgid "To pledge %s by %s at %s."
+#, fuzzy, php-format
+msgid "To pledge %s by %s, %s."
 msgstr "Al promeso %s de %s je %s."
 
 # See comment immediately above.
@@ -1202,8 +1207,8 @@ msgstr "Al promeso %s de %s."
 
 # See comment immediately above.
 #: pb/phplib/comments.php:69
-#, php-format
-msgid "%s at %s."
+#, fuzzy, php-format
+msgid "%s, %s."
 msgstr "%s je %s."
 
 #: pb/phplib/comments.php:76
@@ -1223,8 +1228,8 @@ msgstr "Neniu komento ĝis nun! Kial ne aldoni la unuan?"
 # "<start of comment text...> by <name>, on <pledge reference link> at <time>" - these are the strings under Latest comments on the front page. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #. TRANS: "<start of comment text...> by <name>, on <pledge reference link> at <time>" - these are the strings under Latest comments on the front page. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #: pb/phplib/comments.php:152
-#, php-format
-msgid "%s by %s, on %s at %s"
+#, fuzzy, php-format
+msgid "%s by %s, on %s, %s"
 msgstr "%s de %s, pri %s je %s"
 
 #: pb/phplib/comments.php:162
@@ -1298,6 +1303,39 @@ msgstr "Antaŭvido"
 #: pb/phplib/comments.php:346
 msgid "Post comment"
 msgstr "Afiŝi komenton"
+
+#: pb/phplib/comments.php:364
+#, fuzzy, php-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "antaŭ %d minutoj"
+msgstr[1] "antaŭ %d minutoj"
+
+#: pb/phplib/comments.php:366
+#, fuzzy, php-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "antaŭ %d tagoj"
+msgstr[1] "antaŭ %d tagoj"
+
+#: pb/phplib/comments.php:368
+#, fuzzy, php-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "antaŭ %d horoj"
+msgstr[1] "antaŭ %d horoj"
+
+#: pb/phplib/comments.php:370
+#, fuzzy, php-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "antaŭ %d minutoj"
+msgstr[1] "antaŭ %d minutoj"
+
+#: pb/phplib/comments.php:372
+#, fuzzy
+msgid "less than a minute ago"
+msgstr "malpli ol 1 mejlo for"
 
 #: pb/phplib/fns.php:115
 msgid "exceeded"
@@ -1615,10 +1653,6 @@ msgstr "Ĉie &mdash; ĉiuj landoj kaj ĉiuj lingvoj"
 #: pb/phplib/microsites.php:54
 msgid "London (United Kingdom)"
 msgstr "Londono (Britio)"
-
-#: pb/phplib/microsites.php:55
-msgid "Global Cool (One by One, Ton by Ton)"
-msgstr "Global Cool (Unu post Unu, Tuno post Tuno)"
 
 #: pb/phplib/microsites.php:56
 msgid "Catalytic Communities"
@@ -3353,7 +3387,7 @@ msgstr "RSS-servo pri sukcesaj promesoj"
 msgid "Recent successful pledges"
 msgstr "Antaŭnelongaj sukcesaj promesoj"
 
-#: pb/web/index.php:245
+#: pb/web/index.php:256
 msgid "More successful pledges..."
 msgstr "Pli da sukcesaj promesoj..."
 
@@ -6733,6 +6767,9 @@ msgstr "Bonfarto kaj socio"
 #: pb/db/ican-categories.sql
 msgid "Your rights"
 msgstr "Viaj rajtoj"
+
+#~ msgid "Global Cool (One by One, Ton by Ton)"
+#~ msgstr "Global Cool (Unu post Unu, Tuno post Tuno)"
 
 #~ msgid "How does Live Simply Promise work?"
 #~ msgstr "Kiel funkcias Live Simply Promise?"

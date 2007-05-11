@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pledgebank\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-01 18:06+0100\n"
+"POT-Creation-Date: 2007-05-11 12:40+0100\n"
 "PO-Revision-Date: 2006-09-17 11:45-0500\n"
 "Last-Translator: Hugo Lamoureux <hugolamoureux@videotron.ca>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -1160,11 +1160,11 @@ msgstr "Code d'événement inconnu '%s'"
 msgid "Local pledge alerts"
 msgstr "Alertes de promesses locales"
 
-#: pb/phplib/alert.php:180 pb/phplib/alert.php:210
+#: pb/phplib/alert.php:180
 msgid "You will get email when there are:<ul>"
 msgstr "Vous recevrez un courriel lorsqu'il y aura&nbsp;:<ul>"
 
-#: pb/phplib/alert.php:188 pb/phplib/alert.php:218
+#: pb/phplib/alert.php:188 pb/phplib/alert.php:219
 msgid "Unsubscribe"
 msgstr "Se désabonner"
 
@@ -1176,10 +1176,15 @@ msgstr "Pour ajouter un nouvel endroit, <a href=\"/alert\">cliquez ici</a>."
 msgid "Comment alerts"
 msgstr "Alertes de commentaires"
 
+#: pb/phplib/alert.php:210
+#, fuzzy
+msgid "You will get email when there are:"
+msgstr "Vous recevrez un courriel lorsqu'il y aura&nbsp;:<ul>"
+
 #. TRANS: "blah, blah, this is a comment. - To pledge artnotads by Matthew at 08:00 today." (Matthew Somerville in http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000099.html)
 #: pb/phplib/comments.php:62
-#, php-format
-msgid "To pledge %s by %s at %s."
+#, fuzzy, php-format
+msgid "To pledge %s by %s, %s."
 msgstr "À la promesse %s par %s à %s."
 
 #: pb/phplib/comments.php:64
@@ -1188,8 +1193,8 @@ msgid "To pledge %s by %s."
 msgstr "À la promesse %s par %s."
 
 #: pb/phplib/comments.php:69
-#, php-format
-msgid "%s at %s."
+#, fuzzy, php-format
+msgid "%s, %s."
 msgstr "%s à %s."
 
 #: pb/phplib/comments.php:76
@@ -1207,8 +1212,8 @@ msgstr "Pas encore de commentaires! Pourquoi ne pas en ajouter un?"
 
 #. TRANS: "<start of comment text...> by <name>, on <pledge reference link> at <time>" - these are the strings under Latest comments on the front page. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #: pb/phplib/comments.php:152
-#, php-format
-msgid "%s by %s, on %s at %s"
+#, fuzzy, php-format
+msgid "%s by %s, on %s, %s"
 msgstr "%s par %s, à propos de %s à %s"
 
 #: pb/phplib/comments.php:162
@@ -1282,6 +1287,39 @@ msgstr "Aperçu"
 #: pb/phplib/comments.php:346
 msgid "Post comment"
 msgstr "Afficher le commentaire"
+
+#: pb/phplib/comments.php:364
+#, fuzzy, php-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "il y a %d minutes"
+msgstr[1] "il y a %d minutes"
+
+#: pb/phplib/comments.php:366
+#, fuzzy, php-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "il y a %d jours"
+msgstr[1] "il y a %d jours"
+
+#: pb/phplib/comments.php:368
+#, fuzzy, php-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "il y a %d heures"
+msgstr[1] "il y a %d heures"
+
+#: pb/phplib/comments.php:370
+#, fuzzy, php-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "il y a %d minutes"
+msgstr[1] "il y a %d minutes"
+
+#: pb/phplib/comments.php:372
+#, fuzzy
+msgid "less than a minute ago"
+msgstr "à moins d'un mille"
 
 #: pb/phplib/fns.php:115
 msgid "exceeded"
@@ -1598,10 +1636,6 @@ msgstr "Partout &mdash; tous les pays dans toutes les langues"
 #: pb/phplib/microsites.php:54
 msgid "London (United Kingdom)"
 msgstr "Londres (Royaume-Uni)"
-
-#: pb/phplib/microsites.php:55
-msgid "Global Cool (One by One, Ton by Ton)"
-msgstr "Global Cool (un par un, tonne par tonne)"
 
 #: pb/phplib/microsites.php:56
 msgid "Catalytic Communities"
@@ -3344,7 +3378,7 @@ msgstr "flux RSS de promesses fructueuses"
 msgid "Recent successful pledges"
 msgstr "Promesses fructueuses récentes"
 
-#: pb/web/index.php:245
+#: pb/web/index.php:256
 msgid "More successful pledges..."
 msgstr "Autres promesses fructueuses..."
 
@@ -6691,6 +6725,9 @@ msgstr "Bien-être et société"
 #: pb/db/ican-categories.sql
 msgid "Your rights"
 msgstr "Vos droits"
+
+#~ msgid "Global Cool (One by One, Ton by Ton)"
+#~ msgstr "Global Cool (un par un, tonne par tonne)"
 
 #~ msgid "How does Live Simply Promise work?"
 #~ msgstr "Comment ça marche chez Live Simply Promise?"
