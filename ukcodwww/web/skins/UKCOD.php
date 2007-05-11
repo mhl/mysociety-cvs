@@ -47,10 +47,15 @@ class UKCODTemplate extends QuickTemplate {
 		// Suppress warnings to prevent notices about missing indexes in $this->data
 		wfSuppressWarnings();
 
-        include($_SERVER['DOCUMENT_ROOT']."/header.html");
         global $title;
 
-?>	
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+    <html>
+    <head>
+    <title>UK Citizens Online Democracy</title>
+    <style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "<?php $this->text('stylepath') ?>/<?php $this->text('stylename') ?>/main.css?<?php echo $GLOBALS['wgStyleVersion'] ?>"; /*]]>*/</style>
+    </head>
+    <body>
 	<a href="#menu" class="hiddentext">Menu</a>
 	<a href="#content" class="hiddentext">Content</a>
 	<a herf="/" id="site-title-link"><h1 class="hiddentext">UK Citizens Online Democracy</h1></a>
@@ -144,7 +149,9 @@ class UKCODTemplate extends QuickTemplate {
 
 -->
 <?php endif;
-    include($_SERVER['DOCUMENT_ROOT']."/header.html");
+?></body>
+</html>
+<?php
 	wfRestoreWarnings();
 	} // end of execute() method
 } // end of class
