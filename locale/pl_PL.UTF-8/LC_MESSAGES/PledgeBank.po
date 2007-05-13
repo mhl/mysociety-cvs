@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-13 18:39+0100\n"
+"POT-Creation-Date: 2007-05-13 19:18+0100\n"
 "PO-Revision-Date: 2006-04-06 19:24+0100\n"
 "Last-Translator: Łukasz 'l5x' Anwajler <l5x@revival.pl>\n"
 "Language-Team: \n"
@@ -1187,158 +1187,166 @@ msgstr ""
 msgid "You will get email when there are:"
 msgstr ""
 
-#. TRANS: "blah, blah, this is a comment. - To pledge artnotads by Matthew at 08:00 today." (Matthew Somerville in http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000099.html)
-#: pb/phplib/comments.php:62
+#. TRANS: This appears immediately after a comment, to show who wrote it when, as: "To pledge <pledge reference> by <person's name>, <how long ago>."
+#. TRANS: e.g. "blah, blah, this is a comment. - To pledge artnotads by Matthew, 3 hours ago."
+#: pb/phplib/comments.php:63
 #, php-format
 msgid "To pledge %s by %s, %s."
 msgstr ""
 
-#: pb/phplib/comments.php:64
+#. TRANS: This is a shortened version of the above string: "To pledge <pledge reference> by <person's name>."
+#: pb/phplib/comments.php:66
 #, php-format
 msgid "To pledge %s by %s."
 msgstr ""
 
-#: pb/phplib/comments.php:69
+#. TRANS: This appears immediately after a comment, to show who wrote it when, as: "<person's name>, <how long ago>."
+#. TRANS: e.g. "Matthew, 4 minutes ago."
+#: pb/phplib/comments.php:73
 #, fuzzy, php-format
 msgid "%s, %s."
 msgstr "będę %s."
 
-#: pb/phplib/comments.php:76
+#: pb/phplib/comments.php:80
 msgid "Abusive? Report it!"
 msgstr ""
 
-#: pb/phplib/comments.php:109 pb/phplib/comments.php:243
+#. TRANS: this is an error message meaning, "The pledge called '%s' doesn't exist.
+#: pb/phplib/comments.php:114 pb/phplib/comments.php:251
 #, fuzzy, php-format
 msgid "No pledge '%s'"
 msgstr "Nowe obietnice"
 
-#: pb/phplib/comments.php:115
+#: pb/phplib/comments.php:120
 msgid "No comments yet! Why not add one?"
 msgstr ""
 
-#. TRANS: "<start of comment text...> by <name>, on <pledge reference link> at <time>" - these are the strings under Latest comments on the front page. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/comments.php:152
+#. TRANS: This appears under "Latest comments" on the front page as: "<start of comment text...> by <name>, on <pledge reference link>, <how long ago>"
+#. TRANS: e.g. "Most of my veg are British..." by Esther, on ukfood, 3 hours ago"
+#: pb/phplib/comments.php:158
 #, php-format
 msgid "%s by %s, on %s, %s"
 msgstr ""
 
-#: pb/phplib/comments.php:162
+#. TRANS: this appears in an RSS feed as: "Comment on <pledge reference> pledge by <person's name>"
+#. TRANS: e.g. "Comment on Electric pledge by Owen Blacker"
+#: pb/phplib/comments.php:170
 #, php-format
 msgid "Comment on %s pledge by %s"
 msgstr ""
 
-#: pb/phplib/comments.php:221
+#: pb/phplib/comments.php:229
 #, fuzzy
 msgid "RSS feed of comments on all pledges"
 msgstr "Kanał RSS obietnic zakończonych sukcesem"
 
-#: pb/phplib/comments.php:222
+#: pb/phplib/comments.php:230
 msgid "<h2>Latest comments</h2>"
 msgstr ""
 
-#: pb/phplib/comments.php:249
+#: pb/phplib/comments.php:257
 msgid "No comments"
 msgstr ""
 
-#: pb/phplib/comments.php:302
+#: pb/phplib/comments.php:310
 #, fuzzy
 msgid "This pledge is closed for new comments."
 msgstr "Spełnione obietnice, zamknięte dla nowych członków"
 
-#: pb/phplib/comments.php:305
+#: pb/phplib/comments.php:313
 msgid "<h2>Add public comment</h2>"
 msgstr ""
 
-#: pb/phplib/comments.php:307 pb/web/contact.php:92
+#: pb/phplib/comments.php:315 pb/web/contact.php:92
 #, fuzzy
 msgid "Your name"
 msgstr "Twoja obietnica"
 
-#: pb/phplib/comments.php:312 pb/phplib/pledge.php:675 pb/web/contact.php:93
+#: pb/phplib/comments.php:320 pb/phplib/pledge.php:675 pb/web/contact.php:93
 msgid "Your email"
 msgstr ""
 
-#: pb/phplib/comments.php:318
+#: pb/phplib/comments.php:326
 #, fuzzy
 msgid "Your web site address"
 msgstr "Wpisz swoją obietnicę"
 
-#: pb/phplib/comments.php:318
+#: pb/phplib/comments.php:326
 msgid "(optional)"
 msgstr ""
 
-#: pb/phplib/comments.php:323
+#: pb/phplib/comments.php:331
 msgid "Your comment"
 msgstr ""
 
-#: pb/phplib/comments.php:331
+#: pb/phplib/comments.php:339
 #, fuzzy
 msgid "Privacy note:"
 msgstr "Status prywatności"
 
-#: pb/phplib/comments.php:336
+#: pb/phplib/comments.php:344
 msgid ""
 "Your name (and web site address if given) will be shown publically on this page\n"
 "with your comment. Your email address will not be shown. People searching for your\n"
 "name on the Internet may find your comment."
 msgstr ""
 
-#: pb/phplib/comments.php:342
+#: pb/phplib/comments.php:350
 msgid " Email me future comments on this pledge"
 msgstr ""
 
-#: pb/phplib/comments.php:344 pb/web/new.php:376 pb/web/new.php:414
+#: pb/phplib/comments.php:352 pb/web/new.php:376 pb/web/new.php:414
 #, fuzzy
 msgid "Preview"
 msgstr "Poprzednia strona"
 
-#: pb/phplib/comments.php:346
+#: pb/phplib/comments.php:354
 msgid "Post comment"
 msgstr ""
 
-#: pb/phplib/comments.php:365
+#: pb/phplib/comments.php:373
 #, fuzzy, php-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
 msgstr[0] "%d dni temu"
 msgstr[1] "%d dni temu"
 
-#: pb/phplib/comments.php:367
+#: pb/phplib/comments.php:375
 #, fuzzy, php-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d minut temu"
 msgstr[1] "%d minut temu"
 
-#: pb/phplib/comments.php:369
+#: pb/phplib/comments.php:377
 #, fuzzy, php-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d minut temu"
 msgstr[1] "%d minut temu"
 
-#: pb/phplib/comments.php:371
+#: pb/phplib/comments.php:379
 #, fuzzy, php-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dni temu"
 msgstr[1] "%d dni temu"
 
-#: pb/phplib/comments.php:373
+#: pb/phplib/comments.php:381
 #, fuzzy, php-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d godzin temu"
 msgstr[1] "%d godzin temu"
 
-#: pb/phplib/comments.php:375
+#: pb/phplib/comments.php:383
 #, fuzzy, php-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minut temu"
 msgstr[1] "%d minut temu"
 
-#: pb/phplib/comments.php:377
+#: pb/phplib/comments.php:385
 #, fuzzy
 msgid "less than a minute ago"
 msgstr "minutę temu"

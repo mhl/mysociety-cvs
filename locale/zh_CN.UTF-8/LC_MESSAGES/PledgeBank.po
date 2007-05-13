@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-13 18:39+0100\n"
+"POT-Creation-Date: 2007-05-13 19:18+0100\n"
 "PO-Revision-Date: 2007-05-13 07:31+0800\n"
 "Last-Translator: Oliver Ding <swordi@gmail.com>\n"
 "Language-Team: Chinese <team@pledgebank.com>\n"
@@ -1186,146 +1186,154 @@ msgstr "评论提示"
 msgid "You will get email when there are:"
 msgstr "我们将通过电邮通知你如下的最新信息："
 
-#. TRANS: "blah, blah, this is a comment. - To pledge artnotads by Matthew at 08:00 today." (Matthew Somerville in http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000099.html)
-#: pb/phplib/comments.php:62
+#. TRANS: This appears immediately after a comment, to show who wrote it when, as: "To pledge <pledge reference> by <person's name>, <how long ago>."
+#. TRANS: e.g. "blah, blah, this is a comment. - To pledge artnotads by Matthew, 3 hours ago."
+#: pb/phplib/comments.php:63
 #, php-format
 msgid "To pledge %s by %s, %s."
 msgstr "%s 在 %s 祈愿%s。"
 
-#: pb/phplib/comments.php:64
+#. TRANS: This is a shortened version of the above string: "To pledge <pledge reference> by <person's name>."
+#: pb/phplib/comments.php:66
 #, php-format
 msgid "To pledge %s by %s."
 msgstr "%s 祈愿 %s。"
 
-#: pb/phplib/comments.php:69
+#. TRANS: This appears immediately after a comment, to show who wrote it when, as: "<person's name>, <how long ago>."
+#. TRANS: e.g. "Matthew, 4 minutes ago."
+#: pb/phplib/comments.php:73
 #, fuzzy, php-format
 msgid "%s, %s."
 msgstr "%s 在 %s。"
 
-#: pb/phplib/comments.php:76
+#: pb/phplib/comments.php:80
 msgid "Abusive? Report it!"
 msgstr "被滥用？报告！"
 
-#: pb/phplib/comments.php:109 pb/phplib/comments.php:243
+#. TRANS: this is an error message meaning, "The pledge called '%s' doesn't exist.
+#: pb/phplib/comments.php:114 pb/phplib/comments.php:251
 #, php-format
 msgid "No pledge '%s'"
 msgstr "没有'%s'这样一条祈愿"
 
-#: pb/phplib/comments.php:115
+#: pb/phplib/comments.php:120
 msgid "No comments yet! Why not add one?"
 msgstr "还没有评论！为什么不加一条？"
 
-#. TRANS: "<start of comment text...> by <name>, on <pledge reference link> at <time>" - these are the strings under Latest comments on the front page. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/comments.php:152
+#. TRANS: This appears under "Latest comments" on the front page as: "<start of comment text...> by <name>, on <pledge reference link>, <how long ago>"
+#. TRANS: e.g. "Most of my veg are British..." by Esther, on ukfood, 3 hours ago"
+#: pb/phplib/comments.php:158
 #, fuzzy, php-format
 msgid "%s by %s, on %s, %s"
 msgstr "%s针对%s在%s祈愿%s"
 
-#: pb/phplib/comments.php:162
+#. TRANS: this appears in an RSS feed as: "Comment on <pledge reference> pledge by <person's name>"
+#. TRANS: e.g. "Comment on Electric pledge by Owen Blacker"
+#: pb/phplib/comments.php:170
 #, php-format
 msgid "Comment on %s pledge by %s"
 msgstr "%s对祈愿%s的评论"
 
-#: pb/phplib/comments.php:221
+#: pb/phplib/comments.php:229
 msgid "RSS feed of comments on all pledges"
 msgstr "所有祈愿的评论的RSS订阅种子"
 
-#: pb/phplib/comments.php:222
+#: pb/phplib/comments.php:230
 msgid "<h2>Latest comments</h2>"
 msgstr "<h2>最新评论</h2>"
 
-#: pb/phplib/comments.php:249
+#: pb/phplib/comments.php:257
 msgid "No comments"
 msgstr "没有评论"
 
-#: pb/phplib/comments.php:302
+#: pb/phplib/comments.php:310
 msgid "This pledge is closed for new comments."
 msgstr "截止给这个祈愿添加新评论"
 
-#: pb/phplib/comments.php:305
+#: pb/phplib/comments.php:313
 msgid "<h2>Add public comment</h2>"
 msgstr "<h2>添加公开评论</h2>"
 
-#: pb/phplib/comments.php:307 pb/web/contact.php:92
+#: pb/phplib/comments.php:315 pb/web/contact.php:92
 msgid "Your name"
 msgstr "你的名字"
 
-#: pb/phplib/comments.php:312 pb/phplib/pledge.php:675 pb/web/contact.php:93
+#: pb/phplib/comments.php:320 pb/phplib/pledge.php:675 pb/web/contact.php:93
 msgid "Your email"
 msgstr "你的电邮地址"
 
-#: pb/phplib/comments.php:318
+#: pb/phplib/comments.php:326
 msgid "Your web site address"
 msgstr "你的个人主页地址"
 
-#: pb/phplib/comments.php:318
+#: pb/phplib/comments.php:326
 msgid "(optional)"
 msgstr "(可选项)"
 
-#: pb/phplib/comments.php:323
+#: pb/phplib/comments.php:331
 msgid "Your comment"
 msgstr "你的评论"
 
-#: pb/phplib/comments.php:331
+#: pb/phplib/comments.php:339
 msgid "Privacy note:"
 msgstr "隐私权保护声明："
 
-#: pb/phplib/comments.php:336
+#: pb/phplib/comments.php:344
 msgid ""
 "Your name (and web site address if given) will be shown publically on this page\n"
 "with your comment. Your email address will not be shown. People searching for your\n"
 "name on the Internet may find your comment."
 msgstr "你的名字 (和你的个人主页地址，如有提供) 会连同你的评论公开显示在这个页面上。你的电邮地址则不会显示。当人们在互联网上搜索你的名字的时候，人们可能看到你的评论。"
 
-#: pb/phplib/comments.php:342
+#: pb/phplib/comments.php:350
 msgid " Email me future comments on this pledge"
 msgstr "今后请将这个祈愿的新评论电邮给我"
 
-#: pb/phplib/comments.php:344 pb/web/new.php:376 pb/web/new.php:414
+#: pb/phplib/comments.php:352 pb/web/new.php:376 pb/web/new.php:414
 msgid "Preview"
 msgstr "预览"
 
-#: pb/phplib/comments.php:346
+#: pb/phplib/comments.php:354
 msgid "Post comment"
 msgstr "发布评论"
 
-#: pb/phplib/comments.php:365
+#: pb/phplib/comments.php:373
 #, fuzzy, php-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
 msgstr[0] "%d 天前"
 
-#: pb/phplib/comments.php:367
+#: pb/phplib/comments.php:375
 #, fuzzy, php-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d 分钟前"
 
-#: pb/phplib/comments.php:369
+#: pb/phplib/comments.php:377
 #, fuzzy, php-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d 分钟前"
 
-#: pb/phplib/comments.php:371
+#: pb/phplib/comments.php:379
 #, fuzzy, php-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d 天前"
 
-#: pb/phplib/comments.php:373
+#: pb/phplib/comments.php:381
 #, fuzzy, php-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: pb/phplib/comments.php:375
+#: pb/phplib/comments.php:383
 #, fuzzy, php-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d 分钟前"
 
-#: pb/phplib/comments.php:377
+#: pb/phplib/comments.php:385
 #, fuzzy
 msgid "less than a minute ago"
 msgstr "少于1英里距离"
