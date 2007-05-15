@@ -121,7 +121,7 @@ class SpecialSearch {
 		$this->setupPage( $term );
 
 		global $wgOut;
-		$wgOut->addWikiText( wfMsg( 'searchresulttext' ) );
+		#$wgOut->addWikiText( wfMsg( 'searchresulttext' ) );
 
 		#if ( !$this->parseQuery() ) {
 		if( '' === trim( $term ) ) {
@@ -166,7 +166,7 @@ class SpecialSearch {
 		} else {
 			$top = wfShowingResultsNum( $this->offset, $this->limit, $num );
 		}
-		$wgOut->addHTML( "<p>{$top}</p>\n" );
+#		$wgOut->addHTML( "<p>{$top}</p>\n" );
 
 		if( $num || $this->offset ) {
 			$prevnext = wfViewPrevNext( $this->offset, $this->limit,
@@ -174,7 +174,7 @@ class SpecialSearch {
 				wfArrayToCGI(
 					$this->powerSearchOptions(),
 					array( 'search' => $term ) ) );
-			$wgOut->addHTML( "<br />{$prevnext}\n" );
+#			$wgOut->addHTML( "<br />{$prevnext}\n" );
 		}
 
 		if( $titleMatches ) {
@@ -182,7 +182,7 @@ class SpecialSearch {
 				$wgOut->addWikiText( '==' . wfMsg( 'titlematches' ) . "==\n" );
 				$wgOut->addHTML( $this->showMatches( $titleMatches ) );
 			} else {
-				$wgOut->addWikiText( '==' . wfMsg( 'notitlematches' ) . "==\n" );
+#				$wgOut->addWikiText( '==' . wfMsg( 'notitlematches' ) . "==\n" );
 			}
 		}
 
@@ -202,7 +202,7 @@ class SpecialSearch {
 		if( $num || $this->offset ) {
 			$wgOut->addHTML( "<p>{$prevnext}</p>\n" );
 		}
-		$wgOut->addHTML( $this->powerSearchBox( $term ) );
+#		$wgOut->addHTML( $this->powerSearchBox( $term ) );
 		wfProfileOut( $fname );
 	}
 
