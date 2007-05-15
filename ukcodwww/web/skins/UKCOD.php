@@ -96,8 +96,6 @@ class UKCODTemplate extends QuickTemplate {
 		</div>
 	</div>
 
-	<!--	<li><a href="#">foo</a></li>
-		<li class="selected"><a href="#">foo</a></li>	-->
 	<ul id="footer">
     <!-- article/edit/history -->
 	<?php			foreach($this->data['content_actions'] as $key => $tab) { 
