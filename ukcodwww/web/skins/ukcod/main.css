@@ -33,13 +33,6 @@ ul#menu li {
   margin:0 0 0 80px;
 }
 
-.hiddentext {
-  margin-left:-100000px;
-  font-size: 0px;
-  position:absolute;
-  height:0;
-}
-
 #footer {
 	border-top:1px solid #F76833;
 	background-image:url('/skins/ukcod/images/footer_bg.png');
@@ -106,7 +99,8 @@ ul#menu li.selected, ul#menu li.selected a, #footer li.selected, #footer li.sele
   border-bottom:none;
 }
 
-/* XXX display:none is bad for this - push it way out of sight.  Seems to work on all browsers */
+/* XXX display:none is bad for this - push it way out of sight.
+   Isn't working in Opera 9 */
 .hiddentext {
   margin-left:-100000px;
   font-size: 0px;
