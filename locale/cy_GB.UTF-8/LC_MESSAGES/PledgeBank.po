@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-13 19:18+0100\n"
+"POT-Creation-Date: 2007-05-21 14:10+0100\n"
 "PO-Revision-Date: 2005-08-15 10:02-0000\n"
 "Last-Translator: Nic Dafis <nicdafis@gmail.com>\n"
 "Language-Team: Welsh <LL@pledgebank.com>\n"
@@ -1369,7 +1369,7 @@ msgstr ""
 msgid "-- the PledgeBank.com team"
 msgstr "-- t&icirc;m PledgeBank.com"
 
-#: pb/phplib/fns.php:165 pb/web/poster.cgi:313
+#: pb/phplib/fns.php:165 pb/web/poster.cgi:314
 #, fuzzy
 msgid "PledgeBank.com"
 msgstr "T&icirc;m PledgeBank"
@@ -1719,8 +1719,8 @@ msgstr "Pob Addewid"
 msgid "Start a Pledge"
 msgstr "Cychwyn Addewid"
 
-#: pb/phplib/microsites.php:285 pb/web/faq.php:18 pb/web/faq.php:347
-#: pb/web/faq.php:479
+#: pb/phplib/microsites.php:285 pb/web/faq.php:18 pb/web/faq.php:354
+#: pb/web/faq.php:486
 msgid "Frequently Asked Questions"
 msgstr "Cwestiynau Cyffredin"
 
@@ -2889,7 +2889,9 @@ msgstr "Ydy e yn rhad ac am ddim?"
 msgid ""
 "The site is free to use, no matter how big a pledge you create. PledgeBank\n"
 "    is run by a charitable organisation, though, so if you want to run an\n"
-"    especially big pledge, and feel like making a contribution, please contact us.\n"
+"    especially big pledge, and feel like making a contribution, please <a\n"
+"    <a href=\"/contact\">contact us</a> or\n"
+"    <a href=\"https://secure.mysociety.org/donate/\">make a donation directly</a>.\n"
 "    SMS messages to PledgeBank (available in %s only) cost your normal text fee."
 msgstr ""
 "Mae defnyddio'r safle hon yn rhad ac am ddim, dim ots pa mor fawr yw'r addewid\n"
@@ -2897,15 +2899,15 @@ msgstr ""
 "os ydych eisiau rhedeg addewid arbennig o fawr, ac yn teimlo fel gwneud cyfraniad, cysylltwch &acirc; ni.\n"
 "Mae negeseuon testun at PledgeBank yn costio'r un faint &acirc;'ch negeseuon testun arferol."
 
-#: pb/web/faq.php:92
+#: pb/web/faq.php:95
 msgid "Organisation Questions"
 msgstr "Cwestiynau Cefndirol"
 
-#: pb/web/faq.php:95
+#: pb/web/faq.php:98
 msgid "Who built PledgeBank?"
 msgstr "Pwy adeiladodd PledgeBank?"
 
-#: pb/web/faq.php:97
+#: pb/web/faq.php:100
 #, fuzzy
 msgid ""
 "This site was built by <a href=\"http://www.mysociety.org\">mySociety</a>. \n"
@@ -2925,11 +2927,11 @@ msgstr ""
 "cyntaf oedd <a href=\"http://www.writetothem.com\">WriteToThem.com</a>, ble allwch ysgrifennu at unrhywun o'ch\n"
 "cynrychiolwyr etholedig, yn rhad ac am ddim."
 
-#: pb/web/faq.php:106
+#: pb/web/faq.php:109
 msgid "Who pays for it?"
 msgstr "Pwy sy'n talu amdano?"
 
-#: pb/web/faq.php:108
+#: pb/web/faq.php:111
 #, fuzzy
 msgid ""
 "PledgeBank has been built by mySociety thanks to the effort\n"
@@ -2945,11 +2947,11 @@ msgstr ""
 "<acronym title=\"Office of the Deputy Prime Minister\">ODPM</acronym> \n"
 "mewn partneriaeth &acirc; Chyngor Sir Gorllewin Sussex."
 
-#: pb/web/faq.php:117
+#: pb/web/faq.php:120
 msgid "Do you need any help with the project?"
 msgstr "Oes angen help arnoch gyda'r prosiect?"
 
-#: pb/web/faq.php:119
+#: pb/web/faq.php:122
 #, fuzzy
 msgid ""
 "Yes, we can use help in all sorts of ways, technical or non-technical.\n"
@@ -2958,11 +2960,11 @@ msgstr ""
 "Oes, gwerthfawrogwn help mewn unrhyw ffordd, boed yn dechnegol neu beidio.\n"
 "<a href=\"/contact\">Cysylltwch &acirc; ni</a>."
 
-#: pb/web/faq.php:122
+#: pb/web/faq.php:125
 msgid "Where's the \"source code\" to PledgeBank?"
 msgstr ""
 
-#: pb/web/faq.php:124
+#: pb/web/faq.php:127
 msgid ""
 "The software behind PledgeBank is open source, and available to you\n"
 "    mainly under the Affero GPL software license. You can <a\n"
@@ -2973,11 +2975,11 @@ msgid ""
 "    "
 msgstr ""
 
-#: pb/web/faq.php:132
+#: pb/web/faq.php:135
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr ""
 
-#: pb/web/faq.php:134
+#: pb/web/faq.php:137
 msgid ""
 "OK, we are\n"
 "    Mike Bracken,\n"
@@ -2989,8 +2991,12 @@ msgid ""
 "    Richard Pope,\n"
 "    Matthew Somerville,\n"
 "    Tom Steinberg.\n"
-"\n"
-"    <strong>Translations by</strong>\n"
+"    "
+msgstr ""
+
+#: pb/web/faq.php:149
+msgid ""
+"<strong>Translations by</strong>\n"
 "    Nic Dafis (Welsh),\n"
 "    Hugo Caballero Figueroa (Spanish),\n"
 "    Tim Morley (Esperanto),\n"
@@ -2998,9 +3004,15 @@ msgid ""
 "    LaPingvino and Leo De Cooman (Dutch),\n"
 "    Creso Moraes (Brazilian Portuguese),\n"
 "    Alexander Markushin (Russian),\n"
-"    maidan.org.ua team (Ukrainian).\n"
-"\n"
-"    <strong>Thanks also to</strong>\n"
+"    maidan.org.ua team (Ukrainian),\n"
+"    Oliver Ding, Isaac Mao, Danny Yu, Nan Yang, Jacky Peng (Chinese),\n"
+"    Aliaksej Lavońčyk (Belarusian).\n"
+"    "
+msgstr ""
+
+#: pb/web/faq.php:162
+msgid ""
+"<strong>Thanks also to</strong>\n"
 "    <a href=\"http://www.c360uk.com/\">c360</a> (for SMS in the UK), \n"
 "    the <a href=\"http://earth-info.nga.mil/gns/html/\">US military</a> (for the world gazetteer),\n"
 "    <a href=\"http://sedac.ciesin.columbia.edu/gpw/\">CIESIN</a> (for population density data),\n"
@@ -3016,15 +3028,15 @@ msgid ""
 "    "
 msgstr ""
 
-#: pb/web/faq.php:175
+#: pb/web/faq.php:182
 msgid "Pledge Creators' Questions"
 msgstr "Cwestiynau Creuwyr Addewidion"
 
-#: pb/web/faq.php:178
+#: pb/web/faq.php:185
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Pa fath o addewidion sy'n gweithio a pha fath sy'n methu?"
 
-#: pb/web/faq.php:180
+#: pb/web/faq.php:187
 #, fuzzy
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
@@ -3044,11 +3056,11 @@ msgstr ""
 "o ddrws i ddrws, a chael pobl i arwyddo yn y man a'r lle, rydych yn\n"
 "fwy tebygol o lwyddo na rhywun sy'n gosod eu haddewid ac yna'n anghofio amdano."
 
-#: pb/web/faq.php:189
+#: pb/web/faq.php:196
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Faint o bobl dylwn ofyn amdanynt?</a>"
 
-#: pb/web/faq.php:191
+#: pb/web/faq.php:198
 #, fuzzy
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
@@ -3063,11 +3075,11 @@ msgstr ""
 "Peidiwch gosod rhif uwch na hynny.  Mae hyn yn ei wneud yn debygol y\n"
 "bydd yr addewid yn llwyddo, a gall mwy o bobl na fyddwch wedi ei ddisgwyldal droi fyny"
 
-#: pb/web/faq.php:206
+#: pb/web/faq.php:213
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Pam nad yw fy addewid newydd ddim ymddangos ar y dudalen Holl Addewidion"
 
-#: pb/web/faq.php:208
+#: pb/web/faq.php:215
 #, fuzzy
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
@@ -3082,12 +3094,12 @@ msgstr ""
 "sydd &acirc; chreuwr gweithgar a rhai cefnogwyr tu cefn iddynt. Felly ewch allan\n"
 "a dweud wrth eich ffrindiau a'ch cymdogion am eich addewid!"
 
-#: pb/web/faq.php:214
+#: pb/web/faq.php:221
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Ydych chi'n diddymu addewidion gwirion neu anghyfreithlon?"
 
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:217
+#: pb/web/faq.php:224
 #, fuzzy
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
@@ -3103,11 +3115,11 @@ msgstr ""
 "sy'n ddim mwy na hysbysebu neu bropoganda, neu sy'n gwbl wamal.  Byddwn hefyd yn\n"
 "dileu addewidion sy'n hyrwyddo neu annog ymddygiad anghyfreithiol."
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:231
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Pam na alla i addasu fy addewid ar &ocirc;l i mi ei osod?</a>"
 
-#: pb/web/faq.php:226
+#: pb/web/faq.php:233
 #, fuzzy
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
@@ -3123,11 +3135,11 @@ msgstr ""
 "Am newidiadau mwy, gallwch greu addewid newydd a gofyn i'ch tanysgrifwyr symud\n"
 "ar draws. Mae dolen gyswllt i wneud hyn ar adran 'Lledu'r Gair' tudalen eich addewid."
 
-#: pb/web/faq.php:233
+#: pb/web/faq.php:240
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Alla i gysylltu &acirc;'r bobl sy wedi arwyddo fy addewid?"
 
-#: pb/web/faq.php:235
+#: pb/web/faq.php:242
 #, fuzzy
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
@@ -3142,11 +3154,11 @@ msgstr ""
 "Gallwch chi anfon neges at lofnodwyr cyffredol eich addewid unrhyw bryd. \n"
 "Ewch i dudalen eich addewid, a rhowch glec ar y ddolen o dan 'Lledu'r Gair'. Am resymau ariannol, ni anfonir y neges hon at y rhai sy wedi llofnodi trwy neges destun ff&ocirc;n symudol. Os ydy'ch addewid yn llwyddo cewch chi ddolen i anfon neges at bawb sy wedi ei arwyddo, gan gynnwys y rhai a wnaeth drwy neges destun. Fe ddylech chi roi'ch manylion cysylltu, a gofyn am eu manylion nhw, er mwyn i chi gadw mewn cyswllt wrth wireddu'r addewid. Os bydd mwy o bobl yn llofnodi'r addewid wedyn, c&acirc;n nhw gopi o bob neges yr ydych chi wedi anfon."
 
-#: pb/web/faq.php:244
+#: pb/web/faq.php:251
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Ydy pobl yn gallu llofnodi trwy neges destun, ac os felly, sut?"
 
-#: pb/web/faq.php:246
+#: pb/web/faq.php:253
 #, fuzzy, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -3157,11 +3169,11 @@ msgid ""
 "    where to text it to at the bottom of each relevant pledge signup box."
 msgstr "Mae cyfarwyddiadau ar ffleiars eich addewid, felly'r peth hawsaf yw argraffu cyflenwad a'u cario gyda chi. Ffeindiwch chi'r ffleiars ar adran 'Lledu'r Gair' tudalen eich addewid. Fel arall, dwedwch wrth bobl i anfon neges <strong>pledge ALLWEDDAIR</strong> at <strong>%s</strong>. Mae'r ALLWEDDAIR yma yw'r gair sy'n cyfeirio at eich addewid a ddewisoch chi wrth greu'r addewid, ac sy'n ymddangos ar ddiwedd ei gyfeiriad."
 
-#: pb/web/faq.php:254
+#: pb/web/faq.php:261
 msgid "How do I add a picture to my pledge?"
 msgstr "Sut alla i ychwanegu llun i'm addewid"
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:263
 #, fuzzy
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
@@ -3171,11 +3183,11 @@ msgstr ""
 "Ewch i dudalen eich addewid a chlicio 'Ychwanegu llun i'ch addewid\n"
 "(creuwr yn unig)' o dan 'Lledwch y gair ar lein ac yn y byd go iawn'. Cewch chi ddefnyddio llun sy'n berthnasol i bwnc eich addewid, neu ddefnyddio llun ohonoch chi eich hun!"
 
-#: pb/web/faq.php:260
+#: pb/web/faq.php:267
 msgid "Can you make a special version of PledgeBank for my organisation?"
 msgstr ""
 
-#: pb/web/faq.php:262
+#: pb/web/faq.php:269
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
 "    colours or complete style to match your branding. We can intimately\n"
@@ -3187,15 +3199,15 @@ msgid ""
 "    bottom of <A href=\"/where\">this page</a>."
 msgstr ""
 
-#: pb/web/faq.php:275
+#: pb/web/faq.php:282
 msgid "International Questions"
 msgstr "Cwestiynau Rhyngwladol"
 
-#: pb/web/faq.php:278
+#: pb/web/faq.php:285
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Gaf i greu addewidion mewn ieithoedd eraill?"
 
-#: pb/web/faq.php:280
+#: pb/web/faq.php:287
 #, fuzzy
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
@@ -3208,12 +3220,12 @@ msgstr ""
 "Mae croeso i chi dr&iuml;al! Mae fersiynau PledgeBank mewn ieithoedd eraill yn fwy na phosibl, ond ni allwn ni eu creu heb gymorth siaradwyr yr ieithoedd hynny\n"
 "Os oes diddordeb gennych mewn gwirfoddoli cyfieithu'r safle, dechreuwch gan <a href=\"/translate\">ddarllen y dudalen cyfieithu</a>."
 
-#: pb/web/faq.php:287
+#: pb/web/faq.php:294
 #, fuzzy
 msgid "What countries does PledgeBank work in?"
 msgstr "Beth yw pwrpas PledgeBank?"
 
-#: pb/web/faq.php:289
+#: pb/web/faq.php:296
 msgid ""
 "All of them. We try to detect which country you are in\n"
 "    automatically, and show you only pledges relevant to your country. To see what\n"
@@ -3222,11 +3234,11 @@ msgid ""
 "    us</a> if you'd like to help get more people in your country using PledgeBank."
 msgstr ""
 
-#: pb/web/faq.php:295
+#: pb/web/faq.php:302
 msgid "Why do you only have UK postcodes?"
 msgstr ""
 
-#: pb/web/faq.php:297
+#: pb/web/faq.php:304
 #, fuzzy
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
@@ -3241,25 +3253,25 @@ msgstr ""
 "y nodweddion hyn i ddefnyddwyr tramor. - <a href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">\n"
 "ymunwch &acirc;'r rhestr postio</a> os allwch chi helpu.\n"
 
-#: pb/web/faq.php:303
+#: pb/web/faq.php:310
 msgid "... and SMS?"
 msgstr ""
 
-#: pb/web/faq.php:305
+#: pb/web/faq.php:312
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "    can help add text messaging in your country."
 msgstr ""
 
-#: pb/web/faq.php:312
+#: pb/web/faq.php:319
 msgid "Privacy Questions"
 msgstr "Cwestiynau Preifatrwydd"
 
-#: pb/web/faq.php:315
+#: pb/web/faq.php:322
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Dydw i ddim eisiau i bawb gael gweld fy enw pan llofnoda i addewid."
 
-#: pb/web/faq.php:317
+#: pb/web/faq.php:324
 #, fuzzy, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -3275,11 +3287,11 @@ msgstr ""
 "Adnabod Personol (PIN) dych chi wedi'i roi iddynt bydd yn gallu gweld \n"
 "tudalen yr addewid."
 
-#: pb/web/faq.php:323
+#: pb/web/faq.php:330
 msgid "Who gets to see my email address?"
 msgstr "Pwy fydd yn gweld fy nghyfeiriad ebost?"
 
-#: pb/web/faq.php:325
+#: pb/web/faq.php:332
 #, fuzzy
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
@@ -3297,11 +3309,11 @@ msgstr ""
 "tanysgrifwyr hynny i awdur yr addewid. Pe tasech chi'n ymateb i ebost gan \n"
 "awdur yr addewid, bydd eich cyfeiriad gyda fe/hi - pwyll biau hi, felly!"
 
-#: pb/web/faq.php:333
+#: pb/web/faq.php:340
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "A anfonwch chi sbam ffiaidd a drewllyd at fy nghyfeiriad ebost?"
 
-#: pb/web/faq.php:335
+#: pb/web/faq.php:342
 #, fuzzy
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
@@ -3598,7 +3610,7 @@ msgstr "I ychwanegu lle newydd, <a href=\"/alert\">rhowch glec yma</a>."
 msgid "I will"
 msgstr "Bydda i'n"
 
-#: pb/web/new.php:151 pb/web/poster.cgi:319
+#: pb/web/new.php:151 pb/web/poster.cgi:320
 msgid "but only if"
 msgstr "ond dim ond os bydd"
 
@@ -5503,83 +5515,83 @@ msgstr ""
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr ""
 
-#: pb/web/poster.cgi:317
+#: pb/web/poster.cgi:318
 msgid "I"
 msgstr ""
 
-#: pb/web/poster.cgi:318
+#: pb/web/poster.cgi:319
 #, fuzzy, python-format
 msgid " will %s "
 msgstr "Bydda i'n"
 
-#: pb/web/poster.cgi:321
+#: pb/web/poster.cgi:322
 #, fuzzy, python-format
 msgid " %s will %s."
 msgstr "Bydda i'n"
 
-#: pb/web/poster.cgi:329
+#: pb/web/poster.cgi:330
 #, fuzzy
 msgid "More details:"
 msgstr "Mwy o fanylion"
 
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:337 pb/web/poster.cgi:472
+#: pb/web/poster.cgi:338 pb/web/poster.cgi:476
 #, fuzzy
 msgid "Pledge at "
 msgstr "Addewid"
 
-#: pb/web/poster.cgi:339 pb/web/poster.cgi:474
+#: pb/web/poster.cgi:340 pb/web/poster.cgi:478
 #, fuzzy
 msgid " pin "
 msgstr "picnic"
 
 #. TRANS: Text is an instruction (verb in the imperative)
-#: pb/web/poster.cgi:344
+#: pb/web/poster.cgi:345
 #, fuzzy
 msgid "Text"
 msgstr "Nesaf"
 
 #. TRANS: This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:348
+#: pb/web/poster.cgi:349
 msgid "to"
 msgstr ""
 
 #. TRANS: This is part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
-#: pb/web/poster.cgi:351
+#: pb/web/poster.cgi:352
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr ""
 
-#: pb/web/poster.cgi:355
+#: pb/web/poster.cgi:356
 #, fuzzy
 msgid "This pledge closes on "
 msgstr "Safle parhaol yr addewid:"
 
-#: pb/web/poster.cgi:355
+#: pb/web/poster.cgi:356
 msgid ". Thanks!"
 msgstr ""
 
-#: pb/web/poster.cgi:444
+#: pb/web/poster.cgi:448
 #, fuzzy, python-format
 msgid "<font color=\"%s\">I</font> will %s <b>but only if</b> <font color=\"%s\">%s</font> %s will %s. "
 msgstr "Bydd %s yn %s ond dim ond os bydd <strong>%s</strong> %s yn %s."
 
-#: pb/web/poster.cgi:452
+#: pb/web/poster.cgi:456
 #, python-format
 msgid "<font color=\"%s\">I</font> will %s. "
 msgstr ""
 
-#: pb/web/poster.cgi:468
+#: pb/web/poster.cgi:472
 #, fuzzy, python-format
 msgid "<b>More details:</b> %s"
 msgstr "Mwy o fanylion"
 
-#: pb/web/poster.cgi:480
+#: pb/web/poster.cgi:484
 #, fuzzy
 msgid "pledge at "
 msgstr "addewid"
 
-#: pb/web/poster.cgi:482
+#: pb/web/poster.cgi:486
 #, python-format
 msgid ""
 "<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
@@ -5587,7 +5599,7 @@ msgid ""
 "            (%s only) or "
 msgstr ""
 
-#: pb/web/poster.cgi:490
+#: pb/web/poster.cgi:494
 #, python-format
 msgid ""
 "\n"
@@ -5595,11 +5607,11 @@ msgid ""
 "            "
 msgstr ""
 
-#: pb/web/poster.cgi:693
+#: pb/web/poster.cgi:697
 msgid "UK"
 msgstr ""
 
-#: pb/web/poster.cgi:849
+#: pb/web/poster.cgi:855
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"
@@ -5635,19 +5647,19 @@ msgstr "Defnyddir %d o nodiadau; %d ar &ocirc;l"
 msgid "You have used %d characters, which is %d more than will fit in an SMS. Please make your message shorter."
 msgstr "Defnyddiwyd %d o nodiadau, sy'n %d fwy nag sy'n ffito mewn neges destun. Cwtogwch eich neges, os gwelwch yn dda."
 
-#: pb/web/graph.cgi:214
+#: pb/web/graph.cgi:222
 msgid "signups per day"
 msgstr ""
 
-#: pb/web/graph.cgi:217
+#: pb/web/graph.cgi:225
 msgid "signups per week"
 msgstr ""
 
-#: pb/web/graph.cgi:220
+#: pb/web/graph.cgi:228
 msgid "signups per month"
 msgstr ""
 
-#: pb/web/graph.cgi:282
+#: pb/web/graph.cgi:292
 #, fuzzy
 msgid "total number of signers"
 msgstr "Nifer o lofnodwyr"

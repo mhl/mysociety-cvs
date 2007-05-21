@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-13 19:18+0100\n"
+"POT-Creation-Date: 2007-05-21 14:10+0100\n"
 "PO-Revision-Date: 2006-03-13 16:17+0100\n"
 "Last-Translator: Federico Cherubini <fcherub@free.fr>\n"
 "Language-Team: RNP <team@pledgebank.com>\n"
@@ -1368,7 +1368,7 @@ msgstr "raggiunto"
 msgid "-- the PledgeBank.com team"
 msgstr "-- il team di PledgeBank.com"
 
-#: pb/phplib/fns.php:165 pb/web/poster.cgi:313
+#: pb/phplib/fns.php:165 pb/web/poster.cgi:314
 #, fuzzy
 msgid "PledgeBank.com"
 msgstr "Team PledgeBank"
@@ -1719,8 +1719,8 @@ msgstr "Tutti gli Impegni"
 msgid "Start a Pledge"
 msgstr "Mi Impegno"
 
-#: pb/phplib/microsites.php:285 pb/web/faq.php:18 pb/web/faq.php:347
-#: pb/web/faq.php:479
+#: pb/phplib/microsites.php:285 pb/web/faq.php:18 pb/web/faq.php:354
+#: pb/web/faq.php:486
 msgid "Frequently Asked Questions"
 msgstr "Domande Frequenti"
 
@@ -2891,7 +2891,9 @@ msgstr "&Egrave gratis?"
 msgid ""
 "The site is free to use, no matter how big a pledge you create. PledgeBank\n"
 "    is run by a charitable organisation, though, so if you want to run an\n"
-"    especially big pledge, and feel like making a contribution, please contact us.\n"
+"    especially big pledge, and feel like making a contribution, please <a\n"
+"    <a href=\"/contact\">contact us</a> or\n"
+"    <a href=\"https://secure.mysociety.org/donate/\">make a donation directly</a>.\n"
 "    SMS messages to PledgeBank (available in %s only) cost your normal text fee."
 msgstr ""
 "Il sito è gratuito, indipendentemente dall'importanza dell'impegno. PledgeBank,\n"
@@ -2899,15 +2901,15 @@ msgstr ""
 "progetto particolarmente impegnativo, e vorresti contribuire, prendi contatto con noi.\n"
 "Gli SMS inviati a PledgeBank (servizio disponibile solo nel %s) costano la normale tariffa di base di un SMS. "
 
-#: pb/web/faq.php:92
+#: pb/web/faq.php:95
 msgid "Organisation Questions"
 msgstr "Domande sulla nostra Organizzazione"
 
-#: pb/web/faq.php:95
+#: pb/web/faq.php:98
 msgid "Who built PledgeBank?"
 msgstr "Chi ha creato PledgeBank?"
 
-#: pb/web/faq.php:97
+#: pb/web/faq.php:100
 #, fuzzy
 msgid ""
 "This site was built by <a href=\"http://www.mysociety.org\">mySociety</a>. \n"
@@ -2927,11 +2929,11 @@ msgstr ""
 "progetto fu <a href=\"http://www.writetothem.com\">WriteToThem.com</a>, che rese possibile a chiunque\n"
 "scrivere al proprio rappresentante eletto, e questo gratuitamente."
 
-#: pb/web/faq.php:106
+#: pb/web/faq.php:109
 msgid "Who pays for it?"
 msgstr "Chi paga il servizio?"
 
-#: pb/web/faq.php:108
+#: pb/web/faq.php:111
 #, fuzzy
 msgid ""
 "PledgeBank has been built by mySociety thanks to the effort\n"
@@ -2945,11 +2947,11 @@ msgstr ""
 "I programmatori sono pagati dal fondo per l'e-innovation dell'<acronym title=\"Office of the Deputy Prime Minister\">ODPM</acronym>\n"
 "in partenariato con il West Sussex County Council."
 
-#: pb/web/faq.php:117
+#: pb/web/faq.php:120
 msgid "Do you need any help with the project?"
 msgstr "Avete bisogno di aiuto con il progetto?"
 
-#: pb/web/faq.php:119
+#: pb/web/faq.php:122
 #, fuzzy
 msgid ""
 "Yes, we can use help in all sorts of ways, technical or non-technical.\n"
@@ -2958,11 +2960,11 @@ msgstr ""
 "Sì, è possibile dare una mano in molti modi, tecnici e non-tecnici.\n"
 "<a href=\"/contact\">Scrivici una email</a> per entrare in contatto con noi."
 
-#: pb/web/faq.php:122
+#: pb/web/faq.php:125
 msgid "Where's the \"source code\" to PledgeBank?"
 msgstr "Dove posso trovare il \"source code\" di PledgeBank?"
 
-#: pb/web/faq.php:124
+#: pb/web/faq.php:127
 #, fuzzy
 msgid ""
 "The software behind PledgeBank is open source, and available to you\n"
@@ -2980,11 +2982,11 @@ msgstr ""
 "per i tuoi progetti, purchè il source code del progetto in questione sia\n"
 "reso pubblico a sua volta.\n"
 
-#: pb/web/faq.php:132
+#: pb/web/faq.php:135
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr ""
 
-#: pb/web/faq.php:134
+#: pb/web/faq.php:137
 msgid ""
 "OK, we are\n"
 "    Mike Bracken,\n"
@@ -2996,8 +2998,12 @@ msgid ""
 "    Richard Pope,\n"
 "    Matthew Somerville,\n"
 "    Tom Steinberg.\n"
-"\n"
-"    <strong>Translations by</strong>\n"
+"    "
+msgstr ""
+
+#: pb/web/faq.php:149
+msgid ""
+"<strong>Translations by</strong>\n"
 "    Nic Dafis (Welsh),\n"
 "    Hugo Caballero Figueroa (Spanish),\n"
 "    Tim Morley (Esperanto),\n"
@@ -3005,9 +3011,15 @@ msgid ""
 "    LaPingvino and Leo De Cooman (Dutch),\n"
 "    Creso Moraes (Brazilian Portuguese),\n"
 "    Alexander Markushin (Russian),\n"
-"    maidan.org.ua team (Ukrainian).\n"
-"\n"
-"    <strong>Thanks also to</strong>\n"
+"    maidan.org.ua team (Ukrainian),\n"
+"    Oliver Ding, Isaac Mao, Danny Yu, Nan Yang, Jacky Peng (Chinese),\n"
+"    Aliaksej Lavońčyk (Belarusian).\n"
+"    "
+msgstr ""
+
+#: pb/web/faq.php:162
+msgid ""
+"<strong>Thanks also to</strong>\n"
 "    <a href=\"http://www.c360uk.com/\">c360</a> (for SMS in the UK), \n"
 "    the <a href=\"http://earth-info.nga.mil/gns/html/\">US military</a> (for the world gazetteer),\n"
 "    <a href=\"http://sedac.ciesin.columbia.edu/gpw/\">CIESIN</a> (for population density data),\n"
@@ -3023,15 +3035,15 @@ msgid ""
 "    "
 msgstr ""
 
-#: pb/web/faq.php:175
+#: pb/web/faq.php:182
 msgid "Pledge Creators' Questions"
 msgstr "Domande sui Nuovi Impegni"
 
-#: pb/web/faq.php:178
+#: pb/web/faq.php:185
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Quale tipo di impegno funziona e quale rischia di rimanere nell'oscurità?"
 
-#: pb/web/faq.php:180
+#: pb/web/faq.php:187
 #, fuzzy
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
@@ -3051,11 +3063,11 @@ msgstr ""
 "portatile wi-fi,  spiegando e convincendo, avrai senz'altro più successo\n"
 "di qualcuno che si impegna sul sito e niente più."
 
-#: pb/web/faq.php:189
+#: pb/web/faq.php:196
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Quale deve essere il mio target in termini di numero di adesioni?</a>"
 
-#: pb/web/faq.php:191
+#: pb/web/faq.php:198
 #, fuzzy
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
@@ -3072,11 +3084,11 @@ msgstr ""
 "più probabilità di successo, e nulla poi vieta di superare ampiamente il target\n"
 "stabilito."
 
-#: pb/web/faq.php:206
+#: pb/web/faq.php:213
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Perchè il mio impegno non appare sulla pagina Tutti gli Impegni?"
 
-#: pb/web/faq.php:208
+#: pb/web/faq.php:215
 #, fuzzy
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
@@ -3091,12 +3103,12 @@ msgstr ""
 "e spesso da un vero e proprio comitato promotore attivo. Perciò occorre\n"
 "darsi da fare per far conoscere gli impegni ad amici e conoscenti."
 
-#: pb/web/faq.php:214
+#: pb/web/faq.php:221
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Vengono cancellati gli impegni dal contenuto non appropriato o illegale?"
 
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:217
+#: pb/web/faq.php:224
 #, fuzzy
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
@@ -3113,11 +3125,11 @@ msgstr ""
 "tutto frivoli. Cancelleremo quegli impegni che incitano o promuovono\n"
 "comportamenti illegali."
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:231
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Perchè, dopo averlo creato, non posso più modificare il mio impegno?</a>"
 
-#: pb/web/faq.php:226
+#: pb/web/faq.php:233
 #, fuzzy
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
@@ -3135,11 +3147,11 @@ msgstr ""
 "Nella sezione 'Passaparola' della pagina principale del tuo impegno troverai un link\n"
 "per fare proprio questo."
 
-#: pb/web/faq.php:233
+#: pb/web/faq.php:240
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Posso contattare le persone che hanno aderito al mio impegno?"
 
-#: pb/web/faq.php:235
+#: pb/web/faq.php:242
 #, fuzzy
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
@@ -3160,11 +3172,11 @@ msgstr ""
 "I tuoi messaggi verranno trasmessi automaticamente anche a chi sottoscrive dopo\n"
 "l'invio."
 
-#: pb/web/faq.php:244
+#: pb/web/faq.php:251
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "&Egrave possibile sottoscrivere un impegno tramite SMS?"
 
-#: pb/web/faq.php:246
+#: pb/web/faq.php:253
 #, fuzzy, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -3183,11 +3195,11 @@ msgstr ""
 "RIFERIMENTO è il nome da te scelto al momento della creazione dell'impegno,\n"
 "il nome che appare alla fine dell'indirizzo web."
 
-#: pb/web/faq.php:254
+#: pb/web/faq.php:261
 msgid "How do I add a picture to my pledge?"
 msgstr "Come allegare un'immagine al mio impegno?"
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:263
 #, fuzzy
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
@@ -3198,11 +3210,11 @@ msgstr ""
 "al tuo impegno (solo primo firmatario)' nella sezione 'Passaparola'. Trova\n"
 "un'immagine che richiama il tuo impegno, oppure anche una foto di te!"
 
-#: pb/web/faq.php:260
+#: pb/web/faq.php:267
 msgid "Can you make a special version of PledgeBank for my organisation?"
 msgstr ""
 
-#: pb/web/faq.php:262
+#: pb/web/faq.php:269
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
 "    colours or complete style to match your branding. We can intimately\n"
@@ -3214,15 +3226,15 @@ msgid ""
 "    bottom of <A href=\"/where\">this page</a>."
 msgstr ""
 
-#: pb/web/faq.php:275
+#: pb/web/faq.php:282
 msgid "International Questions"
 msgstr "Domande Internazionali"
 
-#: pb/web/faq.php:278
+#: pb/web/faq.php:285
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Posso impegnarmi in una lingua diversa dall'italiano?"
 
-#: pb/web/faq.php:280
+#: pb/web/faq.php:287
 #, fuzzy
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
@@ -3237,11 +3249,11 @@ msgstr ""
 "si adatterà automaticamente. Altrimenti, segui il link a fondo pagina.\n"
 "Se ti interessa tradurre il sito nella tua lingua, leggi come procedere <a href=\"/translate\">su questa pagina</a>."
 
-#: pb/web/faq.php:287
+#: pb/web/faq.php:294
 msgid "What countries does PledgeBank work in?"
 msgstr "In quali paesi è attivo PledgeBank?"
 
-#: pb/web/faq.php:289
+#: pb/web/faq.php:296
 #, fuzzy
 msgid ""
 "All of them. We try to detect which country you are in\n"
@@ -3256,11 +3268,11 @@ msgstr ""
 "alla destra del logo PledgeBank. Si prega di  <a href=\"/contact\">contattarci</a>\n"
 "se si desidera aiutare a spargere ancor più l'uso di PledgeBank nel proprio paese."
 
-#: pb/web/faq.php:295
+#: pb/web/faq.php:302
 msgid "Why do you only have UK postcodes?"
 msgstr "Perchè funzionano solo i codici postali della Gran Bretagna?"
 
-#: pb/web/faq.php:297
+#: pb/web/faq.php:304
 #, fuzzy
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
@@ -3273,11 +3285,11 @@ msgstr ""
 "per codice postale anche ad altri paesi - <a href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">iscriviti\n"
 "alla mailing list</a> per darci una mano.\n"
 
-#: pb/web/faq.php:303
+#: pb/web/faq.php:310
 msgid "... and SMS?"
 msgstr "... e per gli SMS?"
 
-#: pb/web/faq.php:305
+#: pb/web/faq.php:312
 #, fuzzy
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
@@ -3286,15 +3298,15 @@ msgstr ""
 "Di nuovo, <a href=\"/contact\">prendi contatto con noi</a> se\n"
 "puoi aiutarci ad integrare questa funzionalità per il tuo paese."
 
-#: pb/web/faq.php:312
+#: pb/web/faq.php:319
 msgid "Privacy Questions"
 msgstr "Domande riguardo alla Privacy"
 
-#: pb/web/faq.php:315
+#: pb/web/faq.php:322
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Non desidero svelare il mio nome quando aderisco ad un impegno! "
 
-#: pb/web/faq.php:317
+#: pb/web/faq.php:324
 #, fuzzy, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -3309,11 +3321,11 @@ msgstr ""
 "particolarmente sensibile, esiste l'opzione dell'impegno privato: avranno allora accesso\n"
 "alla pagina web dell'impegno solo le persone in possesso di un codice PIN da te fissato."
 
-#: pb/web/faq.php:323
+#: pb/web/faq.php:330
 msgid "Who gets to see my email address?"
 msgstr "Chi può vedere il mio indirizzo email?"
 
-#: pb/web/faq.php:325
+#: pb/web/faq.php:332
 #, fuzzy
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
@@ -3330,11 +3342,11 @@ msgstr ""
 "Essi, tuttavia, non hanno accesso agli indirizzi email. Va detto, però, che rispondere ad un messaggio\n"
 "del primo firmatario rivelerà il tuo indirizzo email - è bene saperlo!"
 
-#: pb/web/faq.php:333
+#: pb/web/faq.php:340
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "Rischio di ricevere spam da parte di PledgeBank?"
 
-#: pb/web/faq.php:335
+#: pb/web/faq.php:342
 #, fuzzy
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
@@ -3628,7 +3640,7 @@ msgstr "(se preferisci impegnarti in una lingua diversa dall'%s, <a href=\"%s\">
 msgid "I will"
 msgstr "Mi impegno a"
 
-#: pb/web/new.php:151 pb/web/poster.cgi:319
+#: pb/web/new.php:151 pb/web/poster.cgi:320
 msgid "but only if"
 msgstr "ma solamente se"
 
@@ -5625,58 +5637,58 @@ msgstr "<font color=\"#ffffff\">Pledge</font>Bank.com"
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr "Ricorda, ti impegni ad agire solamente se %d altre persone faranno lo stesso – è questo il principio di funzionamento di PledgeBank."
 
-#: pb/web/poster.cgi:317
+#: pb/web/poster.cgi:318
 msgid "I"
 msgstr "Io"
 
-#: pb/web/poster.cgi:318
+#: pb/web/poster.cgi:319
 #, fuzzy, python-format
 msgid " will %s "
 msgstr "mi impegno a %s"
 
-#: pb/web/poster.cgi:321
+#: pb/web/poster.cgi:322
 #, fuzzy, python-format
 msgid " %s will %s."
 msgstr "mi impegno a %s"
 
-#: pb/web/poster.cgi:329
+#: pb/web/poster.cgi:330
 msgid "More details:"
 msgstr "Dettagli:"
 
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:337 pb/web/poster.cgi:472
+#: pb/web/poster.cgi:338 pb/web/poster.cgi:476
 msgid "Pledge at "
 msgstr "Pledge al"
 
-#: pb/web/poster.cgi:339 pb/web/poster.cgi:474
+#: pb/web/poster.cgi:340 pb/web/poster.cgi:478
 msgid " pin "
 msgstr " codice pin"
 
 #. TRANS: Text is an instruction (verb in the imperative)
-#: pb/web/poster.cgi:344
+#: pb/web/poster.cgi:345
 msgid "Text"
 msgstr "Testo"
 
 #. TRANS: This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:348
+#: pb/web/poster.cgi:349
 msgid "to"
 msgstr "a"
 
 #. TRANS: This is part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
-#: pb/web/poster.cgi:351
+#: pb/web/poster.cgi:352
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr " (solo nel %s) oppure pledge al"
 
-#: pb/web/poster.cgi:355
+#: pb/web/poster.cgi:356
 msgid "This pledge closes on "
 msgstr "Questo impegno finisce il"
 
-#: pb/web/poster.cgi:355
+#: pb/web/poster.cgi:356
 msgid ". Thanks!"
 msgstr ". Grazie!"
 
-#: pb/web/poster.cgi:444
+#: pb/web/poster.cgi:448
 #, fuzzy, python-format
 msgid "<font color=\"%s\">I</font> will %s <b>but only if</b> <font color=\"%s\">%s</font> %s will %s. "
 msgstr ""
@@ -5684,21 +5696,21 @@ msgstr ""
 "            <b>Se</b> <font color=\"%s\">%s</font> %s si impegneranno %s, \n"
 "            allora <font color=\"%s\">Io</font> mi impegnerò a %s."
 
-#: pb/web/poster.cgi:452
+#: pb/web/poster.cgi:456
 #, python-format
 msgid "<font color=\"%s\">I</font> will %s. "
 msgstr ""
 
-#: pb/web/poster.cgi:468
+#: pb/web/poster.cgi:472
 #, python-format
 msgid "<b>More details:</b> %s"
 msgstr "<b>Ulteriori detagli:</b> %s"
 
-#: pb/web/poster.cgi:480
+#: pb/web/poster.cgi:484
 msgid "pledge at "
 msgstr "Indirizzo web:"
 
-#: pb/web/poster.cgi:482
+#: pb/web/poster.cgi:486
 #, fuzzy, python-format
 msgid ""
 "<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
@@ -5709,7 +5721,7 @@ msgstr ""
 "            <b>pledge %s</b></font> al <font color=\"%s\"><b>%s</b></font> \n"
 "            (solo nel %s) oppure "
 
-#: pb/web/poster.cgi:490
+#: pb/web/poster.cgi:494
 #, python-format
 msgid ""
 "\n"
@@ -5719,11 +5731,11 @@ msgstr ""
 "\n"
 "            La data limite per aderire a questo impegno è il <font color=\"%s\">%s</font>. Grazie!"
 
-#: pb/web/poster.cgi:693
+#: pb/web/poster.cgi:697
 msgid "UK"
 msgstr "UK"
 
-#: pb/web/poster.cgi:849
+#: pb/web/poster.cgi:855
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"
@@ -5761,19 +5773,19 @@ msgstr "Hai utilizzato %d caratteri; ne rimangono %d."
 msgid "You have used %d characters, which is %d more than will fit in an SMS. Please make your message shorter."
 msgstr "Hai utilizzato %d caratteri, %d più di quanti possono comporre un SMS. Accorcia il tuo messaggio."
 
-#: pb/web/graph.cgi:214
+#: pb/web/graph.cgi:222
 msgid "signups per day"
 msgstr ""
 
-#: pb/web/graph.cgi:217
+#: pb/web/graph.cgi:225
 msgid "signups per week"
 msgstr ""
 
-#: pb/web/graph.cgi:220
+#: pb/web/graph.cgi:228
 msgid "signups per month"
 msgstr ""
 
-#: pb/web/graph.cgi:282
+#: pb/web/graph.cgi:292
 #, fuzzy
 msgid "total number of signers"
 msgstr "Numero firmatari"

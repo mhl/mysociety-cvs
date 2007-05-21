@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-05-13 19:18+0100\n"
+"POT-Creation-Date: 2007-05-21 14:10+0100\n"
 "PO-Revision-Date: 2007-01-09 16:10-0200\n"
 "Last-Translator: Creso Moraes <creso@enfoque.com>\n"
 "Language-Team: pt_BR <team@pledgebank.com>\n"
@@ -1361,7 +1361,7 @@ msgstr "cumprida"
 msgid "-- the PledgeBank.com team"
 msgstr "-- a equipe EuPrometo.org"
 
-#: pb/phplib/fns.php:165 pb/web/poster.cgi:313
+#: pb/phplib/fns.php:165 pb/web/poster.cgi:314
 msgid "PledgeBank.com"
 msgstr ""
 
@@ -1706,8 +1706,8 @@ msgstr "Todas as Promessas"
 msgid "Start a Pledge"
 msgstr "Iniciar uma Promessa"
 
-#: pb/phplib/microsites.php:285 pb/web/faq.php:18 pb/web/faq.php:347
-#: pb/web/faq.php:479
+#: pb/phplib/microsites.php:285 pb/web/faq.php:18 pb/web/faq.php:354
+#: pb/web/faq.php:486
 msgid "Frequently Asked Questions"
 msgstr "Perguntas Mais Freqüentes"
 
@@ -2866,26 +2866,28 @@ msgid "Is it free?"
 msgstr "É de graça?"
 
 #: pb/web/faq.php:83
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "The site is free to use, no matter how big a pledge you create. PledgeBank\n"
 "    is run by a charitable organisation, though, so if you want to run an\n"
-"    especially big pledge, and feel like making a contribution, please contact us.\n"
+"    especially big pledge, and feel like making a contribution, please <a\n"
+"    <a href=\"/contact\">contact us</a> or\n"
+"    <a href=\"https://secure.mysociety.org/donate/\">make a donation directly</a>.\n"
 "    SMS messages to PledgeBank (available in %s only) cost your normal text fee."
 msgstr ""
 "Sim, o EuPrometo é de uso grátis, não importa o tamanho da promessa que V. criar.\n"
 "    Mensagens tipo torpedo ao EuPrometo (disponiveis só n%s, por enquanto) \n"
 "    custam a tarifa normal que é cobrada pelas operadoras de telefonia celular."
 
-#: pb/web/faq.php:92
+#: pb/web/faq.php:95
 msgid "Organisation Questions"
 msgstr "Questões de Organização"
 
-#: pb/web/faq.php:95
+#: pb/web/faq.php:98
 msgid "Who built PledgeBank?"
 msgstr "Quem desenvolveu o EuPrometo?"
 
-#: pb/web/faq.php:97
+#: pb/web/faq.php:100
 msgid ""
 "This site was built by <a href=\"http://www.mysociety.org\">mySociety</a>. \n"
 "    mySociety is a charitable organisation which has grown out of this community of\n"
@@ -2904,11 +2906,11 @@ msgstr ""
 "    O primeiro projeto foi <a href=\"http://www.writetothem.com\">WriteToThem.com</a>, site\n"
 "    do qual se pode mandar email, gratuitamente, para qualquer parlamentar britânico eleito."
 
-#: pb/web/faq.php:106
+#: pb/web/faq.php:109
 msgid "Who pays for it?"
 msgstr "Quem banca isso?"
 
-#: pb/web/faq.php:108
+#: pb/web/faq.php:111
 msgid ""
 "PledgeBank has been built by mySociety thanks to the effort\n"
 "    of a combination of paid core developers and unpaid volunteers. The\n"
@@ -2923,11 +2925,11 @@ msgstr ""
 "    da Inglaterra, em parceria com o Conselho do Condado de West Sussex. \"    A versão brasileira do sistema, este EuPrometo, é tocada em parceria pela \n"
 "    organização não governamental <a href=\"http://www.enfoquecivico.org.br\">Enfoque Cívico</a>."
 
-#: pb/web/faq.php:117
+#: pb/web/faq.php:120
 msgid "Do you need any help with the project?"
 msgstr "Vocês precisam de alguma ajuda para o projeto?"
 
-#: pb/web/faq.php:119
+#: pb/web/faq.php:122
 msgid ""
 "Yes, we can use help in all sorts of ways, technical or non-technical.\n"
 "    Please <a href=\"/contact\">contact us</a> if you want to get in touch."
@@ -2935,11 +2937,11 @@ msgstr ""
 "Sim, aceitamos ajuda de toda ordem, técnica ou não-técnica.\n"
 "    Por favor,<a href=\"/contact\">fale conosco</a> se quiser ajudar."
 
-#: pb/web/faq.php:122
+#: pb/web/faq.php:125
 msgid "Where's the \"source code\" to PledgeBank?"
 msgstr "Onde fica o \"código fonte\" do sistema?"
 
-#: pb/web/faq.php:124
+#: pb/web/faq.php:127
 msgid ""
 "The software behind PledgeBank is open source, and available to you\n"
 "    mainly under the Affero GPL software license. You can <a\n"
@@ -2955,13 +2957,13 @@ msgstr ""
 "    baixar o código fonte</a> (veja sob 'pb') e nos ajudar a desenvolvê-lo.     Você também poderá usá-lo em seus projetos, embora deva sempre manter esse código\n"
 "    fonte disponível para outros desenvolvedores."
 
-#: pb/web/faq.php:132
+#: pb/web/faq.php:135
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr ""
 "São as pessoas que constróem coisas, não as organizações. Quem <em> \n"
 "efetivamente</em> construiu isto?"
 
-#: pb/web/faq.php:134
+#: pb/web/faq.php:137
 msgid ""
 "OK, we are\n"
 "    Mike Bracken,\n"
@@ -2973,8 +2975,12 @@ msgid ""
 "    Richard Pope,\n"
 "    Matthew Somerville,\n"
 "    Tom Steinberg.\n"
-"\n"
-"    <strong>Translations by</strong>\n"
+"    "
+msgstr ""
+
+#: pb/web/faq.php:149
+msgid ""
+"<strong>Translations by</strong>\n"
 "    Nic Dafis (Welsh),\n"
 "    Hugo Caballero Figueroa (Spanish),\n"
 "    Tim Morley (Esperanto),\n"
@@ -2982,9 +2988,16 @@ msgid ""
 "    LaPingvino and Leo De Cooman (Dutch),\n"
 "    Creso Moraes (Brazilian Portuguese),\n"
 "    Alexander Markushin (Russian),\n"
-"    maidan.org.ua team (Ukrainian).\n"
-"\n"
-"    <strong>Thanks also to</strong>\n"
+"    maidan.org.ua team (Ukrainian),\n"
+"    Oliver Ding, Isaac Mao, Danny Yu, Nan Yang, Jacky Peng (Chinese),\n"
+"    Aliaksej Lavońčyk (Belarusian).\n"
+"    "
+msgstr ""
+
+#: pb/web/faq.php:162
+#, fuzzy
+msgid ""
+"<strong>Thanks also to</strong>\n"
 "    <a href=\"http://www.c360uk.com/\">c360</a> (for SMS in the UK), \n"
 "    the <a href=\"http://earth-info.nga.mil/gns/html/\">US military</a> (for the world gazetteer),\n"
 "    <a href=\"http://sedac.ciesin.columbia.edu/gpw/\">CIESIN</a> (for population density data),\n"
@@ -3033,15 +3046,15 @@ msgstr ""
 "\n"
 "    Avisem se esquecemos de alguém."
 
-#: pb/web/faq.php:175
+#: pb/web/faq.php:182
 msgid "Pledge Creators' Questions"
 msgstr "Para Criadores de Promessas"
 
-#: pb/web/faq.php:178
+#: pb/web/faq.php:185
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Quais promessas funcionam, e quais vão para o esquecimento?"
 
-#: pb/web/faq.php:180
+#: pb/web/faq.php:187
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
 "    which will apply. First, the lower a pledge target (in terms of\n"
@@ -3060,11 +3073,11 @@ msgstr ""
 "    pessoas se comprometam online com sua promessa, ali na hora, também\n"
 "    terá mais chance do que outro que cria uma promessa e a deixa por si só."
 
-#: pb/web/faq.php:189
+#: pb/web/faq.php:196
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">A quantas pessoas devo propor adesão?</a>"
 
-#: pb/web/faq.php:191
+#: pb/web/faq.php:198
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
 "    Choose the number of people for which you could only just be bothered to carry\n"
@@ -3079,11 +3092,11 @@ msgstr ""
 "    sucesso, e, de todo modo, mais pessoas do que V. esperava ainda poderão\n"
 "    se inscrever, dentro do prazo."
 
-#: pb/web/faq.php:206
+#: pb/web/faq.php:213
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Por que a minha promessa não aparece na página Todas as Promessas?"
 
-#: pb/web/faq.php:208
+#: pb/web/faq.php:215
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
 "    the site, until a few people have signed up to them. This is to make\n"
@@ -3097,12 +3110,12 @@ msgstr ""
 "    um criador ativo e apoiado. Assim, vá à luta e atraia amigos e\n"
 "    vizinhos para sua promessa!"
 
-#: pb/web/faq.php:214
+#: pb/web/faq.php:221
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Vocês apagam promessas bobas ou ilegais?"
 
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:217
+#: pb/web/faq.php:224
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "    consider to be inappropriate. This means that your pledge will work, but will\n"
@@ -3119,11 +3132,11 @@ msgstr ""
 "    sejam inteiramente frívolas. Nós também apagaremos promessas que\n"
 "    promovam ou incitem a um comportamento ilícito."
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:231
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Não posso modificar a promessa depois de fazê-la?</a>"
 
-#: pb/web/faq.php:226
+#: pb/web/faq.php:233
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "    the pledge.  If you change the wording, then their signatures would no longer\n"
@@ -3139,11 +3152,11 @@ msgstr ""
 "    essa. Há um link para fazer isso na seção \"Divulgue ao Mundo\" na página\n"
 "    da sua promessa."
 
-#: pb/web/faq.php:233
+#: pb/web/faq.php:240
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Posso contatar as pessoas que apoiaram minha promessa?"
 
-#: pb/web/faq.php:235
+#: pb/web/faq.php:242
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
 "    to your pledge's page, and follow the link under 'Spread the word'.  For cost\n"
@@ -3163,11 +3176,11 @@ msgstr ""
 "    cumprir sua promessa. Àqueles que vierem depois em apoio à sua promessa\n"
 "    serão mandadas também, automaticamente, todas as mensagens."
 
-#: pb/web/faq.php:244
+#: pb/web/faq.php:251
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Dá para usar mensagens tipo torpedo, via celular? Como?"
 
-#: pb/web/faq.php:246
+#: pb/web/faq.php:253
 #, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -3186,11 +3199,11 @@ msgstr ""
 "    Aqui, REFERENCE é a referência breve à sua promessa - a mesma que V. \n"
 "    escolheu quando a criou, e que também aparece ao final do endereço dela."
 
-#: pb/web/faq.php:254
+#: pb/web/faq.php:261
 msgid "How do I add a picture to my pledge?"
 msgstr "Como colocar foto na minha promessa?"
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:263
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
 "    (creator only)' under 'Spread the word on and offline'. Either find a picture\n"
@@ -3200,11 +3213,11 @@ msgstr ""
 "    (só criador)', que está sob 'Divulgar online e offline'. Pode ser uma\n"
 "    imagem de algo relacionado à promessa, ou mesmo um retrato seu!"
 
-#: pb/web/faq.php:260
+#: pb/web/faq.php:267
 msgid "Can you make a special version of PledgeBank for my organisation?"
 msgstr "Vocês podem fazer uma versão especial do EuPrometo para minha organização?"
 
-#: pb/web/faq.php:262
+#: pb/web/faq.php:269
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
 "    colours or complete style to match your branding. We can intimately\n"
@@ -3226,15 +3239,15 @@ msgstr ""
 "    sobre o que V. está pensando ou fazendo. Há uma lista de \n"
 "    exemplos de sites especiais no rodapé <A href=\"/where\">desta página</a>."
 
-#: pb/web/faq.php:275
+#: pb/web/faq.php:282
 msgid "International Questions"
 msgstr "Questões Internacionais"
 
-#: pb/web/faq.php:278
+#: pb/web/faq.php:285
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Valem promessas em idioma que não seja o inglês?"
 
-#: pb/web/faq.php:280
+#: pb/web/faq.php:287
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
 "    If your browser is configured to use one of those languages, PledgeBank will \n"
@@ -3249,11 +3262,11 @@ msgstr ""
 "    página. Se quiser se voluntariar para ajudar a traduzir também para um\n"
 "    idioma que falta, <a href=\"/translate\">leia a nossa página de ajuda de tradução</a>"
 
-#: pb/web/faq.php:287
+#: pb/web/faq.php:294
 msgid "What countries does PledgeBank work in?"
 msgstr "Em que países funciona o EuPrometo?"
 
-#: pb/web/faq.php:289
+#: pb/web/faq.php:296
 msgid ""
 "All of them. We try to detect which country you are in\n"
 "    automatically, and show you only pledges relevant to your country. To see what\n"
@@ -3268,11 +3281,11 @@ msgstr ""
 "    <a href=\"/contact\">Fale conosco</a> se quiser ajudar a motivar mais\n"
 "    gente em seu país por meio do EuPrometo."
 
-#: pb/web/faq.php:295
+#: pb/web/faq.php:302
 msgid "Why do you only have UK postcodes?"
 msgstr "Por que vocês só têm códigos postais do Reino Unido?"
 
-#: pb/web/faq.php:297
+#: pb/web/faq.php:304
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
 "    the postcode search overseas&mdash;please <a\n"
@@ -3285,11 +3298,11 @@ msgstr ""
 "   href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">aderir a\n"
 "   esta lista de discussão </a> para nos ajudar nisso."
 
-#: pb/web/faq.php:303
+#: pb/web/faq.php:310
 msgid "... and SMS?"
 msgstr "... e SMS?"
 
-#: pb/web/faq.php:305
+#: pb/web/faq.php:312
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "    can help add text messaging in your country."
@@ -3297,15 +3310,15 @@ msgstr ""
 "De novo, <a href=\"/contact\">escreva-nos</a> caso\n"
 "    possa ajudar a ter mensagens de texto SMS no Brasil."
 
-#: pb/web/faq.php:312
+#: pb/web/faq.php:319
 msgid "Privacy Questions"
 msgstr "Questões de Privacidade"
 
-#: pb/web/faq.php:315
+#: pb/web/faq.php:322
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Quero apoiar, mas não desejo mostrar meu nome!"
 
-#: pb/web/faq.php:317
+#: pb/web/faq.php:324
 #, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -3320,11 +3333,11 @@ msgstr ""
 "    privada, então só pessoas com um PIN que V. dará poderão visualizar\n"
 "    essa página de promessa."
 
-#: pb/web/faq.php:323
+#: pb/web/faq.php:330
 msgid "Who gets to see my email address?"
 msgstr "Quem pode ver meu endereço de email?"
 
-#: pb/web/faq.php:325
+#: pb/web/faq.php:332
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
 "    creator of your pledge, unless we are obliged to by law. We do let the pledge\n"
@@ -3341,11 +3354,11 @@ msgstr ""
 "    sua mensagem. Se V. responder a email do próprio criador, estará revelando seu\n"
 "    endereço a ele - esteja avisado!"
 
-#: pb/web/faq.php:333
+#: pb/web/faq.php:340
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "Receberei mensagens chatas e spam em meu endereço de email?"
 
-#: pb/web/faq.php:335
+#: pb/web/faq.php:342
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
 "    relation to your pledge. These will be a mixture of status emails from\n"
@@ -3638,7 +3651,7 @@ msgstr "(se preferir sua promessa em idioma que não o %s, <a href=\"%s\">clique
 msgid "I will"
 msgstr "Eu prometo"
 
-#: pb/web/new.php:151 pb/web/poster.cgi:319
+#: pb/web/new.php:151 pb/web/poster.cgi:320
 msgid "but only if"
 msgstr "mas só se"
 
@@ -5719,77 +5732,77 @@ msgstr "<font color=\"#ffffff\">Eu</font>Prometo.org"
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr "Lembre-se, V. só precisa agir se %d outras pessoas assinarem – é como funciona o EuPrometo."
 
-#: pb/web/poster.cgi:317
+#: pb/web/poster.cgi:318
 msgid "I"
 msgstr "Eu"
 
-#: pb/web/poster.cgi:318
+#: pb/web/poster.cgi:319
 #, python-format
 msgid " will %s "
 msgstr " Prometo %s."
 
-#: pb/web/poster.cgi:321
+#: pb/web/poster.cgi:322
 #, python-format
 msgid " %s will %s."
 msgstr " %s fazer %s."
 
-#: pb/web/poster.cgi:329
+#: pb/web/poster.cgi:330
 msgid "More details:"
 msgstr "Mais detalhes:"
 
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:337 pb/web/poster.cgi:472
+#: pb/web/poster.cgi:338 pb/web/poster.cgi:476
 msgid "Pledge at "
 msgstr "Prometer em "
 
-#: pb/web/poster.cgi:339 pb/web/poster.cgi:474
+#: pb/web/poster.cgi:340 pb/web/poster.cgi:478
 msgid " pin "
 msgstr " pin "
 
 #. TRANS: Text is an instruction (verb in the imperative)
-#: pb/web/poster.cgi:344
+#: pb/web/poster.cgi:345
 msgid "Text"
 msgstr "Texto"
 
 #. TRANS: This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:348
+#: pb/web/poster.cgi:349
 msgid "to"
 msgstr "to"
 
 #. TRANS: This is part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
-#: pb/web/poster.cgi:351
+#: pb/web/poster.cgi:352
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr " (%s somente) ou pledge em"
 
-#: pb/web/poster.cgi:355
+#: pb/web/poster.cgi:356
 msgid "This pledge closes on "
 msgstr "Esta promessa termina em"
 
-#: pb/web/poster.cgi:355
+#: pb/web/poster.cgi:356
 msgid ". Thanks!"
 msgstr ". Obrigado!"
 
-#: pb/web/poster.cgi:444
+#: pb/web/poster.cgi:448
 #, python-format
 msgid "<font color=\"%s\">I</font> will %s <b>but only if</b> <font color=\"%s\">%s</font> %s will %s. "
 msgstr "<font color=\"%s\">Eu</font> prometo %s <b>mas só se </b> <font color=\"%s\">%s</font> %s também %s.            "
 
-#: pb/web/poster.cgi:452
+#: pb/web/poster.cgi:456
 #, python-format
 msgid "<font color=\"%s\">I</font> will %s. "
 msgstr ""
 
-#: pb/web/poster.cgi:468
+#: pb/web/poster.cgi:472
 #, python-format
 msgid "<b>More details:</b> %s"
 msgstr "<b>Mais detalhes:</b> %s"
 
-#: pb/web/poster.cgi:480
+#: pb/web/poster.cgi:484
 msgid "pledge at "
 msgstr "promessa em  "
 
-#: pb/web/poster.cgi:482
+#: pb/web/poster.cgi:486
 #, python-format
 msgid ""
 "<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
@@ -5800,7 +5813,7 @@ msgstr ""
 "            <b>%s %s</b></font> a <font color=\"%s\"><b>%s</b></font> \n"
 "            (%s apenas) ou "
 
-#: pb/web/poster.cgi:490
+#: pb/web/poster.cgi:494
 #, python-format
 msgid ""
 "\n"
@@ -5811,11 +5824,11 @@ msgstr ""
 "            Esta promessa fecha em <font color=\"%s\">%s</font>. Obrigado!\n"
 "             "
 
-#: pb/web/poster.cgi:693
+#: pb/web/poster.cgi:697
 msgid "UK"
 msgstr "Reino Unido"
 
-#: pb/web/poster.cgi:849
+#: pb/web/poster.cgi:855
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"
@@ -5853,19 +5866,19 @@ msgstr "V. usou %d caracteres; faltam %d."
 msgid "You have used %d characters, which is %d more than will fit in an SMS. Please make your message shorter."
 msgstr "Você usou %d caracteres, o que é %d mais do que cabe numa SMS. Favor reduzir esse texto.  "
 
-#: pb/web/graph.cgi:214
+#: pb/web/graph.cgi:222
 msgid "signups per day"
 msgstr ""
 
-#: pb/web/graph.cgi:217
+#: pb/web/graph.cgi:225
 msgid "signups per week"
 msgstr ""
 
-#: pb/web/graph.cgi:220
+#: pb/web/graph.cgi:228
 msgid "signups per month"
 msgstr ""
 
-#: pb/web/graph.cgi:282
+#: pb/web/graph.cgi:292
 #, fuzzy
 msgid "total number of signers"
 msgstr "Número de apoiadores"
