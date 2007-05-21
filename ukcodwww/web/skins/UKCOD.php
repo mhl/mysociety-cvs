@@ -98,7 +98,8 @@ class UKCODTemplate extends QuickTemplate {
 
 	<ul id="footer">
     <!-- article/edit/history -->
-	<?php			foreach($this->data['content_actions'] as $key => $tab) { 
+	<?php	
+    foreach($this->data['content_actions'] as $key => $tab) { 
                     if ($key == 'talk') continue;
                 ?> <li id="ca-<?php echo Sanitizer::escapeId($key) ?>"<?php
 					 	if($tab['class']) { ?> class="<?php echo htmlspecialchars($tab['class']) ?>"<?php }
@@ -116,7 +117,20 @@ class UKCODTemplate extends QuickTemplate {
 				if(!empty($item['class'])) { ?> class="<?php
 				echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
 				echo htmlspecialchars($item['text']) ?></a></li>
-<?php			} ?>
+<?php			} 
+
+		foreach( array('contributions', 'blockip', 'emailuser', 'upload', 'specialpages') as $special ) {
+
+			if($this->data['nav_urls'][$special]) {
+				?><li id="t-<?php echo $special ?>"><a href="<?php echo htmlspecialchars($this->data['nav_urls'][$special]['href'])
+				?>"><?php $this->msg($special) ?></a></li>
+<?php		}
+		}
+
+
+?>
+
+
 
 	</ul>		
 
