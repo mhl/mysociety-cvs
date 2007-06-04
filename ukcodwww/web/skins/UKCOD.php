@@ -73,7 +73,7 @@ class UKCODTemplate extends QuickTemplate {
 		<li <?= ($title == 'UKCOD_Trustees') ? 'class="selected"' : '' ?> ><a href="/UKCOD_Trustees">UKCOD Trustees</a></li>
 		<li <?= ($title == 'MySociety_Ltd_Board_Members') ? 'class="selected"' : '' ?> ><a href="/MySociety_Ltd_Board_Members">mySociety Ltd Board</a></li>
 		<li <?= ($title == 'Finances') ? 'class="selected"' : '' ?> ><a href="/Finances">Finances</a></li>
-		<li <?= ($title == 'Paid_Staff') ? 'class="selected"' : '' ?> ><a href="/Paid_Staff">Staff</a></li>
+		<li <?= ($title == 'Paid_Staff') ? 'class="selected"' : '' ?> ><a href="/Developers">Developers</a></li>
 		<li <?= ($title == 'Contact') ? 'class="selected"' : '' ?> ><a href="/Contact">Contact</a></li>
 	</ul>
 
