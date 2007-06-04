@@ -160,6 +160,8 @@ class UKCODTemplate extends QuickTemplate {
 <?php 		}
 		}
 ?>
+    <br>UKOD is a registered charity in England and Wales, no. 1076346
+
     </div>
 
 	<?php $this->html('bottomscripts'); /* JS call to runBodyOnloadHook */ ?>
