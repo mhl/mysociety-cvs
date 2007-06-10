@@ -80,11 +80,13 @@ our public developer mailing list</a>.
 
 <dt>Are you a registered charity?</dt>
 
-<dd>mySociety is the project of a registered charity. The charity is called UK
-Citizens Online Democracy and is <a
+<dd>mySociety is the project of a registered charity. The charity is called 
+<a href="http://www.ukcod.org.uk/">UK Citizens Online Democracy</a> and is <a
 href="http://www.charity-commission.gov.uk/registeredcharities/showcharity.asp?remchar=&chyno=1076346">charity
-number 1076346</a>. UKCOD doesn't do much else these days, so don't worry if
-you get confused between the two. We do as well!
+number 1076346</a>. You can read more about how UKCOD is governed, and
+its finances, on <a href="http://www.ukcod.org.uk/">UKCOD's website</a>. UKCOD
+doesn't do much other than run mySociety these days, so don't worry if you get
+confused between the two. We do as well!
 
 <dt>Where did the idea come from?</dt>
 
