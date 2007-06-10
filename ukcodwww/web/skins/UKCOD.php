@@ -119,13 +119,16 @@ class UKCODTemplate extends QuickTemplate {
 				echo htmlspecialchars($item['text']) ?></a></li>
 <?php			} 
 
-		foreach( array('contributions', 'blockip', 'emailuser', 'upload', 'specialpages') as $special ) {
+        global $wgUser;
+		if( $wgUser->isLoggedIn() ) {
+            foreach( array('contributions', 'blockip', 'emailuser', 'upload', 'specialpages') as $special ) {
 
-			if($this->data['nav_urls'][$special]) {
-				?><li id="t-<?php echo $special ?>"><a href="<?php echo htmlspecialchars($this->data['nav_urls'][$special]['href'])
-				?>"><?php $this->msg($special) ?></a></li>
-<?php		}
-		}
+                if($this->data['nav_urls'][$special]) {
+                    ?><li id="t-<?php echo $special ?>"><a href="<?php echo htmlspecialchars($this->data['nav_urls'][$special]['href'])
+                    ?>"><?php $this->msg($special) ?></a></li>
+    <?php		}
+            }
+        }
 
 
 ?>
