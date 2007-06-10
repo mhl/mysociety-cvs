@@ -182,7 +182,9 @@ reclaim on your donations (currently 28p for each &pound;1 you give).
 
 <h2>Donate to mySociety</h2>
 
-<p>To support the work of mySociety, you can make a donation to UK Citizens Online Democracy, mySociety's parent charity.</p>
+<p>To support the work of mySociety, you can make a donation to 
+<a href="http://www.ukcod.org.uk/">UK Citizens Online Democracy</a>, 
+mySociety's parent charity.</p>
 
 <p>Despite being part of a registered charity mySociety has never asked for donations from the public before. But when your own users start asking if they can give you cash, it would be churlish to refuse. </p>
 <p>If you love mySociety and its sites with such unbridled passion that you don't need any actual persuading to donate, then please just go ahead and let rip (fill in the form to the right). But if you want some reasons, here they are... </p>
