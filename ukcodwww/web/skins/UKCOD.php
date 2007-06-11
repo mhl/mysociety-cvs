@@ -48,6 +48,7 @@ class UKCODTemplate extends QuickTemplate {
 		wfSuppressWarnings();
 
         global $title;
+        global $wgUser;
 
         $html_title = "UK Citizens Online Democracy - ".htmlspecialchars($this->data['title']);
         if ($this->data['title'] == 'UK Citizens Online Democracy')
@@ -101,6 +102,7 @@ class UKCODTemplate extends QuickTemplate {
 	<?php	
     foreach($this->data['content_actions'] as $key => $tab) { 
                     if ($key == 'talk') continue;
+                    if( !$wgUser->isLoggedIn() && ($key == 'edit')) continue;
                 ?> <li id="ca-<?php echo Sanitizer::escapeId($key) ?>"<?php
 					 	if($tab['class']) { ?> class="<?php echo htmlspecialchars($tab['class']) ?>"<?php }
 					 ?>><a href="<?php echo htmlspecialchars($tab['href']) ?>"><?php
@@ -119,7 +121,6 @@ class UKCODTemplate extends QuickTemplate {
 				echo htmlspecialchars($item['text']) ?></a></li>
 <?php			} 
 
-        global $wgUser;
 		if( $wgUser->isLoggedIn() ) {
             foreach( array('contributions', 'blockip', 'emailuser', 'upload', 'specialpages') as $special ) {
 
