@@ -805,7 +805,7 @@ Your account has been created. Don't forget to change your {{SITENAME}} preferen
 
 'login'			=> 'Log in',
 'loginprompt'	=> 'You must have cookies enabled to log in to {{SITENAME}}.',
-'userlogin'		=> 'Log in / create account',
+'userlogin'		=> 'Log in',
 'logout'		=> 'Log out',
 'userlogout'	=> 'Log out',
 'notloggedin'	=> 'Not logged in',
