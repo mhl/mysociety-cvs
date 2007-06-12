@@ -164,7 +164,7 @@ class UKCODTemplate extends QuickTemplate {
 <?php 		}
 		}
 ?>
-    <br>UKOD is a registered charity in England and Wales, no. 1076346
+    <br>UKCOD is a registered charity in England and Wales, no. 1076346
 
     </div>
 
