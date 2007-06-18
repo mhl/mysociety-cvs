@@ -8,13 +8,13 @@ Launched sites
 </div>
 
 <div class="item_inner_head">
-<a href="http://www.neighbourhoodfixit.com/">Neighbourhood Fix-It &ndash; launched 7th March 2007</a>
+<a href="http://www.fixmystreet.com/">FixMyStreet &ndash; launched 7th March 2007</a>
 </div>
 <div class="item">
 A site where people can report, view, or discuss local problems like graffiti,
 fly tipping, broken paving slabs, or street lighting. We're making this 
 in collaboration with the <a href="http://www.youngfoundation.org.uk/">Young
-Foundation</a>.
+Foundation</a>. (Was originally called Neighbourhood Fix-It.)
 </div>
 
 <div class="item_inner_head">
