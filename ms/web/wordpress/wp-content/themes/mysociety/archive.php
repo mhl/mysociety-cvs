@@ -54,7 +54,7 @@ if ($cat == 3)
                 the_title(); ?></a></div>
 
                 <div class="meta">
-                    <?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?>
+                    <?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?>,
 		    <?php the_time('jS F Y')?>
                 </div>
 				

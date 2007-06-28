@@ -14,7 +14,7 @@
                 href="<?php the_permalink() ?>" rel="bookmark"
                 title="Permanent Link to <?php the_title(); ?>"><?php
                 the_title(); ?></a></div>
-				<div class="meta"><?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?> <?php the_time('jS F Y')?> </div> 
+				<div class="meta"><?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?>, <?php the_time('jS F Y')?> </div> 
 					
 				<div class="item">
 					<?php the_content('Read the rest of this entry &raquo;'); ?>

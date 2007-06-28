@@ -47,7 +47,7 @@ Read more <a href="/faq">about mySociety</a>.
             title="Permanent Link: <?php the_title(); ?>"><?php
                 the_title(); ?></a></div>
 
-				<div class="meta"><?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?> <?php the_time('jS F Y')?> </div> 
+				<div class="meta"><?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?>, <?php the_time('jS F Y')?> </div> 
 	
 			<div class="item">
 				<?php the_content('<p class="serif">Read the rest of this entry &raquo;</p>'); ?>
