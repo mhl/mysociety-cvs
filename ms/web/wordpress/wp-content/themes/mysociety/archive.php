@@ -51,11 +51,11 @@ if ($cat == 3)
 				<div class="item_head" id="post-<?php the_ID(); ?>"><a
                 href="<?php the_permalink() ?>" rel="bookmark"
                 title="Permanent Link to <?php the_title(); ?>"><?php
-                the_title(); ?> &mdash; <?php the_time('jS F
-                Y')?></a></div>
+                the_title(); ?></a></div>
 
                 <div class="meta">
                     <?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?>
+		    <?php the_time('jS F Y')?>
                 </div>
 				
 				<div class="item">

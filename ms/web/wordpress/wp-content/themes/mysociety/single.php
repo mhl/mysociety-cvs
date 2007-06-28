@@ -45,10 +45,9 @@ Read more <a href="/faq">about mySociety</a>.
 			<div class="item_head" id="post-<?php the_ID(); ?>"><a
             href="<?php echo get_permalink() ?>" rel="bookmark"
             title="Permanent Link: <?php the_title(); ?>"><?php
-                the_title(); ?> &mdash; 
-                <?php the_time('jS F Y')?></a></div>
+                the_title(); ?></a></div>
 
-				<div class="meta"><?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?>  </div> 
+				<div class="meta"><?=($cat == 3) ? "Proposed by" : "Posted by"?> <?php the_author() ?> <?php the_time('jS F Y')?> </div> 
 	
 			<div class="item">
 				<?php the_content('<p class="serif">Read the rest of this entry &raquo;</p>'); ?>
