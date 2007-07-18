@@ -10,7 +10,7 @@ README-check - Run this to check everything is documented here
 Main projects
 =============
 
-bci - FixMyStreet
+bci - FixMyStreet (internal name BrokenCivicInfrastructure)
 ycml - HearFromYourMP (internal name YourConstituencyMailingList)
 pb - PledgeBank
 na - NotApathetic codebase
