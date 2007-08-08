@@ -1,11 +1,31 @@
 <html>
 <head>
+<script type="text/javascript">
+/* Yuck, copied from source code */
+function setjs() {
+ if(navigator.product == 'Gecko') {
+   document.loginform["interface"].value = 'mozilla';
+ }else if(window.opera && document.childNodes) {
+   document.loginform["interface"].value = 'opera7';
+ }else if(navigator.appName == 'Microsoft Internet Explorer' &&
+    navigator.userAgent.indexOf("Mac_PowerPC") > 0) {
+    document.loginform["interface"].value = 'konqueror';
+ }else if(navigator.appName == 'Microsoft Internet Explorer' &&
+ document.getElementById && document.getElementById('ietest').innerHTML) {
+   document.loginform["interface"].value = 'ie';
+ }else if(navigator.appName == 'Konqueror') {
+    document.loginform["interface"].value = 'konqueror';
+ }else if(window.opera) {
+   document.loginform["interface"].value = 'opera';
+ }
+}
+</script>
 <title>mySociety Chat</title>
 </head>
 <body>
 <p>Please choose a "nickname", then press the Login button.</p>
 
-<form method="post" action="irc.cgi" name="loginform">
+<form method="post" action="irc.cgi" name="loginform" onsubmit="setjs()">
 <input type="hidden" name="interface" value="nonjs">
 <input type="hidden" name="server" value="irc.mysociety.org">
 <input type="hidden" name="channel" value="#mschat">
@@ -20,7 +40,7 @@ bgcolor="#f1f1f1"><input type="text" name="Nickname" value="Passerby"></td></tr>
 
 <p>If you prefer to use a desktop IRC client, use <a href="http://www.mysociety.org/?p=256">these login details</a>.
 
-<p><a href="http://www.mysociety.org"><img border="0" src="https://secure.mysociety.org/mysociety_sm.gif" alt="mySociety.org"></a></p>
+<p><a href="http://www.mysociety.org"><img border="0" src="http://www.mysociety.org/mysociety_sm.gif" alt="mySociety.org"></a></p>
 
 </body>
 </html>
