@@ -17,6 +17,7 @@ na - NotApathetic codebase
 na2005 - NotApathetic 2005 UK General Election, static file version
 fyr - WriteToThem (internal name FaxYourRepresentative)
 twfy - TheyWorkForYou
+foi - Freedom of Information Filer and Archive
 
 news - Look up your local newspapers
 
@@ -48,6 +49,7 @@ ms - mySociety.org website
 mscouk - mySociety.co.uk website
 ukcodwww - UKCOD.org.uk website
 
+intranet - Internal documentation / wiki
 cvswww - Development infrastructure, cvs.mysociety.org
 secure - Development infrastructure, secure.mysociety.org
 ircwww - Internet Relay Chat web interface, www.irc.mysociety.org
@@ -83,7 +85,6 @@ Libraries etc.
 ==============
 
 bin - General use scripts
-doc - General documentation 
 perllib - General purpose Perl modules
 phplib - General purpose PHP modules
 pylib - General purpose Python modules
