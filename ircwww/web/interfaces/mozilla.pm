@@ -1076,7 +1076,7 @@ var tablen;
 var tabinc;
 
 function fns(){
-   if(!document.myform.say) return;
+   if(!document.myform || !document.myform.say) return;
    document.myform.say.focus();
 }
 
