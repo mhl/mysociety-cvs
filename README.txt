@@ -69,6 +69,7 @@ services/Gaze - Gazeteer, look up place names (runs under gaze.mysociety.org)
 services/TilMa - Map tile server
 services/Queue - General queuing system (UNFINISHED)
 track - Conversion tracking (UNFINISHED)
+meinedata - Flash widget for displaying graphical data
 
 Software (which may be useful elsewhere)
 ========
