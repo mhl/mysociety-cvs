@@ -1012,6 +1012,10 @@ function userlist(users) {
           : '') + '>' + user + '</td></tr>';
    }
    tmp += '</table>';
+   if (!document.getElementById('usertable')) {
+       setTimeout(userlist, 1000, users);
+       return;
+   }
    document.getElementById('usertable').innerHTML = tmp;
    document.mform.user.value = '';
 }
