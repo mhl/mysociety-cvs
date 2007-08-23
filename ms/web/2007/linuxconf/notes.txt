@@ -1,0 +1,42 @@
+What early bugs / scalingy things were there in Dec/Jan?
+
+petsignupd - bundling database transactions
+    - although we stopped doing that later?
+
+petemaild - email sending without the writes to disk
+    - find lots of problems
+
+PHP FastCGI scripts, perl FastCGI scripts for more loaded parts.
+
+Reverse proxy - Squid
+
+pound - load balancer
+
+Had to hack libapache-mod-rpaf so it works with pound and squid
+
+Reloading PostgreSQL 7.4 database to reduce size (yeuch)
+In some ways don't recommend PostgreSQL, in others do.
+Tested PostgreSQL 8.0 but had some query/index performance problem.
+
+Was migrating from other servers to dedicated ones far too late.
+
+Adding RAM
+
+Adding indices we'd forgotten
+
+When on news at 10, load balancer maxed out (XXX get details from Pete) - was
+    better off with only one frontend server, it turned out
+
+Get some shots of front pages of mail etc, footage from news at 10 etc.
+
+Lots of gaffer tape, spent ages undoing it all.
+
+Mass email send
+    - we just had a PHP cron job and exim, which really couldn't handle it
+    ("I can let them trickle out in 10 days")
+    - 
+    - power, the whole rack died
+
+Adding more RAM :)
+
+
