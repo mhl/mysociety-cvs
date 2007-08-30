@@ -1,4 +1,4 @@
 #!/bin/sh
 
-/usr/lib/cgi-bin/nagios/$0
+/home/keith/nagios2/sbin/$0
 
