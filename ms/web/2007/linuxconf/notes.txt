@@ -1,18 +1,17 @@
-Talk to Pete Stevens about load balancer thing
+TODO:
+read architecture blog post by chris
+get graph of traffic levels
 
-Gimmicky things:
+
 
 Put your hands up if you're from a democracy
 Put them down if you don't know who your MP is
 
 
-------------------------------------------------------------------------------
-
 Intro
 =====
 
-Boiler
-
+govtrack.us
 
 
 Petitions
@@ -30,33 +29,6 @@ Two frontend machines
 One backend database machine
 Linux
 
-"When you go from 3 servers to 7 servers, there’s another step change in
-sorting out systems administration tools"
-http://www.mysociety.org/2007/01/30/good-morning/
-
-
-Languages
-=========
-
-PHP FastCGI scripts, perl FastCGI scripts for more loaded parts.
-Reverse proxy - Squid
-Had to hack libapache-mod-rpaf so it works with pound and squid
-Memory use of processes cannot be done fully from user space (in a stock
-kernel).
-
-
-Daemons
-=======
-
-Chris's description of architecture
-http://www.mysociety.org/2006/12/08/under-the-bonnet/
-
-petsignupd - bundling database transactions
-    - although we stopped doing that later?
-    - did Matthew turn this off at one point?
-petemaild - email sending without the writes to disk
-    - find lots of problems
-
 
 Open source
 ===========
@@ -66,6 +38,28 @@ Mention all open source
 - Affero GPL (check and mention status of version 3)
 - (get in propaganda about personal worries about SaS ruining GPL)
 - people spotted faults in code
+
+
+Frontend
+========
+
+PHP FastCGI scripts, perl FastCGI scripts for more loaded parts.
+Reverse proxy - Squid
+Had to hack libapache-mod-rpaf so it works with pound and squid
+Memory use of processes cannot be done fully from user space (in a stock
+kernel).
+
+
+Backend
+=======
+
+Chris's description of architecture
+http://www.mysociety.org/2006/12/08/under-the-bonnet/
+
+petsignupd - bundling database transactions
+petemaild - email sending without the writes to disk
+    - find lots of problems
+
 
 
 Early things
@@ -80,6 +74,8 @@ Mention test scripts
 
 Adding indices we'd forgotten
 Adding RAM
+
+Had to turn off updating of petition counts, and do it in a cron job
 
 
 PostgreSQL 7.4
@@ -127,7 +123,6 @@ Finish
 PledgeBank (as multinational)
 
 
-------------------------------------------------------------------------------
 
 
 Was migrating from other servers to dedicated ones far too late.
@@ -146,5 +141,6 @@ Get footage from news at 10 etc.
 Future - removing old records (what is situation with that?)
 
 Maybe get annoyed about lack of certified laptops
-    - I have Matthew Garrett living next door
+    - even though I have Matthew Garrett living next door
+
 
