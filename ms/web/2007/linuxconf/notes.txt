@@ -1,54 +1,65 @@
+Talk to Pete Stevens about load balancer thing
+
+Gimmicky things:
+
+Put your hands up if you're from a democracy
+Put them down if you don't know who your MP is
+
+
+------------------------------------------------------------------------------
+
+Intro
+=====
+
+Boiler
+
+
+
+Petitions
+=========
+
+Talk about politics of it
+- why and that I was initially sceptical it would benefit people
+  (i.e. it's just like a letter to a minister, really)
+
+
+Hardware
+========
+
+Two frontend machines
+One backend database machine
+Linux
+
 "When you go from 3 servers to 7 servers, there’s another step change in
 sorting out systems administration tools"
 http://www.mysociety.org/2007/01/30/good-morning/
 
+
+Languages
+=========
+
+PHP FastCGI scripts, perl FastCGI scripts for more loaded parts.
+Reverse proxy - Squid
+Had to hack libapache-mod-rpaf so it works with pound and squid
+Memory use of processes cannot be done fully from user space (in a stock
+kernel).
+
+
+Daemons
+=======
+
 Chris's description of architecture
 http://www.mysociety.org/2006/12/08/under-the-bonnet/
 
-What we did in first 48 hours
-http://www.mysociety.org/2006/11/17/this-is-what-beta-means-the-first-48-hours-of-petitions/
-
-What early bugs / scalingy things were there in Dec/Jan?
-
 petsignupd - bundling database transactions
     - although we stopped doing that later?
-
+    - did Matthew turn this off at one point?
 petemaild - email sending without the writes to disk
     - find lots of problems
 
-PHP FastCGI scripts, perl FastCGI scripts for more loaded parts.
 
-Reverse proxy - Squid
-
-pound - load balancer
-
-Had to hack libapache-mod-rpaf so it works with pound and squid
-
-Reloading PostgreSQL 7.4 database to reduce size (yeuch)
-In some ways don't recommend PostgreSQL, in others do.
-Tested PostgreSQL 8.0 but had some query/index performance problem.
-
-Was migrating from other servers to dedicated ones far too late.
-
-Adding RAM
-
-Adding indices we'd forgotten
-
-When on news at 10, load balancer maxed out (XXX get details from Pete) - was
-    better off with only one frontend server, it turned out
-
-Get some shots of front pages of mail etc, footage from news at 10 etc.
-
-Lots of gaffer tape, spent ages undoing it all.
-
-Mass email send
-    - we just had a PHP cron job and exim, which really couldn't handle it
-    ("I can let them trickle out in 10 days")
-    - 
-    - power, the whole rack died
-
-Get lots of web stats
-    150 signatures in a second
+Open source
+===========
 
 Mention all open source
 - which is astonishing for a prominent, government website
@@ -56,22 +67,84 @@ Mention all open source
 - (get in propaganda about personal worries about SaS ruining GPL)
 - people spotted faults in code
 
-Mention that we're hiring
-Mention that we have lots of volunteers
 
-Adding more RAM :)
+Early things
+============
 
-Future - removing old records (waht is situation with that?)
+What we did in first 48 hours
+http://www.mysociety.org/2006/11/17/this-is-what-beta-means-the-first-48-hours-of-petitions/
 
 Mention test scripts
-Iterative delivery
-Usability improvements
+    Iterative delivery
+    Usability improvements
 
-Talk about politics of it
-- why and that I was initially sceptical it would benefit people
-  (i.e. it's just like a letter to a minister, really)
+Adding indices we'd forgotten
+Adding RAM
+
+
+PostgreSQL 7.4
+==============
+
+Reloading PostgreSQL 7.4 database to reduce size (yeuch)
+Dumping it and reloading it was must thorough and reliable way to vacuum it
+
+In some ways don't recommend PostgreSQL, in others do.
+Tested PostgreSQL 8.0 but had some query/index performance problem.
+
+
+Petitions - maybe they do matter
+================================
+
 - why petitions can help after all (what stories do we have of changed
   policies?)
 - nobody realised you got on the 10 o'clock news if you got a million signatures.
 
+
+Get some shots of front pages of mail etc
+Get lots of web stats
+    150 signatures in a second
+
+
+Load balancing
+==============
+
+pound - load balancer - turned out wasn't needed.
+
+When on news at 10, load balancer maxed out (XXX get details from Pete) - was
+    better off with only one frontend server, it turned out
+
+
+Future
+======
+
+Mention that we're hiring
+Mention that we have lots of volunteers
+
+
+Finish
+======
+
+PledgeBank (as multinational)
+
+
+------------------------------------------------------------------------------
+
+
+Was migrating from other servers to dedicated ones far too late.
+
+Lots of gaffer tape, spent ages undoing it all.
+
+Mass email send
+    - we just had a PHP cron job and exim, which really couldn't handle it
+    ("I can let them trickle out in 10 days")
+    - power, the whole rack died
+
+Mention Chris's death in the middle
+
+Get footage from news at 10 etc.
+
+Future - removing old records (what is situation with that?)
+
+Maybe get annoyed about lack of certified laptops
+    - I have Matthew Garrett living next door
 
