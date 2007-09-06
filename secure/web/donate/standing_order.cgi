@@ -8,7 +8,7 @@
 # Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: standing_order.cgi,v 1.1 2007-01-09 15:48:24 louise Exp $
+# $Id: standing_order.cgi,v 1.2 2007-09-06 17:11:29 matthew Exp $
 #
 
 
@@ -142,8 +142,8 @@ def generate_pdf(c, ref):
                               Please fill in the form below and send it to: """), p_normal)])
 
     text.extend([Paragraph(_("""F.A.O. Tom Steinberg"""), p_close)])
-    text.extend([Paragraph(_("""35 Matilda Street,"""), p_close)])
-    text.extend([Paragraph(_("""London N1 0LA"""), p_close)])
+    text.extend([Paragraph(_("""12 Duke's Road,"""), p_close)])
+    text.extend([Paragraph(_("""London WC1H 9AD"""), p_close)])
 
     text.extend([Paragraph(_("""Thanks again for your support."""), p_normal)])
     text.extend([Paragraph(_("""Best wishes,"""), p_close)])
