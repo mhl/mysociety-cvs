@@ -54,7 +54,7 @@
 			<?php if ($cat!=3) { ?>
                 <div class="item_head">Categories</div>
                 <div class="item">
-<ul><?php wp_list_cats('feed=XML&use_desc_for_title=0&feed_image=/rss.gif');?></ul>
+<ul class="archive_list"><?php wp_list_cats('feed=XML&use_desc_for_title=0&feed_image=/rss.gif');?></ul>
 </div>
 <div class="item_foot">
 </div>
