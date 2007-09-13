@@ -553,17 +553,24 @@ Copyright (c) 2001, 2002, 2003 by Juergen Hermann
 
 /* Donations page */
 
-#betteritemdiv {
+#betteritemdiv, .itembox {
     font-size: 14px;
-    padding: 1em;
+    padding: 1em 1em 0;
     background-color: #f0f0ff;
     border: dashed 1px black;
     margin-top: 1em;
 }
 
-#betteritemdiv h2 {
+#betteritemdiv h2, .itembox h2 {
     font-size: 1.5em;
     margin: 0;
+}
+.itembox h2 small {
+    font-weight: normal;
+}
+#betteritemdiv h1, .itembox h1 {
+    font-size: 1.75em;
+    margin-top: 0;
 }
 
 #donatebox {
