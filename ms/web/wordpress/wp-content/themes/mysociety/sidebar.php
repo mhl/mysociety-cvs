@@ -31,6 +31,12 @@
 			<?php wp_list_pages('title_li=<h2>' . __('Pages') . '</h2>' ); ?>
 
 			<?php if (is_category() && $cat==1) { ?>
+			<div class="itembox">
+			<h2>What we do</h2>
+			<p>mySociety builds <a href="/projects">websites</a> which give
+			people simple, tangible benefits in the civic and community aspects of their
+			lives. <a href="/faq">More info on our aims</a>.</p>
+			</div>
 				<div class="item_head">Developer's Blog</div>
 				<div class="item"><ul class="archive_list">
 				<?php wp_get_archives('type=postbypost&limit=10&cat=2'); ?>
