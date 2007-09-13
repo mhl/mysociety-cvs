@@ -1,7 +1,6 @@
 <?php get_header(); ?>
 
 <?php print category_description($cat);?>
-    <div class="item_foot"></div>
 
 	<div id="content" class="narrowcolumn">
 
