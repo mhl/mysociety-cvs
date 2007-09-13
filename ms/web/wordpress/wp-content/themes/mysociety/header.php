@@ -31,11 +31,11 @@ if ($_SERVER['HTTP_HOST'] != 'www.mysociety.org') {
 }
 ?>
 
-<div class="top">
+<div id="top">
 <?
 if ($menu_proposals2006) {
 ?>
-<div class="masthead masthead_proposals">
+<div id="masthead" class="masthead_proposals">
 mySociety Call for Proposals 2006 
 </div>
 </div>
@@ -50,7 +50,7 @@ mySociety Call for Proposals 2006
     print '</div>';
 } else {
 ?>
-<div class="masthead"><a href="/"><img border="0" src="/mslogo.gif" alt="mySociety.org"/></a></div>
+<div id="masthead"><a href="/"><img border="0" src="/mslogo.gif" alt="mySociety.org"/></a></div>
 </div>
 
 <div class="page-body">
