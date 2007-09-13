@@ -32,7 +32,7 @@
 
 			<?php if (is_category() && $cat==1) { ?>
 				<div class="item_head">Developer's Blog</div>
-				<div class="item"><ul>
+				<div class="item"><ul class="archive_list">
 				<?php wp_get_archives('type=postbypost&limit=10&cat=2'); ?>
 				</ul></div>
 				<div class="item_foot"></div>
