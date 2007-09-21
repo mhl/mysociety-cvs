@@ -1,5 +1,5 @@
 <?php
-require_once('init.php');
+require_once('../includes/init.php');
 
 class check_email_page extends pagebase {
 

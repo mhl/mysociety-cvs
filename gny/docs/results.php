@@ -1,6 +1,6 @@
 <?php
 
-require_once('init.php');
+require_once('../includes/init.php');
 require_once('group_search.php');
 
 class results_page extends pagebase {

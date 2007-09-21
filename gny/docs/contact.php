@@ -1,5 +1,5 @@
 <?php
-require_once('init.php');
+require_once('../includes/init.php');
 require_once('table_classes/stat.php');
 	
 class contact_page extends pagebase {

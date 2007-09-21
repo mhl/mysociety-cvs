@@ -1,5 +1,5 @@
 <?php
-require_once('init.php');
+require_once('../includes/init.php');
 require_once('table_classes/group.php');
 
 class addcontact_page extends pagebase {

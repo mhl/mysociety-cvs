@@ -1,5 +1,5 @@
 <?php
-require_once('init.php');
+require_once('../includes/init.php');
 
 class about_page extends pagebase {
 
