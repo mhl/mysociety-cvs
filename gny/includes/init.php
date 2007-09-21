@@ -1,6 +1,6 @@
 <?php
 	require_once ('PEAR.php');
-	require_once ('config.php');
+	require_once ('../conf/general');
 	require_once ('element.php');
 	require_once ('factory.php');
 	require_once ('error_handle.php');
