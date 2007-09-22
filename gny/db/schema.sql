@@ -5,11 +5,8 @@
 */
 
 
-CREATE DATABASE IF NOT EXISTS groups;
-USE groups;
-
-DROP TABLE IF EXISTS `groups`.`confirmation`;
-CREATE TABLE  `groups`.`confirmation` (
+DROP TABLE IF EXISTS `confirmation`;
+CREATE TABLE  `confirmation` (
   `confirmation_id` int(11) NOT NULL auto_increment,
   `parent_table` varchar(40) NOT NULL,
   `parent_id` int(11) NOT NULL,
@@ -17,8 +14,8 @@ CREATE TABLE  `groups`.`confirmation` (
   PRIMARY KEY  (`confirmation_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `groups`.`contact_email`;
-CREATE TABLE  `groups`.`contact_email` (
+DROP TABLE IF EXISTS `contact_email`;
+CREATE TABLE  `contact_email` (
   `contact_email_id` int(11) NOT NULL auto_increment,
   `to_email` varchar(150) NOT NULL,
   `message` text NOT NULL,
@@ -29,8 +26,8 @@ CREATE TABLE  `groups`.`contact_email` (
 ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `groups`.`country`;
-CREATE TABLE  `groups`.`country` (
+DROP TABLE IF EXISTS `country`;
+CREATE TABLE  `country` (
   `iso` char(2) NOT NULL,
   `name` varchar(80) NOT NULL,
   `printable_name` varchar(80) NOT NULL,
@@ -39,7 +36,7 @@ CREATE TABLE  `groups`.`country` (
   `disabled` tinyint(1) default '0',
   PRIMARY KEY  (`iso`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('AF','AFGHANISTAN','Afghanistan','AFG',4,0),
  ('AL','ALBANIA','Albania','ALB',8,0),
  ('DZ','ALGERIA','Algeria','DZA',12,0),
@@ -62,7 +59,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('BY','BELARUS','Belarus','BLR',112,0),
  ('BE','BELGIUM','Belgium','BEL',56,0),
  ('BZ','BELIZE','Belize','BLZ',84,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('BJ','BENIN','Benin','BEN',204,0),
  ('BM','BERMUDA','Bermuda','BMU',60,0),
  ('BT','BHUTAN','Bhutan','BTN',64,0),
@@ -83,7 +80,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('KY','CAYMAN ISLANDS','Cayman Islands','CYM',136,0),
  ('CF','CENTRAL AFRICAN REPUBLIC','Central African Republic','CAF',140,0),
  ('TD','CHAD','Chad','TCD',148,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('CL','CHILE','Chile','CHL',152,0),
  ('CN','CHINA','China','CHN',156,0),
  ('CX','CHRISTMAS ISLAND','Christmas Island',NULL,NULL,0),
@@ -104,7 +101,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('DM','DOMINICA','Dominica','DMA',212,0),
  ('DO','DOMINICAN REPUBLIC','Dominican Republic','DOM',214,0),
  ('EC','ECUADOR','Ecuador','ECU',218,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('EG','EGYPT','Egypt','EGY',818,0),
  ('SV','EL SALVADOR','El Salvador','SLV',222,0),
  ('GQ','EQUATORIAL GUINEA','Equatorial Guinea','GNQ',226,0),
@@ -125,7 +122,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('DE','GERMANY','Germany','DEU',276,0),
  ('GH','GHANA','Ghana','GHA',288,0),
  ('GI','GIBRALTAR','Gibraltar','GIB',292,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('GR','GREECE','Greece','GRC',300,0),
  ('GL','GREENLAND','Greenland','GRL',304,0),
  ('GD','GRENADA','Grenada','GRD',308,0),
@@ -146,7 +143,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('ID','INDONESIA','Indonesia','IDN',360,0),
  ('IR','IRAN, ISLAMIC REPUBLIC OF','Iran, Islamic Republic of','IRN',364,0),
  ('IQ','IRAQ','Iraq','IRQ',368,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('IE','IRELAND','Ireland','IRL',372,0),
  ('IL','ISRAEL','Israel','ISR',376,0),
  ('IT','ITALY','Italy','ITA',380,0),
@@ -167,7 +164,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('LR','LIBERIA','Liberia','LBR',430,0),
  ('LY','LIBYAN ARAB JAMAHIRIYA','Libyan Arab Jamahiriya','LBY',434,0),
  ('LI','LIECHTENSTEIN','Liechtenstein','LIE',438,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('LT','LITHUANIA','Lithuania','LTU',440,0),
  ('LU','LUXEMBOURG','Luxembourg','LUX',442,0),
  ('MO','MACAO','Macao','MAC',446,0),
@@ -187,7 +184,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('FM','MICRONESIA, FEDERATED STATES OF','Micronesia, Federated States of','FSM',583,0),
  ('MD','MOLDOVA, REPUBLIC OF','Moldova, Republic of','MDA',498,0),
  ('MC','MONACO','Monaco','MCO',492,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('MN','MONGOLIA','Mongolia','MNG',496,0),
  ('MS','MONTSERRAT','Montserrat','MSR',500,0),
  ('MA','MOROCCO','Morocco','MAR',504,0),
@@ -209,7 +206,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('NO','NORWAY','Norway','NOR',578,0),
  ('OM','OMAN','Oman','OMN',512,0),
  ('PK','PAKISTAN','Pakistan','PAK',586,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('PW','PALAU','Palau','PLW',585,0),
  ('PS','PALESTINIAN TERRITORY, OCCUPIED','Palestinian Territory, Occupied',NULL,NULL,0),
  ('PA','PANAMA','Panama','PAN',591,0),
@@ -230,7 +227,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('KN','SAINT KITTS AND NEVIS','Saint Kitts and Nevis','KNA',659,0),
  ('LC','SAINT LUCIA','Saint Lucia','LCA',662,0),
  ('PM','SAINT PIERRE AND MIQUELON','Saint Pierre and Miquelon','SPM',666,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('VC','SAINT VINCENT AND THE GRENADINES','Saint Vincent and the Grenadines','VCT',670,0),
  ('WS','SAMOA','Samoa','WSM',882,0),
  ('SM','SAN MARINO','San Marino','SMR',674,0),
@@ -249,7 +246,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('GS','SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS','South Georgia and the South Sandwich Islands',NULL,NULL,0),
  ('ES','SPAIN','Spain','ESP',724,0),
  ('LK','SRI LANKA','Sri Lanka','LKA',144,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('SD','SUDAN','Sudan','SDN',736,0),
  ('SR','SURINAME','Suriname','SUR',740,0),
  ('SJ','SVALBARD AND JAN MAYEN','Svalbard and Jan Mayen','SJM',744,0),
@@ -269,7 +266,7 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('TN','TUNISIA','Tunisia','TUN',788,0),
  ('TR','TURKEY','Turkey','TUR',792,0),
  ('TM','TURKMENISTAN','Turkmenistan','TKM',795,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('TC','TURKS AND CAICOS ISLANDS','Turks and Caicos Islands','TCA',796,0),
  ('TV','TUVALU','Tuvalu','TUV',798,0),
  ('UG','UGANDA','Uganda','UGA',800,0),
@@ -288,12 +285,12 @@ INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`
  ('WF','WALLIS AND FUTUNA','Wallis and Futuna','WLF',876,0),
  ('EH','WESTERN SAHARA','Western Sahara','ESH',732,0),
  ('YE','YEMEN','Yemen','YEM',887,0);
-INSERT INTO `groups`.`country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
+INSERT INTO `country` (`iso`,`name`,`printable_name`,`iso3`,`numcode`,`disabled`) VALUES 
  ('ZM','ZAMBIA','Zambia','ZMB',894,0),
  ('ZW','ZIMBABWE','Zimbabwe','ZWE',716,0);
 
-DROP TABLE IF EXISTS `groups`.`groups`;
-CREATE TABLE  `groups`.`groups` (
+DROP TABLE IF EXISTS `groups`;
+CREATE TABLE `groups` (
   `group_id` int(11) NOT NULL auto_increment,
   `name` varchar(150) NOT NULL,
   `byline` text NOT NULL,
@@ -317,27 +314,27 @@ CREATE TABLE  `groups`.`groups` (
   PRIMARY KEY  (`group_id`),
   KEY `url` (`url_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=123 DEFAULT CHARSET=utf8;
-INSERT INTO `groups`.`groups` (`group_id`,`name`,`byline`,`description`,`tags`,`involved_type`,`involved_link`,`created_name`,`created_date`,`created_email`,`confirmed`,`long_bottom_left`,`lat_bottom_left`,`long_top_right`,`lat_top_right`,`zoom_level`,`long_centroid`,`lat_centroid`,`url_id`,`involved_email`) VALUES 
+INSERT INTO `groups` (`group_id`,`name`,`byline`,`description`,`tags`,`involved_type`,`involved_link`,`created_name`,`created_date`,`created_email`,`confirmed`,`long_bottom_left`,`lat_bottom_left`,`long_top_right`,`lat_top_right`,`zoom_level`,`long_centroid`,`lat_centroid`,`url_id`,`involved_email`) VALUES 
  (113,'dsadsadsa','dsadasdas','dsadsadas','dsadsadsa','email',NULL,'jhkjlkj','2007-09-08 19:39:05','fds@fds.com',1,-3.30517,54.4589,-3.29487,54.4649,15,-3.3,54.4619,'dsadsadsa','fds@fds.com'),
  (114,'fdsfdsfds','fdsfds','fdsfds','fdsfdsfdsf','link','http://ewqewqewq.com','ewqewq','2007-09-08 19:39:05','ewq@r.com',1,-3.32062,54.4499,-3.27942,54.4738,13,-3.3,54.4619,'fdsfdsfds',NULL),
  (115,'fdsfds','fds','fdsfds','fdsfds','email',NULL,'richard','2007-09-09 16:15:28','richard@memespring.co.uk',1,-0.124798,51.4555,-0.104198,51.4683,14,-0.114498,51.4619,'fdsfds','richard@memespring.co.uk'),
  (116,'dsadsa','dsa','dsa','dsa','email',NULL,'fds','2007-09-09 20:22:31','fds@fds.com',1,-0.189514,51.4052,-0.0247192,51.5078,11,-0.107117,51.4566,'dsadsa','fds@fds.com'),
  (117,'dsadasdsa','dsadsa','dsadas',NULL,'email',NULL,'jjkjkl','2007-09-15 20:23:31','jkjlkjkljkl@fds.com',0,-3.16923,54.9771,-3.16408,54.9801,16,-3.16667,54.9786,'','fds@gdsfd.com');
-INSERT INTO `groups`.`groups` (`group_id`,`name`,`byline`,`description`,`tags`,`involved_type`,`involved_link`,`created_name`,`created_date`,`created_email`,`confirmed`,`long_bottom_left`,`lat_bottom_left`,`long_top_right`,`lat_top_right`,`zoom_level`,`long_centroid`,`lat_centroid`,`url_id`,`involved_email`) VALUES 
+INSERT INTO `groups` (`group_id`,`name`,`byline`,`description`,`tags`,`involved_type`,`involved_link`,`created_name`,`created_date`,`created_email`,`confirmed`,`long_bottom_left`,`lat_bottom_left`,`long_top_right`,`lat_top_right`,`zoom_level`,`long_centroid`,`lat_centroid`,`url_id`,`involved_email`) VALUES 
  (118,'fdfdsfds','fdsfdsfds','fdsfdsfds',NULL,'email',NULL,'joiji','2007-09-15 20:42:04','fdsf@fds.com',0,-3.16796,54.9779,-3.16538,54.9794,17,-3.16667,54.9786,'','ds@fds.com'),
  (119,'fdsfds','fds','fdsfdsfds',NULL,'email',NULL,'jjkljlk','2007-09-15 20:57:50','jkjlkjkljkl@fds.com',0,-3.16923,54.9771,-3.16408,54.9801,16,-3.16667,54.9786,'','fds@gdsfd.com'),
  (120,'jkhjkhjkhj','dsadsads','hjkhkjhjk','hjk','email',NULL,'jkjjkl','2007-09-15 22:06:42','fdsf@fds.com',0,-3.16923,54.9771,-3.16408,54.9801,16,-3.16667,54.9786,'','ds@fds.com'),
  (121,'dsa','dsadsa','dsadsa','dsadsa','email',NULL,'jhhjk','2007-09-15 22:09:46','hj@fds.com',0,-3.16796,54.9779,-3.16538,54.9794,17,-3.16667,54.9786,'','fds@gdsfd.com'),
  (122,'jkhkl','jkl','jkl','ljk','email',NULL,'kjklj','2007-09-15 22:12:34','jkl@fds.com',0,-3.16923,54.9771,-3.16408,54.9801,16,-3.16667,54.9786,'jkhkl','sa@fd.com');
 
-DROP TABLE IF EXISTS `groups`.`stat`;
-CREATE TABLE  `groups`.`stat` (
+DROP TABLE IF EXISTS `stat`;
+CREATE TABLE  `stat` (
   `stat_key` varchar(100) NOT NULL,
   `stat_value` varchar(100) NOT NULL,
   `stat_id` int(11) NOT NULL auto_increment,
   PRIMARY KEY  (`stat_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-INSERT INTO `groups`.`stat` (`stat_key`,`stat_value`,`stat_id`) VALUES 
+INSERT INTO `stat` (`stat_key`,`stat_value`,`stat_id`) VALUES 
  ('search.type.ukpostcode','10',2),
  ('search.count','5',3),
  ('contactemail.sent.count','2',4),
