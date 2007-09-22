@@ -9,6 +9,6 @@
 	'require_prefix' => 'DataObjects/',
 	'class_prefix' => 'tableclass_',
 	'db_driver' => 'MDB2',
-	"debug" =>0
+	"debug" =>5
 	);
 ?>

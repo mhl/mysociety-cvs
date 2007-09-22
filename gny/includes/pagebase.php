@@ -102,7 +102,8 @@ abstract class pagebase {
         $this->smarty->compile_dir = SMARTY_PATH;
         $this->compile_check = true;
         $this->smarty->template_dir = TEMPLATE_DIR;
-        $this->smarty_template = $template_file;
+       
+	$this->smarty_template = $template_file;
     }
     
     //Get template name - uses reflection to try and guess the template name
