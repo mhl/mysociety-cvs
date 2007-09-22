@@ -36,6 +36,14 @@ class confirmed_page extends pagebase {
 
 		//handle different confirmation types
 		if($confirmation->parent_table == 'contact_email'){
+		
+			//send the email
+			$contact_email = factory::create('contact_email');
+			$contact_email->get($confirmation->parent_id);
+			$contact_email->send();
+			$contact_email->delete();
+		
+			//show page
 	    	$this->page_title = "your email has been sent";					
 	    	$this->menu_item = "search";				
 			$this->assign('title', "Your email has been sent");			
@@ -58,8 +66,12 @@ class confirmed_page extends pagebase {
 			}else{
 				trigger_error("Couldent find group from confirmation ID");
 			}
+			
+			//update group status to confirmed
+			$group->confirmed = true;
+			$group->update();
 
-			//assign vars to smarty
+			//show the page
 	    	$this->page_title = "your group has been added";					
 	    	$this->menu_item = "add";				
 			$this->assign('title', "Your group has been added!");			
@@ -67,12 +79,6 @@ class confirmed_page extends pagebase {
 			$this->assign('link', GROUP_ORGANISERS_GROUP_URL);
 			$this->assign('link_text', "Click here to join.");
 
-			//Send the email
-			$contact_email = factory::create('contact_email');
-			$contact_email->get($confirmation->parent_id);
-			$contact_email->send();
-			$contact_email->delete();
-			
 			//Update the stats table
 			tableclass_stat::increment_stat("group.confirmed.count");
 						
