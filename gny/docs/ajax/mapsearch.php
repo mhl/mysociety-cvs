@@ -1,9 +1,11 @@
 <?php
 
+
+
 	//the this a page to be called via ajax. it does its best to work out what people are searching for and 
 	// then does a geo lookup
-	
-	require_once('init.php');
+
+	require_once('../../includes/init.php');
 	require_once('group_search.php');	
 
 	$search = trim(get_http_var('q'));
@@ -12,7 +14,7 @@
 
 	//Work out the search type
 	$search_type = group_search::get_search_type($search);
-	
+
 	if($search_type == 'postcode'){
 		//UK postcode search
 		$clean_postcode = clean_postcode($search);
