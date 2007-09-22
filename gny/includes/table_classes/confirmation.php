@@ -43,7 +43,7 @@ class tableclass_confirmation extends DB_DataObject {
 		$smarty->assign('text',$text);
 		$smarty->assign('url',$url);		
 
-        $body = $smarty->fetch(SMARTY_TEMPLATE_DIRECTORY . '/emails/confirmation.tpl');
+        $body = $smarty->fetch(TEMPLATE_DIR . '/emails/confirmation.tpl');
 
 		//send email
 		send_text_email($to, $SITE_NAME, CONFIRMATION_EMAIL, $subject, $body);

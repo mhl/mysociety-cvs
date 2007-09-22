@@ -23,7 +23,7 @@
         <div id="divFrontRight">
             <h3>Want to add your group?</h3>
             <p>
-                <strong>It’s simple, just 3 steps</strong>. Tell us what the group does,what area it covers and how 
+                <strong>It's simple, just 3 steps</strong>. Tell us what the group does,what area it covers and how 
                 people near you can get involved.<br/>
                 <a id="aGetStarted" href="{$www_server}/add/about/">Get started &gt;&gt;</a>
             </p>

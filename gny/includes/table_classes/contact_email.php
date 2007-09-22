@@ -33,7 +33,7 @@ class tableclass_contact_email extends DB_DataObject {
 		$smarty->assign('text', $this->message);
 		$smarty->assign('team_email', CONTACT_EMAIL);		
 
-        $body = $smarty->fetch(SMARTY_TEMPLATE_DIRECTORY . '/emails/contact.tpl');
+        $body = $smarty->fetch(TEMPLATE_DIR . '/emails/contact.tpl');
 
 		//send email
 		send_text_email($this->to_email, $this->from_name, $this->from_email, $this->subject, $body);

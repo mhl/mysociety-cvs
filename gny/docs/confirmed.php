@@ -12,13 +12,13 @@ class confirmed_page extends pagebase {
 
 	//setup
 	protected function setup (){
-		
+
 		if($_GET['q']){
 			$this->viewstate['link_key'] = urlencode($_GET['q']);
 		}else{
-			throw_404();
+                	throw_404();
 		}
-		
+
 	}
 
 	//Bind
@@ -27,7 +27,7 @@ class confirmed_page extends pagebase {
 		//try and get the group, check it is a contact by web type
 		$search = factory::create('search');
 		$result = $search->search_cached('confirmation', array(array('link_key', '=', $this->viewstate['link_key'])),1);
-		$confirmation = null;
+		$confirmation = null; 
 		if(sizeof($result) == 1){
 			$confirmation = $result[0];
 		}else{
@@ -46,7 +46,7 @@ class confirmed_page extends pagebase {
 			//Update the stats table
 			tableclass_stat::increment_stat("contactemail.confirmed.count");
 			
-		}elseif($confirmation->parent_table == 'group'){
+		}elseif($confirmation->parent_table == 'groups'){
 
 			//get the group
 			$group_id = $confirmation->parent_id;

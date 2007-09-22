@@ -63,8 +63,8 @@ class addpreview_page extends pagebase {
 		
 			//send confirmation email
 			$confirmation = factory::create('confirmation');
-			$confirmation->send($this->contact_email->from_email, 
-				EMAIL_PREFIX . "Confirm your group'" . $this->group->name . " on " . SITE_NAME,
+			$confirmation->send($this->group->created_email, 
+				EMAIL_PREFIX . "Confirm the group '" . $this->group->name . "'  on " . SITE_NAME,
 				"Click on the link below to confirm you want to add your to " . SITE_NAME . ":",
 				"groups", $this->group->group_id);
 		

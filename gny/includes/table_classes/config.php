@@ -9,6 +9,7 @@
 	'require_prefix' => 'DataObjects/',
 	'class_prefix' => 'tableclass_',
 	'db_driver' => 'MDB2',
+		'ini_' . DB_NAME => INCLUDE_DIR . '/table_classes/groups.ini',
 	"debug" => SQL_DEBUG_LEVEL
 	);
 ?>

@@ -7,7 +7,7 @@
                 <li><a href="{$www_server}/about/">About</a></li>                         
                 <li><a href="{$www_server}/about/#contact">Contact</a></li>                
             </ul>
-            <a id="aHosted" href="http://www.mysociety.org" title="This website is hosted by mySociety"><span class="hide">Hosted by MySociety</span></a>
+
         </div>
     </div>
     {if $onloadscript !="" || $set_focus_control !=""}
