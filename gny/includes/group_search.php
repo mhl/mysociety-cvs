@@ -34,7 +34,7 @@
 			
 			//zipcode?
 			if($this->search_type == 'zipcode'){
-				$clean_postcode = clean_postcode($search_term);
+				$clean_postcode = trim($search_term);
 				$longlat = get_postcode_location($clean_postcode, 'US');
 				if($longlat == false){
 					array_push($this->warnings, "A error occured when trying to find that zip code");

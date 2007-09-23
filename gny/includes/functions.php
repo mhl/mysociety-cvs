@@ -127,7 +127,7 @@
 		$url = "http://geo.localsearchmaps.com/?zip={zip}&country={country}";
 		$url = str_replace('{zip}', urlencode($zip), $url);
 		$url = str_replace('{country}', urlencode($country), $url);
-		
+error_log($url);
 		$data = safe_scrape_cached($url);
 		return process_emag_geocoder($data);
 	}

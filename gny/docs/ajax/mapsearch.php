@@ -22,7 +22,7 @@
 		$zoom_level = 14;
 	}elseif($search_type == 'zipcode'){
 		//US zipcode search
-		$clean_postcode = clean_postcode($search);
+		$clean_postcode = trim($search);
 		$result = get_postcode_location($clean_postcode, 'US');	
 		$zoom_level = 14;
 	}else{
