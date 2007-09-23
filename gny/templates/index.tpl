@@ -10,11 +10,11 @@
             <input type="submit" id="btnSearch" name="btnIndex" value="Go" />
             <small>
                 {if $country == 'US'}
-                    e.g. <em>94105</em> or <em>San Francisco</em>
+                    e.g. <em><a href="{$www_server}/search/94105/">94105</a></em> or <em><a href="{$www_server}/search/San Francisco/">San Francisco</a></em>
                 {elseif  $country == 'GB'}
-                    e.g. <em>SW9 8JX</em> or <em>Brixton</em>
+                    e.g. <em><a href="{$www_server}/search/sw98jx/">SW9 8JX</a></em> or <em><a href="{$www_server}/search/brixton/">Brixton</a></em>
                 {else}
-                    e.g. <em>Berlin</em> or <em>Gdansk</em>
+                    e.g. <em><a href="{$www_server}/search/berlin/">Berlin</a></em> or <em><a href="{$www_server}/search/gdansk/">Gdansk</a></em>
                 {/if}
             </small>
         </div>
