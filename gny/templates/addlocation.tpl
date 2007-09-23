@@ -21,9 +21,9 @@
                 <input type="text" class="text" id="txtSearchMap" onkeypress="return submitMapSearch(event);"/>
                 <input type="button" onclick="javascript:searchMap();"value="Go" />
                 <small>
-                    {if $country == 'US'}
+                    {if $country_code == 'US'}
                         e.g. <em>94105</em> or <em>San Francisco</em> or <em>London, UK</em>
-                    {elseif  $country == 'GB'}
+                    {elseif  $country_code == 'GB'}
                         e.g. <em>SW9 8JX</em> or <em>Manchester</em> or <em>San Francisco, USA</em>
                     {else}
                         e.g. <em>Paris, France</em> or <em>Sydney, Australia</em>
