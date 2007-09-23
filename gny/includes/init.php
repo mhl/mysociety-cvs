@@ -7,7 +7,6 @@
 
 	require_once ('PEAR.php');
 	require_once ('general');
-	require_once ('element.php');
 	require_once ('factory.php');
 	require_once ('error_handle.php');
 	require_once ('session.php');
