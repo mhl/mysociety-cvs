@@ -24,18 +24,18 @@ class addlocation_page extends pagebase {
 	//setup
 	protected function setup (){
 
+		//try and get their country code from IP (if not, set then default to GB)
+		$gaze = factory::create('gaze');
+		$this->viewstate['country_code'] = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
+		if($this->viewstate['country_code'] == false){
+			$this->viewstate['country_code'] = "GB";
+		}
+
 		//set the js for the map
 		if(!isset($this->group->zoom_level) || $this->group->zoom_level == ''){
-		
-			//try and get their country code from IP (if not, set then default to GB)
-			$gaze = factory::create('gaze');
-			$this->viewstate['country_code'] = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
-			if($this->viewstate['country_code'] == false){
-				$this->viewstate['country_code'] = "GB";
-			}
 
 			//Get the centroid for that country
-			$centroid = $gaze->get_country_centroid($country_code);
+			$centroid = $gaze->get_country_centroid($this->viewstate['country_code']);
 
 			//work out an oppropriate zoom level
 			$bounding_coords = $gaze->get_country_bounding_coords($this->viewstate['country_code']);
