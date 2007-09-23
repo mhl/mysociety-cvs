@@ -19,7 +19,7 @@
 *
 * @package Cache_Lite
 * @category Caching
-* @version $Id: Lite.php,v 1.1 2007-09-21 07:18:02 richard Exp $
+* @version $Id: Lite.php,v 1.2 2007-09-23 14:00:20 richard Exp $
 * @author Fabien MARTY <fab@php.net>
 */
 
@@ -395,7 +395,7 @@ class Cache_Lite
             }
             if (is_object($res)) {
 	        	// $res is a PEAR_Error object 
-                if (!($this->_errorHandlingAPIBreak)) {   
+                if (!($this->_errorHandlingAPIBreak)) { 
 	                return false; // we return false (old API)
 	            }
 	        }
@@ -770,6 +770,7 @@ class Cache_Lite
             @fclose($fp);
             return true;
         }      
+
         return $this->raiseError('Cache_Lite : Unable to write cache file : '.$this->_file, -1);
     }
        

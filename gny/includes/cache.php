@@ -27,7 +27,8 @@ class Cache {
 	}
 	
 	public function set($id, $data, $group = "default") {
-		$success = $this->cache_lite->save($data, $id, $group);		
+
+		$success = $this->cache_lite->save(serialize($data), $id, $group);		
 		return $success;
 	}
 	
@@ -35,7 +36,7 @@ class Cache {
 	
 		$return = $this->cache_lite->get($id, $group);
 
-		return $return;	
+		return unserialize($return);	
 	}
 
 	public function delete($id) {

@@ -17,7 +17,7 @@
             </li>
             <li>
                 <label for="txtMessage">Your message</label>
-<textarea id="txtContactMessage" name="txtContactMessage" {if $warn_txtContactMessage}class="error"{/if}>{if $data.txtContactMessage}
+<textarea id="txtContactMessage" name="txtContactMessage" {if $warn_txtContactMessage}class="error"{/if}>{if $data.txtContactMessage == ''}
 Hi,
 
 I found out about {$group->name} on {$site_name} and would like to know how I can get involved.

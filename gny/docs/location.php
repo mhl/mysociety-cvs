@@ -53,6 +53,12 @@ class location_page extends pagebase {
 		}	
 	
 	}
+	
+	function check_single_match(){
+		
+		
+		
+	}
 
 
 	//setup

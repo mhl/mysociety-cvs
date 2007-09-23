@@ -75,9 +75,9 @@ class confirmed_page extends pagebase {
 	    	$this->page_title = "your group has been added";					
 	    	$this->menu_item = "add";				
 			$this->assign('title', "Your group has been added!");			
-			$this->assign('text', "We have set up an email group for people who oganise groups like yours.");						
+			$this->assign('text', "We have set up an email group for people who organise groups like yours.");						
 			$this->assign('link', GROUP_ORGANISERS_GROUP_URL);
-			$this->assign('link_text', "Click here to join.");
+			$this->assign('link_text', "Click here to join the group organisers email group.");
 
 			//Update the stats table
 			tableclass_stat::increment_stat("group.confirmed.count");

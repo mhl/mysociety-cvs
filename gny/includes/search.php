@@ -18,7 +18,6 @@ class searcher {
 		//check the cache
 		$cache = cache::factory();
 		$cached = $cache->get($key, "search");
-		
 		//if we have something in the cache, grab that, if not do the query as normal
 		if (isset($cached) && $cached !== false) {
 			$return = $cached;
@@ -28,7 +27,10 @@ class searcher {
 
 		//cache
 		$cached = $cache->set($key, $return, "search");
-		
+		if($cached == false){
+			trigger_error("Failed to cache database call");
+		}
+
 		//return
 		return $return;
 	}
