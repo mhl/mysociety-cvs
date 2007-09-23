@@ -84,7 +84,7 @@ class factory {
 				// part of the factory.
 				
 				if (!$require_only) {
-					report_error('Unknown class: ' . $class_name, 'The class that was thrown at this factory method is unknown. Check that you\'re passing the right data or that you haven\'t forgotten to define the class here!', E_USER_ERROR);
+					trigger_error('Unknown class: ' . $class_name, 'The class that was thrown at this factory method is unknown. Check that you\'re passing the right data or that you haven\'t forgotten to define the class here!');
 				}
 				else {
 					// We'll mention something in the error log as this is an

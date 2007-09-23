@@ -56,7 +56,7 @@ class contact_page extends pagebase {
 		$search = factory::create('search');
 		$result = $search->search_cached('group', array(array('url_id', '=', $this->viewstate['url_id'])),1);
 		if(sizeof($result) !=1){
-			report_error('tried to retrieve email address for ' . $this->viewstate['url_id'] . ' but failed');
+			trigger_error('tried to retrieve email address for ' . $this->viewstate['url_id'] . ' but failed');
 		}
 
 		$group = $result[0];
@@ -100,7 +100,7 @@ class contact_page extends pagebase {
 			
 			//save data
 			if(!$this->contact_email->insert()){
-				report_error('Error saving contact email');
+				trigger_error('Error saving contact email');
 			}
 			
 			//send confirmation email
