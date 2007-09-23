@@ -51,23 +51,23 @@
                	</li>
                	<li{if $tracker_location == 3} class="current" {elseif $tracker_location > 3} class="complete" {/if}>
                		{if $tracker_location >2}
-               			<a href="{$www_server}/add/location/">2. Location</a>
+               			<a href="{$www_server}/add/location/">2. Area covered</a>
                		{else}	
-               			2. Location
+               			2. Area covered
                		{/if}
                	</li>
                	<li{if $tracker_location == 4} class="current" {elseif $tracker_location > 4} class="complete" {/if}>
                		{if $tracker_location >3} 
-               			    <a href="{$www_server}/add/preview/">3. Contact details</a> 
+               			    <a href="{$www_server}/add/preview/">3. Joining the group</a> 
                		{else}	
-               			3. Contact details
+               			3. Joining the group
                		{/if}
                	</li>
                	<li{if $tracker_location == 5} class="current" {elseif $tracker_location > 5} class="complete" {/if}>
                		{if $tracker_location >4} 
-               			    <a href="{$www_server}/add/preview/">4. Preview</a> 
+               			    <a href="{$www_server}/add/preview/">4. Preview &amp; confirm</a> 
                		{else}	
-               			4. Preview
+               			4. Preview &amp; confirm
                		{/if}
                	</li>
                </ul>

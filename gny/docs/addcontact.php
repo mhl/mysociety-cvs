@@ -25,7 +25,7 @@ class addcontact_page extends pagebase {
 	
 		//set the default contact mode
 		if(!isset($this->group->involved_type) || $this->group->involved_type == ''){
-			$this->group->involved_type = 'email';
+			$this->group->involved_type = 'link';
 			session_write('group', $this->group);
 		}	
 
@@ -35,7 +35,7 @@ class addcontact_page extends pagebase {
 	protected function bind() {
 
 		//page vars
-	    $this->page_title = "how do you want to be contacted?";
+	    $this->page_title = "how do people join the group?";
 	    $this->menu_item = "add";	
 	    $this->show_tracker = true;		
 	    $this->tracker_location = 4;			
@@ -61,6 +61,11 @@ class addcontact_page extends pagebase {
 		}else{
 			$this->group->involved_link = $this->data['txtInvolvedLink'];		
 			$this->group->involved_email = '';
+			
+			// if the link doesnt look like a url then add http, (this gets validated again later)
+			if(!valid_url($this->group->involved_link)){
+				$this->group->involved_link = "http://" . $this->group->involved_link;
+			}
 		}
 		$this->group->created_name = $this->data['txtCreatedName'];				
 		$this->group->created_email = $this->data['txtCreatedEmail'];	
@@ -73,7 +78,7 @@ class addcontact_page extends pagebase {
 		$valid = true;
 		if($this->group->involved_type == 'email'){
 			if($this->group->involved_email == '' || !valid_email($this->group->involved_email)){
-				$this->add_warning('Please enter a valid email address people can use to contact your group');
+				$this->add_warning('Please enter a valid email address people can use to contact the group');
 				$this->add_warn_control('txtInvolvedEmail');
 				$valid = false;				
 			}
@@ -81,7 +86,7 @@ class addcontact_page extends pagebase {
 		
 		if($this->group->involved_type == 'link'){
 			if($this->group->involved_link == '' || !valid_url($this->group->involved_link)){
-				$this->add_warning('Please enter a valid web address people can visit to get involved with your group');
+				$this->add_warning('Please enter a valid web address people can visit to get involved with the group');
 				$this->add_warn_control('txtInvolvedLink');
 				$valid = false;				
 			}

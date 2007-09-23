@@ -2,7 +2,7 @@
     <form action="{$form_action}" method="post">
         {include file="../templates/formvars.tpl"}
         
-        <h3>Tell us a bit about your group</h3>
+        <h3>Tell us a bit about this group</h3>
         <ul class="form nobullets">
             <li>
                 <label for="txtName">Group's name *</label>
@@ -20,9 +20,9 @@
                 <small id="smlDescriptionHint">Tell what your group does. Some <acronym title="html is web page code in case you were wondering">html</acronym> is ok (<acronym title="link to a web page">&lt;a&gt;</acronym>, <acronym title="italic text">&lt;em&gt;</acronym>, <acronym title="bold text">&lt;strong&gt;</acronym>).</small>
             </li>
             <li>
-                <label for="txtTags">Tag this group</label>
-                <input type="text" class="textbox{if $warn_txtTags} error{/if}" id="txtTags" name="txtTags" value="{$group->tags}"  title="Add tags to help people find this group"/>
-                <small>Add words that will help people find your group e.g. <em>crime, environment, camden</em></small>
+                <label for="txtTags">Keywords for this group</label>
+                <input type="text" class="textbox large{if $warn_txtTags} error{/if}" id="txtTags" name="txtTags" value="{$group->tags}"  title="Add tags to help people find this group"/>
+                <small>e.g. <em>crime, environment, camden</em></small>
             </li>
         </ul>    
         <div class="buttons">

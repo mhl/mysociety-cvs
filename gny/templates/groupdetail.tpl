@@ -18,7 +18,7 @@
     </div>
 
     <div id="divMeta">
-        You can <a href="javascript:popup_map('{$www_server}/map.php?url_id={$group->url_id|escape:url}');" title="View on a map (new window)">view the area covered by this group on a map</a>.
+        You can <a href="javascript:popup_map('{$www_server}/map.php?url_id={$group->url_id|escape:url}');" title="View on a map (new window)">view the <em>approximate</em> area covered by this group on a map</a>.
         It has been tagged with <strong>{$group->tags}</strong>.
         This page was created by <strong>{$group->created_name} on {$group->created_date|date_format}</strong>. <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Report abuse?</a>
     </div>

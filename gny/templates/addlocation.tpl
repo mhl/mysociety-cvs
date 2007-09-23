@@ -13,7 +13,7 @@
     </fieldset>
 
     <div>
-        <h3>Choose the <em>approximate</em> area covered by your group</h3>
+        <h3>Choose the <em>approximate</em> area covered by the group using the red box</h3>
 
         <div id="divMapWrapper">
             <div id="divMapSearch">
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="buttons">
-            <input type="submit" value="Contact details >" />
+            <input type="submit" value="Joining the group >" />
         </div>
     </div>
 </form>
