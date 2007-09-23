@@ -29,16 +29,16 @@ class addlocation_page extends pagebase {
 		
 			//try and get their country code from IP (if not, set then default to GB)
 			$gaze = factory::create('gaze');
-			$country_code = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
-			if($country_code == false){
-				$country_code = "GB";
+			$this->viewstate['country_code'] = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
+			if($this->viewstate['country_code'] == false){
+				$this->viewstate['country_code'] = "GB";
 			}
 
 			//Get the centroid for that country
 			$centroid = $gaze->get_country_centroid($country_code);
 
 			//work out an oppropriate zoom level
-			$bounding_coords = $gaze->get_country_bounding_coords($country_code);
+			$bounding_coords = $gaze->get_country_bounding_coords($this->viewstate['country_code']);
 			$width = $bounding_coords['bottom_right_long'] - $bounding_coords['top_left_long'];
 			$zoom = approximate_gmap_zoom($bounding_coords['bottom_right_long'],
 				$bounding_coords['top_left_long']);
@@ -64,6 +64,7 @@ class addlocation_page extends pagebase {
 		$this->assign('group', $this->group);
 		$this->assign('map_js', true);
 		$this->assign('google_maps_key', GOOGLE_MAPS_KEY);
+		$this->assign('country_code', $this->viewstate['country_code']);		
 		
 		$this->display_template();
 					

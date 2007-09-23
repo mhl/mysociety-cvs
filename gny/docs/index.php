@@ -8,9 +8,12 @@ class index_page extends pagebase {
 
 	}
 
-
 	//setup
 	protected function setup (){
+
+		//get geo ip so we can put an appropriate search hint in
+		$gaze = factory::create('gaze');
+		$this->viewstate['country'] = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
 
 	}
 
@@ -20,7 +23,7 @@ class index_page extends pagebase {
 		//show postcode hint?
 		$show_postcode_hint == false;
 		
-		//groups
+		//latest groups
 		$search = factory::create('search');
 		$groups = $search->search_cached('group', array(array('group_id', '>', 0), array('confirmed', '=', 1)),  
 			'AND',
@@ -34,6 +37,7 @@ class index_page extends pagebase {
 	    $this->set_focus_control = "";			
 		$this->assign('groups', $groups);
 		$this->assign('search_hint', 'enter a place, postcode or zip code');
+		$this->assign('country', strtoupper($this->viewstate['country']));
 	
 		$this->display_template();
 					

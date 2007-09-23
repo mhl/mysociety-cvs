@@ -3,12 +3,20 @@
         {include file="../templates/formvars.tpl"}
         <div id="divMainSearch">
             <label for="txtSearch">
-                Find email lists and web communities where you live
+                Find email lists and web communities <br/>where you live
             </label>
             <input type="text" id="txtSearch" name="txtSearch" class="textbox{if $warn_txtSearch} error{/if}" 
                 onclick="if (this.value=='{$search_hint}') this.value='';" value="{if $data.txtSearch == ''}{$search_hint}{else}$data.txtSearch{/if}"/>
             <input type="submit" id="btnSearch" name="btnIndex" value="Go" />
-            <small>e.g. SW9 8JX or Brixton</small>
+            <small>
+                {if $country == 'US'}
+                    e.g. <em>94105</em> or <em>San Francisco</em>
+                {elseif  $country == 'GB'}
+                    e.g. <em>SW9 8JX</em> or <em>Brixton</em>
+                {else}
+                    e.g. <em>Berlin</em> or <em>Gdansk</em>
+                {/if}
+            </small>
         </div>
         <div id="divFrontLeft">
             <h3>Recently added groups</h3>

@@ -10,14 +10,14 @@
             <ul class="nobullets">
                 {foreach name="places" from="$places" item="place"}
                     <li>
-                        <a href="{$www_server}/search/{$place.name|escape:url}/{$place.longitude},{$place.latitude}">
+                        <a href="{$www_server}/search/{$place.name|escape:url}/{$place.longitude|string_format:'%.3f'},{$place.latitude|string_format:'%.3f'}">
                             {$place.name}{if $place.state !=''} ({$place.state}){/if}{if $place.near != ''} (near {$place.near}){/if}
                         </a>
                         <small><a href="http://maps.google.com/maps?ll={$place.latitude},{$place.longitude}&amp;z=12" class="quiet">[check on map]</a></small>
                     </li>
                 {/foreach}
             </ul>
-        
+
             {* Search form *}
             <form id="frmSearchPlaceName" action="{$form_action}" method="post">
                 {include file="../templates/formvars.tpl"}

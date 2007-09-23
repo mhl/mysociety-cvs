@@ -4,6 +4,7 @@ ini_set('unserialize_callback_func', 'unserialize_callback_factory');
 
 require_once('table_classes/config.php');
 require_once('table_classes/group.php');
+require_once('table_classes/country.php');
 
 class factory {
 
