@@ -19,8 +19,13 @@
         {/foreach}
     {else}
         <h3 class="centerpage">Sorry, we couldn't find any groups for {if $place_name !=''}{$place_name}{else}that location{/if}</h3>
+        
+        <h4>Never mind. Why not use PledgeBank to start one?</h4>
+        <p>
+    	    PledgeBank is a website that lets you say you will do something, but only if some other people will help you. You get your own web page and TXT number to help you gather support, plus you can print posters to promote your pledge.
+    	</p>
+    	
         <form id="frmPledge" accept-charset="utf-8" name="pledge" method="post" action="http://www.pledgebank.com/new">
-            <h4>Never mind. Why not use Pledgebank.com to start one?</h4>
 			<ul class="form nobullets">
 				<li>
 					<label for="title">I will</label>
@@ -40,13 +45,12 @@
 						<input type="hidden" name="detail" value="" />
 						<input type="hidden" name="name" value="">
 						<input type="hidden" name="email" value="">
-						<input type="hidden" name="identity" value=""></p>
+						<input type="hidden" name="identity" value="">
+						<input type="hidden" name="source" value="{$site_name|lower}">
+					</p>
 				</li>
 
 			</ul>
-			<p>
-        	    PledgeBank.com lets you say you will do something, but only if some other people will help you. You get your own web page and TXT number to help you gather support, plus you can print posters to promote your pledge.
-        	</p>
 			<div class="buttons">
         	    <input class="button" type="submit" name="tostep1" value="Continue on Pledgebank.com &gt;&gt;"></p>
         	</div>
