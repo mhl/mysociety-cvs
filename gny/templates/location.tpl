@@ -10,7 +10,7 @@
             <ul class="nobullets">
                 {foreach name="places" from="$places" item="place"}
                     <li>
-                        <a href="{$www_server}/search/{$search_term}/{$place.longitude},{$place.latitude}">
+                        <a href="{$www_server}/search/{$place.name|escape:url}/{$place.longitude},{$place.latitude}">
                             {$place.name}{if $place.state !=''} ({$place.state}){/if}{if $place.near != ''} (near {$place.near}){/if}
                         </a>
                         <small><a href="http://maps.google.com/maps?ll={$place.latitude},{$place.longitude}&amp;z=12" class="quiet">[check on map]</a></small>

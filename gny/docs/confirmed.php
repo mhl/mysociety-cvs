@@ -14,7 +14,7 @@ class confirmed_page extends pagebase {
 	protected function setup (){
 
 		if($_GET['q']){
-			$this->viewstate['link_key'] = urlencode($_GET['q']);
+			$this->viewstate['link_key'] = $_GET['q'];
 		}else{
                 	throw_404();
 		}
@@ -32,7 +32,7 @@ class confirmed_page extends pagebase {
 			$confirmation = $result[0];
 		}else{
 			throw_404();
-		}
+                }
 
 		//handle different confirmation types
 		if($confirmation->parent_table == 'contact_email'){

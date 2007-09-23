@@ -32,6 +32,7 @@ class tableclass_contact_email extends DB_DataObject {
         $smarty->template_dir = TEMPLATE_DIR;
 		$smarty->assign('text', $this->message);
 		$smarty->assign('team_email', CONTACT_EMAIL);		
+                $smarty->assign('site_name', SITE_NAME);
 
         $body = $smarty->fetch(TEMPLATE_DIR . '/emails/contact.tpl');
 

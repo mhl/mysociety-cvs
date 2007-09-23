@@ -66,7 +66,7 @@ class contact_page extends pagebase {
 		$this->contact_email->to_email = $group->involved_email;
 		$this->contact_email->from_email = $this->data['txtEmail'];
 		$this->contact_email->from_name = $this->data['txtName'];			
-		$this->contact_email->subject = EMAIL_PREFIX . $group->name;
+		$this->contact_email->subject = EMAIL_PREFIX . 'Enquiry about '  . $group->name;
 		$this->contact_email->message = $this->data['txtContactMessage'];
 		
 	}

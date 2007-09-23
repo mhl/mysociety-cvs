@@ -16,7 +16,7 @@
                 <input type="text" class="text{if $warn_txtEmail} error{/if}" id="txtEmail" name="txtEmail" value="{$data.txtEmail}" />
             </li>
             <li>
-                <label for="txtMessage">Enter your message</label>
+                <label for="txtMessage">Your message</label>
 <textarea id="txtContactMessage" name="txtContactMessage" {if $warn_txtContactMessage}class="error"{/if}>{if $data.txtContactMessage}
 Hi,
 
