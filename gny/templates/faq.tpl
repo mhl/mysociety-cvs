@@ -4,7 +4,7 @@
     <dl class="faq">
         <dt>What does GroupsNearMe.com do?</dt>
         <dd>
-            If lets you find out about all those hidden residents groups, societies or sports clubs near where you live.
+            If lets you find out about all those hidden email lists, forums and community blogs near where you live.
         </dd>
         <dt>I am a local group of some kind and want to add it to GroupdsNearMe.com</dt>
         <dd>

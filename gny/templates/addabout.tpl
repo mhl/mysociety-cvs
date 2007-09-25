@@ -2,10 +2,10 @@
     <form action="{$form_action}" method="post">
         {include file="../templates/formvars.tpl"}
         
-        <h3>Tell us a bit about this group</h3>
+        <h3>Tell us a bit about this email group, forum or blog</h3>
         <ul class="form nobullets">
             <li>
-                <label for="txtName">Group's name *</label>
+                <label for="txtName">Name *</label>
                 <input type="text" class="textbox{if $warn_txtName} error{/if}" id="txtName" name="txtName" value="{$group->name}" />
             </li>
             <li>

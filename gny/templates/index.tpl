@@ -3,7 +3,7 @@
         {include file="../templates/formvars.tpl"}
         <div id="divMainSearch">
             <label for="txtSearch">
-                Find email lists and web communities <br/>where you live
+                Find email groups and web communities <br/>where you live
             </label>
             <input type="text" id="txtSearch" name="txtSearch" class="textbox{if $warn_txtSearch} error{/if}" 
                 onclick="if (this.value=='{$search_hint}') this.value='';" value="{if $data.txtSearch == ''}{$search_hint}{else}$data.txtSearch{/if}"/>
@@ -29,7 +29,7 @@
             </ul>
         </div>
         <div id="divFrontRight">
-            <h3>Want to add your group?</h3>
+            <h3>Want to add a group?</h3>
             <p>
                 <strong>It's simple, just 3 steps</strong>. Tell us what the group does,what area it covers and how 
                 people near you can get involved.<br/>

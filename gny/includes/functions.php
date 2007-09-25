@@ -268,6 +268,7 @@ error_log($url);
 	//Format a string for a url
 	function format_string_for_url($string) {
 		$string = ereg_replace('&', 'and', $string);
+		$string = ereg_replace("'", '', $string);
 		$string = ereg_replace(' ', '_', $string);
 		$string = strtolower(iconv("UTF-8", "ASCII//TRANSLIT", $string));
 		return $string;
