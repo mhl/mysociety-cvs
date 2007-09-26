@@ -28,7 +28,7 @@ class addlocation_page extends pagebase {
 		$gaze = factory::create('gaze');
 		$this->viewstate['country_code'] = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
 		if($this->viewstate['country_code'] == false){
-			$this->viewstate['country_code'] = "GB";
+			$this->viewstate['country_code'] = "US";
 		}
 
 		//set the js for the map
@@ -46,6 +46,14 @@ class addlocation_page extends pagebase {
 			$this->group->long_centroid = $centroid['long'];
 			$this->group->lat_centroid =  $centroid['lat'];
 			$this->group->zoom_level = $zoom;
+			
+			//override for usa, bug on international dateline
+			if($this->viewstate['country_code'] == 'US'){
+				$this->group->long_centroid = -100;
+				$this->group->lat_centroid =  40;
+				$this->group->zoom_level = 3;
+			
+			}
 		}
 
 	}

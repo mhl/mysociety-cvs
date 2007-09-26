@@ -2,9 +2,11 @@
 /** @internal Set Callback for object unserialization */
 ini_set('unserialize_callback_func', 'unserialize_callback_factory');
 
+//these shouldent be here, but something odd is happening :(
 require_once('table_classes/config.php');
 require_once('table_classes/group.php');
 require_once('table_classes/country.php');
+require_once('table_classes/confirmation.php');
 
 class factory {
 
