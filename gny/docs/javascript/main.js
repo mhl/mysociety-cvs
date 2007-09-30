@@ -16,4 +16,3 @@ function popup_map(sUrl){
 	document.open(sUrl,'name', 'width=400,height=400');
 }
 
-

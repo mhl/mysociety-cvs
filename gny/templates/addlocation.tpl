@@ -19,7 +19,8 @@
             <div id="divMapSearch">
                 <label for="txtMapSearch">Go to location</label>
                 <input type="text" class="text" id="txtSearchMap" onkeypress="return submitMapSearch(event);"/>
-                <input type="button" onclick="javascript:searchMap();"value="Go" />
+                <input id="btnMapSearch" type="button" onclick="javascript:searchMap();"value="Go" />
+                <img id="imgMapLoading" src="{$www_server}/images/maploading.gif" width="16px" height="16px" alt="Loading ..." title="Loading ..."/>
                 <small>
                     {if $country_code == 'US'}
                         e.g. <em>94105</em> or <em>San Francisco</em> or <em>London, UK</em>

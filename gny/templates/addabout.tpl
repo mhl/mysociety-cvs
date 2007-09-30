@@ -1,8 +1,8 @@
 {include file="../templates/header.tpl"}
     <form action="{$form_action}" method="post">
         {include file="../templates/formvars.tpl"}
-        
         <h3>Tell us a bit about this email group, forum or blog</h3>
+        <br class="clear"/>
         <ul class="form nobullets">
             <li>
                 <label for="txtName">Name *</label>
@@ -25,6 +25,7 @@
                 <small>e.g. <em>crime, environment, camden</em></small>
             </li>
         </ul>    
+         <small class="required"><span>*</span> = required information</small>
         <div class="buttons">
             <input type="submit" value="Location >" />
         </div>

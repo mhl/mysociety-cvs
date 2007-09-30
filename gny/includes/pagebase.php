@@ -20,7 +20,7 @@ abstract class pagebase {
     protected $post_inputs = array();
     protected $smarty_template ="";
 	protected $data = null;
-	protected $rss_link = '';		
+	protected $rss_link = '';
 
     //Constructor
     public function __construct(){
@@ -38,7 +38,6 @@ abstract class pagebase {
 		
 		//load function (a way of child classes running code at the point of class construction)
 		$this->load();
-					
 		//check for postback vs load
 		if (isset($_POST["_is_postback"])) {
 			$this->get_data();
@@ -135,12 +134,13 @@ abstract class pagebase {
 	public function add_warn_control($control_id){
 		array_push($this->warn_controls, $control_id);
 	}
-	
+
 	public function clear_warn_controls(){
 		$this->warn_controls = array();
 	}
-	
+
 	protected function get_data(){
+
 		$this->data = $_POST;
 	}
 

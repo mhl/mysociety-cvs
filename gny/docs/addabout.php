@@ -47,10 +47,10 @@ class addabout_page extends pagebase {
 
 	//Unbind
 	protected function unbind (){
-		$this->group->name = $this->data['txtName'];
-		$this->group->byline = $this->data['txtByline'];		
-		$this->group->description = $this->data['txtDescription'];				
-		$this->group->tags = $this->data['txtTags'];				
+		$this->group->name = strip_tags($this->data['txtName']);
+		$this->group->byline = strip_tags($this->data['txtByline']);		
+		$this->group->description = strip_tags($this->data['txtDescription'], '<a><em><strong>');				
+		$this->group->tags = strip_tags($this->data['txtTags']);				
 	}
 
 	//Validate

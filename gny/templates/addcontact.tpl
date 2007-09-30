@@ -32,7 +32,7 @@
             <small>This will not be published and <span class="highlight">we will not spam you</span></small>
         </li>
     </ul>
-
+    <small class="required"><span>*</span> = required information</small>
     <div class="buttons">
         <input type="submit" class="button" value="Preview &amp; confirm >"/>
     </div>

@@ -330,8 +330,7 @@ error_log($url);
 	function is_utf8($str) {
 		if ($str === mb_convert_encoding(mb_convert_encoding($str, "UTF-32", "UTF-8"), "UTF-8", "UTF-32")) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

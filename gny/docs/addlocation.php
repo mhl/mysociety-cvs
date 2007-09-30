@@ -46,7 +46,7 @@ class addlocation_page extends pagebase {
 			$this->group->long_centroid = $centroid['long'];
 			$this->group->lat_centroid =  $centroid['lat'];
 			$this->group->zoom_level = $zoom;
-			
+
 			//override for usa, bug on international dateline
 			if($this->viewstate['country_code'] == 'US'){
 				$this->group->long_centroid = -100;

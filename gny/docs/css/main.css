@@ -13,6 +13,7 @@ body {font-family georgia, serif; text-align:center;line-height:1.8em;margin:0;
 /* Headings */
 h3 {font-weight:normal; font-size:1.6em; color:#0066ff;padding:0.4em 0;}
 h3.centerpage {text-align:center;border-bottom:dotted 1px #808080;margin-bottom:1em;margin-top:0.5em;}
+div.processheader {position:relative}
 
 /* Menu */
 #ulMenu {width:500px;margin:0 auto; position:absolute; right:0;top:0;}
@@ -64,6 +65,10 @@ div.attention h3 {font-size:2em;padding-bottom:0.3em;font-style:normal; color:#4
 input.error, textarea.error {background:#fdd9ea;}
 small.error {background:#fdd9ea;}
 
+/* required information */
+small.required {background:#fafafa;padding:8px;}
+small.required span {font-size:1.4em;position:relative; top:4px;}
+
 /* Signup about */
 #txtByline {width:300px;}
 #txtDescription {width:350px;height:150px;}
@@ -77,6 +82,7 @@ small.error {background:#fdd9ea;}
 #divMapSearch #txtSearchMap {width:310px;}	
 #divMapWrapper #divMap {margin:0 auto;}
 #divMapInfo {padding-left:420px;}
+#imgMapLoading {display:none;padding:0 10px;}
 
 /* Signup contact */
 #ulInvolved label {display:block; float:left;width:180px;}

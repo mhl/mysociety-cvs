@@ -120,21 +120,38 @@ function searchMap(){
 	
 	sSearch = get('txtSearchMap').value;
 	if(sSearch != ''){
+		
+		//hide any warnings
+		hideWarning();
+		setControlWarning(get('txtSearchMap'), false);		
+		
+		//show spinny thing
+		get('btnMapSearch').style.display = "none";
+		get('imgMapLoading').style.display = "inline";
+		
 		sPost = "&q=" + sSearch;		
 		var oAjax = new Ajax.Request("/ajax/mapsearch.php", {method: 'post',  postBody: sPost,  onComplete: searchmapCallback});
 	}else{
-		alert('enter stuff');
+		showWarning('Please enter a location');
+		setControlWarning(get('txtSearchMap'), true);		
+		setFocus('txtSearchMap');		
 	}
 	
 }
 
 function searchmapCallback(oResponse){
+
+	get('btnMapSearch').style.display = "inline";
+	get('imgMapLoading').style.display = "none";
+	
 	var oResult = eval('('+oResponse.responseText+')');
 
 	if(oResult != false){
 		map.setCenter(new GLatLng(oResult['location'][1], oResult['location'][0]),oResult['zoom']);
 	}else{
-		alert('nay');
+		showWarning('Sorry, we couldent find any results for <em>' + get('txtSearchMap').value + '</em>');
+		setControlWarning(get('txtSearchMap'), true);
+		setFocus('txtSearchMap');
 	}
 }
 
@@ -150,4 +167,6 @@ function submitMapSearch(oEvent){
 	}
 	
 }
+
+
 	

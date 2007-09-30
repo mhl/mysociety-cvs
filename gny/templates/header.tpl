@@ -58,7 +58,7 @@
                	</li>
                	<li{if $tracker_location == 4} class="current" {elseif $tracker_location > 4} class="complete" {/if}>
                		{if $tracker_location >3} 
-               			    <a href="{$www_server}/add/preview/">3. Joining the group</a> 
+               			    <a href="{$www_server}/add/contact/">3. Joining the group</a> 
                		{else}	
                			3. Joining the group
                		{/if}
