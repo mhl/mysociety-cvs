@@ -46,7 +46,7 @@
 						<input type="hidden" name="name" value="">
 						<input type="hidden" name="email" value="">
 						<input type="hidden" name="identity" value="">
-						<input type="hidden" name="source" value="{$site_name|lower}">
+						<input type="hidden" name="tags" value="{$site_name|lower}">
 					</p>
 				</li>
 
