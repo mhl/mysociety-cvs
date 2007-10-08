@@ -18,6 +18,7 @@ na2005 - NotApathetic 2005 UK General Election, static file version
 fyr - WriteToThem (internal name FaxYourRepresentative)
 twfy - TheyWorkForYou
 foi - Freedom of Information Filer and Archive
+gny - Groups Near You
 
 news - Look up your local newspapers
 
@@ -67,9 +68,9 @@ services/EvEl - Email formatter and sender
 services/NeWs - Directory of local newspapers
 services/Gaze - Gazeteer, look up place names (runs under gaze.mysociety.org)
 services/TilMa - Map tile server
-services/Queue - General queuing system (UNFINISHED)
 track - Conversion tracking (UNFINISHED)
 meinedata - Flash widget for displaying graphical data
+bbcparlvid - Parliamentary video
 
 Software (which may be useful elsewhere)
 ========
@@ -80,7 +81,8 @@ pgblackbox - Records PostgreSQL action so can work out cause of deadlocks
 pnmtilesplit - Split a single large PNM file into numerous smaller tiles
 utils/ - Various useful separate utilities 
 cpan/ - Various Perl modules packaged for CPAN
-monitoring - Server automatic monitoring scripts
+monitoring - Our own server monitoring system
+monitor - Nagios server monitoring system
 
 Libraries etc.
 ==============
@@ -91,6 +93,7 @@ phplib - General purpose PHP modules
 pylib - General purpose Python modules
 shlib - General purpose shell functions
 jslib - General purpose javascript functions
+rblib - General purpose Ruby functions
 locale - Translations into different human languages
 
 web-admin - General use web administration scripts (UNFINISHED - should really
