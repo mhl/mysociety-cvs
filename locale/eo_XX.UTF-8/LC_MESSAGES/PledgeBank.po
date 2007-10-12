@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-08-31 01:29+0100\n"
+"POT-Creation-Date: 2007-10-12 13:52+0100\n"
 "PO-Revision-Date: 2006-01-12 15:32+0000\n"
 "Last-Translator: Tim Morley <t_morley@argonet.co.uk>\n"
 "Language-Team: Esperanto <team@pledgebank.com>\n"
@@ -989,8 +989,8 @@ msgstr "Zambio"
 msgid "Zimbabwe"
 msgstr "Zimbabvo"
 
-#: phplib/importparams.php:140 pb/web/alert.php:60 pb/web/contact.php:138
-#: pb/web/login.php:201 pb/web/login.php:228 pb/web/new.php:660
+#: phplib/importparams.php:140 pb/phplib/login.php:44 pb/phplib/login.php:71
+#: pb/web/alert.php:60 pb/web/contact.php:133 pb/web/new.php:686
 msgid "Please enter a valid email address"
 msgstr "Bonvolu entajpi validan retadreson"
 
@@ -1038,100 +1038,117 @@ msgstr "tempolinio"
 msgid "Microsite:"
 msgstr "Subretejo:"
 
-#: pb/phplib/admin-pb.php:286 pb/phplib/page.php:289
+#: pb/phplib/admin-pb.php:286
 msgid "Language:"
 msgstr "Lingvo:"
 
-#: pb/phplib/admin-pb.php:303 pb/phplib/fns.php:517
-#: pb/phplib/microsites.php:952 pb/phplib/pledge.php:529 pb/web/alert.php:137
+#: pb/phplib/admin-pb.php:303 pb/phplib/fns.php:511
+#: pb/phplib/microsites.php:919 pb/phplib/pledge.php:540 pb/web/alert.php:137
 msgid "Country:"
 msgstr "Lando:"
 
-#: pb/phplib/admin-pb.php:447
+#: pb/phplib/admin-pb.php:317
+msgid "Tags:"
+msgstr ""
+
+#: pb/phplib/admin-pb.php:326
+#, fuzzy
+msgid "none"
+msgstr "Iu ajn"
+
+#: pb/phplib/admin-pb.php:462
 msgid "Messages"
 msgstr "Mesaĝoj"
 
-#: pb/phplib/admin-pb.php:534
+#: pb/phplib/admin-pb.php:549
 msgid "<em>That pledge has been successfully removed, along with all its signatories.</em>"
 msgstr "<em>Tiu promeso estas forigita, kune kun ĉiuj ĝiaj subskribintoj.</em>"
 
-#: pb/phplib/admin-pb.php:540
+#: pb/phplib/admin-pb.php:555
 msgid "<em>That signer has been successfully removed.</em>"
 msgstr "<em>Tiu subskribinto estas forigita.</em>"
 
 # I've translated this as meaning "The show-name for this signer has been updated", but I'm not sure if this is right. (Tim Morley, 2005-11-21)
 # D'oh, should have checked the mailing list archive. Question answered at http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000078.html (Tim Morley, 2005-11-22)
 #. TRANS: http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000078.html
-#: pb/phplib/admin-pb.php:548
+#: pb/phplib/admin-pb.php:563
 msgid "<em>Show name for signer updated</em>"
 msgstr "<em>Ĝisdatigis montron/kaŝon de subskribinta nomo</em>"
 
-#: pb/phplib/admin-pb.php:555
+#: pb/phplib/admin-pb.php:570
 msgid "<em>That comment has been shown/hidden</em>"
 msgstr "<em>Tiu komento estas afiŝita/kaŝita</em>"
 
-#: pb/phplib/admin-pb.php:561
+#: pb/phplib/admin-pb.php:576
 msgid "<em>Change to pledge prominence saved</em>"
 msgstr "<em>Ŝanĝo al promesa elstareco konservita</em>"
 
-#: pb/phplib/admin-pb.php:576
+#: pb/phplib/admin-pb.php:591
 msgid "<em>Change to pledge microsite saved</em>"
 msgstr "<em>Ŝanĝo al subretejo de la promeso estas konservita</em>"
 
-#: pb/phplib/admin-pb.php:602
+#: pb/phplib/admin-pb.php:617
 #, php-format
 msgid "<em>Unknown country %s</em>"
 msgstr "<em>Nekonata lando %s</em>"
 
-#: pb/phplib/admin-pb.php:606
+#: pb/phplib/admin-pb.php:621
 msgid "<em>Change to pledge country saved</em>"
 msgstr "<em>Ŝanĝo al promesa lando konservita</em>"
 
-#: pb/phplib/admin-pb.php:617
+#: pb/phplib/admin-pb.php:632
 msgid "<em>Change to pledge language saved</em>"
 msgstr "<em>Ŝanĝo al promesa lingvo konservita</em>"
 
-#: pb/phplib/admin-pb.php:629
+#: pb/phplib/admin-pb.php:644
 msgid "<em>Categories updated.</em>"
 msgstr "<em>Kategorioj ĝisdatigitaj"
 
-#: pb/phplib/admin-pb.php:641
+#: pb/phplib/admin-pb.php:659
+msgid "<em>Pick a target larger than the number of signers please!</em>"
+msgstr ""
+
+#: pb/phplib/admin-pb.php:664
+msgid "<em>Pick a target smaller than or equal to the number of signers please!</em>"
+msgstr ""
+
+#: pb/phplib/admin-pb.php:670
 msgid "<em>Pledge text updated. Check it in the pledge box preview on the right.</em>"
 msgstr ""
 
 # Not sure of the meaning here. (Tim Morley, 2005-11-21)
 # This is an admin message, printed when someone has pressed the button to send an email to a pledge creator letting them send an announcement message. (Matthew Somerville,  http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #. TRANS: This is an admin message, printed when someone has pressed the button to send an email to a pledge creator letting them send an announcement message. (Matthew Somerville,  http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/admin-pb.php:695
+#: pb/phplib/admin-pb.php:724
 msgid "<em>Announcement permission mail sent</em>"
 msgstr "<em>Mesaĝo pri anoncpermeso sendita"
 
-#: pb/phplib/admin-pb.php:954
+#: pb/phplib/admin-pb.php:983
 msgid "No events have happened yet."
 msgstr "Neniu evento okazis ĝis nun."
 
-#: pb/phplib/admin-pb.php:989
+#: pb/phplib/admin-pb.php:1018
 msgid "Statistics"
 msgstr "Statistikoj"
 
-#: pb/phplib/admin-pb.php:995
+#: pb/phplib/admin-pb.php:1024
 msgid "Local alert summary"
 msgstr "Resumo de lokaj atentigoj"
 
-#: pb/phplib/admin-pb.php:1003
+#: pb/phplib/admin-pb.php:1032
 msgid "Alerts followed by signatures"
 msgstr "Atentigoj sekve de subskriboj"
 
-#: pb/phplib/admin-pb.php:1019
+#: pb/phplib/admin-pb.php:1048
 #, php-format
 msgid "%d cases where somebody signed a pledge they had previously been alerted about. Time gap between alert and signing is displayed for each case."
 msgstr "%d kazoj, kiam iu subskribis promeson pri kiu oni atentigis. La tempo inter la atentigo kaj la subskribo vidiĝas por ĉiu kazo."
 
-#: pb/phplib/admin-pb.php:1034
+#: pb/phplib/admin-pb.php:1063
 msgid "Local alerts by country"
 msgstr "Lokaj atentigoj laŭ lando"
 
-#: pb/phplib/admin-pb.php:1091
+#: pb/phplib/admin-pb.php:1120
 msgid "Local alert signups"
 msgstr "Aliĝoj al lokaj atentigoj"
 
@@ -1177,7 +1194,7 @@ msgstr "Lokaj promesatentigoj"
 msgid "You will get email when there are:<ul>"
 msgstr "Vi ricevos retmesaĝon kiam estos:<ul>"
 
-#: pb/phplib/alert.php:188 pb/phplib/alert.php:219
+#: pb/phplib/alert.php:188 pb/phplib/alert.php:229
 msgid "Unsubscribe"
 msgstr "Malaliĝi"
 
@@ -1185,13 +1202,18 @@ msgstr "Malaliĝi"
 msgid "To add a new place, <a href=\"/alert\">click here</a>."
 msgstr "Por aldoni novan lokon, <a href=\"/alert\">musklaku ĉi tie</a>"
 
-#: pb/phplib/alert.php:209
+#: pb/phplib/alert.php:214
 msgid "Comment alerts"
 msgstr "Atentigiloj pri komentoj"
 
-#: pb/phplib/alert.php:210
+#: pb/phplib/alert.php:215
 msgid "You will get email when there are:"
 msgstr "Vi ricevos retmesaĝon kiam estos:"
+
+#: pb/phplib/alert.php:236
+#, fuzzy
+msgid "Show all your comment alerts"
+msgstr "Montri ĉiujn komentojn"
 
 #. TRANS: This appears immediately after a comment, to show who wrote it when, as: "To pledge <pledge reference> by <person's name>, <how long ago>."
 #. TRANS: e.g. "blah, blah, this is a comment. - To pledge artnotads by Matthew, 3 hours ago."
@@ -1218,7 +1240,7 @@ msgid "Abusive? Report it!"
 msgstr "Ĉu fia? Raportu ĝin!"
 
 #. TRANS: this is an error message meaning, "The pledge called '%s' doesn't exist.
-#: pb/phplib/comments.php:114 pb/phplib/comments.php:254
+#: pb/phplib/comments.php:114 pb/phplib/comments.php:265
 #, php-format
 msgid "No pledge '%s'"
 msgstr "Neniu promeso '%s'"
@@ -1229,68 +1251,68 @@ msgstr "Neniu komento ĝis nun! Kial ne aldoni la unuan?"
 
 #. TRANS: This appears under "Latest comments" on the front page as: "<start of comment text...> by <name>, on <pledge reference link>, <how long ago>"
 #. TRANS: e.g. "Most of my veg are British..." by Esther, on ukfood, 3 hours ago"
-#: pb/phplib/comments.php:155
+#: pb/phplib/comments.php:166
 #, php-format
 msgid "%s by %s, on %s, %s"
 msgstr "%s de %s, pri %s, %s"
 
 #. TRANS: this appears in an RSS feed as: "Comment on <pledge reference> pledge by <person's name>"
 #. TRANS: e.g. "Comment on Electric pledge by Owen Blacker"
-#: pb/phplib/comments.php:167
+#: pb/phplib/comments.php:178
 #, php-format
 msgid "Comment on %s pledge by %s"
 msgstr "Komentoj pri promeso %s de %s"
 
-#: pb/phplib/comments.php:228
+#: pb/phplib/comments.php:239
 msgid "RSS feed of comments on all pledges"
 msgstr "RSS-servo de komentoj pri ĉiuj promesoj"
 
-#: pb/phplib/comments.php:229
+#: pb/phplib/comments.php:240
 msgid "<h2>Latest comments</h2>"
 msgstr "<h2>Plej lastaj komentoj</h2>"
 
-#: pb/phplib/comments.php:258
+#: pb/phplib/comments.php:269
 msgid "No comments"
 msgstr "Neniuj komentoj"
 
-#: pb/phplib/comments.php:310
+#: pb/phplib/comments.php:321
 msgid "This pledge is closed for new comments."
 msgstr "Tiu ĉi promeso estas fermita por novaj komentoj."
 
-#: pb/phplib/comments.php:313
+#: pb/phplib/comments.php:324
 msgid "<h2>Add public comment</h2>"
 msgstr "<h2>Aldoni publikan komenton</h2>"
 
-#: pb/phplib/comments.php:315 pb/phplib/fns.php:254 pb/web/contact.php:109
-#: pb/web/new.php:210 pb/web/ref-contact.php:107
+#: pb/phplib/comments.php:326 pb/phplib/fns.php:263 pb/phplib/pledge.php:707
+#: pb/web/contact.php:104 pb/web/new.php:212 pb/web/ref-contact.php:107
 msgid "Your name:"
 msgstr "Via nomo:"
 
-#: pb/phplib/comments.php:320 pb/phplib/fns.php:578 pb/phplib/pledge.php:727
-#: pb/web/contact.php:110 pb/web/ref-contact.php:108
+#: pb/phplib/comments.php:331 pb/phplib/fns.php:572 pb/phplib/pledge.php:709
+#: pb/web/contact.php:105 pb/web/new.php:214 pb/web/ref-contact.php:108
 #, fuzzy
 msgid "Your email:"
 msgstr "Via retadreso"
 
-#: pb/phplib/comments.php:326
+#: pb/phplib/comments.php:337
 msgid "Your web site address"
 msgstr "Via retpaĝadreso"
 
-#: pb/phplib/comments.php:326
-msgid "(optional, will be shown publically)"
+#: pb/phplib/comments.php:337
+msgid "(optional, will be shown publicly)"
 msgstr ""
 
-#: pb/phplib/comments.php:331
+#: pb/phplib/comments.php:342
 msgid "Your comment"
 msgstr "Via komento"
 
-#: pb/phplib/comments.php:339
+#: pb/phplib/comments.php:350
 msgid "Privacy note:"
 msgstr "Noto pri privateco:"
 
-#: pb/phplib/comments.php:343
+#: pb/phplib/comments.php:354
 msgid ""
-"Your name (and web site address if given) will be shown publically on this page\n"
+"Your name (and web site address if given) will be shown publicly on this page\n"
 "with your comment. Your email address will not be shown. People searching for your\n"
 "name on the Internet may find your comment."
 msgstr ""
@@ -1299,61 +1321,62 @@ msgstr ""
 
 # Meant to be a leading space here? (Tim Morley, 2005-11-22)
 # Hmm, no, probably not, though it doesn't matter. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000093.html)
-#: pb/phplib/comments.php:349
+#: pb/phplib/comments.php:360
 msgid " Email me future comments on this pledge"
 msgstr " Sendu retmesaĝojn al mi pri venontaj komentoj pri tiu promeso"
 
-#: pb/phplib/comments.php:351 pb/web/new.php:402 pb/web/new.php:440
+#: pb/phplib/comments.php:362 pb/phplib/microsites.php:1367 pb/web/new.php:418
+#: pb/web/new.php:462 pb/web/new.php:877
 msgid "Preview"
 msgstr "Antaŭvido"
 
-#: pb/phplib/comments.php:353
+#: pb/phplib/comments.php:364
 msgid "Post comment"
 msgstr "Afiŝi komenton"
 
-#: pb/phplib/comments.php:372
+#: pb/phplib/comments.php:383
 #, php-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
 msgstr[0] "antaŭ %d jaro"
 msgstr[1] "antaŭ %d jaroj"
 
-#: pb/phplib/comments.php:374
+#: pb/phplib/comments.php:385
 #, php-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "antaŭ %d monato"
 msgstr[1] "antaŭ %d monatoj"
 
-#: pb/phplib/comments.php:376
+#: pb/phplib/comments.php:387
 #, php-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "antaŭ %d semajno"
 msgstr[1] "antaŭ %d semajnoj"
 
-#: pb/phplib/comments.php:378
+#: pb/phplib/comments.php:389
 #, php-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "antaŭ %d tago"
 msgstr[1] "antaŭ %d tagoj"
 
-#: pb/phplib/comments.php:380
+#: pb/phplib/comments.php:391
 #, php-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "antaŭ %d horo"
 msgstr[1] "antaŭ %d horoj"
 
-#: pb/phplib/comments.php:382
+#: pb/phplib/comments.php:393
 #, php-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "antaŭ %d minuto"
 msgstr[1] "antaŭ %d minutoj"
 
-#: pb/phplib/comments.php:384
+#: pb/phplib/comments.php:395
 msgid "less than a minute ago"
 msgstr "antaŭ malpli ol 1 minuto"
 
@@ -1369,15 +1392,15 @@ msgstr "trafita"
 msgid "-- the PledgeBank.com team"
 msgstr "-- la skipo de PromesoBanko.com"
 
-#: pb/phplib/fns.php:193 pb/web/poster.cgi:319
+#: pb/phplib/fns.php:193 pb/web/poster.cgi:320
 msgid "PledgeBank.com"
 msgstr "PromesoBanko.com"
 
-#: pb/phplib/fns.php:237
+#: pb/phplib/fns.php:246
 msgid "Email this pledge"
 msgstr "Sendi tiun ĉi promeson per retmesaĝo"
 
-#: pb/phplib/fns.php:241
+#: pb/phplib/fns.php:250
 msgid ""
 "Please enter these details so that we can send your message to your contacts.\n"
 "We will not give or sell either your or their email address to anyone else."
@@ -1385,24 +1408,24 @@ msgstr ""
 "Bonvolu entajpi tiujn detalojn, por ke ni povu sendi vian mesaĝon al via amikaro.\n"
 "Ni ne donos nek vendos vian aŭ ilian retadreson al iu ajn."
 
-#: pb/phplib/fns.php:243
+#: pb/phplib/fns.php:252
 msgid "Other people's email addresses:"
 msgstr "Retadresoj de aliuloj:"
 
-#: pb/phplib/fns.php:250
+#: pb/phplib/fns.php:259
 msgid "Add a message, if you want:"
 msgstr "Aldoni mesaĝon, se vi volas:"
 
-#: pb/phplib/fns.php:255 pb/phplib/fns.php:512 pb/web/alert.php:134
-#: pb/web/new.php:212 pb/web/sms.php:229
+#: pb/phplib/fns.php:264 pb/phplib/fns.php:506 pb/web/alert.php:134
+#: pb/web/sms.php:229
 msgid "Email:"
 msgstr "Retadreso:"
 
-#: pb/phplib/fns.php:257 pb/web/ref-contact.php:111
+#: pb/phplib/fns.php:266 pb/web/ref-contact.php:111
 msgid "Send message"
 msgstr "Sendi mesaĝon"
 
-#: pb/phplib/fns.php:270
+#: pb/phplib/fns.php:279
 msgid "the UK"
 msgstr "Britio"
 
@@ -1410,159 +1433,151 @@ msgstr "Britio"
 # Yes, it's choose website. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
 #. TRANS: i.e. "choose website" or "choose local place where action will be taken?" I've assumed the former. (Tim Morley, 2005-11-21)
 #. Yes, it's choose website. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/fns.php:289
+#: pb/phplib/fns.php:298
 msgid "choose site"
 msgstr "elektu retejon"
 
-#: pb/phplib/fns.php:292
+#: pb/phplib/fns.php:301
 msgid "change country"
 msgstr "ŝanĝi landon"
 
-#: pb/phplib/fns.php:294
-msgid "choose country"
-msgstr "elekti landon"
-
-#: pb/phplib/fns.php:303
+#: pb/phplib/fns.php:310
 msgid "change language"
 msgstr "ŝanĝi lingvon"
 
-#: pb/phplib/fns.php:391
+#: pb/phplib/fns.php:390
 #, php-format
 msgid "%s%s pledges listed"
 msgstr "%s%s promesoj listigitaj"
 
-#: pb/phplib/fns.php:393
+#: pb/phplib/fns.php:392
 #, php-format
 msgid "%s%s pledges only listed"
 msgstr "nur %s%s promesoj listigitaj"
 
 # Worth thinking about word order here. The English reads e.g. "UK (change country) pledges and global English (change language) pledges listed. Even in English, and certainly in other languages, it'd probably be clearer as something like: "Listed below are pledges for the UK (change country) and global pledges written in English (change language)." (Tim Morley, 2005-11-27)
-#: pb/phplib/fns.php:400
-#, php-format
-msgid "%s%s pledges and global %s (%s) pledges listed"
+#. TRANS: Worth thinking about word order here. The English reads e.g. "UK (change country) pledges and global English (change language) pledges listed. Even in English, and certainly in other languages, it'd probably be clearer as something like: "Listed below are pledges for the UK (change country) and global pledges written in English (change language)." (Tim Morley, 2005-11-27)
+#: pb/phplib/fns.php:398
+#, fuzzy, php-format
+msgid "%s pledges and global %s pledges listed"
 msgstr "Listiĝas promesoj en %s%s kaj tutmondaj promesoj skribitaj en %s (%s)"
 
-#: pb/phplib/fns.php:402
-#, php-format
-msgid "%s%s pledges in %s (%s) only listed"
-msgstr "nur %s%s promesoj en %s (%s) listigitaj"
-
-#: pb/phplib/fns.php:411
+#: pb/phplib/fns.php:407
 #, php-format
 msgid "There are no featured pledges for %s%s at the moment."
 msgstr "Ne ekzistas reliefigitaj promesoj por %s%s nuntempe."
 
-#: pb/phplib/fns.php:413
+#: pb/phplib/fns.php:409
 msgid "There are no featured pledges at the moment."
 msgstr "Ne ekzistas reliefigitaj promesoj nuntempe."
 
-#: pb/phplib/fns.php:456 pb/phplib/fns.php:458
+#: pb/phplib/fns.php:450 pb/phplib/fns.php:452
 msgid "less than 1 mile away"
 msgstr "malpli ol 1 mejlo for"
 
-#: pb/phplib/fns.php:460
+#: pb/phplib/fns.php:454
 msgid "less than 1 km away"
 msgstr "malpli ol 1 km for"
 
-#: pb/phplib/fns.php:462 pb/phplib/fns.php:465
+#: pb/phplib/fns.php:456 pb/phplib/fns.php:459
 #, php-format
 msgid "%d mile away"
 msgid_plural "%d miles away"
 msgstr[0] "%d mejlo for"
 msgstr[1] "%d mejloj for"
 
-#: pb/phplib/fns.php:463 pb/phplib/fns.php:466
+#: pb/phplib/fns.php:457 pb/phplib/fns.php:460
 #, php-format
 msgid "%d mile"
 msgid_plural "%d miles"
 msgstr[0] "%d mejlo"
 msgstr[1] "%d mejloj"
 
-#: pb/phplib/fns.php:468
+#: pb/phplib/fns.php:462
 #, php-format
 msgid "%d km away"
 msgstr "%d km for"
 
-#: pb/phplib/fns.php:468
+#: pb/phplib/fns.php:462
 #, php-format
 msgid "%d km"
 msgstr "%d km"
 
-#: pb/phplib/fns.php:507
+#: pb/phplib/fns.php:501
 msgid "Sign up for emails when people make pledges in your local area"
 msgstr "Aliĝi por retmesaĝoj kiam iu faras promeson proksime de ĉe vi"
 
-#: pb/phplib/fns.php:509
+#: pb/phplib/fns.php:503
 msgid "Works in any country!"
 msgstr "Funkcias en ĉiu lando!"
 
-#: pb/phplib/fns.php:515 pb/phplib/microsites.php:950
+#: pb/phplib/fns.php:509 pb/phplib/microsites.php:917
 msgid "Postcode:"
 msgstr "Poŝtkodo:"
 
-#: pb/phplib/fns.php:518 pb/phplib/microsites.php:946 pb/web/pb.js:129
+#: pb/phplib/fns.php:512 pb/phplib/microsites.php:913 pb/web/pb.js:129
 #: pb/web/pb.js:132
 msgid "Town:"
 msgstr "Urbo:"
 
-#: pb/phplib/fns.php:520 pb/web/alert.php:147
+#: pb/phplib/fns.php:514 pb/web/alert.php:147
 msgid "Subscribe"
 msgstr "Aliĝi"
 
-#: pb/phplib/fns.php:538
+#: pb/phplib/fns.php:532
 msgid "Change password"
 msgstr "Ŝanĝi pasvorton"
 
-#: pb/phplib/fns.php:538
+#: pb/phplib/fns.php:532
 msgid "Set password"
 msgstr "Krei pasvorton"
 
-#: pb/phplib/fns.php:552
+#: pb/phplib/fns.php:546
 msgid "Please type your new password twice"
 msgstr "Bonvolu tajpi vian novan pasvorton dufoje"
 
-#: pb/phplib/fns.php:554
+#: pb/phplib/fns.php:548
 msgid "Your password must be at least 5 characters long"
 msgstr "Via pasvorto devas enhavi almenaŭ kvin signojn"
 
-#: pb/phplib/fns.php:556
+#: pb/phplib/fns.php:550
 msgid "Please type the same password twice"
 msgstr "Bonvolu tajpi la saman pasvorton dufoje"
 
-#: pb/phplib/fns.php:560
+#: pb/phplib/fns.php:554
 msgid "Password successfully updated"
 msgstr "Pasvorto sukcese ĝisdatigita"
 
-#: pb/phplib/fns.php:561
+#: pb/phplib/fns.php:555
 msgid "Password successfully set"
 msgstr "Pasvorto sukcese kreita"
 
-#: pb/phplib/fns.php:570
+#: pb/phplib/fns.php:564
 msgid "If you wish to change your password, you can do so here."
 msgstr "Se vi volas ŝanĝi vian pasvorton, vi povas fari tion tie ĉi."
 
-#: pb/phplib/fns.php:571
+#: pb/phplib/fns.php:565
 msgid "Set a password, and we won't need to check your email address each time you use PledgeBank."
 msgstr "Kreu pasvorton, kaj poste ni ne plu bezonos kontroli vian retadreson je ĉiu uzo de PromesoBanko."
 
-#: pb/phplib/fns.php:574
+#: pb/phplib/fns.php:568
 msgid "New password:"
 msgstr "Nova pasvorto:"
 
-#: pb/phplib/fns.php:575
+#: pb/phplib/fns.php:569
 msgid "New password, again:"
 msgstr "Nova pasvorto, denove:"
 
-#: pb/phplib/fns.php:576 pb/phplib/pledge.php:959 pb/web/ref-picture.php:188
+#: pb/phplib/fns.php:570 pb/phplib/pledge.php:998 pb/web/ref-picture.php:188
 #: pb/web/sms.php:231
 msgid "Submit"
 msgstr "Sendi"
 
-#: pb/phplib/fns.php:578
+#: pb/phplib/fns.php:572
 msgid "(<a href=\"/contact\">contact us</a> to change this)"
 msgstr ""
 
-#: pb/phplib/gaze-controls.php:33 pb/web/search.php:182
+#: pb/phplib/gaze-controls.php:33 pb/web/search.php:216 pb/web/search.php:255
 msgid "near"
 msgstr "proksime al"
 
@@ -1580,7 +1595,7 @@ msgstr "Bedaŭrinde ni ne scias kie troviĝas '%s'. Ni konas tiujn lokojn kun si
 msgid "If it isn't any of those, try a different spelling, or the name of another nearby town:"
 msgstr "Se ĝi ne estas proksime al iu ajn el tiuj, provu malsaman literumon, aŭ la nomo de alia proksima urbo:"
 
-#: pb/phplib/gaze-controls.php:89 pb/web/new.php:1051 pb/web/pb.js:111
+#: pb/phplib/gaze-controls.php:89 pb/web/new.php:1100 pb/web/pb.js:111
 msgid "(choose one)"
 msgstr "(elektu unu)"
 
@@ -1654,6 +1669,89 @@ msgstr "Bonvolu entajpi lokonomon"
 msgid "Unfortunately, we couldn't find anywhere with a name like '%s'.  Please try a different spelling, or another nearby village, town or city."
 msgstr "Bedaŭrinde ni ne trovis lokon kun nomo simila al '%s'. Bonvolu provi malsaman literumon, aŭ alia proksima vilaĝo, urbo aŭ urbego."
 
+#: pb/phplib/login.php:34
+msgid "Required parameter was missing"
+msgstr "Mankis bezonata argumento"
+
+#: pb/phplib/login.php:40 pb/phplib/login.php:67 pb/web/alert.php:59
+#: pb/web/comment.php:88 pb/web/contact.php:132 pb/web/new.php:685
+#: pb/web/ref-contact.php:36 pb/web/ref-email.php:46
+msgid "Please enter your email address"
+msgstr "Bonvolu entajpi vian retadreson"
+
+#: pb/phplib/login.php:50
+msgid "Either your email or password weren't recognised.  Please try again."
+msgstr "Aŭ via retadreso aŭ via pasvorto ne estas rekonita. Bonvolu reprovi."
+
+#: pb/phplib/login.php:91 pb/phplib/login.php:95
+msgid "Now check your email!"
+msgstr "Nun serĉu viajn retmesaĝojn!"
+
+#: pb/phplib/login.php:96
+msgid ""
+"We've sent you an email, and you'll need to click the link in it before you can\n"
+"continue"
+msgstr "Ni sendis retmesaĝon al vi, kaj vi devas musklaki la enan ligilon por daŭrigi."
+
+#: pb/phplib/login.php:99
+msgid ""
+"If you use web-based email or have\n"
+"\"junk mail\" filters, you may wish to check your bulk/spam mail folders:\n"
+"sometimes, our messages are marked that way."
+msgstr ""
+"Se vi uzas <acronym title=\"t.e. se vi uzas TTT-legilon por legi viajn retmesaĝojn \n"
+"sur TTT-paĝo, ekz. la servojn de Yahoo, Hotmail, ktp.\">TTT-an retmesaĝilon</acronym>\n"
+"aŭ se vi havas <acronym title=\"filtrilojn, kiu forigas trudmesaĝojn\">kontraŭspamajn \n"
+"filtrilojn</acronym>, vi eble devos serĉi nian mesaĝon en via spamrubujo, ĉar foje niaj mesaĝoj\n"
+"estas erare tiel markitaj."
+
+#: pb/phplib/login.php:121
+msgid "Checking Your Email Address"
+msgstr "Kontrolado de Via Retadreso"
+
+#: pb/phplib/login.php:149
+msgid "What is your email address?"
+msgstr "Kio estas via retadreso?"
+
+#: pb/phplib/login.php:159
+msgid "Have you used PledgeBank before?"
+msgstr "Ĉu vi jam uzis PromesoBankon?"
+
+#: pb/phplib/login.php:163
+msgid "I've never used PledgeBank before"
+msgstr "Mi neniam antaŭe uzis PromesoBankon"
+
+#: pb/phplib/login.php:165
+msgid "(we'll send an email, click the link in it to confirm your email is working)"
+msgstr "(ni sendos retmesaĝon; musklaku la enan ligilon por konfirmi, ke via adreso bone funkcias)"
+
+# "on" as in "listed on the pledge website", or "on" as in "about this pledge"? (Tim Morley, 2005-11-21)
+# It's about reporting a comment or signer, so is saying "This is on the pledge <strong><I will boycott foo...></strong>." (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
+#: pb/phplib/login.php:167
+msgid "I have a PledgeBank <strong>password</strong>"
+msgstr "Mi havas <strong>pasvorton</strong> ĉe PromesoBanko"
+
+#: pb/phplib/login.php:170
+msgid "Remember me"
+msgstr "Memori min"
+
+#: pb/phplib/login.php:173
+msgid "don't use this on a public or shared computer"
+msgstr "ne uzu tion sur publika aŭ pluruzanta komputilo"
+
+#: pb/phplib/login.php:177
+msgid "I've forgotten or didn't set a password"
+msgstr "Mi forgesis aŭ ne kreis pasvorton"
+
+#: pb/phplib/login.php:179
+#, fuzzy
+msgid "(we'll send an email, click the link in it to confirm your email is working.<br>if you like, you can then set a password on My Pledges page)"
+msgstr "(ni sendos retmesaĝon; musklaku la enan ligilon por konfirmi, ke via adreso bone funkcias.<br>Se vi volas, vi povas tiam krei pasvorton ĉe la paĝo Viaj Promesoj)"
+
+#: pb/phplib/login.php:183
+msgid "Continue"
+msgstr "Daŭrigi"
+
 #: pb/phplib/microsites.php:29 pb/phplib/microsites.php:62
 msgid "Everywhere"
 msgstr "Ĉie"
@@ -1670,104 +1768,84 @@ msgstr "Londono (Britio)"
 msgid "Catalytic Communities"
 msgstr "Catalytic Communities"
 
-#: pb/phplib/microsites.php:202 pb/phplib/microsites.php:225
-#: pb/phplib/microsites.php:258 pb/phplib/microsites.php:264
+#: pb/phplib/microsites.php:206 pb/phplib/microsites.php:229
 msgid "(change)"
 msgstr "(ŝanĝi)"
 
-#: pb/phplib/microsites.php:218 pb/phplib/microsites.php:241
+#: pb/phplib/microsites.php:222 pb/phplib/microsites.php:245
 msgid "(other PledgeBanks)"
 msgstr "(aliaj PromesoBankoj)"
 
-#: pb/phplib/microsites.php:255 pb/phplib/microsites.php:262
-#: pb/web/new.php:161 pb/web/new.php:166
+#: pb/phplib/microsites.php:259 pb/phplib/microsites.php:266
+#: pb/web/new.php:162 pb/web/new.php:167
 msgid "Pledge"
 msgstr "Promeso"
 
-#: pb/phplib/microsites.php:255 pb/phplib/microsites.php:262
+#: pb/phplib/microsites.php:259 pb/phplib/microsites.php:266
 msgid "Bank"
 msgstr "Banko"
 
+#: pb/phplib/microsites.php:262 pb/phplib/microsites.php:268
+#, fuzzy
+msgid "I&rsquo;ll do it, but only if you&rsquo;ll help"
+msgstr "Diru al la mondo \"Mi tion faros, sed nur se vi helpos\""
+
 #. TRANS: 'PledgeBank' here is the first part of the HTML title which appears on browser windows, and search engines
-#: pb/phplib/microsites.php:277
+#: pb/phplib/microsites.php:281
 msgid "Tell the world \"I'll do it, but only if you'll help\""
 msgstr "Diru al la mondo \"Mi tion faros, sed nur se vi helpos\""
 
-#: pb/phplib/microsites.php:320
-msgid "Home"
-msgstr "Hejmo"
-
-#: pb/phplib/microsites.php:325
+#: pb/phplib/microsites.php:332
 msgid "All Pledges"
 msgstr "Ĉiuj Promesoj"
 
-#: pb/phplib/microsites.php:326
+#: pb/phplib/microsites.php:333
 msgid "Start a Pledge"
 msgstr "Krei Promeson"
 
-#: pb/phplib/microsites.php:331 pb/web/faq.php:18 pb/web/faq.php:355
-#: pb/web/faq.php:499
-msgid "Frequently Asked Questions"
-msgstr "Respondaro"
+#: pb/phplib/microsites.php:335 pb/web/my.php:22
+#, fuzzy
+msgid "My Pledges"
+msgstr "Promesoj"
 
-#: pb/phplib/microsites.php:331
-msgid "FAQ"
-msgstr "Respondaro"
-
-#: pb/phplib/microsites.php:335
-msgid "Contact"
-msgstr "Kontakto"
-
-#: pb/phplib/microsites.php:336 pb/web/your.php:22
-msgid "Your Pledges"
-msgstr "Viaj Promesoj"
-
-#: pb/phplib/microsites.php:340
-msgid "Logout"
-msgstr "Elsaluti"
-
-#: pb/phplib/microsites.php:489
-msgid ""
-"\"We all know what it is like to feel powerless, that our own\n"
-"        actions can't really change the things that we want to change.\n"
-"        PledgeBank is about beating that feeling...\""
+#: pb/phplib/microsites.php:337
+msgid "Login"
 msgstr ""
-"\"Ni scias ĉiuj la senton de senpoveco, ke niaj propraj\n"
-"        agoj ne sufiĉas por ŝanĝi tion, kion ni ja volas ŝanĝi.\n"
-"        PromesoBanko temas pri konkero super tiu sento...\""
 
-#: pb/phplib/microsites.php:496
-msgid "Tell the world &#8220;I&#8217;ll do it, but only if you&#8217;ll help me do it&#8221;"
+#: pb/phplib/microsites.php:342
+#, fuzzy
+msgid "About"
+msgstr "Pri Vi"
+
+#: pb/phplib/microsites.php:390
+#, fuzzy
+msgid "&#8220;I&#8217;ll do it, but only if you&#8217;ll help me do it&#8221;"
 msgstr "Diru al la mondo &#8220;Mi promesas fari tion, sed nur se vi helpas&#8221;"
 
-# The tags here are just all wrong, aren't they? (Tim Morley, 2005-11-22)
-# No, that's correct, the starting <a...> and the finishing </a> are outside the translated string - I remember we took the starting <a> out because some translators translated it. :) (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000093.html)
-#: pb/phplib/microsites.php:513
-msgid ""
-"Listen to how PledgeBank\n"
-"    works</a>, as explained by mySociety's director Tom Steinberg.\n"
-"    Or <a href=\"/explain\">read a full transcript"
+#: pb/phplib/microsites.php:492
+#, fuzzy
+msgid "PledgeBank successes"
+msgstr "PromesoBanko"
+
+#: pb/phplib/microsites.php:495
+msgid "summary"
 msgstr ""
-"Aŭskultu</a> la klarigon de la direktoro de mySociety Tom Steinberg [tom stajnberg] pri\n"
-"    kiel funkcias PromesoBanko. Aŭ <a href=\"/explain\">legu</a> la tuton."
 
-#: pb/phplib/microsites.php:517
-msgid ""
-"<a href=\"/explain\">Find out how PledgeBank\n"
-"    works</a>, as explained by mySociety's director Tom Steinberg."
-msgstr ""
-"Legu aŭ aŭskultu la klarigon de la direktoro de mySociety Tom Steinberg [tom stajnberg] pri\n"
-"<a href=\"/explain\">kiel funkcias PromesoBanko</a>."
+#: pb/phplib/microsites.php:496
+#, fuzzy
+msgid "More success stories"
+msgstr "Pli da sukcesaj promesoj..."
 
-#: pb/phplib/microsites.php:612
-msgid "Why not sign a live pledge?"
-msgstr "Kial ne subskribi aktualan promeson?"
+#: pb/phplib/microsites.php:583
+#, fuzzy
+msgid "Some live pledges"
+msgstr "Proponitaj promesoj"
 
-#: pb/phplib/microsites.php:697
+#: pb/phplib/microsites.php:661
 msgid "Top Tips for Successful Pledges"
 msgstr "Bonaj Konsiloj por Sukcesplenaj Promesoj"
 
-#: pb/phplib/microsites.php:699
+#: pb/phplib/microsites.php:663
 #, php-format
 msgid ""
 "<strong>Keep your ambitions modest</strong> &mdash; why ask for 50 people\n"
@@ -1778,7 +1856,7 @@ msgstr ""
 "        personoj faru ion se 5 sufiĉus? Ĉiu kroma persono petita malpliigas la ŝancon\n"
 "        de sukceso. Nur %0.0f%% de promesoj, kiuj petas pli ol 100 subskribantoj sukcesas."
 
-#: pb/phplib/microsites.php:702
+#: pb/phplib/microsites.php:666
 msgid ""
 "<strong>Get ready to sell your pledge, hard</strong>. Pledges don't\n"
 "        sell themselves just by sitting on this site. In fact your pledge won't even\n"
@@ -1791,7 +1869,7 @@ msgstr ""
 "        promeso eĉ ne aperos por ĝeneralaj vizitantoj ĝis kiam vi mem havigis al ĝi plurajn\n"
 "        subskribintojn. Bone pripensu ĉu viaj ĉirkaŭuloj ŝatus subskribi vian promeson!"
 
-#: pb/phplib/microsites.php:707
+#: pb/phplib/microsites.php:671
 msgid ""
 "<strong>Think about how your pledge reads.</strong> How will it look to\n"
 "        someone who picks up a flyer from their doormat? Read your pledge to the person\n"
@@ -1803,14 +1881,14 @@ msgstr ""
 "        apudulo, aŭ al via patrino, por kontroli ĉu ili bone komprenas vian celon.\n"
 "        Nekaze, vi devas reverki ĝin."
 
-#: pb/phplib/microsites.php:714
+#: pb/phplib/microsites.php:678
 msgid ""
 "<strong>A picture &ndash; or audio clip, or video &ndash; is worth a thousand\n"
 "words</strong>. You can add a picture to your pledge once you've created it, or consider including a\n"
 "link in your pledge to a picture, audio, or video if you have one."
 msgstr ""
 
-#: pb/phplib/microsites.php:738
+#: pb/phplib/microsites.php:702
 msgid ""
 "Was it useful?  How could it be better?\n"
 "    We make PledgeBank and thrive off feedback, good and bad.\n"
@@ -1820,133 +1898,170 @@ msgstr ""
 "    Kaj nin kaj PromesoBankon vigligas viaj komentoj, bonaj kaj malbonaj, laŭdaj kaj mallaŭdaj.\n"
 "    Uzu tiun ĉi formularon por kontakti nin."
 
-#: pb/phplib/microsites.php:743
+#: pb/phplib/microsites.php:707
 #, php-format
 msgid "If you prefer, you can email %s instead of using the form."
 msgstr "Se vi preferas, vi rajtas retmesaĝi al %s anstataŭ uzi la formularon."
 
-#: pb/phplib/microsites.php:756
+#: pb/phplib/microsites.php:720
 msgid "This pledge is now closed, as its deadline has passed."
 msgstr "Tiu ĉi promeso nun estas fermita, ĉar ĝia limdato jam pasis."
 
-#: pb/phplib/microsites.php:806 pb/phplib/microsites.php:814
-#: pb/phplib/microsites.php:823
+#: pb/phplib/microsites.php:770 pb/phplib/microsites.php:778
+#: pb/phplib/microsites.php:790
 msgid "Create pledge"
 msgstr "Krei promeson"
 
-#: pb/phplib/microsites.php:820
-msgid "When you're happy with your pledge, <strong>click \"Create\"</strong> to confirm that you wish PledgeBank.com to display the pledge at the top of this page in your name, and that you agree to the terms and conditions below."
+#: pb/phplib/microsites.php:784
+#, fuzzy
+msgid "When you're happy with your pledge, enter your PledgeBank password, if you have one, and click &ldquo;Create Pledge&rdquo; to confirm that you wish PledgeBank to display the pledge in your name, and that you agree to the terms and conditions below."
 msgstr "Kiam vi kontentas pri via promeso, <strong>musklaku \"Krei\"</strong> por konfirmi, ke vi volas, ke PromesoBanko.com vidigu ĝin sub via nomo, kaj ke vi konsentas kun la preskriboj kaj kondiĉoj ĉi sube."
 
-#: pb/phplib/microsites.php:826
+#: pb/phplib/microsites.php:786
+msgid "Password:"
+msgstr "Pasvorto:"
+
+#: pb/phplib/microsites.php:787
+msgid "If you don&rsquo;t have a password, or have forgotten it, we&rsquo;ll send you a confirmation email instead."
+msgstr ""
+
+#: pb/phplib/microsites.php:793
 msgid "The Dull Terms and Conditions"
 msgstr "La Neinteresaj Preskriboj kaj Kondiĉoj"
 
-#: pb/phplib/microsites.php:833
+#: pb/phplib/microsites.php:800
 msgid "By creating your pledge you also consent to the syndication of your pledge to other sites &mdash; this means that other people will be able to display your pledge and your name"
 msgstr "Per kreado de via promeso vi konsentas ankaŭ je la amaspublikigo de via promeso en aliaj retejoj &mdash; tio signifas, ke ili rajtos montri vian promeson kune kun via nomo"
 
-#: pb/phplib/microsites.php:835
+#: pb/phplib/microsites.php:802
 msgid ", and use (but not display) your postcode to locate your pledge in the right geographic area"
 msgstr ", kaj uzi (sed ne montri) vian poŝtkodon por lokigi vian promeson en la bona geografia areo"
 
-#: pb/phplib/microsites.php:838
+#: pb/phplib/microsites.php:805
 msgid ""
 "The purpose of this is simply to give your pledge\n"
 "greater publicity and a greater chance of succeeding."
 msgstr "La celo de tio estas simple doni al via promeso la plej grandan ŝancon sukcesi."
 
-#: pb/phplib/microsites.php:842
+#: pb/phplib/microsites.php:809
 msgid "Rest assured that we won't ever give or sell anyone your email address."
 msgstr "Ni promesas, ke ni neniam donos nek vendos vian retadreson al iu ajn."
 
-#: pb/phplib/microsites.php:942
+#: pb/phplib/microsites.php:909
 msgid "Your address:"
 msgstr "Via adreso:"
 
-#: pb/phplib/microsites.php:948
+#: pb/phplib/microsites.php:915
 msgid "County:"
 msgstr "Departamento:"
 
-#: pb/phplib/microsites.php:990 pb/web/pb.js:38 pb/web/pb.js:40
+#: pb/phplib/microsites.php:957 pb/web/pb.js:38 pb/web/pb.js:40
 msgid "other local people"
 msgstr "aliaj lokaj personoj"
 
-#: pb/phplib/microsites.php:1078 pb/phplib/microsites.php:1081
-#: pb/web/list.php:149
+#: pb/phplib/microsites.php:1045 pb/web/list.php:158
 msgid "Open pledges"
 msgstr "Malfermaj promesoj"
 
-#: pb/phplib/microsites.php:1079 pb/web/list.php:151
+#: pb/phplib/microsites.php:1046 pb/web/list.php:160
 msgid "Closed pledges"
 msgstr "Fermitaj Promesoj"
 
-#: pb/phplib/microsites.php:1081
+#: pb/phplib/microsites.php:1048 pb/web/list.php:146
+msgid "Pledges which need signers"
+msgstr "Promesoj, kiuj bezonas subskribantojn"
+
+#: pb/phplib/microsites.php:1048
 msgid "Successful open pledges"
 msgstr "Sukcesaj malfermaj promesoj"
 
-#: pb/phplib/microsites.php:1082
+#: pb/phplib/microsites.php:1049
 msgid "Successful closed pledges"
 msgstr "Sukcesaj fermitaj promesoj"
 
-#: pb/phplib/microsites.php:1082 pb/web/list.php:147
+#: pb/phplib/microsites.php:1049 pb/web/list.php:156
 msgid "Failed pledges"
 msgstr "Malsukcesaj promesoj"
 
-#: pb/phplib/microsites.php:1090
+#: pb/phplib/microsites.php:1057
 msgid "Start date"
 msgstr "Komencdato"
 
-#: pb/phplib/microsites.php:1091
+#: pb/phplib/microsites.php:1058
 msgid "Deadline"
 msgstr "Limdato"
 
-#: pb/phplib/microsites.php:1094
+#: pb/phplib/microsites.php:1061
 msgid "Percent signed"
 msgstr "elcento de apogantocelo"
 
-#: pb/phplib/microsites.php:1096 pb/web/new.php:856
+#: pb/phplib/microsites.php:1063 pb/web/new.php:846
 msgid "Category"
 msgstr "Kategorio"
 
-#: pb/phplib/microsites.php:1368 pb/phplib/microsites.php:1374
+#: pb/phplib/microsites.php:1335 pb/phplib/microsites.php:1341
 msgid "You can search for:"
 msgstr "Vi povas serĉi:"
 
-#: pb/phplib/microsites.php:1370 pb/phplib/microsites.php:1379
+#: pb/phplib/microsites.php:1337 pb/phplib/microsites.php:1346
 msgid "<strong>Any words</strong>, to find pledges and comments containing those words"
 msgstr "<strong>Iu(j)n ajn vorto(j)n</strong>, por trovi promesojn kaj komentojn, kiuj ilin enhavas."
 
-#: pb/phplib/microsites.php:1376
+#: pb/phplib/microsites.php:1343
 msgid "The name of a <strong>town or city</strong> near you, to find pledges in your area"
 msgstr "La nomon de <strong>urbo aŭ urbego</strong> apud ĉe vi, por trovi promesojn proksime de vi."
 
-#: pb/phplib/microsites.php:1378
+#: pb/phplib/microsites.php:1345
 msgid "A <strong>postcode</strong> or postcode area, if you are in the United Kingdom"
 msgstr "<strong>poŝtkodon</strong> aŭ poŝtkodareon, se vi estas en Britio"
 
-#: pb/phplib/microsites.php:1380
-msgid "The name of <strong>a person</strong>, to find pledges they made or signed publically"
+#: pb/phplib/microsites.php:1347
+msgid "The name of <strong>a person</strong>, to find pledges they made or signed publicly"
 msgstr "La nomon de <strong>iu persono</strong>, por trovi promesojn, kiujn ili kreis aŭ publike subskribis"
 
+#: pb/phplib/microsites.php:1360
+#, fuzzy
+msgid "Basics"
+msgstr "Statistikoj"
+
+#: pb/phplib/microsites.php:1362
+#, fuzzy
+msgid "Location"
+msgstr "Ŝanĝi lokon"
+
+#: pb/phplib/microsites.php:1364
+#, fuzzy
+msgid "Category/Privacy"
+msgstr "Ŝanĝi kategorion/privatecon"
+
+#: pb/phplib/microsites.php:1366
+#, fuzzy
+msgid "Address"
+msgstr "Via adreso:"
+
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:133 pb/phplib/page.php:392
+#: pb/phplib/page.php:137 pb/phplib/page.php:394
 msgid "PledgeBank"
 msgstr "PromesoBanko"
 
-#: pb/phplib/page.php:199
-msgid "This pledge's permanent location: "
-msgstr "La porĉiama loko de tiu ĉi promeso estas: "
-
-#: pb/phplib/page.php:215
+#: pb/phplib/page.php:206
 msgid "Hello, "
 msgstr "Saluton, "
 
-#: pb/phplib/page.php:221
+#: pb/phplib/page.php:212
 msgid "this isn't you?  click here"
 msgstr "ĉu ne vi? musklaku ĉi tie"
 
-#: pb/phplib/page.php:232
+#: pb/phplib/page.php:218 pb/web/search.php:400
+#, fuzzy
+msgid "Search for pledges:"
+msgstr "Serĉi promeson"
+
+#: pb/phplib/page.php:220 pb/web/search.php:402
+msgid "Search"
+msgstr "Serĉo"
+
+#: pb/phplib/page.php:227
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
@@ -1954,45 +2069,37 @@ msgstr ""
 "Tiu ĉi paĝo estas provizora, nur por paĝverkistoj. Vi tre verŝajne\n"
 "serĉas <a href=\"http://www.promesobanko.com/\">la veran retejon</a>."
 
-#: pb/phplib/page.php:237
+#: pb/phplib/page.php:232
 msgid "Note: On this test site, the date is faked to be"
 msgstr "Notu: Sur tiu ĉi provretejo, la dato false montriĝas kiel"
 
-#: pb/phplib/page.php:282
+#: pb/phplib/page.php:275
 msgid "Navigation"
 msgstr "Navigado"
 
-#: pb/phplib/page.php:296
+#: pb/phplib/page.php:289
 #, fuzzy
 msgid "Translate into your language..."
 msgstr "Traduki PromesoBanko vialingven"
 
-#: pb/phplib/page.php:297
+#: pb/phplib/page.php:290
 #, fuzzy
 msgid "Change"
 msgstr "(ŝanĝi)"
 
-#: pb/phplib/page.php:301
-msgid "Search"
-msgstr "Serĉo"
-
-#: pb/phplib/page.php:302 pb/web/bogusref.php:85
-msgid "Go"
-msgstr "Ek!"
-
-#: pb/phplib/page.php:325 pb/web/lang.php:44
+#: pb/phplib/page.php:313 pb/web/lang.php:44
 msgid "Translate PledgeBank into your language"
 msgstr "Traduki PromesoBanko vialingven"
 
-#: pb/phplib/page.php:326
+#: pb/phplib/page.php:314
 msgid "Built by mySociety"
 msgstr "Konstruita de mySociety"
 
-#: pb/phplib/page.php:327
+#: pb/phplib/page.php:315
 msgid "Powered by Easynet"
 msgstr "Ebligita de Easynet"
 
-#: pb/phplib/pb.php:48 pb/phplib/pb.php:206 pb/phplib/pb.php:207
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
 msgid "Sorry! Something's gone wrong."
 msgstr "Pardonu! Io misas."
 
@@ -2000,69 +2107,69 @@ msgstr "Pardonu! Io misas."
 msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
 msgstr "Bonvolu provi denove post iom da tempo, aux <a href=\"mailto:team&#64;pledgebank.com\">retmesaĝu nin</a> por helpo pri la problemo."
 
-#: pb/phplib/pbfacebook.php:174 pb/web/new.php:166 pb/web/new.php:480
-#: pb/web/ref-index.php:384 pb/web/ref-plain.php:50
+#: pb/phplib/pbfacebook.php:153 pb/web/new.php:167 pb/web/new.php:503
+#: pb/web/ref-index.php:393 pb/web/ref-plain.php:40
 msgid "I will"
 msgstr "Mi promesas"
 
-#: pb/phplib/pbfacebook.php:210
+#: pb/phplib/pbfacebook.php:185
 #, fuzzy
 msgid "From:"
 msgstr "De"
 
-#: pb/phplib/pbfacebook.php:212
+#: pb/phplib/pbfacebook.php:187
 #, fuzzy
 msgid "on"
 msgstr "Neniu"
 
-#: pb/phplib/pbfacebook.php:214 pb/web/contact.php:112
-#: pb/web/ref-announce.php:321 pb/web/ref-announcearchive.php:67
+#: pb/phplib/pbfacebook.php:189 pb/web/contact.php:107
+#: pb/web/ref-announce.php:323 pb/web/ref-announcearchive.php:67
 msgid "Subject"
 msgstr "Temo"
 
-#: pb/phplib/pbfacebook.php:437
+#: pb/phplib/pbfacebook.php:424
 #, fuzzy
 msgid "None of your friends have made or signed any pledges."
 msgstr "Vi subskribis neniun promeson."
 
-#: pb/phplib/pbfacebook.php:438
+#: pb/phplib/pbfacebook.php:425
 #, fuzzy
 msgid "See some featured pledges."
 msgstr "Proponitaj promesoj"
 
-#: pb/phplib/pbfacebook.php:466
+#: pb/phplib/pbfacebook.php:453
 #, fuzzy
 msgid "Pledge you've created:"
 msgstr "Promeso Kreita"
 
-#: pb/phplib/pbfacebook.php:489
+#: pb/phplib/pbfacebook.php:476
 #, fuzzy
 msgid "Pledge you've signed:"
 msgstr "<h2>Promesoj subskribitaj de vi</h2>"
 
-#: pb/phplib/pbfacebook.php:498
+#: pb/phplib/pbfacebook.php:485
 #, fuzzy
 msgid "You've neither made nor signed any pledges."
 msgstr "Vi subskribis neniun promeson."
 
-#: pb/phplib/pbfacebook.php:546 pb/web/ref-sign.php:234 pb/web/sms.php:67
+#: pb/phplib/pbfacebook.php:533 pb/web/ref-sign.php:234 pb/web/sms.php:67
 #: pb/web/sms.php:137
 msgid "Thanks for signing up to this pledge!"
 msgstr "Dankon pro via subskribo!"
 
-#: pb/phplib/pbfacebook.php:552 pb/web/ref-sign.php:241
+#: pb/phplib/pbfacebook.php:539 pb/web/ref-sign.php:241
 msgid "Your signature has made this pledge reach its target! Woohoo!"
 msgstr "Via subskribo sukcesigis tiun promeson! Ni festu!"
 
-#: pb/phplib/pbfacebook.php:567
+#: pb/phplib/pbfacebook.php:554
 msgid "The news that you've signed could not be added to your feed."
 msgstr ""
 
-#: pb/phplib/pbfacebook.php:575 pb/web/ref-sign.php:252
+#: pb/phplib/pbfacebook.php:562 pb/web/ref-sign.php:252
 msgid "You've already signed this pledge!"
 msgstr "Vi jam subskribis tiun ĉi promeson!"
 
-#: pb/phplib/pbfacebook.php:578 pb/web/ref-sign.php:257
+#: pb/phplib/pbfacebook.php:565 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Pardonu &mdash; ne eblis subskribi tiun ĉi promeson."
 
@@ -2082,69 +2189,74 @@ msgstr "Promeso ne troviĝas en datumbazo"
 msgid "byarea_location_id not valid"
 msgstr "byarea_location_id ne valida"
 
-#: pb/phplib/pledge.php:306
+#: pb/phplib/pledge.php:314
 msgid "Place"
 msgstr "Loko"
 
-#: pb/phplib/pledge.php:308
+#: pb/phplib/pledge.php:316
 msgid "Postcode area"
 msgstr "Poŝtkoda areo"
 
-#: pb/phplib/pledge.php:453
+#: pb/phplib/pledge.php:458
+#, php-format
+msgid "Pledge &ldquo;%s&rdquo;"
+msgstr ""
+
+#: pb/phplib/pledge.php:464
 msgid "Roughly translate the pledge into your language (using Altavista's Babel Fish machine translator)"
 msgstr "Malprecize traduki la promeson vialingven (per la aŭtomata tradukilo Babel Fish de AltaVista)"
 
-#: pb/phplib/pledge.php:453
+#: pb/phplib/pledge.php:464
 msgid "translate"
 msgstr "traduki"
 
-#: pb/phplib/pledge.php:457
+#: pb/phplib/pledge.php:468
 msgid "admin"
 msgstr "administrado"
 
-#: pb/phplib/pledge.php:464
+#: pb/phplib/pledge.php:475
 #, fuzzy
 msgid "contact"
 msgstr "Kontakto"
 
-#: pb/phplib/pledge.php:482
+#: pb/phplib/pledge.php:493
 msgid "Deadline to sign up by:"
 msgstr "Findato por subskriboj:"
 
-#: pb/phplib/pledge.php:487
+#: pb/phplib/pledge.php:498
 #, php-format
 msgid "%s person signed up"
 msgid_plural "%s people signed up"
 msgstr[0] "%s persono subskribinta"
 msgstr[1] "%s personoj subskribintaj"
 
-#: pb/phplib/pledge.php:489
+#: pb/phplib/pledge.php:500
 #, php-format
 msgid "%s person has signed up"
 msgid_plural "%s people have signed up"
 msgstr[0] "%s persono jam subskribis"
 msgstr[1] "%s personoj jam subskribis"
 
-#: pb/phplib/pledge.php:493
+#: pb/phplib/pledge.php:504
 #, php-format
 msgid "successful in %d place"
 msgid_plural "successful in %d places"
 msgstr[0] "sukcesa en %d loko"
 msgstr[1] "sukcesa en %d lokoj"
 
-#: pb/phplib/pledge.php:499
+#: pb/phplib/pledge.php:510
 #, php-format
 msgid "(%d over target)"
 msgstr "(%d pli ol la celo)"
 
-#: pb/phplib/pledge.php:503
+#: pb/phplib/pledge.php:514
 #, php-format
 msgid "%d more was needed"
 msgid_plural "%d more were needed"
 msgstr[0] "ankoraŭ %d estis bezonata"
 msgstr[1] "ankoraŭ %d estis bezonataj"
 
-#: pb/phplib/pledge.php:505
+#: pb/phplib/pledge.php:516
 #, php-format
 msgid "%d more needed"
 msgid_plural "%d more needed"
@@ -2152,244 +2264,244 @@ msgstr[0] "ankoraŭ %d bezonata"
 msgstr[1] "ankoraŭ %d bezonataj"
 
 # %s here is microsite name (Tim Morley, 2006-10-09)
-#: pb/phplib/pledge.php:518
+#: pb/phplib/pledge.php:529
 #, php-format
 msgid "This is a %s pledge"
 msgstr "Tiu ĉi estas promeso de %s"
 
 # %s here is microsite name (Tim Morley, 2006-10-09)
-#: pb/phplib/pledge.php:520
+#: pb/phplib/pledge.php:531
 #, php-format
 msgid "Show all of the %s pledges"
 msgstr "Montri ĉiun promeson de %s"
 
-#: pb/phplib/pledge.php:522
+#: pb/phplib/pledge.php:533
 msgid "show more"
 msgstr "montri pli"
 
-#: pb/phplib/pledge.php:534
+#: pb/phplib/pledge.php:545
 msgid "Show where exactly this place is (using Google Maps)"
 msgstr "Montri precize kie troviĝas tiu loko (per Google Maps)"
 
-#: pb/phplib/pledge.php:536
+#: pb/phplib/pledge.php:547
 msgid "view map"
 msgstr "vidi mapon"
 
-#: pb/phplib/pledge.php:560
+#: pb/phplib/pledge.php:570
 msgid "More details"
 msgstr "Pli da detaloj"
 
-#: pb/phplib/pledge.php:565
+#: pb/phplib/pledge.php:575
 #, php-format
 msgid "Pledge originally made by %s"
 msgstr "Promeso origine farita de %s"
 
-#: pb/phplib/pledge.php:571
+#: pb/phplib/pledge.php:581
 msgid "Anything wrong with this pledge?  Tell us!"
 msgstr "Ĉu io misas pri tiu promeso? Diru al ni!"
 
-#: pb/phplib/pledge.php:621
+#: pb/phplib/pledge.php:631
 #, php-format
 msgid "I, %s, will %s."
 msgstr "Mi, %s, promesas %s."
 
-#: pb/phplib/pledge.php:623
+#: pb/phplib/pledge.php:633
 #, php-format
 msgid "I will %s."
 msgstr "Mi promesas %s."
 
-#: pb/phplib/pledge.php:626
+#: pb/phplib/pledge.php:636
 #, php-format
 msgid "I, %s, will %s but only if <strong>%s</strong> %s will %s."
 msgstr "Mi, %s, promesas %s sed nur se <strong>%s</strong> %s promesas %s."
 
-#: pb/phplib/pledge.php:628
+#: pb/phplib/pledge.php:638
 #, php-format
 msgid "I will %s but only if <strong>%s</strong> %s will %s."
 msgstr "Mi promesas %s sed nur se <strong>%s</strong> %s promesas %s."
 
-#: pb/phplib/pledge.php:692
+#: pb/phplib/pledge.php:704
 msgid "Sign up where you live"
 msgstr "Subskribu por la urbo, kie vi loĝas"
 
-#: pb/phplib/pledge.php:692
+#: pb/phplib/pledge.php:704
 msgid "Sign up now"
 msgstr "Subskribi nun"
 
-#: pb/phplib/pledge.php:696
-#, php-format
-msgid "I, %s, sign up to the pledge."
-msgstr "Mi, %s, subskribas tiun ĉi promeson."
+#: pb/phplib/pledge.php:710
+msgid "(we only use this to tell you when the pledge is completed and to let the pledge creator get in touch)"
+msgstr "(ni uzas tion nur por ke ni povu indiki al vi kiam la promeso finos, kaj por ebligi, ke la promeskreinto kontaktu vin)"
 
-#: pb/phplib/pledge.php:704
-msgid "Show my name publically on this pledge."
+#: pb/phplib/pledge.php:716
+msgid "Show my name publicly on this pledge."
 msgstr "Publike montri mian nomon sur tiu ĉi promeso."
 
-#: pb/phplib/pledge.php:705
+#: pb/phplib/pledge.php:717
+#, fuzzy
 msgid ""
-"People searching for your name on the Internet will be able\n"
-"    to find your signature, unless you uncheck this box."
+"People searching for your name on the Internet might be able\n"
+"    to find your signature."
 msgstr ""
 "Iu, kiu serĉos vian nomon sur interreto, povos trovi vian subskribon\n"
 "    krom se vi forigas tiun ĉi hokmarkon."
 
-#: pb/phplib/pledge.php:712
+#: pb/phplib/pledge.php:725
 msgid "Your country:"
 msgstr "Via lando:"
 
-#: pb/phplib/pledge.php:719
+#: pb/phplib/pledge.php:732
 msgid "Your town:"
 msgstr "Via urbo:"
 
-#: pb/phplib/pledge.php:722
+#: pb/phplib/pledge.php:735
 #, php-format
 msgid "(%s only)"
 msgstr "(nur %s)"
 
-#: pb/phplib/pledge.php:728
-msgid "(we only use this to tell you when the pledge is completed and to let the pledge creator get in touch)"
-msgstr "(ni uzas tion nur por ke ni povu indiki al vi kiam la promeso finos, kaj por ebligi, ke la promeskreinto kontaktu vin)"
-
-#: pb/phplib/pledge.php:730 pb/web/ref-sign.php:173 pb/web/ref-sign.php:298
+#: pb/phplib/pledge.php:740 pb/web/ref-sign.php:173 pb/web/ref-sign.php:298
 msgid "Sign Pledge"
 msgstr "Subskribi Promeson"
 
-#: pb/phplib/pledge.php:737
-#, php-format
-msgid "Or, text '<strong>%s %s</strong>' to <strong>%s</strong>"
+#: pb/phplib/pledge.php:747
+#, fuzzy, php-format
+msgid "Or text &lsquo;<strong>%s %s</strong>&rsquo; to <strong>%s</strong>"
 msgstr "Aŭ sendu '<strong>%s %s</strong>' kiel SMS-mesaĝon al <strong>%s</strong>"
 
-#: pb/phplib/pledge.php:739
+#: pb/phplib/pledge.php:749
 #, php-format
 msgid "(in %s only)"
 msgstr "(nur en %s)"
 
-#: pb/phplib/pledge.php:744
+#: pb/phplib/pledge.php:754
 #, php-format
-msgid "Or, share and sign this pledge <strong><a href=\"%s\">in Facebook</a></strong>"
+msgid "Share and sign this pledge <strong><a href=\"%s\">in Facebook</a> <a href=\"%s\"><img src=\"http://news.bbc.co.uk/shared/img/icons/bookmarks/facebook.gif\" alt=\"\" border=\"0\"></a></strong>"
 msgstr ""
 
-#: pb/phplib/pledge.php:778 pb/phplib/pledge.php:798
+#: pb/phplib/pledge.php:784 pb/web/ref-index.php:81
+msgid "Send message to signers"
+msgstr "Sendi mesaĝon al la subskribintoj"
+
+#: pb/phplib/pledge.php:817 pb/phplib/pledge.php:837
 #, php-format
 msgid "just %d day left"
 msgid_plural "just %d days left"
 msgstr[0] "restas nur %d tago"
 msgstr[1] "restas nur %d tagoj"
 
-#: pb/phplib/pledge.php:780 pb/phplib/pledge.php:800 pb/phplib/pledge.php:826
+#: pb/phplib/pledge.php:819 pb/phplib/pledge.php:839 pb/phplib/pledge.php:865
 #, php-format
 msgid "%d day left"
 msgid_plural "%d days left"
 msgstr[0] "restas %d tago"
 msgstr[1] "restas %d tagoj"
 
-#: pb/phplib/pledge.php:786
+#: pb/phplib/pledge.php:825
 msgid "Target met nowhere"
 msgstr "Celo atingita nenie"
 
-#: pb/phplib/pledge.php:788
+#: pb/phplib/pledge.php:827
 #, php-format
 msgid "Target met in %d place"
 msgid_plural "Target met in %d places"
 msgstr[0] "Celo atingita en %d loko."
 msgstr[1] "Celo atingita en %d lokoj."
 
-#: pb/phplib/pledge.php:793
+#: pb/phplib/pledge.php:832
 #, fuzzy, php-format
 msgid "pledge open for %d hour."
 msgid_plural "pledge open for %d hours."
 msgstr[0] "Celo atingita, promeso malferma dum ankoraŭ %d tago."
 msgstr[1] "Celo atingita, promeso malferma dum ankoraŭ %d tagoj."
 
-#: pb/phplib/pledge.php:807
+#: pb/phplib/pledge.php:846
 #, fuzzy, php-format
 msgid "Target met, pledge still open for %d hour."
 msgid_plural "Target met, pledge still open for %d hours."
 msgstr[0] "Celo atingita, promeso malferma dum ankoraŭ %d tago."
 msgstr[1] "Celo atingita, promeso malferma dum ankoraŭ %d tagoj."
 
-#: pb/phplib/pledge.php:809
+#: pb/phplib/pledge.php:848
 msgid "Target met, pledge closed."
 msgstr "Celo atingita, promeso fermita."
 
-#: pb/phplib/pledge.php:811
+#: pb/phplib/pledge.php:850
 #, php-format
 msgid "Target met, pledge still open for %d day."
 msgid_plural "Target met, pledge still open for %d days."
 msgstr[0] "Celo atingita, promeso malferma dum ankoraŭ %d tago."
 msgstr[1] "Celo atingita, promeso malferma dum ankoraŭ %d tagoj."
 
-#: pb/phplib/pledge.php:816
+#: pb/phplib/pledge.php:855
 #, fuzzy, php-format
 msgid "Just %d hour left"
 msgid_plural "Just %d hours left"
 msgstr[0] "restas nur %d tago"
 msgstr[1] "restas nur %d tagoj"
 
-#: pb/phplib/pledge.php:817 pb/phplib/pledge.php:828
+#: pb/phplib/pledge.php:856 pb/phplib/pledge.php:867
 #, fuzzy, php-format
 msgid ", %d more signature needed"
 msgid_plural ", %d more signatures needed"
 msgstr[0] ", %d kroma subskribanto bezonata)"
 msgstr[1] ", %d kromaj subskribantoj bezonataj)"
 
-#: pb/phplib/pledge.php:820
+#: pb/phplib/pledge.php:859
 msgid "Deadline expired, pledge failed."
 msgstr "Templimo pasis, promeso malsukcesis."
 
-#: pb/phplib/pledge.php:824
+#: pb/phplib/pledge.php:863
 #, fuzzy, php-format
 msgid "Just %d day left"
 msgid_plural "Just %d days left"
 msgstr[0] "restas nur %d tago"
 msgstr[1] "restas nur %d tagoj"
 
-#: pb/phplib/pledge.php:862
+#: pb/phplib/pledge.php:901
 msgid "Success"
 msgstr "Sukceso"
 
-#: pb/phplib/pledge.php:865
+#: pb/phplib/pledge.php:904
 msgid "That pledge has already finished"
 msgstr "Tiu promeso jam finiĝis"
 
-#: pb/phplib/pledge.php:868
+#: pb/phplib/pledge.php:907
 msgid "That pledge is already full"
 msgstr "Tiu promeso jam plenas"
 
-#: pb/phplib/pledge.php:871
+#: pb/phplib/pledge.php:910
 msgid "Signing up with a place name is supported only by email (not mobile phones or Facebook)"
 msgstr ""
 
-#: pb/phplib/pledge.php:874
+#: pb/phplib/pledge.php:913
 msgid "You've already signed that pledge"
 msgstr "Vi jam subskribis tiun promeson"
 
-#: pb/phplib/pledge.php:877 pb/web/comment.php:52 pb/web/ref-sign.php:84
+#: pb/phplib/pledge.php:916 pb/web/comment.php:52 pb/web/ref-sign.php:84
 #: pb/web/sms.php:62
 msgid "Permission denied"
 msgstr "Ne permesita"
 
-#: pb/phplib/pledge.php:881
+#: pb/phplib/pledge.php:920
 msgid "Something went wrong unexpectedly"
 msgstr "Iu neatendite misis"
 
-#: pb/phplib/pledge.php:955
+#: pb/phplib/pledge.php:994
 msgid "Incorrect PIN!"
 msgstr "Neĝusta PIN!"
 
-#: pb/phplib/pledge.php:958
+#: pb/phplib/pledge.php:997
 msgid "PIN Protected Pledge"
 msgstr "PIN-e Protektita Promeso"
 
-#: pb/phplib/pledge.php:958
+#: pb/phplib/pledge.php:997
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "Tiu ĉi promeso estas protektita. Bonvolu entajpi la PIN-on por daŭrigi."
 
-#: pb/phplib/pledge.php:961
+#: pb/phplib/pledge.php:1000
 msgid "Enter PIN"
 msgstr "Entajpu la sekretan kodnumeron"
 
-#: pb/phplib/pledge.php:1012
+#: pb/phplib/pledge.php:1051
 msgid ""
 "<p>PledgeBank can send you email alerts when people\n"
 "        create local pledges in your area. Sign up - you don't know\n"
@@ -2401,61 +2513,66 @@ msgstr ""
 
 # I've translated this as "In order to massively increase the chance of this pledge succeeding, " because what follows is "print this page out" (entry immediately below) in the imperative. See comment there. (Tim Morley, 2005-11-27)
 #. TRANS: Esperanto translated this as "In order to massive increase the chance of this pledge succeeding, " to keep it in the imperative
-#: pb/phplib/pledge.php:1026
+#: pb/phplib/pledge.php:1065
 msgid "You will massively increase the chance of this pledge succeeding if you "
 msgstr "Por pliigegi la probablecon de sukceso de tiu ĉi promeso, vi "
 
 # This phrase is used on two different pages, in two grammatically different ways (one present tense, one imperative), which doesn't matter in English, but does in Esperanto. I've translated it as imperative, and changed the translation of the entry above (msgid "You will massively increase the chance of this pledge succeeding if you "). (Tim Morley, 2005-11-27)
 #. TRANS: This phrase is used in two different places, once in present tense, once in imperative. Shout if this is a problem.
-#: pb/phplib/pledge.php:1029 pb/web/ref-flyers.php:64
+#: pb/phplib/pledge.php:1068 pb/web/ref-flyers.php:64
 msgid "print this page out"
 msgstr "presu tiun ĉi paĝon"
 
-#: pb/phplib/pledge.php:1030
+#: pb/phplib/pledge.php:1069
 msgid "these more attractive PDF and RTF (Word) versions"
 msgstr "tiujn pli belajn versiojn PDF kaj RTF (por Word aŭ OpenOffice.org)"
 
 # Use the imperative here to go with msgid "You will massively increase......." and msgid "print this page out". (Tim Morley, 2005-11-30)
 #. TRANS: Use the imperative here to go with msgid "You will massively increase......." and msgid "print this page out". (Tim Morley, 2005-11-30)
-#: pb/phplib/pledge.php:1032
+#: pb/phplib/pledge.php:1071
 #, php-format
 msgid "(or use %s), cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr "(aŭ uzu %s), distondu la flugfoliojn kaj poŝtu ilin ĉe la najbaroj."
 
-#: pb/phplib/pledge.php:1037
+#: pb/phplib/pledge.php:1076
 msgid "print these pages out"
 msgstr "presas tiujn ĉi paĝojn"
 
-#: pb/phplib/pledge.php:1038
+#: pb/phplib/pledge.php:1077
 msgid ", cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr ", distondas la flugfoliojn kaj poŝtas ilin ĉe la najbaroj."
 
-#: pb/phplib/pledge.php:1041
+#: pb/phplib/pledge.php:1080
 msgid ""
 "We cannot emphasise this enough &mdash; print them NOW and post them next time you\n"
 "go out to the shops or your pledge is unlikely to succeed."
 msgstr "Ne eblas sufiĉe emfazi tion &mdash; presu ilin NUN kaj poŝtu ilin je via venonta foriro. Alikaze via promeso verŝajne malsukcesos."
 
-#: pb/phplib/pledge.php:1047 pb/web/ref-flyers.php:67
+#: pb/phplib/pledge.php:1086 pb/web/ref-flyers.php:67
 msgid "Graphic of flyers for printing"
 msgstr "Grafikaĵo de flugfolioj por presado"
 
-#: pb/phplib/pledge.php:1210
+#: pb/phplib/pledge.php:1250
 #, php-format
 msgid "This pledge has been successful in <strong>%d place</strong>!"
 msgid_plural "This pledge has been successful in <strong>%d places</strong>!"
 msgstr[0] "Tiu promeso sukcesis en <strong>%d loko</strong>!"
 msgstr[1] "Tiu promeso sukcesis en <strong>%d lokoj</strong>!"
 
-#: pb/phplib/pledge.php:1215
+#: pb/phplib/pledge.php:1255
 msgid "<strong>You can still sign up</strong>, to help make it successful where you live."
 msgstr "<strong>Vi ankoraŭ povas subskribi</strong> por helpi sukcesigi ĝin tie, kie vi loĝas."
 
-#: pb/phplib/pledge.php:1220
+#: pb/phplib/pledge.php:1266
 msgid "This pledge has been successful!"
 msgstr "Tiu promeso sukcesis!"
 
-#: pb/phplib/pledge.php:1222
+#: pb/phplib/pledge.php:1271
+#, fuzzy
+msgid "This pledge was successful!"
+msgstr "Tiu promeso sukcesis!"
+
+#: pb/phplib/pledge.php:1274
 msgid "<strong>You can still add your name to it</strong>, because the deadline hasn't been reached yet."
 msgstr "<strong>Vi ankoraŭ povas aldoni vian nomon</strong>, ĉar la limdato ankoraŭ ne pasis."
 
@@ -2481,18 +2598,13 @@ msgid "Thanks!  You won't receive more email about %s."
 msgstr "Dankon! Vi ricevos neniun plian mesaĝon pri %s."
 
 #: pb/web/alert.php:42
-msgid "You might like to <a href=\"/alert/\">subscribe to a new local alert</a>, or <a href=\"/your\">manage all your alerts</a>."
+#, fuzzy
+msgid "You might like to <a href=\"/alert/\">subscribe to a new local alert</a>, or <a href=\"/my\">manage all your alerts</a>."
 msgstr "Eble vi ŝatus <a href=\"/alert/\">aliĝi al nova loka atentigo</a>, aŭ <a href=\"/your\">administri ĉiujn viajn atentigojn</a>."
 
 #: pb/web/alert.php:44
 msgid "Thanks!  You are already unsubscribed from that alert."
 msgstr "Dankon! Vi jam estis malaliĝinta de tiu atentigo."
-
-#: pb/web/alert.php:59 pb/web/comment.php:88 pb/web/contact.php:137
-#: pb/web/login.php:197 pb/web/login.php:224 pb/web/new.php:659
-#: pb/web/ref-contact.php:36 pb/web/ref-email.php:46
-msgid "Please enter your email address"
-msgstr "Bonvolu entajpi vian retadreson"
 
 #: pb/web/alert.php:70
 msgid "Before subscribing you to local pledge email alerts, we need to confirm your email address."
@@ -2572,6 +2684,10 @@ msgstr "Serĉu la promeson, kiun vi celas per tajpado de vortoj ĉi sube."
 msgid "Search for a pledge"
 msgstr "Serĉi promeson"
 
+#: pb/web/bogusref.php:85
+msgid "Go"
+msgstr "Ek!"
+
 #: pb/web/comment.php:23
 msgid "Missing pledge id"
 msgstr "Mankas identigilo de promeso"
@@ -2602,7 +2718,7 @@ msgstr "Pardonu -- io misis"
 msgid "'%s' is not a valid email address; please check it carefully"
 msgstr "'%s' ne estas valida retadreso; bonvolu zorge kontroli ĝin"
 
-#: pb/web/comment.php:95 pb/web/contact.php:136 pb/web/new.php:658
+#: pb/web/comment.php:95 pb/web/contact.php:131 pb/web/new.php:684
 #: pb/web/ref-contact.php:35 pb/web/ref-email.php:45 pb/web/sms.php:75
 msgid "Please enter your name"
 msgstr "Bonvolu entajpi vian nomon"
@@ -2651,89 +2767,84 @@ msgstr "Reiri la la promeso"
 msgid "<h2>Here's how your comment will appear</h2>"
 msgstr "<h2>Jen kiel aspektos via komento</h2>"
 
-#: pb/web/contact.php:30 pb/web/contact.php:62
+#: pb/web/contact.php:30 pb/web/faq.php:504
 msgid "Contact Us"
 msgstr "Kontaktu Nin"
 
 # Same question as before: what follows here? Singular or plural? (Tim Morley, 2005-11-26)
 #: pb/web/contact.php:60
-msgid "Report abusive, suspicious or wrong comment"
-msgstr "Raporti pri insulta, suspektinda aŭ malĝusta komento"
-
-# Same question as before: what follows here? Singular or plural? (Tim Morley, 2005-11-26)
-#: pb/web/contact.php:65
 #, fuzzy
 msgid "You are reporting the following comment to the PledgeBank team:"
 msgstr "Vi raportas pri la sekva komento:"
 
-#: pb/web/contact.php:83
+#: pb/web/contact.php:78
 msgid "<a href=\"/faq\">Read the FAQ</a> first, it might be a quicker way to answer your question."
 msgstr "Unue vi <a href=\"/faq\">legu la respondaron</a>; tiel vi eble trovos pli rapide la respondon al via demando."
 
-#: pb/web/contact.php:95
-#, fuzzy
-msgid "Report comment to PledgeBank"
-msgstr "Ensaluti en PromesoBanko.com"
+# Same question as before: what follows here? Singular or plural? (Tim Morley, 2005-11-26)
+#: pb/web/contact.php:90
+msgid "Report abusive, suspicious or wrong comment"
+msgstr "Raporti pri insulta, suspektinda aŭ malĝusta komento"
 
-#: pb/web/contact.php:96
+#: pb/web/contact.php:91
 msgid "Please let us know exactly what is wrong with the comment, and why you think it should be removed."
 msgstr ""
 
-#: pb/web/contact.php:98
+#: pb/web/contact.php:93
 #, fuzzy
 msgid "Contact the PledgeBank team"
 msgstr "-- la skipo de PromesoBanko.com"
 
-#: pb/web/contact.php:101
+#: pb/web/contact.php:96
 #, fuzzy, php-format
 msgid "To contact the creator of the <strong>%s</strong> pledge <a href=\"%s\">leave a comment</a> on the pledge, or <a href=\"%s\">contact the pledge creator</a>. The form below is for messages to the PledgeBank team only, <strong>not</strong> the pledge creator."
 msgstr "Se vi volas kontakti la Kreinton de iu Promeso, bonvolu uzi la sekcion 'komentoj' sur la paĝo de la promeso. La ĉi suba formularo estas por mesaĝoj celantaj la administran skipon de PromesoBanko, <strong>ne</strong> la kreinton de la promeso."
 
-#: pb/web/contact.php:104
+#: pb/web/contact.php:99
 #, fuzzy
 msgid "To contact a pledge creator, please use the 'comments' section on the pledge, or the 'contact the pledge creator' feature. The form below is for messages to the PledgeBank team only, <strong>not</strong> a pledge creator."
 msgstr "Se vi volas kontakti la Kreinton de iu Promeso, bonvolu uzi la sekcion 'komentoj' sur la paĝo de la promeso. La ĉi suba formularo estas por mesaĝoj celantaj la administran skipon de PromesoBanko, <strong>ne</strong> la kreinton de la promeso."
 
-#: pb/web/contact.php:114 pb/web/ref-contact.php:103
+#: pb/web/contact.php:109 pb/web/ref-contact.php:103
 #, fuzzy
 msgid "Your message:"
 msgstr "Bonvolu entajpi vian mesaĝon"
 
-#: pb/web/contact.php:119
+#: pb/web/contact.php:114
 msgid "Did you <a href=\"/faq\">read the FAQ</a> first?"
 msgstr "Ĉu vi jam <a href=\"/faq\">legis la respondaron</a>?"
 
-#: pb/web/contact.php:120
+#: pb/web/contact.php:115
 #, fuzzy
 msgid "Send to PledgeBank team"
 msgstr "la administra skipo de PromesoBanko"
 
-#: pb/web/contact.php:126 pb/web/login.php:82 pb/web/new.php:473
+#: pb/web/contact.php:121 pb/web/login.php:83 pb/web/new.php:496
 #: pb/web/ref-contact.php:30 pb/web/ref-sign.php:64 pb/web/pb.js:15
 msgid "<Enter your name>"
 msgstr "<Entajpu vian nomon>"
 
-#: pb/web/contact.php:139
+#: pb/web/contact.php:134
 msgid "Please enter a subject"
 msgstr "Bonvolu entajpi temon"
 
-#: pb/web/contact.php:140 pb/web/ref-contact.php:38
+#: pb/web/contact.php:135 pb/web/ref-contact.php:38
 msgid "Please enter your message"
 msgstr "Bonvolu entajpi vian mesaĝon"
 
-#: pb/web/contact.php:151
+#: pb/web/contact.php:146
 msgid "I'm afraid that we rate limit the usage of the contact form to prevent abuse."
 msgstr ""
 
-#: pb/web/contact.php:192
+#: pb/web/contact.php:187
 msgid "Failed to send message.  Please try again, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a>."
 msgstr "Sendo malsukcesis. Bonvolu reprovi, aŭ <a href=\"mailto:team&#64;pledgebank.com\">skribu al ni</a>."
 
-#: pb/web/contact.php:194
+#: pb/web/contact.php:189
 msgid "<strong>Thank you!</strong> One of our team will investigate that comment as soon as possible"
 msgstr "<strong>Dankon!</strong> Skipano prienketos tiun komenton k.e.p. baldaŭ."
 
-#: pb/web/contact.php:196
+#: pb/web/contact.php:191
 msgid "Thanks for your feedback.  We'll get back to you as soon as we can!"
 msgstr "Dankon pro via komento. Ni respondos al vi tuj kiam ni povos!"
 
@@ -2861,15 +2972,19 @@ msgstr ""
 msgid "To PledgeBank front page"
 msgstr "Hejmpaĝen"
 
-#: pb/web/facebook.php:93
+#: pb/web/facebook.php:114
 #, fuzzy
 msgid "Thanks for sending the pledge to your friends!"
 msgstr "Dankon pro via subskribo de tiu ĉi promeso en %s!"
 
-#: pb/web/facebook.php:94
+#: pb/web/facebook.php:115
 #, fuzzy
 msgid "Here are some more pledges you might like."
 msgstr "Ne ekzistas reliefigitaj promesoj nuntempe."
+
+#: pb/web/faq.php:18 pb/web/faq.php:357 pb/web/faq.php:501
+msgid "Frequently Asked Questions"
+msgstr "Respondaro"
 
 #: pb/web/faq.php:28
 msgid "What does PledgeBank do for me? Why should I use it?"
@@ -2968,7 +3083,9 @@ msgid ""
 "We can't; PledgeBank is based on a psychological bet. We believe that\n"
 "    if a person possesses a slight desire to do something, and then we help\n"
 "    connect them to a bunch of people who also want to do the same thing,\n"
-"    then that first person is much more likely to act. We have\n"
+"    then that first person is much more likely to act. We have some\n"
+"    <a href='/success'>success stories</a> for a variety of pledges from the site,\n"
+"    and we have also\n"
 "    surveyed many of the money-based pledges that have succeeded, and found that\n"
 "    payment rates vary from 50% to well over 150%, with three-quarters of \n"
 "    people paying being typical."
@@ -2980,11 +3097,11 @@ msgstr ""
 "promesoj, kaj trovis, ke inter 50% kaj 150% de la promesita mono\n"
 "estis kolektita; tipa valoro estas ĉ. 75%."
 
-#: pb/web/faq.php:73
+#: pb/web/faq.php:75
 msgid "What do I get out of it?"
 msgstr "Kiel mi estas rekompenciĝita?"
 
-#: pb/web/faq.php:75
+#: pb/web/faq.php:77
 msgid ""
 "As a well intentioned subscriber, you get insurance against being the\n"
 "    only person to show up to the demo in the freezing rain or against being\n"
@@ -2997,11 +3114,11 @@ msgstr ""
 "la gepatro, kiu ĵus sinproponis por ĉion fari tutsole por la lerneja teatraĵo.\n"
 "Kiel promeskreinto, vi ege pligrandigas la ŝancon atingi tion, kion vi volas."
 
-#: pb/web/faq.php:81
+#: pb/web/faq.php:83
 msgid "Is it free?"
 msgstr "Ĉu senpaga?"
 
-#: pb/web/faq.php:83
+#: pb/web/faq.php:85
 #, fuzzy, php-format
 msgid ""
 "The site is free to use, no matter how big a pledge you create. PledgeBank\n"
@@ -3017,15 +3134,15 @@ msgstr ""
 "<a href=\"https://secure.mysociety.org/donate/\">rekte fari donacon</a>.\n"
 "SMS-mesaĝoj al PromesoBanko (kiuj funkcias aktuale nur en %s) kostas same kiel normala tekstmesaĝo."
 
-#: pb/web/faq.php:95
+#: pb/web/faq.php:97
 msgid "Organisation Questions"
 msgstr "Demandoj pri Organizaĵo"
 
-#: pb/web/faq.php:98
+#: pb/web/faq.php:100
 msgid "Who built PledgeBank?"
 msgstr "Kiu konstruis PromesoBankon?"
 
-#: pb/web/faq.php:100
+#: pb/web/faq.php:102
 #, fuzzy
 msgid ""
 "This site was built by <a href=\"http://www.mysociety.org\">mySociety</a>. \n"
@@ -3046,12 +3163,12 @@ msgstr ""
 "<a href=\"http://www.writetothem.com\">WriteToThem.com</a>, kie la publiko\n"
 "povas skribi al iu ajn el siaj voĉdone elektitaj reprezentantoj, senpage."
 
-#: pb/web/faq.php:109
+#: pb/web/faq.php:111
 msgid "Who pays for it?"
 msgstr "Kiu pagas?"
 
 # added a short explanation (only a translation, really) of "ODPM". (Tim Morley, 2005-11-22)
-#: pb/web/faq.php:111
+#: pb/web/faq.php:113
 msgid ""
 "PledgeBank has been built by mySociety thanks to the effort\n"
 "    of a combination of paid core developers and unpaid volunteers. The\n"
@@ -3066,11 +3183,11 @@ msgstr ""
 "(t.e. la ofico de la brita vicĉefministro), kune kun la Provinca Konsilio de West\n"
 "Sussex."
 
-#: pb/web/faq.php:120
+#: pb/web/faq.php:122
 msgid "Do you need any help with the project?"
 msgstr "Ĉu vi bezonas helpon kun la projekto?"
 
-#: pb/web/faq.php:122
+#: pb/web/faq.php:124
 msgid ""
 "Yes, we can use help in all sorts of ways, technical or non-technical.\n"
 "    Please <a href=\"/contact\">contact us</a> if you want to get in touch."
@@ -3078,14 +3195,14 @@ msgstr ""
 "Jes, ni povas uzi multspecajn helpagojn, teknikajn aŭ ne. Bonvolu \n"
 "<a href=\"/contact\">kontakti nin</a> se vi havas proponon."
 
-#: pb/web/faq.php:125
+#: pb/web/faq.php:127
 msgid "Where's the \"source code\" to PledgeBank?"
 msgstr "Kie estas la \"fontkodo\" de PromesoBanko?"
 
 # Just noticed that the line breaks don't necessarily coincide with a \n sequence as in the line that ends with \">download the ". Not then sure what the purpose of the \n is, because looking at the website where this text is used, it doesn't correspond to a linebreak in the output.
 # Second thought: is the space that's sometimes at the end of a line critical? (Tim Morley, 2005-11-22)
 # gettext joins strings together without adding any spaces or newlines, so you definitely need one or the other, otherwise you'd get "copiedcorrectly", "you'llhave" and so on. For web strings, it doesn't matter if you have spaces or newlines,as they're equivalent in the HTML; it might matter for the email translations. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000093.html)
-#: pb/web/faq.php:127
+#: pb/web/faq.php:129
 msgid ""
 "The software behind PledgeBank is open source, and available to you\n"
 "    mainly under the Affero GPL software license. You can <a\n"
@@ -3103,11 +3220,11 @@ msgstr ""
 "tiuj projektoj.\n"
 "    "
 
-#: pb/web/faq.php:135
+#: pb/web/faq.php:137
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr "Ne organizaĵoj konstruas retejojn, sed personoj. Kiu <em>vere</em> kreis ĝin?"
 
-#: pb/web/faq.php:137
+#: pb/web/faq.php:139
 msgid ""
 "OK, we are\n"
 "    Mike Bracken,\n"
@@ -3133,7 +3250,7 @@ msgstr ""
 "Tom Steinberg.\n"
 "    "
 
-#: pb/web/faq.php:149
+#: pb/web/faq.php:151
 #, fuzzy
 msgid ""
 "<strong>Translations by</strong>\n"
@@ -3163,7 +3280,7 @@ msgstr ""
 "Aliaksej Lavońčyk (belorusa).\n"
 "    "
 
-#: pb/web/faq.php:163
+#: pb/web/faq.php:165
 msgid ""
 "<strong>Thanks also to</strong>\n"
 "    <a href=\"http://www.tangentlabs.co.uk/\">Tangent Labs</a> (for SMS in the UK), \n"
@@ -3193,15 +3310,15 @@ msgstr ""
 "\n"
 "    "
 
-#: pb/web/faq.php:183
+#: pb/web/faq.php:185
 msgid "Pledge Creators' Questions"
 msgstr "Demandoj de Promeskreantoj"
 
-#: pb/web/faq.php:186
+#: pb/web/faq.php:188
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Kiaj promesoj bone funkcias, kaj kiaj fiaskas?"
 
-#: pb/web/faq.php:188
+#: pb/web/faq.php:190
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
 "    which will apply. First, the lower a pledge target (in terms of\n"
@@ -3220,11 +3337,11 @@ msgstr ""
 "de pordo al pordo kaj instigi personojn tuj subskribi, sukceso por vi estas multe\n"
 "pli probabla ol por tiu, kiu verkas sian promeson kaj poste forgesas pri ĝi."
 
-#: pb/web/faq.php:197
+#: pb/web/faq.php:199
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Kiom da personoj mi petu?</a>"
 
-#: pb/web/faq.php:199
+#: pb/web/faq.php:201
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
 "    Choose the number of people for which you could only just be bothered to carry\n"
@@ -3239,11 +3356,11 @@ msgstr ""
 "vin. Ne petu pli ol tio. Tiel, vi havas la plej grandan ŝancon sukcesi, kaj\n"
 "nenio malhelpas, ke pli da personoj eventuale subskribu."
 
-#: pb/web/faq.php:214
+#: pb/web/faq.php:216
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Kial mia nova promeso ne aperas sur la paĝo Ĉiuj Promesoj?"
 
-#: pb/web/faq.php:216
+#: pb/web/faq.php:218
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
 "    the site, until a few people have signed up to them. This is to make\n"
@@ -3256,13 +3373,13 @@ msgstr ""
 "promesojn, kiuj havas aktivan kreinton kaj iom da apogo. Do nepre informu\n"
 "viajn amikojn kaj najbarojn pri la promeso!"
 
-#: pb/web/faq.php:222
+#: pb/web/faq.php:224
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Ĉu vi forigas stultajn aŭ kontraŭleĝajn promesojn?"
 
 # Translated your neologism "backpage" as simply "hide", because that's what it seems to mean. (Tim Morley, 2005-11-22)
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:225
+#: pb/web/faq.php:227
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "    consider to be inappropriate. This means that your pledge will work, but will\n"
@@ -3278,11 +3395,11 @@ msgstr ""
 "Krome, ni tute forigos promesojn, kiuj apogas aŭ instigas al kontraŭleĝaj\n"
 "agoj."
 
-#: pb/web/faq.php:232
+#: pb/web/faq.php:234
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Kial mi ne rajtas modifi mian promeson post kiam mi kreis ĝin?</a>"
 
-#: pb/web/faq.php:234
+#: pb/web/faq.php:236
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "    the pledge.  If you change the wording, then their signatures would no longer\n"
@@ -3297,11 +3414,11 @@ msgstr ""
 "novan promeson kaj petu, ke viaj subskribintoj resubskribu la novan. Estas\n"
 "ligilo por fari tion en la sekcio 'Diskonigi' de via promespaĝo."
 
-#: pb/web/faq.php:241
+#: pb/web/faq.php:243
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Ĉu mi povas kontakti miajn subskribintojn?"
 
-#: pb/web/faq.php:243
+#: pb/web/faq.php:245
 #, fuzzy
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
@@ -3322,11 +3439,11 @@ msgstr ""
 "daŭrigi la kontakton post kiam vi kune ekagos. Eventualaj postaj\n"
 "subskribantoj aŭtomate ricevos vian lastan mesaĝon, kune kun ligilo por legi la aliajn."
 
-#: pb/web/faq.php:252
+#: pb/web/faq.php:254
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Ĉu oni povas subskribi per SMS (poŝtelefona tekstmesaĝo)? Kiel?"
 
-#: pb/web/faq.php:254
+#: pb/web/faq.php:256
 #, fuzzy, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -3344,11 +3461,11 @@ msgstr ""
 "%s</strong>, anstataŭiginte REFERENCOn per la mallonga referenco de via\n"
 "promeso, kiun vi elektis kiam vi kreis ĝin, kaj kiu aperas je la fino de ĝia TTT-adreso."
 
-#: pb/web/faq.php:262
+#: pb/web/faq.php:264
 msgid "How do I add a picture to my pledge?"
 msgstr "Kiel aldoni bildon al mia promeso?"
 
-#: pb/web/faq.php:264
+#: pb/web/faq.php:266
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
 "    (creator only)' under 'Spread the word on and offline'. Either find a picture\n"
@@ -3358,11 +3475,11 @@ msgstr ""
 "la sekcio 'Diskonigi' de via promespaĝo. Trovu bildon de io, kio rilatas al via\n"
 "promeso, aŭ simple foton de vi mem."
 
-#: pb/web/faq.php:268
+#: pb/web/faq.php:270
 msgid "Can you make a special version of PledgeBank for my organisation?"
 msgstr "Ĉu vi povas fari specialan version de PledgeBank por mia organizaĵo?"
 
-#: pb/web/faq.php:270
+#: pb/web/faq.php:272
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
 "    colours or complete style to match your branding. We can intimately\n"
@@ -3382,15 +3499,15 @@ msgstr ""
 "de viaj ideoj. Estas listo de ekzemplaj specialaj retejoj malsupre\n"
 "sur <a href=\"/where\">tiu ĉi paĝo</a>."
 
-#: pb/web/faq.php:283
+#: pb/web/faq.php:285
 msgid "International Questions"
 msgstr "Internaciaj Demandoj"
 
-#: pb/web/faq.php:286
+#: pb/web/faq.php:288
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Ĉu mi povas fari promesojn en aliaj lingvoj?"
 
-#: pb/web/faq.php:288
+#: pb/web/faq.php:290
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
 "    If your browser is configured to use one of those languages, PledgeBank will \n"
@@ -3403,15 +3520,16 @@ msgstr ""
 "Se via TTT-legilo estas agordita por uzi unu el tiuj lingvoj, PromesoBanko\n"
 "aŭtomate montriĝos en tiu lingvo. Alikaze, sekvu unu el la ligiloj sube sur la paĝo. Se interesas al vi volontuli por traduki la retejon vialingven, bonvolu <a href=\"/translate\">legi nian pritradukan paĝon</a>."
 
-#: pb/web/faq.php:295
+#: pb/web/faq.php:297
 msgid "What countries does PledgeBank work in?"
 msgstr "En kiuj landoj funkcias PromesoBanko?"
 
-#: pb/web/faq.php:297
+#: pb/web/faq.php:299
+#, fuzzy
 msgid ""
 "All of them. We try to detect which country you are in\n"
 "    automatically, and show you only pledges relevant to your country. To see what\n"
-"    PledgeBank looks like in other countries, click on '(change)' at the top of any\n"
+"    PledgeBank looks like in other countries, click on the country name at the top of any\n"
 "    page, just right of the PledgeBank logo.  Please <a href=\"/contact\">contact\n"
 "    us</a> if you'd like to help get more people in your country using PledgeBank."
 msgstr ""
@@ -3421,11 +3539,11 @@ msgstr ""
 "paĝo, dekstre de la identigilo de PromesoBanko. Bonvolu <a href=\"/contact\">kontakti\n"
 "nin</a> se vi volas helpi al viaj samlandanoj plene profiti de PromesoBanko."
 
-#: pb/web/faq.php:303
+#: pb/web/faq.php:305
 msgid "Why do you only have UK postcodes?"
 msgstr "Kial vi havas nur britajn poŝtkodojn?"
 
-#: pb/web/faq.php:305
+#: pb/web/faq.php:307
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
 "    the postcode search overseas&mdash;please <a\n"
@@ -3437,11 +3555,11 @@ msgstr ""
 "Bonvolu <a href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">aliĝi al tiu ĉi dissendlisto<a/> por helpi nin.\n"
 "    "
 
-#: pb/web/faq.php:311
+#: pb/web/faq.php:313
 msgid "... and SMS?"
 msgstr "... kaj SMS?"
 
-#: pb/web/faq.php:313
+#: pb/web/faq.php:315
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "    can help add text messaging in your country."
@@ -3449,15 +3567,15 @@ msgstr ""
 "Denove, bonvolu <a href=\"/contact\">kontakti nin</a> se vi\n"
 "povus helpi nin aldoni SMS-servon por via lando."
 
-#: pb/web/faq.php:320
+#: pb/web/faq.php:322
 msgid "Privacy Questions"
 msgstr "Demandoj pri Privateco"
 
-#: pb/web/faq.php:323
+#: pb/web/faq.php:325
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Mi ne volas montri mian nomon kiam mi subskribas promeson!"
 
-#: pb/web/faq.php:325
+#: pb/web/faq.php:327
 #, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -3472,11 +3590,11 @@ msgstr ""
 "promeson, pripensu la eblecon privatigi ĝin; tiel, nur tiuj, al kiuj vi donas\n"
 "PIN-on (sekretan kodnumeron) povos vidi la paĝon."
 
-#: pb/web/faq.php:331
+#: pb/web/faq.php:333
 msgid "Who gets to see my email address?"
 msgstr "Kiuj rajtas vidi mian retadreson?"
 
-#: pb/web/faq.php:333
+#: pb/web/faq.php:335
 #, fuzzy
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
@@ -3494,11 +3612,11 @@ msgstr ""
 "la adresojn de tiuj, kiuj ricevos la mesaĝon. Atentu: se vi respondus al\n"
 "mesaĝo de iu promeskreinto, vi mem donus al li/ŝi vian retadreson."
 
-#: pb/web/faq.php:341
+#: pb/web/faq.php:343
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "Ĉu vi sendos aĉajn trudmesaĝojn al mia retadreso?"
 
-#: pb/web/faq.php:343
+#: pb/web/faq.php:345
 #, fuzzy
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
@@ -3512,73 +3630,77 @@ msgstr ""
 "promeskreinto, kiu provos instigi vin al pli granda subteno. Evidente\n"
 "ni neniam donos nek vendos vian retadreson al iu ajn, krom pro leĝa devigo."
 
-#: pb/web/index.php:20
+#: pb/web/faq.php:505
+msgid ""
+"If your question isn&rsquo;t answered here, or you just\n"
+"wanted to let us know something about the site, <a href=\"/contact\">contact&nbsp;us</a>."
+msgstr ""
+
+#: pb/web/index.php:21
 msgid "New Pledges at PledgeBank.com"
 msgstr "Novaj Promesoj ĉe PromesoBanko.com"
 
-#: pb/web/index.php:21
+#: pb/web/index.php:22
 msgid "Successful Pledges at PledgeBank.com"
 msgstr "Sukcesaj Promesoj ĉe PromesoBanko.com"
 
-#: pb/web/index.php:22
+#: pb/web/index.php:23
 msgid "Comments on All Pledges PledgeBank.com"
 msgstr "Komentoj pri ĉiuj promesoj ĉe PromesoBanko.com"
 
-#: pb/web/index.php:52 pb/web/index.php:56
-msgid "Start your own pledge"
+#: pb/web/index.php:45
+#, fuzzy
+msgid "Start your pledge"
 msgstr "Krei novan promeson"
 
-#: pb/web/index.php:53
-msgid ""
-"PledgeBank is free and easy to use. Once you've thought of something you'd like\n"
-"to do, just <a href=\"/new\">create a pledge</a> which says \"I'll do this, but\n"
-"only if 5 other people will do the same\"."
+#: pb/web/index.php:47
+#, fuzzy
+msgid "Page and tools to promote your pledge"
+msgstr "Krei novan promeson"
+
+#: pb/web/index.php:48
+msgid "People can sign by SMS, the web, or in Facebook"
 msgstr ""
-"Uzo de PromesoBanko estas senpaga kaj facila. Kiam vi pensis pri io, kion vi ŝatus fari,\n"
-"simple <a href=\"/new\">kreu promeson</a> kiu tekstas \"Mi faros tion,\n"
-"sed nur se 5 aliaj personoj faros same\"."
 
-#: pb/web/index.php:77
-msgid ""
-"How scissors, a phone and some printouts\n"
-"can make your pledge succeed &raquo;"
-msgstr ""
-"Kiel sukcesigi vian promeson per tondilo,\n"
-"telefono kaj presilo &raquo;"
+#: pb/web/index.php:49
+#, fuzzy
+msgid "Change the world"
+msgstr "Ŝanĝi pasvorton"
 
-# Should have a `;' after &mdash -- Internet Explorer is happy without it, but not all other browsers are. (Tim Morley, 2005-11-23)
-#: pb/web/index.php:80
-msgid "Scissors, a phone and some printouts &mdash; "
-msgstr "Tondilo, telefono kaj presilo &mdash; "
-
-#: pb/web/index.php:81
-msgid "Find out why these things are the secret of a successful pledge"
-msgstr "Malkovru kial tiuj aĵoj estas la sekreto de sukcesa promeso"
-
-#: pb/web/index.php:107
+#: pb/web/index.php:90
 msgid "RSS feed of new pledges"
 msgstr "RSS-servo pri novaj promesoj"
 
-#: pb/web/index.php:129
+#: pb/web/index.php:112
 msgid "Interesting pledges from other countries"
 msgstr "Interesaj promesoj el aliaj landoj"
 
 # See comment immediately above.
-#: pb/web/index.php:135
+#: pb/web/index.php:118
 msgid "More pledges to sign..."
 msgstr "Pli da subskribotaj promesoj..."
 
-#: pb/web/index.php:140
+#: pb/web/index.php:124
 msgid "RSS feed of successful pledges"
 msgstr "RSS-servo pri sukcesaj promesoj"
 
-#: pb/web/index.php:141
+#: pb/web/index.php:125
 msgid "Recent successful pledges"
 msgstr "Antaŭnelongaj sukcesaj promesoj"
 
-#: pb/web/index.php:174
+#: pb/web/index.php:159
 msgid "More successful pledges..."
 msgstr "Pli da sukcesaj promesoj..."
+
+#: pb/web/index.php:187
+msgid "Sign these or they fail today"
+msgstr ""
+
+# See comment immediately above.
+#: pb/web/index.php:198
+#, fuzzy
+msgid "More pledges..."
+msgstr "Pli da subskribotaj promesoj..."
 
 #: pb/web/lang.php:29 pb/web/lang.php:30
 msgid "Choose your language"
@@ -3588,63 +3710,64 @@ msgstr "Elektu vian lingvon"
 msgid "Illegal offset or sort parameter passed"
 msgstr "Nevalida deŝovo aŭ ordigargumento donita"
 
-#: pb/web/list.php:111 pb/web/list.php:224
+#: pb/web/list.php:119 pb/web/list.php:237
 msgid "Miscellaneous"
 msgstr "Diversaĵoj"
 
-#: pb/web/list.php:137
-msgid "Pledges which need signers"
-msgstr "Promesoj, kiuj bezonas subskribantojn"
-
-#: pb/web/list.php:139
+#: pb/web/list.php:148
 msgid "New pledges"
 msgstr "Novaj promesoj"
 
-#: pb/web/list.php:141
+#: pb/web/list.php:150
 msgid "Successful pledges, open to new signers"
 msgstr "Sukcesaj promesoj, malfermaj al novaj subskribontoj"
 
-#: pb/web/list.php:143
+#: pb/web/list.php:152
 msgid "Successful pledges, closed to new signers"
 msgstr "Sukcesaj promesoj, fermaj al novaj subskribontoj"
 
-#: pb/web/list.php:145
+#: pb/web/list.php:154
 msgid "Successful pledges"
 msgstr "Sukcesaj promesoj"
 
-#: pb/web/list.php:167
+#: pb/web/list.php:176
+#, fuzzy
+msgid "(one category only)"
+msgstr "(nur kreinto)"
+
+#: pb/web/list.php:180
 msgid "RSS feed of "
 msgstr "RSS-servo de "
 
-#: pb/web/list.php:182 pb/web/list.php:186
+#: pb/web/list.php:197 pb/web/list.php:201
 msgid "Previous page"
 msgstr "Antaŭa paĝo"
 
-#: pb/web/list.php:182 pb/web/list.php:190
+#: pb/web/list.php:197 pb/web/list.php:205
 msgid "Next page"
 msgstr "Venonta paĝo"
 
-#: pb/web/list.php:196
+#: pb/web/list.php:211
 msgid "Sort by"
 msgstr "Ordigi laŭ"
 
-#: pb/web/list.php:206
+#: pb/web/list.php:221
 msgid "Pledges"
 msgstr "Promesoj"
 
-#: pb/web/list.php:263
+#: pb/web/list.php:280
 msgid "There are currently none."
 msgstr "Estas neniu aktuale."
 
-#: pb/web/list.php:270
+#: pb/web/list.php:287
 msgid "New pledges are not shown here. <a href=\"/faq#allpledges\">Read our FAQ</a> for details of when they appear."
 msgstr "Novaj promesoj ne vidiĝas ĉi tie. <a href=\"/faq#allpledges\">Legu nian Respondaron</a> por informiĝi pri kiam ili aperos."
 
-#: pb/web/login.php:58
+#: pb/web/login.php:59
 msgid "Please enable cookies"
 msgstr "Bonvolu ebligi kuketojn"
 
-#: pb/web/login.php:59
+#: pb/web/login.php:60
 msgid ""
 "It appears that you don't have \"cookies\" enabled in your browser.\n"
 "<strong>To continue, you must enable cookies</strong>. Please\n"
@@ -3658,100 +3781,24 @@ msgstr ""
 "kiu klarigas kiel fari tion</a>, kaj klaku la butonon \"Malantaŭen\"\n"
 "kaj reprovu."
 
-#: pb/web/login.php:89
+#: pb/web/login.php:90
 msgid "To log into PledgeBank, we need to check your email address."
 msgstr "Por ensaluti en PromesoBankon, ni devas kontroli vian retadreson."
 
-#: pb/web/login.php:90
+#: pb/web/login.php:91
 msgid "Then you will be logged into PledgeBank, and can set or change your password."
 msgstr "Tiam vi ensalutos en PromesoBankon kaj vi povos krei aŭ ŝanĝi vian pasvorton."
 
-#: pb/web/login.php:91
+#: pb/web/login.php:92
 msgid "Log into PledgeBank.com"
 msgstr "Ensaluti en PromesoBanko.com"
 
 # This message has a trailing space at the end of each line, but no \n. Other messages have \n but no spaces. Are either particularly important, or can we chuck 'em all? (Tim Morley, 2005-11-22)
 # gettext joins strings together without adding any spaces or newlines, so you definitely need one or the other, otherwise you'd get "copiedcorrectly", "you'llhave" and so on. For web strings, it doesn't matter if you have spaces or newlines,as they're equivalent in the HTML; it might matter for the email translations. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000093.html)
-#: pb/web/login.php:107
+#: pb/web/login.php:108
 #, php-format
 msgid "Please check the URL (i.e. the long code of letters and numbers) is copied correctly from your email.  If you can't click on it in the email, you'll have to select and copy it from the email.  Then paste it into your browser, into the place you would type the address of any other webpage. Technical details: The token '%s' wasn't found."
 msgstr "Bonvolu kontroli ĉu la URL (t.e. la longa kodo de leteroj kaj ciferoj) estas ĝuste kopiita de via retmesaĝo. Se vi ne povas musklaki ĝin en la mesaĝo, vi devos elekti kaj kopii ĝin el la mesaĝo, kaj englui ĝin en via TTT-legilo tie, kie kutime vi entajpas retpaĝadreson. Teknikaj detaloj: Mankis anstataŭilo '%s'."
-
-#: pb/web/login.php:191
-msgid "Required parameter was missing"
-msgstr "Mankis bezonata argumento"
-
-#: pb/web/login.php:207
-msgid "Either your email or password weren't recognised.  Please try again."
-msgstr "Aŭ via retadreso aŭ via pasvorto ne estas rekonita. Bonvolu reprovi."
-
-#: pb/web/login.php:248 pb/web/login.php:252
-msgid "Now check your email!"
-msgstr "Nun serĉu viajn retmesaĝojn!"
-
-#: pb/web/login.php:253
-msgid ""
-"We've sent you an email, and you'll need to click the link in it before you can\n"
-"continue"
-msgstr "Ni sendis retmesaĝon al vi, kaj vi devas musklaki la enan ligilon por daŭrigi."
-
-#: pb/web/login.php:256
-msgid ""
-"If you use web-based email or have\n"
-"\"junk mail\" filters, you may wish to check your bulk/spam mail folders:\n"
-"sometimes, our messages are marked that way."
-msgstr ""
-"Se vi uzas <acronym title=\"t.e. se vi uzas TTT-legilon por legi viajn retmesaĝojn \n"
-"sur TTT-paĝo, ekz. la servojn de Yahoo, Hotmail, ktp.\">TTT-an retmesaĝilon</acronym>\n"
-"aŭ se vi havas <acronym title=\"filtrilojn, kiu forigas trudmesaĝojn\">kontraŭspamajn \n"
-"filtrilojn</acronym>, vi eble devos serĉi nian mesaĝon en via spamrubujo, ĉar foje niaj mesaĝoj\n"
-"estas erare tiel markitaj."
-
-#: pb/web/login.php:278
-msgid "Checking Your Email Address"
-msgstr "Kontrolado de Via Retadreso"
-
-#: pb/web/login.php:307
-msgid "What is your email address?"
-msgstr "Kio estas via retadreso?"
-
-#: pb/web/login.php:317
-msgid "Have you used PledgeBank before?"
-msgstr "Ĉu vi jam uzis PromesoBankon?"
-
-#: pb/web/login.php:321
-msgid "I've never used PledgeBank before"
-msgstr "Mi neniam antaŭe uzis PromesoBankon"
-
-#: pb/web/login.php:323
-msgid "(we'll send an email, click the link in it to confirm your email is working)"
-msgstr "(ni sendos retmesaĝon; musklaku la enan ligilon por konfirmi, ke via adreso bone funkcias)"
-
-# "on" as in "listed on the pledge website", or "on" as in "about this pledge"? (Tim Morley, 2005-11-21)
-# It's about reporting a comment or signer, so is saying "This is on the pledge <strong><I will boycott foo...></strong>." (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/web/login.php:325
-msgid "I have a PledgeBank <strong>password</strong>"
-msgstr "Mi havas <strong>pasvorton</strong> ĉe PromesoBanko"
-
-#: pb/web/login.php:328
-msgid "Remember me"
-msgstr "Memori min"
-
-#: pb/web/login.php:331
-msgid "don't use this on a public or shared computer"
-msgstr "ne uzu tion sur publika aŭ pluruzanta komputilo"
-
-#: pb/web/login.php:335
-msgid "I've forgotten or didn't set a password"
-msgstr "Mi forgesis aŭ ne kreis pasvorton"
-
-#: pb/web/login.php:337
-msgid "(we'll send an email, click the link in it to confirm your email is working.<br>if you like, you can then set a password on Your Pledges page)"
-msgstr "(ni sendos retmesaĝon; musklaku la enan ligilon por konfirmi, ke via adreso bone funkcias.<br>Se vi volas, vi povas tiam krei pasvorton ĉe la paĝo Viaj Promesoj)"
-
-#: pb/web/login.php:341
-msgid "Continue"
-msgstr "Daŭrigi"
 
 #: pb/web/logout.php:26
 msgid "Logged out"
@@ -3761,119 +3808,180 @@ msgstr "Elsalutita"
 msgid "You're now logged out.  Thanks for using PledgeBank!"
 msgstr "Vi nun elsalutis. Dankon pro via vizito ĉe PromesoBanko!"
 
-#: pb/web/new.php:47
+#: pb/web/my.php:17
+msgid "To view your pledges, we need to check your email address."
+msgstr "Por vidi viajn promesojn, ni devas kontroli vian retadreson."
+
+#: pb/web/my.php:18
+msgid "Then you will be able to view your pledges."
+msgstr "Tiam vi rajtos vidi viajn promesojn."
+
+#: pb/web/my.php:19
+msgid "View your pledges at PledgeBank.com"
+msgstr "Vidi viajn promesojn ĉe PromesoBanko.com"
+
+#: pb/web/my.php:63 pb/web/ref-index.php:321
+msgid "Suggested pledges"
+msgstr "Proponitaj promesoj"
+
+#: pb/web/my.php:64
+msgid "People who signed the pledges you created or signed also signed these..."
+msgstr "Iuj, kiuj subskribis promesojn kreitajn de vi subskribis ankaŭ tiujn ĉi..."
+
+#: pb/web/my.php:91
+#, fuzzy
+msgid "Open pledges you created"
+msgstr "<h2>Malfermaj promesoj kreitaj de vi</h2>"
+
+#: pb/web/my.php:94
+#, fuzzy
+msgid "Closed pledges you created"
+msgstr "<h2>Fermitaj promesoj kreitaj de vi</h2>"
+
+#: pb/web/my.php:102
+msgid "You have no open pledges. <a href=\"/new\">Start a new pledge</a>."
+msgstr "Vi havas neniun malfermajn promesojn. <a href=\"/new\">Eki novan promeson</a>."
+
+#: pb/web/my.php:117
+#, fuzzy
+msgid "<h2>Pledges you have signed</h2>"
+msgstr "<h2>Promesoj subskribitaj de vi</h2>"
+
+#: pb/web/my.php:133
+#, fuzzy
+msgid "Have you done this pledge anyway?"
+msgstr "Nur se vi kreis tiun ĉi promeson"
+
+#: pb/web/my.php:135
+#, fuzzy
+msgid "Have you done this pledge?"
+msgstr "Nur se vi kreis tiun ĉi promeson"
+
+#: pb/web/my.php:137 pb/web/new.php:345
+msgid "Yes"
+msgstr "Jes"
+
+#: pb/web/my.php:141
+msgid "That's great!"
+msgstr ""
+
+#: pb/web/my.php:154
+msgid "You have signed no pledges."
+msgstr "Vi subskribis neniun promeson."
+
+#: pb/web/my.php:157
+#, php-format
+msgid "Why not <a href=\"mailto:%s\">send us photos</a> of yourself carrying out successful pledges?"
+msgstr "Kial ne <a href=\"mailto:%s\">sendi al ni fotojn</a> de vi plenumante viajn sukcesajn promesojn?"
+
+#: pb/web/new.php:41
 msgid "Create a New Pledge"
 msgstr "Krei Novan Promeson"
 
-#: pb/web/new.php:93
+#: pb/web/new.php:90
 msgid "people in my street"
 msgstr "miaj samstratanoj"
 
-#: pb/web/new.php:144 pb/web/new.php:327 pb/web/new.php:381 pb/web/new.php:430
-#: pb/web/new.php:809
-#, php-format
-msgid "New Pledge &#8211; Step %s of %s"
-msgstr "Nova Promeso &#8211; Ŝtupo %s el %s"
+#: pb/web/new.php:147
+#, fuzzy
+msgid "New Pledge &ndash; Basics"
+msgstr "novaj promesoj proksime al %s%s"
 
-#: pb/web/new.php:146
-msgid "Your Pledge"
-msgstr "Via Promeso"
-
-#: pb/web/new.php:148
+#: pb/web/new.php:149
 #, fuzzy, php-format
 msgid "(<a href=\"%s\">Want your pledge in a language other than %s?</a>)"
 msgstr "Ĉu mi povas fari promesojn en aliaj lingvoj?"
 
-#: pb/web/new.php:168 pb/web/poster.cgi:325
+#: pb/web/new.php:169 pb/web/poster.cgi:326
 msgid "but only if"
 msgstr "sed nur se"
 
-#: pb/web/new.php:168 pb/web/new.php:283
+#: pb/web/new.php:169 pb/web/new.php:284
 msgid "Target number of people"
 msgstr "Nombro da subskribantoj celita"
 
-#: pb/web/new.php:173 pb/web/new.php:176
+#: pb/web/new.php:174 pb/web/new.php:177
 msgid "do the same"
 msgstr "fari same"
 
-#: pb/web/new.php:173 pb/web/new.php:175 pb/web/new.php:481
+#: pb/web/new.php:174 pb/web/new.php:176 pb/web/new.php:504
 msgid "will"
 msgstr "promesas"
 
-#: pb/web/new.php:182
+#: pb/web/new.php:183
 msgid "The other people must sign up before"
 msgstr "La aliaj personoj devas subskribi la promeson antaǔ"
 
-#: pb/web/new.php:184
+#: pb/web/new.php:186
 msgid "Deadline date"
 msgstr "Limdato"
 
-#: pb/web/new.php:186
+#: pb/web/new.php:188
 msgid "e.g."
 msgstr "ekz."
 
-#: pb/web/new.php:188
+#: pb/web/new.php:190
 msgid "Choose a short name for your pledge (6 to 16 letters):"
 msgstr "Elektu mallongan nomon por via promeso (inter 6 kaj 16 literoj):"
 
-#: pb/web/new.php:190
+#: pb/web/new.php:192
 #, php-format
 msgid "This gives your pledge an easy web address. e.g. %s/tidyupthepark"
 msgstr "Tio donas al via promeso facilan TTT-adreson, ekz. %s/helpunin"
 
-#: pb/web/new.php:193
+#: pb/web/new.php:195
 #, fuzzy
 msgid "More details about your pledge:"
 msgstr "Pliaj informoj pri via promeso: (nedevigaj)"
 
-#: pb/web/new.php:193 pb/web/new.php:216
+#: pb/web/new.php:195 pb/web/new.php:218
 msgid "(optional)"
 msgstr "(nedeviga)"
 
-#: pb/web/new.php:195
+#: pb/web/new.php:197
 msgid "(links and email addresses will be automatically made clickable, no \"markup\" needed)"
 msgstr "(ligiloj kaj retadresoj estos aŭtomate traktata, do vi ne bezonas aldoni HTML-etikedojn)"
 
-#: pb/web/new.php:198
+#: pb/web/new.php:200
 msgid "About You"
 msgstr "Pri Vi"
 
-#: pb/web/new.php:204
+#: pb/web/new.php:206
 #, fuzzy
 msgid "Your Facebook account:"
 msgstr "Via lando:"
 
-#: pb/web/new.php:213
+#: pb/web/new.php:215
 msgid "(we need your email so we can get in touch with you when your pledge completes, and so on)"
 msgstr "(ni bezonos vian retadreson por ke ni povu kontakti vin kiam via promeso sukcesos, ktp.)"
 
-#: pb/web/new.php:216
+#: pb/web/new.php:218
 #, fuzzy
 msgid "On flyers and elsewhere, after your name, how would you like to be described?"
 msgstr "Sur flugfolioj kaj aliloke, post via nomo, kiel oni priskribu vin? (nedeviga)"
 
-#: pb/web/new.php:218
+#: pb/web/new.php:220
 msgid "(e.g. \"resident of Tamilda Road\")"
 msgstr "(ekz. \"loĝanto de Zamenhof Strato\")"
 
-#: pb/web/new.php:225
+#: pb/web/new.php:226
 #, fuzzy
-msgid "Did you read the tips on the left of the page? They'll help you make a successful pledge."
+msgid "Did you read the tips on the right of the page? They'll help you make a successful pledge."
 msgstr "Ĉu vi legis la konsilojn ĉe la supro de la paĝo? Ili helpos al vi sukcesigi vian promeson."
 
-#: pb/web/new.php:231 pb/web/new.php:293 pb/web/new.php:350
+#: pb/web/new.php:232 pb/web/new.php:293 pb/web/new.php:360
 msgid "Next step"
 msgstr "Venonta paŝo"
 
-#: pb/web/new.php:244 pb/web/new.php:317 pb/web/new.php:371 pb/web/new.php:422
+#: pb/web/new.php:250 pb/web/new.php:322 pb/web/new.php:386 pb/web/new.php:442
 msgid "Your pledge looks like this so far:"
 msgstr "Ĝis nun via promeso aspektas tiel:"
 
-#: pb/web/new.php:260
+#: pb/web/new.php:261
 msgid "Please lower your target!"
 msgstr "Bonvolu malpliigi vian celon!"
 
-#: pb/web/new.php:262
+#: pb/web/new.php:263
 #, php-format
 msgid ""
 "Recruiting more than %d people to a pledge is much harder than\n"
@@ -3885,7 +3993,7 @@ msgstr ""
 "    <strong>Nur %0.0f%%</strong> de promesoj kun celoj je %d aŭ pli sukcesis &mdash;\n"
 "    kial riski malsukceson? Ĉu vere vi bezonas tiom da partoprenantoj?"
 
-#: pb/web/new.php:268
+#: pb/web/new.php:269
 #, php-format
 msgid ""
 "In order to encourage people to aim at achievable targets, we don't\n"
@@ -3902,7 +4010,7 @@ msgstr ""
 "    Promesoj', en serĉrezultoj, aŭ antaŭ ol esti sendata al petintoj de atentigiloj\n"
 "    pri lokaj promesoj (se la via estas loka promeso)."
 
-#: pb/web/new.php:276
+#: pb/web/new.php:277
 msgid ""
 "We've <strong>reduced your target to 10</strong> for now. Please\n"
 "    use this box if you want to change back to another target.  There is \n"
@@ -3913,11 +4021,11 @@ msgstr ""
 "    se vi volas reŝanĝi ĝin al alia celo.\n"
 "    Estas <a href=\"/faq#targets\">pli da konsiloj</a> pri celoj en la Respondaro."
 
-#: pb/web/new.php:282
+#: pb/web/new.php:283
 msgid "<strong>My target</strong> is "
 msgstr "<strong>Mia celo</strong> estas "
 
-#: pb/web/new.php:286
+#: pb/web/new.php:287
 msgid ""
 "Remember, a small but successful pledge can be the perfect preparation\n"
 "for a larger and more ambitious one. You can mail your subscribers, and ask\n"
@@ -3927,135 +4035,148 @@ msgstr ""
 "por pli granda, pli ambicia promeso. Vi povas retmesaĝi viajn subskribintojn kaj\n"
 "peti ilian helpon kun io pli granda."
 
-#: pb/web/new.php:293 pb/web/new.php:350
+#: pb/web/new.php:294 pb/web/new.php:361
 msgid "Back to step 1"
 msgstr "Reen al ŝtupo 1"
 
-#: pb/web/new.php:329
+#: pb/web/new.php:333
+msgid "New Pledge &ndash; Location"
+msgstr ""
+
+#: pb/web/new.php:335
+msgid ""
+"If your pledge applies to a particular country,\n"
+"or place within a country, providing that information\n"
+"will help people who live nearby find your pledge, through\n"
+"our email alerts and location search."
+msgstr ""
+
+#: pb/web/new.php:340
 msgid "Which country does your pledge apply to?"
 msgstr "Kiun landon celas via promeso?"
 
-#: pb/web/new.php:333
+#: pb/web/new.php:344
 msgid "Within that country, is your pledge specific to a local area or specific place?"
 msgstr "Ene de tiu lando, ĉu vi promeso celas specifan lokon aŭ regionon?"
 
-#: pb/web/new.php:334
-msgid "If so, we will help people who live nearby find your pledge."
-msgstr "Tiukaze, ni helpos al la loka loĝantaro trovi vian promeson."
-
-#: pb/web/new.php:335 pb/web/your.php:135
-msgid "Yes"
-msgstr "Jes"
-
-#: pb/web/new.php:336
+#: pb/web/new.php:346
 msgid "No"
 msgstr "Ne"
 
-#: pb/web/new.php:340
+#: pb/web/new.php:350
 msgid "If yes, choose where."
 msgstr "Jeskaze, elektu la lokon."
 
-#: pb/web/new.php:384
+#: pb/web/new.php:397
+msgid "New Pledge &ndash; Category / Privacy"
+msgstr ""
+
+#: pb/web/new.php:400
 msgid "Which category does your pledge best fit into?"
 msgstr "Kiu kategorio plej konvenas por via promeso?"
 
-#: pb/web/new.php:386
+#: pb/web/new.php:402
 msgid "(this will be used in future to help more people find your pledge)"
 msgstr "(oni uzos tion por helpi al eventualaj serĉantoj trovi vian promeson)"
 
-#: pb/web/new.php:391
+#: pb/web/new.php:407
 msgid "Who do you want to be able to see your pledge?"
 msgstr "Kiu rajtos vidi vian promeson?"
 
-#: pb/web/new.php:392
+#: pb/web/new.php:408
 msgid "Anyone"
 msgstr "Iu ajn"
 
-#: pb/web/new.php:393
+#: pb/web/new.php:409
 msgid "Only people to whom I give this PIN:"
 msgstr "Nur personoj, al kiuj mi donos tiun sekretan kodnumeron:"
 
-#: pb/web/new.php:402
+#: pb/web/new.php:419
 msgid "Back to step 2"
 msgstr "Reen al ŝtupo 2"
 
-#: pb/web/new.php:441
+#: pb/web/new.php:452
+#, php-format
+msgid "New Pledge &#8211; Step %s of %s"
+msgstr "Nova Promeso &#8211; Ŝtupo %s el %s"
+
+#: pb/web/new.php:463
 #, php-format
 msgid "Back to step %s"
 msgstr "Reen al ŝtupo %s"
 
-#: pb/web/new.php:462
+#: pb/web/new.php:485
 msgid "Transferring the data from previous page failed :("
 msgstr "Transdono de datumoj de la antaŭa paĝo malsukcesis  :o("
 
-#: pb/web/new.php:472 pb/web/pb.js:13
+#: pb/web/new.php:495 pb/web/pb.js:13
 msgid "<Enter your pledge>"
 msgstr "<Entajpu vian promeson>"
 
-#: pb/web/new.php:588
+#: pb/web/new.php:613
 msgid "Before creating your new pledge, we need to check that your email is working."
 msgstr "Antaŭ la kreadon de via promeso, ni devas kontroli, ke via retadreso bone funkcias."
 
-#: pb/web/new.php:616 pb/web/new.php:689
+#: pb/web/new.php:642 pb/web/new.php:715
 msgid "Please enter a target"
 msgstr "Bonvolu entajpi celnombron"
 
-#: pb/web/new.php:617
+#: pb/web/new.php:643
 msgid "The target must be a positive number"
 msgstr "La celo devas esti pozitiva cifero"
 
-#: pb/web/new.php:620
+#: pb/web/new.php:646
 msgid "Please enter a short name for your pledge"
 msgstr "Bonvolu entajpi mallongan nomon por via promeso"
 
-#: pb/web/new.php:621
+#: pb/web/new.php:647
 msgid "The short name must be at least six characters long"
 msgstr "La mallonga nomo devas enhavi almenaŭ ses signojn"
 
-#: pb/web/new.php:622
+#: pb/web/new.php:648
 msgid "The short name can be at most 20 characters long"
 msgstr "La mallonga nomo povas enhavi maksimume 20 signojn"
 
-#: pb/web/new.php:623
+#: pb/web/new.php:649
 msgid "That short name is not allowed."
 msgstr "Tiu mallonga nomo estas malpermesata."
 
-#: pb/web/new.php:624
+#: pb/web/new.php:650
 msgid "The short name must only contain letters, numbers, or a hyphen.  Spaces are not allowed."
 msgstr ""
 "La mallonga nomo devas enhavi nur literojn, ciferojn, kaj eventuale streketo. Spacetoj\n"
 "estas malpermesataj."
 
-#: pb/web/new.php:625
+#: pb/web/new.php:651
 msgid "The short name must contain at least one letter."
 msgstr "La mallonga nomo devas enhavi almenaŭ unu literon."
 
-#: pb/web/new.php:637
+#: pb/web/new.php:663
 #, php-format
 msgid "You've already made a pledge with short name '%s'. Either go to your <a href=\"/%s\">existing pledge</a>, or edit the short name below to make a new pledge."
 msgstr "Vi jam faris promeson kun la mallonga nomo '%s'. Vi povas <a href=\"/%s\">iri al via ekzistanta promeso</a>, aŭ ŝanĝi la nomon ĉi malsupre por krei novan promeson."
 
-#: pb/web/new.php:640
+#: pb/web/new.php:666
 msgid "That short name is already taken!"
 msgstr "Tiu mallonga nomo jam ekzistas por alia promeso!"
 
-#: pb/web/new.php:642
+#: pb/web/new.php:668
 msgid "Please enter a pledge"
 msgstr "Bonvolu entajpi promeson"
 
-#: pb/web/new.php:647
+#: pb/web/new.php:673
 msgid "Please enter a deadline"
 msgstr "Bonvolu entajpi limdaton"
 
-#: pb/web/new.php:648
+#: pb/web/new.php:674
 msgid "The deadline must be in the future"
 msgstr "La limdato devas esti venonteca"
 
-#: pb/web/new.php:649
+#: pb/web/new.php:675
 msgid "Please enter a valid date"
 msgstr "Bonvolu entajpi validan daton"
 
-#: pb/web/new.php:651
+#: pb/web/new.php:677
 #, php-format
 msgid ""
 "Please change your deadline so it is less than %d years into the\n"
@@ -4069,93 +4190,51 @@ msgstr ""
 "Se vi vere volas pli foran limdaton, kreu la promeson kun mallonga\n"
 "limdato, kaj skribu al <a href=\"mailto:%s\">%s</a> petante la ŝanĝon."
 
-#: pb/web/new.php:670
+#: pb/web/new.php:696
 msgid "Unknown language code:"
 msgstr "Nekonata lingvokodo:"
 
-#: pb/web/new.php:676
+#: pb/web/new.php:702
 msgid "You already have Facebook set up on PledgeBank with a different email address. Please use that address, it is "
 msgstr ""
 
-#: pb/web/new.php:711
+#: pb/web/new.php:737
 msgid "Please choose which country your pledge applies to"
 msgstr "Bonvolu elekti la landon celitan de via promeso"
 
 # Ideally "none" will be translated here, but I can't see it as an entry in this .po file. How is this resolved? (Tim Morley, 2005-11-23)
 # It's the entry "None &mdash; applies anywhere"; I guess this message could be reworded to mirror that, but as it says it directly afterward... (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: Ideally "none" will be translated here, but I can't see it as an entry in this .po file. How is this resolved? (Tim Morley, 2005-11-23)
-#: pb/web/new.php:722
+#: pb/web/new.php:748
 msgid "Please choose a country, or \"not specific to any location\" if your pledge applies everywhere"
 msgstr "Bonvolu elekti landon, aŭ \"neniu specifa loko\" se via promeso validas ĉie"
 
-#: pb/web/new.php:724
+#: pb/web/new.php:750
 msgid "Please choose a valid state within that country, or the country name itself"
 msgstr "Bonvolu elekti validan ŝtaton en tiu lando, aŭ la landonomon mem"
 
-#: pb/web/new.php:735
+#: pb/web/new.php:761
 msgid "Please choose whether the pledge is local or not"
 msgstr "Bonvolu elekti ĉu la promeso estas loka aŭ ne"
 
-#: pb/web/new.php:747
+#: pb/web/new.php:773
 msgid "Please enter a pin"
 msgstr "Bonvolu entajpi sekretan kodnumeron"
 
-#: pb/web/new.php:756
+#: pb/web/new.php:782
 msgid "Please enter a valid postcode"
 msgstr "Bonvolu entajpi validan poŝtkodon"
 
-#: pb/web/new.php:801
+#: pb/web/new.php:831
 #, php-format
 msgid "Your pledge, with short name <em>%s</em>, will look like this:"
 msgstr "Via promeso, kun mallonga nomo <em>%s</em>, aspektos tiel:"
 
-#: pb/web/new.php:810
-#, php-format
-msgid ""
-"\n"
-"Now please read your pledge (on the left) and check the details thoroughly.\n"
-"<strong>Read carefully</strong> - we can't ethically let you %schange the wording%s of your pledge once people have\n"
-"started to sign up to it.    \n"
-msgstr ""
-"\n"
-"Legu nun vian promeson (maldekstre) kaj kontrolu ĉiun detalon.\n"
-"<strong>Legu ĝin zorgege</strong> - ni ne etike povas rajtigi al vi %sŝanĝi la vortumon%s de\n"
-"via promeso post kiam homoj eksubskribis ĝin.    \n"
-
-#: pb/web/new.php:819
-msgid "Why can't I modify my pledge after I've made it?"
-msgstr "Kial mi ne rajtas modifi mian promeson post kiam mi kreis ĝin?"
-
-#: pb/web/new.php:821
-msgid ""
-"People who sign up to a pledge are signing up to the specific wording of\n"
-"the pledge. If you change the wording, then their signatures would no\n"
-"longer be valid."
-msgstr ""
-"Tiuj, kiuj subskribas vian promeson apogas ĝian specifan vortumon. Se vi\n"
-"ŝanĝus la vortojn, la subskriboj ne plu validus."
-
-#: pb/web/new.php:828
-msgid "Change pledge text"
-msgstr "Ŝanĝi la tekston de la promeso"
-
-#: pb/web/new.php:830
-msgid "Change location"
-msgstr "Ŝanĝi lokon"
-
-#: pb/web/new.php:833
-msgid "Change category/privacy"
-msgstr "Ŝanĝi kategorion/privatecon"
-
-#: pb/web/new.php:836
-msgid "Change your postal address"
-msgstr "Ŝanĝi vian poŝtan adreson"
-
-#: pb/web/new.php:853
+#: pb/web/new.php:843
 msgid "Other Details"
 msgstr "Pli da detaloj"
 
-#: pb/web/new.php:858
+#: pb/web/new.php:848
 msgid "None"
 msgstr "Neniu"
 
@@ -4171,34 +4250,76 @@ msgstr "Publika"
 msgid "Pledge can only be seen by people who I give the PIN to"
 msgstr "La mesaĝojn rajtas vidi nur tiuj, al kiuj mi donis la PIN-on."
 
-#: pb/web/new.php:1011
+#: pb/web/new.php:878
+#, fuzzy, php-format
+msgid ""
+"\n"
+"Now please read your pledge (on the right) and check the details thoroughly.\n"
+"<strong>Read carefully</strong> - we can't ethically let you %schange the wording%s of your pledge once people have\n"
+"started to sign up to it.    \n"
+msgstr ""
+"\n"
+"Legu nun vian promeson (maldekstre) kaj kontrolu ĉiun detalon.\n"
+"<strong>Legu ĝin zorgege</strong> - ni ne etike povas rajtigi al vi %sŝanĝi la vortumon%s de\n"
+"via promeso post kiam homoj eksubskribis ĝin.    \n"
+
+#: pb/web/new.php:887
+msgid "Why can't I modify my pledge after I've made it?"
+msgstr "Kial mi ne rajtas modifi mian promeson post kiam mi kreis ĝin?"
+
+#: pb/web/new.php:889
+msgid ""
+"People who sign up to a pledge are signing up to the specific wording of\n"
+"the pledge. If you change the wording, then their signatures would no\n"
+"longer be valid."
+msgstr ""
+"Tiuj, kiuj subskribas vian promeson apogas ĝian specifan vortumon. Se vi\n"
+"ŝanĝus la vortojn, la subskriboj ne plu validus."
+
+#: pb/web/new.php:896
+msgid "Change pledge text"
+msgstr "Ŝanĝi la tekston de la promeso"
+
+#: pb/web/new.php:898
+msgid "Change location"
+msgstr "Ŝanĝi lokon"
+
+#: pb/web/new.php:901
+msgid "Change category/privacy"
+msgstr "Ŝanĝi kategorion/privatecon"
+
+#: pb/web/new.php:904
+msgid "Change your postal address"
+msgstr "Ŝanĝi vian poŝtan adreson"
+
+#: pb/web/new.php:1060
 msgid "Pledge Created"
 msgstr "Promeso Kreita"
 
-#: pb/web/new.php:1022
+#: pb/web/new.php:1071
 msgid "Thank you for creating your pledge."
 msgstr "Dankon pro tio, ke vi kreis promeson."
 
-#: pb/web/new.php:1024
+#: pb/web/new.php:1073
 #, fuzzy, php-format
 msgid "It is now live on Facebook at %s<br>and your friends can sign up to it there."
 msgstr "Ĝi nun estas videbla ĉe %s<br> kaj homoj povas tie subskribi ĝin."
 
-#: pb/web/new.php:1025
+#: pb/web/new.php:1074
 #, php-format
 msgid "Or sign up by email at %s"
 msgstr ""
 
-#: pb/web/new.php:1027
+#: pb/web/new.php:1076
 #, php-format
 msgid "It is now live at %s<br>and people can sign up to it there."
 msgstr "Ĝi nun estas videbla ĉe %s<br> kaj homoj povas tie subskribi ĝin."
 
-#: pb/web/new.php:1030
+#: pb/web/new.php:1079
 msgid "Your pledge will <strong>not succeed</strong> unless people find out about it.  So get out there and tell your friends and colleagues about your pledge &mdash; for ways to do this check out the \"Spread the Word\" section of your pledge webpage."
 msgstr "Via promeso <strong>ne sukcesos</strong> se homoj ne malkovras ĝin. Do vi ekparolu al viaj amikoj kaj kolegoj pri ĝi &mdash; por ideoj pri tio, vidu la sekcion \"Diskonigi\" de via promespaĝo."
 
-#: pb/web/new.php:1032
+#: pb/web/new.php:1081
 msgid "Your pledge will <strong>not be publicised</strong> elsewhere on the site until a few people have signed it.  So get out there and tell your friends and neighbours about your pledge."
 msgstr "Via promeso <strong>ne estos reklamita</strong> aliloke sur tiu ĉi retejo ĝis kiam kelkaj personoj subskribis ĝin. Do ekparolu al viaj amikoj kaj najbaroj pri ĝi."
 
@@ -4622,54 +4743,59 @@ msgstr "Bonvolu aldoni instrukciojn por la subskribontoj al la retmesaĝo."
 msgid "Please enter a longer message."
 msgstr "Bonvolu tajpi pli longan mesaĝon"
 
-#: pb/web/ref-announce.php:277
+#: pb/web/ref-announce.php:250
+#, php-format
+msgid "This message has been sent through PledgeBank by the pledge creator of a pledge you signed, '%s' The pledge's URL is <%s>."
+msgstr ""
+
+#: pb/web/ref-announce.php:279
 #, fuzzy
 msgid "Your pledge is successful!"
 msgstr "Tiu promeso sukcesis!"
 
-#: pb/web/ref-announce.php:287 pb/web/ref-announce.php:367
+#: pb/web/ref-announce.php:289 pb/web/ref-announce.php:369
 msgid "Send"
 msgstr "Sendi"
 
-#: pb/web/ref-announce.php:294
+#: pb/web/ref-announce.php:296
 #, php-format
 msgid "Write a message to tell the %d %s who have signed your pledge in %s what to do next."
 msgstr "Verku mesaĝon por diri al la %d %s, kiuj subskribis vian promeson en %s tion, kion ili devas nun fari."
 
-#: pb/web/ref-announce.php:296
+#: pb/web/ref-announce.php:298
 #, php-format
 msgid "Write a message to tell the %d %s who have signed your pledge what to do next."
 msgstr "Verku mesaĝon por diri al la %d %s, kiuj subskribis vian promeson tion, kion ili devas nun fari."
 
-#: pb/web/ref-announce.php:299
+#: pb/web/ref-announce.php:301
 #, php-format
 msgid "Write a message to the %d %s who have signed your pledge in %s."
 msgstr "Verku mesaĝon al la %d %s, kiuj subskribis vian promeson en %s."
 
-#: pb/web/ref-announce.php:301
+#: pb/web/ref-announce.php:303
 #, php-format
 msgid "Write a message to the %d %s who have signed your pledge."
 msgstr "Verku mesaĝon al la %d %s, kiuj subskribis vian promeson."
 
-#: pb/web/ref-announce.php:304
+#: pb/web/ref-announce.php:306
 msgid "Please note you can only send one failure announcement message to your signers."
 msgstr "Notu, ke vi rajtas sendi nur UNU mesaĝon pri malsukceso al viaj subskribintoj."
 
-#: pb/web/ref-announce.php:308
+#: pb/web/ref-announce.php:310
 #, php-format
 msgid "A copy of your message will also be sent to anybody who signs your pledge there later."
 msgstr "Kopio de via mesaĝo estos sendita al eventualaj tieaj subskribontoj de via promeso."
 
-#: pb/web/ref-announce.php:310
+#: pb/web/ref-announce.php:312
 #, php-format
 msgid "A copy of your message will also be sent to anybody who signs your pledge later."
 msgstr "Kopio de via mesaĝo estos sendita al eventualaj subskribontoj de via promeso."
 
-#: pb/web/ref-announce.php:315
+#: pb/web/ref-announce.php:317
 msgid "<h3>Email message</h3>"
 msgstr "<h3>Retmesaĝo</h3>"
 
-#: pb/web/ref-announce.php:316
+#: pb/web/ref-announce.php:318
 msgid ""
 "The message will be sent from your email address, so the people\n"
 "who signed your pledge can reply directly to you. <strong>You may want to also\n"
@@ -4680,11 +4806,11 @@ msgstr ""
 "rekte al vi. <strong>Vi eble aldonu vian telefonnumeron aŭ retejadreson</strong>\n"
 "por ke ili povu kontakti vin ankaŭ alimaniere."
 
-#: pb/web/ref-announce.php:331
+#: pb/web/ref-announce.php:333
 msgid "<h3>SMS message</h3>"
 msgstr "<h3>SMS-mesaĝo</h3>"
 
-#: pb/web/ref-announce.php:332
+#: pb/web/ref-announce.php:334
 msgid ""
 "Enter a short (160 or fewer characters) summary of your main message,\n"
 "    which can be sent to anyone who has signed up to your pledge by SMS only.\n"
@@ -4696,18 +4822,18 @@ msgstr ""
 "vian telefonnumeron aŭ retadreson.</strong> Alikaze la ricevintoj ne plu povos\n"
 "kontakti vin."
 
-#: pb/web/ref-announce.php:364
+#: pb/web/ref-announce.php:366
 msgid "<h3>Send announcement</h3>"
 msgstr "<h3>Sendu anoncon</h3>"
 
-#: pb/web/ref-announce.php:366
+#: pb/web/ref-announce.php:368
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr ""
 "(Memoru, ke kiam vi sendos tiun ĉi mesaĝon, <strong>via retadreso estos donita\n"
 "al ĉiuj viaj subskribintoj kaj subskribontoj</strong>)"
 
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:37
-#: pb/web/ref-plain.php:36
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
+#: pb/web/ref-plain.php:31
 msgid "Invalid parameters, please try again"
 msgstr "Nevalidaj argumentoj, bonvolu reprovi"
 
@@ -4749,7 +4875,7 @@ msgid ""
 "    pledge."
 msgstr "La mesaĝojn rajtas vidi nur subskribintoj de la promeso."
 
-#: pb/web/ref-contact.php:21 pb/web/ref-index.php:77
+#: pb/web/ref-contact.php:21
 #, fuzzy
 msgid "Contact the pledge creator"
 msgstr "Reiri al la promesaj komentoj"
@@ -4863,28 +4989,28 @@ msgstr "Redaktebla afiŝo (RTF)"
 msgid "Alternatively, simply %s to get these flyers."
 msgstr "Alikaze, simple %s por havigi al vi tiujn flugfoliojn."
 
-#: pb/web/ref-index.php:58
+#: pb/web/ref-index.php:61
 msgid "Spread the word on and offline"
 msgstr "Diskonigi pri via promeso rete kaj persone"
 
-#: pb/web/ref-index.php:60
+#: pb/web/ref-index.php:63
 msgid "Things to do with this pledge"
 msgstr "Farindaĵoj rilate al tiu ĉi promeso"
 
-#: pb/web/ref-index.php:65
+#: pb/web/ref-index.php:68
 #, fuzzy
 msgid "Email your friends"
 msgstr "Sendi la promeson al viaj amikoj per retmesaĝo"
 
-#: pb/web/ref-index.php:69
+#: pb/web/ref-index.php:72
 msgid "Stick them places!"
 msgstr "Alkroĉi ilin ĉie!"
 
-#: pb/web/ref-index.php:69
+#: pb/web/ref-index.php:72
 msgid "Print out customised flyers"
 msgstr "Presi adaptitajn flugfoliojn"
 
-#: pb/web/ref-index.php:73
+#: pb/web/ref-index.php:76
 msgid "Promote on your site or blog"
 msgstr ""
 
@@ -4900,10 +5026,6 @@ msgstr "(nur kreinto)"
 #: pb/web/ref-index.php:81 pb/web/ref-index.php:83
 msgid "Only if you made this pledge"
 msgstr "Nur se vi kreis tiun ĉi promeson"
-
-#: pb/web/ref-index.php:81
-msgid "Send message to signers"
-msgstr "Sendi mesaĝon al la subskribintoj"
 
 #: pb/web/ref-index.php:84
 #, fuzzy
@@ -4997,10 +5119,6 @@ msgstr "Pro la granda nombro da komentoj, nur la %d plej lastaj vidiĝas sur tiu
 msgid "Show all comments"
 msgstr "Montri ĉiujn komentojn"
 
-#: pb/web/ref-index.php:321 pb/web/your.php:63
-msgid "Suggested pledges"
-msgstr "Proponitaj promesoj"
-
 #: pb/web/ref-index.php:322
 msgid "Some of the people who signed this pledge also signed these pledges..."
 msgstr "Iuj, kiuj subskribis tiun ĉi promeso subskribis ankaŭ tiujn ĉi..."
@@ -5012,118 +5130,123 @@ msgid_plural "%s people"
 msgstr[0] "%s persono"
 msgstr[1] "%s personoj"
 
-#: pb/web/ref-index.php:368
+#: pb/web/ref-index.php:370
 #, fuzzy
-msgid "You might be interested in these other pledges."
-msgstr "Vi subskribis neniun promeson."
+msgid "This pledge has now closed; it was successful!"
+msgstr "Tiu promeso sukcesis!"
 
 #: pb/web/ref-index.php:377
-msgid "See <a href=\"/\">more other pledges</a>, and all about how PledgeBank works."
+#, fuzzy
+msgid "You might be interested in these other pledges:"
+msgstr "Vi subskribis neniun promeson."
+
+#: pb/web/ref-index.php:386
+msgid "See <a href=\"/list\">more pledges</a>, and all <a href=\"/faq\">about how PledgeBank works</a>."
 msgstr ""
 
-#: pb/web/ref-index.php:393
+#: pb/web/ref-index.php:403
 #, php-format
 msgid "Comments on Pledge '%s'"
 msgstr "Komentoj pri Promeso '%s'"
 
-#: pb/web/ref-info.php:50
+#: pb/web/ref-info.php:53
 msgid "More information: "
 msgstr "Pli da informoj: "
 
-#: pb/web/ref-info.php:66
+#: pb/web/ref-info.php:70
 msgid "<h2>General pledge information</h2>"
 msgstr "<h2>Ĝeneralaj informoj pri la promeso</h2>"
 
-#: pb/web/ref-info.php:69
+#: pb/web/ref-info.php:73
 msgid "Creator"
 msgstr "Kreinto"
 
-#: pb/web/ref-info.php:73
+#: pb/web/ref-info.php:77
 msgid "Date created"
 msgstr "Kreiĝdato"
 
-#: pb/web/ref-info.php:77
+#: pb/web/ref-info.php:81
 msgid "Date closes"
 msgstr "Fermdato"
 
-#: pb/web/ref-info.php:77
+#: pb/web/ref-info.php:81
 msgid "Date closed"
 msgstr "Fermdato"
 
-#: pb/web/ref-info.php:81
+#: pb/web/ref-info.php:85
 msgid "Status"
 msgstr "Stato"
 
 # Is this used in a singular or plural context, or both? If both, entry needs to be pluralised. (Tim Morley, 2005-11-23)
 # It's only ever used in singular context at present, on a pledge's info page, to simply say something like: "Status: open for signers; successful." Same for the three following. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/ref-info.php:84
+#: pb/web/ref-info.php:88
 #, php-format
 msgid "successful in %d area"
 msgid_plural "successful in %d areas"
 msgstr[0] "sukcesa en %d loko"
 msgstr[1] "sukcesa en %d lokoj"
 
-#: pb/web/ref-info.php:87
+#: pb/web/ref-info.php:91
 msgid "open for signers; "
 msgstr "malferma por subskribontoj; "
 
 # Is this used in a singular or plural context, or both? If both, entry needs to be pluralised. (Tim Morley, 2005-11-23)
 # It's only ever used in singular context at present, on a pledge's info page, to simply say something like: "Status: open for signers; successful." Same for the three following. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: "successful" is only ever used in singular context
-#: pb/web/ref-info.php:89 pb/web/ref-info.php:92
+#: pb/web/ref-info.php:93 pb/web/ref-info.php:96
 msgid "successful"
 msgstr "sukcesa"
 
 # See comments at msgid "successful". (Tim Morley, 2005-11-23)
-#: pb/web/ref-info.php:89
+#: pb/web/ref-info.php:93
 msgid "not yet successful"
 msgstr "ankoraŭ ne sukcesa"
 
 # See comments at msgid "successful". (Tim Morley, 2005-11-23)
-#: pb/web/ref-info.php:91
+#: pb/web/ref-info.php:95
 msgid "closed; "
 msgstr "fermita; "
 
 # See comments at msgid "successful". (Tim Morley, 2005-11-23)
-#: pb/web/ref-info.php:92
+#: pb/web/ref-info.php:96
 msgid "failed"
 msgstr "malsukcesa"
 
-#: pb/web/ref-info.php:97
+#: pb/web/ref-info.php:101
 msgid "Number of signers"
 msgstr "Nombro da subskribintoj"
 
-#: pb/web/ref-info.php:101
+#: pb/web/ref-info.php:105
 #, php-format
 msgid "(%.1f%% of target)"
 msgstr "(%.1f%% de la celo)"
 
-#: pb/web/ref-info.php:107
+#: pb/web/ref-info.php:111
 msgid "Estimated signers by deadline"
 msgstr "Takso de nombro de subskribintoj ĝis la limdato"
 
-#: pb/web/ref-info.php:110
+#: pb/web/ref-info.php:114
 #, php-format
 msgid "(%.1f%% of target)<br><small>if signup rate continues as in last week</small>"
 msgstr "(%.1f%% de la celo)<br><small>se subskriba rapideco daŭras same kiel pasintsemajne</small>"
 
-#: pb/web/ref-info.php:117
+#: pb/web/ref-info.php:121
 msgid "Categories"
 msgstr "Kategorioj"
 
-#: pb/web/ref-info.php:136
+#: pb/web/ref-info.php:140
 msgid "Rate of signups"
 msgstr "Subskriba rapideco"
 
-#: pb/web/ref-info.php:139
+#: pb/web/ref-info.php:143
 msgid "Signup graph not available for private pledges."
 msgstr "Diagramo de subskriba rapideco ne disponebla por privataj promesoj."
 
-#: pb/web/ref-info.php:141
+#: pb/web/ref-info.php:145
 msgid "Graph of signers to this pledge"
 msgstr "Diagramo de subskribintoj de tiu ĉi promeso"
 
-#: pb/web/ref-info.php:142
+#: pb/web/ref-info.php:146
 msgid "Graph updated every 30 minutes"
 msgstr "Diagramo ĝisdatigita je ĉiuj 30 minutoj"
 
@@ -5248,7 +5371,8 @@ msgid "Remove the picture"
 msgstr "Forigi bildon"
 
 #: pb/web/ref-picture.php:194
-msgid "Pictures are not available for private pledges.  Please let us know if this is a problem."
+#, fuzzy
+msgid "Pictures are currently not available for private pledges.  Please let us know if this is a problem."
 msgstr "Bildoj estas malpermesataj por privataj promesoj. Bonvolu sciigi al ni, se tio estas problemo."
 
 #: pb/web/ref-promote.php:23 pb/web/ref-promote.php:25
@@ -5374,90 +5498,100 @@ msgstr ""
 msgid "Comments on all pledges"
 msgstr "Komentoj pri ĉiuj promesoj"
 
-#: pb/web/search.php:24
+#: pb/web/search.php:26
 #, php-format
 msgid "Search results for '%s'"
 msgstr "Serĉrezultoj por '%s'"
 
-#: pb/web/search.php:91
+#: pb/web/search.php:101
 msgid "decrease distance"
 msgstr "malpliigi distancon"
 
-#: pb/web/search.php:100
+#: pb/web/search.php:110
 msgid "increase distance"
 msgstr "pliigi distancon"
 
-#: pb/web/search.php:111 pb/web/pb.js:16
+#: pb/web/search.php:122 pb/web/pb.js:16
 msgid "<Enter town or keyword>"
 msgstr "<Entajpu urbon aŭ ŝlosilvortojn>"
 
-#: pb/web/search.php:118
-msgid "RSS feed of search for '"
-msgstr "RSS-servo de serĉo por '"
+#: pb/web/search.php:128
+#, fuzzy, php-format
+msgid "RSS feed of pledges matching '%s'"
+msgstr "RSS-servo pri novaj promesoj"
 
-#: pb/web/search.php:134
+#: pb/web/search.php:147
 #, php-format
 msgid "Result <strong>exactly matching</strong> pledge <strong>%s</strong>:"
 msgstr "Rezulto, kiu <strong>precize kongruas</strong> kun promeso <strong>%s</strong>:"
 
-#: pb/web/search.php:152
+#: pb/web/search.php:165
 msgid "We couldn't find that postcode, please check it again."
 msgstr "Ni ne trovis tiun poŝtkodon, bonvolu rekontroli ĝin."
 
-#: pb/web/search.php:156
+#: pb/web/search.php:169
 #, php-format
 msgid "Results for <strong>open pledges</strong> within %s %s of UK postcode <strong>%s</strong>:"
 msgstr "Rezultoj por <strong>malfermaj promesoj</strong> malpli ol %s %s for de brita poŝtkodo <strong>%s</strong>:"
 
-#: pb/web/search.php:160 pb/web/search.php:194
+#: pb/web/search.php:173 pb/web/search.php:228
 msgid "No nearby open pledges. Why not <a href=\"/new\">make one</a>?"
 msgstr "Ne ekzistas proksimaj promesoj. Kial ne <a href=\"/new\">krei la unuan</a>?"
 
 # What are the various %s here? (Tim Morley, 2005-11-23)
 # Quick test on the site reveals, for example: "Results for <strong>open pledges</strong> near places matching <strong>Bolton</strong>, United Kingdom (<a href="....">change country</a>):" (Tim Morley, 2005-11-23)
 #. TRANS: For example: "Results for <strong>open pledges</strong> near places matching <strong>Bolton</strong>, United Kingdom (<a href="....">change country</a>):"
-#: pb/web/search.php:190
-#, php-format
-msgid "Results for <strong>open pledges</strong> within %s %s of <strong>%s</strong>, %s%s:"
+#: pb/web/search.php:224
+#, fuzzy, php-format
+msgid "Results for <strong>open pledges</strong> within %s %s of <strong>%s</strong>, %s:"
 msgstr "Rezultoj por <strong>malfermaj promesoj</strong> malpli ol %s %s for de <strong>%s</strong>, %s%s:"
 
 # What are the various %s here? (Tim Morley, 2005-11-23)
 # Quick test on the site reveals, for example: "Results for <strong>open pledges</strong> near places matching <strong>Bolton</strong>, United Kingdom (<a href="....">change country</a>):" (Tim Morley, 2005-11-23)
-#: pb/web/search.php:200
-#, php-format
-msgid "Results for <strong>open pledges near</strong> %s places matching <strong>%s</strong>, %s%s:"
+#: pb/web/search.php:234
+#, fuzzy, php-format
+msgid "Results for <strong>open pledges near</strong> %s places matching <strong>%s</strong>, %s:"
 msgstr "Rezultoj por <strong>malfermaj promesoj</strong> %s lokoj, kiuj kongruas kun <strong>%s</strong>, %s%s:"
 
-#: pb/web/search.php:213
+#: pb/web/search.php:245
+#, php-format
+msgid "Other similar places to %s"
+msgstr ""
+
+#: pb/web/search.php:247
+msgid "Did you mean:"
+msgstr ""
+
+#: pb/web/search.php:266
 #, php-format
 msgid "To search for a town, please first %s."
 msgstr "Por serĉi urbon, bonvolu unue %s"
 
-#: pb/web/search.php:258
+#: pb/web/search.php:308
 #, php-format
 msgid "Results for <strong>open pledges</strong> matching <strong>%s</strong>:"
 msgstr "Rezultoj por <strong>malfermaj promesoj</strong>, kiuj kongruas kun <strong>%s</strong>"
 
-#: pb/web/search.php:264
+#: pb/web/search.php:314
 #, php-format
 msgid "Results for <strong>closed pledges</strong> matching <strong>%s</strong>:"
 msgstr "Rezultoj por <strong>fermitaj promesoj</strong>, kiuj kongruas kun <strong>%s</strong>:"
 
-#: pb/web/search.php:282
+#: pb/web/search.php:331
 #, php-format
 msgid "Results for <strong>comments</strong> matching <strong>%s</strong>:"
 msgstr "Rezultoj por <strong>komentoj</strong>, kiuj kongruas kun <strong>%s</strong>:"
 
-#: pb/web/search.php:329
+#: pb/web/search.php:380
 #, php-format
 msgid "Results for <strong>people</strong> matching <strong>%s</strong>:"
 msgstr "Rezultoj por <strong>personoj</strong>, kiuj kongruas kun <strong>%s</strong>:"
 
-#: pb/web/search.php:337
+#: pb/web/search.php:388
 msgid " (creator)"
 msgstr " (kreinto)"
 
-#: pb/web/search.php:345
+#: pb/web/search.php:396
 #, php-format
 msgid "Sorry, we could find nothing that matched \"%s\"."
 msgstr "Pardonu, ni ne trovis ion ajn, kio kongruas kun \"%s\"."
@@ -5851,63 +5985,6 @@ msgstr "... aŭ elektu specialan retejon"
 msgid "If you would like your own special PledgeBank site, then <a href=\"/contact\">email us</a> for details."
 msgstr "Se vi volas havi vian propran PromesoBankon, bonvolu <a href=\"/contact\">kontaku nin</a> por pli da detaloj."
 
-#: pb/web/your.php:17
-msgid "To view your pledges, we need to check your email address."
-msgstr "Por vidi viajn promesojn, ni devas kontroli vian retadreson."
-
-#: pb/web/your.php:18
-msgid "Then you will be able to view your pledges."
-msgstr "Tiam vi rajtos vidi viajn promesojn."
-
-#: pb/web/your.php:19
-msgid "View your pledges at PledgeBank.com"
-msgstr "Vidi viajn promesojn ĉe PromesoBanko.com"
-
-#: pb/web/your.php:64
-msgid "People who signed the pledges you created or signed also signed these..."
-msgstr "Iuj, kiuj subskribis promesojn kreitajn de vi subskribis ankaŭ tiujn ĉi..."
-
-#: pb/web/your.php:91
-#, fuzzy
-msgid "Open pledges you created"
-msgstr "<h2>Malfermaj promesoj kreitaj de vi</h2>"
-
-#: pb/web/your.php:94
-#, fuzzy
-msgid "Closed pledges you created"
-msgstr "<h2>Fermitaj promesoj kreitaj de vi</h2>"
-
-#: pb/web/your.php:100
-msgid "You have no open pledges. <a href=\"/new\">Start a new pledge</a>."
-msgstr "Vi havas neniun malfermajn promesojn. <a href=\"/new\">Eki novan promeson</a>."
-
-#: pb/web/your.php:115
-msgid "<h2>Pledges you signed</h2>"
-msgstr "<h2>Promesoj subskribitaj de vi</h2>"
-
-#: pb/web/your.php:131
-#, fuzzy
-msgid "Have you done this pledge anyway?"
-msgstr "Nur se vi kreis tiun ĉi promeson"
-
-#: pb/web/your.php:133
-#, fuzzy
-msgid "Have you done this pledge?"
-msgstr "Nur se vi kreis tiun ĉi promeson"
-
-#: pb/web/your.php:139
-msgid "That's great!"
-msgstr ""
-
-#: pb/web/your.php:152
-msgid "You have signed no pledges."
-msgstr "Vi subskribis neniun promeson."
-
-#: pb/web/your.php:155
-#, php-format
-msgid "Why not <a href=\"mailto:%s\">send us photos</a> of yourself carrying out successful pledges?"
-msgstr "Kial ne <a href=\"mailto:%s\">sendi al ni fotojn</a> de vi plenumante viajn sukcesajn promesojn?"
-
 #: pb/bin/frequentupdate:399 pb/bin/frequentupdate:485
 #, php-format
 msgid "PledgeBank here. Sorry, the %s pledge has failed. Better luck next time!"
@@ -5935,28 +6012,28 @@ msgstr ""
 "\n"
 "%s"
 
-#: pb/bin/frequentupdate:935
+#: pb/bin/frequentupdate:937
 #, php-format
 msgid "%d days ago"
 msgstr "antaŭ %d tagoj"
 
-#: pb/bin/frequentupdate:937
+#: pb/bin/frequentupdate:939
 #, php-format
 msgid "%d hours ago"
 msgstr "antaŭ %d horoj"
 
-#: pb/bin/frequentupdate:939
+#: pb/bin/frequentupdate:941
 #, php-format
 msgid "%d minutes ago"
 msgstr "antaŭ %d minutoj"
 
-#: pb/bin/frequentupdate:941
+#: pb/bin/frequentupdate:943
 msgid "a minute ago"
 msgstr "antaŭ unu minuto"
 
 # According to the source code file pb/bin/frequentupdate, the first %s here is replaced by one of the above expressions (%d days ago, one minute ago, etc.) (Tim Morley, 2005-11-23)
 #. TRANS: The first %s is one of the time strings above.
-#: pb/bin/frequentupdate:944
+#: pb/bin/frequentupdate:946
 #, php-format
 msgid "[ You signed this pledge after this message was sent to the other signers. They will have received copies of this message %s. You can read older messages from the pledge creator that you missed here: %s ]"
 msgstr "[ Vi subskribis tiun ĉi promeson post kiam tiu ĉi mesaĝo estis sendita al aliaj subskribintoj. Ili jam ricevis kopion de tiu ĉi mesaĝo %s. Vi povas legi pli malnovajn mesaĝojn de la promeskreinto, kiujn vi maltrafis ĉi tie: %s ]"
@@ -5965,101 +6042,101 @@ msgstr "[ Vi subskribis tiun ĉi promeson post kiam tiu ĉi mesaĝo estis sendit
 msgid "Click for more info:"
 msgstr "Musklaku por pli da informoj"
 
-#: pb/web/poster.cgi:49
+#: pb/web/poster.cgi:50
 msgid "SMS operated by charity UKCOD. Available in UK only. Sign-up message costs your normal text rate. Further messages are free. "
 msgstr "SMS funkciigata de la bonfara fondaĵo UKCOD. Disponeblas nur en Britio. La kosto de la subskriba mesaĝo estas la sama kiel kutima SMS-mesaĝo, laŭ via telefona kontrakto. Ĉiuj postaj mesaĝoj estas senpagaj."
 
-#: pb/web/poster.cgi:115
+#: pb/web/poster.cgi:116
 msgid "<font color=\"#ffffff\">Pledge</font>Bank.com"
 msgstr "<font color=\"#ffffff\">Pledge</font>Bank.com"
 
 # Some characters seem corrupted in the original .po file. I think they're meant to be em-dashes, but is it OK to put the HTML code &mdash; in their place? A Google search for '"you only have to act" site:pledgebank.com' suggests that this code is used to create pdf's, not webpages, so maybe HTML codes are no use. Oh yeah, the fact that this is all in a file called "poster.cgi" suggests it might be used for generating, er, posters. What to do then? (Tim Morley, 2005-11-23)
 # Hmm, yes. The poster.cgi file is indeed for creating PDF and RTF posters in Python, and the RTF generation library we use (or RTF standard itself) requires the characters to be in, I believe, Win-1252. As the .po file says it's in UTF-8, it's encoded e.g. \x96 as \xc2 \x96. If you just copy that identically (\x96 and \x97 are dashes, \x92 is apostrophe), it should be okay. I know that's not perfect, sorry. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:147
+#: pb/web/poster.cgi:148
 #, python-format
 msgid "Remember, you only have to act if %d other people sign up – that’s what PledgeBank is all about."
 msgstr "Memoru, vi devas ekagi nur se %d aliaj personoj subskribas – tio estas la etoso de PromesoBanko."
 
-#: pb/web/poster.cgi:323
+#: pb/web/poster.cgi:324
 msgid "I"
 msgstr "mi"
 
-#: pb/web/poster.cgi:324
+#: pb/web/poster.cgi:325
 #, python-format
 msgid " will %s "
 msgstr " promesas %s "
 
-#: pb/web/poster.cgi:327
+#: pb/web/poster.cgi:328
 #, python-format
 msgid " %s will %s."
 msgstr " %s promesas %s."
 
-#: pb/web/poster.cgi:335
+#: pb/web/poster.cgi:336
 msgid "More details:"
 msgstr "Pli da detaloj:"
 
 # OK, even having found this in the source code, I can't work out what its context is! I gather it's part of a SMS message, but I can't get any more. Please help. What follows "at"? Is it a time, a date, or something else? (Tim Morley, 2005-11-23)
 # It's on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:343 pb/web/poster.cgi:485
+#: pb/web/poster.cgi:344 pb/web/poster.cgi:545
 msgid "Pledge at "
 msgstr "Subskribu ĉe "
 
-#: pb/web/poster.cgi:345 pb/web/poster.cgi:487
+#: pb/web/poster.cgi:346 pb/web/poster.cgi:547
 msgid " pin "
 msgstr " sekreta kodnumero "
 
 # I think from the context in poster.cgi that this is an instruction (i.e. verb in the imperative), not the noun 'text', is that right? (Tim Morley, 2005-11-23)
 # Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: Text is an instruction (verb in the imperative)
-#: pb/web/poster.cgi:350
+#: pb/web/poster.cgi:351
 msgid "Text"
 msgstr "Tekstmesaĝu"
 
 # This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
 #. TRANS: This appears on posters/flyers in the sentence: "Text 'pledge REFERENCE' *to* 60022". (Tim Morley, 2005-11-30)
-#: pb/web/poster.cgi:354
+#: pb/web/poster.cgi:355
 msgid "to"
 msgstr "al"
 
 # I think 'pledge' here means 'sign up to', as part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
 # Yes, as above. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
 #. TRANS: This is part of "text xxxxxxxxxx to 60022 (UK only) or pledge at http://xxxxxxxxx". Is that right? (Tim Morley, 2005-11-23)
-#: pb/web/poster.cgi:357
+#: pb/web/poster.cgi:358
 #, python-format
 msgid " (%s only) or pledge at "
 msgstr " (nur %s) aŭ subskribu ĉe "
 
-#: pb/web/poster.cgi:361
+#: pb/web/poster.cgi:362
 msgid "This pledge closes on "
 msgstr "Tiu ĉi promeso fermiĝos je "
 
-#: pb/web/poster.cgi:361
+#: pb/web/poster.cgi:362
 msgid ". Thanks!"
 msgstr ". Dankon!"
 
-#: pb/web/poster.cgi:456
+#: pb/web/poster.cgi:508
 #, python-format
 msgid "<font color=\"%s\">I</font> will %s <b>but only if</b> <font color=\"%s\">%s</font> %s will %s. "
 msgstr "<font color=\"%s\">Mi</font> promesas %s <b>sed nur se</b> <font color=\"%s\">%s</font> %s promesas %s. "
 
-#: pb/web/poster.cgi:464
+#: pb/web/poster.cgi:516
 #, python-format
 msgid "<font color=\"%s\">I</font> will %s. "
 msgstr "<font color=\"%s\">Mi</font> promesas %s. "
 
-#: pb/web/poster.cgi:480
+#: pb/web/poster.cgi:535
 #, python-format
 msgid "<b>More details:</b> %s"
 msgstr "<b>Pli da detaloj:</b> %s"
 
-#: pb/web/poster.cgi:493
+#: pb/web/poster.cgi:553
 msgid "pledge at "
 msgstr "subskribu ĉe "
 
 # Translate "pledge" here or not (as part of text message to be automatically interpreted as a signing up)? (Tim Morley, 2005-11-23)
 # No, we only have use of the word "pledge" currently. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:495
+#: pb/web/poster.cgi:555
 #, python-format
 msgid ""
 "<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
@@ -6070,7 +6147,7 @@ msgstr ""
 "            <b>%s %s</b></font> al <font color=\"%s\"><b>%s</b></font> \n"
 "            (nur en %s) aŭ "
 
-#: pb/web/poster.cgi:506
+#: pb/web/poster.cgi:566
 #, python-format
 msgid ""
 "\n"
@@ -6081,59 +6158,59 @@ msgstr ""
 "            Tiu ĉi promeso fermiĝos je <font color=\"%s\">%s</font>. Dankon!\n"
 "            "
 
-#: pb/web/poster.cgi:515
+#: pb/web/poster.cgi:575
 #, fuzzy, python-format
 msgid "<font color=\"%s\">%s</font> person signed up"
 msgid_plural "<font color=\"%s\">%s</font> people signed up"
 msgstr[0] "<font color=\"%s\">Mi</font> promesas %s. "
 msgstr[1] "<font color=\"%s\">Mi</font> promesas %s. "
 
-#: pb/web/poster.cgi:517
+#: pb/web/poster.cgi:577
 #, fuzzy, python-format
 msgid "<font color=\"%s\">%s</font> person has signed up"
 msgid_plural "<font color=\"%s\">%s</font> people have signed up"
 msgstr[0] "<font color=\"%s\">Mi</font> promesas %s. "
 msgstr[1] "<font color=\"%s\">Mi</font> promesas %s. "
 
-#: pb/web/poster.cgi:519
+#: pb/web/poster.cgi:579
 #, fuzzy, python-format
 msgid " (%d over target) — success!"
 msgstr "(%d pli ol la celo)"
 
-#: pb/web/poster.cgi:523
+#: pb/web/poster.cgi:583
 #, fuzzy, python-format
 msgid "<font color=\"%s\">%d</font> more was needed"
 msgid_plural "<font color=\"%s\">%d</font> more were needed"
 msgstr[0] "<font color=\"%s\">Mi</font> promesas %s. "
 msgstr[1] "<font color=\"%s\">Mi</font> promesas %s. "
 
-#: pb/web/poster.cgi:525
+#: pb/web/poster.cgi:585
 #, fuzzy, python-format
 msgid "<font color=\"%s\">%d</font> more needed"
 msgid_plural "<font color=\"%s\">%d</font> more needed"
 msgstr[0] "<font color=\"%s\">Mi</font> promesas %s. "
 msgstr[1] "<font color=\"%s\">Mi</font> promesas %s. "
 
-#: pb/web/poster.cgi:531
+#: pb/web/poster.cgi:591
 #, python-format
 msgid " Or you can text <font color=\"%s\">%s %s</font> to <font color=\"%s\">%s</font> <font size=\"-1\">(%s only)</font>."
 msgstr ""
 
-#: pb/web/poster.cgi:535
+#: pb/web/poster.cgi:595
 #, python-format
 msgid "Open until %s — <font color=\"%s\">Sign this pledge</font>!%s"
 msgstr ""
 
-#: pb/web/poster.cgi:538
+#: pb/web/poster.cgi:598
 #, fuzzy, python-format
 msgid "Closed on <font color=\"%s\">%s</font>"
 msgstr "<font color=\"%s\">Mi</font> promesas %s. "
 
-#: pb/web/poster.cgi:740
+#: pb/web/poster.cgi:803
 msgid "UK"
 msgstr "Britio"
 
-#: pb/web/poster.cgi:902
+#: pb/web/poster.cgi:971
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"
@@ -7279,7 +7356,7 @@ msgid ""
 "\n"
 "Obviously, some pledges might take a while until you can carry them\n"
 "out; if so, you can keep this email safe until you do.  Or, you can\n"
-"say you've done a pledge at any time by going to Your Pledges.\n"
+"say you've done a pledge at any time by going to My Pledges.\n"
 "\n"
 "Just to remind you, the pledge, created by <?=$values['creator_name']?>, reads:\n"
 "'<?=$values['sentence_first']?>'\n"
@@ -7338,6 +7415,98 @@ msgstr "Bonfarto kaj socio"
 #: pb/db/ican-categories.sql
 msgid "Your rights"
 msgstr "Viaj rajtoj"
+
+#~ msgid "choose country"
+#~ msgstr "elekti landon"
+
+#~ msgid "%s%s pledges in %s (%s) only listed"
+#~ msgstr "nur %s%s promesoj en %s (%s) listigitaj"
+
+#~ msgid "Home"
+#~ msgstr "Hejmo"
+
+#~ msgid "FAQ"
+#~ msgstr "Respondaro"
+
+#~ msgid "Contact"
+#~ msgstr "Kontakto"
+
+#~ msgid "Your Pledges"
+#~ msgstr "Viaj Promesoj"
+
+#~ msgid "Logout"
+#~ msgstr "Elsaluti"
+
+#~ msgid ""
+#~ "\"We all know what it is like to feel powerless, that our own\n"
+#~ "        actions can't really change the things that we want to change.\n"
+#~ "        PledgeBank is about beating that feeling...\""
+#~ msgstr ""
+#~ "\"Ni scias ĉiuj la senton de senpoveco, ke niaj propraj\n"
+#~ "        agoj ne sufiĉas por ŝanĝi tion, kion ni ja volas ŝanĝi.\n"
+#~ "        PromesoBanko temas pri konkero super tiu sento...\""
+
+# The tags here are just all wrong, aren't they? (Tim Morley, 2005-11-22)
+# No, that's correct, the starting <a...> and the finishing </a> are outside the translated string - I remember we took the starting <a> out because some translators translated it. :) (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000093.html)
+#~ msgid ""
+#~ "Listen to how PledgeBank\n"
+#~ "    works</a>, as explained by mySociety's director Tom Steinberg.\n"
+#~ "    Or <a href=\"/explain\">read a full transcript"
+#~ msgstr ""
+#~ "Aŭskultu</a> la klarigon de la direktoro de mySociety Tom Steinberg [tom stajnberg] pri\n"
+#~ "    kiel funkcias PromesoBanko. Aŭ <a href=\"/explain\">legu</a> la tuton."
+
+#~ msgid ""
+#~ "<a href=\"/explain\">Find out how PledgeBank\n"
+#~ "    works</a>, as explained by mySociety's director Tom Steinberg."
+#~ msgstr ""
+#~ "Legu aŭ aŭskultu la klarigon de la direktoro de mySociety Tom Steinberg [tom stajnberg] pri\n"
+#~ "<a href=\"/explain\">kiel funkcias PromesoBanko</a>."
+
+#~ msgid "Why not sign a live pledge?"
+#~ msgstr "Kial ne subskribi aktualan promeson?"
+
+#~ msgid "This pledge's permanent location: "
+#~ msgstr "La porĉiama loko de tiu ĉi promeso estas: "
+
+#~ msgid "I, %s, sign up to the pledge."
+#~ msgstr "Mi, %s, subskribas tiun ĉi promeson."
+
+#, fuzzy
+#~ msgid "Report comment to PledgeBank"
+#~ msgstr "Ensaluti en PromesoBanko.com"
+
+#~ msgid ""
+#~ "PledgeBank is free and easy to use. Once you've thought of something you'd like\n"
+#~ "to do, just <a href=\"/new\">create a pledge</a> which says \"I'll do this, but\n"
+#~ "only if 5 other people will do the same\"."
+#~ msgstr ""
+#~ "Uzo de PromesoBanko estas senpaga kaj facila. Kiam vi pensis pri io, kion vi ŝatus fari,\n"
+#~ "simple <a href=\"/new\">kreu promeson</a> kiu tekstas \"Mi faros tion,\n"
+#~ "sed nur se 5 aliaj personoj faros same\"."
+
+#~ msgid ""
+#~ "How scissors, a phone and some printouts\n"
+#~ "can make your pledge succeed &raquo;"
+#~ msgstr ""
+#~ "Kiel sukcesigi vian promeson per tondilo,\n"
+#~ "telefono kaj presilo &raquo;"
+
+# Should have a `;' after &mdash -- Internet Explorer is happy without it, but not all other browsers are. (Tim Morley, 2005-11-23)
+#~ msgid "Scissors, a phone and some printouts &mdash; "
+#~ msgstr "Tondilo, telefono kaj presilo &mdash; "
+
+#~ msgid "Find out why these things are the secret of a successful pledge"
+#~ msgstr "Malkovru kial tiuj aĵoj estas la sekreto de sukcesa promeso"
+
+#~ msgid "Your Pledge"
+#~ msgstr "Via Promeso"
+
+#~ msgid "If so, we will help people who live nearby find your pledge."
+#~ msgstr "Tiukaze, ni helpos al la loka loĝantaro trovi vian promeson."
+
+#~ msgid "RSS feed of search for '"
+#~ msgstr "RSS-servo de serĉo por '"
 
 #~ msgid "Your name"
 #~ msgstr "Via nomo"
@@ -7463,9 +7632,6 @@ msgstr "Viaj rajtoj"
 
 #~ msgid "Yes, I'd like to set a password, so I don't have to keep going back to my email."
 #~ msgstr "Jes, mi volas krei pasvorton, por ke mi ne estu devigata ĉiufoje serĉi retmesaĝon."
-
-#~ msgid "Password:"
-#~ msgstr "Pasvorto:"
 
 #~ msgid "Password (again):"
 #~ msgstr "Pasvorto (denove):"
