@@ -176,7 +176,10 @@ class confirmed2_page extends pagebase {
 			send_text_email($email, $result[0]->created_name, $result[0]->created_email, $title, $this->data['txtContactMessage']);
 		
 		}
-	
+
+		//Update the stats table
+		tableclass_stat::increment_stat("group.forwarded.count");
+			
 	}
 
 }
