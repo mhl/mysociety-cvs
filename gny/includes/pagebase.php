@@ -99,10 +99,10 @@ abstract class pagebase {
     	$template_folder = null;
         $this->smarty = new Smarty();
         $this->smarty->compile_dir = SMARTY_PATH;
-        $this->compile_check = true;
+        $this->smarty->compile_check = true;
         $this->smarty->template_dir = TEMPLATE_DIR;
        
-	$this->smarty_template = $template_file;
+		$this->smarty_template = $template_file;
     }
     
     //Get template name - uses reflection to try and guess the template name
@@ -144,17 +144,29 @@ abstract class pagebase {
 		$this->data = $_POST;
 	}
 
-	protected abstract function load();
+	protected function load(){
 	
-	protected abstract function setup();
+	}
 	
-	protected abstract function bind();
+	protected function setup(){
 	
-	protected abstract function unbind();
+	}
 	
-	protected abstract function validate();		
+	protected function bind(){
+		$this->display_template();
+	}
 	
-	protected abstract function process();	
+	protected function unbind(){
+	
+	}
+	
+	protected function validate(){
+	
+	}
+	
+	protected function process(){
+	
+	}
     
     private function get_postback_command(){
         if (isset($_POST["_postback_command"])){

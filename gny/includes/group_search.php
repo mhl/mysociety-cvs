@@ -15,11 +15,18 @@
 			
 			$long = 0;
 			$lat = 0;			
-			
+
 			//postcode?
 			if($this->search_type == 'postcode'){
+			
+				//if its a partial postcode, padd it
+				if(is_partial_postcode($search_term)){
+					$search_term = pad_partial_postcode($search_term);
+				}
+			
 				$clean_postcode = clean_postcode($search_term);
 				$longlat = get_postcode_location($clean_postcode, 'UK');
+
 				if($longlat == false){
 					array_push($this->warnings, "A error occured when trying to find that post code");
 					trigger_error("Unable to get locaiton for postcode: " . $search_term);
@@ -85,6 +92,11 @@
 			
 			//check if is postcode
 			if(is_postcode($search_term)){
+				$search_type = "postcode";
+			}
+			
+			//check if partial postcode
+			if(is_partial_postcode($search_term)){
 				$search_type = "postcode";
 			}
 			

@@ -74,7 +74,7 @@
 			//make query string
 			$query_string = "f=get_population_density&lat=%s&lon=%s";
 			$query_string = sprintf($query_string, urlencode($long), urlencode($lat));
-			
+
 			//get result
 			$return = $this->make_call($this->base_url . $query_string);
 			

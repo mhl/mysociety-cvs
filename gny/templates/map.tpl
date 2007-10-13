@@ -24,6 +24,7 @@
 
     <fieldset>
         <input type="hidden" id="hidSaveMapData" value="0" />
+        <input type="hidden" id="hidMiniMap" value="{$mini_map}" />        
     </fieldset>
     <div id="divMap" style="width:400px; height:400px;"></div>
 

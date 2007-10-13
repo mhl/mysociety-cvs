@@ -15,6 +15,7 @@
                     <a href="{$url}/groups/{$group->url_id}">{$group->name}</a> -  <em>{$group->byline}</em>
                 </h4>
                 <p>{$group->description|substr:0:200|strip_tags} <a href="{$url}/groups/{$group->url_id}">read more...</a></p>
+                {include file="../templates/hcard.tpl"}
             </div>
         {/foreach}
     {else}

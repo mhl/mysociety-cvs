@@ -2,7 +2,8 @@
 <form action="{$form_action}" method="post">
     {include file="../templates/formvars.tpl"}
     <fieldset>
-        <input type="hidden" id="hidSaveMapData" value="1" />        
+        <input type="hidden" id="hidSaveMapData" value="1" />    
+        <input type="hidden" id="hidMiniMap" value="{$mini_map}" />
         <input type="hidden" id="hidLongBottomLeft" name="hidLongBottomLeft" value="{$group->long_bottom_left|escape:html}" />
         <input type="hidden" id="hidLatBottomLeft" name="hidLatBottomLeft" value="{$group->lat_bottom_left|escape:html}" />        
         <input type="hidden" id="hidLongTopRight" name="hidLongTopRight" value="{$group->long_top_right|escape:html}" />                    

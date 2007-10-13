@@ -34,6 +34,19 @@
 		return preg_match("/^(http(s?):\\/\\/|ftp:\\/\\/{1})((\w+\.)+)\w{2,}(\/?)$/i", $url);
 	}
 
+	function raw_urls_to_links($text){
+	
+		//replace strings with http etc
+		$return = preg_replace('/(\s|^)(http(s?):\\/\\/|ftp:\\/\\/{1})((\w+\.)+)\w{2,}(\/?)/i', '<a href="$0">$0</a>', 
+			$text); 
+			
+		$return = preg_replace('/(\s|^)((\w+\.)+)\w{2,}(\/?)/i', '<a href="http://$0">$0</a>', 
+			$return);	
+			
+		return $return;
+	
+	}
+
 	//is a postcode?
 	function is_postcode ($postcode) {
 		// See http://www.govtalk.gov.uk/gdsc/html/noframes/PostCode-2-1-Release.htm
@@ -58,6 +71,47 @@
 		} else {
 			return false;
 		}
+	}
+
+	//is a postcode?
+	function is_partial_postcode ($postcode) {
+		// See http://www.govtalk.gov.uk/gdsc/html/noframes/PostCode-2-1-Release.htm
+
+		$in  = 'ABDEFGHJLNPQRSTUWXYZ';
+		$fst = 'ABCDEFGHIJKLMNOPRSTUWYZ';
+		$sec = 'ABCDEFGHJKLMNOPQRSTUVWXY';
+		$thd = 'ABCDEFGHJKSTUW';
+		$fth = 'ABEHMNPRVWXY';
+		$num = '0123456789';
+		$nom = '0123456789';
+		$gap = '\s\.';	
+
+		if (	preg_match("/^[$fst][$num]$/i", $postcode) ||
+				preg_match("/^[$fst][$num][$num]$/i", $postcode) ||
+				preg_match("/^[$fst][$sec][$num]$/i", $postcode) ||
+				preg_match("/^[$fst][$sec][$num][$num]$/i", $postcode) ||
+				preg_match("/^[$fst][$num][$thd]$/i", $postcode) ||
+				preg_match("/^[$fst][$sec][$num]$/i", $postcode)
+			) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function pad_partial_postcode($partial_postcode){
+
+		$partial_postcode = strtolower($partial_postcode);
+		if($partial_postcode == "sw1" || $partial_postcode == "ec1"){
+			$return = $partial_postcode . "a 1aa";
+		}elseif($partial_postcode == "sw9"){
+			$return = $partial_postcode . "8jx";		
+		}else{
+			$return = $partial_postcode . " 1aa";
+		}
+				
+		return $return;
+		
 	}
 
 	//iszip code
@@ -127,7 +181,7 @@
 		$url = "http://geo.localsearchmaps.com/?zip={zip}&country={country}";
 		$url = str_replace('{zip}', urlencode($zip), $url);
 		$url = str_replace('{country}', urlencode($country), $url);
-error_log($url);
+
 		$data = safe_scrape_cached($url);
 		return process_emag_geocoder($data);
 	}
@@ -251,12 +305,9 @@ error_log($url);
 	}
 
 	//Redirect page to a URL
-	function redirect ($url, $exit_after_redirect = false){
-	
+	function redirect ($url){
 	    header("Location: $url");
-		if($exit_after_redirect == true){
-			exit;
-		}
+		exit;
 	}
 
 	//Throw 404
@@ -290,7 +341,6 @@ error_log($url);
 	
 		return $default;
 	}
-
 
 	/**
 	 * Take a string and make it utf8 if it isn't already (it should be though)
@@ -366,5 +416,9 @@ error_log($url);
 		var_dump($bla);
 		print '</pre>';
 	}
-
+	// Format a date to mysql format
+	function mysql_date($date){
+	    return date("Y-m-d H::i:s", $date);
+	}
+	
 ?>
