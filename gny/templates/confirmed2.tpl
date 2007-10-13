@@ -28,7 +28,7 @@ and thought you might be interested in adding your group?
 
 All the best
 
-{$group->created_name}
+{$name}
     {else}{$data.txtContactMessage}{/if}</textarea>
                     </li>
                 </ul>
