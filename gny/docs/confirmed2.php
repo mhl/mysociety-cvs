@@ -76,7 +76,18 @@ class confirmed2_page extends pagebase {
 		//show the page
 		if(!$this->viewstate['show_sent']){
 			$this->page_title = "Your group has been added!";
-			$this->set_focus_control = "txtEmails";			
+			$this->set_focus_control = "txtEmails";	
+			$name_split = explod(' ', $result[0]->created_name);
+			
+			//work out the name of the person
+			$name = '';
+			if(sizeof($name_split) > 0){
+				$name = $name_split[0];
+			}else{
+				$name = $result[0]->created_name;
+			}
+			$this->assign('name', $name);
+			
 		}else{
 			$this->page_title = "Your email has been sent";
 		}
@@ -161,7 +172,7 @@ class confirmed2_page extends pagebase {
 		$invalid_emails = false;
 		$title = "Mapping local online groups (" . SITE_NAME . ")";
 		foreach($emails as $email){
-
+		
 			send_text_email($email, $result[0]->created_name, $result[0]->created_email, $title, $this->data['txtContactMessage']);
 		
 		}
