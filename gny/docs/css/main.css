@@ -23,6 +23,11 @@ div.processheader {position:relative}
 #ulMenu li.selected {background: #0066ff url(../images/menuleft.png) bottom left no-repeat;}
 #ulMenu li.selected a {background:url(../images/menuright.png) bottom right no-repeat; color:white}
 
+/* Layout */
+div.contentleft, div.contentright {float:left;}
+div.contentleft {width:68%; padding: 0 1%;}
+div.contentright {width:28%;padding: 0 1%;}
+
 /* Search box */
 #frmSearchMain {text-align:center;}
 #divMainSearch {background:url(../images/searchbottom.png) no-repeat bottom left; width:542px; 
@@ -38,7 +43,7 @@ div.processheader {position:relative}
 	margin-top:2.2em;background:#fafafa;padding:2%;}
 #divFrontLeft {margin-right:1%;}	
 #divFrontRight {margin-left:3%;}
-#aGetStarted {font-size:1.3em;}	
+#aGetStarted, #aBrowseAll {font-size:1.3em;}	
 
 /* Location page */
 #frmSearchPlaceName #ddlCountry, #frmSearchAgain #ddlCountry {width:150px;}
@@ -61,9 +66,9 @@ div.attention {text-align:center; padding-top:1em;}
 div.attention h3 {font-size:2em;padding-bottom:0.3em;font-style:normal; color:#456FB1;}
 
 /* Warnings & errors*/
-#divWarning {background:#fdd9ea;font-size:0.9em;text-align:center; margin-bottom:1em;}
-input.error, textarea.error {background:#fdd9ea;}
-small.error {background:#fdd9ea;}
+#divWarning {background:#ff6f75;font-size:0.9em;text-align:center; margin-bottom:1em;}
+input.error, textarea.error {background:#ff6f75;}
+small.error {background:#ff6f75;}
 
 /* required information */
 small.required {background:#fafafa;padding:8px;}
@@ -79,7 +84,7 @@ small.required span {font-size:1.4em;position:relative; top:4px;}
 	position:relative;}
 #divMapSearch {text-align:center;width:100%;
 	z-index:100;background:#ffffaa;border-bottom:solid 1px #ccc;padding:5px 0;}
-#divMapSearch #txtSearchMap {width:310px;}	
+#divMapSearch #txtSearchMap {width:200px;}	
 #divMapWrapper #divMap {margin:0 auto;}
 #divMapInfo {padding-left:420px;}
 #imgMapLoading {display:none;padding:0 10px;}
@@ -119,9 +124,16 @@ div.searchresult p {margin:0;padding:0;}
 /* Contact */
 #txtContactMessage {width:400px; height:300px;}
 
+/* Owner contact form */
+#frmOwnerContact {width:600px;margin:0 auto;text-align:left;}
+#frmOwnerContact #txtEmails {width:250px;}
+#frmOwnerContact #txtContactMessage {width:400px; height:170px;}
+
 /* Attention grabbers */
 div.attention {text-align:center; padding-top:1em;}
 div.attention h3 {font-size:2em;padding-bottom:0.3em;font-style:normal; color:#456FB1;}
+ul.shout, p.shout {font-size:1.3em;}
+ul.shout {line-height:1.8em;}
 
 /* Preview */
 #divPreview #divGroup {border:solid 1px #5e5e5e;padding:10px;margin-top:1em;}
@@ -155,6 +167,13 @@ span.highlight {background:#ffffaa;}
 
 /* Shout */
 div.shout {text-align:center; font-size:1.5em;}
+
+/* A-Z index */
+dl.azindex dt {font-size:1.6em;clear:left;position:relative; top:1.2em;float:left;
+	color:#808080;}
+dl.azindex dd {border-bottom:dotted 1px #ccc;}
+dl.azindex ul {clear:left}
+dl.azindex li {min-width:32%;_min-width:32%;}
 
 /* Links */
 a {color:#0066ff;}

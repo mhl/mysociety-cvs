@@ -4,7 +4,8 @@
 	//to us it, just point your browser at it and specify a test_type
 	//e.g. http://localhost/gaze_test.php?test_type=ip
 
-	require_once('gaze.php');
+	require_once('../../includes/init.php');
+	require_once('../../includes/apis/gaze.php');
 
 
 	$test_type = $_GET['type'];

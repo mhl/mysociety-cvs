@@ -28,6 +28,9 @@ class addpreview_page extends pagebase {
 	//Bind
 	protected function bind() {
 
+		//convert any urls to links (we do this perminently on save)
+		$this->group->description = raw_urls_to_links($this->group->description);
+
 		//page vars
 	    $this->page_title = "preview your group";
 	    $this->menu_item = "add";	
@@ -35,7 +38,8 @@ class addpreview_page extends pagebase {
 	    $this->tracker_location = 5;			
 		$this->assign('group', $this->group);
 		$this->assign('preview', true);
-		
+		$this->assign('dead_links', true);		
+
 		$this->display_template();
 					
 	}
@@ -52,6 +56,9 @@ class addpreview_page extends pagebase {
 
 	//Process page
 	protected function process (){
+
+		//convert raw urls to links
+		$this->group->description = raw_urls_to_links($this->group->description);
 
 		//save data
 		$this->group->confirmed = 0;

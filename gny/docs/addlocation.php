@@ -72,7 +72,8 @@ class addlocation_page extends pagebase {
 		$this->assign('group', $this->group);
 		$this->assign('map_js', true);
 		$this->assign('google_maps_key', GOOGLE_MAPS_KEY);
-		$this->assign('country_code', $this->viewstate['country_code']);		
+		$this->assign('country_code', $this->viewstate['country_code']);	
+		$this->assign('mini_map', false);			
 		
 		$this->display_template();
 					
@@ -103,7 +104,7 @@ class addlocation_page extends pagebase {
 			$valid = false;
 		}
 		if($this->group->zoom_level < MAX_MAP_ZOOM){
-			$this->add_warning('The selected area for your group is too large. <strong>Please use the zoom tool to select a smaller area</strong>.');
+			$this->add_warning('The selected area for your group is too big. <strong>Please use the zoom tool to select a smaller area</strong>.');
 			$valid = false;
 		}
 		

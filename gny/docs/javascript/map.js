@@ -63,8 +63,13 @@ function addRectangle(){
 	oSouthWestPoint = oBounds.getSouthWest();
 	oNorthEastPoint = oBounds.getNorthEast();	
 
-	iWidthBuffer = ((oSouthWestPoint.x - oNorthEastPoint.x) * -1) * iBuffer_width;
-	iHeightBuffer = ((oSouthWestPoint.y - oNorthEastPoint.y) * -1) * iBuffer_height;	
+	if(get('hidMiniMap').value == 1){
+		iWidthBuffer = ((oSouthWestPoint.x - oNorthEastPoint.x) * -1) * iBuffer_width;
+		iHeightBuffer = ((oSouthWestPoint.y - oNorthEastPoint.y) * -1) * iBuffer_width;
+	}else{
+		iWidthBuffer = ((oSouthWestPoint.x - oNorthEastPoint.x) * -1) * iBuffer_width;
+		iHeightBuffer = ((oSouthWestPoint.y - oNorthEastPoint.y) * -1) * iBuffer_height;		
+	}	
 
 	iSouthWestY = oSouthWestPoint.y + iHeightBuffer;
 	iSouthWestX = oSouthWestPoint.x + iWidthBuffer;	
@@ -96,7 +101,7 @@ function addRectangle(){
 
 }
 
-function load(nCenterLong, nCenterLat, iZoom) {
+function load(nCenterLong, nCenterLat, iZoom, bFullMap) {
   if (GBrowserIsCompatible()) {
     map = new GMap2(document.getElementById("divMap"));
     map.addControl(new GLargeMapControl());

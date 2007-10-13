@@ -22,7 +22,7 @@ class faq_page extends pagebase {
 	    $this->page_title = "frequently asked questions";
 	    $this->menu_item = "faq";	
 	    $this->set_focus_control = "";
-	
+		$this->assign("team_email", CONTACT_EMAIL);
 		$this->display_template();
 					
 	}

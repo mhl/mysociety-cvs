@@ -26,13 +26,13 @@ class confirmed_page extends pagebase {
 
 		//try and get the group, check it is a contact by web type
 		$search = factory::create('search');
-		$result = $search->search_cached('confirmation', array(array('link_key', '=', $this->viewstate['link_key'])),1);
+		$result = $search->search('confirmation', array(array('link_key', '=', $this->viewstate['link_key'])),1);
 		$confirmation = null; 
 		if(sizeof($result) == 1){
 			$confirmation = $result[0];
 		}else{
 			throw_404();
-                }
+        }
 
 		//handle different confirmation types
 		if($confirmation->parent_table == 'contact_email'){
@@ -42,7 +42,7 @@ class confirmed_page extends pagebase {
 			$contact_email->get($confirmation->parent_id);
 			$contact_email->send();
 			$contact_email->delete();
-		
+
 			//show page
 	    	$this->page_title = "your email has been sent";					
 	    	$this->menu_item = "search";				
@@ -50,12 +50,17 @@ class confirmed_page extends pagebase {
 			$this->assign('text', "Hopefully someone from that group will contact you soon.");						
 			$this->assign('link', WWW_SERVER);
 			$this->assign('link_text', "Want to search for another group?");
-			
+
 			//Update the stats table
 			tableclass_stat::increment_stat("contactemail.confirmed.count");
-			
+
 		}elseif($confirmation->parent_table == 'groups'){
 
+			/* REDIRECT TO USE ALTERNATE CONFIRMED PAGE */
+			/* have left the code below incase we want to treat it as normal at a later date */
+			redirect(WWW_SERVER . "/confirmed2.php?q=" . $this->viewstate['link_key']);
+			
+			/*
 			//get the group
 			$group_id = $confirmation->parent_id;
 			$search = factory::create('search');
@@ -73,7 +78,10 @@ class confirmed_page extends pagebase {
 
 			//show the page
 	    	$this->page_title = "your group has been added";					
-	    	$this->menu_item = "add";				
+	    	$this->menu_item = "add";
+	    	$this->set_focus_control = "txtEmails";	
+
+			$this->assign('show_forward', true);			
 			$this->assign('title', "Your group has been added!");			
 			$this->assign('text', "We have set up an email group for people who organise groups like yours.");						
 			$this->assign('link', GROUP_ORGANISERS_GROUP_URL);
@@ -81,7 +89,7 @@ class confirmed_page extends pagebase {
 
 			//Update the stats table
 			tableclass_stat::increment_stat("group.confirmed.count");
-						
+			*/			
 		}else{
 			throw_404();						
 		}
@@ -95,6 +103,7 @@ class confirmed_page extends pagebase {
 	//Unbind
 	protected function unbind (){
 
+		
 		
 	}
 

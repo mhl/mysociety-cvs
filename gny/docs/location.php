@@ -20,6 +20,11 @@ class location_page extends pagebase {
 		$search_term = get_http_var('q');
 		if(isset($search_term) && $search_term != ''){
 			$this->search_term = get_http_var('q');
+			
+			//if the search term is a postcode or zip code, send tthe to the proper search page
+			if(is_postcode($this->search_term) || is_partial_postcode($this->search_term) || is_zipcode($this->search_term)){
+				redirect(WWW_SERVER . "/search/" . $this->search_term . "/");
+			}
 		}else{
 			throw_404(); // no search term, nothing to see here
 		}

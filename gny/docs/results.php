@@ -53,6 +53,7 @@ class results_page extends pagebase {
 			throw_404();
 		}
 		
+		
 		if($this->mode == 'postcode' || $this->mode == 'zipcode'|| $this->mode == 'longlat'){
 			//do the search
 			$group_search = factory::create('group_search');
@@ -68,7 +69,7 @@ class results_page extends pagebase {
 		$this->onloadscript = "";	
 	    $this->page_title = "Search results for " . $this->query_display_text;
 	    $this->menu_item = "search";	
-	    $this->set_focus_control = "";
+	    $this->set_focus_control = "txtSearch";
 		$this->rss_link = WWW_SERVER . "/rss.php?" . $_SERVER["QUERY_STRING"];
 			
 		$this->assign('groups', $groups);
