@@ -43,7 +43,7 @@
         <dd>
             {$site_name} is run by <a href="http://www.mysociety.org">mySociety.org</a>, a charity 
             which builds useful websites which give people simple, tangible benefits in the 
-            civic and community aspects of their lives. It was built and designed by 
+            civic and community aspects of their lives. It was built by 
             <a href="http://www.memespring.co.uk">Richard Pope</a>.
         </dd>
         <dt>I am a geek and want to know how this site works</dt>

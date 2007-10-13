@@ -14,7 +14,7 @@
                 {elseif  $country == 'GB'}
                     e.g. <em><a href="{$www_server}/search/sw98jx/">SW9 8JX</a></em> or <em><a href="{$www_server}/search/brixton/">Brixton</a></em>
                 {else}
-                    e.g. <em><a href="{$www_server}/search/berlin/">Berlin</a></em> or <em><a href="{$www_server}/search/gdansk/">Gdansk</a></em>
+                    e.g. <em><a href="{$www_server}/search/berlin/13.400,52.517/">Berlin</a></em> or <em><a href="{$www_server}/search/barcelona/2.183,41.383/">Barcelona</a></em>
                 {/if}
             </small>
         </div>
