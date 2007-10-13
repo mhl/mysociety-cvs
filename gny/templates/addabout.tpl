@@ -27,7 +27,7 @@
         </ul>    
          <small class="required"><span>*</span> = required information</small>
         <div class="buttons">
-            <input type="submit" value="Location >" />
+            <input type="submit" value="Area covered >" />
         </div>
     </form>
 {include file="../templates/footer.tpl"}        
