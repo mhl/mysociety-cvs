@@ -170,7 +170,7 @@ class confirmed2_page extends pagebase {
 	
 		$emails = explode(",", trim($this->data['txtEmails']));
 		$invalid_emails = false;
-		$title = "Mapping local online groups (" . SITE_NAME . ")";
+		$title = "Local online groups (" . SITE_NAME . ")";
 		foreach($emails as $email){
 		
 			send_text_email($email, $result[0]->created_name, $result[0]->created_email, $title, $this->data['txtContactMessage']);
