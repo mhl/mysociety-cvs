@@ -16,7 +16,7 @@
         		<dd>
         		    <ul class="nobullets collapse">
     		{/if}
-    		        
+
     		            <li>
     		                <a href="{$www_server}/groups/{$group->url_id}" title="{$group->byline}">{$group->name}</a>
     		            </li>
