@@ -6,7 +6,7 @@
 	// then does a geo lookup
 
 	require_once('../../includes/init.php');
-	require_once('group_search.php');	
+	require_once('group_search.php');
 
 	$search = trim(get_http_var('q'));
 	$result = false;
@@ -73,7 +73,7 @@
 				if($gaze_country_code != false && $gaze->status != 'service unavaliable'){
 					$country = $gaze_country_code;
 				}else{
-					//if no country then assume GB because we are being all patriotic					
+					//if no country then assume US
 					$country = 'GB';
 				}
 			}

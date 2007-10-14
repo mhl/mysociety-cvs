@@ -23,8 +23,7 @@
 <textarea id="txtContactMessage" name="txtContactMessage" {if $warn_txtContactMessage}class="error"{/if}>{if $data.txtContactMessage == ''}
 Hi,
 
-I've just added {$group->name} to {$www_server}, which is a website that helps people find local email lists, blogs and forums where they live,
-and thought you might be interested in adding your group?
+I've just added {$group->name} to {$www_server}, which is a website that helps people find local email lists, blogs and forums where they live, and thought you might be interested in adding your group?
 
 All the best
 

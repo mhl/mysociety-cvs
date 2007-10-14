@@ -1,7 +1,7 @@
 {include file="../templates/header.tpl"}
 
     {if $show_sent == false}
-        <h3>Report abuse</h3>
+        <h3>Contact {$site_name} about <em>{$group->name}</em></h3>
         <p>
             If you think that there is something wrong with the information on the page for <em><strong>{$group->name}</strong></em>,
             please use the form below to contact the {$site_name} team.

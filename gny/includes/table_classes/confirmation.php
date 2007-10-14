@@ -42,7 +42,9 @@ class tableclass_confirmation extends DB_DataObject {
         $smarty->compile_check = true;
         $smarty->template_dir = TEMPLATE_DIR;
 		$smarty->assign('text',$text);
-		$smarty->assign('url',$url);		
+		$smarty->assign('url',$url);
+		$smarty->assign('site_name', SITE_NAME);
+		$smarty->assign('team_email', CONTACT_EMAIL);
 
         $body = $smarty->fetch(TEMPLATE_DIR . '/emails/confirmation.tpl');
 

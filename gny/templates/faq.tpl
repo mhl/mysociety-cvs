@@ -20,7 +20,7 @@
             Click on the "join this group" link. If the group lets you join online then you'll get taken to their website.  
             If not, you can contact the group owner via this site.
         </dd>
-        <dt>I can find any groups near me, but would like to start one.</dt>
+        <dt>I can't find any groups near me, but would like to start one.</dt>
         <dd>
             There are lots of free tools on the internet to help you start an online group. 
             Companies like <a href="http://groups.yahoo.com/start">Yahoo</a> and 
@@ -46,6 +46,11 @@
             civic and community aspects of their lives. It was built by 
             <a href="http://www.memespring.co.uk">Richard Pope</a>.
         </dd>
+        <dt>There is something wrong / inappropriate about a group, how do I report it?</dt>
+        <dd>
+            Click on the "Something wrong with this group?" link at the bottom of the group's page. This will let you 
+            send us an email telling us what is up.
+        </dd>        
         <dt>I am a geek and want to know how this site works</dt>
         <dd>
             The site is built using <a href="http://www.php.net">php</a>, <a href="http://www.smarty.net">smarty</a>,

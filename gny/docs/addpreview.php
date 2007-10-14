@@ -72,7 +72,7 @@ class addpreview_page extends pagebase {
 			$confirmation = factory::create('confirmation');
 			$confirmation->send($this->group->created_email, 
 				EMAIL_PREFIX . "Confirm the group '" . $this->group->name . "'  on " . SITE_NAME,
-				"Click on the link below to confirm you want to " . $this->group->name . " to " . SITE_NAME . ":",
+				"Click on the link below to confirm you want to add " . $this->group->name . " to " . SITE_NAME . ":",
 				"groups", $this->group->group_id);
 		
 			//clear the session

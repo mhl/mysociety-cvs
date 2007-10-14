@@ -15,7 +15,7 @@
                 <input type="radio" class="radio" id="radInvolvedType_email" name="radInvolvedType" {if $group->involved_type == "email"}checked="checked"{/if} onclick="javascript:changeInvolvedType();" value="email"/>
                 <label for="radInvolvedType_email">Email for more information</label>        
                 <input type="text" class="textbox large{if $warn_txtInvolvedEmail} error{/if}" id="txtInvolvedEmail" name="txtInvolvedEmail" value="{$group->involved_email}" />
-                <small>people will be able to email this via the site, but won't be published</small>
+                <small>will not be published, but people will be able to contact you</small>
             </li>
         </ul>
     </div>

@@ -20,7 +20,7 @@ class addlocation_page extends pagebase {
 			$this->group = session_read('group');
 		}
 	}
-	
+
 	//setup
 	protected function setup (){
 
@@ -28,7 +28,7 @@ class addlocation_page extends pagebase {
 		$gaze = factory::create('gaze');
 		$this->viewstate['country_code'] = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
 		if($this->viewstate['country_code'] == false){
-			$this->viewstate['country_code'] = "US";
+			$this->viewstate['country_code'] = "GB";
 		}
 
 		//set the js for the map

@@ -22,7 +22,7 @@
             <li>
                 <label for="txtTags">Keywords for this group</label>
                 <input type="text" class="textbox large{if $warn_txtTags} error{/if}" id="txtTags" name="txtTags" value="{$group->tags}"  title="Add tags to help people find this group"/>
-                <small>e.g. <em>crime, environment, camden</em></small>
+                <small>e.g. <em>crime, environment, Camden</em></small>
             </li>
         </ul>    
          <small class="required"><span>*</span> = required information</small>
