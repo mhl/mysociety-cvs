@@ -25,7 +25,7 @@
     <ul class="nobullets">
         <li><a href="{$www_server}/faq/">Read our FAQ's</a></li>
         <li><a href="{$www_Server}">Search for a group</a></li>
-        <li><a href="mailto:{$team_email}">Contact us</a></li>        
+        <li><a href="mailto:team@{$domain}">Contact us</a></li>        
     </ul>
 </div>
 
