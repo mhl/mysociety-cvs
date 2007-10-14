@@ -5,7 +5,7 @@
 <p>
     {$site_name} data is available programmatically as <a href="http://georss.org/">GeoRSS</a> 
     feeds. These can be used in most web mapping APIs and desktop <acronym title="Geographic Information System">GIS</acronym> software like 
-    <a href="http://mapufactu re.com">mapufacture</a>, 
+    <a href="http://mapufacture.com">mapufacture</a>, 
     <a href="http://maps.google.com">Google Maps</a>, <a href="http://developer.yahoo.com/maps/georss/index.html">Yahoo maps</a> 
     and <a href="http://pipes.yahoo.com/">Yahoo Pipes</a>. 
     Details of the API are listed below.

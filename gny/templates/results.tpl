@@ -57,7 +57,7 @@
         	</div>
         </form>
     {/if}
-    
+
     <div id="divMeta">
         There {if $groups|@sizeof == 1}is{else}are{/if} currently <strong>{$groups|@sizeof}</strong> {if $groups|@sizeof == 1}group{else}groups{/if} near {$query_display_text}. 
         You can get updates of near new groups {$query_display_text} by subscribing to <a class="rss" href="{$rss_link}">this 
