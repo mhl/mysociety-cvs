@@ -57,6 +57,7 @@ abstract class pagebase {
         $this->smarty->assign("site_tag_line", SITE_TAG_LINE);                  
         $this->smarty->assign("root_dir", ROOT_DIR);        
         $this->smarty->assign("www_server", WWW_SERVER);
+        $this->smarty->assign("domain", DOMAIN);
 		$this->smarty->assign("secure_server", SECURE_SERVER);
         $this->smarty->assign("form_action", htmlspecialchars($_SERVER['PHP_SELF']) . '?' . $_SERVER["QUERY_STRING"]);
         $this->smarty->assign("onloadscript", $this->onloadscript);
