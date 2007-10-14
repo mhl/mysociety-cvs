@@ -32,8 +32,8 @@
         <div id="divFrontRight">
             <h3>Want to add a group?</h3>
             <p>
-                <strong>It's simple, just 3 steps</strong>. Tell us what the group does, what area it covers and how 
-                people near you can get involved.<br/>
+                <strong>It's simple, just 4 steps</strong>. Tell us what the group does, what area it covers and how 
+                people near you can get involved, then confirm the details.<br/>
                 <a id="aGetStarted" href="{$www_server}/add/about/">Get started &gt;&gt;</a>
             </p>
         </div>
