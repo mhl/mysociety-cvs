@@ -115,7 +115,7 @@ class confirmed2_page extends pagebase {
 		
 		//Emails
 		if($this->data['txtEmails'] == ''){
-			$this->add_warning('Please enter one or more valid email address');
+			$this->add_warning('Please enter one or more valid email address seperated by commas');
 			$this->add_warn_control('txtEmails');
 			$valid = false;
 		}else{
@@ -130,7 +130,7 @@ class confirmed2_page extends pagebase {
 			}
 			
 			if($invalid_emails){
-				$this->add_warning('One or more of the email addresses is invalid');
+				$this->add_warning('Please enter one or more valid email address seperated by commas');
 				$this->add_warn_control('txtEmails');
 				$valid = false;				
 			}
