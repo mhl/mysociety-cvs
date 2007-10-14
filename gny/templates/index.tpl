@@ -27,7 +27,7 @@
                     </li>
                 {/foreach}
             </ul>
-            <a id="aBrowseAll" href="{$www_server}/browse.php">Browse all groups &gt;&gt;</a>
+            <a id="aBrowseAll" href="{$www_server}/browse/">Browse all groups &gt;&gt;</a>
         </div>
         <div id="divFrontRight">
             <h3>Want to add a group?</h3>
