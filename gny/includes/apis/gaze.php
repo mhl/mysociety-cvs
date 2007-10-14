@@ -88,7 +88,7 @@
 
 			//make query string
 			$query_string = "f=get_radius_containing_population&lat=%s&lon=%s&number=%s&maximum=%s";
-			$query_string = sprintf($query_string, urlencode($long), urlencode($lat),
+			$query_string = sprintf($query_string, urlencode($lat), urlencode($long),
 				urlencode($number), urlencode($maximum));
 
 			//get result

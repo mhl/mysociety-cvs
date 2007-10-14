@@ -420,5 +420,17 @@
 	function mysql_date($date){
 	    return date("Y-m-d H::i:s", $date);
 	}
+
+	// very inacurate way of converting distance to a point on latitude	
+	function distance_to_latitude($distance_km){
+		$km_per_degree = 111;
+		return $latitude + ($distance_km / $km_per_degree);
+	}
+	
+	// very inacurate way of converting distance to a point on longitude
+	function distance_to_longitude($distance_km){
+		$km_per_degree = 111.321;
+		return $distance_km / $km_per_degree;
+	}
 	
 ?>

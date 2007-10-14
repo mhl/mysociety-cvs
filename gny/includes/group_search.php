@@ -65,9 +65,9 @@
 				tableclass_stat::increment_stat("search.type.longlat");				
 			}
 
-			//Do the search
+			//Do the search for groups directly covering this location
 			$search = factory::create('search');
-			$result = $search->search_cached('group', array(
+			$groups = $search->search_cached('group', array(
 				array('long_bottom_left', '<', $long),
 				array('long_top_right', '>', $long),
 				array('lat_bottom_left', '<', $lat),
@@ -78,11 +78,122 @@
 				array(array("zoom_level", 'DESC'))
 			);
 			
+			//Do another search with buffeering based on population density 
+			$gaze = factory::create('gaze');
+			$radius_km = $gaze->get_radius_containing_population($long, $lat, POPULATION_THRESHOLD, MAX_KM_DISTANCE_BUFFER);
+			
+			//if that worked, do the other search
+			if($radius_km && $gaze->status !='service unavaliable'){
+			
+				//work out the buffered long / lat values
+				$buffered_long = distance_to_longitude($radius_km);
+				$buffered_lat = distance_to_latitude($radius_km);
+
+				//make the bounding box
+				$buffered_bottom_left_long = $long - $buffered_long;
+				$buffered_bottom_left_lat = $lat - $buffered_lat;
+				$buffered_top_right_long = $long + $buffered_long;
+				$buffered_top_right_lat = $lat + $buffered_lat;
+
+				//do the buffered searches (THIS IS REALY INEFFICANT BUT PEAR DATA OBJECTS DONT DO MIXED AND/OR SEARCHES)
+				$groups_buffered = array();
+				$groups_buffered1 = $search->search_cached('group', array(
+					array('long_bottom_left', '>', $buffered_bottom_left_long),
+					array('long_bottom_left', '<', $buffered_top_right_long),
+					array('lat_bottom_left', '>', $buffered_bottom_left_lat),
+					array('lat_bottom_left', '<', $buffered_top_right_lat),
+					array('confirmed', '=', 1)				
+					),
+					'AND',
+					array(array("zoom_level", 'DESC'))
+				);
+
+				if($groups_buffered1){
+					foreach ($groups_buffered1 as $group_buffered1){
+						array_push($groups_buffered, $group_buffered1);
+					}
+				}
+				
+				$groups_buffered2 = $search->search_cached('group', array(
+					array('long_top_right', '<', $buffered_top_right_long),
+					array('long_top_right', '>', $buffered_top_right_long),
+					array('lat_top_right', '>', $buffered_bottom_left_lat),
+					array('lat_top_right', '<', $buffered_top_right_lat),
+					array('confirmed', '=', 1)				
+					),
+					'AND',
+					array(array("zoom_level", 'DESC'))
+				);
+				if($groups_buffered2){
+					foreach ($groups_buffered2 as $group_buffered2){
+						array_push($groups_buffered, $group_buffered2);
+					}
+				}
+				
+				$groups_buffered3 = $search->search_cached('group', array(
+					array('long_bottom_left' + $buffered_long, '>', $buffered_bottom_left_long),
+					array('long_bottom_left' + $buffered_long, '<', $buffered_top_right_long),
+					array('lat_bottom_left' + $buffered_lat, '>', $buffered_bottom_left_lat),
+					array('lat_bottom_left' + $buffered_lat, '<', $buffered_top_right_lat),
+					array('confirmed', '=', 1)				
+					),
+					'AND',
+					array(array("zoom_level", 'DESC'))
+				);
+				if($groups_buffered3){
+					foreach ($groups_buffered3 as $group_buffered3){
+						array_push($groups_buffered, $group_buffered3);
+					}
+				}
+				
+				$groups_buffered3 = $search->search_cached('group', array(
+					array('long_top_right' + $buffered_long, '>', $buffered_bottom_left_long),
+					array('long_top_right' + $buffered_long, '<', $buffered_top_right_long),
+					array('lat_top_right' + $buffered_lat, '>', $buffered_bottom_left_lat),
+					array('lat_top_right' + $buffered_lat, '<', $buffered_top_right_lat),
+					array('confirmed', '=', 1)				
+					),
+					'AND',
+					array(array("zoom_level", 'DESC'))
+				);
+				if($groups_buffered4){
+					foreach ($groups_buffered4 as $group_buffered4){
+						array_push($groups_buffered, $group_buffered4);
+					}
+				}
+
+				//if we have any buffered groups, add them in
+				if($groups_buffered){
+					foreach ($groups_buffered as $group_buffered){
+						array_push($groups, $group_buffered1);
+					}
+					
+					//remove any duplicates (again should really be in the database call)
+					$cleaned_groups = array();
+					foreach ($groups as $group){
+						$allready_added = false;
+						foreach ($cleaned_groups as $cleaned_group){
+							if($cleaned_group->group_id == $group->group_id){
+								$allready_added = true;
+							}
+						}
+						
+						if(!$allready_added){
+							array_push($cleaned_groups, $group);
+						}
+					}
+					
+					$groups = $cleaned_groups;
+					
+				}
+			
+			}
+			
 			//Update the stats table
 			tableclass_stat::increment_stat("search.count");
 			
 			//Return search result
-			return $result;
+			return $groups;
 			
 		}
 		

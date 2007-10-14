@@ -139,7 +139,7 @@ class confirmed2_page extends pagebase {
 
 		//Message
 		if($this->data['txtContactMessage'] == ''){
-			$this->add_warning('Please a message');
+			$this->add_warning('Please enter a message');
 			$this->add_warn_control('txtContactMessage');
 			$valid = false;
 		}		

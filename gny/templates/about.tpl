@@ -5,7 +5,7 @@
 
 <div class="contentleft">
     <p class="shout">
-        {$site_name} helps you find email lists, forums and community blogs near where you live. 
+        {$site_name} helps you find email lists, forums and community blogs where you live. 
     </p>
     <ul class="shout">
         <li>
