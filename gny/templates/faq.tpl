@@ -2,11 +2,11 @@
 
     <h3>Frequently asked questions</h3>
     <dl class="faq">
-        <dt>What does GroupsNearMe.com do?</dt>
+        <dt>What does {$site_name} do?</dt>
         <dd>
             If lets you find out about all those hidden email lists, forums and community blogs near where you live.
         </dd>
-        <dt>I am run a local email group, forum or blog and want to add it to GroupdsNearMe.com</dt>
+        <dt>I am run a local email group, forum or blog and want to add it to {$site_name}</dt>
         <dd>
             It's very easy. Tell us a bit about the group, the approximate area it covers and how people
             can get involved. <a href="{$www_server}/add/about/">Click here to get started</a>.
