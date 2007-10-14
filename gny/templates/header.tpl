@@ -26,7 +26,7 @@
 
 <body>
     <div id="divBeta">
-        This site is currently in beta (test) mode. We'd love to <a href="mailto:team@{$domain}">hear what you link about it!</a>
+        This site is currently in beta (test) mode. <a href="mailto:team@{$domain}">We'd love to hear what you link about it!</a>
     </div>
     <div id="divPage">
         <div id="divHeader">
