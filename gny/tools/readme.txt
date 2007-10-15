@@ -1,1 +1,1 @@
-this folder is for php functions that need to be run from tetheommand line
+This folder is for php scripts that need to be run from the coommand line.
