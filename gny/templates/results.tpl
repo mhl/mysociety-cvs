@@ -21,10 +21,8 @@
     {else}
         <h3 class="centerpage">Sorry, we couldn't find any groups for {if $place_name !=''}{$place_name}{else}that location{/if}</h3>
         
-        <h4>Never mind. Why not use PledgeBank to start one?</h4>
-        <p>
-    	    PledgeBank is a website that lets you say you will do something, but only if some other people will help you. You get your own web page and TXT number to help you gather support, plus you can print posters to promote your pledge.
-    	</p>
+        <h4><a href="{$www_server}/add/about/">Add an existing group for this location</a> or use PledgeBank.com to start a one</h4>
+        
     	
         <form id="frmPledge" accept-charset="utf-8" name="pledge" method="post" action="http://www.pledgebank.com/new">
 			<ul class="form nobullets">
@@ -56,6 +54,9 @@
         	    <input class="button" type="submit" name="tostep1" value="Continue on Pledgebank.com &gt;&gt;"></p>
         	</div>
         </form>
+        <p id="pPledgeBank">
+    	    PledgeBank is a website that lets you say you will do something, but only if some other people will help you. You get your own web page and TXT number to help you gather support, plus you can print posters to promote your pledge.
+    	</p>
     {/if}
 
     <div id="divMeta">

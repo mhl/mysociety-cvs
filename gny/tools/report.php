@@ -34,7 +34,7 @@
 	$smarty->assign("team_email", CONTACT_EMAIL);
    	
 	//render template
-	$body = $smarty->fetch(TEMPLATE_DIR . "/emails/confirmation.tpl"); 
+	$body = $smarty->fetch(TEMPLATE_DIR . "/emails/report.tpl"); 
 
 	//send email
 	$title = SITE_NAME . " stats (" . sizeof($groups) . " new groups in the past " . $days ." days)";

@@ -26,6 +26,7 @@ class addabout_page extends pagebase {
 
 	}
 
+
 	//Bind
 	protected function bind() {
 

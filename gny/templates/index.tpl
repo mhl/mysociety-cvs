@@ -14,7 +14,7 @@
                 {elseif  $country == 'GB'}
                     e.g. <em><a href="{$www_server}/search/sw98jx/">SW9 8JX</a></em> or <em><a href="{$www_server}/search/brixton/">Brixton</a></em>
                 {else}
-                    e.g. <em><a href="{$www_server}/search/berlin/13.400,52.517/">Berlin</a></em> or <em><a href="{$www_server}/search/barcelona/2.183,41.383/">Barcelona</a></em>
+                    e.g. <em><a href="{$www_server}/search/berlin/13.400,52.517">Berlin</a></em> or <em><a href="{$www_server}/search/barcelona/2.183,41.383">Barcelona</a></em>
                 {/if}
             </small>
         </div>
@@ -30,7 +30,7 @@
             <a id="aBrowseAll" href="{$www_server}/browse/">Browse all groups &gt;&gt;</a>
         </div>
         <div id="divFrontRight">
-            <h3>Want to add a group?</h3>
+            <h3>Add a group</h3>
             <p>
                 <strong>It's simple, just 4 steps</strong>. Tell us what the group does, what area it covers and how 
                 people near you can get involved, then confirm the details.<br/>
