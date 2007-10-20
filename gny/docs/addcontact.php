@@ -67,6 +67,7 @@ class addcontact_page extends pagebase {
 				$this->group->involved_link = "http://" . $this->group->involved_link;
 			}
 		}
+
 		$this->group->created_name = strip_tags($this->data['txtCreatedName']);				
 		$this->group->created_email = $this->data['txtCreatedEmail'];	
 					
