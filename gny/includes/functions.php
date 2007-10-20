@@ -15,7 +15,7 @@
     }
 
 	//Valid email address?
-    function valid_email ($string) {Unable to get locaiton for postcode
+    function valid_email ($string) {
         $valid = false;
     	if (!ereg('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+'.
     		'@'.
