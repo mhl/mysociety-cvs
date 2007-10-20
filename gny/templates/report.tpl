@@ -3,8 +3,8 @@
     {if $show_sent == false}
         <h3>Contact {$site_name} about <em>{$group->name}</em></h3>
         <p>
-            If you think that there is something wrong with the information on the page for <em><strong>{$group->name}</strong></em>,
-            please use the form below to contact the {$site_name} team.
+            If you would like to suggest a change to the page for <em><strong>{$group->name}</strong></em>, 
+            or want to report something inappropriate, please use the form below to contact the {$site_name} team.
         </p>
         <form id="frmReportAbuse" action="{$form_action}" method="post">
             {include file="../templates/formvars.tpl"}

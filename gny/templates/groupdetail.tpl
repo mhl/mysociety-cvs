@@ -35,7 +35,7 @@
         It has been tagged with the keywords <strong>{$group->tags}</strong>.
         This page was created by <strong>{$group->created_name} on {$group->created_date|date_format}</strong>. 
         {if !$dead_links}
-            <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Something wrong with this group?</a>
+            <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change to this group</a>
         {/if}
     </div>
 </div>
