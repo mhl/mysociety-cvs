@@ -33,12 +33,6 @@
     </div>
 
     <div id="divMeta">
-        You can 
-        {if !$dead_links}
-            <a href="javascript:popup_map('{$www_server}/map.php?url_id={$group->url_id|escape:url}');" title="View on a map (new window)">view the <em>approximate</em> area covered by this group on a map</a>.
-        {else}
-            <a href="#" title="link disabled for preview">view the <em>approximate</em> area covered by this group on a map</a>.
-        {/if}
         It has been tagged with the keywords <strong>{$group->tags}</strong>.
         This page was created by <strong>{$group->created_name} on {$group->created_date|date_format}</strong>. 
         {if !$dead_links}
