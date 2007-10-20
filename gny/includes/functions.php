@@ -153,8 +153,12 @@
 		$reg = array();
 		$postcode = trim($postcode);
 		preg_match('/^(.+?)([0-9][a-z]{2})$/',$postcode, $reg);
-	
-		$clean_postcode = trim($reg[1]) . ' ' . trim($reg[2]);
+
+		if(sizeof($reg) == 2){
+			$clean_postcode = trim($reg[1]) . ' ' . trim($reg[2]);
+		}else{
+			$clean_postcode = $postcode;
+		}
 		$clean_postcode = strtoupper($clean_postcode);
 	
 		return $clean_postcode;

@@ -18,10 +18,6 @@
 	if($search_type == 'postcode'){
 	
 		//UK postcode search
-		if(is_partial_postcode($search)){
-			$search = pad_partial_postcode($search);
-		}
-
 		$clean_postcode = clean_postcode($search);
 		$result = get_postcode_location($clean_postcode, 'UK');
 		$zoom_level = 14;

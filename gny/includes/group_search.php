@@ -20,10 +20,6 @@
 			if($this->search_type == 'postcode'){
 			
 				//if its a partial postcode, padd it
-				if(is_partial_postcode($search_term)){
-					$search_term = pad_partial_postcode($search_term);
-				}
-			
 				$clean_postcode = clean_postcode($search_term);
 				$longlat = get_postcode_location($clean_postcode, 'UK');
 
