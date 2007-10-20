@@ -35,7 +35,7 @@ class map_page extends pagebase {
 
 		//page vars
 		$this->onloadscript = 'load(' . $group->long_centroid . ', ' .
-		$group->lat_centroid .', ' . $group->zoom_level . ')';	
+		$group->lat_centroid .', ' . $group->zoom_level -1  . ')';	
 	    $this->page_title = "location of " . $group->name;
 		$this->assign('map_js', true);
 		$this->assign('mini_map', 1);		

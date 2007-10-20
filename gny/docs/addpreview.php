@@ -30,6 +30,7 @@ class addpreview_page extends pagebase {
 
 		//convert any urls to links (we do this perminently on save)
 		$this->group->description = raw_urls_to_links($this->group->description);
+		$this->group->created_date = mktime();
 
 		//page vars
 	    $this->page_title = "preview your group";
@@ -38,7 +39,14 @@ class addpreview_page extends pagebase {
 	    $this->tracker_location = 5;			
 		$this->assign('group', $this->group);
 		$this->assign('preview', true);
-		$this->assign('dead_links', true);		
+		$this->assign('dead_links', true);
+		$this->assign('map_js', true);
+		$this->assign('mini_map', 1);		
+		$this->assign('google_maps_key', GOOGLE_MAPS_KEY);
+		$this->onloadscript = 'load(' . $this->group->long_centroid . ', ' .
+		$this->group->lat_centroid .', ' . ($this->group->zoom_level -1) . ')';
+		
+	
 
 		$this->display_template();
 					

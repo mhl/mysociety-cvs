@@ -3,6 +3,9 @@ var map;
 var iBuffer_height = 0.1
 var iBuffer_width = 0.26
 
+var iBuffer_mini_height = 0.2
+var iBuffer_mini_width = 0.2
+
 // A Rectangle is a simple overlay that outlines a lat/lng bounds on the
 // map. It has a border of the given weight and color and can optionally
 // have a semi-transparent background color.
@@ -64,8 +67,8 @@ function addRectangle(){
 	oNorthEastPoint = oBounds.getNorthEast();	
 
 	if(get('hidMiniMap').value == 1){
-		iWidthBuffer = ((oSouthWestPoint.x - oNorthEastPoint.x) * -1) * iBuffer_width;
-		iHeightBuffer = ((oSouthWestPoint.y - oNorthEastPoint.y) * -1) * iBuffer_width;
+		iWidthBuffer = ((oSouthWestPoint.x - oNorthEastPoint.x) * -1) * iBuffer_mini_width;
+		iHeightBuffer = ((oSouthWestPoint.y - oNorthEastPoint.y) * -1) * iBuffer_mini_height;
 	}else{
 		iWidthBuffer = ((oSouthWestPoint.x - oNorthEastPoint.x) * -1) * iBuffer_width;
 		iHeightBuffer = ((oSouthWestPoint.y - oNorthEastPoint.y) * -1) * iBuffer_height;		
@@ -103,11 +106,16 @@ function addRectangle(){
 
 function load(nCenterLong, nCenterLat, iZoom, bFullMap) {
   if (GBrowserIsCompatible()) {
+
     map = new GMap2(document.getElementById("divMap"));
-    map.addControl(new GLargeMapControl());
     map.setCenter(new GLatLng(nCenterLat, nCenterLong), iZoom);
-	//map.setZoom();
-	
+
+	if(get('hidMiniMap').value == 0){
+	    map.addControl(new GLargeMapControl());
+	}else{
+		map.disableDragging();
+	}
+
 	//add default rectangle
 	addRectangle();
 	

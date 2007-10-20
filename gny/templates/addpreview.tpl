@@ -1,8 +1,12 @@
 {include file="../templates/header.tpl"}
 <form id="frmAddContact" action="{$form_action}" method="post">
     {include file="../templates/formvars.tpl"}
+    <fieldset>
+        <input type="hidden" id="hidSaveMapData" value="0" />
+        <input type="hidden" id="hidMiniMap" value="{$mini_map}" />        
+    </fieldset>
 
-    <h3>This is how the group will appear, review it then click confirm</h3>
+    <h3>This is how your group will appear, review it then click confirm</h3>
     {include file="../templates/groupdetail.tpl"}
     
     <p id="pEditGroup">

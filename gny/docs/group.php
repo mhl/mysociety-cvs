@@ -35,16 +35,22 @@ class group_page extends pagebase {
 		if(sizeof($result) != 1){
 			throw_404();			
 		}
+		
+		$group = $result[0];
 
 		//page vars
 		$this->onloadscript = "";	
-	    $this->page_title = "meet your neighbours";
+	    $this->page_title = $result[0]->name;
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "";
-		$this->assign('group', $result[0]);
+		$this->assign('group', $group);
 		$this->assign('show_return', strpos($this->viewstate['refering_url'], 'results.php') > -1);
 		$this->assign('refering_url', $this->viewstate['refering_url']);		
-
+		$this->assign('map_js', true);
+		$this->assign('mini_map', 1);		
+		$this->assign('google_maps_key', GOOGLE_MAPS_KEY);
+		$this->onloadscript = 'load(' . $group->long_centroid . ', ' .
+		$group->lat_centroid .', ' . $group->zoom_level . ')';
 		$this->display_template();
 					
 	}

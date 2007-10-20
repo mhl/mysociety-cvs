@@ -1,3 +1,7 @@
+<fieldset>
+    <input type="hidden" id="hidSaveMapData" value="0" />
+    <input type="hidden" id="hidMiniMap" value="{$mini_map}" />        
+</fieldset>
 <div id="divGroup" {if $preview == true}class="preview"{/if}>
     <div id="divGroupHeader">
         <h3>{$group->name}</h3>
@@ -23,6 +27,9 @@
 
     <div id="divDescription">
         {$group->description}
+        <div id="divMapMiniWrapper">
+            <div id="divMap"></div>
+        </div>
     </div>
 
     <div id="divMeta">
