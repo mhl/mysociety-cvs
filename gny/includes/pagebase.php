@@ -100,7 +100,7 @@ abstract class pagebase {
     	$template_folder = null;
         $this->smarty = new Smarty();
         $this->smarty->compile_dir = SMARTY_PATH;
-        $this->smarty->compile_check = DEVSITE;
+        $this->smarty->compile_check = true;
         $this->smarty->template_dir = TEMPLATE_DIR;
        
 		$this->smarty_template = $template_file;
