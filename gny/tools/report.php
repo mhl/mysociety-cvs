@@ -1,7 +1,7 @@
 #!/usr/bin/php5
 <?php
 
-	require_once('../includes/init.php');
+	require_once(dirname(__FILE__) .'../../includes/init.php');
 
 	$days = 7;
 	
