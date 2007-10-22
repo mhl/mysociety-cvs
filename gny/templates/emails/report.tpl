@@ -15,7 +15,7 @@ ALL TIME STATS:
 
 {foreach from=$stats item=stat}
 
-    {$stat->stat_key}:  {$stat->value}
+    {$stat->stat_key}:  {$stat->stat_value}
     
     
 {/foreach}

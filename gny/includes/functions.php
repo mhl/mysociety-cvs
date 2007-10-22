@@ -46,6 +46,19 @@
 		return $return;
 	
 	}
+	
+	function new_lines_to_paragraphs($text){
+	
+		$return = "";
+		$lines = explode("\n", $text);
+		foreach($lines as $line) {
+			if(trim($line) !=''){
+				$return .= "<p>" . trim($line) . "</p>";
+			}
+		}
+	
+		return $return;
+	}
 
 	//is a postcode?
 	function is_postcode ($postcode) {

@@ -28,8 +28,10 @@ class addpreview_page extends pagebase {
 	//Bind
 	protected function bind() {
 
-		//convert any urls to links (we do this perminently on save)
+		//convert any urls to links and add paragraphs (we do this perminently on save)
 		$this->group->description = raw_urls_to_links($this->group->description);
+		$this->group->description = new_lines_to_paragraphs($this->group->description);	
+
 		$this->group->created_date = mktime();
 
 		//page vars
@@ -67,7 +69,8 @@ class addpreview_page extends pagebase {
 
 		//convert raw urls to links
 		$this->group->description = raw_urls_to_links($this->group->description);
-
+		$this->group->description = new_lines_to_paragraphs($this->group->description);	
+		
 		//save data
 		$this->group->confirmed = 0;
 		$this->group->set_url_id();

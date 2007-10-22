@@ -43,7 +43,7 @@ class addabout_page extends pagebase {
 		$this->assign('group', $this->group);
 		
 		$this->display_template();
-					
+
 	}
 
 	//Unbind
