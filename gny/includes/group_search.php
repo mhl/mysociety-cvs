@@ -70,7 +70,8 @@
 				'AND',
 				array(array("zoom_level", 'DESC'))
 			);
-			
+		
+		/*	
 			//Do another search with buffeering based on population density 
 			$gaze = factory::create('gaze');
 			$radius_km = $gaze->get_radius_containing_population($long, $lat, POPULATION_THRESHOLD, MAX_KM_DISTANCE_BUFFER);
@@ -181,7 +182,7 @@
 				}
 			
 			}
-			
+		*/	
 			//Update the stats table
 			tableclass_stat::increment_stat("search.count");
 			
