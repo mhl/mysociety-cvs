@@ -31,7 +31,7 @@
 
 	//Valid URL?
 	function valid_url($url) {
-		return preg_match("/^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(:(\d+))?\//i", $url);
+		return preg_match("/^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(:(\d+))?/i", $url);
 	}
 
 	function raw_urls_to_links($text){

@@ -6,7 +6,7 @@
 		<description>{$site_tag_line}</description>
         {foreach name="groups" from="$groups" item="group"}
             <item>
-                <title>{$group->name} - {$group->byline}</title>
+                <title>New group! {$group->name} - {$group->byline}</title>
                 <pubDate>{$group->created_date|date_format:"%a, %e %b %Y"}</pubDate>                
                 <guid isPermaLink="true">{$www_server}/groups/{$group->url_id}/</guid>
                 <georss:featurename>{$group->name}</georss:featurename>
