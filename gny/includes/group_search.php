@@ -60,7 +60,7 @@
 
 			//Do the search for groups directly covering this location
 			$search = factory::create('search');
-			$groups = $search->search_cached('group', array(
+			$groups = $search->search('group', array(
 				array('long_bottom_left', '<', $long),
 				array('long_top_right', '>', $long),
 				array('lat_bottom_left', '<', $lat),
@@ -90,7 +90,7 @@
 
 				//do the buffered searches (THIS IS REALY INEFFICANT BUT PEAR DATA OBJECTS DONT DO MIXED AND/OR SEARCHES)
 				$groups_buffered = array();
-				$groups_buffered1 = $search->search_cached('group', array(
+				$groups_buffered1 = $search->search('group', array(
 					array('long_bottom_left', '>', $buffered_bottom_left_long),
 					array('long_bottom_left', '<', $buffered_top_right_long),
 					array('lat_bottom_left', '>', $buffered_bottom_left_lat),
@@ -107,7 +107,7 @@
 					}
 				}
 				
-				$groups_buffered2 = $search->search_cached('group', array(
+				$groups_buffered2 = $search->search('group', array(
 					array('long_top_right', '<', $buffered_top_right_long),
 					array('long_top_right', '>', $buffered_top_right_long),
 					array('lat_top_right', '>', $buffered_bottom_left_lat),
@@ -123,7 +123,7 @@
 					}
 				}
 				
-				$groups_buffered3 = $search->search_cached('group', array(
+				$groups_buffered3 = $search->search('group', array(
 					array('long_bottom_left' + $buffered_long, '>', $buffered_bottom_left_long),
 					array('long_bottom_left' + $buffered_long, '<', $buffered_top_right_long),
 					array('lat_bottom_left' + $buffered_lat, '>', $buffered_bottom_left_lat),
@@ -139,7 +139,7 @@
 					}
 				}
 				
-				$groups_buffered3 = $search->search_cached('group', array(
+				$groups_buffered3 = $search->search('group', array(
 					array('long_top_right' + $buffered_long, '>', $buffered_bottom_left_long),
 					array('long_top_right' + $buffered_long, '<', $buffered_top_right_long),
 					array('lat_top_right' + $buffered_lat, '>', $buffered_bottom_left_lat),
@@ -158,7 +158,7 @@
 				//if we have any buffered groups, add them in
 				if($groups_buffered){
 					foreach ($groups_buffered as $group_buffered){
-						array_push($groups, $group_buffered1);
+						array_push($groups, $group_buffered);
 					}
 					
 					//remove any duplicates (again should really be in the database call)
