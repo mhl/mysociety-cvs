@@ -27,7 +27,7 @@ class index_page extends pagebase {
 		$search = factory::create('search');
 		$groups = $search->search_cached('group', array(array('group_id', '>', 0), array('confirmed', '=', 1)),  
 			'AND',
-			array(array('created_date', 'DESC')),
+			array(array('group_id', 'DESC')),
 			3);
 
 		//page vars
