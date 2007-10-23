@@ -30,7 +30,8 @@ class group_page extends pagebase {
 
 		//try and get the group
 		$search = factory::create('search');
-		$result = $search->search_cached('group', array(array('url_id', '=', $this->viewstate['url_id'])));
+		$result = $search->search_cached('group', array(array('url_id', '=', $this->viewstate['url_id']),
+                array('confirmed', '=', 1)));
 	
 		if(sizeof($result) != 1){
 			throw_404();			
