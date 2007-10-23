@@ -25,7 +25,7 @@ class browse_page extends pagebase {
 	
 		$search = factory::create('search');
 		$groups = $search->search_cached('group', array(
-			array('group_id', '>', 0)),
+			array('group_id', '>', 1)),
 			'AND',
 			array(array("name", 'ASC')));
 		$this->assign("groups", $groups);
