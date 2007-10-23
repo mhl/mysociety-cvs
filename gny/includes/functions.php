@@ -330,6 +330,7 @@
 	//Throw 404
 	function throw_404(){
 		header("HTTP/1.0 404 Not Found");
+		include("the404.php");
 		exit;
 	}
 
