@@ -2,7 +2,7 @@
 
 	require_once('HTTP/Request.php');
 	require_once('cache.php');
-	require_once '../../phplib/mapit.php';
+	require_once 'mapit.php';
 	
 	//Send a text email
     function send_text_email($to, $from_name, $from_email, $subject, $body){
