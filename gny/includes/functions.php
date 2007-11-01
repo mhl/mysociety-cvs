@@ -162,7 +162,7 @@
 		$postcode = trim($postcode);
 		$postcode = preg_replace('/(\d[A-Z]{2})/', ' $1', $postcode);
 	
-		return $clean_postcode;
+		return $postcode;
 
 	}
 
