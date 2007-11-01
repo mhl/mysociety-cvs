@@ -2,6 +2,7 @@
 
 	require_once('HTTP/Request.php');
 	require_once('cache.php');
+	require_once '../../phplib/mapit.php';
 	
 	//Send a text email
     function send_text_email($to, $from_name, $from_email, $subject, $body){
@@ -89,22 +90,18 @@
 	//is a postcode?
 	function is_partial_postcode ($postcode) {
 		// See http://www.govtalk.gov.uk/gdsc/html/noframes/PostCode-2-1-Release.htm
-
-		$in  = 'ABDEFGHJLNPQRSTUWXYZ';
 		$fst = 'ABCDEFGHIJKLMNOPRSTUWYZ';
 		$sec = 'ABCDEFGHJKLMNOPQRSTUVWXY';
 		$thd = 'ABCDEFGHJKSTUW';
 		$fth = 'ABEHMNPRVWXY';
 		$num = '0123456789';
-		$nom = '0123456789';
-		$gap = '\s\.';	
 
 		if (	preg_match("/^[$fst][$num]$/i", $postcode) ||
 				preg_match("/^[$fst][$num][$num]$/i", $postcode) ||
 				preg_match("/^[$fst][$sec][$num]$/i", $postcode) ||
 				preg_match("/^[$fst][$sec][$num][$num]$/i", $postcode) ||
 				preg_match("/^[$fst][$num][$thd]$/i", $postcode) ||
-				preg_match("/^[$fst][$sec][$num]$/i", $postcode)
+				preg_match("/^[$fst][$sec][$num][$fth]$/i", $postcode)
 			) {
 			return true;
 		} else {
@@ -161,18 +158,9 @@
 	function clean_postcode ($postcode) {
 
 		$postcode = str_replace(' ','',$postcode);
-		$postcode = strtolower($postcode);
-
-		$reg = array();
+		$postcode = strtoupper($postcode);
 		$postcode = trim($postcode);
-		preg_match('/^(.+?)([0-9][a-z]{2})$/',$postcode, $reg);
-
-		if(sizeof($reg) == 2){
-			$clean_postcode = trim($reg[1]) . ' ' . trim($reg[2]);
-		}else{
-			$clean_postcode = $postcode;
-		}
-		$clean_postcode = strtoupper($clean_postcode);
+		$postcode = preg_replace('/(\d[A-Z]{2})/', ' $1', $postcode);
 	
 		return $clean_postcode;
 
@@ -195,12 +183,20 @@
 	//Get a location (uses a google maps proxy)
 	function get_postcode_location($zip, $country){
 
-		$url = "http://geo.localsearchmaps.com/?zip={zip}&country={country}";
-		$url = str_replace('{zip}', urlencode($zip), $url);
-		$url = str_replace('{country}', urlencode($country), $url);
+		if ($country == 'UK') {
+			$data = mapit_get_location($zip, is_partial_postcode($zip) ? 1 : 0);
+			return array(
+				0 => $data['wgs84_lon']+0,
+				1 => $data['wgs84_lat']+0
+			);
+		} else {
+			$url = "http://geo.localsearchmaps.com/?zip={zip}&country={country}";
+			$url = str_replace('{zip}', urlencode($zip), $url);
+			$url = str_replace('{country}', urlencode($country), $url);
 
-		$data = safe_scrape_cached($url);
-		return process_emag_geocoder($data);
+			$data = safe_scrape_cached($url);
+	 		return process_emag_geocoder($data);
+		}
 	}
 
 	//Get a location (uses a google maps proxy)
