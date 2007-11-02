@@ -48,8 +48,18 @@ class location_page extends pagebase {
 		//if we have a country and a search term, then we can do a search
 		if($this->gaze_down == false && $this->country_code != '' && $this->search_term != ''){
 
+			# XXX: Need to split off state name if given... :-/
+			# XXX: Display County if there's more than one result in a state
 			$places = $gaze->find_places($this->country_code, $this->search_term);
 			if($places){
+				function sort_places($a, $b) {
+					if ($a['score'] > $b['score']) return -1;
+					elseif ($a['score'] < $b['score']) return 1;
+					if ($a['state'] > $b['state']) return 1;
+					elseif ($a['state'] < $b['state']) return -1;
+					return 0;
+				}
+				usort($places, 'sort_places');
 				$this->places = $places;
 			}elseif($gaze->status == 'service unavaliable'){
 				$gaze_down  = true;
