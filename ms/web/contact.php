@@ -34,7 +34,8 @@ to keep in touch with other interested people.
   <address class="adr"><a href="http://www.mysociety.org/" class="url">mySociety.org</a>
   <br /><span class="street-address">12 Duke&rsquo;s Road</span>
   <br /><span class="locality">London</span>
-  <br /><span class="postal-code">WC1H 9AD</span></address>
+  <br /><span class="postal-code">WC1H 9AD</span>
+  <br /><span class="country-name">UK</span></address>
   (We don't actually work here, as we&rsquo;re one of those new fangled organisations
   where everyone works from home spread across the world. It&rsquo;s where our charity
   is registered.)
