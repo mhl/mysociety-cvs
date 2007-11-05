@@ -69,11 +69,15 @@ class addabout_page extends pagebase {
 			$this->add_warn_control('txtByline');
 			$valid = false;
 		}
+		
+		/*
+		removed this bit of validation as people couldent think what to write
 		if($this->group->description == ''){
 			$this->add_warning('Please enter some more information about your group e.g. size, purpose and aims"');
 			$this->add_warn_control('txtDescription');
 			$valid = false;
 		}
+		*/
 		
 		return $valid;
 	}

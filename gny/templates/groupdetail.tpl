@@ -29,6 +29,7 @@
         {$group->description}
         <div id="divMapMiniWrapper">
             <div id="divMap"></div>
+            <small>(approximate area for this group)</small>
         </div>
     </div>
 

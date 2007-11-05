@@ -14,7 +14,7 @@
                 <small>e.g. a residents email group for Woking, UK</small>
             </li>
             <li>
-                <label for="txtDescription">More information *</label>
+                <label for="txtDescription">More information</label>
                 <textarea class="textbox{if $warn_txtDescription} error{/if}" id="txtDescription" name="txtDescription">{$group->description}</textarea>
                 <br/>
                 <small id="smlDescriptionHint">Tell what your group does. Some <acronym title="html is web page code in case you were wondering">html</acronym> is ok (<acronym title="link to a web page">&lt;a&gt;</acronym>, <acronym title="italic text">&lt;em&gt;</acronym>, <acronym title="bold text">&lt;strong&gt;</acronym>).</small>
