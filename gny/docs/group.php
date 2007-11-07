@@ -44,7 +44,7 @@ class group_page extends pagebase {
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "";
 		$this->assign('group', $group);
-		$this->assign('show_return', strpos($this->viewstate['refering_url'], 'results.php') > -1);
+		$this->assign('show_return', strpos($this->viewstate['refering_url'], '/search/') > -1);
 		$this->assign('refering_url', $this->viewstate['refering_url']);		
 		$this->assign('map_js', true);
 		$this->assign('mini_map', 1);		
