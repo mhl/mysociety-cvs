@@ -18,6 +18,15 @@ class results_page extends pagebase {
 		if(isset($query) && $query != ''){
 			$this->query = get_http_var('q');
 			$this->mode = group_search::get_search_type($this->query);
+			
+			//if we are in placename mode, we need to send them to the gaze pge to verify they get the right place
+			if ($this->mode == 'placename') {
+				redirect('/location/' . urlencode($this->query));
+				exit;
+			} elseif ($_SERVER['SCRIPT_NAME'] == '/results.php') {
+				redirect('/search/' . urlencode($this->query));
+				exit;
+			}
 
 			//if a display version of the query has been passed in, use that
 			$query_display_text = get_http_var('t');
@@ -26,12 +35,6 @@ class results_page extends pagebase {
 				$this->place_name = $query_display_text;
 			}else{
 				$this->query_display_text = $this->query;
-			}
-			
-			//if we are in placename mode, we need to send them to the gaze pge to verify they get the right place
-			if($this->mode == 'placename'){
-				redirect("/location.php?q=" . urlencode($this->query));
-				exit;
 			}
 			
 		}else{
