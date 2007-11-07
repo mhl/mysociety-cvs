@@ -12,7 +12,7 @@
                     <li>
                         <a href="{$www_server}/search/{$place.name|escape:url|lower}/{$place.longitude|string_format:'%.3f'},{$place.latitude|string_format:'%.3f'}">
                             {$place.name}{if $place.state !=''} ({$place.state}){/if}{if $place.near != ''} (near {$place.near}){/if}</a>
-                        <small>(<a target="_blank" href="http://maps.google.com/maps?ll={$place.latitude},{$place.longitude}&amp;z=12" class="quiet">check on map (new window)</a>)</small>
+                        <small>(<a target="_blank" href="http://maps.google.com/maps?ll={$place.latitude},{$place.longitude}&amp;z=12" class="quiet">check on map, new window</a>)</small>
                     </li>
                 {/foreach}
             </ul>

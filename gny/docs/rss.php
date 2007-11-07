@@ -69,10 +69,11 @@ class rss_page extends pagebase {
 	    $this->menu_item = "search";
 		$this->assign('groups', $groups);
 		$this->assign('query', $this->query);
-		$this->assign('search_link', WWW_SERVER . "/results.php" . $_SERVER["QUERY_STRING"]);
+		$this->assign('search_link', WWW_SERVER . '/search/' . $_SERVER["QUERY_STRING"]);
 		$this->assign('query_display_text', $this->query_display_text);
 		$this->assign('place_name', $this->place_name);		
 		
+		header('Content-Type: application/xml; charset=utf-8');
 		$this->display_template();
 		
 	}
