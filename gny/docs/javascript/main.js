@@ -12,7 +12,7 @@ function changeInvolvedType(){
 	}
 }
 
-function popup_map(sUrl){
-	document.open(sUrl,'name', 'width=400,height=400');
+function popup_map(link){
+	document.open(link.href, 'name', 'width=400,height=400');
 }
 
