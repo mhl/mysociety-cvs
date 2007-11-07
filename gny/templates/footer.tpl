@@ -21,7 +21,7 @@
     </script>
     <script type="text/javascript">
         _uacct = "UA-321882-11";
-        urchinTracker();
+        if (typeof urchinTracker == 'function') urchinTracker();
     </script>
 </body>
 </html>

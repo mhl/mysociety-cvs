@@ -142,8 +142,8 @@ function searchMap(){
 		get('btnMapSearch').style.display = "none";
 		get('imgMapLoading').style.display = "inline";
 		
-		var geocoder = new GClientGeocoder();
-		geocoder.getLatLng(sSearch, searchmapCallback);
+		sPost = "q=" + sSearch;
+		var oAjax = new Ajax.Request("/ajax/mapsearch.php", {method: 'post',  postBody: sPost,  onComplete: searchmapCallback});
 	}else{
 		showWarning('Please enter a location');
 		setControlWarning(get('txtSearchMap'), true);		
@@ -157,8 +157,9 @@ function searchmapCallback(oResponse){
 	get('btnMapSearch').style.display = "inline";
 	get('imgMapLoading').style.display = "none";
 	
-	if (oResponse) {
-		map.setCenter(oResponse, 13);
+	var oResult = eval('(' + oResponse.responseText + ')');
+	if (oResponse != false) {
+		map.setCenter(new GLatLng(oResult['location'][1], oResult['location'][0]),oResult['zoom']);
 	}else{
 		showWarning('Sorry, we couldent find any results for <em>' + get('txtSearchMap').value + '</em>');
 		setControlWarning(get('txtSearchMap'), true);
