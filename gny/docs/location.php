@@ -41,7 +41,7 @@ class location_page extends pagebase {
 			if($country_code){
 				$this->country_code = $country_code;
 			}elseif($gaze->status == 'service unavaliable'){
-				$gaze_down  = true;
+				$this->gaze_down  = true;
 			}
 		}
 
@@ -62,7 +62,7 @@ class location_page extends pagebase {
 				usort($places, 'sort_places');
 				$this->places = $places;
 			}elseif($gaze->status == 'service unavaliable'){
-				$gaze_down  = true;
+				$this->gaze_down  = true;
 			}
 			
 		}	

@@ -112,6 +112,7 @@ function load(nCenterLong, nCenterLat, iZoom, bFullMap) {
 
 	if(get('hidMiniMap').value == 0){
 	    map.addControl(new GLargeMapControl());
+	    map.addControl(new GMapTypeControl());
 	}else{
 		map.disableDragging();
 	}
