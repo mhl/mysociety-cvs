@@ -217,7 +217,10 @@
 			$parts['state'] = strtoupper($last);
 			$parts['country'] = 'US';
 			array_pop($s);
+		} elseif (strtolower($last) == 'us') {
+			$parts['country'] = 'US'; # XXX: Yucky, but not sure best way to deal with this
 		}
+
 		$last = trim(end($s));
 		if ($parts['country'] && isset($countries_name_to_statecode[$parts['country']][strtolower($last)])) {
 			$parts['state'] = $countries_name_to_statecode[$parts['country']][strtolower($last)];
