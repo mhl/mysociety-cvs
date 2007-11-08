@@ -2,7 +2,7 @@
     <form id="frmSearchPage" action="{$www_server}/results.php" method="post">
         {include file="../templates/formvars.tpl"}
         <fieldset>
-            <input type="textbox" class="textbox" id="txtSearch" name="q" value="{$query_display_text}"/>
+            <input type="textbox" class="textbox" id="txtSearch" name="q" value="{$query_display_text|escape:html}"/>
             <input type="submit" class="button" value="Go" />
         </fieldset>
     </form>
@@ -19,7 +19,7 @@
             </div>
         {/foreach}
     {else}
-        <h3 class="centerpage">Sorry, we couldn't find any groups for {if $place_name !=''}{$place_name}{else}that location{/if}</h3>
+        <h3 class="centerpage">Sorry, we couldn't find any groups for {if $place_name !=''}{$place_name|escape:html}{else}that location{/if}</h3>
         
         <h4><a href="{$www_server}/add/about/">Add an existing group for this location</a> or use PledgeBank.com to start a one</h4>
         
@@ -60,8 +60,8 @@
     {/if}
 
     <div id="divMeta">
-        There {if $groups|@sizeof == 1}is{else}are{/if} currently <strong>{$groups|@sizeof}</strong> {if $groups|@sizeof == 1}group{else}groups{/if} near {$query_display_text}. 
-        You can get updates of new groups near {$query_display_text} by subscribing to <a class="rss" href="{$rss_link}">this 
+        There {if $groups|@sizeof == 1}is{else}are{/if} currently <strong>{$groups|@sizeof}</strong> {if $groups|@sizeof == 1}group{else}groups{/if} near {$query_display_text|escape:html}. 
+        You can get updates of new groups near {$query_display_text|escape:html} by subscribing to <a class="rss" href="{$rss_link}">this 
         <acronym title="Really simple syndication">rss</acronym> feed</a> or view the areas covered by 
         groups on this page <a href="http://maps.google.com/maps?f=q&hl=en&q={$rss_link}&layer=&ie=UTF8&z=13&om=1">on a map</a>. You can permanently link to this page <a href="{$current_url}">here</a>.
     </div>

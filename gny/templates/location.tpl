@@ -10,7 +10,7 @@
             <ul class="nobullets">
                 {foreach name="places" from="$places" item="place"}
                     <li>
-                        <a href="{$www_server}/search/{$place.name|escape:url|lower}/{$place.longitude|string_format:'%.3f'},{$place.latitude|string_format:'%.3f'}">{$place.pretty_name}</a>
+                        <a href="{$www_server}/search/{$place.pretty_name|escape:url|lower}/{$place.longitude|string_format:'%.3f'},{$place.latitude|string_format:'%.3f'}">{$place.pretty_name}</a>
                     </li>
                 {/foreach}
             </ul>
@@ -20,7 +20,7 @@
                 {include file="../templates/formvars.tpl"}
                 <fieldset>
                     <label for="txtSearch">Change location?</label>
-                    <input type="textbox" class="textbox" id="txtSearch" name="q" value="{$search_term}"/>
+                    <input type="textbox" class="textbox" id="txtSearch" name="q" value="{$search_term|escape:html}"/>
                     <select id="ddlCountry" name="country_code">
                         {foreach name="countries" from="$countries" item="country"}                
                             <option value="{$country->iso}"{if $country_code == $country->iso}selected="selected"{/if}>
@@ -34,12 +34,12 @@
         {else}
             {* No places found *}
             <div class="attention">
-                <h3>Sorry, we couldn't find anywhere called {$search_term}</h3>
+                <h3>Sorry, we couldn't find anywhere called {$search_term|escape:html}</h3>
                 <form id="frmSearchAgain" action="{$form_action}" method="post">
                     {include file="../templates/formvars.tpl"}
                     <fieldset>
                         <label for="txtSearch">Try another place name?</label>
-                        <input type="textbox" class="textbox" id="txtSearch" name="q" value="{$search_term}"/>
+                        <input type="textbox" class="textbox" id="txtSearch" name="q" value="{$search_term|escape:html}"/>
                         <select id="ddlCountry" name="country_code">
                             {foreach name="countries" from="$countries" item="country"}                
                                 <option value="{$country->iso}"{if $country_code == $country->iso}selected="selected"{/if}>
@@ -59,7 +59,7 @@
             <form id="frmSearchPlace" action="{$form_action}" method="post">
                 {include file="../templates/formvars.tpl"}
                 <fieldset>
-                    <input type="hidden" name="q" value="{$search_term}"/>
+                    <input type="hidden" name="q" value="{$search_term|escape:html}"/>
                     <select id="ddlCountry" name="country_code">
                             <option></option>
                         {foreach name="countries" from="$countries" item="country"}                
