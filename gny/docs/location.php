@@ -71,9 +71,18 @@ class location_page extends pagebase {
 				}
 
 				$statecounts = array();
-				foreach ($places as $p) {
+				foreach ($places as $k => $p) {
 					$name = $p['name'];
 					$state = $p['state'];
+					$match_name = strtolower($name) == strtolower($parts['place']);
+					$match = $match_name;
+					if ($parts['state']) {
+					    $match_state = strtolower($state) == strtolower($parts['state']);
+					    $match &= $match_state;
+					}
+					if ($match) {
+					    $places[$k]['score'] += 1000; # XXX
+					}
 					if (!isset($statecounts[$state])) $statecounts[$state] = array();
 					if (!isset($statecounts[$state][$name])) $statecounts[$state][$name] = 0;
 					if ($state)
