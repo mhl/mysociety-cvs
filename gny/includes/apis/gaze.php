@@ -20,6 +20,7 @@
 				$ip_country = $_SERVER['HTTP_X_GEOIP_COUNTRY'];
 				if ($ip_country != 'none')
 					return $ip_country;
+			}
 	
 			return $this->make_call($this->base_url . "f=get_country_from_ip&ip=" . urlencode($ip));
 	
