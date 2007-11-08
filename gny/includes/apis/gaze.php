@@ -143,6 +143,7 @@
 							$key = strtolower($key);
 							$place[$key] = str_replace('"', '', $place_explode[$ii]);
 						}
+						$place['country'] = $country_code;
 					
 						//add to palces array
 						array_push($places, $place);
