@@ -209,16 +209,21 @@
 		if (isset($countries_name_to_code[$last])) {
 			$parts['country'] = $last;
 			array_pop($s);
-		} elseif (isset($countries_name_to_statecode['US'][strtolower($last)])
-		    || isset($countries_statecode_to_name['US'][strtoupper($last)])) {
-			$parts['state'] = $last;
+		} elseif (isset($countries_name_to_statecode['US'][strtolower($last)])) {
+			$parts['state'] = $countries_name_to_statecode['US'][strtolower($last)];
+			$parts['country'] = 'US';
+			array_pop($s);
+		} elseif (isset($countries_statecode_to_name['US'][strtoupper($last)])) {
+			$parts['state'] = strtoupper($last);
 			$parts['country'] = 'US';
 			array_pop($s);
 		}
 		$last = trim(end($s));
-		if ($parts['country'] && isset($countries_name_to_statecode[$parts['country']][strtolower($last)])
-		    || isset($countries_statecode_to_name[$parts['country']][strtoupper($last)])) {
-			$parts['state'] = $last;
+		if ($parts['country'] && isset($countries_name_to_statecode[$parts['country']][strtolower($last)])) {
+			$parts['state'] = $countries_name_to_statecode[$parts['country']][strtolower($last)];
+			array_pop($s);
+		} elseif (isset($countries_statecode_to_name[$parts['country']][strtoupper($last)])) {
+			$parts['state'] = strtoupper($last);
 			array_pop($s);
 		}
 		if (count($s) >= 2) {
