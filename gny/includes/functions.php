@@ -207,7 +207,7 @@
 		$parts = array();
 		$last = trim(end($s));
 		if (isset($countries_name_to_code[strtolower($last)])) {
-			$parts['country'] = $last;
+			$parts['country'] = $countries_name_to_code[strtolower($last)];
 			array_pop($s);
 		} elseif (isset($countries_name_to_statecode['US'][strtolower($last)])) {
 			$parts['state'] = $countries_name_to_statecode['US'][strtolower($last)];
