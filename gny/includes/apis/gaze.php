@@ -12,7 +12,14 @@
 		
 	
 		//Get country from IP (returns a country code)
+		// Uses Squid-added accelerator header if it's present,
+		// rather than call out to Gaze
 		public function get_country_from_ip($ip){
+
+			if (array_key_exists('HTTP_X_GEOIP_COUNTRY', $_SERVER)) {
+				$ip_country = $_SERVER['HTTP_X_GEOIP_COUNTRY'];
+				if ($ip_country != 'none')
+					return $ip_country;
 	
 			return $this->make_call($this->base_url . "f=get_country_from_ip&ip=" . urlencode($ip));
 	
