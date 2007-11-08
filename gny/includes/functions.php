@@ -217,8 +217,11 @@
 			$parts['state'] = strtoupper($last);
 			$parts['country'] = 'US';
 			array_pop($s);
-		} elseif (strtolower($last) == 'us') {
-			$parts['country'] = 'US'; # XXX: Yucky, but not sure best way to deal with this
+		} elseif (isset($countries_code_to_name[strtoupper($last)])) {
+			$parts['country'] = strtoupper($last);
+			array_pop($s);
+		} elseif (strtoupper($last) == 'UK') {
+			$parts['country'] = 'GB';
 			array_pop($s);
 		}
 
@@ -226,10 +229,11 @@
 		if ($parts['country'] && isset($countries_name_to_statecode[$parts['country']][strtolower($last)])) {
 			$parts['state'] = $countries_name_to_statecode[$parts['country']][strtolower($last)];
 			array_pop($s);
-		} elseif (isset($countries_statecode_to_name[$parts['country']][strtoupper($last)])) {
+		} elseif ($parts['country'] && isset($countries_statecode_to_name[$parts['country']][strtoupper($last)])) {
 			$parts['state'] = strtoupper($last);
 			array_pop($s);
 		}
+
 		if (count($s) >= 2) {
 			$parts['street'] = trim($s[0]);
 			$parts['place'] = trim($s[1]);

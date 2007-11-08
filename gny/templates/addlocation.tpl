@@ -26,7 +26,7 @@
                     {if $country_code == 'US'}
                         e.g. <em>94105</em> or <em>San Francisco</em> or <em>London, UK</em>
                     {elseif  $country_code == 'GB'}
-                        e.g. <em>SW9 8JX</em> or <em>Manchester</em> or <em>San Francisco, USA</em>
+                        e.g. <em>SW9 8JX</em> or <em>Manchester</em> or <em>San Francisco, US</em>
                     {else}
                         e.g. <em>Paris, France</em> or <em>Sydney, Australia</em>
                     {/if}
