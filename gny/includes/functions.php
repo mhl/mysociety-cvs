@@ -4,6 +4,7 @@
     require_once('cache.php');
     require_once 'mapit.php';
     require_once 'evel.php';
+    require_once 'countries.php';
 	
     //Send a text email
     function send_text_email($to, $from_name, $from_email, $subject, $body){
@@ -199,16 +200,41 @@
 		}
 	}
 
+	/* Given a search string, try and coax out the country, state, etc. */
+	function get_place_parts($s) {
+		global $countries_name_to_code, $countries_code_to_name, $countries_name_to_statecode, $countries_statecode_to_name;
+		$s = explode(',', $s);
+		$parts = array();
+		$last = trim(end($s));
+		if (isset($countries_name_to_code[$last])) {
+			$parts['country'] = $last;
+			array_pop($s);
+		} elseif (isset($countries_name_to_statecode[$last])) {
+			$parts['state'] = $last;
+			array_pop($s);
+		}
+		$last = trim(end($s));
+		if (isset($countries_name_to_statecode[$last])) {
+			$parts['state'] = $last;
+			array_pop($s);
+		}
+		if (count($s) >= 2) {
+			$parts['street'] = trim($s[0]);
+			$parts['place'] = trim($s[1]);
+		} elseif (count($s)) {
+			$parts['place'] = trim($s[0]);
+		}
+		return $parts;
+	}
+
 	//Get a location (uses a google maps proxy)
-	function get_place_location($place, $country, $street = null){		
+	function get_place_location($parts) {
 
 		//try the city search (for outside the us)
-		$url = "http://geo.localsearchmaps.com/?city={place}&country={country}";
-		$url = str_replace('{place}', urlencode($place), $url);
-		$url = str_replace('{country}', urlencode($country), $url);
-		if(isset($street)){
-			$url .= "&street=" . urlencode($street);
-		}
+		$url = 'http://geo.localsearchmaps.com/?country=' . urlencode($parts['country']);
+		if (isset($parts['state'])) $url .= '&state=' . urlencode($parts['state']);
+		if (isset($parts['place'])) $url .= '&city=' . urlencode($parts['place']);
+		if (isset($parts['street'])) $url .= '&street=' . urlencode($parts['street']);
 
 		//TODO: implement the US location search
 		//http://geo.localsearchmaps.com/?loc=1600+Amphitheatre+Parkway,+Mountai n+View+CA++94043

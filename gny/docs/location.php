@@ -36,6 +36,8 @@ class location_page extends pagebase {
 			$this->country_code = $country_code;
 		}
 
+		# XXX: If country given in search term, use that!
+
 		//if no country code, do an IP lookup
 		if($this->country_code == ''){
 			$country_code = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
