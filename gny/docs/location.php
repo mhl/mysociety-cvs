@@ -1,5 +1,6 @@
 <?php
 require_once('../includes/init.php');
+require_once 'countries.php';
 
 class location_page extends pagebase {
 
@@ -32,7 +33,7 @@ class location_page extends pagebase {
 		//get country code
 		$country_code = get_http_var('country_code');		
 		if(isset($country_code) && $country_code != ''){
-			$this->country_code = get_http_var('country_code');
+			$this->country_code = $country_code;
 		}
 
 		//if no country code, do an IP lookup
@@ -59,7 +60,34 @@ class location_page extends pagebase {
 					elseif ($a['state'] < $b['state']) return -1;
 					return 0;
 				}
+
+				$statecounts = array();
+				foreach ($places as $p) {
+					$name = $p['name'];
+					$state = $p['state'];
+					if (!isset($statecounts[$state])) $statecounts[$state] = array();
+					if (!isset($statecounts[$state][$name)) $statecounts[$state][$name] = 0;
+					if ($state)
+						$statecounts[$state][$name]++;
+				}
 				usort($places, 'sort_places');
+				global $countries_statecode_to_name;
+				foreach ($places as $k => $p) {
+					$desc = $p['name'];
+					if ($p['in'] && (!$p['state'] || $statecounts[$p['state']][$p['name']]>1))
+						$desc .= ", $p[in]";
+					if ($p['state']) {
+						$desc .= ', ';
+						if (isset($countries_statecode_to_name[$p['country']][$p['state']])) {
+							$desc .= $countries_statecode_to_name[$p['country']][$p['state']];
+						} else {
+							$desc .= $p['state'];
+						}
+					}
+					if ($p['near'])
+						$desc .= " (near $p[near])";
+					$places[$k]['pretty_name'] = $desc;
+				}
 				$this->places = $places;
 			}elseif($gaze->status == 'service unavaliable'){
 				$this->gaze_down  = true;
