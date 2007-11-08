@@ -66,7 +66,7 @@ class location_page extends pagebase {
 					$name = $p['name'];
 					$state = $p['state'];
 					if (!isset($statecounts[$state])) $statecounts[$state] = array();
-					if (!isset($statecounts[$state][$name)) $statecounts[$state][$name] = 0;
+					if (!isset($statecounts[$state][$name])) $statecounts[$state][$name] = 0;
 					if ($state)
 						$statecounts[$state][$name]++;
 				}
