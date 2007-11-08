@@ -209,12 +209,12 @@
 		if (isset($countries_name_to_code[$last])) {
 			$parts['country'] = $last;
 			array_pop($s);
-		} elseif (isset($countries_name_to_statecode[$last])) {
+		} elseif (isset($countries_name_to_statecode[strtolower($last)])) {
 			$parts['state'] = $last;
 			array_pop($s);
 		}
 		$last = trim(end($s));
-		if (isset($countries_name_to_statecode[$last])) {
+		if (isset($countries_name_to_statecode[strtolower($last)])) {
 			$parts['state'] = $last;
 			array_pop($s);
 		}
