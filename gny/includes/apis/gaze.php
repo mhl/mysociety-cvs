@@ -129,7 +129,7 @@
 				
 				if(sizeof($explode) > 1){
 					//titles are in the first line of the array
-					$titles = explode('",', $explode[0]);
+					$titles = explode('",', trim($explode[0]));
 
 					//get any results
 					$places = array();
