@@ -219,6 +219,7 @@
 			array_pop($s);
 		} elseif (strtolower($last) == 'us') {
 			$parts['country'] = 'US'; # XXX: Yucky, but not sure best way to deal with this
+			array_pop($s);
 		}
 
 		$last = trim(end($s));
