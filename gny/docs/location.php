@@ -36,7 +36,9 @@ class location_page extends pagebase {
 			$this->country_code = $country_code;
 		}
 
-		# XXX: If country given in search term, use that!
+		$parts = get_place_parts($this->search_term);
+		if ($parts['country'])
+			$this->country_code = $parts['country'];
 
 		//if no country code, do an IP lookup
 		if($this->country_code == ''){
@@ -53,7 +55,12 @@ class location_page extends pagebase {
 
 			# XXX: Need to split off state name if given... :-/
 			# XXX: Display County if there's more than one result in a state
-			$places = $gaze->find_places($this->country_code, $this->search_term);
+			if ($parts['place']) {
+				$s = $parts['place'];
+			} else {
+				$s = $this->search_term;
+			}
+			$places = $gaze->find_places($this->country_code, $s);
 			if($places){
 				function sort_places($a, $b) {
 					if ($a['score'] > $b['score']) return -1;
