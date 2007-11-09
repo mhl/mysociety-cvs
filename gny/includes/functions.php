@@ -8,12 +8,21 @@
 	
     //Send a text email
     function send_text_email($to, $from_name, $from_email, $subject, $body){
-        evel_send(array(
+
+/*    
+    evel_send(array(
             '_body_' => $body,
             'To' => $to,
             'From' => array($from_email, $from_name),
             'Subject' => $subject,
         ), $to);
+*/
+	$headers  = 'MIME-Version: 1.0' . "\r\n";
+	$headers .= 'Content-type: text/plain; charset=iso-8859-1' . "\r\n";
+	$headers .= 'From: ' . $from_name. ' <' . $from_email . ">\r\n";
+	    
+	mail($to, $subject, $body, $headers);
+	
     }
 
 	//Valid email address?

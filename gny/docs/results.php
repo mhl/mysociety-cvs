@@ -56,7 +56,6 @@ class results_page extends pagebase {
 			throw_404();
 		}
 		
-		
 		if($this->mode == 'postcode' || $this->mode == 'zipcode'|| $this->mode == 'longlat'){
 			//do the search
 			$group_search = factory::create('group_search');
