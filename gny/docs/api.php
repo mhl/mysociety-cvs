@@ -19,7 +19,7 @@ class api_page extends pagebase {
 	
 		//page vars
 		$this->onloadscript = "";	
-	    $this->page_title = "frequently asked questions";
+	    $this->page_title = "Feeds and API";
 	    $this->menu_item = "";	
 	    $this->set_focus_control = "";
 	
