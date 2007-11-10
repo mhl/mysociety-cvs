@@ -10,7 +10,7 @@
             <ul class="nobullets">
                 {foreach name="places" from="$places" item="place"}
                     <li>
-                        <a href="{$www_server}/search/{$place.pretty_name|escape:url}/{$place.longitude|string_format:'%.3f'},{$place.latitude|string_format:'%.3f'}">{$place.pretty_name}</a>
+                        <a href="{$www_server}/search/{$place.name|escape:url|lower}/{$place.longitude|string_format:'%.3f'},{$place.latitude|string_format:'%.3f'}">{$place.pretty_name}</a>
                     </li>
                 {/foreach}
             </ul>
