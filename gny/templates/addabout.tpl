@@ -5,7 +5,7 @@
         <br class="clear"/>
         <ul class="form nobullets">
             <li>
-                <label for="txtName">Name *</label>
+                <label for="txtName">Group name *</label>
                 <input type="text" class="textbox{if $warn_txtName} error{/if}" id="txtName" name="txtName" value="{$group->name}" />
             </li>
             <li>
