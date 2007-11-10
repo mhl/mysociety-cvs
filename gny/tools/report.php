@@ -13,7 +13,7 @@
 	$date = mysql_date(time() - ($days * 24 * 60 * 60));
 	
 	$groups = $search->search('group', array(
-			array('created_date', '>', $date)),
+			array('created_date', '>', $date), array('confirmed', '=', true)),
 			'AND',
 			array(array("name", 'ASC'))); 
 
