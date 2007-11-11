@@ -5,6 +5,7 @@
 <div id="divGroup" {if $preview == true}class="preview"{/if}>
     <div id="divGroupHeader">
         <h3>{$group->name}</h3>
+        <h4>{$group->byline}</h4>
         {if $preview != true}
             <div id="divInvolved">
                 {if $group->involved_type == 'email'}
@@ -25,7 +26,6 @@
     </div>
 
     <div id="divDescription">
-        <h4>{$group->byline}</h4>
         {$group->description}
         <div id="divMapMiniWrapper">
             <div id="divMap"></div>
