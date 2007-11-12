@@ -49,7 +49,7 @@ class tableclass_confirmation extends DB_DataObject {
         $body = $smarty->fetch(TEMPLATE_DIR . '/emails/confirmation.tpl');
 
 		//send email
-		send_text_email($to, $SITE_NAME, CONFIRMATION_EMAIL, $subject, $body);
+		send_text_email($to, SITE_NAME, CONFIRMATION_EMAIL, $subject, $body);
 		
 	}
 	
