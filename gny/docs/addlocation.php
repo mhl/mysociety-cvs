@@ -34,25 +34,41 @@ class addlocation_page extends pagebase {
 		//set the js for the map
 		if(!isset($this->group->zoom_level) || $this->group->zoom_level == ''){
 
-			//Get the centroid for that country
-			$centroid = $gaze->get_country_centroid($this->viewstate['country_code']);
+			$bounding_coords = $gaze->get_country_bounding_coords($this->viewstate['country_code']);
 
 			//work out an oppropriate zoom level
-			$bounding_coords = $gaze->get_country_bounding_coords($this->viewstate['country_code']);
-			$width = $bounding_coords['bottom_right_long'] - $bounding_coords['top_left_long'];
 			$zoom = approximate_gmap_zoom($bounding_coords['bottom_right_long'],
 				$bounding_coords['top_left_long']);
-				
-			$this->group->long_centroid = $centroid['long'];
-			$this->group->lat_centroid =  $centroid['lat'];
-			$this->group->zoom_level = $zoom;
 
-			//override for usa, bug on international dateline
-			if($this->viewstate['country_code'] == 'US'){
+			$centroid_long = ($bounding_coords['bottom_right_long'] + $bounding_coords['top_left_long'])/2;
+			$centroid_lat = ($bounding_coords['top_left_lat'] + $bounding_coords['bottom_right_lat'])/2;
+
+			// Overrides for countries crossing the dateline
+			// XXX Not sure what to do in Gaze about it...
+			if ($this->viewstate['country_code'] == 'US') {
 				$this->group->long_centroid = -100;
 				$this->group->lat_centroid =  40;
 				$this->group->zoom_level = 3;
-			
+			} elseif ($this->viewstate['country_code'] == 'RU') {
+				$this->group->long_centroid = 100;
+				$this->group->lat_centroid = $centroid_lat;
+				$this->group->zoom_level = 3;
+			} elseif ($this->viewstate['country_code'] == 'NZ') {
+				$this->group->long_centroid = -179.1333333;
+				$this->group->lat_centroid = $centroid_lat;
+				$this->group->zoom_level = 6;
+			} elseif ($this->viewstate['country_code'] == 'FJ') {
+				$this->group->long_centroid = -180;
+				$this->group->lat_centroid = $centroid_lat;
+				$this->group->zoom_level = 8;
+			} elseif ($this->viewstate['country_code'] == 'KI') {
+				$this->group->long_centroid = -178.85;
+				$this->group->lat_centroid = $centroid_lat;
+				$this->group->zoom_level = 5;
+			} else {
+				$this->group->long_centroid = $centroid_long;
+				$this->group->lat_centroid =  $centroid_lat;
+				$this->group->zoom_level = $zoom;
 			}
 		}
 
