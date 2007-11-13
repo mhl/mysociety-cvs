@@ -26,7 +26,7 @@
     </div>
 
     <div id="divDescription">
-        {$group->description}
+        {if $description}{$description}{else}{$group->description}{/if}
         <div id="divMapMiniWrapper">
             <div id="divMap"></div>
             <small>(approximate area for this group)</small>

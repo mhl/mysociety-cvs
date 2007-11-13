@@ -5,6 +5,7 @@
 
 	<title>{$site_name} | {$page_title}</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="keywords" content="GroupsNearYou, local, groups, local groups, neighbours, neighbors{if $group->tags}, {$group->tags|escape:html}{/if}" />
 	<script type="text/javascript" src="{$www_server}/javascript/prototype.js"></script>
     <script type="text/javascript" src="{$www_server}/javascript/scriptaculous.js"></script>
     <script type="text/javascript" src="{$www_server}/javascript/functions.js"></script>

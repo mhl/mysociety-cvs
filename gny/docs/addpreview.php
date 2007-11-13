@@ -29,8 +29,8 @@ class addpreview_page extends pagebase {
 	protected function bind() {
 
 		//convert any urls to links and add paragraphs (we do this perminently on save)
-		$this->group->description = raw_urls_to_links($this->group->description);
-		$this->group->description = new_lines_to_paragraphs($this->group->description);	
+		$html_desc = raw_urls_to_links($this->group->description);
+		$html_desc = new_lines_to_paragraphs($html_desc);
 
 		$this->group->created_date = mktime();
 
@@ -40,6 +40,7 @@ class addpreview_page extends pagebase {
 	    $this->show_tracker = true;		
 	    $this->tracker_location = 5;			
 		$this->assign('group', $this->group);
+		$this->assign('description', $html_desc);
 		$this->assign('preview', true);
 		$this->assign('dead_links', true);
 		$this->assign('map_js', true);
