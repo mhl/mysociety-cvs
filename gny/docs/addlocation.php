@@ -50,13 +50,13 @@ class addlocation_page extends pagebase {
 				$this->group->lat_centroid =  40;
 				$this->group->zoom_level = 3;
 			} elseif ($this->viewstate['country_code'] == 'RU') {
-				$this->group->long_centroid = 100;
-				$this->group->lat_centroid = $centroid_lat;
+				$this->group->long_centroid = 80;
+				$this->group->lat_centroid = 60;
 				$this->group->zoom_level = 3;
 			} elseif ($this->viewstate['country_code'] == 'NZ') {
-				$this->group->long_centroid = -179.1333333;
-				$this->group->lat_centroid = $centroid_lat;
-				$this->group->zoom_level = 6;
+				$this->group->long_centroid = -175;
+				$this->group->lat_centroid = -41;
+				$this->group->zoom_level = 5;
 			} elseif ($this->viewstate['country_code'] == 'FJ') {
 				$this->group->long_centroid = -180;
 				$this->group->lat_centroid = $centroid_lat;
