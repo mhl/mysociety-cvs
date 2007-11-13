@@ -55,7 +55,7 @@ class rss_page extends pagebase {
 		if($this->mode == 'postcode' || $this->mode == 'zipcode'|| $this->mode == 'longlat'){
 			//do the search
 			$group_search = factory::create('group_search');
-			$groups = $group_search->search($this->query);
+			list($groups, $long, $lat) = $group_search->search($this->query);
 
 			//copy over any warnings
 			if(sizeof($group_search->warnings) > 0){

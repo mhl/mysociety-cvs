@@ -59,7 +59,7 @@ class results_page extends pagebase {
 		if($this->mode == 'postcode' || $this->mode == 'zipcode'|| $this->mode == 'longlat'){
 			//do the search
 			$group_search = factory::create('group_search');
-			$groups = $group_search->search($this->query);
+			list($groups, $long, $lat) = $group_search->search($this->query);
 			
 			//copy over any warnings
 			if(sizeof($group_search->warnings) > 0){
@@ -80,6 +80,7 @@ class results_page extends pagebase {
 		$this->assign('query', $this->query);
 		$this->assign('query_display_text', $this->query_display_text);
 		$this->assign('place_name', $this->place_name);
+		$this->assign('location', "$long,$lat");
 
 		$this->display_template();
 		

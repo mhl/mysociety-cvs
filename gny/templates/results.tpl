@@ -21,7 +21,7 @@
     {else}
         <h3 class="centerpage">Sorry, we couldn't find any groups for {if $place_name !=''}{$place_name|escape:html}{else}that location{/if}</h3>
         
-        <h4><a href="{$www_server}/add/about/">Add an existing group for this location</a> or use PledgeBank.com to start a one</h4>
+        <h4><a href="{$www_server}/add/about/?q={$location}">Add an existing group for this location</a> or use PledgeBank.com to start a one</h4>
         
     	
         <form id="frmPledge" accept-charset="utf-8" name="pledge" method="post" action="http://www.pledgebank.com/new">

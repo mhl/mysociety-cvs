@@ -19,6 +19,12 @@ class addabout_page extends pagebase {
 		}else{
 			$this->group = session_read('group');
 		}
+		if (is_longlat(get_http_var('q'))) {
+			$parts = explode(',', get_http_var('q'));
+			$this->group->long_centroid = $parts[0];
+			$this->group->lat_centroid = $parts[1];
+			$this->group->zoom_level = 13;
+		}
 	}
 	
 	//setup

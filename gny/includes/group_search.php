@@ -38,14 +38,14 @@
 				$longlat = get_postcode_location($clean_postcode, 'US');
 				if($longlat == false){
 					array_push($this->warnings, "A error occured when trying to find that zip code");
-					trigger_error("Unable to get locaiton for zipcode: " . $search_term);
+					trigger_error("Unable to get location for zipcode: " . $search_term);
 				}else{
 					$long = $longlat[0];
 					$lat = $longlat[1];					
 				}
 				
 				//Update the stats table
-				tableclass_stat::increment_stat("search.type.ukpostcode");				
+				tableclass_stat::increment_stat("search.type.zipcode");				
 			}
 
 			//long lat?
@@ -159,7 +159,7 @@
 			tableclass_stat::increment_stat("search.count");
 			
 			//Return search result
-			return $groups;
+			return array($groups, $long, $lat);
 			
 		}
 		
