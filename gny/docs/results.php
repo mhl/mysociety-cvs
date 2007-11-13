@@ -72,7 +72,18 @@ class results_page extends pagebase {
 	    $this->page_title = "Search results for " . $this->query_display_text;
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "txtSearch";
-		$this->rss_link = WWW_SERVER . "/rss.php?" . $_SERVER["QUERY_STRING"];
+		$this->rss_link = WWW_SERVER . '/rss.php?';
+		if ($this->mode == 'longlat') {
+			$this->rss_link .= 't=' . $this->query_display_text . '&q=';
+			$this->google_link = $this->rss_link;
+			$parts = explode(',', $this->query);
+			$swapped_query = $parts[1] . ',' . $parts[0];
+			$this->rss_link .= $this->query;
+			$this->google_link .= $swapped_query;
+		} else {
+			$this->rss_link .= 'q=' . $this->query;
+			$this->google_link = $this->rss_link;
+		}
 			
 		$this->assign('groups', $groups);
 		$this->assign('query', $this->query);
