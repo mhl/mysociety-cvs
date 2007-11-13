@@ -74,21 +74,22 @@ class results_page extends pagebase {
 	    $this->set_focus_control = "txtSearch";
 		$this->rss_link = WWW_SERVER . '/rss.php?';
 		if ($this->mode == 'longlat') {
-			$this->rss_link .= 't=' . $this->query_display_text . '&q=';
-			$this->google_link = $this->rss_link;
+			$this->rss_link .= 't=' . urlencode($this->query_display_text) . '&q=';
+			$google_link = $this->rss_link;
 			$parts = explode(',', $this->query);
 			$swapped_query = $parts[1] . ',' . $parts[0];
 			$this->rss_link .= $this->query;
-			$this->google_link .= $swapped_query;
+			$google_link .= $swapped_query;
 		} else {
-			$this->rss_link .= 'q=' . $this->query;
-			$this->google_link = $this->rss_link;
+			$this->rss_link .= 'q=' . urlencode($this->query);
+			$google_link = $this->rss_link;
 		}
 			
 		$this->assign('groups', $groups);
 		$this->assign('query', $this->query);
 		$this->assign('query_display_text', $this->query_display_text);
 		$this->assign('place_name', $this->place_name);
+		$this->assign('google_link', $google_link);
 
 		$this->display_template();
 		
