@@ -11,7 +11,8 @@ CREATE TABLE  `confirmation` (
   `parent_table` varchar(40) NOT NULL,
   `parent_id` int(11) NOT NULL,
   `link_key` varchar(40) NOT NULL,
-  PRIMARY KEY  (`confirmation_id`)
+  PRIMARY KEY  (`confirmation_id`),
+  UNIQUE KEY (`link_key`)
 ) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `contact_email`;
@@ -312,7 +313,8 @@ CREATE TABLE `groups` (
   `url_id` varchar(150) NOT NULL,
   `involved_email` varchar(150) default NULL,
   PRIMARY KEY  (`group_id`),
-  KEY `url` (`url_id`)
+  UNIQUE KEY `url` (`url_id`),
+  KEY (`confirmed`,`long_bottom_left`, `lat_bottom_left`, `long_top_right`, `lat_top_right`)
 ) ENGINE=MyISAM AUTO_INCREMENT=123 DEFAULT CHARSET=utf8;
 INSERT INTO `groups` (`group_id`,`name`,`byline`,`description`,`tags`,`involved_type`,`involved_link`,`created_name`,`created_date`,`created_email`,`confirmed`,`long_bottom_left`,`lat_bottom_left`,`long_top_right`,`lat_top_right`,`zoom_level`,`long_centroid`,`lat_centroid`,`url_id`,`involved_email`) VALUES 
  (113,'dsadsadsa','dsadasdas','dsadsadas','dsadsadsa','email',NULL,'jhkjlkj','2007-09-08 19:39:05','fds@fds.com',1,-3.30517,54.4589,-3.29487,54.4649,15,-3.3,54.4619,'dsadsadsa','fds@fds.com'),
@@ -332,7 +334,8 @@ CREATE TABLE  `stat` (
   `stat_key` varchar(100) NOT NULL,
   `stat_value` varchar(100) NOT NULL,
   `stat_id` int(11) NOT NULL auto_increment,
-  PRIMARY KEY  (`stat_id`)
+  PRIMARY KEY  (`stat_id`),
+  UNIQUE KEY (`stat_key`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 INSERT INTO `stat` (`stat_key`,`stat_value`,`stat_id`) VALUES 
  ('search.type.ukpostcode','10',2),

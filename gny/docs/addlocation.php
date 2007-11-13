@@ -54,7 +54,7 @@ class addlocation_page extends pagebase {
 				$this->group->lat_centroid = 60;
 				$this->group->zoom_level = 3;
 			} elseif ($this->viewstate['country_code'] == 'NZ') {
-				$this->group->long_centroid = -175;
+				$this->group->long_centroid = -171;
 				$this->group->lat_centroid = -41;
 				$this->group->zoom_level = 5;
 			} elseif ($this->viewstate['country_code'] == 'FJ') {

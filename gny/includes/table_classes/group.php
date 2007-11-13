@@ -52,21 +52,14 @@ class tableclass_group extends DB_DataObject {
 
 		//check if its been taken
 		$url_id_taken = true;
-		$postfix = '';
 		$loop_count = 0; //we only want to loop 5 times. more than than its gone pear shaped
 		while($url_id_taken == true && $loop_count <=5) {
 
 			$search = factory::create('search');
-			$search_result = $search->search('group', array(array('url_id', '=', $url_id . $postfix)));
+			$test_url_id = $url_id . ($loop_count ? "_$loop_count" : '');
+			$search_result = $search->search('group', array(array('url_id', '=', $test_url_id)));
 			if($search_result == false){
 				$url_id_taken = false;
-			}else{
-				if($postfix == ''){
-					$postfix = 1;
-				}else{
-					$postfix ++;
-				}
-				$url_id	.= '_' . $postfix;
 			}
 			$loop_count ++;
 		}
@@ -74,7 +67,7 @@ class tableclass_group extends DB_DataObject {
 		if($url_id_taken == true){
 			trigger_error("Unable to create a unique url id for group: " . $this->name);
 		}else{
-			$this->url_id = $url_id . $postfix;	
+			$this->url_id = $test_url_id;
 		}
 
 	}

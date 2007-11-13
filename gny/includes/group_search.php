@@ -101,12 +101,7 @@
 					'AND',
 					array(array("zoom_level", 'DESC'))
 				);
-
-				if($groups_buffered1){
-					foreach ($groups_buffered1 as $group_buffered1){
-						array_push($groups_buffered, $group_buffered1);
-					}
-				}
+				$groups_buffered = array_merge($groups_buffered, $groups_buffered1);
 				
 				$groups_buffered2 = $search->search('group', array(
 					array('long_top_right', '<', $buffered_top_right_long),
@@ -118,66 +113,43 @@
 					'AND',
 					array(array("zoom_level", 'DESC'))
 				);
-				if($groups_buffered2){
-					foreach ($groups_buffered2 as $group_buffered2){
-						array_push($groups_buffered, $group_buffered2);
-					}
-				}
+				$groups_buffered = array_merge($groups_buffered, $groups_buffered2);
 				
 				$groups_buffered3 = $search->search('group', array(
-					array('long_bottom_left' + $buffered_long, '>', $buffered_bottom_left_long),
-					array('long_bottom_left' + $buffered_long, '<', $buffered_top_right_long),
-					array('lat_bottom_left' + $buffered_lat, '>', $buffered_bottom_left_lat),
-					array('lat_bottom_left' + $buffered_lat, '<', $buffered_top_right_lat),
+					array('long_bottom_left', '>', $buffered_bottom_left_long),
+					array('long_bottom_left', '<', $buffered_top_right_long),
+					array('lat_top_right', '>', $buffered_bottom_left_lat),
+					array('lat_top_right', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
 					),
 					'AND',
 					array(array("zoom_level", 'DESC'))
 				);
-				if($groups_buffered3){
-					foreach ($groups_buffered3 as $group_buffered3){
-						array_push($groups_buffered, $group_buffered3);
-					}
-				}
+				$groups_buffered = array_merge($groups_buffered, $groups_buffered3);
 				
-				$groups_buffered3 = $search->search('group', array(
-					array('long_top_right' + $buffered_long, '>', $buffered_bottom_left_long),
-					array('long_top_right' + $buffered_long, '<', $buffered_top_right_long),
-					array('lat_top_right' + $buffered_lat, '>', $buffered_bottom_left_lat),
-					array('lat_top_right' + $buffered_lat, '<', $buffered_top_right_lat),
+				$groups_buffered4 = $search->search('group', array(
+					array('long_top_right', '>', $buffered_bottom_left_long),
+					array('long_top_right', '<', $buffered_top_right_long),
+					array('lat_bottom_left', '>', $buffered_bottom_left_lat),
+					array('lat_bottom_left', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
 					),
 					'AND',
 					array(array("zoom_level", 'DESC'))
 				);
-				if($groups_buffered4){
-					foreach ($groups_buffered4 as $group_buffered4){
-						array_push($groups_buffered, $group_buffered4);
-					}
-				}
+				$groups_buffered = array_merge($groups_buffered, $groups_buffered4);
 
 				//if we have any buffered groups, add them in
 				if($groups_buffered){
-					foreach ($groups_buffered as $group_buffered){
-						array_push($groups, $group_buffered);
-					}
+					$groups = array_merge($groups, $groups_buffered);
 					
 					//remove any duplicates (again should really be in the database call)
 					$cleaned_groups = array();
 					foreach ($groups as $group){
-						$allready_added = false;
-						foreach ($cleaned_groups as $cleaned_group){
-							if($cleaned_group->group_id == $group->group_id){
-								$allready_added = true;
-							}
-						}
-						
-						if(!$allready_added){
-							array_push($cleaned_groups, $group);
-						}
+						if (!isset($cleaned_groups[$group->group_id]))
+							$cleaned_groups[$group->group_id] = $group;
 					}
-					
-					$groups = $cleaned_groups;
+					$groups = array_values($cleaned_groups);
 					
 				}
 			
