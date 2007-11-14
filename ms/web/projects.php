@@ -24,7 +24,7 @@ launched.
 <h2><a href="http://www.pledgebank.com">PledgeBank</a> <small>(launched 13th June 2005)</small></h2>
 <p>
 PledgeBank is about reassuring people who want to do something altruistic or
-socially beneficially that they won't be alone in their actions. It lets users
+socially beneficial that they won't be alone in their actions. It lets users
 create pledges which say "I'll do something, but only if 10 other people will
 do something", for example "I'll clean up the banks of my local river, but only
 if 5 other local people will pledge to come and help.
