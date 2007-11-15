@@ -10,7 +10,7 @@
                 <pubDate>{$group->created_date|date_format:"%a, %e %b %Y"}</pubDate>                
                 <guid isPermaLink="true">{$www_server}/groups/{$group->url_id}</guid>
                 <georss:featurename>{$group->name|escape:html}</georss:featurename>
-                <georss:box>{$group->lat_bottom_left} {$group->long_bottom_left} {$group->lat_top_right} {$group->long_top_right}</georss:box>
+                <georss:polygon>{$group->lat_bottom_left} {$group->long_bottom_left} {$group->lat_top_right} {$group->long_bottom_left} {$group->lat_top_right} {$group->long_top_right} {$group->lat_bottom_left} {$group->long_top_right} {$group->lat_bottom_left} {$group->long_bottom_left}</georss:polygon>
                 <description><![CDATA[{$group->description|escape:html}]]></description>
                 <link><![CDATA[{$www_server}/groups/{$group->url_id}/]]></link>
             </item>
