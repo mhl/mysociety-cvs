@@ -31,7 +31,6 @@
             <div id="divMap"></div>
             <small>(approximate area for this group)</small>
         </div>
-    </div>
 
     <div id="divMeta">
         <em>{$group->name}</em> has been tagged with the keywords <strong>{$group->tags}</strong>.
@@ -39,5 +38,7 @@
         {if !$dead_links}
             <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change to this page</a>.
         {/if}
+    </div>
+
     </div>
 </div>
