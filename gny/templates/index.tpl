@@ -1,4 +1,9 @@
 {include file="../templates/header.tpl"}
+
+<p id="frontAddBlurb">This site hasn't officially launched yet. We need your knowledge
+about local groups near you to help it grow. <a href="/add/about/">Add a group now!</a>
+</p>
+
     <form id="frmSearchMain" action="{$form_action}" method="post">
         {include file="../templates/formvars.tpl"}
         <div id="divMainSearch">
@@ -33,8 +38,8 @@
             <h3>Add a group</h3>
             <p>
                 <strong>It's simple, just 4 steps</strong>. Tell us what the group does, what area it covers and how 
-                people near you can get involved, then confirm the details.<br/>
-                <a id="aGetStarted" href="{$www_server}/add/about/">Get started &gt;&gt;</a>
+                people near you can get involved, then confirm the details.</p>
+                <p><a id="aGetStarted" href="{$www_server}/add/about/">Get started &gt;&gt;</a>
             </p>
         </div>
     </form>
