@@ -2,7 +2,9 @@
     <form action="{$form_action}" method="post">
         {include file="../templates/formvars.tpl"}
         <h3>Tell us a bit about this email group, forum or blog</h3>
-        <br class="clear"/>
+	<p>You can help people in your neighbourhood get to know each other.
+	Please add any local group you know about, to help more people join up!
+	</p>
         <ul class="form nobullets">
             <li>
                 <label for="txtName">Group name *</label>
