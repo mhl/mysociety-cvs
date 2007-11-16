@@ -8,7 +8,7 @@ about local groups near you to help it grow. <a href="/add/about/">Add a group n
         {include file="../templates/formvars.tpl"}
         <div id="divMainSearch">
             <label for="txtSearch">
-                Find email groups and web communities <br/>where you live
+                Find email groups and web communities where you live
             </label>
             <input type="text" id="txtSearch" name="txtSearch" class="textbox{if $warn_txtSearch} error{/if}" 
                 onclick="if (this.value=='{$search_hint}') this.value='';" value="{if $data.txtSearch == ''}{$search_hint}{else}$data.txtSearch{/if}"/>
