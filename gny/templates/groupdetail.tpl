@@ -10,15 +10,15 @@
             <div id="divInvolved">
                 {if $group->involved_type == 'email'}
                     {if !$dead_links}
-                        <a href="{$www_server}/groups/{$group->url_id}/contact/">Join this group</a>
+                        <a href="{$www_server}/groups/{$group->url_id}/contact/">{l}Join this group{/l}</a>
                     {else}
-                        <a href="#" title="link disabled for preview">Join this group</a>
+                        <a href="#" title="link disabled for preview">{l}Join this group{/l}</a>
                     {/if}
                 {else}
                     {if !$dead_links}
-                        <a href="{$group->involved_link}">Join this group</a>
+                        <a href="{$group->involved_link}">{l}Join this group{/l}</a>
                     {else}
-                        <a href="#" title="link disabled for preview">Join this group</a>
+                        <a href="#" title="link disabled for preview">{l}Join this group{/l}</a>
                     {/if}
                 {/if}
             </div>
@@ -29,15 +29,16 @@
         {if $description}{$description}{else}{$group->description}{/if}
         <div id="divMapMiniWrapper">
             <div id="divMap"></div>
-            <small>(approximate area for this group)</small>
+            <small>({l}approximate area for this group{/l})</small>
         </div>
 
     <div id="divMeta">
-        <em>{$group->name}</em> has been tagged with the keywords <strong>{$group->tags}</strong>.
-        This page was created by <strong>{$group->created_name} on {$group->created_date|date_format}</strong>. 
-        {if !$dead_links}
-            <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change to this page</a>.
-        {/if}
+        {l}<em>{$group->name}</em> has been tagged with the keywords <strong>{$group->tags}</strong>.{/l}
+        {l}This page was created by <strong>{$group->created_name} on {$group->created_date|date_format}</strong>. 
+            {if !$dead_links}
+                <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change to this page</a>.
+            {/if}
+        {/l}
     </div>
 
     </div>

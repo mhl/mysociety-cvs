@@ -27,17 +27,17 @@
 
 <body>
     <div id="divBeta">
-        This site is currently in beta (test) mode. <a href="mailto:team@{$domain}">We'd love to hear what you think about it!</a>
+        {l}This site is currently in beta (test) mode. <a href="mailto:team@{$domain}">We'd love to hear what you think about it!</a>{/l}
     </div>
     <div id="divPage">
         <div id="divHeader">
-            <h1><a href="{$www_server}">Groups<span>NearYou</span>.com</a></h1>
-            <h2>Meet your neighbours</h2>
+            <h1><a href="{$www_server}">{l}Groups<span>NearYou</span>.com</a>{/l}</h1>
+            <h2>{l}Meet your neighbours{/l}</h2>
             <ul id="ulMenu" class="collapse">
-                <li {if $menu_item =="about"}class="selected"{/if}><a href="{$www_server}/about/">About</a></li>                                     
-                <li {if $menu_item =="faq"}class="selected"{/if}><a href="{$www_server}/faq/"><acronym title="Frequently asked questions">FAQ</acronym>s</a></li>                
-                <li {if $menu_item =="add"}class="selected"{/if}><a href="{$www_server}/add/about/">Add a group</a></li>                        
-                <li {if $menu_item =="search"}class="selected"{/if}><a href="{$www_server}">Search</a></li>            
+                <li {if $menu_item =="about"}class="selected"{/if}><a href="{$www_server}/about/">{l}About{/l}</a></li>                                     
+                <li {if $menu_item =="faq"}class="selected"{/if}><a href="{$www_server}/faq/"><acronym title="{l}Frequently asked questions{/l}">{l}FAQs{/l}</acronym></a></li>                
+                <li {if $menu_item =="add"}class="selected"{/if}><a href="{$www_server}/add/about/">{l}Add a group{/l}</a></li>                        
+                <li {if $menu_item =="search"}class="selected"{/if}><a href="{$www_server}">{l}Search{/l}</a></li>            
             </ul>
         </div>
 
@@ -48,30 +48,30 @@
                <ul id="ulTracker" class="collapse">
                	<li{if $tracker_location == 2} class="current" {elseif $tracker_location > 2} class="complete" {/if}>
                		{if $tracker_location >1}
-               			<a href="{$www_server}/add/about/">1. About the group</a>
+               			<a href="{$www_server}/add/about/">{l}1. About the group{/l}</a>
                		{else}
-               			1. About the group
+               			{l}1. About the group{/l}
                		{/if}
                	</li>
                	<li{if $tracker_location == 3} class="current" {elseif $tracker_location > 3} class="complete" {/if}>
                		{if $tracker_location >2}
-               			<a href="{$www_server}/add/location/">2. Area covered</a>
+               			<a href="{$www_server}/add/location/">{l}2. Area covered{/l}</a>
                		{else}	
-               			2. Area covered
+               			{l}2. Area covered{/l}
                		{/if}
                	</li>
                	<li{if $tracker_location == 4} class="current" {elseif $tracker_location > 4} class="complete" {/if}>
                		{if $tracker_location >3} 
-               			    <a href="{$www_server}/add/contact/">3. Joining the group</a> 
+               			    <a href="{$www_server}/add/contact/">{l}3. Joining the group{/l}</a> 
                		{else}	
-               			3. Joining the group
+               			{l}3. Joining the group{/l}
                		{/if}
                	</li>
                	<li{if $tracker_location == 5} class="current" {elseif $tracker_location > 5} class="complete" {/if}>
                		{if $tracker_location >4} 
-               			    <a href="{$www_server}/add/preview/">4. Preview &amp; confirm</a> 
+               			    <a href="{$www_server}/add/preview/">{l}4. Preview &amp; confirm{/l}</a> 
                		{else}	
-               			4. Preview &amp; confirm
+               			{l}4. Preview &amp; confirm{/l}
                		{/if}
                	</li>
                </ul>

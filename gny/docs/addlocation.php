@@ -116,11 +116,11 @@ class addlocation_page extends pagebase {
 			|| !is_numeric($this->group->long_top_right) || !is_numeric($this->group->lat_top_right) 
 			|| !is_numeric($this->group->long_centroid) || !is_numeric($this->group->lat_centroid ) 
 			|| !is_numeric($this->group->zoom_level)){
-			$this->add_warning('Something went wrong with google maps. Please try again');
+			$this->add_warning($this->smarty->translate('Something went wrong with google maps. Please try again'));
 			$valid = false;
 		}
 		if($this->group->zoom_level < MAX_MAP_ZOOM){
-			$this->add_warning('The selected area for your group is too big. <strong>Please use the zoom tool to select a smaller area</strong>.');
+			$this->add_warning($this->smarty->translate('The selected area for your group is too big. <strong>Please use the zoom tool to select a smaller area</strong>.'));
 			$valid = false;
 		}
 		

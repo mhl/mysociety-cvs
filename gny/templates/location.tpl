@@ -6,7 +6,7 @@
     {if $country_code != ''}
         {* We have results! display them *}
         {if $found_places}
-            <h3>Please confirm which place you are looking for</h3>
+            <h3>{l}Please confirm which place you are looking for{/l}</h3>
             <ul class="nobullets">
                 {foreach name="places" from="$places" item="place"}
                     <li>
@@ -19,7 +19,7 @@
             <form id="frmSearchPlaceName" action="{$form_action}" method="post">
                 {include file="../templates/formvars.tpl"}
                 <fieldset>
-                    <label for="txtSearch">Change location?</label>
+                    <label for="txtSearch">{l}Change location?{/l}</label>
                     <input type="textbox" class="textbox" id="txtSearch" name="q" value="{$search_term|escape:html}"/>
                     <select id="ddlCountry" name="country_code">
                         {foreach name="countries" from="$countries" item="country"}                
@@ -28,7 +28,7 @@
                             </option>
                         {/foreach}
                     </select>
-                    <input type="submit" class="button" value="Go" />
+                    <input type="submit" class="button" value="{l}Go{/l}" />
                 </fieldset>
             </form>
         {else}
@@ -38,7 +38,7 @@
                 <form id="frmSearchAgain" action="{$form_action}" method="post">
                     {include file="../templates/formvars.tpl"}
                     <fieldset>
-                        <label for="txtSearch">Try another place name?</label>
+                        <label for="txtSearch">{l}Try another place name?{/l}</label>
                         <input type="textbox" class="textbox" id="txtSearch" name="q" value="{$search_term|escape:html}"/>
                         <select id="ddlCountry" name="country_code">
                             {foreach name="countries" from="$countries" item="country"}                
@@ -55,7 +55,7 @@
         {/if}
     {else}
         <div class="attention">
-            <h3>Please choose which country you are in</h3>
+            <h3>{l}Please choose which country you are in{/l}</h3>
             <form id="frmSearchPlace" action="{$form_action}" method="post">
                 {include file="../templates/formvars.tpl"}
                 <fieldset>
@@ -68,7 +68,7 @@
                             </option>
                         {/foreach}
                     </select>
-                    <input type="submit" class="button" value="Go" />
+                    <input type="submit" class="button" value="{l}Go{/l}" />
                 </fieldset>
             </form>
         </div>
@@ -78,9 +78,9 @@
 
     <div class="attention">
         
-        <h3>Unable to search by place name</h3>
+        <h3>{l}Unable to search by place name{/l}</h3>
         <p>
-            Sorry, searching by place name is currently unavailable. Please try again later, or <a href="{$www_server}">search by post code or zip code</a>
+            {l}Sorry, searching by place name is currently unavailable. Please try again later, or <a href="{$www_server}">search by post code or zip code</a>{/l}
         </p>
     </div>
 

@@ -1,6 +1,6 @@
 <?php
 require_once ("init.php");
-require_once ("smarty/Smarty.class.php");
+require_once ("smarty/intsmarty.class.php");
 
 abstract class pagebase {
 
@@ -53,8 +53,8 @@ abstract class pagebase {
     //Display template (also assigns default properties)
     public function display_template($echo = false){
 
-        $this->smarty->assign("site_name", SITE_NAME);                  
-        $this->smarty->assign("site_tag_line", SITE_TAG_LINE);                  
+        $this->smarty->assignLang("site_name", SITE_NAME);                  
+        $this->smarty->assignLang("site_tag_line", SITE_TAG_LINE);                  
         $this->smarty->assign("root_dir", ROOT_DIR);        
         $this->smarty->assign("www_server", WWW_SERVER);
         $this->smarty->assign("domain", DOMAIN);
@@ -70,7 +70,7 @@ abstract class pagebase {
         $this->smarty->assign("data", $this->data);
         $this->smarty->assign("show_warnings", sizeof($this->warnings) >0);
         $this->smarty->assign("warn_controls", $this->warn_controls);        
-		$this->smarty->assign("page_title", htmlspecialchars($this->page_title));
+		$this->smarty->assignLang("page_title", htmlspecialchars($this->page_title));
 		$this->smarty->assign("menu_item", $this->menu_item);		
 		$this->smarty->assign("tracker_location", $this->tracker_location);				
 		$this->smarty->assign("show_tracker",$this->show_tracker);				
@@ -94,15 +94,25 @@ abstract class pagebase {
 	public function assign($name, $value){
 		$this->smarty->assign($name, $value);
 	}
-    
+	
+	public function assignLang($name, $value){
+		$this->smarty->assignLang($name, $value);
+	}
+
     //Reset smarty object and template path
     public function reset_smarty($template_file){
+
     	$template_folder = null;
-        $this->smarty = new Smarty();
+        $this->smarty = new IntSmarty();
         $this->smarty->compile_dir = SMARTY_PATH;
         $this->smarty->compile_check = true;
+        $this->smarty->force_compile = DEVSITE === true;
         $this->smarty->template_dir = TEMPLATE_DIR;
-       
+        $this->smarty->lang_path = LANGUAGE_DIR;
+
+		//call setup (basically a standard smarty constuct with the translation thrown in)
+		$this->smarty->setup("en-us");
+
 		$this->smarty_template = $template_file;
     }
     

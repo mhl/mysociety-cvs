@@ -26,15 +26,15 @@ class check_email_page extends pagebase {
 		if($this->viewstate['type'] == 'contactemail'){
 		    $this->page_title = "Now check your email";
 		    $this->menu_item = "search";
-			$this->assign('title', 'Now check your email!');
-			$this->assign('confirm_type', 'your message');			
-			$this->assign('action_result', 'to confirm your message');						
+			$this->assignLang('title', 'Now check your email!');
+			$this->assignLang('confirm_type', 'your message');			
+			$this->assignLang('action_result', 'to confirm your message');						
 		}elseif($this->viewstate['type'] == 'group'){
-		    $this->page_title = "Now check your email";
+		    $this->assignLang = "Now check your email";
 		    $this->menu_item = "add";
-			$this->assign('title', 'Now check your email!');
-			$this->assign('confirm_type', 'your group');			
-			$this->assign('action_result', 'and your group will be added to ' . SITE_NAME);						
+			$this->assignLang('title', 'Now check your email!');
+			$this->assignLang('confirm_type', 'your group');			
+			$this->assignLang('action_result', 'and your group will be added to ' . SITE_NAME);						
 		}else{
 			throw_404();
 		}

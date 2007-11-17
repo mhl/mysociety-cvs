@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:georss="http://www.georss.org/georss">
 	<channel>
-		<title>{$site_name} - groups near {$query_display_text|escape:html}</title>
+		<title>{l}{$site_name} - groups near {$query_display_text|escape:html}{/l}</title>
 		<link>{$search_link}</link>
 		<description>{$site_tag_line}</description>
         {foreach name="groups" from="$groups" item="group"}

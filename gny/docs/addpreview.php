@@ -77,9 +77,9 @@ class addpreview_page extends pagebase {
 		$this->group->set_url_id();
 		if(!$this->group->insert()){
 			trigger_error('Error saving group');
-			$this->add_warning("Something went wrong when we tried to save your group. (We're looking into it).");
+			$this->add_warning($this->smarty->translate("Something went wrong when we tried to save your group. (We're looking into it)."));
 		}else{
-		
+
 			//send confirmation email
 			$confirmation = factory::create('confirmation');
 			$confirmation->send($this->group->created_email, 

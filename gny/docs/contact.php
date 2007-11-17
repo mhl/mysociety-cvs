@@ -76,17 +76,17 @@ class contact_page extends pagebase {
 
 		$valid = true;
 		if(!valid_email($this->contact_email->from_email)){
-			$this->add_warning('Please enter a valid email address');
+			$this->add_warning($this->smarty->translate('Please enter a valid email address'));
 			$this->add_warn_control('txtEmail');
 			$valid = false;
 		}
 		if($this->contact_email->from_name == ''){
-			$this->add_warning('Please enter your name');
+			$this->add_warning($this->smarty->translate('Please enter your name'));
 			$this->add_warn_control('txtName');
 			$valid = false;
 		}
 		if($this->contact_email->message == ''){
-			$this->add_warning('Please a message');
+			$this->add_warning($this->smarty->translate('Please a message'));
 			$this->add_warn_control('txtContactMessage');
 			$valid = false;
 		}

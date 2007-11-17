@@ -14,21 +14,21 @@
     </fieldset>
 
     <div>
-        <h3>Choose the <em>approximate</em> area covered by the group using the red box</h3>
+        <h3>{l}Choose the <em>approximate</em> area covered by the group using the red box{/l}</h3>
 
         <div id="divMapWrapper">
             <div id="divMapSearch">
-                <label for="txtMapSearch">Go to location</label>
+                <label for="txtMapSearch">{l}Go to location{/l}</label>
                 <input type="text" class="text" id="txtSearchMap" onkeypress="return submitMapSearch(event);"/>
                 <input id="btnMapSearch" type="button" onclick="javascript:searchMap();"value="Go" />
                 <img id="imgMapLoading" src="{$www_server}/images/maploading.gif" width="16px" height="16px" alt="Loading ..." title="Loading ..."/>
                 <small>
                     {if $country_code == 'US'}
-                        e.g. <em>94105</em> or <em>San Francisco</em> or <em>London, UK</em>
+                        {l}e.g. <em>94105</em> or <em>San Francisco</em> or <em>London, UK</em>{/l}
                     {elseif  $country_code == 'GB'}
-                        e.g. <em>SW9 8JX</em> or <em>Manchester</em> or <em>San Francisco, US</em>
+                        {l}e.g. <em>SW9 8JX</em> or <em>Manchester</em> or <em>San Francisco, US</em>{/l}
                     {else}
-                        e.g. <em>Paris, France</em> or <em>Sydney, Australia</em>
+                        {l}e.g. <em>Paris, France</em> or <em>Sydney, Australia</em>{/l}
                     {/if}
                 </small>
             </div>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="buttons">
-            <input type="submit" value="Joining the group >" />
+            <input type="submit" value="{l}Joining the group{/l} >" />
         </div>
     </div>
 </form>

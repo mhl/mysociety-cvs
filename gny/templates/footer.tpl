@@ -1,11 +1,11 @@
         </div>
         <div id="divFooter">
             <ul class="inline">
-                <li><a href="{$www_server}">Home</a></li>
+                <li><a href="{$www_server}">{l}Home{/l}</a></li>
                 <li><a href="{$www_server}/api/"><acronym title="Application Programming Interface">API</acronym> &amp; feeds</a></li>                                
-                <li><a href="http://groups.google.com/group/groupsnearyou">Discussion list</a></li>
-                <li><a href="{$www_server}/about/">About</a></li>                         
-                <li><a href="mailto:team@{$domain}">Contact</a></li>                
+                <li><a href="http://groups.google.com/group/groupsnearyou">{l}Discussion list{/l}</a></li>
+                <li><a href="{$www_server}/about/">{l}About{/l}</a></li>                         
+                <li><a href="mailto:team@{$domain}">{l}Contact{/l}</a></li>                
             </ul>
 
         </div>

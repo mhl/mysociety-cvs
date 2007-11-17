@@ -8,11 +8,11 @@ about local groups near you to help it grow. <a href="/add/about/">Add a group n
         {include file="../templates/formvars.tpl"}
         <div id="divMainSearch">
             <label for="txtSearch">
-                Find email groups and web communities where you live
+                {l}Find email groups and web communities <br/>where you live{/l}
             </label>
             <input type="text" id="txtSearch" name="txtSearch" class="textbox{if $warn_txtSearch} error{/if}" 
                 onclick="if (this.value=='{$search_hint}') this.value='';" value="{if $data.txtSearch == ''}{$search_hint}{else}$data.txtSearch{/if}"/>
-            <input type="submit" id="btnSearch" name="btnIndex" value="Go" />
+            <input type="submit" id="btnSearch" name="btnIndex" value="{l}Go{/l}" />
             <small>
                 {if $country == 'US'}
                     e.g. <em><a href="{$www_server}/search/94105/">94105</a></em> or <em><a href="{$www_server}/search/San Francisco/">San Francisco</a></em>
@@ -24,7 +24,7 @@ about local groups near you to help it grow. <a href="/add/about/">Add a group n
             </small>
         </div>
         <div id="divFrontLeft">
-            <h3>Recently added groups</h3>
+            <h3>{l}Recently added groups{/l}</h3>
             <ul class="nobullets">
                 {foreach name="groups" from="$groups" item="group"}
                     <li>
@@ -32,14 +32,14 @@ about local groups near you to help it grow. <a href="/add/about/">Add a group n
                     </li>
                 {/foreach}
             </ul>
-            <a id="aBrowseAll" href="{$www_server}/browse/">Browse all groups &gt;&gt;</a>
+            <a id="aBrowseAll" href="{$www_server}/browse/">{l}Browse all groups{/l} &gt;&gt;</a>
         </div>
         <div id="divFrontRight">
-            <h3>Add a group</h3>
+            <h3>{l}Help us map the worlds online communities{/l}</h3>
             <p>
-                <strong>It's simple, just 4 steps</strong>. Tell us what the group does, what area it covers and how 
-                people near you can get involved, then confirm the details.</p>
-                <p><a id="aGetStarted" href="{$www_server}/add/about/">Get started &gt;&gt;</a>
+                <strong>{l}It's simple, just 4 steps to add a group{/l}</strong>. {l}Tell us what the group does, what area it covers and how 
+                people near you can get involved, then confirm the details.{/l}<br/>
+                <a id="aGetStarted" href="{$www_server}/add/about/">{l}Add a group now{/l} &gt;&gt;</a>
             </p>
         </div>
     </form>

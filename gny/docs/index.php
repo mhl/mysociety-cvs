@@ -36,7 +36,7 @@ class index_page extends pagebase {
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "";			
 		$this->assign('groups', $groups);
-		$this->assign('search_hint', 'enter a place, postcode or zip code');
+		$this->assignLang('search_hint', 'enter a place, postcode or zip code');
 		$this->assign('country', strtoupper($this->viewstate['country']));
 	
 		$this->display_template();
@@ -52,7 +52,7 @@ class index_page extends pagebase {
 	protected function validate (){
 		
 		if($this->data['txtSearch'] ==''){
-			$this->add_warning('Please enter a post code, zip code or place name');
+			$this->add_warning($this->smarty->translate('Please enter a post code, zip code or place name'));
 			$this->add_warn_control('txtSearch');			
 		}
 		

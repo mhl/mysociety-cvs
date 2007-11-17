@@ -79,7 +79,7 @@ class addcontact_page extends pagebase {
 		$valid = true;
 		if($this->group->involved_type == 'email'){
 			if($this->group->involved_email == '' || !valid_email($this->group->involved_email)){
-				$this->add_warning('Please enter a valid email address people can use to contact the group');
+				$this->add_warning($this->smarty->translate('Please enter a valid email address people can use to contact the group'));
 				$this->add_warn_control('txtInvolvedEmail');
 				$valid = false;				
 			}
@@ -87,24 +87,24 @@ class addcontact_page extends pagebase {
 		
 		if($this->group->involved_type == 'link'){
 			if($this->group->involved_link == '' || !valid_url($this->group->involved_link)){
-				$this->add_warning('Please enter a valid web address people can visit to get involved with the group');
+				$this->add_warning($this->smarty->translate('Please enter a valid web address people can visit to get involved with the group'));
 				$this->add_warn_control('txtInvolvedLink');
 				$valid = false;				
 			}
 		}
 		
 		if($this->group->created_email == ''){
-			$this->add_warning('Please enter your email address');
+			$this->add_warning($this->smarty->translate('Please enter your email address'));
 			$this->add_warn_control('txtCreatedEmail');
 			$valid = false;				
 		}elseif(!valid_email($this->group->created_email)){
-			$this->add_warning('Your email address is invalid, please check it and try again');
+			$this->add_warning($this->smarty->translate('Your email address is invalid, please check it and try again'));
 			$this->add_warn_control('txtCreatedEmail');
 			$valid = false;				
 		}
 		
 		if($this->group->created_name == ''){
-			$this->add_warning('Please enter your name');
+			$this->add_warning($this->smarty->translate('Please enter your name'));
 			$this->add_warn_control('txtCreatedName');
 			$valid = false;				
 		}

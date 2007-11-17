@@ -1,9 +1,9 @@
 {include file="../templates/header.tpl"}
 
     <div class="attention">
-        <h3>Sorry, page not found :(</h3>
+        <h3>{l}Sorry, page not found{/l} :(</h3>
         <p>
-            <a href="{$www_server}">Search for a group</a> <a href="{$www_server}/addabout/">Add a new a group</a> 
+            <a href="{$www_server}">{l}Search for a group{/l}</a> <a href="{$www_server}/addabout/">{l}Add a new a group{/l}</a> 
         </p>
     </div>
 

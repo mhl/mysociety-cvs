@@ -1,31 +1,30 @@
 {include file="../templates/header.tpl"}
 
-
-<h3>About {$site_name}</h3>
+<h3>{l}About {$site_name}{/l}</h3>
 
 <div class="contentleft">
     <p class="shout">
-        {$site_name} helps you find email lists, forums and community blogs where you live. 
+        {l}{$site_name} helps you find email lists, forums and community blogs where you live.{/l}
     </p>
     <ul class="shout">
         <li>
-            Discuss local issues and share information.
+            {l}Discuss local issues and share information.{/l}
         </li>
         <li>
-            Find local issues that are important to you. Make a change with the help of others.
+            {l}Find local issues that are important to you. Make a change with the help of others.{/l}
         </li>
         <li>
-            Run a local email list? Publicise your group and get new local members!
+            {l}Run a local email list? Publicise your group and get new local members!{/l}
         </li>
     </ul>
 </div>
 
 <div class="contentright">
-    <h4>Want to know more?</h4>
+    <h4>{l}Want to know more?{/l}</h4>
     <ul class="nobullets">
-        <li><a href="{$www_server}/faq/">Read our FAQ's</a></li>
-        <li><a href="{$www_Server}">Search for a group</a></li>
-        <li><a href="mailto:team@{$domain}">Contact us</a></li>        
+        <li><a href="{$www_server}/faq/">{l}Read our FAQ's{/l}</a></li>
+        <li><a href="{$www_Server}">{l}Search for a group{/l}</a></li>
+        <li><a href="mailto:team@{$domain}">{l}Contact us{/l}</a></li>        
     </ul>
 </div>
 

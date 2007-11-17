@@ -46,10 +46,10 @@ class confirmed_page extends pagebase {
 			//show page
 	    	$this->page_title = "your email has been sent";					
 	    	$this->menu_item = "search";				
-			$this->assign('title', "Your email has been sent");			
-			$this->assign('text', "Hopefully someone from that group will contact you soon.");						
+			$this->assignLang('title', "Your email has been sent");			
+			$this->assignLang('text', "Hopefully someone from that group will contact you soon.");						
 			$this->assign('link', WWW_SERVER);
-			$this->assign('link_text', "Want to search for another group?");
+			$this->assignLang('link_text', "Want to search for another group?");
 
 			//Update the stats table
 			tableclass_stat::increment_stat("contactemail.confirmed.count");

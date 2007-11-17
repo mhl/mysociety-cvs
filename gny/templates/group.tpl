@@ -2,7 +2,7 @@
 
 {if $refering_url != '' && $show_return == true}
     <div id="divReturnToSearch">
-        <a href="{$refering_url}">&lt; back to search results</a>
+        <a href="{$refering_url}">&lt; {l}back to search results{/l}</a>
     </div>
 {/if}
 

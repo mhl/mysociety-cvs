@@ -11,5 +11,5 @@
      
      <span class="note">{$group->description}</span> 
 
-     <abbr class="geo" title="{$group->lat_centroid};{$group->long_centroid}">Centroid of the area covered by {$group->name}</abbr>
+     <abbr class="geo" title="{$group->lat_centroid};{$group->long_centroid}">{l}Centroid of the area covered by {$group->name}{/l}</abbr>
 </div>
