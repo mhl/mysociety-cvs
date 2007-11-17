@@ -37,7 +37,7 @@ about local groups near you to help it grow. <a href="/add/about/">Add a group n
         <div id="divFrontRight">
             <h3>{l}Help us map the worlds online communities{/l}</h3>
             <p>
-                <strong>{l}It's simple, just 4 steps to add a group{/l}</strong>. {l}Tell us what the group does, what area it covers and how 
+                <strong>{l}It's simple, just 4 steps to add any group you know about{/l}</strong>. {l}Tell us what the group does, what area it covers and how 
                 people near you can get involved, then confirm the details.{/l}<br/>
                 <a id="aGetStarted" href="{$www_server}/add/about/">{l}Add a group now{/l} &gt;&gt;</a>
             </p>
