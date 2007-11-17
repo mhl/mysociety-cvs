@@ -1,7 +1,7 @@
 {include file="../templates/header.tpl"}
 
-<p id="frontAddBlurb">This site hasn't officially launched yet. We need your knowledge
-about local groups near you to help it grow. <a href="/add/about/">Add a group now!</a>
+<p id="pAddBlurb">This site hasn't officially launched yet. We need your knowledge
+about local groups near you to help it grow. <a href="/add/about/">Add a group now &raquo;</a>
 </p>
 
     <form id="frmSearchMain" action="{$form_action}" method="post">
@@ -32,14 +32,14 @@ about local groups near you to help it grow. <a href="/add/about/">Add a group n
                     </li>
                 {/foreach}
             </ul>
-            <a id="aBrowseAll" href="{$www_server}/browse/">{l}Browse all groups{/l} &gt;&gt;</a>
+            <a id="aBrowseAll" href="{$www_server}/browse/">{l}Browse all groups{/l} &raquo;</a>
         </div>
         <div id="divFrontRight">
-            <h3>{l}Help us map the worlds online communities{/l}</h3>
+            <h3>{l}Help us map the worlds online communities!{/l}</h3>
             <p>
                 <strong>{l}It's simple, just 4 steps to add any group you know about{/l}</strong>. {l}Tell us what the group does, what area it covers and how 
-                people near you can get involved, then confirm the details.{/l}<br/>
-                <a id="aGetStarted" href="{$www_server}/add/about/">{l}Add a group now{/l} &gt;&gt;</a>
+                people can get involved, then confirm the details.{/l}<br/>
+                <a id="aGetStarted" href="{$www_server}/add/about/">{l}Add a group now{/l} &raquo;</a>
             </p>
         </div>
     </form>
