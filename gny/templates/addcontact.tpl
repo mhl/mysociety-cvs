@@ -34,7 +34,7 @@
     </ul>
     <small class="required"><span>*</span> = {l}required information{/l}</small>
     <div class="buttons">
-        <input type="submit" class="button" value="{l}Preview &amp; confirm{/l} >"/>
+        <input type="submit" class="button" value="{l}Preview &amp; confirm{/l} &raquo;"/>
     </div>
 </form>
 {include file="../templates/footer.tpl"}

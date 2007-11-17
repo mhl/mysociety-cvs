@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="buttons">
-            <input type="submit" value="{l}Joining the group{/l} >" />
+            <input type="submit" value="{l}Joining the group{/l} &raquo;" />
         </div>
     </div>
 </form>

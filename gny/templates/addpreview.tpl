@@ -14,7 +14,7 @@
     </p>
 
     <div class="buttons">
-        <input type="submit" class="button" value="{l}Confirm this group{/l} >"/>
+        <input type="submit" class="button" value="{l}Confirm this group{/l} &raquo;"/>
     </div>
     
 </form>

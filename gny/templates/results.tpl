@@ -22,7 +22,7 @@
         <div id="divResultsHelp" class="aligncenter">
             <h3>{l}Sorry, we couldn't find any groups {if $place_name !=''}for {$place_name|escape:html}{else}for that location{/if}{/l}</h3>
             
-            <h4 id="hHelpMap">{l}Help map the worlds online communities!{/l} <br/> <a href="{$www_server}/add/about/?q={$location}">{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if}</a>{/l}</h4>
+            <h4 id="hHelpMap">{l}Help map the worlds online communities!{/l} <br/> <a href="{$www_server}/add/about/?q={$location}">{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if} &raquo;</a>{/l}</h4>
             
             <em id="emOr">or use PledgeBank.com to start one</em>
         </div>
@@ -53,7 +53,7 @@
 
 			</ul>
 			<div class="buttons">
-        	    <input class="button" type="submit" name="tostep1" value="{l}Continue on Pledgebank.com{/l} &gt;&gt;"></p>
+        	    <input class="button" type="submit" name="tostep1" value="{l}Continue on Pledgebank.com{/l} &raquo;"></p>
         	</div>
         </form>
         <p id="pPledgeBank">

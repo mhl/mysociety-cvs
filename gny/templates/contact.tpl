@@ -28,7 +28,7 @@ All the best{/l}
         </ul>
         <small class="required"><span>*</span> = {l}required information{/l}</small>
         <div class="buttons">
-            <input type="submit" value="{l}Next{/l} >" />
+            <input type="submit" value="{l}Next{/l} &raquo;" />
         </div>
     </form>
 {include file="../templates/footer.tpl"}    

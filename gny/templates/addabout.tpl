@@ -30,7 +30,7 @@
         </ul>    
          <small class="required"><span>*</span> = {l}required information{/l}</small>
         <div class="buttons">
-            <input type="submit" value="{l}Area covered{/l} >" />
+            <input type="submit" value="{l}Area covered{/l} &raquo;" />
         </div>
     </form>
 {include file="../templates/footer.tpl"}        
