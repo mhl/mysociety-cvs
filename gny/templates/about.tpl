@@ -4,17 +4,20 @@
 
 <div class="contentleft">
     <p class="shout">
-        {l}{$site_name} helps you find email lists, forums and community blogs where you live.{/l}
+        {l}We don't talk enough. {$site_name} helps people in your neighbourhood get to know each other!{/l}
     </p>
-    <ul class="shout">
+    <ul class="shout nobullets">
         <li>
-            {l}Discuss local issues and share information.{/l}
+            
         </li>
         <li>
-            {l}Find local issues that are important to you. Make a change with the help of others.{/l}
+            {l}Find email lists, forums and community blogs where you live{/l}
         </li>
         <li>
-            {l}Run a local email list? Publicise your group and get new local members!{/l}
+            {l}Help people find a group you know about by <a href="{$www_server}/add/about/">adding it to {$site_name} in 4 simple steps</a>{/l}
+        </li>
+        <li>
+            {l}Get people talking about local issues that are important to them. Make a change with the help of others.{/l}
         </li>
     </ul>
 </div>

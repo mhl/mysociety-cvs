@@ -19,11 +19,14 @@
             </div>
         {/foreach}
     {else}
-        <h3 class="centerpage">{l}Sorry, we couldn't find any groups for {if $place_name !=''}{$place_name|escape:html}{else}that location{/if}{/l}</h3>
-        
-        <h4><a href="{$www_server}/add/about/?q={$location}">{l}Add an existing group for this location</a> or use PledgeBank.com to start a one{/l}</h4>
-
-        <form id="frmPledge" accept-charset="utf-8" name="pledge" method="post" action="http://www.pledgebank.com/new">
+        <div id="divResultsHelp" class="aligncenter">
+            <h3>{l}Sorry, we couldn't find any groups {if $place_name !=''}for {$place_name|escape:html}{else}for that location{/if}{/l}</h3>
+            
+            <h4 id="hHelpMap">{l}Help map the worlds online communities!{/l} <br/> <a href="{$www_server}/add/about/?q={$location}">{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if}</a>{/l}</h4>
+            
+            <em id="emOr">or use PledgeBank.com to start one</em>
+        </div>
+        <form id="frmPledge"  accept-charset="utf-8" name="pledge" method="post" action="http://www.pledgebank.com/new">
 			<ul class="form nobullets">
 				<li>
 					<label for="title">{l}I will{/l}</label>
