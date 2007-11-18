@@ -21,7 +21,7 @@
     {else}
         <div id="divResultsHelp" class="aligncenter">
             <h3>{l}Nobody has added any groups {if $place_name !=''}for {$place_name|escape:html}{else}for that location{/if} yet!{/l}</h3>
-                <a href="{$www_server}/add/about/?q={$location}">{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if} &raquo;</a>{/l}
+                <a href="{$www_server}/add/about/?q={$location}">{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}near {$query}{/if} &raquo;</a>{/l}
             <p>
                 <a href="{$www_server}/add/about/?q={$location}">
                     <img src="{$www_server}/images/globe.png" alt="globe" title="{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if}{/l}"/>
@@ -32,7 +32,7 @@
                     <strong>It takes 4 simple steps to add a group.</strong>
                 {/l} 
             </p>
-            
+
         </div>
         <em id="emOr">or use PledgeBank.com to start one</em>        
         <form id="frmPledge"  accept-charset="utf-8" name="pledge" method="post" action="http://www.pledgebank.com/new">
