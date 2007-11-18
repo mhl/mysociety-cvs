@@ -20,12 +20,21 @@
         {/foreach}
     {else}
         <div id="divResultsHelp" class="aligncenter">
-            <h3>{l}Sorry, we couldn't find any groups {if $place_name !=''}for {$place_name|escape:html}{else}for that location{/if}{/l}</h3>
+            <h3>{l}Nobody has added any groups {if $place_name !=''}for {$place_name|escape:html}{else}for that location{/if} yet!{/l}</h3>
+                <a href="{$www_server}/add/about/?q={$location}">{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if} &raquo;</a>{/l}
+            <p>
+                <a href="{$www_server}/add/about/?q={$location}">
+                    <img src="{$www_server}/images/globe.png" alt="globe" title="{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if}{/l}"/>
+                </a>
+                <br/>
+                {l}
+                    Help map the worlds online communities by adding an community email group, <br/>forum or blog you know about{if $place_name !=''} in {$place_name|escape:html}{/if}.
+                    <strong>It's simple, it just takes 4 simple steps.</strong>
+                {/l} 
+            </p>
             
-            <h4 id="hHelpMap">{l}Help map the worlds online communities!{/l} <br/> <a href="{$www_server}/add/about/?q={$location}">{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if} &raquo;</a>{/l}</h4>
-            
-            <em id="emOr">or use PledgeBank.com to start one</em>
         </div>
+        <em id="emOr">or use PledgeBank.com to start one</em>        
         <form id="frmPledge"  accept-charset="utf-8" name="pledge" method="post" action="http://www.pledgebank.com/new">
 			<ul class="form nobullets">
 				<li>
@@ -34,20 +43,20 @@
 					</p>
 					<p>
 						<label for="target">{l}but only if{/l}</label>
-						<input title="Target number of people" size="2" type="text" id="txtTarget" name="target" value="5">
+						<input title="Target number of people" size="2" type="text" id="txtTarget" name="target" value="5"/>
 						<input type="hidden" id="hidType" name="type" value="other people">
 						{l}other local people{/l}
 					</p>
 					<p>
 						<label for="signup">{l}will{/l}</label>
-						<input type="text" id="txtSignup" name="signup" value="{l}join the email group{/l}">
-						<input type="hidden" name="date" value="">
-						<input type="hidden" name="ref" value=""> 
+						<input type="text" id="txtSignup" name="signup" value="{l}join the email group{/l}"/>
+						<input type="hidden" name="date" value=""/>
+						<input type="hidden" name="ref" value=""/> 
 						<input type="hidden" name="detail" value="" />
-						<input type="hidden" name="name" value="">
-						<input type="hidden" name="email" value="">
-						<input type="hidden" name="identity" value="">
-						<input type="hidden" name="tags" value="{$site_name|lower}">
+						<input type="hidden" name="name" value=""/>
+						<input type="hidden" name="email" value=""/>
+						<input type="hidden" name="identity" value=""/>
+						<input type="hidden" name="tags" value="{$site_name|lower}"/>
 					</p>
 				</li>
 
