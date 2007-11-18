@@ -29,7 +29,7 @@
                 <br/>
                 {l}
                     Help map the worlds online communities by adding a community email group, <br/>forum or blog you know about{if $place_name !=''} in {$place_name|escape:html}{/if}.
-                    <strong>It's simple, it just takes 4 simple steps.</strong>
+                    <strong>It takes 4 simple steps to add a group.</strong>
                 {/l} 
             </p>
             
