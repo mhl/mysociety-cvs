@@ -24,7 +24,7 @@
                 <a href="{$www_server}/add/about/?q={$location}">{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if} &raquo;</a>{/l}
             <p>
                 <a href="{$www_server}/add/about/?q={$location}">
-                    <img src="{$www_server}/images/globe.png" alt="globe" title="{l}Add a group you know about {if $place_name !=''}in {$place_name|escape:html}{else}this location{/if}{/l}"/>
+                    <img src="{$www_server}/images/globesmall.png"/>
                 </a>
                 <br/>
                 {l}
