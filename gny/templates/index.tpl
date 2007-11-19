@@ -35,7 +35,7 @@ about local groups near you to help it grow. <a href="/add/about/">Add a group n
             <a id="aBrowseAll" href="{$www_server}/browse/">{l}Browse all groups{/l} &raquo;</a>
         </div>
         <div id="divFrontRight">
-            <h3>{l}Help map the worlds online communities!{/l}</h3>
+            <h3>{l}Help map the world&rsquo;s online communities!{/l}</h3>
             <p>
                 <strong>{l}It takes 4 simple steps to add a group you know about{/l}</strong>. {l}Tell us what the group does, the area it covers and how 
                 people can get involved, then confirm the details.{/l}<br/>

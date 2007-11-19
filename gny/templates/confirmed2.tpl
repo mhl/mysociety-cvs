@@ -43,7 +43,7 @@ All the best
         <p>
             {l}We have set up an email group for people who organise groups like yours{/l}
         </p>
-        <p><a href="{$organisers_group_url}">{l}Click here to join the group organisers email group.{/l}</a></p>
+        <p><a href="{$organisers_group_url}">{l}Click here to join the group organisers&rsquo; email group.{/l}</a></p>
     {/if}
 </div>    
 

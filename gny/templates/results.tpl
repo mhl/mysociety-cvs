@@ -28,7 +28,7 @@
                 </a>
                 <br/>
                 {l}
-                    Help map the worlds online communities by adding a community email group, <br/>forum or blog you know about{if $place_name !=''} in {$place_name|escape:html}{/if}.
+                    Help map the world&rsquo;s online communities by adding a community email group, <br/>forum or blog you know about{if $place_name !=''} in {$place_name|escape:html}{/if}.
                     <strong>It takes 4 simple steps to add a group.</strong>
                 {/l} 
             </p>
