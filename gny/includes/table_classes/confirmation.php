@@ -23,7 +23,7 @@ class tableclass_confirmation extends DB_DataObject {
     ###END_AUTOCODE
 
 	public function send($to, $subject, $text, $table, $id){
-		
+
 		//generate key etc
 		$this->link_key = crypt($table . $id);
 		$this->link_key = str_replace('.', '', $this->link_key); // remove any full stops as they look weird
@@ -37,10 +37,13 @@ class tableclass_confirmation extends DB_DataObject {
 		$url = CONFIRMATION_BASE_URL . urlencode($this->link_key);
 
 		//Setup email text
-		$smarty = new Smarty();
+		$smarty = new IntSmarty();
         $smarty->compile_dir = SMARTY_PATH;
         $smarty->compile_check = true;
         $smarty->template_dir = TEMPLATE_DIR;
+        $this->smarty->lang_path = LANGUAGE_DIR;
+		$this->smarty->setup();
+		
 		$smarty->assign('text',$text);
 		$smarty->assign('url',$url);
 		$smarty->assign('site_name', SITE_NAME);
