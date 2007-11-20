@@ -37,12 +37,10 @@ class tableclass_confirmation extends DB_DataObject {
 		$url = CONFIRMATION_BASE_URL . urlencode($this->link_key);
 
 		//Setup email text
-		$smarty = new IntSmarty();
+		$smarty = new Smarty();
         $smarty->compile_dir = SMARTY_PATH;
         $smarty->compile_check = true;
         $smarty->template_dir = TEMPLATE_DIR;
-        $this->smarty->lang_path = LANGUAGE_DIR;
-		$this->smarty->setup();
 		
 		$smarty->assign('text',$text);
 		$smarty->assign('url',$url);
