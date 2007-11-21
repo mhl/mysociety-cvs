@@ -56,11 +56,9 @@ class addcontact_page extends pagebase {
 		$this->group->involved_type = $this->data['radInvolvedType'];
 
 		if($this->group->involved_type == 'email'){
-			$this->group->involved_link = '';		
-			$this->group->involved_email = $this->data['txtInvolvedEmail'];
+			$this->group->involved_link = $this->data['txtInvolvedEmail'];
 		}else{
 			$this->group->involved_link = $this->data['txtInvolvedLink'];		
-			$this->group->involved_email = '';
 			
 			// if the link doesnt look like a url then add http, (this gets validated again later)
 			if(!valid_url($this->group->involved_link)){
@@ -78,7 +76,7 @@ class addcontact_page extends pagebase {
 
 		$valid = true;
 		if($this->group->involved_type == 'email'){
-			if($this->group->involved_email == '' || !valid_email($this->group->involved_email)){
+			if($this->group->involved_link == '' || !valid_email($this->group->involved_link)){
 				$this->add_warning($this->smarty->translate('Please enter a valid email address people can use to contact the group'));
 				$this->add_warn_control('txtInvolvedEmail');
 				$valid = false;				
