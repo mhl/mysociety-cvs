@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2007-10-21 20:28+0100\n"
+"POT-Creation-Date: 2007-11-28 13:45+0000\n"
 "PO-Revision-Date: 2005-08-15 10:02-0000\n"
 "Last-Translator: Nic Dafis <nicdafis@gmail.com>\n"
 "Language-Team: Welsh <LL@pledgebank.com>\n"
@@ -990,7 +990,8 @@ msgid "Zimbabwe"
 msgstr "Simbabwe"
 
 #: phplib/importparams.php:140 pb/phplib/login.php:44 pb/phplib/login.php:71
-#: pb/web/alert.php:60 pb/web/contact.php:133 pb/web/new.php:689
+#: pb/web/alert.php:60 pb/web/contact.php:133 pb/web/new.php:695
+#: pb/web/new_orig.php:689 pb/web/new_tim.php:689
 msgid "Please enter a valid email address"
 msgstr "Rhowch cyfeiriad ebost dilys"
 
@@ -1005,6 +1006,45 @@ msgstr "Disgwylwyd enw yn matches_name"
 #: phplib/person.php:133
 msgid "PASSWORD must not be null in password method"
 msgstr "Ni all PASSWORD fod yn nwl ym method cyfrinair"
+
+#: phplib/sharethis.php:81
+#, fuzzy
+msgid "Close"
+msgstr "Ar gau"
+
+#: phplib/sharethis.php:83 pb/phplib/share.php:42
+msgid "Social Web"
+msgstr ""
+
+#: phplib/sharethis.php:84 phplib/sharethis.php:111 pb/phplib/share.php:44
+#, fuzzy
+msgid "Email"
+msgstr "Ebost:"
+
+#: phplib/sharethis.php:114
+msgid "To: (up to 5 emails)"
+msgstr ""
+
+#: phplib/sharethis.php:118 pb/phplib/comments.php:325 pb/phplib/fns.php:264
+#: pb/phplib/pledge.php:725 pb/web/contact.php:104 pb/web/new.php:212
+#: pb/web/new_orig.php:212 pb/web/new_tim.php:212 pb/web/ref-contact.php:107
+msgid "Your name:"
+msgstr "Eich enw:"
+
+#: phplib/sharethis.php:122 pb/phplib/comments.php:330 pb/phplib/fns.php:573
+#: pb/phplib/pledge.php:727 pb/web/contact.php:105 pb/web/new.php:214
+#: pb/web/new_orig.php:214 pb/web/new_tim.php:214 pb/web/ref-contact.php:108
+#, fuzzy
+msgid "Your email:"
+msgstr "Eich e-bost"
+
+#: phplib/sharethis.php:125 pb/phplib/fns.php:260
+msgid "Add a message, if you want:"
+msgstr "Rhowch neges, os dymunwch:"
+
+#: phplib/sharethis.php:129 pb/phplib/fns.php:267 pb/web/ref-contact.php:111
+msgid "Send message"
+msgstr "Anfon neges"
 
 #: phplib/stash.php:106 phplib/stash.php:139
 #, fuzzy
@@ -1043,8 +1083,8 @@ msgstr ""
 msgid "Language:"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:303 pb/phplib/fns.php:511
-#: pb/phplib/microsites.php:926 pb/phplib/pledge.php:540 pb/web/alert.php:137
+#: pb/phplib/admin-pb.php:303 pb/phplib/fns.php:512
+#: pb/phplib/microsites.php:926 pb/phplib/pledge.php:545 pb/web/alert.php:137
 msgid "Country:"
 msgstr "Gwlad"
 
@@ -1104,51 +1144,51 @@ msgstr "<em>Newidiadau i iaith yr addewid wedi eu cadw</em>"
 msgid "<em>Categories updated.</em>"
 msgstr "<em>Categoriau wedi eu diweddaru.</em>"
 
-#: pb/phplib/admin-pb.php:659
+#: pb/phplib/admin-pb.php:661
 msgid "<em>Pick a target larger than the number of signers please!</em>"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:664
+#: pb/phplib/admin-pb.php:666
 msgid "<em>Pick a target smaller than or equal to the number of signers please!</em>"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:670
+#: pb/phplib/admin-pb.php:672
 msgid "<em>Pledge text updated. Check it in the pledge box preview on the right.</em>"
 msgstr ""
 
 #. TRANS: This is an admin message, printed when someone has pressed the button to send an email to a pledge creator letting them send an announcement message. (Matthew Somerville,  http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/admin-pb.php:724
+#: pb/phplib/admin-pb.php:726
 msgid "<em>Announcement permission mail sent</em>"
 msgstr "<em>E-bost caniatad cyhoeddi wedi ei anfon</em>"
 
-#: pb/phplib/admin-pb.php:983
+#: pb/phplib/admin-pb.php:985
 msgid "No events have happened yet."
 msgstr ""
 
-#: pb/phplib/admin-pb.php:1018
+#: pb/phplib/admin-pb.php:1020
 #, fuzzy
 msgid "Statistics"
 msgstr "Ystadegau larymau"
 
-#: pb/phplib/admin-pb.php:1024
+#: pb/phplib/admin-pb.php:1026
 #, fuzzy
 msgid "Local alert summary"
 msgstr "Cofrestrau am larymau lleol"
 
-#: pb/phplib/admin-pb.php:1032
+#: pb/phplib/admin-pb.php:1034
 msgid "Alerts followed by signatures"
 msgstr ""
 
-#: pb/phplib/admin-pb.php:1048
+#: pb/phplib/admin-pb.php:1050
 #, php-format
 msgid "%d cases where somebody signed a pledge they had previously been alerted about. Time gap between alert and signing is displayed for each case."
 msgstr ""
 
-#: pb/phplib/admin-pb.php:1063
+#: pb/phplib/admin-pb.php:1065
 msgid "Local alerts by country"
 msgstr "Larymau lleol wrth y wlad"
 
-#: pb/phplib/admin-pb.php:1120
+#: pb/phplib/admin-pb.php:1122
 msgid "Local alert signups"
 msgstr "Cofrestrau am larymau lleol"
 
@@ -1219,106 +1259,95 @@ msgstr "Dangos y sylwadau i gyd"
 
 #. TRANS: This appears immediately after a comment, to show who wrote it when, as: "To pledge <pledge reference> by <person's name>, <how long ago>."
 #. TRANS: e.g. "blah, blah, this is a comment. - To pledge artnotads by Matthew, 3 hours ago."
-#: pb/phplib/comments.php:63
+#: pb/phplib/comments.php:62
 #, php-format
 msgid "To pledge %s by %s, %s."
 msgstr "I addo %s gan %s, %s."
 
 #. TRANS: This is a shortened version of the above string: "To pledge <pledge reference> by <person's name>."
-#: pb/phplib/comments.php:66
+#: pb/phplib/comments.php:65
 #, php-format
 msgid "To pledge %s by %s."
 msgstr "I addo %s gan %s."
 
 #. TRANS: This appears immediately after a comment, to show who wrote it when, as: "<person's name>, <how long ago>."
 #. TRANS: e.g. "Matthew, 4 minutes ago."
-#: pb/phplib/comments.php:73
+#: pb/phplib/comments.php:72
 #, php-format
 msgid "%s, %s."
 msgstr "%s, %s"
 
-#: pb/phplib/comments.php:80
+#: pb/phplib/comments.php:79
 msgid "Abusive? Report it!"
 msgstr "Yn faleisus? Rhowch wybod!"
 
 #. TRANS: this is an error message meaning, "The pledge called '%s' doesn't exist.
-#: pb/phplib/comments.php:114 pb/phplib/comments.php:265
+#: pb/phplib/comments.php:113 pb/phplib/comments.php:264
 #, php-format
 msgid "No pledge '%s'"
 msgstr "Dim addewid '%s'"
 
-#: pb/phplib/comments.php:118
+#: pb/phplib/comments.php:117
 msgid "No comments yet! Why not add one?"
 msgstr "Dim sylwadau hyd yn hyn! Beth am ychwanegu sylw?"
 
 #. TRANS: This appears under "Latest comments" on the front page as: "<start of comment text...> by <name>, on <pledge reference link>, <how long ago>"
 #. TRANS: e.g. "Most of my veg are British..." by Esther, on ukfood, 3 hours ago"
-#: pb/phplib/comments.php:166
+#: pb/phplib/comments.php:165
 #, php-format
 msgid "%s by %s, on %s, %s"
 msgstr "%s gan %s, ar addewid %s, %s"
 
 #. TRANS: this appears in an RSS feed as: "Comment on <pledge reference> pledge by <person's name>"
 #. TRANS: e.g. "Comment on Electric pledge by Owen Blacker"
-#: pb/phplib/comments.php:178
+#: pb/phplib/comments.php:177
 #, fuzzy, php-format
 msgid "Comment on %s pledge by %s"
 msgstr "Sylwadau ar yr addewid '%s'"
 
-#: pb/phplib/comments.php:239
+#: pb/phplib/comments.php:238
 #, fuzzy
 msgid "RSS feed of comments on all pledges"
 msgstr "Sylwadau ar yr addewid hwn"
 
-#: pb/phplib/comments.php:240
+#: pb/phplib/comments.php:239
 msgid "<h2>Latest comments</h2>"
 msgstr "<h2>Sylwadau diweddaraf</h2>"
 
-#: pb/phplib/comments.php:269
+#: pb/phplib/comments.php:268
 #, fuzzy
 msgid "No comments"
 msgstr "Eich sylw"
 
-#: pb/phplib/comments.php:321
+#: pb/phplib/comments.php:320
 #, fuzzy
 msgid "This pledge is closed for new comments."
 msgstr "Safle parhaol yr addewid:"
 
-#: pb/phplib/comments.php:324
+#: pb/phplib/comments.php:323
 #, fuzzy
 msgid "<h2>Add public comment</h2>"
 msgstr "<h2>Ychwanegu Sylw</h2>"
 
-#: pb/phplib/comments.php:326 pb/phplib/fns.php:263 pb/phplib/pledge.php:707
-#: pb/web/contact.php:104 pb/web/new.php:212 pb/web/ref-contact.php:107
-msgid "Your name:"
-msgstr "Eich enw:"
-
-#: pb/phplib/comments.php:331 pb/phplib/fns.php:572 pb/phplib/pledge.php:709
-#: pb/web/contact.php:105 pb/web/new.php:214 pb/web/ref-contact.php:108
-#, fuzzy
-msgid "Your email:"
-msgstr "Eich e-bost"
-
-#: pb/phplib/comments.php:337
+#: pb/phplib/comments.php:336
 #, fuzzy
 msgid "Your web site address"
 msgstr "Eich gwefan"
 
-#: pb/phplib/comments.php:337
+#: pb/phplib/comments.php:336
 msgid "(optional, will be shown publicly)"
 msgstr ""
 
-#: pb/phplib/comments.php:342
+#: pb/phplib/comments.php:341
 msgid "Your comment"
 msgstr "Eich sylw"
 
-#: pb/phplib/comments.php:350
+#: pb/phplib/comments.php:349
 #, fuzzy
 msgid "Privacy note:"
 msgstr "Cwestiynau Preifatrwydd"
 
-#: pb/phplib/comments.php:354
+#: pb/phplib/comments.php:353
 #, fuzzy
 msgid ""
 "Your name (and web site address if given) will be shown publicly on this page\n"
@@ -1328,62 +1357,64 @@ msgstr ""
 "Bydd eich enw a'ch safle gwe, os ydych wedi ei roi, yn ymddangos ar eich sylw,\n"
 "ond fydd eich cyfeiriad e-bost ddim yn cael ei ddangos."
 
-#: pb/phplib/comments.php:360
+#: pb/phplib/comments.php:359
 msgid " Email me future comments on this pledge"
 msgstr "Ebostiwch sylwadau ar yr addewid hwn ataf"
 
-#: pb/phplib/comments.php:362 pb/phplib/microsites.php:1374 pb/web/new.php:418
-#: pb/web/new.php:465 pb/web/new.php:880
+#: pb/phplib/comments.php:361 pb/phplib/microsites.php:1374 pb/web/new.php:424
+#: pb/web/new.php:471 pb/web/new.php:886 pb/web/new_orig.php:418
+#: pb/web/new_orig.php:465 pb/web/new_orig.php:880 pb/web/new_tim.php:418
+#: pb/web/new_tim.php:465 pb/web/new_tim.php:880
 msgid "Preview"
 msgstr "Rhagolwg"
 
-#: pb/phplib/comments.php:364
+#: pb/phplib/comments.php:363
 msgid "Post comment"
 msgstr "Anfon sylw"
 
-#: pb/phplib/comments.php:383
+#: pb/phplib/comments.php:382
 #, fuzzy, php-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
 msgstr[0] "%d diwrnod ar &ocirc;l"
 msgstr[1] "%d diwrnod ar &ocirc;l"
 
-#: pb/phplib/comments.php:385
+#: pb/phplib/comments.php:384
 #, fuzzy, php-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "%d diwrnod ar &ocirc;l"
 msgstr[1] "%d diwrnod ar &ocirc;l"
 
-#: pb/phplib/comments.php:387
+#: pb/phplib/comments.php:386
 #, fuzzy, php-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "%d diwrnod ar &ocirc;l"
 msgstr[1] "%d diwrnod ar &ocirc;l"
 
-#: pb/phplib/comments.php:389
+#: pb/phplib/comments.php:388
 #, fuzzy, php-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d diwrnod ar &ocirc;l"
 msgstr[1] "%d diwrnod ar &ocirc;l"
 
-#: pb/phplib/comments.php:391
+#: pb/phplib/comments.php:390
 #, fuzzy, php-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d diwrnod ar &ocirc;l"
 msgstr[1] "%d diwrnod ar &ocirc;l"
 
-#: pb/phplib/comments.php:393
+#: pb/phplib/comments.php:392
 #, php-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/comments.php:395
+#: pb/phplib/comments.php:394
 msgid "less than a minute ago"
 msgstr ""
 
@@ -1395,20 +1426,20 @@ msgstr ""
 msgid "met"
 msgstr ""
 
-#: pb/phplib/fns.php:158
+#: pb/phplib/fns.php:159
 msgid "-- the PledgeBank.com team"
 msgstr "-- t&icirc;m PledgeBank.com"
 
-#: pb/phplib/fns.php:193 pb/web/poster.cgi:473
+#: pb/phplib/fns.php:194 pb/web/poster.cgi:473
 #, fuzzy
 msgid "PledgeBank.com"
 msgstr "T&icirc;m PledgeBank"
 
-#: pb/phplib/fns.php:246
+#: pb/phplib/fns.php:247
 msgid "Email this pledge"
 msgstr "Ebostio'r addewid"
 
-#: pb/phplib/fns.php:250
+#: pb/phplib/fns.php:251
 msgid ""
 "Please enter these details so that we can send your message to your contacts.\n"
 "We will not give or sell either your or their email address to anyone else."
@@ -1416,265 +1447,258 @@ msgstr ""
 "Rhowch y manylion hyn er mwyn i ni fedru anfon eich neges at eich cysylltiadau.\n"
 "Fyddwn ni ddim yn rhoi nac yn gwerthu'ch cyfeiriad e-bost chi na'u rhai nhw i unrhyw un arall."
 
-#: pb/phplib/fns.php:252
+#: pb/phplib/fns.php:253
 msgid "Other people's email addresses:"
 msgstr "Cyfeiriadau ebost pobl eraill:"
 
-#: pb/phplib/fns.php:259
-msgid "Add a message, if you want:"
-msgstr "Rhowch neges, os dymunwch:"
-
-#: pb/phplib/fns.php:264 pb/phplib/fns.php:506 pb/web/alert.php:134
+#: pb/phplib/fns.php:265 pb/phplib/fns.php:507 pb/web/alert.php:134
 #: pb/web/sms.php:229
 msgid "Email:"
 msgstr "Ebost:"
 
-#: pb/phplib/fns.php:266 pb/web/ref-contact.php:111
-msgid "Send message"
-msgstr "Anfon neges"
-
-#: pb/phplib/fns.php:279
+#: pb/phplib/fns.php:280
 msgid "the UK"
 msgstr "y DU"
 
 #. TRANS: i.e. "choose website" or "choose local place where action will be taken?" I've assumed the former. (Tim Morley, 2005-11-21)
 #. Yes, it's choose website. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000092.html)
-#: pb/phplib/fns.php:298
+#: pb/phplib/fns.php:299
 msgid "choose site"
 msgstr "dewis safle"
 
-#: pb/phplib/fns.php:301
+#: pb/phplib/fns.php:302
 msgid "change country"
 msgstr "newid gwlad"
 
-#: pb/phplib/fns.php:310
+#: pb/phplib/fns.php:311
 msgid "change language"
 msgstr "newid iaith"
 
-#: pb/phplib/fns.php:390
+#: pb/phplib/fns.php:391
 #, fuzzy, php-format
 msgid "%s%s pledges listed"
 msgstr "Dangosir addewidion %s (%s) yn unig"
 
-#: pb/phplib/fns.php:392
+#: pb/phplib/fns.php:393
 #, fuzzy, php-format
 msgid "%s%s pledges only listed"
 msgstr "Dangosir addewidion %s (%s) yn unig"
 
 #. TRANS: Worth thinking about word order here. The English reads e.g. "UK (change country) pledges and global English (change language) pledges listed. Even in English, and certainly in other languages, it'd probably be clearer as something like: "Listed below are pledges for the UK (change country) and global pledges written in English (change language)." (Tim Morley, 2005-11-27)
-#: pb/phplib/fns.php:398
+#: pb/phplib/fns.php:399
 #, fuzzy, php-format
 msgid "%s pledges and global %s pledges listed"
 msgstr "Dangosir addewidion %s (%s) a  %s (%s) byd eang yn unig"
 
-#: pb/phplib/fns.php:407
+#: pb/phplib/fns.php:408
 #, fuzzy, php-format
 msgid "There are no featured pledges for %s%s at the moment."
 msgstr "Does dim addewidion ar gyfer %s (%s) ar hyn o bryd."
 
-#: pb/phplib/fns.php:409
+#: pb/phplib/fns.php:410
 #, fuzzy
 msgid "There are no featured pledges at the moment."
 msgstr "Does dim addewidion newydd ar hyn o bryd."
 
-#: pb/phplib/fns.php:450 pb/phplib/fns.php:452
+#: pb/phplib/fns.php:451 pb/phplib/fns.php:453
 msgid "less than 1 mile away"
 msgstr ""
 
-#: pb/phplib/fns.php:454
+#: pb/phplib/fns.php:455
 msgid "less than 1 km away"
 msgstr ""
 
-#: pb/phplib/fns.php:456 pb/phplib/fns.php:459
+#: pb/phplib/fns.php:457 pb/phplib/fns.php:460
 #, php-format
 msgid "%d mile away"
 msgid_plural "%d miles away"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/fns.php:457 pb/phplib/fns.php:460
+#: pb/phplib/fns.php:458 pb/phplib/fns.php:461
 #, php-format
 msgid "%d mile"
 msgid_plural "%d miles"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/phplib/fns.php:462
+#: pb/phplib/fns.php:463
 #, php-format
 msgid "%d km away"
 msgstr ""
 
-#: pb/phplib/fns.php:462
+#: pb/phplib/fns.php:463
 #, php-format
 msgid "%d km"
 msgstr ""
 
-#: pb/phplib/fns.php:501
+#: pb/phplib/fns.php:502
 msgid "Sign up for emails when people make pledges in your local area"
 msgstr "Cofrestrwch i gael ebost am addewidion newydd yn eich ardal chi."
 
-#: pb/phplib/fns.php:503
+#: pb/phplib/fns.php:504
 msgid "Works in any country!"
 msgstr "Gweithio mewn unrhyw wlad!"
 
-#: pb/phplib/fns.php:509 pb/phplib/microsites.php:924
+#: pb/phplib/fns.php:510 pb/phplib/microsites.php:924
 #, fuzzy
 msgid "Postcode:"
 msgstr "C&ocirc;d Post Prydeinig"
 
-#: pb/phplib/fns.php:512 pb/phplib/microsites.php:920 pb/web/pb.js:129
-#: pb/web/pb.js:132
+#: pb/phplib/fns.php:513 pb/phplib/microsites.php:920 pb/web/pb.js:134
+#: pb/web/pb.js:136
 msgid "Town:"
 msgstr "Tref:"
 
-#: pb/phplib/fns.php:514 pb/web/alert.php:147
+#: pb/phplib/fns.php:515 pb/web/alert.php:157
 msgid "Subscribe"
 msgstr "Tanysgrifio"
 
-#: pb/phplib/fns.php:532
+#: pb/phplib/fns.php:533
 #, fuzzy
 msgid "Change password"
 msgstr "Newidiwch eich cyfrinair"
 
-#: pb/phplib/fns.php:532
+#: pb/phplib/fns.php:533
 msgid "Set password"
 msgstr "Gosod cyfrinair"
 
-#: pb/phplib/fns.php:546
+#: pb/phplib/fns.php:547
 msgid "Please type your new password twice"
 msgstr "Teipiwch eich cyfrinair newydd ddwywaith"
 
-#: pb/phplib/fns.php:548
+#: pb/phplib/fns.php:549
 msgid "Your password must be at least 5 characters long"
 msgstr "Rhaid cael o leia 5 nod yn eich cyfrinair"
 
-#: pb/phplib/fns.php:550
+#: pb/phplib/fns.php:551
 msgid "Please type the same password twice"
 msgstr "Teipiwch yr un cyfrinair ddwywaith, os gwelwch yn dda"
 
-#: pb/phplib/fns.php:554
+#: pb/phplib/fns.php:555
 msgid "Password successfully updated"
 msgstr ""
 
-#: pb/phplib/fns.php:555
+#: pb/phplib/fns.php:556
 msgid "Password successfully set"
 msgstr ""
 
-#: pb/phplib/fns.php:564
+#: pb/phplib/fns.php:565
 msgid "If you wish to change your password, you can do so here."
 msgstr ""
 
-#: pb/phplib/fns.php:565
+#: pb/phplib/fns.php:566
 msgid "Set a password, and we won't need to check your email address each time you use PledgeBank."
 msgstr ""
 
-#: pb/phplib/fns.php:568
+#: pb/phplib/fns.php:569
 msgid "New password:"
 msgstr "Cyfrinair newydd:"
 
-#: pb/phplib/fns.php:569
+#: pb/phplib/fns.php:570
 #, fuzzy
 msgid "New password, again:"
 msgstr "Cyfrinair newydd (eto):"
 
-#: pb/phplib/fns.php:570 pb/phplib/pledge.php:998 pb/web/ref-picture.php:188
+#: pb/phplib/fns.php:571 pb/phplib/pledge.php:1016 pb/web/ref-picture.php:188
 #: pb/web/sms.php:231
 msgid "Submit"
 msgstr "Anfonwch"
 
-#: pb/phplib/fns.php:572
+#: pb/phplib/fns.php:573
 msgid "(<a href=\"/contact\">contact us</a> to change this)"
 msgstr ""
 
-#: pb/phplib/gaze-controls.php:33 pb/web/search.php:216 pb/web/search.php:255
+#: pb/phplib/gaze-controls.php:47
 msgid "near"
 msgstr "ar bwys"
 
-#: pb/phplib/gaze-controls.php:49
+#: pb/phplib/gaze-controls.php:77
 #, php-format
 msgid "There is more than one place called '%s'. Please choose which one you mean, or which place with a similar name:"
 msgstr ""
 
-#: pb/phplib/gaze-controls.php:51
+#: pb/phplib/gaze-controls.php:79
 #, php-format
 msgid "Sorry, we don't know where '%s' is. We know about these places with similar names, please choose one if it is right:"
 msgstr ""
 
-#: pb/phplib/gaze-controls.php:63
+#: pb/phplib/gaze-controls.php:100
 msgid "If it isn't any of those, try a different spelling, or the name of another nearby town:"
 msgstr "Os nad yw'n agos i un o'r rhain, ceisiwch sillafiad gwahanol [neu'r fersiwn Saesneg], neu enw tref arall yn yr ardal:"
 
-#: pb/phplib/gaze-controls.php:89 pb/web/new.php:1103 pb/web/pb.js:111
+#: pb/phplib/gaze-controls.php:126 pb/web/new.php:1120
+#: pb/web/new_orig.php:1103 pb/web/new_tim.php:1109 pb/web/pb.js:111
 msgid "(choose one)"
 msgstr "(dewiswch un)"
 
-#: pb/phplib/gaze-controls.php:91
+#: pb/phplib/gaze-controls.php:128
 msgid "Not specific to any location"
 msgstr ""
 
-#: pb/phplib/gaze-controls.php:129
+#: pb/phplib/gaze-controls.php:166
 msgid "---------------------------------------------------"
 msgstr "---------------------------------------------------"
 
-#: pb/phplib/gaze-controls.php:172
+#: pb/phplib/gaze-controls.php:209
 msgid "Now please select one of the possible places; if none of them is right, please type the name of another nearby place"
 msgstr "Dewiswch un o'r llefydd posibl; os nad oes un sy'n iawn, teipiwch enw llegerllaw arall"
 
-#: pb/phplib/gaze-controls.php:193
+#: pb/phplib/gaze-controls.php:230 pb/web/pb.js:147
 msgid "Place name:"
 msgstr "Enw lle:"
 
-#: pb/phplib/gaze-controls.php:205
+#: pb/phplib/gaze-controls.php:242
 msgid "Or, UK only, you can give a postcode area:"
 msgstr "Neu, yn y DU yn unig, cewch chi roi'r ardal c&ocirc;d post:"
 
-#: pb/phplib/gaze-controls.php:207
+#: pb/phplib/gaze-controls.php:244
 msgid "(just the start of the postcode, such as WC1)"
 msgstr "(dim ond y rhan gyntaf o'r c&ocirc;d post, fel CF1)"
 
-#: pb/phplib/gaze-controls.php:269
+#: pb/phplib/gaze-controls.php:312
 msgid "Please choose a country"
 msgstr "Dewiswch wlad"
 
-#: pb/phplib/gaze-controls.php:271
+#: pb/phplib/gaze-controls.php:314
 #, fuzzy
 msgid "Please enter a place rather than a postcode for location based pledge signups"
 msgstr "Teipiwch enw lle ar gyfer eich addewid lleol"
 
-#: pb/phplib/gaze-controls.php:274
+#: pb/phplib/gaze-controls.php:317
 msgid "Please enter either a place name or a postcode area, but not both"
 msgstr "Rhowch naill ai c&ocirc;d post neu enw lle, ond nid y ddau"
 
-#: pb/phplib/gaze-controls.php:277
+#: pb/phplib/gaze-controls.php:320
 msgid "You can only enter a postcode area if your pledge applies to the UK"
 msgstr "Cewch chi ddim ond rhoi c&ocirc;d post os ydy'ch addewid yn berthnasol i'r DU"
 
-#: pb/phplib/gaze-controls.php:281
+#: pb/phplib/gaze-controls.php:324
 msgid "Please enter a postcode, or just its first part; for example, OX1 3DR or WC1."
 msgstr "Rhowch naill ai c&ocirc;d post llawn dilys, neu'r rhan cyntaf o'r c&ocirc;d; er  enghraifft, CF1 3GF neu SA44."
 
-#: pb/phplib/gaze-controls.php:284
+#: pb/phplib/gaze-controls.php:327
 msgid "I'm afraid we don't know about Isle of Man or Channel Island postcodes. Please try entering a local town instead."
 msgstr ""
 
-#: pb/phplib/gaze-controls.php:286
+#: pb/phplib/gaze-controls.php:329
 #, fuzzy, php-format
 msgid "We couldn't recognise the postcode '%s'; please re-check it"
 msgstr "Doedden ni ddim yn gallu adnabod y c&ocirc;d post; a allwch chi ei wirio eto?"
 
-#: pb/phplib/gaze-controls.php:297
+#: pb/phplib/gaze-controls.php:347
 msgid "Please enter a place name. Choose a specific town where you will carry out the pledge, rather than a postcode."
 msgstr ""
 
-#: pb/phplib/gaze-controls.php:299
+#: pb/phplib/gaze-controls.php:349
 msgid "Please enter either a place name or a postcode area"
 msgstr "Rhowch naill ai c&ocirc;d post neu enw lle, ond nid y ddau"
 
-#: pb/phplib/gaze-controls.php:301
+#: pb/phplib/gaze-controls.php:351
 msgid "Please enter a place name"
 msgstr "Rhowch enw lle"
 
-#: pb/phplib/gaze-controls.php:339
+#: pb/phplib/gaze-controls.php:392
 #, php-format
 msgid "Unfortunately, we couldn't find anywhere with a name like '%s'.  Please try a different spelling, or another nearby village, town or city."
 msgstr "Yn anffodus, ni allwn ni ffeindio unrhywle gyda enw fel '%s'. Ceisiwch eto gyda sillafiad gwahanol, neu dr&iuml;al pentref, tref, neu ddinas arall yn yr un ardal."
@@ -1684,8 +1708,9 @@ msgid "Required parameter was missing"
 msgstr "Paramedr anghenrheidiol ar goll"
 
 #: pb/phplib/login.php:40 pb/phplib/login.php:67 pb/web/alert.php:59
-#: pb/web/comment.php:88 pb/web/contact.php:132 pb/web/new.php:688
-#: pb/web/ref-contact.php:36 pb/web/ref-email.php:46
+#: pb/web/comment.php:88 pb/web/contact.php:132 pb/web/new.php:694
+#: pb/web/new_orig.php:688 pb/web/new_tim.php:688 pb/web/ref-contact.php:36
+#: pb/web/ref-email.php:53
 msgid "Please enter your email address"
 msgstr "Rhowch eich cyfeiriad ebost"
 
@@ -1789,7 +1814,8 @@ msgid "(other PledgeBanks)"
 msgstr "Mae gen i gyfrinair"
 
 #: pb/phplib/microsites.php:260 pb/phplib/microsites.php:267
-#: pb/web/new.php:162 pb/web/new.php:167
+#: pb/web/new.php:162 pb/web/new.php:167 pb/web/new_orig.php:162
+#: pb/web/new_orig.php:167 pb/web/new_tim.php:162 pb/web/new_tim.php:167
 msgid "Pledge"
 msgstr "Addewid"
 
@@ -1800,7 +1826,7 @@ msgstr "Bhwtan"
 
 #: pb/phplib/microsites.php:263 pb/phplib/microsites.php:269
 #, fuzzy
-msgid "I&rsquo;ll do it, but only if you&rsquo;ll help"
+msgid "I&rsquo;ll do it, but <strong>only</strong> if you&rsquo;ll help"
 msgstr "Dywedwch wrth y byd \"Fe wna i, ond dim ond os wnewch chi helpu\""
 
 #. TRANS: 'PledgeBank' here is the first part of the HTML title which appears on browser windows, and search engines
@@ -2017,7 +2043,8 @@ msgstr "Terfyn"
 msgid "Percent signed"
 msgstr "Canradd llofnodwyd"
 
-#: pb/phplib/microsites.php:1070 pb/web/new.php:849
+#: pb/phplib/microsites.php:1070 pb/web/new.php:855 pb/web/new_orig.php:849
+#: pb/web/new_tim.php:849
 msgid "Category"
 msgstr "Categori"
 
@@ -2062,29 +2089,29 @@ msgid "Address"
 msgstr "Eich gwefan"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:137 pb/phplib/page.php:394
+#: pb/phplib/page.php:136 pb/phplib/page.php:396
 #, fuzzy
 msgid "PledgeBank"
 msgstr "T&icirc;m PledgeBank"
 
-#: pb/phplib/page.php:206
+#: pb/phplib/page.php:208
 msgid "Hello, "
 msgstr "Helo, "
 
-#: pb/phplib/page.php:212
+#: pb/phplib/page.php:214
 msgid "this isn't you?  click here"
 msgstr "nid chi yw hwn?  cliciwch yma"
 
-#: pb/phplib/page.php:218 pb/web/search.php:400
+#: pb/phplib/page.php:220 pb/web/search.php:435
 #, fuzzy
 msgid "Search for pledges:"
 msgstr "Chwilio am addewid"
 
-#: pb/phplib/page.php:220 pb/web/search.php:402
+#: pb/phplib/page.php:222 pb/web/search.php:437
 msgid "Search"
 msgstr "Ymchwilio"
 
-#: pb/phplib/page.php:227
+#: pb/phplib/page.php:229
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
@@ -2092,33 +2119,33 @@ msgstr ""
 "Safle prawf ar gyfer datblygwyr yn unig yw hwn. Mwy na thebyg\n"
 "eich bod angen <a href=\"http://www.pledgebank.com/\">y safle go iawn</a>."
 
-#: pb/phplib/page.php:232
+#: pb/phplib/page.php:234
 msgid "Note: On this test site, the date is faked to be"
 msgstr "Sylwer: Ar y safle hwn, mae'r dyddiad yn ffug, sef"
 
-#: pb/phplib/page.php:275
+#: pb/phplib/page.php:277
 msgid "Navigation"
 msgstr "Llywio"
 
-#: pb/phplib/page.php:289
+#: pb/phplib/page.php:291
 #, fuzzy
 msgid "Translate into your language..."
 msgstr "Cyfieithwch PledgeBank i'ch iaith eich hun"
 
-#: pb/phplib/page.php:290
+#: pb/phplib/page.php:292
 #, fuzzy
 msgid "Change"
 msgstr "Chad"
 
-#: pb/phplib/page.php:313 pb/web/lang.php:44
+#: pb/phplib/page.php:315 pb/web/lang.php:44
 msgid "Translate PledgeBank into your language"
 msgstr "Cyfieithwch PledgeBank i'ch iaith eich hun"
 
-#: pb/phplib/page.php:314
+#: pb/phplib/page.php:316
 msgid "Built by mySociety"
 msgstr "Adeiladwyd gan mySociety"
 
-#: pb/phplib/page.php:315
+#: pb/phplib/page.php:317
 msgid "Powered by Easynet"
 msgstr ""
 
@@ -2131,69 +2158,66 @@ msgstr "Sori! Aeth rhywbeth o'i le."
 msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
 msgstr "Ceisiwch eto'n hwyrach, neu <a href=\"mailto:team@pledgebank.com\">cysylltwch &acirc; ni am help i ddatrys y broblem."
 
-#: pb/phplib/pbfacebook.php:153 pb/web/new.php:167 pb/web/new.php:506
-#: pb/web/ref-index.php:394 pb/web/ref-plain.php:40
+#: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
+#: pb/web/new_orig.php:167 pb/web/new_orig.php:506 pb/web/new_tim.php:167
+#: pb/web/new_tim.php:506 pb/web/ref-index.php:403 pb/web/ref-plain.php:40
 msgid "I will"
 msgstr "Bydda i'n"
 
-#: pb/phplib/pbfacebook.php:185
+#: pb/phplib/pbfacebook.php:187
 #, fuzzy
 msgid "From:"
 msgstr "Oddi wrth"
 
-#: pb/phplib/pbfacebook.php:187
+#: pb/phplib/pbfacebook.php:189
 #, fuzzy
 msgid "on"
 msgstr "Nac ydy"
 
-#: pb/phplib/pbfacebook.php:189 pb/web/contact.php:107
-#: pb/web/ref-announce.php:323 pb/web/ref-announcearchive.php:67
+#: pb/phplib/pbfacebook.php:191 pb/web/contact.php:107
+#: pb/web/ref-announce.php:338 pb/web/ref-announcearchive.php:67
 msgid "Subject"
 msgstr "Pwnc"
 
-#: pb/phplib/pbfacebook.php:424
+#: pb/phplib/pbfacebook.php:435
 #, fuzzy
 msgid "None of your friends have made or signed any pledges."
 msgstr "Dych chi ddim wedi llofnodi addewid hyd yn hyn"
 
-#: pb/phplib/pbfacebook.php:425
+#: pb/phplib/pbfacebook.php:436
 #, fuzzy
 msgid "See some featured pledges."
 msgstr "Awgrymiadau am addewidion"
 
-#: pb/phplib/pbfacebook.php:453
+#: pb/phplib/pbfacebook.php:464
 #, fuzzy
 msgid "Pledge you've created:"
 msgstr "Creuwyd Addewid"
 
-#: pb/phplib/pbfacebook.php:476
+#: pb/phplib/pbfacebook.php:487
 #, fuzzy
 msgid "Pledge you've signed:"
 msgstr "<h2>Addewidion dych chi wedi eu llofnodi</h2>"
 
-#: pb/phplib/pbfacebook.php:485
+#: pb/phplib/pbfacebook.php:496
 #, fuzzy
 msgid "You've neither made nor signed any pledges."
 msgstr "Dych chi ddim wedi llofnodi addewid hyd yn hyn"
 
-#: pb/phplib/pbfacebook.php:533 pb/web/ref-sign.php:234 pb/web/sms.php:67
+#: pb/phplib/pbfacebook.php:547 pb/web/ref-sign.php:234 pb/web/sms.php:67
 #: pb/web/sms.php:137
 msgid "Thanks for signing up to this pledge!"
 msgstr "Diolch yn fawr am lofnodi'r addewid hwn!"
 
-#: pb/phplib/pbfacebook.php:539 pb/web/ref-sign.php:241
+#: pb/phplib/pbfacebook.php:553 pb/web/ref-sign.php:241
 msgid "Your signature has made this pledge reach its target! Woohoo!"
 msgstr "Eich llofnod chi yw'r un sy wedi gwthio'r addewid dros y llinell derfynol!Da iawn chi!"
 
-#: pb/phplib/pbfacebook.php:554
-msgid "The news that you've signed could not be added to your feed."
-msgstr ""
-
-#: pb/phplib/pbfacebook.php:562 pb/web/ref-sign.php:252
+#: pb/phplib/pbfacebook.php:578 pb/web/ref-sign.php:252
 msgid "You've already signed this pledge!"
 msgstr "Dych chi eisoes wedi llofnodi'r addewid hwn!"
 
-#: pb/phplib/pbfacebook.php:565 pb/web/ref-sign.php:257
+#: pb/phplib/pbfacebook.php:581 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Mae'n flin gennym &mdash; nid oedd yn bosibl i chi lofnodi'r addewid."
 
@@ -2213,321 +2237,321 @@ msgstr "Dyw'r addewid ddim yn y gronfa ddata"
 msgid "byarea_location_id not valid"
 msgstr ""
 
-#: pb/phplib/pledge.php:314
+#: pb/phplib/pledge.php:319
 msgid "Place"
 msgstr "Lleoliad"
 
-#: pb/phplib/pledge.php:316
+#: pb/phplib/pledge.php:321
 msgid "Postcode area"
 msgstr "Ardal C&ocirc;d Post"
 
-#: pb/phplib/pledge.php:458
+#: pb/phplib/pledge.php:463
 #, php-format
 msgid "Pledge &ldquo;%s&rdquo;"
 msgstr ""
 
-#: pb/phplib/pledge.php:464
+#: pb/phplib/pledge.php:469
 msgid "Roughly translate the pledge into your language (using Altavista's Babel Fish machine translator)"
 msgstr ""
 
-#: pb/phplib/pledge.php:464
+#: pb/phplib/pledge.php:469
 msgid "translate"
 msgstr ""
 
-#: pb/phplib/pledge.php:468
+#: pb/phplib/pledge.php:473
 #, fuzzy
 msgid "admin"
 msgstr "Terfyn"
 
-#: pb/phplib/pledge.php:475
+#: pb/phplib/pledge.php:480
 #, fuzzy
 msgid "contact"
 msgstr "Cysylltwch"
 
-#: pb/phplib/pledge.php:493
+#: pb/phplib/pledge.php:498
 msgid "Deadline to sign up by:"
 msgstr "- Dylid arwyddo cyn:"
 
-#: pb/phplib/pledge.php:498
+#: pb/phplib/pledge.php:503
 #, php-format
 msgid "%s person signed up"
 msgid_plural "%s people signed up"
 msgstr[0] "arwyddwyd gan %s person"
 msgstr[1] "arwyddwyd gan %s o bobl"
 
-#: pb/phplib/pledge.php:500
+#: pb/phplib/pledge.php:505
 #, php-format
 msgid "%s person has signed up"
 msgid_plural "%s people have signed up"
 msgstr[0] "%s person wedi arwyddo"
 msgstr[1] "%s person wedi arwyddo"
 
-#: pb/phplib/pledge.php:504
+#: pb/phplib/pledge.php:509
 #, fuzzy, php-format
 msgid "successful in %d place"
 msgid_plural "successful in %d places"
 msgstr[0] "Addewidion agored"
 msgstr[1] "Addewidion agored"
 
-#: pb/phplib/pledge.php:510
+#: pb/phplib/pledge.php:515
 #, php-format
 msgid "(%d over target)"
 msgstr "(%d dros y targed)"
 
-#: pb/phplib/pledge.php:514
+#: pb/phplib/pledge.php:519
 #, php-format
 msgid "%d more was needed"
 msgid_plural "%d more were needed"
 msgstr[0] "Roedd angen %d mwy"
 msgstr[1] "Roedd angen %d mwy"
 
-#: pb/phplib/pledge.php:516
+#: pb/phplib/pledge.php:521
 #, fuzzy, php-format
 msgid "%d more needed"
 msgid_plural "%d more needed"
 msgstr[0] "Angen %d yn fwy"
 msgstr[1] "Angen %d yn fwy"
 
-#: pb/phplib/pledge.php:529
+#: pb/phplib/pledge.php:534
 #, fuzzy, php-format
 msgid "This is a %s pledge"
 msgstr "Rhestr o bob addewid"
 
-#: pb/phplib/pledge.php:531
+#: pb/phplib/pledge.php:536
 #, fuzzy, php-format
 msgid "Show all of the %s pledges"
 msgstr "Dangoswch fy enw ar yr addewid"
 
-#: pb/phplib/pledge.php:533
+#: pb/phplib/pledge.php:538
 msgid "show more"
 msgstr ""
 
-#: pb/phplib/pledge.php:545
+#: pb/phplib/pledge.php:550
 msgid "Show where exactly this place is (using Google Maps)"
 msgstr ""
 
-#: pb/phplib/pledge.php:547
+#: pb/phplib/pledge.php:552
 msgid "view map"
 msgstr ""
 
-#: pb/phplib/pledge.php:570
+#: pb/phplib/pledge.php:588
 msgid "More details"
 msgstr "Mwy o fanylion"
 
-#: pb/phplib/pledge.php:575
+#: pb/phplib/pledge.php:593
 #, php-format
 msgid "Pledge originally made by %s"
 msgstr ""
 
-#: pb/phplib/pledge.php:581
+#: pb/phplib/pledge.php:599
 msgid "Anything wrong with this pledge?  Tell us!"
 msgstr "Unrhyw beth o'i le ar yr addewid?  Rhowch wybod!"
 
-#: pb/phplib/pledge.php:631
+#: pb/phplib/pledge.php:649
 #, fuzzy, php-format
 msgid "I, %s, will %s."
 msgstr "Bydda i'n"
 
-#: pb/phplib/pledge.php:633
+#: pb/phplib/pledge.php:651
 #, fuzzy, php-format
 msgid "I will %s."
 msgstr "Bydda i'n"
 
-#: pb/phplib/pledge.php:636
+#: pb/phplib/pledge.php:654
 #, php-format
 msgid "I, %s, will %s but only if <strong>%s</strong> %s will %s."
 msgstr "Fe fydda i, %s, yn %s ond dim ond os bydd <strong>%s</strong> %s yn %s."
 
-#: pb/phplib/pledge.php:638
+#: pb/phplib/pledge.php:656
 #, php-format
 msgid "I will %s but only if <strong>%s</strong> %s will %s."
 msgstr "Bydda i'n %s ond dim ond os bydd <strong>%s</strong> %s yn %s."
 
-#: pb/phplib/pledge.php:704
+#: pb/phplib/pledge.php:722
 msgid "Sign up where you live"
 msgstr ""
 
-#: pb/phplib/pledge.php:704
+#: pb/phplib/pledge.php:722
 msgid "Sign up now"
 msgstr "Llofnodwch nawr"
 
-#: pb/phplib/pledge.php:710
+#: pb/phplib/pledge.php:728
 #, fuzzy
 msgid "(we only use this to tell you when the pledge is completed and to let the pledge creator get in touch)"
 msgstr "(mae angen hwn er mwyn i ni ddweud wrthoch chi pan mae'r addewid wedi'i gwblhau ac i adael i gychwynnwr yr addewid gysylltu &acirc; chi)"
 
-#: pb/phplib/pledge.php:716
+#: pb/phplib/pledge.php:734
 #, fuzzy
 msgid "Show my name publicly on this pledge."
 msgstr "Dangoswch fy enw ar yr addewid"
 
-#: pb/phplib/pledge.php:717
+#: pb/phplib/pledge.php:735
 msgid ""
 "People searching for your name on the Internet might be able\n"
 "    to find your signature."
 msgstr ""
 
-#: pb/phplib/pledge.php:725
+#: pb/phplib/pledge.php:743
 #, fuzzy
 msgid "Your country:"
 msgstr "Eich sylw"
 
-#: pb/phplib/pledge.php:732
+#: pb/phplib/pledge.php:750
 #, fuzzy
 msgid "Your town:"
 msgstr "Eich enw:"
 
-#: pb/phplib/pledge.php:735
+#: pb/phplib/pledge.php:753
 #, fuzzy, php-format
 msgid "(%s only)"
 msgstr "(cr&euml;wr yn unig)"
 
-#: pb/phplib/pledge.php:740 pb/web/ref-sign.php:173 pb/web/ref-sign.php:298
+#: pb/phplib/pledge.php:758 pb/web/ref-sign.php:173 pb/web/ref-sign.php:298
 msgid "Sign Pledge"
 msgstr "Llofnodwch yr addewid"
 
-#: pb/phplib/pledge.php:747
+#: pb/phplib/pledge.php:765
 #, fuzzy, php-format
 msgid "Or text &lsquo;<strong>%s %s</strong>&rsquo; to <strong>%s</strong>"
 msgstr "Canlyniadau am <strong>sylwadau</strong> sy'n cyfateb gyda <strong>%s</strong>:"
 
-#: pb/phplib/pledge.php:749
+#: pb/phplib/pledge.php:767
 #, fuzzy, php-format
 msgid "(in %s only)"
 msgstr "(cr&euml;wr yn unig)"
 
-#: pb/phplib/pledge.php:754
+#: pb/phplib/pledge.php:772
 #, php-format
-msgid "Sign and share this pledge <strong><a href=\"%s\">in Facebook</a> <a href=\"%s\"><img src=\"http://news.bbc.co.uk/shared/img/icons/bookmarks/facebook.gif\" alt=\"\" border=\"0\"></a></strong>"
+msgid "Sign this pledge <strong><a href=\"%s\">in Facebook</a> <a href=\"%s\"><img src=\"/share/facebook.gif\" alt=\"\" border=\"0\"></a></strong>"
 msgstr ""
 
-#: pb/phplib/pledge.php:784 pb/web/ref-index.php:86
+#: pb/phplib/pledge.php:802 pb/web/ref-index.php:95
 msgid "Send message to signers"
 msgstr "Anfon neges at lofnodwyr"
 
-#: pb/phplib/pledge.php:817 pb/phplib/pledge.php:837
+#: pb/phplib/pledge.php:835 pb/phplib/pledge.php:855
 #, php-format
 msgid "just %d day left"
 msgid_plural "just %d days left"
 msgstr[0] "dim ond %d diwrnod ar &ocirc;l"
 msgstr[1] "dim ond %d o ddiwrnodau ar &ocirc;l"
 
-#: pb/phplib/pledge.php:819 pb/phplib/pledge.php:839 pb/phplib/pledge.php:865
+#: pb/phplib/pledge.php:837 pb/phplib/pledge.php:857 pb/phplib/pledge.php:883
 #, php-format
 msgid "%d day left"
 msgid_plural "%d days left"
 msgstr[0] "%d diwrnod ar &ocirc;l"
 msgstr[1] "%d o ddiwrnodau ar &ocirc;l"
 
-#: pb/phplib/pledge.php:825
+#: pb/phplib/pledge.php:843
 #, fuzzy
 msgid "Target met nowhere"
 msgstr "Faint o bobl yn y targed"
 
-#: pb/phplib/pledge.php:827
+#: pb/phplib/pledge.php:845
 #, fuzzy, php-format
 msgid "Target met in %d place"
 msgid_plural "Target met in %d places"
 msgstr[0] "Nod wedi cyrraedd, addewid ar ben."
 msgstr[1] "Nod wedi cyrraedd, addewid ar ben."
 
-#: pb/phplib/pledge.php:832
+#: pb/phplib/pledge.php:850
 #, fuzzy, php-format
 msgid "pledge open for %d hour."
 msgid_plural "pledge open for %d hours."
 msgstr[0] "Nod wedi cyrraedd, addewid ar agor o hyd am %d diwrnod"
 msgstr[1] "Nod wedi cyrraedd, addewid ar agor o hyd am %d o ddiwrnodau."
 
-#: pb/phplib/pledge.php:846
+#: pb/phplib/pledge.php:864
 #, fuzzy, php-format
 msgid "Target met, pledge still open for %d hour."
 msgid_plural "Target met, pledge still open for %d hours."
 msgstr[0] "Nod wedi cyrraedd, addewid ar agor o hyd am %d diwrnod"
 msgstr[1] "Nod wedi cyrraedd, addewid ar agor o hyd am %d o ddiwrnodau."
 
-#: pb/phplib/pledge.php:848
+#: pb/phplib/pledge.php:866
 #, fuzzy
 msgid "Target met, pledge closed."
 msgstr "Nod wedi cyrraedd, addewid ar ben."
 
-#: pb/phplib/pledge.php:850
+#: pb/phplib/pledge.php:868
 #, php-format
 msgid "Target met, pledge still open for %d day."
 msgid_plural "Target met, pledge still open for %d days."
 msgstr[0] "Nod wedi cyrraedd, addewid ar agor o hyd am %d diwrnod"
 msgstr[1] "Nod wedi cyrraedd, addewid ar agor o hyd am %d o ddiwrnodau."
 
-#: pb/phplib/pledge.php:855
+#: pb/phplib/pledge.php:873
 #, fuzzy, php-format
 msgid "Just %d hour left"
 msgid_plural "Just %d hours left"
 msgstr[0] "dim ond %d diwrnod ar &ocirc;l"
 msgstr[1] "dim ond %d o ddiwrnodau ar &ocirc;l"
 
-#: pb/phplib/pledge.php:856 pb/phplib/pledge.php:867
+#: pb/phplib/pledge.php:874 pb/phplib/pledge.php:885
 #, fuzzy, php-format
 msgid ", %d more signature needed"
 msgid_plural ", %d more signatures needed"
 msgstr[0] ", angen %d llofnod arall"
 msgstr[1] ", angen %d rhagor o lofnodion"
 
-#: pb/phplib/pledge.php:859
+#: pb/phplib/pledge.php:877
 msgid "Deadline expired, pledge failed."
 msgstr "Terfyn wedi mynd heibio, methodd yr addewid."
 
-#: pb/phplib/pledge.php:863
+#: pb/phplib/pledge.php:881
 #, fuzzy, php-format
 msgid "Just %d day left"
 msgid_plural "Just %d days left"
 msgstr[0] "dim ond %d diwrnod ar &ocirc;l"
 msgstr[1] "dim ond %d o ddiwrnodau ar &ocirc;l"
 
-#: pb/phplib/pledge.php:901
+#: pb/phplib/pledge.php:919
 msgid "Success"
 msgstr "Llwyddiant"
 
-#: pb/phplib/pledge.php:904
+#: pb/phplib/pledge.php:922
 msgid "That pledge has already finished"
 msgstr "Mae'r addewid eisoes ar ben"
 
-#: pb/phplib/pledge.php:907
+#: pb/phplib/pledge.php:925
 msgid "That pledge is already full"
 msgstr "Mae'r addewid eisoes yn llawn"
 
-#: pb/phplib/pledge.php:910
+#: pb/phplib/pledge.php:928
 msgid "Signing up with a place name is supported only by email (not mobile phones or Facebook)"
 msgstr ""
 
-#: pb/phplib/pledge.php:913
+#: pb/phplib/pledge.php:931
 msgid "You've already signed that pledge"
 msgstr "Rydych eisoes wedi arwyddo'r addewid"
 
-#: pb/phplib/pledge.php:916 pb/web/comment.php:52 pb/web/ref-sign.php:84
+#: pb/phplib/pledge.php:934 pb/web/comment.php:52 pb/web/ref-sign.php:84
 #: pb/web/sms.php:62
 msgid "Permission denied"
 msgstr "Caniat&acirc;d wedi'i wrthod"
 
-#: pb/phplib/pledge.php:920
+#: pb/phplib/pledge.php:938
 msgid "Something went wrong unexpectedly"
 msgstr "Aeth rhywbeth o'i le yn annisgwyl"
 
-#: pb/phplib/pledge.php:994
+#: pb/phplib/pledge.php:1012
 msgid "Incorrect PIN!"
 msgstr "PIN anghywir"
 
-#: pb/phplib/pledge.php:997
+#: pb/phplib/pledge.php:1015
 msgid "PIN Protected Pledge"
 msgstr "Addewid ag Amddiffyniad Rhif Adnabod Personol (PIN)"
 
-#: pb/phplib/pledge.php:997
+#: pb/phplib/pledge.php:1015
 msgid "This pledge is protected.  Please enter the PIN to proceed."
 msgstr "Mae'r addewid hwn dan warchod. Rhowch y Rhif Adnabod Personol (PIN) i fynd yn eich blaen."
 
-#: pb/phplib/pledge.php:1000
+#: pb/phplib/pledge.php:1018
 msgid "Enter PIN"
 msgstr "Rhowch Rhif Adnabod Personol (PIN)"
 
-#: pb/phplib/pledge.php:1051
+#: pb/phplib/pledge.php:1069
 msgid ""
 "<p>PledgeBank can send you email alerts when people\n"
 "        create local pledges in your area. Sign up - you don't know\n"
@@ -2535,34 +2559,34 @@ msgid ""
 msgstr ""
 
 #. TRANS: Esperanto translated this as "In order to massive increase the chance of this pledge succeeding, " to keep it in the imperative
-#: pb/phplib/pledge.php:1065
+#: pb/phplib/pledge.php:1083
 msgid "You will massively increase the chance of this pledge succeeding if you "
 msgstr "Bydd yr addewid yn llawer mwy tebygol o lwyddo pe tasech chi'n "
 
 #. TRANS: This phrase is used in two different places, once in present tense, once in imperative. Shout if this is a problem.
-#: pb/phplib/pledge.php:1068 pb/web/ref-flyers.php:64
+#: pb/phplib/pledge.php:1086 pb/web/ref-flyers.php:64
 msgid "print this page out"
 msgstr "argraffu'r dudalen hon"
 
-#: pb/phplib/pledge.php:1069
+#: pb/phplib/pledge.php:1087
 msgid "these more attractive PDF and RTF (Word) versions"
 msgstr "y fersiynau mwy deniadol PDF ac RTF (Word) yma"
 
 #. TRANS: Use the imperative here to go with msgid "You will massively increase......." and msgid "print this page out". (Tim Morley, 2005-11-30)
-#: pb/phplib/pledge.php:1071
+#: pb/phplib/pledge.php:1089
 #, php-format
 msgid "(or use %s), cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr "(neu ddefnyddio %s), torri'r ffleiars allan a'u rhoi trwy flychau postio eich cymdogion."
 
-#: pb/phplib/pledge.php:1076
+#: pb/phplib/pledge.php:1094
 msgid "print these pages out"
 msgstr "argraffu'r tudalennau hyn"
 
-#: pb/phplib/pledge.php:1077
+#: pb/phplib/pledge.php:1095
 msgid ", cut up the flyers and stick them through your neighbours' letterboxes."
 msgstr ", torri'r ffleiars a'u rhou trwy flychau postio eich cymdogion."
 
-#: pb/phplib/pledge.php:1080
+#: pb/phplib/pledge.php:1098
 msgid ""
 "We cannot emphasise this enough &mdash; print them NOW and post them next time you\n"
 "go out to the shops or your pledge is unlikely to succeed."
@@ -2570,33 +2594,43 @@ msgstr ""
 "Ni allwn orbwysleisio hyn &mdash; argraffwch nhw NAWR a'u postio'r tro nesa\n"
 "i chi fynd i'r siopau neu ni fydd eich addewid yn debyg i lwyddo."
 
-#: pb/phplib/pledge.php:1086 pb/web/ref-flyers.php:67
+#: pb/phplib/pledge.php:1104 pb/web/ref-flyers.php:67
 msgid "Graphic of flyers for printing"
 msgstr "Graffig o'r ffleiars ar gyfer argraffu"
 
-#: pb/phplib/pledge.php:1250
+#: pb/phplib/pledge.php:1277
 #, fuzzy, php-format
 msgid "This pledge has been successful in <strong>%d place</strong>!"
 msgid_plural "This pledge has been successful in <strong>%d places</strong>!"
 msgstr[0] "Mae'r addewid wedi llwyddo!"
 msgstr[1] "Mae'r addewid wedi llwyddo!"
 
-#: pb/phplib/pledge.php:1255
+#: pb/phplib/pledge.php:1282
 msgid "<strong>You can still sign up</strong>, to help make it successful where you live."
 msgstr ""
 
-#: pb/phplib/pledge.php:1266
+#: pb/phplib/pledge.php:1292 pb/phplib/pledge.php:1298
+#: pb/web/ref-index.php:383
+#, fuzzy
+msgid "This pledge has now closed; it was successful!"
+msgstr "Mae'r addewid wedi llwyddo!"
+
+#: pb/phplib/pledge.php:1294
 msgid "This pledge has been successful!"
 msgstr "Mae'r addewid wedi llwyddo!"
 
-#: pb/phplib/pledge.php:1271
+#: pb/phplib/pledge.php:1300
 #, fuzzy
 msgid "This pledge was successful!"
 msgstr "Mae'r addewid wedi llwyddo!"
 
-#: pb/phplib/pledge.php:1274
+#: pb/phplib/pledge.php:1303
 msgid "<strong>You can still add your name to it</strong>, because the deadline hasn't been reached yet."
 msgstr "<strong>Cewch chi ychwanegu eich enw iddo</strong>, gan nad yw'r dyddiad cau wedi cyrraedd eto."
+
+#: pb/phplib/share.php:41
+msgid "From this page you can use the <em>Social Web</em> links to save this pledge to a social bookmarking site, or the <em>Email</em> form to send a link via email."
+msgstr ""
 
 #: pb/phplib/success.php:12 pb/phplib/success.php:26
 msgid "Organise aid trip to New Orleans"
@@ -2858,7 +2892,7 @@ msgstr "Doeddwn ni ddim yn gallu dod ar hyd i'r dudalen."
 msgid "New pledge alerts"
 msgstr "Larymau addewidion newydd"
 
-#: pb/web/alert.php:37
+#: pb/web/alert.php:37 pb/web/ref-announce.php:36
 msgid "Unexpectedly not signed on after following unsubscribe link"
 msgstr "Heb ei fewngofnodi yn annisgwyl wedyn dilyn dolen dat-danysgrifio"
 
@@ -2991,8 +3025,9 @@ msgstr "Sori -- mae rhywbeth wedi mynd o'i le"
 msgid "'%s' is not a valid email address; please check it carefully"
 msgstr "Nad yw '%s' yn gyfeiriad ebost dilys; edrychwch drosto'n ofalus"
 
-#: pb/web/comment.php:95 pb/web/contact.php:131 pb/web/new.php:687
-#: pb/web/ref-contact.php:35 pb/web/ref-email.php:45 pb/web/sms.php:75
+#: pb/web/comment.php:95 pb/web/contact.php:131 pb/web/new.php:693
+#: pb/web/new_orig.php:687 pb/web/new_tim.php:687 pb/web/ref-contact.php:35
+#: pb/web/ref-email.php:52 pb/web/sms.php:75
 msgid "Please enter your name"
 msgstr "Rhowch eich enw"
 
@@ -3089,8 +3124,9 @@ msgstr "A ydych chi wedi <a href=\"/faq\">darllen y Cwestiynau Cyffredin</a>?"
 msgid "Send to PledgeBank team"
 msgstr "T&icirc;m PledgeBank"
 
-#: pb/web/contact.php:121 pb/web/login.php:83 pb/web/new.php:499
-#: pb/web/ref-contact.php:30 pb/web/ref-sign.php:64 pb/web/pb.js:15
+#: pb/web/contact.php:121 pb/web/login.php:83 pb/web/new.php:505
+#: pb/web/new_orig.php:499 pb/web/new_tim.php:499 pb/web/ref-contact.php:30
+#: pb/web/ref-sign.php:64 pb/web/pb.js:15
 msgid "<Enter your name>"
 msgstr "<Rhowch eich enw yma>"
 
@@ -3254,12 +3290,12 @@ msgstr ""
 msgid "To PledgeBank front page"
 msgstr "I dudalen flaen PledgeBank"
 
-#: pb/web/facebook.php:114
+#: pb/web/facebook.php:116
 #, fuzzy
 msgid "Thanks for sending the pledge to your friends!"
 msgstr "Diolch yn fawr am lofnodi'r addewid hwn!"
 
-#: pb/web/facebook.php:115
+#: pb/web/facebook.php:117
 #, fuzzy
 msgid "Here are some more pledges you might like."
 msgstr "Does dim addewidion newydd ar hyn o bryd."
@@ -4040,7 +4076,7 @@ msgstr "Mi allwch chi weld eich addewidion wedyn."
 msgid "View your pledges at PledgeBank.com"
 msgstr "Gweld manylion eich addewidion ar PledgeBank.com"
 
-#: pb/web/my.php:63 pb/web/ref-index.php:326
+#: pb/web/my.php:63 pb/web/ref-index.php:335
 msgid "Suggested pledges"
 msgstr "Awgrymiadau am addewidion"
 
@@ -4077,7 +4113,8 @@ msgstr "Cr&euml;wr yr addewid yn unig"
 msgid "Have you done this pledge?"
 msgstr "Cr&euml;wr yr addewid yn unig"
 
-#: pb/web/my.php:137 pb/web/new.php:345
+#: pb/web/my.php:137 pb/web/new.php:345 pb/web/new_orig.php:345
+#: pb/web/new_tim.php:345
 msgid "Yes"
 msgstr "Ydy"
 
@@ -4094,117 +4131,128 @@ msgstr "Dych chi ddim wedi llofnodi addewid hyd yn hyn"
 msgid "Why not <a href=\"mailto:%s\">send us photos</a> of yourself carrying out successful pledges?"
 msgstr "Beth am <a href=\"mailto:team@pledgebank.com\">anfon lluniau atom</a> ohonoch chi wrthi wirio'ch addewidion llwyddiannus?"
 
-#: pb/web/new.php:41
+#: pb/web/new.php:41 pb/web/new_orig.php:41 pb/web/new_tim.php:41
 msgid "Create a New Pledge"
 msgstr "Creu Addewid"
 
-#: pb/web/new.php:90
+#: pb/web/new.php:90 pb/web/new_orig.php:90 pb/web/new_tim.php:90
 msgid "people in my street"
 msgstr "pobl yn fy stryd"
 
-#: pb/web/new.php:147
+#: pb/web/new.php:147 pb/web/new_orig.php:147 pb/web/new_tim.php:147
 #, fuzzy
 msgid "New Pledge &ndash; Basics"
 msgstr "addewidion newydd ar bwys %s%s"
 
-#: pb/web/new.php:149
+#: pb/web/new.php:149 pb/web/new_orig.php:149 pb/web/new_tim.php:149
 #, fuzzy, php-format
 msgid "(<a href=\"%s\">Want your pledge in a language other than %s?</a>)"
 msgstr "Gaf i greu addewidion mewn ieithoedd eraill?"
 
-#: pb/web/new.php:169 pb/web/poster.cgi:479
+#: pb/web/new.php:169 pb/web/new_orig.php:169 pb/web/new_tim.php:169
+#: pb/web/poster.cgi:479
 msgid "but only if"
 msgstr "ond dim ond os bydd"
 
-#: pb/web/new.php:169 pb/web/new.php:284
+#: pb/web/new.php:169 pb/web/new.php:284 pb/web/new_orig.php:169
+#: pb/web/new_orig.php:284 pb/web/new_tim.php:169 pb/web/new_tim.php:284
 msgid "Target number of people"
 msgstr "Faint o bobl yn y targed"
 
-#: pb/web/new.php:174 pb/web/new.php:177
+#: pb/web/new.php:174 pb/web/new.php:177 pb/web/new_orig.php:174
+#: pb/web/new_orig.php:177 pb/web/new_tim.php:174 pb/web/new_tim.php:177
 msgid "do the same"
 msgstr "gwneud yr un peth"
 
-#: pb/web/new.php:174 pb/web/new.php:176 pb/web/new.php:507
+#: pb/web/new.php:174 pb/web/new.php:176 pb/web/new.php:513
+#: pb/web/new_orig.php:174 pb/web/new_orig.php:176 pb/web/new_orig.php:507
+#: pb/web/new_tim.php:174 pb/web/new_tim.php:176 pb/web/new_tim.php:507
 msgid "will"
 msgstr "yn"
 
-#: pb/web/new.php:183
+#: pb/web/new.php:183 pb/web/new_orig.php:183 pb/web/new_tim.php:183
 msgid "The other people must sign up before"
 msgstr "Mae rhaid i'r bobl eraill lofnodi erbyn"
 
-#: pb/web/new.php:186
+#: pb/web/new.php:186 pb/web/new_orig.php:186 pb/web/new_tim.php:186
 msgid "Deadline date"
 msgstr "Dyddiad terfynol"
 
-#: pb/web/new.php:188
+#: pb/web/new.php:188 pb/web/new_orig.php:188 pb/web/new_tim.php:188
 msgid "e.g."
 msgstr ""
 
-#: pb/web/new.php:190
+#: pb/web/new.php:190 pb/web/new_orig.php:190 pb/web/new_tim.php:190
 msgid "Choose a short name for your pledge (6 to 16 letters):"
 msgstr "Dewiswch enw cwta i'ch addewid (6 i 16 o lythrennau"
 
-#: pb/web/new.php:192
+#: pb/web/new.php:192 pb/web/new_orig.php:192 pb/web/new_tim.php:192
 #, fuzzy, php-format
 msgid "This gives your pledge an easy web address. e.g. %s/tidyupthepark"
 msgstr "Rhoddir cyfeiriad gwe hawdd ei gofio i'ch addewid. e.e. www.pledgebank.com/taclusorparc"
 
-#: pb/web/new.php:195
+#: pb/web/new.php:195 pb/web/new_orig.php:195 pb/web/new_tim.php:195
 #, fuzzy
 msgid "More details about your pledge:"
 msgstr "Mwy o fanylion yngl&#375;n &acirc;'ch addewid: (dewisol)"
 
-#: pb/web/new.php:195 pb/web/new.php:218
+#: pb/web/new.php:195 pb/web/new.php:218 pb/web/new_orig.php:195
+#: pb/web/new_orig.php:218 pb/web/new_tim.php:195 pb/web/new_tim.php:218
 msgid "(optional)"
 msgstr "(dewisol)"
 
-#: pb/web/new.php:197
+#: pb/web/new.php:197 pb/web/new_orig.php:197 pb/web/new_tim.php:197
 #, fuzzy
 msgid "(links and email addresses will be automatically made clickable, no \"markup\" needed)"
 msgstr "(caiff dolenni a chyfeiriadau ebost eu adnabod, does dim angen HTML)"
 
-#: pb/web/new.php:200
+#: pb/web/new.php:200 pb/web/new_orig.php:200 pb/web/new_tim.php:200
 msgid "About You"
 msgstr "Amdanoch chi"
 
-#: pb/web/new.php:206
+#: pb/web/new.php:206 pb/web/new_orig.php:206 pb/web/new_tim.php:206
 #, fuzzy
 msgid "Your Facebook account:"
 msgstr "Eich sylw"
 
-#: pb/web/new.php:215
+#: pb/web/new.php:215 pb/web/new_orig.php:215 pb/web/new_tim.php:215
 msgid "(we need your email so we can get in touch with you when your pledge completes, and so on)"
 msgstr "(rhaid i ni gysylltu &acirc; chi pan bydd eich addewid yn gorffen, ac ati"
 
-#: pb/web/new.php:218
+#: pb/web/new.php:218 pb/web/new_orig.php:218 pb/web/new_tim.php:218
 #, fuzzy
 msgid "On flyers and elsewhere, after your name, how would you like to be described?"
 msgstr "Sut hoffech chi gael eich disgrifio, ar &ocirc;l eich enw, ar ffleiars ac yn y blaen? (dewisol)"
 
-#: pb/web/new.php:220
+#: pb/web/new.php:220 pb/web/new_orig.php:220 pb/web/new_tim.php:220
 msgid "(e.g. \"resident of Tamilda Road\")"
 msgstr "(e.e. \"trigolyn Stryd y Bont\""
 
-#: pb/web/new.php:226
+#: pb/web/new.php:226 pb/web/new_orig.php:226 pb/web/new_tim.php:226
 #, fuzzy
 msgid "Did you read the tips on the right of the page? They'll help you make a successful pledge."
 msgstr "A ddarllenoch chi'r tips ar frig y dudalen? Byddan nhw'n eich helpu creu addewid llwyddiannus"
 
-#: pb/web/new.php:232 pb/web/new.php:293 pb/web/new.php:360
+#: pb/web/new.php:232 pb/web/new.php:293 pb/web/new.php:366
+#: pb/web/new_orig.php:232 pb/web/new_orig.php:293 pb/web/new_orig.php:360
+#: pb/web/new_tim.php:232 pb/web/new_tim.php:293 pb/web/new_tim.php:360
 #, fuzzy
 msgid "Next step"
 msgstr "Tudalen nesaf"
 
-#: pb/web/new.php:250 pb/web/new.php:322 pb/web/new.php:386 pb/web/new.php:445
+#: pb/web/new.php:250 pb/web/new.php:322 pb/web/new.php:392 pb/web/new.php:451
+#: pb/web/new_orig.php:250 pb/web/new_orig.php:322 pb/web/new_orig.php:386
+#: pb/web/new_orig.php:445 pb/web/new_tim.php:250 pb/web/new_tim.php:322
+#: pb/web/new_tim.php:386 pb/web/new_tim.php:445
 msgid "Your pledge looks like this so far:"
 msgstr "Dyma sut mae'ch addewid yn edrych hyd yn hyn:"
 
-#: pb/web/new.php:261
+#: pb/web/new.php:261 pb/web/new_orig.php:261 pb/web/new_tim.php:261
 #, fuzzy
 msgid "Please lower your target!"
 msgstr "Rhowch rhif targed"
 
-#: pb/web/new.php:263
+#: pb/web/new.php:263 pb/web/new_orig.php:263 pb/web/new_tim.php:263
 #, php-format
 msgid ""
 "Recruiting more than %d people to a pledge is much harder than\n"
@@ -4213,7 +4261,7 @@ msgid ""
 "    your pledge really need so many people to be worthwhile?"
 msgstr ""
 
-#: pb/web/new.php:269
+#: pb/web/new.php:269 pb/web/new_orig.php:269 pb/web/new_tim.php:269
 #, php-format
 msgid ""
 "In order to encourage people to aim at achievable targets, we don't\n"
@@ -4225,7 +4273,7 @@ msgid ""
 "    is a local pledge)."
 msgstr ""
 
-#: pb/web/new.php:277
+#: pb/web/new.php:277 pb/web/new_orig.php:277 pb/web/new_tim.php:277
 #, fuzzy
 msgid ""
 "We've <strong>reduced your target to 10</strong> for now. Please\n"
@@ -4236,11 +4284,11 @@ msgstr ""
 "Rydym wedi gosod targed o 10 am nawr, ond cewch chi ei newid yn y blwch hwn. Mae <a href=\n"
 "\"/faq#targets\">mwy o gyngor</a> yngl&#375;n &acirc; dewis targed yn y rhestr o gwestiynau cyffredin."
 
-#: pb/web/new.php:283
+#: pb/web/new.php:283 pb/web/new_orig.php:283 pb/web/new_tim.php:283
 msgid "<strong>My target</strong> is "
 msgstr "<strong>Fy nharged</strong> yw"
 
-#: pb/web/new.php:287
+#: pb/web/new.php:287 pb/web/new_orig.php:287 pb/web/new_tim.php:287
 #, fuzzy
 msgid ""
 "Remember, a small but successful pledge can be the perfect preparation\n"
@@ -4250,15 +4298,16 @@ msgstr ""
 "Cofiwch, gall addewid bach ond llwyddiannus fod yn waith paratoi perffaith\n"
 "ar gyfer addewid mwy uchelgeisiol nes ymlaen."
 
-#: pb/web/new.php:294 pb/web/new.php:361
+#: pb/web/new.php:294 pb/web/new.php:367 pb/web/new_orig.php:294
+#: pb/web/new_orig.php:361 pb/web/new_tim.php:294 pb/web/new_tim.php:361
 msgid "Back to step 1"
 msgstr "Yn &ocirc;l i gam 1"
 
-#: pb/web/new.php:333
+#: pb/web/new.php:333 pb/web/new_orig.php:333 pb/web/new_tim.php:333
 msgid "New Pledge &ndash; Location"
 msgstr ""
 
-#: pb/web/new.php:335
+#: pb/web/new.php:335 pb/web/new_orig.php:335 pb/web/new_tim.php:335
 msgid ""
 "If your pledge applies to a particular country,\n"
 "or place within a country, providing that information\n"
@@ -4266,130 +4315,132 @@ msgid ""
 "our email alerts and location search."
 msgstr ""
 
-#: pb/web/new.php:340
+#: pb/web/new.php:340 pb/web/new_orig.php:340 pb/web/new_tim.php:340
 msgid "Which country does your pledge apply to?"
 msgstr "I ba wlad ydy'ch addewid yn berthnasol?"
 
-#: pb/web/new.php:344
+#: pb/web/new.php:344 pb/web/new_orig.php:344 pb/web/new_tim.php:344
 msgid "Within that country, is your pledge specific to a local area or specific place?"
 msgstr "Yn y wlad honno, ydy'ch addewid yn berthnasol i un ardal/lleoliad arbennig?"
 
-#: pb/web/new.php:346
+#: pb/web/new.php:346 pb/web/new_orig.php:346 pb/web/new_tim.php:346
 msgid "No"
 msgstr "Nac ydy"
 
-#: pb/web/new.php:350
+#: pb/web/new.php:350 pb/web/new_orig.php:350 pb/web/new_tim.php:350
 msgid "If yes, choose where."
 msgstr ""
 
-#: pb/web/new.php:397
+#: pb/web/new.php:403 pb/web/new_orig.php:397 pb/web/new_tim.php:397
 msgid "New Pledge &ndash; Category / Privacy"
 msgstr ""
 
-#: pb/web/new.php:400
+#: pb/web/new.php:406 pb/web/new_orig.php:400 pb/web/new_tim.php:400
 msgid "Which category does your pledge best fit into?"
 msgstr "Pa gategori yw'r mwya perthnasol i'ch addewid?"
 
-#: pb/web/new.php:402
+#: pb/web/new.php:408 pb/web/new_orig.php:402 pb/web/new_tim.php:402
 msgid "(this will be used in future to help more people find your pledge)"
 msgstr "(caiff hyn ei ddefnyddio yn y dyfodol i helpu mwy o bobl ffeindio'ch addewid)"
 
-#: pb/web/new.php:407
+#: pb/web/new.php:413 pb/web/new_orig.php:407 pb/web/new_tim.php:407
 msgid "Who do you want to be able to see your pledge?"
 msgstr "Pwy fydd yn gallu gweld eich addewid?"
 
-#: pb/web/new.php:408
+#: pb/web/new.php:414 pb/web/new_orig.php:408 pb/web/new_tim.php:408
 msgid "Anyone"
 msgstr "Unrhywun"
 
-#: pb/web/new.php:409
+#: pb/web/new.php:415 pb/web/new_orig.php:409 pb/web/new_tim.php:409
 msgid "Only people to whom I give this PIN:"
 msgstr "Dim ond y rhai dw i'n rhoi'r rhif arbennig hwn iddyn nhw:"
 
-#: pb/web/new.php:419
+#: pb/web/new.php:425 pb/web/new_orig.php:419 pb/web/new_tim.php:419
 msgid "Back to step 2"
 msgstr "Yn &ocirc;l i gam 2"
 
-#: pb/web/new.php:455
+#: pb/web/new.php:461 pb/web/new_orig.php:455 pb/web/new_tim.php:455
 #, fuzzy, php-format
 msgid "New Pledge &#8211; Step %s of %s"
 msgstr "Addewid Newydd &#8211; Cam 4 o 4"
 
-#: pb/web/new.php:466
+#: pb/web/new.php:472 pb/web/new_orig.php:466 pb/web/new_tim.php:466
 #, fuzzy, php-format
 msgid "Back to step %s"
 msgstr "Yn &ocirc;l i gam 1"
 
-#: pb/web/new.php:488
+#: pb/web/new.php:494 pb/web/new_orig.php:488 pb/web/new_tim.php:488
 msgid "Transferring the data from previous page failed :("
 msgstr "Methwyd trosglwyddo gwybodaeth o'r dudalen flaenorol :("
 
-#: pb/web/new.php:498 pb/web/pb.js:13
+#: pb/web/new.php:504 pb/web/new_orig.php:498 pb/web/new_tim.php:498
+#: pb/web/pb.js:13
 msgid "<Enter your pledge>"
 msgstr "<Rhowch eich addewid yma>"
 
-#: pb/web/new.php:616
+#: pb/web/new.php:622 pb/web/new_orig.php:616 pb/web/new_tim.php:616
 msgid "Before creating your new pledge, we need to check that your email is working."
 msgstr "Cyn creu eich addewid newydd, mae rhaid i ni sieco bod eich ebost yn gweithio"
 
-#: pb/web/new.php:645 pb/web/new.php:718
+#: pb/web/new.php:651 pb/web/new.php:724 pb/web/new_orig.php:645
+#: pb/web/new_orig.php:718 pb/web/new_tim.php:645 pb/web/new_tim.php:718
 msgid "Please enter a target"
 msgstr "Rhowch rhif targed"
 
-#: pb/web/new.php:646
+#: pb/web/new.php:652 pb/web/new_orig.php:646 pb/web/new_tim.php:646
 msgid "The target must be a positive number"
 msgstr "Rhaid i'r rhif targed fod yn bositif"
 
-#: pb/web/new.php:649
+#: pb/web/new.php:655 pb/web/new_orig.php:649 pb/web/new_tim.php:649
 msgid "Please enter a short name for your pledge"
 msgstr "Rhowch enw cwta i'ch addewid"
 
-#: pb/web/new.php:650
+#: pb/web/new.php:656 pb/web/new_orig.php:650 pb/web/new_tim.php:650
 msgid "The short name must be at least six characters long"
 msgstr "Rhaid i'r enw cwta fod o leia chwe llythyren o hyd"
 
-#: pb/web/new.php:651
+#: pb/web/new.php:657 pb/web/new_orig.php:651 pb/web/new_tim.php:651
 msgid "The short name can be at most 20 characters long"
 msgstr "Rhaid i'r enw cwta fod yn 20 llythyren o hyd neu'n llai"
 
-#: pb/web/new.php:652
+#: pb/web/new.php:658 pb/web/new_orig.php:652 pb/web/new_tim.php:652
 msgid "That short name is not allowed."
 msgstr "Ni allwch ddefnyddio'r enw cwta hwnnw"
 
-#: pb/web/new.php:653
+#: pb/web/new.php:659 pb/web/new_orig.php:653 pb/web/new_tim.php:653
 msgid "The short name must only contain letters, numbers, or a hyphen.  Spaces are not allowed."
 msgstr "Rhaid defnyddio llythyrennau, rhifau a chysylltnod yn unig. Ni allwch gynnwys bwlch."
 
-#: pb/web/new.php:654
+#: pb/web/new.php:660 pb/web/new_orig.php:654 pb/web/new_tim.php:654
 msgid "The short name must contain at least one letter."
 msgstr "Rhaid cynnwys o leia un llythyren yn yr enw cwta."
 
-#: pb/web/new.php:666
+#: pb/web/new.php:672 pb/web/new_orig.php:666 pb/web/new_tim.php:666
 #, php-format
 msgid "You've already made a pledge with short name '%s'. Either go to your <a href=\"/%s\">existing pledge</a>, or edit the short name below to make a new pledge."
 msgstr ""
 
-#: pb/web/new.php:669
+#: pb/web/new.php:675 pb/web/new_orig.php:669 pb/web/new_tim.php:669
 msgid "That short name is already taken!"
 msgstr "Mae'r enw hwnna wedi'i ddefnyddio'n barod!"
 
-#: pb/web/new.php:671
+#: pb/web/new.php:677 pb/web/new_orig.php:671 pb/web/new_tim.php:671
 msgid "Please enter a pledge"
 msgstr "Rhowch addewid"
 
-#: pb/web/new.php:676
+#: pb/web/new.php:682 pb/web/new_orig.php:676 pb/web/new_tim.php:676
 msgid "Please enter a deadline"
 msgstr "Rhowch ddyddiad terfynol"
 
-#: pb/web/new.php:677
+#: pb/web/new.php:683 pb/web/new_orig.php:677 pb/web/new_tim.php:677
 msgid "The deadline must be in the future"
 msgstr "Rhaid i'r dyddiad terfynol fod yn y dyfodol"
 
-#: pb/web/new.php:678
+#: pb/web/new.php:684 pb/web/new_orig.php:678 pb/web/new_tim.php:678
 msgid "Please enter a valid date"
 msgstr "Rhowch ddyddiad dilys"
 
-#: pb/web/new.php:680
+#: pb/web/new.php:686 pb/web/new_orig.php:680 pb/web/new_tim.php:680
 #, fuzzy, php-format
 msgid ""
 "Please change your deadline so it is less than %d years into the\n"
@@ -4402,71 +4453,71 @@ msgstr ""
 "      y dyfodol. Bydd rhaid newid y dyddiad er mwyn cario ymlaen &acirc;       chreu'ch addewid. Os oes angen dyddiad terfynol pellach i ffwrdd,       gwnewch eich addewid a rhoi gwybod i ni at <a href=\"mailto:team@pledgebank.com\">team@pledgebank.com</a>\n"
 "       i ofyn i ni newid y dyddiad."
 
-#: pb/web/new.php:699
+#: pb/web/new.php:705 pb/web/new_orig.php:699 pb/web/new_tim.php:699
 msgid "Unknown language code:"
 msgstr "C&ocirc;d iaith anhysbys"
 
-#: pb/web/new.php:705
+#: pb/web/new.php:711 pb/web/new_orig.php:705 pb/web/new_tim.php:705
 msgid "You already have Facebook set up on PledgeBank with a different email address. Please use that address, it is "
 msgstr ""
 
-#: pb/web/new.php:740
+#: pb/web/new.php:746 pb/web/new_orig.php:740 pb/web/new_tim.php:740
 msgid "Please choose which country your pledge applies to"
 msgstr "Dewiswch y wlad mae'ch addewid yn berthnasol iddi"
 
 #. TRANS: Ideally "none" will be translated here, but I can't see it as an entry in this .po file. How is this resolved? (Tim Morley, 2005-11-23)
-#: pb/web/new.php:751
+#: pb/web/new.php:757 pb/web/new_orig.php:751 pb/web/new_tim.php:751
 #, fuzzy
 msgid "Please choose a country, or \"not specific to any location\" if your pledge applies everywhere"
 msgstr "Dewisiwch wlad, neu \"dim un\" os ydy'ch addewid yn berthnasol i unrhywle"
 
-#: pb/web/new.php:753
+#: pb/web/new.php:759 pb/web/new_orig.php:753 pb/web/new_tim.php:753
 msgid "Please choose a valid state within that country, or the country name itself"
 msgstr "Dewiswch naill ai talaith/sir o fewn y wlad, neu enw'r wlad ei hun"
 
-#: pb/web/new.php:764
+#: pb/web/new.php:770 pb/web/new_orig.php:764 pb/web/new_tim.php:764
 msgid "Please choose whether the pledge is local or not"
 msgstr "Dywedwch a ydy'r addewid yn lleol neu beidio"
 
-#: pb/web/new.php:776
+#: pb/web/new.php:782 pb/web/new_orig.php:776 pb/web/new_tim.php:776
 msgid "Please enter a pin"
 msgstr "Rhowch Rif Adnabod Personol (PIN)"
 
-#: pb/web/new.php:785
+#: pb/web/new.php:791 pb/web/new_orig.php:785 pb/web/new_tim.php:785
 #, fuzzy
 msgid "Please enter a valid postcode"
 msgstr "Rhowch ddyddiad dilys"
 
-#: pb/web/new.php:834
+#: pb/web/new.php:840 pb/web/new_orig.php:834 pb/web/new_tim.php:834
 #, php-format
 msgid "Your pledge, with short name <em>%s</em>, will look like this:"
 msgstr "Bydd eich addewid, gyda'r enw cwta <em>%s</em>, yn edrych fel hyn:"
 
-#: pb/web/new.php:846
+#: pb/web/new.php:852 pb/web/new_orig.php:846 pb/web/new_tim.php:846
 #, fuzzy
 msgid "Other Details"
 msgstr "Mwy o fanylion"
 
-#: pb/web/new.php:851
+#: pb/web/new.php:857 pb/web/new_orig.php:851 pb/web/new_tim.php:851
 #, fuzzy
 msgid "None"
 msgstr "Nac ydy"
 
-#: pb/web/new.php:866
+#: pb/web/new.php:872 pb/web/new_orig.php:866 pb/web/new_tim.php:866
 #, fuzzy
 msgid "Privacy status"
 msgstr "Cwestiynau Preifatrwydd"
 
-#: pb/web/new.php:867
+#: pb/web/new.php:873 pb/web/new_orig.php:867 pb/web/new_tim.php:867
 msgid "Public"
 msgstr ""
 
-#: pb/web/new.php:868
+#: pb/web/new.php:874 pb/web/new_orig.php:868 pb/web/new_tim.php:868
 #, fuzzy
 msgid "Pledge can only be seen by people who I give the PIN to"
 msgstr "Dim ond pobl sy wedi llofnodi'r addewid sy'n cael gweld y negeseuon."
 
-#: pb/web/new.php:881
+#: pb/web/new.php:887 pb/web/new_orig.php:881 pb/web/new_tim.php:881
 #, php-format
 msgid ""
 "\n"
@@ -4475,68 +4526,103 @@ msgid ""
 "started to sign up to it.    \n"
 msgstr ""
 
-#: pb/web/new.php:890
+#: pb/web/new.php:896 pb/web/new_orig.php:890 pb/web/new_tim.php:890
 #, fuzzy
 msgid "Why can't I modify my pledge after I've made it?"
 msgstr "<a name=\"editpledge\">Pam na alla i addasu fy addewid ar &ocirc;l i mi ei osod?</a>"
 
-#: pb/web/new.php:892
+#: pb/web/new.php:898 pb/web/new_orig.php:892 pb/web/new_tim.php:892
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "the pledge. If you change the wording, then their signatures would no\n"
 "longer be valid."
 msgstr ""
 
-#: pb/web/new.php:899
+#: pb/web/new.php:905 pb/web/new_orig.php:899 pb/web/new_tim.php:899
 #, fuzzy
 msgid "Change pledge text"
 msgstr "Newid llun yr addewid"
 
-#: pb/web/new.php:901
+#: pb/web/new.php:907 pb/web/new_orig.php:901 pb/web/new_tim.php:901
 #, fuzzy
 msgid "Change location"
 msgstr "newid gwlad"
 
-#: pb/web/new.php:904
+#: pb/web/new.php:910 pb/web/new_orig.php:904 pb/web/new_tim.php:904
 msgid "Change category/privacy"
 msgstr ""
 
-#: pb/web/new.php:907
+#: pb/web/new.php:913 pb/web/new_orig.php:907 pb/web/new_tim.php:907
 #, fuzzy
 msgid "Change your postal address"
 msgstr "Rhowch eich cyfeiriad ebost:"
 
-#: pb/web/new.php:1063
+#: pb/web/new.php:1072 pb/web/new_orig.php:1063 pb/web/new_tim.php:1063
 msgid "Pledge Created"
 msgstr "Creuwyd Addewid"
 
-#: pb/web/new.php:1074
+#: pb/web/new.php:1085 pb/web/new_orig.php:1074 pb/web/new_tim.php:1074
 msgid "Thank you for creating your pledge."
 msgstr "Diolch yn fawr am greu eich addewid."
 
-#: pb/web/new.php:1076
+#: pb/web/new.php:1087 pb/web/new_orig.php:1076 pb/web/new_tim.php:1076
 #, fuzzy, php-format
 msgid "It is now live on Facebook at %s<br>and your friends can sign up to it there."
 msgstr "Mae e bellach yn fyw fan hyn %s<br>ac mae pobl yn gallu ei lofnodi yna."
 
-#: pb/web/new.php:1077
+#: pb/web/new.php:1088 pb/web/new_orig.php:1077 pb/web/new_tim.php:1077
 #, php-format
 msgid "Or sign up by email at %s"
 msgstr ""
 
-#: pb/web/new.php:1079
+#: pb/web/new.php:1090 pb/web/new_orig.php:1079 pb/web/new_tim.php:1079
 #, php-format
 msgid "It is now live at %s<br>and people can sign up to it there."
 msgstr "Mae e bellach yn fyw fan hyn %s<br>ac mae pobl yn gallu ei lofnodi yna."
 
-#: pb/web/new.php:1082
+#: pb/web/new.php:1093
+#, php-format
+msgid "Your pledge needs <strong>your support</strong> if it is to succeed, so <br>print some %s now and hand them out today.<br>Put a %s up in the canteen.<br>%s straightaway!"
+msgstr ""
+
+#: pb/web/new.php:1094 pb/web/new.php:1099
+#, fuzzy
+msgid "flyers"
+msgstr "Taflenni"
+
+#: pb/web/new.php:1095 pb/web/new.php:1100
+#, fuzzy
+msgid "poster"
+msgstr "Poster A4 (PDF)"
+
+#: pb/web/new.php:1096 pb/web/new.php:1101
+#, fuzzy
+msgid "Spread the word online"
+msgstr "Lledwch y gair ar lein ac yn y byd go iawn"
+
+#: pb/web/new.php:1098
+#, php-format
+msgid "Your pledge will <strong>not</strong> appear on the All Pledges page until <strong>you</strong> have recruited the first few signers.<br>Print some %s now and hand them out today.<br>Put a %s up in the canteen.<br>%s straightaway!"
+msgstr ""
+
+#: pb/web/new_orig.php:1082
 #, fuzzy
 msgid "Your pledge will <strong>not succeed</strong> unless people find out about it.  So get out there and tell your friends and colleagues about your pledge &mdash; for ways to do this check out the \"Spread the Word\" section of your pledge webpage."
 msgstr "<strong>Bydd eich addewid yn methu</strong> oni bai bod pobl yn clywed amdano. Felly, bant &acirc; chi a dweud wrth eich cyfeillion a chymdogion am eich addewid."
 
-#: pb/web/new.php:1084
+#: pb/web/new_orig.php:1084
 msgid "Your pledge will <strong>not be publicised</strong> elsewhere on the site until a few people have signed it.  So get out there and tell your friends and neighbours about your pledge."
 msgstr "<strong>Ni chaiff eich addewid ei hysbysebu</strong> ar y safle nes bod sawl un wedi'i lofnodi. Felly, bant &acirc; chi a dweud wrth eich cyfeillion a chymdogion am eich addewid."
+
+#: pb/web/new_tim.php:1082
+#, php-format
+msgid "Your pledge needs <strong>your support</strong> if it is to succeed, so <br />print some %s now and hand them out today.<br />Put a %s up in the canteen.<br />%s straightaway!"
+msgstr ""
+
+#: pb/web/new_tim.php:1087
+#, php-format
+msgid "Your pledge will <strong>not</strong> appear on the All Pledges page until <strong>you</strong> have recruited the first few signers.<br />Print some %s now and hand them out today.<br />Put a %s up in the canteen.<br />%s straightaway!"
+msgstr ""
 
 #: pb/web/offline.php:13 pb/web/offline.php:17 pb/web/offline.php:18
 msgid "You never bump into your neighbours online"
@@ -4708,23 +4794,36 @@ msgstr ""
 msgid "Missing pledge reference"
 msgstr "Allweddair addewid colledig"
 
-#: pb/web/ref-announce.php:67
+#: pb/web/ref-announce.php:40
+msgid "Pledge announce unsubscribe"
+msgstr ""
+
+#: pb/web/ref-announce.php:41
+msgid "Okay, you won't receive any more emails from the pledge creator of this pledge."
+msgstr ""
+
+#: pb/web/ref-announce.php:42
+#, fuzzy
+msgid "Back to pledge page"
+msgstr "Ewch yn &ocirc;l i'r addewid"
+
+#: pb/web/ref-announce.php:82
 msgid "Before you can send a message to all the signers, we need to check that you created the pledge."
 msgstr "Cyn i chi anfon neges at y llofnodwyr, mae rhaid i ni wirio taw chi yw cr&euml;wr yr addewid."
 
-#: pb/web/ref-announce.php:68
+#: pb/web/ref-announce.php:83
 msgid "Then you will be able to send a message to everyone who has signed your pledge."
 msgstr "Wedyn gallwch chi anfon neges at bawb sy wedi llofnodi eich addewid."
 
-#: pb/web/ref-announce.php:69
+#: pb/web/ref-announce.php:84
 msgid "Send a message to your pledge signers at PledgeBank.com"
 msgstr "Anfonwch neges at lofnodwyr eich addewid PledgeBank.com"
 
-#: pb/web/ref-announce.php:74
+#: pb/web/ref-announce.php:89
 msgid "Pledge creator's page"
 msgstr "Tudalen Cr&euml;wr Addewid"
 
-#: pb/web/ref-announce.php:75
+#: pb/web/ref-announce.php:90
 msgid ""
 "You must be the pledge creator to send a message to all signers.\n"
 "        Please <a href=\"/logout\">log out</a> and try again."
@@ -4733,97 +4832,97 @@ msgstr ""
 "\t\t Ceisiwch <a href=\"/logout\">allgofnodi</a> a dechrau eto."
 
 #. TRANS: These all appear as part of a heading: "Send <phrase>", e.g. "Send success announcement message"
-#: pb/web/ref-announce.php:84
+#: pb/web/ref-announce.php:99
 msgid "failure announcement message"
 msgstr "neges datganiad methiant"
 
-#: pb/web/ref-announce.php:85
+#: pb/web/ref-announce.php:100
 msgid "success announcement message"
 msgstr "neges datganiad llwyddiant"
 
-#: pb/web/ref-announce.php:86
+#: pb/web/ref-announce.php:101
 msgid "second or subsequent success message"
 msgstr "neges datganiad llwyddiant am yr ail dro neu fwy"
 
-#: pb/web/ref-announce.php:87
+#: pb/web/ref-announce.php:102
 msgid "general message"
 msgstr "neges gyffredinol"
 
-#: pb/web/ref-announce.php:99
+#: pb/web/ref-announce.php:114
 #, fuzzy
 msgid "Send announcement"
 msgstr "Anfon Datganiad"
 
-#: pb/web/ref-announce.php:102
+#: pb/web/ref-announce.php:117
 #, php-format
 msgid "You have already sent %d %s, which is all that you're allowed."
 msgid_plural "You have already sent %d %s, which is all that you're allowed."
 msgstr[0] "Dych chi eisoes wedi anfon %d %s, sef y mwyafswm y cewch chi."
 msgstr[1] "Dych chi eisoes wedi anfon %d o %s, sef y mwyafswm y cewch chi."
 
-#: pb/web/ref-announce.php:104
+#: pb/web/ref-announce.php:119
 msgid "Think of your signers' poor inboxes, crumbling under the load of all the mail you want to send them."
 msgstr "Meddyliwch am y straen ar fewnflychau eich llofnodwyr druan, sy'n gwichian dan bwysau'r negeseuon dych chi wedi anfon."
 
-#: pb/web/ref-announce.php:113
+#: pb/web/ref-announce.php:128
 msgid "Announcement sent"
 msgstr "Anfonwyd Datganiad"
 
-#: pb/web/ref-announce.php:115
+#: pb/web/ref-announce.php:130
 #, fuzzy, php-format
 msgid "<strong>Thank you!</strong> Your message will now be sent to all the people who signed your pledge in %s. A copy will also be sent to you for your records."
 msgstr "<strong>Diolch yn fawr!</strong> Bydd eich neges yn cael eu hanfon at bawb sy wedi llofnodi'ch addewid."
 
-#: pb/web/ref-announce.php:117
+#: pb/web/ref-announce.php:132
 #, fuzzy
 msgid "<strong>Thank you!</strong> Your message will now be sent to all the people who signed your pledge. A copy will also be sent to you for your records."
 msgstr "<strong>Diolch yn fawr!</strong> Bydd eich neges yn cael eu hanfon at bawb sy wedi llofnodi'ch addewid."
 
-#: pb/web/ref-announce.php:141
+#: pb/web/ref-announce.php:156
 #, fuzzy, php-format
 msgid "Sorry - pledge failed in %s - '%s'"
 msgstr "Ymddiheuriadau - methwyd addewid - '%s'"
 
-#: pb/web/ref-announce.php:143
+#: pb/web/ref-announce.php:158
 #, php-format
 msgid "Sorry - pledge failed - '%s'"
 msgstr "Ymddiheuriadau - methwyd addewid - '%s'"
 
-#: pb/web/ref-announce.php:152
+#: pb/web/ref-announce.php:167
 #, fuzzy, php-format
 msgid "Pledge success in %s! - '%s' at PledgeBank.com"
 msgstr "Addewid wedi llwyddo! - '%s' ar PledgeBank.com"
 
-#: pb/web/ref-announce.php:154
+#: pb/web/ref-announce.php:169
 #, php-format
 msgid "Pledge success! - '%s' at PledgeBank.com"
 msgstr "Addewid wedi llwyddo! - '%s' ar PledgeBank.com"
 
-#: pb/web/ref-announce.php:158
+#: pb/web/ref-announce.php:173
 #, fuzzy, php-format
 msgid "Update on pledge in %s - '%s' at PledgeBank.com"
 msgstr "Diweddariad ar addewid - '%s' ar PledgeBank.com"
 
-#: pb/web/ref-announce.php:160
+#: pb/web/ref-announce.php:175
 #, php-format
 msgid "Update on pledge - '%s' at PledgeBank.com"
 msgstr "Diweddariad ar addewid - '%s' ar PledgeBank.com"
 
-#: pb/web/ref-announce.php:177
+#: pb/web/ref-announce.php:192
 msgid "ADD INSTRUCTIONS FOR PLEDGE SIGNERS HERE, INCLUDING YOUR CONTACT INFO"
 msgstr "RHOWCH CYFARWYDDIADAU I LOFNODWYR EICH ADDEWID YMA, GAN GYNNWYS EICH MANYLION CYSYLLTU"
 
-#: pb/web/ref-announce.php:179
+#: pb/web/ref-announce.php:194
 #, fuzzy, php-format
 msgid "ADD INSTRUCTIONS FOR PLEDGE SIGNERS IN %s HERE, INCLUDING YOUR CONTACT INFO"
 msgstr "RHOWCH CYFARWYDDIADAU I LOFNODWYR EICH ADDEWID YMA, GAN GYNNWYS EICH MANYLION CYSYLLTU"
 
-#: pb/web/ref-announce.php:182
+#: pb/web/ref-announce.php:197
 #, php-format
 msgid "Send %s to signers of '%s'"
 msgstr "Anfonwch %s at lofnodwyr '%s'"
 
-#: pb/web/ref-announce.php:188
+#: pb/web/ref-announce.php:203
 #, php-format
 msgid ""
 "\n"
@@ -4851,12 +4950,12 @@ msgstr ""
 "\n"
 
 #. TRANS: The first %s is a pledge creator's name; the second %s is the pledge reference; the third %s is the instructions entered by the pledge creator, to be sent to signers' mobile phones as a text message
-#: pb/web/ref-announce.php:190
+#: pb/web/ref-announce.php:205
 #, php-format
 msgid "%s here. The %s pledge has been successful! <%s>."
 msgstr "%s sydd yma. Mae'r addewid %s wedi llwyddo! <%s>."
 
-#: pb/web/ref-announce.php:192
+#: pb/web/ref-announce.php:207
 #, php-format
 msgid ""
 "\n"
@@ -4883,12 +4982,12 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: pb/web/ref-announce.php:193
+#: pb/web/ref-announce.php:208
 #, php-format
 msgid "%s here. The %s pledge has failed. <%s>."
 msgstr "%s sydd yma. Mae'r addewid %s wedi methu. <%s>."
 
-#: pb/web/ref-announce.php:195
+#: pb/web/ref-announce.php:210
 #, fuzzy, php-format
 msgid ""
 "\n"
@@ -4917,93 +5016,93 @@ msgstr ""
 "Dwedir yr Addewid: '%s'\n"
 "\n"
 
-#: pb/web/ref-announce.php:212
+#: pb/web/ref-announce.php:227
 msgid "Please edit the text of the SMS message"
 msgstr "Golygwch y neges destun"
 
-#: pb/web/ref-announce.php:214
+#: pb/web/ref-announce.php:229
 msgid "Please add instructions for the pledge signers to the SMS message."
 msgstr "Ychwanegwch cyfarwyddiadau i lofnodwyr yr addewid i'r neges destun."
 
-#: pb/web/ref-announce.php:216
+#: pb/web/ref-announce.php:231
 msgid "Please shorten the text of the SMS message to 160 characters or fewer"
 msgstr "Cwtogwch y neges destun i 160 o gymeriadau neu'n llai, os gwelwch yn dda"
 
-#: pb/web/ref-announce.php:226
+#: pb/web/ref-announce.php:241
 #, php-format
 msgid "Unfortunately, we can't send the character '%s' in an SMS message; please rewrite your message without it"
 msgstr "Yn anffodus, ni allwn ni anfon y nod '%s' mewn neges destun; a allwch ailysgrifennu'r neges hebddo, os gwelwch yn dda?"
 
-#: pb/web/ref-announce.php:232
+#: pb/web/ref-announce.php:247
 #, php-format
 msgid "Unfortunately, we can't send the characters %s in an SMS message; please rewrite your message without them"
 msgstr "Yn anffodus, ni allwn ni anfon y nodau '%s' mewn neges destun; a allwch ailysgrifennu'r neges hebddynt, os gwelwch yn dda?"
 
-#: pb/web/ref-announce.php:238
+#: pb/web/ref-announce.php:253
 msgid "Please edit the text of the email message."
 msgstr "Golygwch destun y neges ebost."
 
-#: pb/web/ref-announce.php:240
+#: pb/web/ref-announce.php:255
 msgid "Please add instructions for the pledge signers to the email message."
 msgstr "Ychwanegwch cyfarwyddiadau i lofnodwyr yr addewid i'r ebost."
 
-#: pb/web/ref-announce.php:242
+#: pb/web/ref-announce.php:257
 msgid "Please enter a longer message."
 msgstr "Rhowch neges hirach, os gwelwch yn dda."
 
-#: pb/web/ref-announce.php:250
+#: pb/web/ref-announce.php:265
 #, php-format
 msgid "This message has been sent through PledgeBank by the pledge creator of a pledge you signed, '%s' The pledge's URL is <%s>."
 msgstr ""
 
-#: pb/web/ref-announce.php:279
+#: pb/web/ref-announce.php:294
 #, fuzzy
 msgid "Your pledge is successful!"
 msgstr "Mae'r addewid wedi llwyddo!"
 
-#: pb/web/ref-announce.php:289 pb/web/ref-announce.php:369
+#: pb/web/ref-announce.php:304 pb/web/ref-announce.php:384
 msgid "Send"
 msgstr "Anfonwch"
 
-#: pb/web/ref-announce.php:296
+#: pb/web/ref-announce.php:311
 #, fuzzy, php-format
 msgid "Write a message to tell the %d %s who have signed your pledge in %s what to do next."
 msgstr "Ysgrifennwch neges at y %d %s sy wedi llofnodi'ch addewid."
 
-#: pb/web/ref-announce.php:298
+#: pb/web/ref-announce.php:313
 #, php-format
 msgid "Write a message to tell the %d %s who have signed your pledge what to do next."
 msgstr "Ysgrifennwch neges at y %d %s sy wedi llofnodi'ch addewid."
 
-#: pb/web/ref-announce.php:301
+#: pb/web/ref-announce.php:316
 #, fuzzy, php-format
 msgid "Write a message to the %d %s who have signed your pledge in %s."
 msgstr "Ysgrifennwch neges at y %d %s sy wedi llofnodi'ch addewid."
 
-#: pb/web/ref-announce.php:303
+#: pb/web/ref-announce.php:318
 #, php-format
 msgid "Write a message to the %d %s who have signed your pledge."
 msgstr "Ysgrifennwch neges at y %d %s sy wedi llofnodi'ch addewid."
 
-#: pb/web/ref-announce.php:306
+#: pb/web/ref-announce.php:321
 msgid "Please note you can only send one failure announcement message to your signers."
 msgstr ""
 
-#: pb/web/ref-announce.php:310
+#: pb/web/ref-announce.php:325
 #, fuzzy, php-format
 msgid "A copy of your message will also be sent to anybody who signs your pledge there later."
 msgstr "Bydd eich neges yn cael eu hanfon at bawb sy'n llofnodi'ch addewid nes ymlaen."
 
-#: pb/web/ref-announce.php:312
+#: pb/web/ref-announce.php:327
 #, php-format
 msgid "A copy of your message will also be sent to anybody who signs your pledge later."
 msgstr "Bydd eich neges yn cael eu hanfon at bawb sy'n llofnodi'ch addewid nes ymlaen."
 
-#: pb/web/ref-announce.php:317
+#: pb/web/ref-announce.php:332
 msgid "<h3>Email message</h3>"
 msgstr "<h3>Neges ebost</h3>"
 
-#: pb/web/ref-announce.php:318
+#: pb/web/ref-announce.php:333
 msgid ""
 "The message will be sent from your email address, so the people\n"
 "who signed your pledge can reply directly to you. <strong>You may want to also\n"
@@ -5014,11 +5113,11 @@ msgstr ""
 "yn uniongyrchol. <strong>Gallwch chi roi'ch rhif ff&ocirc;n neu gyfeiriad\n"
 "gwefan hefyd</strong>, iddyn nhw gysylltu &acirc; chi trwy y rheiny."
 
-#: pb/web/ref-announce.php:333
+#: pb/web/ref-announce.php:348
 msgid "<h3>SMS message</h3>"
 msgstr "<h3>Neges destun</h3>"
 
-#: pb/web/ref-announce.php:334
+#: pb/web/ref-announce.php:349
 msgid ""
 "Enter a short (160 or fewer characters) summary of your main message,\n"
 "    which can be sent to anyone who has signed up to your pledge by SMS only.\n"
@@ -5031,12 +5130,12 @@ msgstr ""
 "ebost.</strong>\n"
 "Fel arall, na fydd y rhai a lofnodwyd trwy neges destun yn gallu cysylltu&acirc; chi."
 
-#: pb/web/ref-announce.php:366
+#: pb/web/ref-announce.php:381
 #, fuzzy
 msgid "<h3>Send announcement</h3>"
 msgstr "<h3>Anfonwch Ddatganiad</h3>"
 
-#: pb/web/ref-announce.php:368
+#: pb/web/ref-announce.php:383
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(Cofiwch, wrth anfon y neges hon <strong>bydd eich cyfeiriad ebost yn mynd at bawb sy wedi llofnodi, a phawb y bydd yn llofnodi</strong>, eich addewid trwy ebost)"
 
@@ -5088,7 +5187,7 @@ msgstr "Dim ond pobl sy wedi llofnodi'r addewid sy'n cael gweld y negeseuon."
 msgid "Contact the pledge creator"
 msgstr "Ewch yn &ocirc;l i sylwadau'r addewid"
 
-#: pb/web/ref-contact.php:37 pb/web/ref-email.php:47
+#: pb/web/ref-contact.php:37 pb/web/ref-email.php:54
 msgid "Please enter a valid address for your email"
 msgstr "Rhowch gyfeiriad ebost dilys, os gwelwch yn dda"
 
@@ -5120,32 +5219,29 @@ msgstr ""
 msgid "Emailing friends"
 msgstr "Ebostio cyfeillion"
 
-#: pb/web/ref-email.php:39
-msgid "Please correct the email address '"
+#: pb/web/ref-email.php:46
+#, fuzzy, php-format
+msgid "Please correct the email address '%s', which is not a valid address."
 msgstr "Cywirwch y cyfeiriad ebost, os gwelwch yn dda "
 
-#: pb/web/ref-email.php:39
-msgid "', which is not a valid address."
-msgstr ", sy ddim yn gyfeiriad dilys."
-
-#: pb/web/ref-email.php:44
+#: pb/web/ref-email.php:51
 msgid "Please enter the email addresses of the people you want to tell about the pledge"
 msgstr "Rhowch yma gyfeiriadau ebost pobl hoffech chi eu hysbysebu yngl&#375;n &acirc;'r addewid"
 
-#: pb/web/ref-email.php:51
+#: pb/web/ref-email.php:58
 msgid "Trying to use us for SPAMMING!?!?!"
 msgstr "Ai ein defnyddio ni i SBAMIO POBL dych chi am wneud!?!?!"
 
-#: pb/web/ref-email.php:61
+#: pb/web/ref-email.php:68
 #, fuzzy, php-format
 msgid "%s added this message:"
 msgstr "Ychwanegon nhw y neges hon:"
 
-#: pb/web/ref-email.php:66
+#: pb/web/ref-email.php:73
 msgid "Your message has been sent.  Thanks very much for spreading the word of this pledge."
 msgstr "Mae'r neges wedi'i hanfon. Diolch yn fawr am ledu'r gair am yr addewid hwn."
 
-#: pb/web/ref-email.php:70
+#: pb/web/ref-email.php:77
 msgid "Unfortunately, something went wrong when trying to send the emails. Please check that all the email addresses are correct."
 msgstr "Yn anffodus, aeth rhywbeth o'i le wrth anfon y ebostiau. A wnewch yn si&#373;r bod pob cyfeiriad ebost yn gywir."
 
@@ -5200,163 +5296,166 @@ msgstr "Poster A4 golygadwy (RTF)"
 msgid "Alternatively, simply %s to get these flyers."
 msgstr "Fel arall, %s i gael y taflenni isod."
 
-#: pb/web/ref-index.php:61
+#: pb/web/ref-index.php:62
 msgid "Spread the word on and offline"
 msgstr "Lledwch y gair ar lein ac yn y byd go iawn"
 
-#: pb/web/ref-index.php:63
+#: pb/web/ref-index.php:64
 msgid "Things to do with this pledge"
 msgstr "Pethau i'w gwneud gyda'r addewid hwn"
 
-#: pb/web/ref-index.php:73
+#: pb/web/ref-index.php:75
+msgid "E-mail this, post to del.icio.us, etc."
+msgstr ""
+
+#: pb/web/ref-index.php:76 pb/web/ref-share.php:27
+msgid "Share this"
+msgstr ""
+
+#: pb/web/ref-index.php:80
 #, fuzzy
 msgid "Email your friends"
 msgstr "Ebostiwch yr addewid at eich cyfeillion"
 
-#: pb/web/ref-index.php:77
+#: pb/web/ref-index.php:86
 msgid "Stick them places!"
 msgstr "Sticio nhw i fyny!"
 
-#: pb/web/ref-index.php:77
+#: pb/web/ref-index.php:86
 msgid "Print out customised flyers"
 msgstr "Argraffu'r taflenni wedi'u haddasu"
 
-#: pb/web/ref-index.php:81
+#: pb/web/ref-index.php:90
 msgid "Promote on your site or blog"
 msgstr ""
 
-#: pb/web/ref-index.php:85
+#: pb/web/ref-index.php:94
 msgid "Create a local version of this pledge"
 msgstr "Creuwch fersiwn leol o'r addewid hwn"
 
-#: pb/web/ref-index.php:86
+#: pb/web/ref-index.php:95
 #, fuzzy
 msgid "Creator only:"
 msgstr "(cr&euml;wr yn unig)"
 
-#: pb/web/ref-index.php:86 pb/web/ref-index.php:88
+#: pb/web/ref-index.php:95 pb/web/ref-index.php:97
 msgid "Only if you made this pledge"
 msgstr "Cr&euml;wr yr addewid yn unig"
 
-#: pb/web/ref-index.php:89
+#: pb/web/ref-index.php:98
 #, fuzzy
 msgid "Change picture"
 msgstr "Newid llun yr addewid"
 
-#: pb/web/ref-index.php:89
+#: pb/web/ref-index.php:98
 #, fuzzy
 msgid "Add a picture"
 msgstr "Ychwanegu llun i'r addewid"
 
-#: pb/web/ref-index.php:107
+#: pb/web/ref-index.php:116
 #, php-format
 msgid "%d person who did not want to give their name"
 msgid_plural "%d people who did not want to give their names"
 msgstr[0] "%d person nad oedd am adael ei (h)enw"
 msgstr[1] "%d o bobl nad oedd am adael eu henwau"
 
-#: pb/web/ref-index.php:109
+#: pb/web/ref-index.php:118
 #, fuzzy
 msgid ", all of whom have done the pledge"
 msgstr "Dangoswch fy enw ar yr addewid"
 
-#: pb/web/ref-index.php:111
+#: pb/web/ref-index.php:120
 #, fuzzy, php-format
 msgid ", %d of whom has done the pledge"
 msgid_plural ", %d of whom have done the pledge"
 msgstr[0] "Sylwadau ar yr addewid hwn"
 msgstr[1] "Sylwadau ar yr addewid hwn"
 
-#: pb/web/ref-index.php:115
+#: pb/web/ref-index.php:124
 #, php-format
 msgid "%d person who signed up via mobile"
 msgid_plural "%d people who signed up via mobile"
 msgstr[0] "%d person a'i lofnodwyd trwy'i ff&ocirc;n l&ocirc;n"
 msgstr[1] "%d o bobl a'i lofnodwyd trwy'u ffonau l&ocirc;n"
 
-#: pb/web/ref-index.php:117
+#: pb/web/ref-index.php:126
 #, fuzzy, php-format
 msgid "%d person who signed up <a href=\"%s\">in Facebook</a>"
 msgid_plural "%d people who signed up <a href=\"%s\">in Facebook</a>"
 msgstr[0] "%d person a'i lofnodwyd trwy'i ff&ocirc;n l&ocirc;n"
 msgstr[1] "%d o bobl a'i lofnodwyd trwy'u ffonau l&ocirc;n"
 
-#: pb/web/ref-index.php:133
+#: pb/web/ref-index.php:142
 msgid "Current signatories"
 msgstr "Llofnodwyr cyfredol"
 
-#: pb/web/ref-index.php:140
+#: pb/web/ref-index.php:149
 #, php-format
 msgid "So far, only %s, the Pledge Creator, has signed this pledge."
 msgstr "Hyd yn hyn, dim ond %s, cr&euml;wr yr Addewid, sy wedi'i lofnodi."
 
-#: pb/web/ref-index.php:154
+#: pb/web/ref-index.php:163
 #, php-format
 msgid "Because there are so many signers, only the most recent %d are shown on this page."
 msgstr "Gan fod cymaint o bobl wedi llofnodi'r addewid, dim ond y %d diweddaraf sy'n ymddangos ar y dudalen hon."
 
-#: pb/web/ref-index.php:157
+#: pb/web/ref-index.php:166
 msgid "Show all signers"
 msgstr "Dangos y llofnodwyr i gyd"
 
-#: pb/web/ref-index.php:174
+#: pb/web/ref-index.php:183
 #, php-format
 msgid "%s, the Pledge Creator, joined by:"
 msgstr "%s, Cr&euml;wr yr Addewid, ynghyd &acirc;:"
 
-#: pb/web/ref-index.php:224
+#: pb/web/ref-index.php:233
 #, php-format
 msgid "Succeeded on %s"
 msgstr ""
 
-#: pb/web/ref-index.php:269
+#: pb/web/ref-index.php:278
 msgid "View signup rate graph"
 msgstr "Gweld graff graddfa llofnodi"
 
-#: pb/web/ref-index.php:276
+#: pb/web/ref-index.php:285
 msgid "RSS feed of comments on this pledge"
 msgstr "Sylwadau ar yr addewid hwn"
 
-#: pb/web/ref-index.php:277
+#: pb/web/ref-index.php:286
 msgid "Comments on this pledge"
 msgstr "Sylwadau ar yr addewid hwn"
 
-#: pb/web/ref-index.php:285
+#: pb/web/ref-index.php:294
 #, php-format
 msgid "Because there are so many comments, only the most recent %d are shown on this page."
 msgstr "Gan fod cymaint o sylwadau, dim ond y %d diweddaraf sy'n ymddangos ar y dudalen hon."
 
-#: pb/web/ref-index.php:288
+#: pb/web/ref-index.php:297
 msgid "Show all comments"
 msgstr "Dangos y sylwadau i gyd"
 
-#: pb/web/ref-index.php:327
+#: pb/web/ref-index.php:336
 #, fuzzy
 msgid "Some of the people who signed this pledge also signed these pledges..."
 msgstr "Mae pobl sy wedi llofnodi yr addewid hwn hefyd wedi addo i..."
 
-#: pb/web/ref-index.php:333 pb/web/ref-related.js.php:60
+#: pb/web/ref-index.php:342 pb/web/ref-related.js.php:60
 #, fuzzy, php-format
 msgid "%s person"
 msgid_plural "%s people"
 msgstr[0] "arwyddwyd gan %s person"
 msgstr[1] "arwyddwyd gan %s o bobl"
 
-#: pb/web/ref-index.php:374
-#, fuzzy
-msgid "This pledge has now closed; it was successful!"
-msgstr "Mae'r addewid wedi llwyddo!"
-
-#: pb/web/ref-index.php:380
+#: pb/web/ref-index.php:389
 #, fuzzy
 msgid "You might be interested in these other pledges:"
 msgstr "Dych chi ddim wedi creu addewid hyd yn hyn."
 
-#: pb/web/ref-index.php:389
+#: pb/web/ref-index.php:398
 msgid "See <a href=\"/list\">more pledges</a>, and all <a href=\"/faq\">about how PledgeBank works</a>."
 msgstr ""
 
-#: pb/web/ref-index.php:404
+#: pb/web/ref-index.php:414
 #, php-format
 msgid "Comments on Pledge '%s'"
 msgstr "Sylwadau ar yr addewid '%s'"
@@ -5708,96 +5807,106 @@ msgstr ""
 msgid "Comments on all pledges"
 msgstr "Sylwadau ar yr addewid hwn"
 
-#: pb/web/search.php:26
+#: pb/web/search.php:27
 #, fuzzy, php-format
 msgid "Search results for '%s'"
 msgstr "Canlyniadu Ymchilio"
 
-#: pb/web/search.php:101
+#: pb/web/search.php:102
 msgid "decrease distance"
 msgstr ""
 
-#: pb/web/search.php:110
+#: pb/web/search.php:111
 msgid "increase distance"
 msgstr ""
 
-#: pb/web/search.php:122 pb/web/pb.js:16
+#: pb/web/search.php:123 pb/web/pb.js:16
 msgid "<Enter town or keyword>"
 msgstr "<Enw tref neu allweddair>"
 
-#: pb/web/search.php:128
+#: pb/web/search.php:129
 #, fuzzy, php-format
 msgid "RSS feed of pledges matching '%s'"
 msgstr "Ffrwd RSS o'r addewidion diweddaraf"
 
-#: pb/web/search.php:147
+#: pb/web/search.php:148
 #, php-format
 msgid "Result <strong>exactly matching</strong> pledge <strong>%s</strong>:"
 msgstr "Canlyniad sy'n cymharu <strong>%s</strong> yn <strong>union</strong>:"
 
-#: pb/web/search.php:165
+#: pb/web/search.php:166
 msgid "We couldn't find that postcode, please check it again."
 msgstr "Doedden ni ddim yn gallu adnabod y c&ocirc;d post; a allwch chi ei wirio eto?"
 
-#: pb/web/search.php:169
+#: pb/web/search.php:170
 #, fuzzy, php-format
 msgid "Results for <strong>open pledges</strong> within %s %s of UK postcode <strong>%s</strong>:"
 msgstr "Canlyniadau am <strong>addewidion agored ar bwys</strong> c&ocirc;d post <strong>%s</strong>:"
 
-#: pb/web/search.php:173 pb/web/search.php:228
+#: pb/web/search.php:174 pb/web/search.php:191 pb/web/search.php:276
 msgid "No nearby open pledges. Why not <a href=\"/new\">make one</a>?"
 msgstr "Dim addewidion agored yn eich ardal. Beth am <a href=\"/new\">wneud un</a>?"
 
-#. TRANS: For example: "Results for <strong>open pledges</strong> near places matching <strong>Bolton</strong>, United Kingdom (<a href="....">change country</a>):"
-#: pb/web/search.php:224
+#: pb/web/search.php:187
+#, fuzzy, php-format
+msgid "Results for <strong>open pledges</strong> within %s %s of US zipcode <strong>%s</strong>:"
+msgstr "Canlyniadau am <strong>addewidion agored ar bwys</strong> c&ocirc;d post <strong>%s</strong>:"
+
+#: pb/web/search.php:195
+#, fuzzy
+msgid "We couldn't find that zipcode, please try again."
+msgstr "Doedden ni ddim yn gallu adnabod y c&ocirc;d post; a allwch chi ei wirio eto?"
+
+#: pb/web/search.php:252
+#, php-format
+msgid "We found more than one location matching <strong>%s</strong>, %s. Pick your town from the list to see pledges in your area:"
+msgstr ""
+
+#. TRANS: For example: "Results for <strong>open pledges</strong> near places matching <strong>Bolton</strong>, United Kingdom:"
+#: pb/web/search.php:272
 #, fuzzy, php-format
 msgid "Results for <strong>open pledges</strong> within %s %s of <strong>%s</strong>, %s:"
 msgstr "Canlyniadau am <strong>addewidion agored</strong> mewn llefydd fel <strong>%s</strong>, %s (%s):"
 
-#: pb/web/search.php:234
-#, fuzzy, php-format
-msgid "Results for <strong>open pledges near</strong> %s places matching <strong>%s</strong>, %s:"
-msgstr "Canlyniadau am <strong>addewidion agored</strong> mewn llefydd fel <strong>%s</strong>, %s (%s):"
-
-#: pb/web/search.php:245
+#: pb/web/search.php:283
 #, php-format
 msgid "Other similar places to %s"
 msgstr ""
 
-#: pb/web/search.php:247
+#: pb/web/search.php:285
 msgid "Did you mean:"
 msgstr ""
 
-#: pb/web/search.php:266
+#: pb/web/search.php:301
 #, php-format
 msgid "To search for a town, please first %s."
 msgstr "I chwilio am dref, mae rhaid %s yn gyntaf."
 
-#: pb/web/search.php:308
+#: pb/web/search.php:343
 #, php-format
 msgid "Results for <strong>open pledges</strong> matching <strong>%s</strong>:"
 msgstr "Canlyniadau am <strong>addewidion agored</strong> sy'n cyfateb gyda <strong>%s</strong>:"
 
-#: pb/web/search.php:314
+#: pb/web/search.php:349
 #, php-format
 msgid "Results for <strong>closed pledges</strong> matching <strong>%s</strong>:"
 msgstr "Canlyniadau am <strong>addewidion cae&euml;dig</strong> sy'n cyfateb gyda <strong>%s</strong>:"
 
-#: pb/web/search.php:331
+#: pb/web/search.php:366
 #, php-format
 msgid "Results for <strong>comments</strong> matching <strong>%s</strong>:"
 msgstr "Canlyniadau am <strong>sylwadau</strong> sy'n cyfateb gyda <strong>%s</strong>:"
 
-#: pb/web/search.php:380
+#: pb/web/search.php:415
 #, php-format
 msgid "Results for <strong>people</strong> matching <strong>%s</strong>:"
 msgstr "Canlyniadau am <strong>bobl</strong> sy'n cyfateb gyda <strong>%s</strong>:"
 
-#: pb/web/search.php:388
+#: pb/web/search.php:423
 msgid " (creator)"
 msgstr " (creuwr)"
 
-#: pb/web/search.php:396
+#: pb/web/search.php:431
 #, php-format
 msgid "Sorry, we could find nothing that matched \"%s\"."
 msgstr "Mae'n flin gennym, ni allem ffeindio dim byd sy'n matsho \"%s\"."
@@ -6121,12 +6230,12 @@ msgstr ""
 msgid "If you would like your own special PledgeBank site, then <a href=\"/contact\">email us</a> for details."
 msgstr ""
 
-#: pb/bin/frequentupdate:399 pb/bin/frequentupdate:485
+#: pb/bin/frequentupdate:400 pb/bin/frequentupdate:486
 #, fuzzy, php-format
 msgid "PledgeBank here. Sorry, the %s pledge has failed. Better luck next time!"
 msgstr "Mae'n flin iawn gennym &mdash; gwell lwc y tro nesaf!"
 
-#: pb/bin/frequentupdate:738
+#: pb/bin/frequentupdate:739
 #, fuzzy, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone in %s who signed your pledge %s ]\n"
@@ -6134,7 +6243,7 @@ msgid ""
 "%s"
 msgstr "Bydd eich neges yn cael eu hanfon at bawb sy'n llofnodi'ch addewid nes ymlaen."
 
-#: pb/bin/frequentupdate:740
+#: pb/bin/frequentupdate:741
 #, fuzzy, php-format
 msgid ""
 "[ This is a copy of the message you have just sent to everyone who signed your pledge %s ]\n"
@@ -6142,29 +6251,34 @@ msgid ""
 "%s"
 msgstr "Bydd eich neges yn cael eu hanfon at bawb sy'n llofnodi'ch addewid nes ymlaen."
 
-#: pb/bin/frequentupdate:937
+#: pb/bin/frequentupdate:952
 #, fuzzy, php-format
 msgid "%d days ago"
 msgstr "%d diwrnod ar &ocirc;l"
 
-#: pb/bin/frequentupdate:939
+#: pb/bin/frequentupdate:954
 #, php-format
 msgid "%d hours ago"
 msgstr ""
 
-#: pb/bin/frequentupdate:941
+#: pb/bin/frequentupdate:956
 #, php-format
 msgid "%d minutes ago"
 msgstr ""
 
-#: pb/bin/frequentupdate:943
+#: pb/bin/frequentupdate:958
 msgid "a minute ago"
 msgstr ""
 
 #. TRANS: The first %s is one of the time strings above.
-#: pb/bin/frequentupdate:946
+#: pb/bin/frequentupdate:961
 #, php-format
 msgid "[ You signed this pledge after this message was sent to the other signers. They will have received copies of this message %s. You can read older messages from the pledge creator that you missed here: %s ]"
+msgstr ""
+
+#: pb/bin/frequentupdate:975
+#, php-format
+msgid "To stop receiving messages from the pledge creator, please follow this link: %s"
 msgstr ""
 
 #: pb/bin/send-local-alerts:153
@@ -6204,12 +6318,12 @@ msgid "More details:"
 msgstr "Mwy o fanylion"
 
 #. TRANS: This is on a poster, it becomes "Pledge at http://www.pledgebank.com/PLEDGEREF", so "Pledge" in this context is a verb, as below. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
-#: pb/web/poster.cgi:497 pb/web/poster.cgi:648
+#: pb/web/poster.cgi:497 pb/web/poster.cgi:651
 #, fuzzy
 msgid "Pledge at "
 msgstr "Addewid"
 
-#: pb/web/poster.cgi:499 pb/web/poster.cgi:650
+#: pb/web/poster.cgi:499 pb/web/poster.cgi:653
 #, fuzzy
 msgid " pin "
 msgstr "picnic"
@@ -6240,27 +6354,27 @@ msgstr "Safle parhaol yr addewid:"
 msgid ". Thanks!"
 msgstr ""
 
-#: pb/web/poster.cgi:613
+#: pb/web/poster.cgi:616
 #, fuzzy, python-format
 msgid "<font color=\"%s\">I</font> will %s <b>but only if</b> <font color=\"%s\">%s</font> %s will %s. "
 msgstr "Bydd %s yn %s ond dim ond os bydd <strong>%s</strong> %s yn %s."
 
-#: pb/web/poster.cgi:621
+#: pb/web/poster.cgi:624
 #, python-format
 msgid "<font color=\"%s\">I</font> will %s. "
 msgstr ""
 
-#: pb/web/poster.cgi:639
+#: pb/web/poster.cgi:642
 #, fuzzy, python-format
 msgid "<b>More details:</b> %s"
 msgstr "Mwy o fanylion"
 
-#: pb/web/poster.cgi:656
+#: pb/web/poster.cgi:659
 #, fuzzy
 msgid "pledge at "
 msgstr "addewid"
 
-#: pb/web/poster.cgi:658
+#: pb/web/poster.cgi:661
 #, python-format
 msgid ""
 "<font size=\"+2\">Text</font> <font size=\"+8\" color=\"%s\">\n"
@@ -6268,7 +6382,7 @@ msgid ""
 "            (%s only) or "
 msgstr ""
 
-#: pb/web/poster.cgi:669
+#: pb/web/poster.cgi:672
 #, python-format
 msgid ""
 "\n"
@@ -6276,59 +6390,59 @@ msgid ""
 "            "
 msgstr ""
 
-#: pb/web/poster.cgi:678
+#: pb/web/poster.cgi:681
 #, fuzzy, python-format
 msgid "<font color=\"%s\">%s</font> person signed up"
 msgid_plural "<font color=\"%s\">%s</font> people signed up"
 msgstr[0] "arwyddwyd gan %s person"
 msgstr[1] "arwyddwyd gan %s o bobl"
 
-#: pb/web/poster.cgi:680
+#: pb/web/poster.cgi:683
 #, fuzzy, python-format
 msgid "<font color=\"%s\">%s</font> person has signed up"
 msgid_plural "<font color=\"%s\">%s</font> people have signed up"
 msgstr[0] "%s person wedi arwyddo"
 msgstr[1] "%s person wedi arwyddo"
 
-#: pb/web/poster.cgi:682
+#: pb/web/poster.cgi:685
 #, fuzzy, python-format
 msgid " (%d over target) — success!"
 msgstr "(%d dros y targed)"
 
-#: pb/web/poster.cgi:686
+#: pb/web/poster.cgi:689
 #, fuzzy, python-format
 msgid "<font color=\"%s\">%d</font> more was needed"
 msgid_plural "<font color=\"%s\">%d</font> more were needed"
 msgstr[0] "Roedd angen %d mwy"
 msgstr[1] "Roedd angen %d mwy"
 
-#: pb/web/poster.cgi:688
+#: pb/web/poster.cgi:691
 #, python-format
 msgid "<font color=\"%s\">%d</font> more needed"
 msgid_plural "<font color=\"%s\">%d</font> more needed"
 msgstr[0] ""
 msgstr[1] ""
 
-#: pb/web/poster.cgi:694
+#: pb/web/poster.cgi:697
 #, python-format
 msgid " Or you can text <font color=\"%s\">%s %s</font> to <font color=\"%s\">%s</font> <font size=\"-1\">(%s only)</font>."
 msgstr ""
 
-#: pb/web/poster.cgi:698
+#: pb/web/poster.cgi:701
 #, python-format
 msgid "Open until %s — <font color=\"%s\">Sign this pledge</font>!%s"
 msgstr ""
 
-#: pb/web/poster.cgi:701
+#: pb/web/poster.cgi:704
 #, python-format
 msgid "Closed on <font color=\"%s\">%s</font>"
 msgstr ""
 
-#: pb/web/poster.cgi:904
+#: pb/web/poster.cgi:907
 msgid "UK"
 msgstr ""
 
-#: pb/web/poster.cgi:1071
+#: pb/web/poster.cgi:1074
 msgid ""
 "Sorry, we weren't able to make your poster.\n"
 "\n"
@@ -6350,16 +6464,25 @@ msgstr "Byd eang"
 msgid "(separator)"
 msgstr "(nodyn gwahanu)"
 
-#: pb/web/pb.js:130 pb/web/pb.js:131
+#: pb/web/pb.js:129 pb/web/pb.js:130 pb/web/pb.js:133
 msgid "Postcode or town:"
 msgstr "C&ocirc;d post neu dref"
 
-#: pb/web/pb.js:196
+#: pb/web/pb.js:131 pb/web/pb.js:132 pb/web/pb.js:135
+msgid "Town or zipcode:"
+msgstr ""
+
+#: pb/web/pb.js:144 pb/web/pb.js:145 pb/web/pb.js:146
+#, fuzzy
+msgid "Place name or zipcode:"
+msgstr "Enw lle:"
+
+#: pb/web/pb.js:211
 #, python-format
 msgid "You have used %d characters; %d remain."
 msgstr "Defnyddir %d o nodiadau; %d ar &ocirc;l"
 
-#: pb/web/pb.js:198
+#: pb/web/pb.js:213
 #, python-format
 msgid "You have used %d characters, which is %d more than will fit in an SMS. Please make your message shorter."
 msgstr "Defnyddiwyd %d o nodiadau, sy'n %d fwy nag sy'n ffito mewn neges destun. Cwtogwch eich neges, os gwelwch yn dda."
@@ -6740,7 +6863,7 @@ msgstr ""
 msgid ""
 "Subject: Your pledge - '<?=$values['title']?>' at PledgeBank.com\n"
 "\n"
-"Unfotunately, the pledge to which you signed up did not meet its target in the\n"
+"Unfortunately, the pledge to which you signed up did not meet its target in the\n"
 "required time.  It required <?=$values['target']?> <?=$values['type']?>, but\n"
 "achieved only <?=$values['actual']?>.\n"
 "\n"
@@ -7074,6 +7197,13 @@ msgstr ""
 #, fuzzy
 msgid "Your rights"
 msgstr "Eich Addewidion"
+
+#~ msgid "', which is not a valid address."
+#~ msgstr ", sy ddim yn gyfeiriad dilys."
+
+#, fuzzy
+#~ msgid "Results for <strong>open pledges near</strong> %s places matching <strong>%s</strong>, %s:"
+#~ msgstr "Canlyniadau am <strong>addewidion agored</strong> mewn llefydd fel <strong>%s</strong>, %s (%s):"
 
 #, fuzzy
 #~ msgid "Some live pledges"
@@ -7540,9 +7670,6 @@ msgstr "Eich Addewidion"
 
 #~ msgid "Open"
 #~ msgstr "Ar agor"
-
-#~ msgid "Closed"
-#~ msgstr "Ar gau"
 
 #~ msgid "Successful"
 #~ msgstr "Llwyddiannus"
