@@ -28,6 +28,7 @@ class tableclass_group extends DB_DataObject {
     public $zoom_level;                      // int(4)   not_null
     public $long_centroid;                   // float()   not_null
     public $lat_centroid;                    // float()   not_null
+    public $location_desc;                   // text() default '' not_null
     public $url_id;                          // varchar(150)   not_null
     public $involved_email;                  // varchar(150)  
 

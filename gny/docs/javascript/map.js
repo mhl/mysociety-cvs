@@ -107,6 +107,8 @@ function addRectangle(){
 function load(nCenterLong, nCenterLat, iZoom, bFullMap) {
   if (GBrowserIsCompatible()) {
 
+    document.getElementById('mapNo').style.display = 'none';
+
     map = new GMap2(document.getElementById("divMap"));
     map.setCenter(new GLatLng(nCenterLat, nCenterLong), iZoom);
 

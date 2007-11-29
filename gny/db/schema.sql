@@ -310,6 +310,7 @@ CREATE TABLE `groups` (
   `zoom_level` int(11) NOT NULL,
   `long_centroid` float NOT NULL,
   `lat_centroid` float NOT NULL,
+  `location_desc` text default '' NOT NULL,
   `url_id` varchar(150) NOT NULL,
   `involved_email` varchar(150) default NULL,
   PRIMARY KEY  (`group_id`),

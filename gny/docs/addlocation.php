@@ -100,11 +100,12 @@ class addlocation_page extends pagebase {
 		$this->group->long_bottom_left = $this->data['hidLongBottomLeft'];
 		$this->group->lat_bottom_left = $this->data['hidLatBottomLeft'];
 		$this->group->long_top_right = $this->data['hidLongTopRight'];
-		$this->group->lat_top_right = $this->data['hidLatTopRight'];								
+		$this->group->lat_top_right = $this->data['hidLatTopRight'];
 		$this->group->long_centroid = $this->data['hidLongCentroid'];
 		$this->group->lat_centroid = $this->data['hidLatCentroid'];
 		$this->group->zoom_level = $this->data['hidZoomLevel'];
 
+		$this->group->location_desc = $this->data['txtLocationDesc'];
 	}
 
 	//Validate
@@ -112,6 +113,18 @@ class addlocation_page extends pagebase {
 	
 		$valid = true;
 		
+		if ($this->group->location_desc) {
+			/* Given a description, assume they didn't use the map */
+			$this->group->long_bottom_left = 0;
+			$this->group->lat_bottom_left = 0;
+			$this->group->long_top_right = 0;
+			$this->group->lat_top_right = 0;
+			$this->group->long_centroid = 0;
+			$this->group->lat_centroid = 0;
+			$this->group->zoom_level = 0;
+			return true;
+		}
+
 		if(!is_numeric($this->group->long_bottom_left) || !is_numeric($this->group->lat_bottom_left) 
 			|| !is_numeric($this->group->long_top_right) || !is_numeric($this->group->lat_top_right) 
 			|| !is_numeric($this->group->long_centroid) || !is_numeric($this->group->lat_centroid ) 

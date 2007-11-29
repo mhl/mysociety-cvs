@@ -46,6 +46,11 @@ class confirmed2_page extends pagebase {
 				$group->confirmed = true;
 				$group->update();
 
+				if ($group->location_desc) {
+					# XXX Send email to team@ as this one needs manual locating
+					# Some sort of admin interface would be the next step!
+				}
+
 				//Update the stats table
 				tableclass_stat::increment_stat("group.confirmed.count");
 						
