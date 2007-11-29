@@ -26,12 +26,13 @@ Third party projects
 ====================
 
 pet - E-Petitions at 10 Downing Street
+iso - isochrone maps for Department for Transport
 
 Other projects
 ==============
 
-glocaliser - Glocaliser
 cop - Comment on Power
+glocaliser - Glocaliser
 ivfyb - I Voted For You Because
 yhh - YourHistoryHere
 placeopedia - Placeopedia
@@ -95,8 +96,5 @@ shlib - General purpose shell functions
 jslib - General purpose javascript functions
 rblib - General purpose Ruby functions
 locale - Translations into different human languages
-
-web-admin - General use web administration scripts (UNFINISHED - should really
-    be in ms/web-admin or as a module?)
 
 If you need any help, please email me francis@mysociety.org.
