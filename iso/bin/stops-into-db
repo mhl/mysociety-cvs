@@ -1,0 +1,53 @@
+#!/usr/bin/perl -w
+#
+# stops-into-db:
+# Make a little database of transport stops from NaPTAN data. 
+#
+# Run postcodes-into-db first, as this also caches nearest postcode to each stop.
+#
+# Copyright (c) 2006 Chris Lightfoot. All rights reserved.
+# Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: stops-into-db,v 1.1 2007-11-30 12:51:33 francis Exp $';
+
+use strict;
+
+use DBI;
+use Text::CSV_XS;
+
+my ($file, $sqlite_db) = @ARGV;
+die "Parameters are filename of NaPTAN's Stops.csv, and sqlite database" if !$file || !$sqlite_db;
+
+my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_db", "", "", { AutoCommit => 0 });
+
+my $C = new Text::CSV_XS({ binary => 1 });
+
+open(F, $file) || die "$file: $!";
+<F>;    # skip header
+
+while (defined($_ = <F>)) {
+    s/\r\n//;
+    s#\x92#'#g;
+    
+    $C->parse($_) || die "$_: bad CSV";
+    my @f = $C->fields();
+
+    my $name = $f[4];
+    my $type = $f[31];
+    my $stopE = $f[27];
+    my $stopN = $f[28];
+
+    # Find the closest postcode.
+    my $pc = $dbh->selectrow_array("select postcode from postcode where easting > $stopE - 100 and easting < $stopE + 100 and northing > $stopN - 100 and northing < $stopN + 100 order by (easting - $stopE) * (easting - $stopE) + (northing - $stopN) * (northing - $stopN) limit 1");
+    if (!defined($pc)) {
+        warn "no postcode near $name\n";
+        next;
+    }
+    print "$name -> $pc\n";
+
+    $dbh->do('insert into stop2 (name, type, easting, northing, postcode_closest) values (?, ?, ?, ?, ?)', {}, $name, $type, $stopE, $stopN, $pc);
+
+}
+
+$dbh->commit();

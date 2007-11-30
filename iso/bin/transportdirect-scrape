@@ -27,7 +27,7 @@
 #$size ||= 20000;
 
 
-my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.4 2007-11-30 12:48:07 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.5 2007-11-30 12:51:33 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -92,7 +92,7 @@ postcode (there are 1.7 million of them in the whole country). See
 postcode-into-db for script to do this. Example row:
     AB101AF|394181|806429
 The stop2 table should contain the coordinates of all relevant public transport
-stops from NaPTAN. e.g. 
+stops from NaPTAN. See stops-into-db for script to do this. Example row:
     Bus Station Bay 19|BCT|358942|173527|BS13LP
 
 Postcodes are in uppercase with no spaces. Coordinates are an integer representation
