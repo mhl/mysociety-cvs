@@ -38,17 +38,15 @@
 		return preg_match("/^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(:(\d+))?/i", $url);
 	}
 
+	// Regexes from ms_make_clickable mostly, adjusted
 	function raw_urls_to_links($text){
-	
-		//replace strings with http etc
-		$return = preg_replace('#(\s|^)((http(s?)|ftp)://(\w+\.)+\w{2,}/?)#i', '$1<a href="$2">$2</a>', 
-			$text); 
-			
-		$return = preg_replace('#(\s|^)((\w+\.){2,}\w{2,}/?)#i', '$1<a href="http://$2">$2</a>', 
-			$return);	
-			
-		return $return;
-	
+		$text = " $text ";
+		$text = preg_replace('#(https?://[^\s<>{}()]+[^\s.,<>{}()])#i', '<a href="$1" rel="nofollow">$1</a>', $text);
+		$text = preg_replace('#(\s)([a-z0-9\-]+(?:\.[a-z0-9\-\~]+){2,}(?:/[^ <>{}()\n\r]*[^., <>{}()\n\r])?)#i', 
+			'$1<a href="http://$2" rel="nofollow">$2</a>', $text);
+
+		$text = trim($text);
+		return $text;
 	}
 	
 	function new_lines_to_paragraphs($text){
