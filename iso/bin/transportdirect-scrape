@@ -27,7 +27,7 @@
 #$size ||= 20000;
 
 
-my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.2 2007-11-30 12:18:04 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.3 2007-11-30 12:30:32 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -94,9 +94,12 @@ The stop2 table should contain the coordinates of all relevant public transport
 stops from NaPTAN. e.g. 
     Bus Station Bay 19|BCT|358942|173527|BS13LP
 
-Postocdes are in uppercase with no spaces. Coordinates are an integer reresentation
+Postcodes are in uppercase with no spaces. Coordinates are an integer representation
 of the 3 decimal plae OS national grid square references - i.e. are measured in
 metres.0
+
+The database does not record parameters like the date, or walkspeed in the
+journey table, so if you vary them you should use a totally new database.
 
 END
     exit;
