@@ -41,10 +41,10 @@
 	function raw_urls_to_links($text){
 	
 		//replace strings with http etc
-		$return = preg_replace('/(\s|^)(http(s?):\\/\\/|ftp:\\/\\/{1})((\w+\.)+)\w{2,}(\/?)/i', '<a href="$0">$0</a>', 
+		$return = preg_replace('#(\s|^)((http(s?)|ftp)://(\w+\.)+\w{2,}/?)#i', '$1<a href="$2">$2</a>', 
 			$text); 
 			
-		$return = preg_replace('/(\s|^)((\w+\.)+)\w{2,}(\/?)/i', '<a href="http://$0">$0</a>', 
+		$return = preg_replace('#(\s|^)((\w+\.){2,}\w{2,}/?)#i', '$1<a href="http://$2">$2</a>', 
 			$return);	
 			
 		return $return;
