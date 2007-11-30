@@ -1,0 +1,40 @@
+#!/usr/bin/perl -w
+#
+# postcode-into-db:
+# Make a little database of postcodes.
+#
+# Copyright (c) 2006 Chris Lightfoot. All rights reserved.
+# Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: postcodes-into-db,v 1.1 2007-11-30 12:48:07 francis Exp $';
+
+use strict;
+
+use DBI;
+use Text::CSV_XS;
+
+my ($codepoint_dir, $sqlite_db) = @ARGV;
+die "Parameters are codepoint directory, and sqlite database" if !$codepoint_dir || !$sqlite_db;
+
+my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_db", "", "", { AutoCommit => 0 });
+
+my $C = new Text::CSV_XS();
+
+foreach (glob("$codepoint_dir/*")) {
+    open(C, $_) || die "$_: $!\n";
+    my $n = 0;
+    print STDERR "$_... ";
+    while (defined($_ = <C>)) {
+        ++$n;
+        $C->parse($_) || die "$_: bad CSV data on line $n\n";
+        my @x = $C->fields();
+        next if ($x[0] =~ /^BT/ || $x[1] == 90);
+        $x[0] =~ s/\s+//g;
+        $dbh->do('insert into postcode (postcode, easting, northing) values (?, ?, ?)', {}, $x[0], $x[10], $x[11]);
+    }
+    close(C);
+    $dbh->commit();
+    print STDERR "done.\n";
+}
+
