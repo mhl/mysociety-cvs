@@ -4,15 +4,15 @@
     <dl class="faq">
         <dt>{l}What does {$site_name} do?{/l}</dt>
         <dd>
-            {l}If lets you find out about all those hidden email lists, forums and community blogs near where you live.{/l}
+            {l}It lets you find out about all those hidden email lists, forums and community blogs near where you live.{/l}
         </dd>
-        <dt>{l}I am run a local email group, forum or blog and want to add it to {$site_name}{/l}</dt>
+        <dt>{l}I run a local email group, forum or blog and want to add it to {$site_name}{/l}</dt>
         <dd>{l}It's very easy. Tell us a bit about the group, the approximate area it covers and how people
-            can get involved. <a href="{$www_server}/add/about/">Click here to get started</a>.{/l}
+            can get involved. <a href="{$www_server}/add/about/">Get started</a>.{/l}
         </dd>
         <dt>{l}How do I find a group near me?{/l}</dt>
         <dd>
-            {l}Enter a place name anywhere in the world, or a UK post code or USA Zip code in the search box on <a href="{$www_server}">this page</a>.{/l}
+            {l}Enter a place name anywhere in the world, or a UK post code or USA Zip code in the search box on <a href="{$www_server}">the front page</a>.{/l}
         </dd>
         <dt>{l}Once I find a group how to join it?{/l}</dt>
         <dd>
@@ -25,7 +25,7 @@
             <a href="http://groups.google.com/groups/create">Google</a> 
             provide free email groups services that is simple to set up. If you need help getting other 
             local people to promise to join your group before you start it, 
-            you can use <a href="http://www.pledgebank.com">PledgeBank.com</a>.{/l}
+            you can use <a href="http://www.pledgebank.com">PledgeBank</a>.{/l}
         </dd>
         <dt>{l}I run a local group and would like to share my experiences or get advice{/l}</dt>
         <dd>
