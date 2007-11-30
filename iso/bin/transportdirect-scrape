@@ -7,7 +7,27 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.1 2007-11-30 11:32:01 francis Exp $';
+# Cardiff 20km CF101EP
+#center = (318244, 175971)
+#bounds = (308244 328244 165971 185971)
+#
+# 
+
+# Cardiff 100km CF101EP
+# center = (318244, 175971)
+# bounds = (268244 368244 125971 225971)
+
+#$to ||= 'CF101EP';
+#$to ||= 'B152TT';
+#$to ||= 'EH12QL';
+#$to ||= 'SE58AZ';
+#$to ||= 'SK84LA';
+
+#$size ||= 100000;
+#$size ||= 20000;
+
+
+my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.2 2007-11-30 12:18:04 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -18,6 +38,7 @@ use HTML::TreeBuilder;
 use IO::Handle;
 use Text::CSV_XS;
 use WWW::Mechanize;
+use Time::HiRes;
 use Getopt::Long;
 
 use vars qw($to $size $htmldir $deadline $walkspeed $sqlite_database $date);
@@ -30,7 +51,7 @@ my $result = GetOptions (
                         "db=s" => \$sqlite_database,
                         "date=s" => \$date,
                         );
-if (!$sqlite_database || !$to || !$htmldir) {
+if (!$sqlite_database || !$to || !$htmldir || !$date) {
     print <<END;
 
 Screen scrapes Transport Direct to generate journey times to get to work at a
@@ -39,11 +60,11 @@ particular postcode.
 Required parameters:
 --db=filename.sqlite - database file containing stop info, and where journeys are saved (se below)
 --to=POSTCODE - postcode of destination place of work, e.g. CB30FD
---htmldir=DIR - place to dump HTML files it scrapes, really for debugging
---date=DD/MM/YYYY - in near future, date to do the journeys on, you probably want to pick a weekday!
+--htmldir=DIR - place to dump HTML files it had trouble with, for debugging
+--date=DDMMYYYY - in near future, date to do the journeys on, you probably want to pick a weekday! e.g. 06022007
 
 Optional parameters:
---size=METRES - size of square round postcode to scrape in metres, defaults to 80,000    
+--size=METRES - destination is in a centre of a square of this size sides in metres, defaults to 20,000    
 --deadline=HH:MM - hard time you have to get to work by, defaults to 09:00
 --walkspeed=METRES/SEC - speed of walking to/from stops, in metres per second, defaults to 1 m/s
 
@@ -81,10 +102,9 @@ END
     exit;
 }
 
-$size ||= 80000;
+$size ||= 20000;
 $deadline ||= '09:00';
 $walkspeed ||= 1;  # m/s
-
 
 my $counter = 0;
 sub dump_page ($) {
@@ -105,57 +125,89 @@ sub trim ($) {
 
 my $timere = qr/^([01][0-9]|2[0-3]):([0-5][0-9])$/;
 
-#(\d\d)/(\d\d)/(\d\d\d\d)##
 
-sub get_journeys_after ($$$) {
+
+sub time_add_minutes ($$) {
+    my ($time, $mins) = @_;
+    my ($H, $M) = ($time =~ $timere);
+    die "invalid time '$time' in time_add_minutes" if (!defined($H));
+    $M += $mins;
+    while ($M > 59) {
+        $M -= 60;
+        ++$H;
+    }
+    while ($M < 0) {
+        $M += 60;
+        --$H;
+    }
+    return sprintf('%02d:%02d', $H, $M);
+}
+
+# time_diff_minutes A B
+# Return A - B in minutes.
+sub time_diff_minutes ($$) {
+    my ($A, $B) = @_;
+    my ($Ha, $Ma) = ($A =~ $timere);
+    die "invalid time '$A' as first argument to time_diff_minutes"
+        if (!defined($Ha));
+    my ($Hb, $Mb) = ($B =~ $timere);
+    die "invalid time '$B' as first argument to time_diff_minutes"
+        if (!defined($Hb));
+    
+    return $Ma - $Mb + 60 * ($Ha - $Hb);
+}
+
+sub urlencode ($) {
+    my $t = shift;
+    $t =~ s/ /+/g;
+    $t =~ s/([^A-Za-z0-9+])/sprintf('%%%02x', ord($1))/ge;
+    return $t;
+}
+
+# get_latest_journey_before DEADLINE FROM TO
+# Get the latest-starting journey which 
+sub get_latest_journey_before_internal ($$$) {
+    my ($deadline, $from, $to) = @_;
+
     my $nretries = 0;
 tryagain:
-    my ($starttime, $from, $to) = @_;
 
-    # round start time to nearest 5 mins.
-    $starttime =~ s/[1289]$/0/;
-    $starttime =~ s/[3467]$/5/;
+    # this is documented in some transportdirect pdf somewhere
+    my $params_starttime = $deadline;
+    $params_starttime =~ s/://;
+    my %params = (
+            et => 'jp',
+            id => 'http://www.mysociety.org/',
+            oo => 'p',
+            o => $from,
+            do => 'p',
+            d => $to,
+            dt => $date,
+            t => $params_starttime,
+            da => 'a',
+            c => 'false',
+            p => 1
+        );
 
-    warn "rounded start time = $starttime\n";
+    my $url = 'http://www.transportdirect.info/transportdirect/en/journeyplanning/jplandingpage.aspx?';
+    foreach my $k (keys %params) {
+        my $v = $params{$k};
+        $url .= urlencode($k) . '=' . urlencode($v) . '&';
+    }
 
-    my ($H, $M) = ($starttime =~ $timere);
-    die "bad start time '$starttime' as first argument to get_journeys_after" if (!defined($H));
-    
+    warn "getting URL $url...\n";
+
     our $m ||= new WWW::Mechanize();
     $m->agent_alias('Windows IE 6');
-    $m->get('http://www.transportdirect.info/TransportDirect/en/?abandon=true');
-
-#    dump_page($m);
-
-    #$m->get('http://www.transportdirect.info/TransportDirect/en/JourneyPlanning/JourneyPlannerInput.aspx?cacheparam=0');
-    #print $m->content();
-
-    $m->submit_form(
-            form_number => 1,
-            fields => {
-                'planAJourneyControl:textBoxFrom' => $from,
-                'planAJourneyControl:fromDropDownLocationGazeteerOptions' => 'AddressPostcode',
-                
-                'planAJourneyControl:textBoxTo' => $to,
-                'planAJourneyControl:toDropDownLocationGazeteerOptions' => 'AddressPostcode',
-
-                'planAJourneyControl:checkBoxPublicTransport' => 'on',
-                'planAJourneyControl:checkBoxCarRoute' => 'off',
-
-                'planAJourneyControl:ambiguousDateSelectControl:listDays' => '05',
-                'planAJourneyControl:ambiguousDateSelectControl:listMonths' => '12/2006',
-                'dateControl:theLeaveDateControl:triDateControl:ambiguousSelectControl:listLeaveArrive' => 'Arrive',
-                'planAJourneyControl:ambiguousDateSelectControl:listHours' => $H,
-                'planAJourneyControl:ambiguousDateSelectControl:listMinutes' => $M
-            },
-            button => 'planAJourneyControl:buttonSubmit'
-        );
+    $m->get($url);
 
     # now we get a dumb "please wait" page.
     my $delta = 1;
     my $total_delay = 0;
     while (my $link = $m->find_link(text => 'click this link.')) {
-        sleep($delta);
+        print "usleep $delta\n";
+        Time::HiRes::usleep($delta * 1000000);
+        print "done\n";
         $total_delay += $delta;
 #        dump_page($m);
     #    $m->follow_link(text => 'click on this link.');
@@ -163,6 +215,7 @@ tryagain:
         $delta *= 2;
         $delta = 16 if ($delta > 16);
 
+        print ".";
         if ($total_delay > 10) {
             warn "... no results after ${total_delay}s; retrying\n";
             if ($nretries > 3) {
@@ -173,6 +226,7 @@ tryagain:
             goto tryagain;
         }
     }
+    print "finished\n";
 
     print STDERR "---\n";
 #    dump_page($m);
@@ -221,97 +275,19 @@ tryagain:
 
         push(@journeys, [$start, $end]);
     }
-
     return @journeys;
 }
 
-sub time_add_minutes ($$) {
-    my ($time, $mins) = @_;
-    my ($H, $M) = ($time =~ $timere);
-    die "invalid time '$time' in time_add_minutes" if (!defined($H));
-    $M += $mins;
-    while ($M > 59) {
-        $M -= 60;
-        ++$H;
-    }
-    while ($M < 0) {
-        $M += 60;
-        --$H;
-    }
-    return sprintf('%02d:%02d', $H, $M);
-}
-
-# time_diff_minutes A B
-# Return A - B in minutes.
-sub time_diff_minutes ($$) {
-    my ($A, $B) = @_;
-    my ($Ha, $Ma) = ($A =~ $timere);
-    die "invalid time '$A' as first argument to time_diff_minutes"
-        if (!defined($Ha));
-    my ($Hb, $Mb) = ($B =~ $timere);
-    die "invalid time '$B' as first argument to time_diff_minutes"
-        if (!defined($Hb));
-    
-    return $Ma - $Mb + 60 * ($Ha - $Hb);
-}
-
-# get_latest_journey_before DEADLINE FROM TO
-# Get the latest-starting journey which 
 sub get_latest_journey_before ($$$) {
     my ($deadline, $from, $to) = @_;
-    my $window = 240;    # estimate based on distance?
-    my $T = $deadline;
-    while (1) {
-        $T = time_add_minutes($T, -$window);
-        return () if ($T !~ $timere);
 
-        warn "getting journeys after $T...\n";
-        my @journeys = get_journeys_after($T, $from, $to);
-        return () if (!@journeys);
+    my @journeys = get_latest_journey_before_internal($deadline, $from, $to);
 
-        # ensure they are sorted by *start* time.
-        @journeys = sort { $a->[0] cmp $b->[0] } @journeys;
+    return () if (!@journeys);
 
-        # Now we should cull any journey whose arrival time is later than a
-        # later journey.
-        for (my $i = 0; $i < @journeys - 1; ++$i) {
-            for (my $j = $i + 1; $j < @journeys; ++$j) {
-                if ($journeys[$j]->[1] lt $journeys[$i]->[1]) {
-                    $journeys[$i] = undef;
-                    last;
-                }
-            }
-        }
+    return ($journeys[0]->[0], $journeys[0]->[1]);
 
-        @journeys = grep { defined($_) } @journeys;
-
-        my $first_arrival = $journeys[0]->[1];
-        my $last_arrival = $journeys[@journeys - 1]->[1];
-
-        if ($last_arrival lt $deadline) {
-            # No good.
-            my $delta = time_diff_minutes($deadline, $last_arrival);
-            $delta = 5 if ($delta < 5);
-            warn "last arrival at $last_arrival is still before deadline, adjusting by +$delta minutes\n";
-            $window = -$delta;
-        } elsif ($first_arrival gt $deadline) {
-            my $delta = time_diff_minutes($first_arrival, $deadline);
-            $delta = 5 if ($delta < 5);
-if ($window == 240) {
-    warn "no possible journeys starting at 05:00, assuming none at all\n";
-    return;
-}
-            warn "first arrival at $first_arrival is after deadline, adjusting by -$delta minutes\n";
-            # no journeys within two hours of T -- assume there are none.
-            return () if (time_diff_minutes($journeys[0]->[0], $T) > 120);
-            
-            $window = +$delta;
-        } else {
-            my ($j) = grep { $_->[1] le $deadline } reverse(@journeys);
-            print "$j->[0] -> $j->[1]\n";
-            return ($j->[0], $j->[1]);
-        }
-    }
+#    return @journeys;
 }
 
 my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_database", "", "", { AutoCommit => 0 });
@@ -335,8 +311,6 @@ warn "bounds = ($WW, $SS) to ($EE, $NN)\n";
 
 my $Nalready = $dbh->selectrow_array('select count(*) from journey where destination = ? and deadline = ?', {}, $to, $deadline);
 
-warn "have $Nalready results so far\n";
-
 my $from;
 
 # Find all the public transport stops within the region. For each one, find the
@@ -344,6 +318,8 @@ my $from;
 # to the destination.
 
 my @stops = @{$dbh->selectall_arrayref("select easting, northing, name, postcode_closest from stop2 where easting > $WW - 500 and easting < $EE + 500 and northing > $SS - 500 and northing < $NN + 500 order by random()")};
+
+warn "have $Nalready  / " . scalar(@stops) . " results so far\n";
 
 foreach my $s (@stops) {
     my ($stopE, $stopN, $stopname, $pc) = @$s;
@@ -357,6 +333,10 @@ foreach my $s (@stops) {
 
     my $dist = sqrt(($stopE - $E) ** 2 + ($stopN - $N) ** 2);
     printf STDERR "%s -> %s (%fm)\n", $stopname, $pc, $dist;
+
+#my (@journeys) = get_latest_journey_before_internal($deadline, $pc, $to);
+#print scalar(@journeys) . ",$dist\n";
+#next;
 
     # Now see if we already have a reading for this postcode.
     my $time = $dbh->selectrow_array('select starttime from journey where journey.origin = ? and destination = ? and deadline = ?', {}, $pc, $to, $deadline);
@@ -383,67 +363,6 @@ foreach my $s (@stops) {
         warn "  impossible to get there from here\n";
         $dbh->do('insert into journey (destination, deadline, origin, starttime, endtime) values (?, ?, ?, ?, ?)', {}, $to, $deadline, $pc, '', '');
     }
-    $dbh->commit();
-}
-
-__END__
-
-# Now we want to find all the existing points, form a triangulation, and go
-# through the database finding triangles which are too big and putting points
-# in their centers.
-my @points = @{$dbh->selectall_arrayref('select easting, northing, origin, starttime from journey, postcode where journey.origin = postcode.postcode and destination = ? and deadline = ?', {}, $to, $deadline)};
-
-# We need to suppress duplicate points, just in case.
-my @p;
-my %havepoints;
-foreach (@points) {
-    next if (exists($havepoints{"$_->[0],$_->[1]"}));
-    push(@p, $_);
-    $havepoints{"$_->[0],$_->[1]"} = 1;
-}
-@points = @p;
-
-my $target_resolution = 500;
-my $nominal_speed = 0.5;  # m/s
-
-open(R, ">rr");
-R->autoflush(1);
-foreach (@points) {
-    print R "$_->[0] $_->[1] ", 60 * time_diff_minutes($deadline, $_->[3]), "\n";
-}
-
-while (1) {
-    # Pick a random postcode, and, if it is not too close to any postcodes
-    # already in the model.
-
-    my $s = $dbh->prepare("select postcode, easting, northing from postcode where easting > $WW and easting < $EE and northing > $SS and northing < $NN order by random() limit 10");
-print "select postcode, easting, northing from postcode where easting > $WW and easting < $EE and northing > $SS and northing < $NN order by random() limit 10\n";
-    $s->execute();
-    while (($from, $E, $N) = $s->fetchrow_array()) {
-        warn "have some candidate postcodes\n";
-
-        # See if it's too close to any other point.
-        next if (exists($havepoints{"$E,$N"}));
-        my $f = 0;
-        foreach (@points) {
-            my ($E2, $N2) = @$_;
-            if (sqrt(($E - $E2) ** 2 + ($N - $N2) ** 2) <= $target_resolution) {
-                $f = 1;
-                last;
-            }
-        }
-        next if ($f);
-
-        warn "trying $from -> $to\n";
-        my ($start, $end) = get_latest_journey_before($deadline, $from, $to);
-        if (defined($start)) {
-            $dbh->do('insert into journey (destination, deadline, origin, starttime, endtime) values (?, ?, ?, ?, ?)', {}, $to, $deadline, $from, $start, $end);
-            push(@points, [$E, $N, $start]);
-            print R "$E $N ", 60 * time_diff_minutes($deadline, $start), "\n";
-            $havepoints{"$E,$N"} = 1;
-        }
-    }
-
     $dbh->commit();
 }
 
