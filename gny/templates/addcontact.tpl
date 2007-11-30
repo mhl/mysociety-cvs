@@ -2,7 +2,7 @@
 <form id="frmAddContact" action="{$form_action}" method="post">
     {include file="../templates/formvars.tpl"}
 
-    <h3>{l}How do people join the group?{/l}</h3>
+    <h3>{l}How do people join the group? *{/l}</h3>
     <div>
         <ul id="ulInvolved" class="nobullets">
             <li>
