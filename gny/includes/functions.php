@@ -186,6 +186,8 @@
 
 		if ($country == 'UK') {
 			$data = mapit_get_location($zip, is_partial_postcode($zip) ? 1 : 0);
+			if (mapit_get_error($data))
+				return false;
 			return array(
 				0 => $data['wgs84_lon']+0,
 				1 => $data['wgs84_lat']+0
