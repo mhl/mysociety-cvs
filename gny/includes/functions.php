@@ -181,7 +181,7 @@
 
 	}
 
-	//Get a location (uses a google maps proxy)
+	// Get a postcode's location
 	function get_postcode_location($zip, $country){
 
 		if ($country == 'UK') {
@@ -193,12 +193,13 @@
 				1 => $data['wgs84_lat']+0
 			);
 		} else {
-			$url = "http://geo.localsearchmaps.com/?zip={zip}&country={country}";
+			$url = "http://maps.google.com/maps/geo?key={key}&output=csv&q={zip},+{country}";
+			$url = str_replace('{key}', GOOGLE_MAPS_KEY, $url);
 			$url = str_replace('{zip}', urlencode($zip), $url);
 			$url = str_replace('{country}', urlencode($country), $url);
 
 			$data = safe_scrape_cached($url);
-	 		return process_emag_geocoder($data);
+	 		return process_google_geocoder($data);
 		}
 	}
 
@@ -245,40 +246,27 @@
 		return $parts;
 	}
 
-	//Get a location (uses a google maps proxy)
+	// Get a location
 	function get_place_location($parts) {
 
 		//try the city search (for outside the us)
-		$url = 'http://geo.localsearchmaps.com/?country=' . urlencode($parts['country']);
-		if (isset($parts['state'])) $url .= '&state=' . urlencode($parts['state']);
-		if (isset($parts['place'])) $url .= '&city=' . urlencode($parts['place']);
-		if (isset($parts['street'])) $url .= '&street=' . urlencode($parts['street']);
-
-		//TODO: implement the US location search
-		//http://geo.localsearchmaps.com/?loc=1600+Amphitheatre+Parkway,+Mountai n+View+CA++94043
+		$url = 'http://maps.google.com/maps/geo?key=' . GOOGLE_MAPS_KEY . '&output=csv&q=';
+		$out = array();
+		if (isset($parts['street'])) $out[] = urlencode($parts['street']);
+		if (isset($parts['place'])) $out[] = urlencode($parts['place']);
+		if (isset($parts['state'])) $out[] = urlencode($parts['state']);
+		$out[] = urlencode($parts['country']);
+		$url .= join(',+', $out);
 
 		$data = safe_scrape_cached($url);
-		return process_emag_geocoder($data);
+		return process_google_geocoder($data);
 	}
 	
-	
-	//process results from http://geo.localsearchmaps.com/
-	function process_emag_geocoder($data){
-		if (strpos($data, 'location not found') > -1){
-			$return = false;
-		}else{
-			$return = array();
-
-			//very hacky this, but hay, ho im in a hurry
-			$data = str_replace('map.centerAndZoom(new GPoint(', '', $data);
-			$data = str_replace(')', '', $data);
-			$data = str_replace(';', '', $data);
-			$exploded = explode(',', $data);
-
-			$return[0] = trim($exploded[0]) + 0; //+0 to cast as number
-			$return[1] = trim($exploded[1]) + 0;			
-
-		}		
+	// Process results from Google Maps API geocoder
+	function process_google_geocoder($data) {
+		$data = explode(',', $data);
+		$return[0] = $data[3] + 0;
+		$return[1] = $data[2] + 0;
 		return $return;
 	}
 
