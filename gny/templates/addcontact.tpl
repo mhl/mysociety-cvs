@@ -3,6 +3,9 @@
     {include file="../templates/formvars.tpl"}
 
     <h3>{l}How do people join the group? *{/l}</h3>
+	<p id="pAddInitBlurb">{l}Don&rsquo;t worry if you don&rsquo;t run or maintain the group you&rsquo;re adding,
+	it&rsquo;s all valuable information.{/l}</p>
+	</p>
     <div>
         <ul id="ulInvolved" class="nobullets">
             <li>

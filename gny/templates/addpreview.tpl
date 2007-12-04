@@ -10,7 +10,9 @@
     {include file="../templates/groupdetail.tpl"}
     
     <p id="pEditGroup">
-        <span class="highlight">{l}Something wrong? <a href="{$www_server}/add/about/">click here to edit{/l}</a></span>
+        <span class="highlight">{l}Something wrong? Edit the <a href="{$www_server}/add/about/">group details{/l}</a>,
+	the <a href="{$www_server}/add/location/">area covered</a>, or
+	<a href="{$www_server}/add/contact/">how to join</a></span>
     </p>
 
     <div class="buttons">

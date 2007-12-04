@@ -5,6 +5,8 @@
     <h3>{l}Tell us a bit about this email group, forum or blog{/l}</h3>
 	<p id="pAddInitBlurb">{l}By adding a group you can help people in your neighbourhood get to know each other.{/l}
 	{l}<span class="highlight">Please add any local group you know about</span>, to help more people join up!{/l}
+	GroupsNearYou is happy to accept information on offline groups like parenting or OAP groups, or entirely
+	online groups like local discussion forums.
 	</p>
         <ul class="form nobullets">
             <li>

@@ -16,9 +16,9 @@
                     {/if}
                 {else}
                     {if !$dead_links}
-                        <a href="{$group->involved_link}">{l}Join this group{/l}</a>
+                        <a href="{$group->involved_link}">{l}Explore or join this group{/l}</a>
                     {else}
-                        <a href="#" title="link disabled for preview">{l}Join this group{/l}</a>
+                        <a href="#" title="link disabled for preview">{l}Explore or join this group{/l}</a>
                     {/if}
                 {/if}
             </div>

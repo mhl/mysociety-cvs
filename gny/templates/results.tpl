@@ -34,7 +34,16 @@
             </p>
 
         </div>
-        <em id="emOr">or use PledgeBank.com to start one</em>        
+    {/if}
+
+    <div id="divMeta">
+        {l}There {if $groups|@sizeof == 1}is{else}are{/if} currently <strong>{$groups|@sizeof}</strong> {if $groups|@sizeof == 1}group{else}groups{/if} near {$query_display_text|escape:html}{/l}. 
+        {l}You can get updates of new groups near {$query_display_text|escape:html} by subscribing to <a class="rss" href="{$rss_link}">this 
+        <acronym title="Really simple syndication">rss</acronym> feed</a> or view the areas covered by 
+        groups on this page <a href="http://maps.google.com/maps?f=q&hl=en&q={$rss_link|escape:url}&layer=&ie=UTF8&z=13&om=1">on a map</a>{/l}. {l}You can permanently link to this page <a href="{$current_url}">here</a>{/l}.
+    </div>
+
+    <em id="emOr">Why not use PledgeBank.com to start a group?</em>        
         <form id="frmPledge"  accept-charset="utf-8" name="pledge" method="post" action="http://www.pledgebank.com/new">
 			<ul class="form nobullets">
 				<li>
@@ -68,12 +77,5 @@
         <p id="pPledgeBank">
     	    {l}PledgeBank is a website that lets you say you will do something, but only if some other people will help you. You get your own web page and TXT number to help you gather support, plus you can print posters to promote your pledge.{/l}
     	</p>
-    {/if}
 
-    <div id="divMeta">
-        {l}There {if $groups|@sizeof == 1}is{else}are{/if} currently <strong>{$groups|@sizeof}</strong> {if $groups|@sizeof == 1}group{else}groups{/if} near {$query_display_text|escape:html}{/l}. 
-        {l}You can get updates of new groups near {$query_display_text|escape:html} by subscribing to <a class="rss" href="{$rss_link}">this 
-        <acronym title="Really simple syndication">rss</acronym> feed</a> or view the areas covered by 
-        groups on this page <a href="http://maps.google.com/maps?f=q&hl=en&q={$rss_link|escape:url}&layer=&ie=UTF8&z=13&om=1">on a map</a>{/l}. {l}You can permanently link to this page <a href="{$current_url}">here</a>{/l}.
-    </div>
 {include file="../templates/footer.tpl"}            
