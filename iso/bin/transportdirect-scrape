@@ -1,18 +1,24 @@
 #!/usr/bin/perl -w
 #
 # transportdirect-scraper:
-# Scrape Transport Direct.
+# Scrape Transport Direct, run with no parameters for help.
 #
 # Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-# Cardiff 20km CF101EP
-#center = (318244, 175971)
-#bounds = (308244 328244 165971 185971)
-#
-# 
+# TODO
+# XXX - currently does public transport only. These are diffs to do cars?
+# -            c => 'true',
+# -            pt => 'false',
+# -            p => 0
+# +            c => 'false',
+# +            p => 1
 
+# Cardiff 20km CF101EP
+# center = (318244, 175971)
+# bounds = (308244 328244 165971 185971)
+#
 # Cardiff 100km CF101EP
 # center = (318244, 175971)
 # bounds = (268244 368244 125971 225971)
@@ -26,8 +32,7 @@
 #$size ||= 100000;
 #$size ||= 20000;
 
-
-my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.5 2007-11-30 12:51:33 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.6 2007-12-04 19:15:30 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -55,7 +60,16 @@ if (!$sqlite_database || !$to || !$htmldir || !$date) {
     print <<END;
 
 Screen scrapes Transport Direct to generate journey times to get to work at a
-particular postcode.
+particular postcode. Output is both to the SQLite database and to stdout. You
+should redirect stdout to a results file, for feeding to journeys-to-grid.
+
+Results are read first from the database if present, so you can scrape smaller
+or larger areas than ones already done quicker. The database does not record
+parameters like the date, or walkspeed in the journey table, so if you vary
+them you should use a totally new database.
+
+Example use:
+./transportdirect-scrape --db=\$HOME/toobig/isodata/td-ab/postcodes.sqlite --html=\$HOME/toobig/isodata/td-ab/html --to=AB101AF --date=11122007 > \$HOME/toobig/isodata/td-ab/results-AB101AF-20k
 
 Required parameters:
 --db=filename.sqlite - database file containing stop info, and where journeys are saved (se below)
@@ -98,9 +112,6 @@ stops from NaPTAN. See stops-into-db for script to do this. Example row:
 Postcodes are in uppercase with no spaces. Coordinates are an integer representation
 of the 3 decimal plae OS national grid square references - i.e. are measured in
 metres.0
-
-The database does not record parameters like the date, or walkspeed in the
-journey table, so if you vary them you should use a totally new database.
 
 END
     exit;
