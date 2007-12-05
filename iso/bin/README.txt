@@ -24,7 +24,7 @@ transportdirect-journeys-to-grid - takes journey times from public transport
         stops and generates a grid of journey times by adding on walking times
         from home to the public transport stops.
 grid-to-ppm - converts grid into displayable image
-faido-transportdirect - example that runs transportdirect scraper and makes final PNG image
+do-transportdirect - runs transportdirect scraper and makes final PNG image
 
 House price specific
 ====================
