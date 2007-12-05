@@ -1,13 +1,67 @@
 /*
- * map2.c:
- * Map from grid.
+ * transportdirect-journeys-to-grid.c:
  *
- * Copyright (c) 2006 Chris Lightfoot. All rights reserved.
- * Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
+ * Convert journeys text file into a grid file, for feeding into grid-to-ppm
+ *
+ * TODO: Remove non-grid options from this
+ *
+ * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
+ * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
  */
 
-static const char rcsid[] = "$Id: grid-to-bitmap.c,v 1.1 2007-12-04 19:15:30 francis Exp $";
+/* Example usages:
+ *  
+ * cat ../tube/results-SW1P4DR-40km.2  | ./map field 509959 549959 158958 198958 1600 1600 1 900 >../tube/results-SW1P4DR-40km.2.out.ppm
+ * The 250k TQ tile begins at 500000,100000 and is 4000x4000 pixels, 100000x100000 nat grid cells, 25 natgrid/pix
+ * So you want to start at: 9959.0 / 100000 * 4000 = 398.3 px
+ *                         58958.0 / 100000 * 4000 = 2358.3 px
+ * and take 1600,1600 pixels
+ *
+ * Miniscale is 1:1000k. 7000 by 13000 pixels. And 100 natgrid/pix.
+ *
+ *
+ *
+ * results-SE58AZ-100km.0
+ * center = (532664, 176146)
+ * bounds = (482664, 126146) to (582664, 226146)
+ *
+ * Suppose miniscale starts at 0,0: Then we want to start at 4826 right and 1261 up,
+ * or 4826 right and 10739 down. And take it 1000 x 1000 pixels.
+ *
+ * 
+ * results-CF101EP-100km
+ * bounds = (268244 368244 125971 225971)
+ * We want to start at 2682 right and 1259 up, or 10741 down
+ *
+ *
+ * Red spot: 1447, 98
+ * = 536175 197550
+ * sqlite> select * from stop2 where easting > 536000 and northing > 197000 and easting < 537000 and northing < 198000;
+ * Green St / Brimsdown Station|BCT|536413|197002|EN37PJ
+ * Brimsdown Station/Mollison Av|BCT|536413|197002|EN37PJ
+ * Brimsdown|BCT|536246|197031|EN37SH
+ * Brimsdown|BCT|536246|197031|EN37SH
+ * Brimsdown-Entrance-1|RSE|536290|197060|EN35EN
+ * Brimsdown|BCT|536280|197098|EN35EN
+ * Green St / Brimsdown Station|BCT|536428|197100|EN37JZ
+ * Brimsdown Station/Mollison Av|BCT|536428|197100|EN37JZ
+ * Brimsdown Bus Station|BCT|536285|197116|EN35EN
+ * Millmarsh Lane|BCT|536358|197400|EN35HZ
+ * Lockfield Avenue|BCT|536401|197401|EN37NJ
+ * Fouracres|BCT|536271|197510|EN35DS
+ * Fouracres|BCT|536298|197573|EN35ER
+ * Brancroft Way|BCT|536437|197700|EN37NE
+ * Brancroft Way|BCT|536429|197801|EN37NE
+ * Leys Road East|BCT|536286|197847|EN35ES
+ * Leys Road East|BCT|536312|197910|EN35HX
+ *
+ *
+ * Grid reference conversion site: http://www.nearby.org.uk/coord.html
+ *
+ */
+
+static const char rcsid[] = "$Id: transportdirect-journeys-to-grid.c,v 1.1 2007-12-05 12:36:51 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -99,14 +153,14 @@ void time_to_colour(float y, uint8_t *r, uint8_t *g, uint8_t *b) {
 }
 
 /* point_sorter A B
- * qsort(3) callback to compare eastings of A and B. */
+ * qsort(3) callback to compare northings of A and B. */
 int point_sorter(const void *a, const void *b) {
     const struct point *pa, *pb;
     pa = (const struct point*)a;
     pb = (const struct point*)b;
-    if (pa->E < pb->E)
+    if (pa->N < pb->N)
         return -1;
-    else if (pa->E > pb->E)
+    else if (pa->N > pb->N)
         return +1;
     else
         return 0;
@@ -126,26 +180,68 @@ int float_sorter(const void *a, const void *b) {
         return 0;
 }
 
-/* Bounds of region. */
-float west, east, south, north;
+/* List of points at which we have journey times. */
+struct point *pp;
+size_t npp, nppalloc;
 
-/* Pixel size of plot. */
-int width, height;
-
-/* traveltime E N
+/* mintime E N
  * Return the minimum time for a journey from (E, N) to the destination, or
  * TIME_INFINITY if no journey is possible. */
-static float *grid;
-float traveltime(const float E, const float N) {
-    int i, j;
+float mintime(const float E, const float N, const float maxwalkdist, const float walkspeed) {
+    int i0, i1, i;
+    static int il, ih;
+    static float last_N;
+    float min = TIME_INFINITY;
 
-    i = (E - west) / (east - west) * (width - 1);
-    j = (north - N) / (north - south) * (height - 1);
+    if (N != last_N) {
+        /* Search for points within maxwalkdist of this one. */
+        i0 = 0;
+        i1 = npp - 1;
+        while (i1 > i0 + 1) {
+            i = (i0 + i1) / 2;
+            if (pp[i].N > N - maxwalkdist)
+                i1 = i;
+            else if (pp[i].N < N - maxwalkdist)
+                i0 = i;
+            else
+                break;
+        }
 
-    if (i < 0 || i >= width || j < 0 || j >= height)
-        return TIME_INFINITY;
-    else
-        return grid[i + j * width];
+        il = i0;
+
+        i0 = 0;
+        i1 = npp - 1;
+        while (i1 > i0 + 1) {
+            i = (i0 + i1) / 2;
+            if (pp[i].N > N + maxwalkdist)
+                i1 = i;
+            else if (pp[i].N < N + maxwalkdist)
+                i0 = i;
+            else
+                break;
+        }
+
+        ih = i1;
+
+        last_N = N;
+    }
+
+    for (i = il; i <= ih; ++i) {
+        float d, t;
+        d = hypot(E - pp[i].E, N - pp[i].N);
+        if (d > maxwalkdist)
+            continue;
+        t = d / walkspeed;
+        t += pp[i].time;
+        if (t < 0) {
+            // ignore negative times - effectively infinite
+            // fprintf(stderr, "< 0 for %f - d: %f walkspeed: %f pptime: %f\n", t, d, walkspeed, pp[i].time);
+        } else if (t < min)
+            min = t;
+
+    }
+
+    return min;
 }
 
 int parse_float(const char *s, float *f) {
@@ -208,12 +304,37 @@ double fmax(const double a, const double b) {
     return a > b ? a : b;
 }
 
+void do_mask(const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed, const float min, const float max) {
+    int x, y;
 
-void do_field(const int width, const int height, const float west, const float east, const float south, const float north) {
+    printf("P5\n%d %d\n255\n", width, height);
+    for (y = 0; y < height; ++y) {
+        float N;
+        N = south + (north - south) * (height - y - 1) / (float)(height - 1);
+
+        for (x = 0; x < width; ++x) {
+            float E, t;
+            E = west + (east - west) * x / (float)(width - 1);
+
+            t = mintime(E, N, maxwalkdist, walkspeed);
+
+            if (t >= min && t <= max)
+                fputc(255, stdout);
+            else
+                fputc(0, stdout);
+        }
+        
+        fprintf(stderr, "\r%d/%d", y + 1, height);
+    }
+    fprintf(stderr, "\n");
+}
+
+void do_field(const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed) {
     int x, y;
 
     printf("P6\n%d %d\n255\n", width, height);
 
+    fprintf(stderr, "0/%d", height);
     for (y = 0; y < height; ++y) {
         float N;
         N = south + (north - south) * (height - y - 1) / (float)(height - 1);
@@ -224,58 +345,52 @@ void do_field(const int width, const int height, const float west, const float e
             int intt;
             E = west + (east - west) * x / (float)(width - 1);
 
-            t = traveltime(E, N);
-#ifdef LONGERBANDS
+            t = mintime(E, N, maxwalkdist, walkspeed);
+
+#ifdef TENMINUTES
             r = 255; g = 255; b = 255;
-            intt = t / 1200;
-            if (intt < 6) {
-                r = 0;
-                g = 255 - intt * 30;
-                b = 0;
-            } else {
+            if (t > 600) {
+                r = 0; g = 200; b = 0;
+            }
+            if (t > 1200) {
+                r = 0; g = 150; b = 0;
+            }
+            if (t > 1800) {
+                r = 0; g = 100; b = 0;
+            }
+            if (t > 2400) {
+                r = 0; g = 50; b = 0;
+            }
+            if (t > 3000) {
                 r = 0; g = 0; b = 0;
             }
             if (t < 0) {
                 r = 255; g = 0; b= 0;
-            }
-#else
-    #ifdef BANDED
-                if (t != TIME_INFINITY) t = 600. * (int)(t / 600.);   /* XXX rounding */
-    #endif /* BANDED */
-                time_to_colour(histinvert(t), &r, &g, &b);
+            } 
+#else /* TENMINUTES */
+    #ifdef LONGERBANDS
+                r = 255; g = 255; b = 255;
+                intt = t / 600;
+                if (intt < 4) {
+                    r = 0;
+                    g = 255 - intt * 30;
+                    b = 0;
+                } else {
+                    r = 0; g = 0; b = 0;
+                }
+                if (t < 0) {
+                    r = 255; g = 0; b= 0;
+                } 
+    #else
+        #ifdef BANDED
+                if (t != TIME_INFINITY) t = 5. * (int)(t / 5.);   /* XXX rounding */
+        #endif /* BANDED */
+            time_to_colour(histinvert(t), &r, &g, &b);
+    #endif
 #endif
             putc((int)r, stdout);
             putc((int)g, stdout);
             putc((int)b, stdout);
-        }
-
-        fprintf(stderr, "\r%d/%d", y + 1, height);
-    }
-
-    fprintf(stderr, "\n");
-
-}
-
-void do_mask(const int width, const int height, const float west, const float east, const float south, const float north, const float threshold) {
-    int x, y;
-
-    printf("P5\n%d %d\n255\n", width, height);
-
-    fprintf(stderr, "0/%d", height);
-    for (y = 0; y < height; ++y) {
-        float N;
-        N = south + (north - south) * (height - y - 1) / (float)(height - 1);
-
-        for (x = 0; x < width; ++x) {
-            float E, t;
-            E = west + (east - west) * x / (float)(width - 1);
-
-            t = traveltime(E, N);
-
-            if (t < threshold)
-                putc(0, stdout);
-            else
-                putc(255, stdout);
         }
 
         fprintf(stderr, "\r%d/%d", y + 1, height);
@@ -315,7 +430,7 @@ void do_scale(const int width, const int height, const float interval) {
     }
 }
 
-void do_contours(const int width, const int height, const float west, const float east, const float south, const float north, const float interval) {
+void do_contours(const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed, const float interval) {
     gdImagePtr im;
     int white, black, nx, ny, x, y, i, nundef;
     float dx, dy, dx2, dy2, maxval = 0.;
@@ -328,8 +443,8 @@ void do_contours(const int width, const int height, const float west, const floa
     white = gdImageColorAllocate(im, 255, 255, 255);    /* background */
     black = gdImageColorAllocate(im, 0, 0, 0);
 
-    nx = (int)(0.5 + width / 8.);
-    ny = (int)(0.5 + height / 8.);
+    nx = (int)(0.5 + width / 4.);
+    ny = (int)(0.5 + height / 4.);
 
     /* Grid spacing in pixel coordinates. */
     dx2 = dx = (float)width / (nx - 1.);
@@ -348,7 +463,7 @@ void do_contours(const int width, const int height, const float west, const floa
         for (x = 0; x < nx; ++x) {
             float E;
             E = west + (east - west) * x / (nx - 1.);
-            grid[y][x].value = traveltime(E, N);
+            grid[y][x].value = mintime(E, N, maxwalkdist, walkspeed);
             if (grid[y][x].value == TIME_INFINITY) {
                 grid[y][x].defined = 0;
                 grid[y][x].value = 0.;
@@ -451,7 +566,7 @@ void do_contours(const int width, const int height, const float west, const floa
                     float E, N, vc;
                     E = west + (east - west) * (x + 0.5) / (nx - 1.);
                     N = north + (south - north) * (y + 0.5) / (ny - 1.);
-                    vc = traveltime(E, N);
+                    vc = mintime(E, N, maxwalkdist, walkspeed);
 
                     if (vc > level && grid[y][x].value > level && grid[y + 1][x + 1].value > level) {
                         /*  \
@@ -481,7 +596,7 @@ void do_contours(const int width, const int height, const float west, const floa
     free(grid);
 }
 
-void do_grid(const bool plain, const int width, const int height, const float west, const float east, const float south, const float north) {
+void do_grid(const bool plain, const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed) {
     int x, y;
 
     for (y = 0; y < height; ++y) {
@@ -491,7 +606,7 @@ void do_grid(const bool plain, const int width, const int height, const float we
         for (x = 0; x < width; ++x) {
             float E, t;
             E = west + (east - west) * x / (float)(width - 1);
-            t = traveltime(E, N);
+            t = mintime(E, N, maxwalkdist, walkspeed);
 
             if (plain)
                 printf("%f %f %f\n", E, N, t);
@@ -504,10 +619,15 @@ void do_grid(const bool plain, const int width, const int height, const float we
 }
 
 int main(int argc, char *argv[]) {
-    enum { m_field = 0, m_scale = 1, m_contour = 2, m_mask = 3 } mode = m_field;
-    const unsigned numargs[4] = { 6, 7, 7, 7 };
-    float contour_interval, threshold;
+    float west, east, south, north, walkspeed, maxwalktime, maxwalkdist;
+    int width, height;
+    enum { m_field = 0, m_scale = 1, m_contour = 2, m_mask = 3,
+            m_query = 4, m_grid = 5, m_plaingrid = 6 } mode = m_field;
+    const unsigned numargs[7] = { 8, 9, 9, 10, 3, 8, 8 };
+    float contour_interval, min, max;
+    FILE *fp;
     
+    fp = stdin;
     srand(time(NULL));
 
     if (argc < 2)
@@ -521,6 +641,12 @@ int main(int argc, char *argv[]) {
         mode = m_contour;
     else if (0 == strcmp(argv[1], "mask"))
         mode = m_mask;
+    else if (0 == strcmp(argv[1], "query"))
+        mode = m_query;
+    else if (0 == strcmp(argv[1], "grid"))
+        mode = m_grid;
+    else if (0 == strcmp(argv[1], "plaingrid"))
+        mode = m_plaingrid;
     else
         die("unknown mode '%s'", argv[1]);
 
@@ -529,31 +655,60 @@ int main(int argc, char *argv[]) {
 
     if (argc - 1 != numargs[mode])
         die("need %d arguments", numargs[mode]);
-    
-    if (!parse_float(argv[1], &west))
-        die("bad west boundary '%s'", argv[1]);
-    if (!parse_float(argv[2], &east))
-        die("bad east boundary '%s'", argv[2]);
-    if (!parse_float(argv[3], &south))
-        die("bad south boundary '%s'", argv[3]);
-    if (!parse_float(argv[4], &north))
-        die("bad north boundary '%s'", argv[4]);
-    if (!parse_int(argv[5], &width))
-        die("bad width '%s'", argv[5]);
-    if (!parse_int(argv[6], &height))
-        die("bad height '%s'", argv[6]);
+ 
+    if (mode == m_query) {
+        if (!(fp = fopen(argv[1], "r")))
+            die("%s: %s", argv[1], strerror(errno));
+        if (!parse_float(argv[2], &walkspeed)) /* probably want 1 m/s */
+            die("bad walk speed '%s'", argv[2]);
+        if (!parse_float(argv[3], &maxwalktime)) /* probably want 15 minutes = 900 seconds*/
+            die("bad max walk time '%s'", argv[3]);
+    } else {
+        if (!parse_float(argv[1], &west))
+            die("bad west boundary '%s'", argv[1]);
+        if (!parse_float(argv[2], &east))
+            die("bad east boundary '%s'", argv[2]);
+        if (!parse_float(argv[3], &south))
+            die("bad south boundary '%s'", argv[3]);
+        if (!parse_float(argv[4], &north))
+            die("bad north boundary '%s'", argv[4]);
+        if (!parse_int(argv[5], &width))
+            die("bad width '%s'", argv[5]);
+        if (!parse_int(argv[6], &height))
+            die("bad height '%s'", argv[6]);
+        if (!parse_float(argv[7], &walkspeed))
+            die("bad walk speed '%s'", argv[7]);
+        if (!parse_float(argv[8], &maxwalktime))
+            die("bad max walk time '%s'", argv[8]);
+    }
 
-    if ((mode == m_scale || mode == m_contour)
-        && !parse_float(argv[7], &contour_interval))
-        die("bad contour interval '%s'", argv[7]);
-    else if (mode == m_mask && !parse_float(argv[7], &threshold))
-        die("bad threshold '%s'", argv[7]);
-
-    /* Read in the previously-computed grid of values. */
-    grid = malloc(width * height * sizeof *grid);
-    fread(grid, width, height * sizeof *grid, stdin);
+    if (mode == m_contour || mode == m_scale) {
+        if (mode != m_field && !parse_float(argv[9], &contour_interval))
+            die("bad contour interval '%s'", argv[9]);
+    } else if (mode == m_mask) {
+        if (!parse_float(argv[9], &min))
+            die("bad min journey time '%s'", argv[9]);
+        if (!parse_float(argv[10], &max))
+            die("bad max journey time '%s'", argv[10]);
+    }
     
-    if (mode == m_field || mode == m_scale) {
+    maxwalkdist = maxwalktime * walkspeed;
+    
+    pp = malloc((nppalloc = 16) * sizeof *pp);
+    
+    while (3 == fscanf(fp, "%f %f %f\n",
+                        &pp[npp].E, &pp[npp].N, &pp[npp].time)) {
+        ++npp;
+        if (npp == nppalloc)
+            pp = realloc(pp, (nppalloc *= 2) * sizeof *pp);
+    }
+
+    debug("have %d points", npp);
+    debug("max walk dist = %f", maxwalkdist);
+
+    qsort(pp, npp, sizeof *pp, point_sorter);
+
+    if (0 /*mode == m_field || mode == m_scale*/) {
         /* Histogram equalisation. We need to form the cumulative distribution
          * of travel times within the domain, so that we can allocate colours
          * to them equally. But since the function is slow to evaluate, do it
@@ -567,20 +722,30 @@ int main(int argc, char *argv[]) {
             do {
                 E = west + frand() * (east - west);
                 N = south + frand() * (north - south);
-            } while (TIME_INFINITY == (timehist[i] = traveltime(E, N)));
+            } while (TIME_INFINITY == (timehist[i] = mintime(E, N, maxwalkdist, walkspeed)));
         }
 
         qsort(timehist, NTIMEHIST, sizeof *timehist, float_sorter);
     }
 
     if (mode == m_field)
-        do_field(width, height, west, east, south, north);
+        do_field(width, height, west, east, south, north, maxwalkdist, walkspeed);
     else if (mode == m_scale)
         do_scale(width, height, contour_interval);
     else if (mode == m_contour)
-        do_contours(width, height, west, east, south, north, contour_interval);
+        do_contours(width, height, west, east, south, north, maxwalkdist, walkspeed, contour_interval);
     else if (mode == m_mask)
-        do_mask(width, height, west, east, south, north, threshold);
+        do_mask(width, height, west, east, south, north, maxwalkdist, walkspeed, min, max);
+    else if (mode == m_query) {
+        float E, N;
+        while (2 == scanf("%f %f", &E, &N)) {
+            float t;
+            t = mintime(E, N, maxwalkdist, walkspeed);
+            if (t == TIME_INFINITY) t = -1;
+            printf("%f %f %f\n", E, N, t);
+        }
+    } else if (mode == m_grid || mode == m_plaingrid)
+        do_grid(mode == m_plaingrid, width, height, west, east, south, north, maxwalkdist, walkspeed);
     else
         abort();
 
