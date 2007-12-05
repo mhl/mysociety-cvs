@@ -33,7 +33,7 @@ landregistry-to-houseprice - convert CSV file from land registry into "E N date 
 houseprice-inflate - inflate a set of house prices to the last month in the data set, using
         median values in each month to work out inflation rate.
 houseprice-mask - convert "E N date price" file into a bitmap mask according to a threshold
-faido-houses - example that runs house price mask generator
+do-houses - runs all scripts in house price mask generator and makes final PNG
 
 Not yet used/ready/named properly
 =================================

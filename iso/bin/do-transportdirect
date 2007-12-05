@@ -21,7 +21,7 @@ DATE=11122007 # XXX you may want to wipe the journey's table in the db if you ch
 set -e # exit on error
 
 RECT="`./calc-bounding-rectangle $DIR/postcodes.sqlite $POSTCODE $SIZE_M`"
-RESULTS=results-$POSTCODE-$SIZE_M
+RESULTS=tdiso-$POSTCODE-$SIZE_M
 
 ./transportdirect-scrape --db=$DIR/postcodes.sqlite --html=$DIR/html --to=$POSTCODE --size=$SIZE_M --date=$DATE > $DIR/$RESULTS
 
