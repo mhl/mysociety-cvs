@@ -1,9 +1,10 @@
 #! /usr/bin/tcc -run -lgd -I/usr/local/ncarg/include/ncarg/ -lncarg -lngmath -L/usr/local/ncarg/lib/
-
 /*
  * transportdirect-journeys-to-grid.c:
+ * vim:syntax=c
  *
  * Convert journeys text file into a grid file, for feeding into grid-to-ppm
+ * The journeys grid file is made by transportdirect-scrape.
  *
  * TODO: Remove non-grid options from this
  *
@@ -63,7 +64,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: transportdirect-journeys-to-grid,v 1.1 2007-12-05 12:45:54 francis Exp $";
+static const char rcsid[] = "$Id: transportdirect-journeys-to-grid,v 1.2 2007-12-05 14:38:12 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
