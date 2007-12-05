@@ -13,7 +13,7 @@
  * 4. north boundary
  * 5. width (pixels)
  * 6. height (pixels)
- * 7. minimum price
+ * 7. minimum price (less than zero makes it do lots of bands from zero up to max price)
  * 8. maximum price
  * 9. search radius (some kind of tolerance in metres?)
  * 10. minimum point count
@@ -26,7 +26,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: houseprice-mask,v 1.2 2007-12-05 17:00:08 francis Exp $";
+static const char rcsid[] = "$Id: houseprice-mask,v 1.3 2007-12-05 20:16:32 francis Exp $";
 
 #include <assert.h>
 #include <math.h>
@@ -134,7 +134,8 @@ static float medianat(const float E, const float N, const float searchradius, co
     }
 
     if (nprices < mincount
-        || !nquad[0] || !nquad[1] || !nquad[2] || !nquad[3])
+/* Not really sure what this quadrant check is for, it makes lots of ugly artefacts so disable for now.
+|| !nquad[0] || !nquad[1] || !nquad[2] || !nquad[3] */)
         return -1;
     else
         return median(prices, nprices);
@@ -206,12 +207,24 @@ int main(int argc, char *argv[]) {
             if (p < 0) {
                 ++nodata;
                 fputc(0, stdout);
-            } else if (p > minprice && p < maxprice) {
-                ++within;
-                fputc(255, stdout);
             } else {
-                ++without;
-                fputc(128, stdout);
+                if (minprice < 0) {
+                    #define BANDS 100
+                    float col = p / maxprice;
+                    int band = (int)(BANDS * col);
+                    if (band >= BANDS) band = BANDS-1;
+                    if (band < 0) band = 0;
+                    int col = 255 - band * (255 / BANDS);
+                    fputc(col, stdout);
+                } else {
+                    if (p > minprice && p < maxprice) {
+                        ++within;
+                        fputc(255, stdout);
+                    } else {
+                        ++without;
+                        fputc(128, stdout);
+                    }
+                }
             }
         }
     }

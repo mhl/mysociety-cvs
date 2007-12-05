@@ -11,22 +11,22 @@
 # Parameters:
 POSTCODE=SW1P4DR
 SIZE_M=40000 # length in metres of sides of rectangle round postcode
-SIZE_PX=100
-DIR=$HOME/toobig/isodata/house-london1
+SIZE_PX=1600
+DIR=$HOME/toobig/isodata/house
 LANDREGISTRY_IN=$HOME/toobig/landregistry/steinberg010106-311206.txt
-MINPRICE=50000 
-MAXPRICE=300000 
-SEARCHRADIUS=2000
+MINPRICE=-1 #50000  # put -1 for banded. put 50000 to remove sheds and things.
+MAXPRICE=500000 
+SEARCHRADIUS=1000
 MINPOINTS=10
 
 set -x # print each line
 set -e # exit on error
 
 RECT="`./calc-bounding-rectangle $DIR/postcodes.sqlite $POSTCODE $SIZE_M`"
-RESULTS=housemask-$POSTCODE-$SIZE_M
+RESULTS=housemask-$POSTCODE-${SIZE_M}m-${MAXPRICE}p
 
-./landregistry-to-houseprice $LANDREGISTRY_IN $DIR/postcodes.sqlite > $DIR/all-house-prices
-cat $DIR/all-house-prices | ./houseprice-inflate > $DIR/all-house-prices-inflated
+#./landregistry-to-houseprice $LANDREGISTRY_IN $DIR/postcodes.sqlite > $DIR/all-house-prices
+#cat $DIR/all-house-prices | ./houseprice-inflate > $DIR/all-house-prices-inflated
 
 # Last two parameters: 1000 - search radius. 10 - minimum point count
 cat $DIR/all-house-prices-inflated | ./houseprice-mask $RECT $SIZE_PX $SIZE_PX $MINPRICE $MAXPRICE $SEARCHRADIUS $MINPOINTS > $DIR/$RESULTS.pgm
