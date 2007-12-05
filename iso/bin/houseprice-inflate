@@ -1,0 +1,53 @@
+#!/usr/bin/perl -w
+#
+# houseprice-inflate:
+# Inflate house prices to nominal present-day values based on median values in
+# previous months. Input is a list of (E, N, date, price) tuples.
+#
+# Copyright (c) 2006 Chris Lightfoot. All rights reserved.
+# Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: houseprice-inflate,v 1.1 2007-12-05 16:22:16 francis Exp $';
+
+use strict;
+
+my @prices = ( );
+my %prices_bymonth = ( );
+
+my $lastmonth;
+
+while (defined($_ = <STDIN>)) {
+    chomp($_);
+    my ($E, $N, $date, $price) = split(/\s+/, $_);
+    my ($month) = ($date =~ /^(\d\d\d\d-\d\d)/);
+    push(@{$prices_bymonth{$month}}, $price);
+    push(@prices, [$E, $N, $date, $price]);
+
+    $lastmonth = $month if (!defined($lastmonth) || $month gt $lastmonth);
+}
+
+my %median_bymonth = ( );
+foreach my $month (keys(%prices_bymonth)) {
+    my @x = sort { $a <=> $b } @{$prices_bymonth{$month}};
+    my $n = scalar(@x);
+    if ($n % 2) {
+        $median_bymonth{$month} = $x[$n / 2];
+    } else {
+        $median_bymonth{$month}
+            = ($x[$n / 2 - 1] + $x[$n / 2]) * 0.5;
+    }
+}
+
+print STDERR "generating prices as for $lastmonth\n";
+print STDERR "median price in $lastmonth = $median_bymonth{$lastmonth}\n";
+
+foreach (@prices) {
+    my ($E, $N, $date, $price) = @$_;
+    my ($month) = ($date =~ /^(\d\d\d\d-\d\d)/);
+
+    $price *= $median_bymonth{$lastmonth} / $median_bymonth{$month};
+
+    print "$E $N $date $price\n";
+}
+

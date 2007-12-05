@@ -1,0 +1,55 @@
+#!/usr/bin/perl -w
+#
+# landregistry-to-houseprice
+# Convert CSV file from the land registry with lines like:
+# {B40CE2C9-AAE3-464D-8C73-E1ED9AB3230A},195000,2006-07-31 00:00:00,"SE16 5XN","F","N","L","","21","ELIZABETH SQUARE","SOUTHWARK","LONDON","SOUTHWARK","GREATER LONDON","U"
+# into a space separated (E N date price) file.
+#
+# Run postcodes-into-db first, as this also caches nearest postcode to each stop.
+#
+# Copyright (c) 2006 Chris Lightfoot. All rights reserved.
+# Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: landregistry-to-houseprice,v 1.1 2007-12-05 16:22:16 francis Exp $';
+
+use strict;
+
+use DBI;
+use Text::CSV_XS;
+
+my ($file, $sqlite_db) = @ARGV;
+die "Parameters are CSV file and filename of sqlite database" if !$file || !$sqlite_db;
+
+my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_db", "", "", { AutoCommit => 0 });
+
+my $C = new Text::CSV_XS({ binary => 1 });
+
+open(F, $file) || die "$file: $!";
+
+while (defined($_ = <F>)) {
+    s/\r\n//;
+    s#\x92#'#g;
+    
+    $C->parse($_) || die "$_: bad CSV";
+    my @f = $C->fields();
+
+    my $price = $f[1];
+    my $date_time = $f[2];
+    $date_time =~ m/(^\d\d\d\d-\d\d-\d\d)/;
+    my $date = $1;
+    die "not found date" if !$date;
+    my $postcode = $f[3];
+    $postcode =~ s/\s//g;
+    $postcode = uc $postcode;
+
+    # Find the closest postcode.
+    my ($e, $n) = $dbh->selectrow_array("select easting, northing from postcode where postcode = ?", {}, $postcode);
+    if (!defined($e) || !defined($n)) {
+        warn "location of postcode $postcode not known\n";
+        next;
+    }
+    print "$e $n $date $price\n";
+}
+
+$dbh->commit();

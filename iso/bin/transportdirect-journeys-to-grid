@@ -1,10 +1,19 @@
 #! /usr/bin/tcc -run -lgd -I/usr/local/ncarg/include/ncarg/ -lncarg -lngmath -L/usr/local/ncarg/lib/
 /*
- * transportdirect-journeys-to-grid.c:
+ * transportdirect-journeys-to-grid:
  * vim:syntax=c
  *
- * Convert journeys text file into a grid file, for feeding into grid-to-ppm
+ * Convert journeys text file into a grid file, for feeding into grid-to-ppm.
+ * The journeys file is times to arrive at work from public transport stops,
+ * this script includes extra time to walk to the stop.
+ *
  * The journeys grid file is made by transportdirect-scrape.
+ * 
+ * Paramters are:
+ * west, east, south, north boundary
+ * width, height (pixels)
+ * walk speed in m/s (choose 1 m/s)
+ * max walk time in seconds (15 mins = 900 secs0
  *
  * TODO: Remove non-grid options from this
  *
@@ -64,7 +73,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: transportdirect-journeys-to-grid,v 1.2 2007-12-05 14:38:12 francis Exp $";
+static const char rcsid[] = "$Id: transportdirect-journeys-to-grid,v 1.3 2007-12-05 16:22:16 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>

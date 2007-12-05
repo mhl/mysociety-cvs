@@ -3,11 +3,20 @@
 # postcode-into-db:
 # Make a little database of postcodes.
 #
+# Parameter are:
+# 1. Codepoint directory of CSV files.
+# 2. Sqlite database
+#
+# Schema is:
+# CREATE TABLE postcode ( postcode text not null primary key, easting integer not null, northing integer not null );
+# CREATE INDEX postcode_easting_idx on postcode(easting);
+# CREATE INDEX postcode_northing_idx on postcode(northing);
+#
 # Copyright (c) 2006 Chris Lightfoot. All rights reserved.
 # Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: postcodes-into-db,v 1.1 2007-11-30 12:48:07 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: postcodes-into-db,v 1.2 2007-12-05 16:22:16 francis Exp $';
 
 use strict;
 

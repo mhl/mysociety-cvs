@@ -1,0 +1,35 @@
+#!/usr/bin/perl -w
+#
+# calc-bounding-rectangle
+# Given a sqlite postcode database (see postcodes-into-db), a postcode and a
+# size (in metres, e.g. 20,000), returns the bounding rectangle.
+#
+# Copyright (c) 2007 UK Citizens Online Democracy. All rights reserved.
+# Email: francis@mysociety.org; WWW: http://www.ex-parrot.com/~chris/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: calc-bounding-rectangle,v 1.1 2007-12-05 16:22:16 francis Exp $';
+
+use strict;
+
+use DBI;
+use Text::CSV_XS;
+
+my ($sqlite_db, $to, $size) = @ARGV;
+die "Parameters are and filename of sqlite database" if !$sqlite_db || !$to || !$size;
+
+my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_db", "", "", { AutoCommit => 0 });
+
+my ($E, $N) = $dbh->selectrow_array('select easting, northing from postcode where postcode = ?', {}, $to);
+die "no location for destination postcode '$to'" if (!defined($E));
+
+# Bounds of rectangle.
+my $WW = $E - $size / 2;
+my $EE = $E + $size / 2;
+my $SS = $N - $size / 2;
+my $NN = $N + $size / 2;
+
+#warn "center = ($E, $N)\n";
+#warn "bounds = ($WW, $SS) to ($EE, $NN)\n";
+print "$WW $EE $SS $NN\n";
+

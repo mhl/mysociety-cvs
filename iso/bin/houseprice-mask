@@ -1,0 +1,238 @@
+#! /usr/bin/tcc -run -lm
+/*
+ * houseprice-mask:
+ * vim:syntax=c
+ *
+ * Make a mask bitmap from price data. Price data is "E N price date". You probably
+ * want to use houseprice-inflate first. Outputs a .pgm file.
+ * 
+ * Parameters are:
+ * 1. west boundary
+ * 2. east boundary
+ * 3. south boundary
+ * 4. north boundary
+ * 5. width (pixels)
+ * 6. height (pixels)
+ * 7. minimum price
+ * 8. maximum price
+ * 9. search radius (some kind of tolerance in metres?)
+ * 10. minimum point count
+ *
+ * Copyright (c) 2006 Chris Lightfoot. All rights reserved.
+ * Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
+ *
+ * cat london/ppi | ./mask 509959 549959 158958 198958 1600 1600 50000 250000 1000 10 > london/london-40km-p250.pgm
+ * cat london/ppi | ./mask 509959 549959 158958 198958 1600 1600 50000 250000 2000 10 > london/london-40km-p250-t2000.pgm
+ *
+ * 100km SE58AZ:
+ * center = (532664, 176146)
+ * bounds = (482664, 126146) to (582664, 226146)
+ *
+ *
+ * cat london/ppi | ./mask 482664 582664 126146 226146 1600 1600 50000 250000 2000 10 > london/london-100km-p250-t2000.pgm
+ *
+ * cat london/ppi | ./mask 519959 539959 168958 188958 800 800 50000 300000 2000 10 > london/london-20km-p300-t2000.pgm
+ *
+ */
+
+static const char rcsid[] = "$Id: houseprice-mask,v 1.1 2007-12-05 16:22:16 francis Exp $";
+
+#include <assert.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define err(...)    do { fprintf(stderr, "mask: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+#define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
+
+#define debug(...)  err(__VA_ARGS__)
+
+struct point {
+    float E, N, price;
+};
+
+/* point_sorter A B
+ * qsort(3) callback to compare northings of A and B. */
+static int point_sorter(const void *a, const void *b) {
+    const struct point *pa, *pb;
+    pa = (const struct point*)a;
+    pb = (const struct point*)b;
+    if (pa->N < pb->N)
+        return -1;
+    else if (pa->N > pb->N)
+        return +1;
+    else
+        return 0;
+}
+
+/* float_sorter A B
+ * qsort(3) callback to sort floats. */
+static int float_sorter(const void *a, const void *b) {
+    const float *fa, *fb;
+    fa = (const float*)a;
+    fb = (const float*)b;
+    if (*fa < *fb)
+        return -1;
+    else if (*fa > *fb)
+        return +1;
+    else
+        return 0;
+}
+
+/* median X N
+ * Find the median of the N values in X. Sorts X as a side-effect. */
+static float median(float *ary, const size_t n) {
+    assert(n > 0);
+    if (n > 1) qsort(ary, n, sizeof *ary, float_sorter);
+    if (n & 1)
+        return ary[n / 2];
+    else
+        return 0.5 * (ary[n / 2 - 1] + ary[n / 2]);
+}
+
+static int parse_float(const char *s, float *f) {
+    return 1 == sscanf(s, "%f", f);
+}
+
+static struct point *pp;
+static size_t npp, nppalloc;
+
+static float medianat(const float E, const float N, const float searchradius, const int mincount) {
+    static size_t i0, i1;
+    static float Nlast;
+    size_t il, ih, i;
+    static float *prices;
+    static size_t nprices_alloc;
+    size_t nprices;
+    int nquad[4] = {0};
+
+    if (!i1 || Nlast != N) {
+        il = 0;
+        ih = npp - 1;
+        while (ih > il + 1) {
+            i = (il + ih) / 2;
+            if (pp[i].N < N - searchradius)
+                il = i;
+            else
+                ih = i;
+        }
+        i0 = il;
+        ih = npp - 1;
+        while (ih > il + 1) {
+            i = (il + ih) / 2;
+            if (pp[i].N > N + searchradius)
+                ih = i;
+            else
+                il = i;
+        }
+        i1 = ih;
+        Nlast = N;
+    }
+   
+    if (nprices_alloc < (i1 - i0 + 1))
+        prices = realloc(prices, (nprices_alloc = i1 - i0 + 1) * sizeof *prices);
+
+    for (i = i0, nprices = 0; i <= i1; ++i) {
+        float dE, dN;
+        dE = pp[i].E - E;
+        dN = pp[i].N - N;
+        if (hypot(dE, dN) < searchradius) {
+            ++nquad[(int)(2 * (1 + atan2(dE, dN) / M_PI))];
+            prices[nprices++] = pp[i].price;
+        }
+    }
+
+    if (nprices < mincount
+        || !nquad[0] || !nquad[1] || !nquad[2] || !nquad[3])
+        return -1;
+    else
+        return median(prices, nprices);
+}
+
+int main(int argc, char *argv[]) {
+    /* arguments are bounds of map, width and height of image, price range,
+     * radius of circle to search for matching price points, and the minimum
+     * number of points within each circle for the center to be valid. */
+    float west, east, south, north, minprice, maxprice, searchradius;
+    int width, height, mincount, i, x, y;
+    unsigned nodata = 0, within = 0, without = 0;
+
+    if (argc < 11) die("need 10 arguments");
+ 
+#define FLOATARG(desc, var)  \
+        do { \
+            if (!parse_float(argv[i], &var)) \
+                die("bad %s '%s'", desc, argv[i]); \
+            ++i; \
+        } while (0)
+
+#define INTARG(desc, var)    \
+        do { \
+            if (0 == (var = atoi(argv[i]))) \
+                die("bad %s '%s'", desc, argv[i]); \
+            ++i; \
+        } while (0)
+
+    i = 1;
+    FLOATARG("west boundary", west);
+    FLOATARG("east boundary", east);
+    FLOATARG("south boundary", south);
+    FLOATARG("north boundary", north);
+    INTARG("width", width);
+    INTARG("height", height);
+    FLOATARG("minimum price", minprice);
+    FLOATARG("maximum price", maxprice);
+    FLOATARG("search radius", searchradius); // 1km ?
+    INTARG("minimum point count", mincount);
+
+    pp = malloc((nppalloc = 16) * sizeof *pp);
+    while (3 == scanf("%f %f %*s %f\n", &pp[npp].E, &pp[npp].N, &pp[npp].price)) {
+        if (pp[npp].E < west - searchradius
+            || pp[npp].E > east + searchradius
+            || pp[npp].N < south - searchradius
+            || pp[npp].N > north + searchradius)
+            continue;
+        ++npp;
+        if (npp == nppalloc)
+            pp = realloc(pp, (nppalloc *= 2) * sizeof *pp);
+    }
+
+    debug("have %u points", npp);
+    qsort(pp, npp, sizeof *pp, point_sorter);
+    debug("looking for places with price in [%f, %f]", minprice, maxprice);
+
+    printf("P5\n%d %d\n255\n", width, height);
+    for (y = 0; y < height; ++y) {
+        float N;
+        fprintf(stderr, "\r%d/%d", y + 1, height);
+        N = south + (north - south) * (height - y - 1) / (float)(height - 1);
+        for (x = 0; x < width; ++x) {
+            float E, p;
+            E = west + (east - west) * x / (float)(width - 1);
+
+            p = medianat(E, N, searchradius, mincount);
+
+            if (p < 0) {
+                ++nodata;
+                fputc(0, stdout);
+            } else if (p > minprice && p < maxprice) {
+                ++within;
+                fputc(255, stdout);
+            } else {
+                ++without;
+                fputc(128, stdout);
+            }
+        }
+    }
+    fprintf(stderr, "\r%d/%d\n", height, height);
+    debug("%.1f%% no data, %.1f%% within, %.1f%% without",
+            100 * (float)nodata / (width * height),
+            100 * (float)within / (width * height),
+            100 * (float)without / (width * height));
+
+    fprintf(stderr, "%f\n", medianat(545415, 261832, searchradius, mincount));
+    fprintf(stderr, "%f\n", medianat(544796, 261571, searchradius, mincount));
+    fprintf(stderr, "%f\n", medianat(547080, 262341, searchradius, mincount));
+    
+    return 0;
+}
