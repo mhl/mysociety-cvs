@@ -1,3 +1,5 @@
+#! /usr/bin/tcc -run -DLONGERBANDS -lgd -I/usr/local/ncarg/include/ncarg/ -lncarg -lngmath -L/usr/local/ncarg/lib/
+
 /*
  * grid-to-ppm.c:
  * Convert grid file into a displayable image. Was originally traveltimemaps/cycle/map2.c
@@ -8,7 +10,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: grid-to-ppm.c,v 1.1 2007-12-05 12:36:51 francis Exp $";
+static const char rcsid[] = "$Id: grid-to-ppm,v 1.1 2007-12-05 12:45:54 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
