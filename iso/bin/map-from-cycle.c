@@ -17,12 +17,12 @@
  *
  * XXX Run this with the grid option only. Others probably should be removed.
  *
- * Copyright (c) 2006 Chris Lightfoot. All rights reserved.
- * Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
+ * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
+ * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
  */
 
-static const char rcsid[] = "$Id: map-from-cycle.c,v 1.2 2007-12-05 16:22:16 francis Exp $";
+static const char rcsid[] = "$Id: map-from-cycle.c,v 1.3 2007-12-05 17:00:08 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>

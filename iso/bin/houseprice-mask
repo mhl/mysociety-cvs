@@ -18,24 +18,15 @@
  * 9. search radius (some kind of tolerance in metres?)
  * 10. minimum point count
  *
- * Copyright (c) 2006 Chris Lightfoot. All rights reserved.
- * Email: chris@ex-parrot.com; WWW: http://www.ex-parrot.com/~chris/
- *
+ * Example usage:
  * cat london/ppi | ./mask 509959 549959 158958 198958 1600 1600 50000 250000 1000 10 > london/london-40km-p250.pgm
- * cat london/ppi | ./mask 509959 549959 158958 198958 1600 1600 50000 250000 2000 10 > london/london-40km-p250-t2000.pgm
  *
- * 100km SE58AZ:
- * center = (532664, 176146)
- * bounds = (482664, 126146) to (582664, 226146)
- *
- *
- * cat london/ppi | ./mask 482664 582664 126146 226146 1600 1600 50000 250000 2000 10 > london/london-100km-p250-t2000.pgm
- *
- * cat london/ppi | ./mask 519959 539959 168958 188958 800 800 50000 300000 2000 10 > london/london-20km-p300-t2000.pgm
+ * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
+ * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
  */
 
-static const char rcsid[] = "$Id: houseprice-mask,v 1.1 2007-12-05 16:22:16 francis Exp $";
+static const char rcsid[] = "$Id: houseprice-mask,v 1.2 2007-12-05 17:00:08 francis Exp $";
 
 #include <assert.h>
 #include <math.h>
