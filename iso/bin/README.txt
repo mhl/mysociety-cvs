@@ -1,5 +1,9 @@
-TODO:
-Copyright statements not right
+These scripts generate isochrone maps of transport distances to locations, and
+house price maps, and other similar goodies. 
+
+See "Travel-time Maps and their Uses", the first report made using these scripts
+(or their ancestors, anyway), for an overview:
+    http://www.mysociety.org/2006/travel-time-maps/
 
 README-check - check this file is up to date
 
