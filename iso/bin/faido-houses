@@ -7,11 +7,11 @@ set -e # exit on error
 
 DIR=$HOME/toobig/isodata/house-london1
 
-./landregistry-to-houseprice /home/francis/toobig/landregistry/steinberg010106-311206.txt /home/francis/toobig/isodata/td-ab/postcodes.sqlite > $DIR/all-house-prices
+./landregistry-to-houseprice /home/francis/toobig/landregistry/steinberg010106-311206.txt $DIR/postcodes.sqlite > $DIR/all-house-prices
 cat $DIR/all-house-prices | ./houseprice-inflate > $DIR/all-house-prices-inflated
 
 # Last two parameters: 1000 - search radius. 10 - minimum point count
-RECT="`./calc-bounding-rectangle ~/toobig/isodata/td-ab/postcodes.sqlite SW1P4DR 40000`"
+RECT="`./calc-bounding-rectangle $DIR/postcodes.sqlite SW1P4DR 40000`"
 cat $DIR/all-house-prices-inflated | ./houseprice-mask $RECT 1600 1600 50000 240000 1000 10 > $DIR/houseprices-240000.pgm
 
 convert $DIR/houseprices-240000.pgm $DIR/houseprices-240000.png
