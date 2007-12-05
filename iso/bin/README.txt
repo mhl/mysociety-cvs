@@ -1,11 +1,14 @@
 TODO:
 Copyright statements not right
 
+README-check - check this file is up to date
+
 General loading scripts
 =======================
 
 postcodes-into-db - loads postcodes from OS's CodePoint into an SQLite database
 stops-into-db - loads NaPTAN stops into an SQLite database
+calc-bounding-rectangle - given a postcode and size gives you the OS grid bounding rectangle
 
 Transport direct specific
 =========================
@@ -31,4 +34,5 @@ faido-houses - example that runs house price mask generator
 Not yet used/ready/named properly
 =================================
 
-map-from-cycle.c
+map-from-cycle.c - XXX
+
