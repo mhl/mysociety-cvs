@@ -14,17 +14,20 @@ postcodes-into-db - loads postcodes from OS's CodePoint into an SQLite database
 stops-into-db - loads NaPTAN stops into an SQLite database
 calc-bounding-rectangle - given a postcode and size gives you the OS grid bounding rectangle
 
-Transport direct specific
+Public transport specific
 =========================
 
 transportdirect-scrape - screen scrapes transport direct to make file of
         journey times from public transport stops to arrive by certain time on 
         certain day.
+tfl-scrape - similar, but uses Transport for London's journey planner (London
+        only, but allegedly quicker)
 transportdirect-journeys-to-grid - takes journey times from public transport
         stops and generates a grid of journey times by adding on walking times
         from home to the public transport stops.
 grid-to-ppm - converts grid into displayable image
 do-transportdirect - runs transportdirect scraper and makes final PNG image
+do-tfl - runs tfl scraper and makes final PNG image
 
 House price specific
 ====================

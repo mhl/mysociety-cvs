@@ -1,25 +1,28 @@
 #!/usr/bin/perl -w
 #
-# transportdirect-scraper:
+# tflscraper:
 #
-# Screen scrapes TransportDirect to make file of journey times from public
-# transport stops to arrive by certain time on certain day.
-# 
-# Run with no parameters for help.
+# Screen scrape Transport for London journey planner.
 #
-# Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
+# Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-# TODO
-# XXX - currently does public transport only. These are diffs to do cars?
-# -            c => 'true',
-# -            pt => 'false',
-# -            p => 0
-# +            c => 'false',
-# +            p => 1
+# SE58AZ
+#center = (532664, 176146)
+#bounds = (482664, 126146) to (582664, 226146)
+# SW1P4DR
+#center = (529959, 178958)
+#bounds = (479959, 128958) to (579959, 228958)
 
-my $rcsid = ''; $rcsid .= '$Id: transportdirect-scrape,v 1.8 2007-12-06 01:50:52 francis Exp $';
+# SW1P4DR 20km
+# center = (529959, 178958)
+# bounds = (519959 539959 168958 188958)
+
+# example use
+# while [ 1 = 1 ]; do ./tflscraper >>results-SE58AZ-40km; done
+
+my $rcsid = ''; $rcsid .= '$Id: tfl-scrape,v 1.1 2007-12-06 01:50:52 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -30,7 +33,6 @@ use HTML::TreeBuilder;
 use IO::Handle;
 use Text::CSV_XS;
 use WWW::Mechanize;
-use Time::HiRes;
 use Getopt::Long;
 
 use vars qw($to $size $htmldir $deadline $walkspeed $sqlite_database $date);
@@ -46,8 +48,8 @@ my $result = GetOptions (
 if (!$sqlite_database || !$to || !$htmldir || !$date) {
     print <<END;
 
-Screen scrapes Transport Direct to generate journey times to get to work at a
-particular postcode, from each public transport stop. Output is both to the
+Screen scrapes Transport for London to generate journey times to get to work at
+a particular postcode, from each public transport stop. Output is both to the
 SQLite database and to stdout. You should redirect stdout to a results file,
 for feeding to journeys-to-grid.
 
@@ -57,7 +59,7 @@ parameters like the date, or walkspeed in the journey table, so if you vary
 them you should use a totally new database.
 
 Example use:
-./transportdirect-scrape --db=\$HOME/toobig/isodata/td-ab/postcodes.sqlite --html=\$HOME/toobig/isodata/td-ab/html --to=AB101AF --date=11122007 > \$HOME/toobig/isodata/td-ab/results-AB101AF-20k
+./tfl-scrape --db=\$HOME/toobig/isodata/tfl/postcodes.sqlite --html=\$HOME/toobig/isodata/tfl/html --to=AB101AF --date=11122007 > \$HOME/toobig/isodata/tfl/results-AB101AF-20k
 
 Required parameters:
 --db=filename.sqlite - database file containing stop info, and where journeys are saved (se below)
@@ -115,7 +117,7 @@ sub dump_page ($) {
     open(H, ">$htmldir/$counter.html");
     H->print($m->content());
     close(H);
-    print STDERR $htmldir, "/$counter.html\n";
+    print STDERR "$htmldir/$counter.html\n";
     ++$counter;
 }
 
@@ -127,8 +129,6 @@ sub trim ($) {
 }
 
 my $timere = qr/^([01][0-9]|2[0-3]):([0-5][0-9])$/;
-
-
 
 sub time_add_minutes ($$) {
     my ($time, $mins) = @_;
@@ -160,140 +160,129 @@ sub time_diff_minutes ($$) {
     return $Ma - $Mb + 60 * ($Ha - $Hb);
 }
 
-sub urlencode ($) {
-    my $t = shift;
-    $t =~ s/ /+/g;
-    $t =~ s/([^A-Za-z0-9+])/sprintf('%%%02x', ord($1))/ge;
-    return $t;
-}
+my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_database", "", "", { AutoCommit => 0 });
+
+my $M = new WWW::Mechanize();
+$M->agent_alias('Windows IE 6');
 
 # get_latest_journey_before DEADLINE FROM TO
-# Get the latest-starting journey which 
-sub get_latest_journey_before_internal ($$$) {
-    my ($deadline, $from, $to) = @_;
+# Get the latest-starting journey which reaches TO before DEADLINE.
+sub get_latest_journey_before ($$$;$);
+sub get_latest_journey_before ($$$;$) {
+    my ($deadline, $from, $to, $nonearbypc) = @_;
 
-    my $nretries = 0;
-tryagain:
+    my ($hour, $minute) = split(/:/, $deadline);
+    $hour =~ s/^0//;
+    $minute =~ s/^0//;
 
-    # this is documented in some transportdirect pdf somewhere
-    my $params_starttime = $deadline;
-    $params_starttime =~ s/://;
-    my %params = (
-            et => 'jp',
-            id => 'http://www.mysociety.org/',
-            oo => 'p',
-            o => $from,
-            do => 'p',
-            d => $to,
-            dt => $date,
-            t => $params_starttime,
-            da => 'a',
-            c => 'false',
-            p => 1
-        );
+    warn "get... ";
+    $M->get('http://journeyplanner.tfl.gov.uk/user/XSLT_TRIP_REQUEST2?language=en');
+#    warn $M->content();
+    warn "submit form... ";
+    $date =~ m/^(\d\d)(\d\d)(\d\d\d\d)$/;
+    my $dateday = $1;
+    my $dateyearmonth = "$3$2";
+    $M->submit_form(
+            form_number => 2,
+            fields => {
+                type_origin => 'locator',
+                name_origin => $from,
+                type_destination => 'locator',
+                name_destination => $to,
 
-    my $url = 'http://www.transportdirect.info/transportdirect/en/journeyplanning/jplandingpage.aspx?';
-    foreach my $k (keys %params) {
-        my $v = $params{$k};
-        $url .= urlencode($k) . '=' . urlencode($v) . '&';
-    }
-
-    warn "getting URL $url...\n";
-
-    our $m ||= new WWW::Mechanize();
-    $m->agent_alias('Windows IE 6');
-    $m->get($url);
-
-    # now we get a dumb "please wait" page.
-    my $delta = 1;
-    my $total_delay = 0;
-    while (my $link = $m->find_link(text => 'click this link.')) {
-        print "usleep $delta\n";
-        Time::HiRes::usleep($delta * 1000000);
-        print "done\n";
-        $total_delay += $delta;
-#        dump_page($m);
-    #    $m->follow_link(text => 'click on this link.');
-        $m->submit_form(form_number => 1);
-        $delta *= 2;
-        $delta = 16 if ($delta > 16);
-
-        print ".";
-        if ($total_delay > 10) {
-            warn "... no results after ${total_delay}s; retrying\n";
-            if ($nretries > 3) {
-                warn "    third retry, assuming there really are none\n";
-                return ();
+                itdTripDateTimeDepArr => 'arr',
+                itdDateDay => $dateday,
+                itdDateYearMonth => $dateyearmonth,
+                itdTimeHour => $hour,
+                itdTimeMinute => $minute
             }
-            ++$nretries;
-            goto tryagain;
-        }
-    }
-    print "finished\n";
+        );
+    warn "done\n";
 
-    print STDERR "---\n";
-#    dump_page($m);
-
-    my $html = HTML::TreeBuilder->new_from_content($m->content());
-
-    # find "journey summary" table
-    my $table = $html->look_down(_tag => 'table', id => 'jdetail');
-    if (!$table) {
-        warn "can't find 'Journey Summary' table => no results";
-        if ($nretries <= 3) {
-            ++$nretries;
-            warn "    retrying...\n";
-            goto tryagain;
+    if ($M->content() =~ /no record of those locations/) {
+        return () if ($nonearbypc);
+        # We just used a postcode that TFL don't know. So try the closest
+        # available postcode.
+        warn "  -> bad postcode $from; trying a nearby one instead...\n";
+        my ($E, $N) = $dbh->selectrow_array('select easting, northing from postcode where postcode = ?', {}, $from);
+        my ($pc) = @{$dbh->selectcol_arrayref("select postcode from postcode where easting > $E - 25 and easting < $E + 25 and northing > $N - 25 and northing < $N + 25 and postcode <> '$from' order by random() limit 1")};
+        $dbh->commit();
+        if (defined($pc)) {
+            warn "    trying $pc\n";
+            return get_latest_journey_before($deadline, $pc, $to, 1);
         } else {
-            warn "third retry, assuming there really are none\n";
-            dump_page($m);
+            warn "    can't find a nearby postcode, giving up on this one\n";
             return ();
         }
+        
     }
 
-    my $tbody = $table->look_down(_tag => 'tbody')
-                    || die "can't find <tbody> in 'Journey Summary' table";
+#    print $M->content();
 
-    # Extract all the rows.
-    my @journeys = ( );
-    my @rows = $tbody->look_down(_tag => 'tr');
-    die "no journey rows in 'Journey Summary' table" unless (@rows);
-    foreach (@rows) {
-        my @cells = $_->look_down(_tag => 'td');
-        die "journey row has " . scalar(@cells) . " cells (should be 6)"
-            unless (@cells == 6);
+    my $triedearlier = 0;
+earlier:
 
-        my ($modes, $changes, $start, $end, $duration) = map { trim($_->content()->[0]) } @cells[0 .. 4];
+    my $html = HTML::TreeBuilder->new_from_content($M->content());
+#    my $table = $html->look_down(_tag => 'table', class => 'datatable-3');
+#    if (!$table) {
+        open(D, ">$htmldir/dump.html");
+        print D $M->content();
+        close(D);
+#        print STDERR "$htmldir/dump.html\n";
+#        warn "can't find results table in journey $from -> $to";
+#        return ();
+#    }
 
-        # time with date
-        if ($start =~ m#^..:.. \(../..\)$# || $end =~ m#^..:.. \(../..\)$#) {
-            warn "  $start -> $end\n";
-            next;
+#    my $tbody = $table->look_down(_tag => 'tbody')
+#        || die "can't find results tbody in journey $origin -> $destination";
+
+    my ($starttime, $endtime);
+    foreach my $tr ($html->look_down(_tag => 'table')) {
+        my @td = $tr->look_down(_tag => 'td');
+        next if (@td == 0);
+#        last unless (@td == 8);
+
+        my ($n, $depart, $arrive, $duration) = map { trim($_->content()->[0]) } @td;
+
+#        print STDERR "$n '$depart' -> '$arrive' ($duration)\n";
+        next unless ($depart =~ /^\d\d:\d\d/ && $arrive =~ /^\d\d:\d\d/);
+
+        $arrive =~ s/,.+$//;
+        $depart =~ s/,.+$//;
+
+#        print STDERR "$from $depart -> $arrive $to\n";
+        
+        if ($arrive le $deadline && (!defined($starttime) || $depart gt $starttime)) {
+            $starttime = $depart;
+            $endtime = $arrive;
         }
-
-        die "start time '$start' is not valid" if ($start !~ $timere);
-        die "end time '$end' is not valid" if ($end !~ $timere);
-
-        warn "  $start $end\n";
-
-        push(@journeys, [$start, $end]);
     }
-    return @journeys;
+
+    if (!defined($starttime)) {
+        if (!$triedearlier) {
+            print STDERR "no results; trying earlier...\n";
+            $triedearlier = 1;
+            $M->submit_form(
+                    form_number => 1,
+                    fields => {
+                        command => 'tripPrev'
+                    }
+                );
+#            $M->follow_link(text_regex => qr/Earlier/)
+#                or die "no 'earlier' link";
+            goto earlier;
+        }
+    
+        open(H, ">$htmldir/dump.html");
+        print H $M->content();
+        close(H);
+        print STDERR "$htmldir/dump.html\n";
+        warn "no results for $from -> $to\n";
+        return ();
+    }
+
+    return ($starttime, $endtime);
 }
-
-sub get_latest_journey_before ($$$) {
-    my ($deadline, $from, $to) = @_;
-
-    my @journeys = get_latest_journey_before_internal($deadline, $from, $to);
-
-    return () if (!@journeys);
-
-    return ($journeys[0]->[0], $journeys[0]->[1]);
-
-#    return @journeys;
-}
-
-my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_database", "", "", { AutoCommit => 0 });
 
 my ($E, $N) = $dbh->selectrow_array('select easting, northing from postcode where postcode = ?', {}, $to);
 die "no location for destination postcode '$to'" if (!defined($E));
@@ -305,7 +294,9 @@ my $SS = $N - $size / 2;
 my $NN = $N + $size / 2;
 
 warn "center = ($E, $N)\n";
-warn "bounds = ($WW, $SS) to ($EE, $NN)\n";
+warn "bounds = ($WW $EE $SS $NN)\n";
+
+printf "%d %d 0\n", $E, $N;
 
 #$WW = 500000;
 #$EE = 600000;
@@ -322,12 +313,12 @@ my $from;
 
 my @stops = @{$dbh->selectall_arrayref("select easting, northing, name, postcode_closest from stop2 where easting > $WW - 500 and easting < $EE + 500 and northing > $SS - 500 and northing < $NN + 500 order by random()")};
 
-warn "have $Nalready  / " . scalar(@stops) . " results so far\n";
+warn "have $Nalready of " . scalar(@stops). " results so far\n";
 
 foreach my $s (@stops) {
     my ($stopE, $stopN, $stopname, $pc) = @$s;
 
-    # Find the nearest postcode.
+    # Find location of nearest postcode.
     my ($E, $N) = $dbh->selectrow_array("select easting, northing from postcode where postcode = ?", {}, $pc);
     if (!defined($pc)) {
         warn "no postcode near $stopname\n";
@@ -336,10 +327,6 @@ foreach my $s (@stops) {
 
     my $dist = sqrt(($stopE - $E) ** 2 + ($stopN - $N) ** 2);
     printf STDERR "%s -> %s (%fm)\n", $stopname, $pc, $dist;
-
-#my (@journeys) = get_latest_journey_before_internal($deadline, $pc, $to);
-#print scalar(@journeys) . ",$dist\n";
-#next;
 
     # Now see if we already have a reading for this postcode.
     my $time = $dbh->selectrow_array('select starttime from journey where journey.origin = ? and destination = ? and deadline = ?', {}, $pc, $to, $deadline);
@@ -356,11 +343,12 @@ foreach my $s (@stops) {
         next;
     }
 
+    #warn "doing...\n";
     my ($start, $end) = get_latest_journey_before($deadline, $pc, $to);
  
     if (defined($start)) {
         warn "  start time is $start\n";
-        printf "%d %d %f\n", $stopE, $stopN, time_diff_minutes($deadline, $start) - ($dist / $walkspeed) / 60;
+        printf "%d %d %f\n", $stopE, $stopN, 60 * time_diff_minutes($deadline, $start) - ($dist / $walkspeed) / 60;
         $dbh->do('insert into journey (destination, deadline, origin, starttime, endtime) values (?, ?, ?, ?, ?)', {}, $to, $deadline, $pc, $start, $end);
     } else {
         warn "  impossible to get there from here\n";
