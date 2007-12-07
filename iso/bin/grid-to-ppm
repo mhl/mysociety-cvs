@@ -11,7 +11,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: grid-to-ppm,v 1.4 2007-12-06 09:47:19 francis Exp $";
+static const char rcsid[] = "$Id: grid-to-ppm,v 1.5 2007-12-07 09:40:32 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -225,24 +225,28 @@ void do_field(const int width, const int height, const float west, const float e
         for (x = 0; x < width; ++x) {
             float E, t;
             uint8_t r, g, b;
-            int intt;
+            int band;
             E = west + (east - west) * x / (float)(width - 1);
 
             t = traveltime(E, N);
 #ifdef LONGERBANDS
-            #define BANDSIZE 300 /* secs */
-            #define BANDCOUNT 18
+//            #define BANDSIZE 300 /* secs */
+//            #define BANDCOUNT 18
+//            #define BANDCOLSEP 10
+            #define BANDSIZE 60 /* secs */
+            #define BANDCOUNT 100
+            #define BANDCOLSEP 2
             r = 255; g = 255; b = 255;
-            intt = t / BANDSIZE;
-            if (intt < BANDCOUNT) {
-                g = 255 - intt * ((int)(200 / BANDCOUNT));
+            band = t / BANDSIZE;
+            if (band < 0) {
+                r = 0; g = 0; b = 0;
+            } else {
+                if (band >= BANDCOUNT) {
+                    band = BANDCOUNT;
+                }
+                g = 255 - band * BANDCOLSEP;
                 r = g;
                 b = g;
-            } else {
-                r = 0; g = 0; b = 0;
-            }
-            if (t < 0) {
-                r = 255; g = 255; b= 255;
             }
 #else
     #ifdef BANDED

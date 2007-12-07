@@ -11,8 +11,10 @@
 #
 
 # Parameters:
-POSTCODE=SE100AX
-SIZE_M=20000 # length in metres of sides of rectangle round postcode
+#POSTCODE=SE100AX
+#POSTCODE=W127RJ
+POSTCODE=E152NQ
+SIZE_M=40000 # length in metres of sides of rectangle round postcode
 SIZE_PX=1000
 DIR=$HOME/toobig/isodata/tfl
 DATE=11122007 # XXX you may want to wipe the journey's table in the db if you change this
@@ -21,7 +23,7 @@ DATE=11122007 # XXX you may want to wipe the journey's table in the db if you ch
 set -e # exit on error
 
 RECT="`./calc-bounding-rectangle $DIR/postcodes.sqlite $POSTCODE $SIZE_M`"
-RESULTS=tdiso-$POSTCODE-$SIZE_M
+RESULTS=tfliso-$POSTCODE-$SIZE_M
 
 ./tfl-scrape --db=$DIR/postcodes.sqlite --html=$DIR/html --to=$POSTCODE --size=$SIZE_M --date=$DATE > $DIR/$RESULTS
 

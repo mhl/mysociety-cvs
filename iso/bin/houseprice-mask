@@ -26,7 +26,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: houseprice-mask,v 1.3 2007-12-05 20:16:32 francis Exp $";
+static const char rcsid[] = "$Id: houseprice-mask,v 1.4 2007-12-07 09:40:32 francis Exp $";
 
 #include <assert.h>
 #include <math.h>
@@ -211,10 +211,10 @@ int main(int argc, char *argv[]) {
                 if (minprice < 0) {
                     #define BANDS 100
                     float col = p / maxprice;
-                    int band = (int)(BANDS * col);
-                    if (band >= BANDS) band = BANDS-1;
-                    if (band < 0) band = 0;
-                    int col = 255 - band * (255 / BANDS);
+                    int band = (int)(BANDS * col) + 1;
+                    if (band > BANDS) band = BANDS;
+                    if (band < 1) band = 1;
+                    int col = band;
                     fputc(col, stdout);
                 } else {
                     if (p > minprice && p < maxprice) {

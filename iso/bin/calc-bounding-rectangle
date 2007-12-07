@@ -8,7 +8,7 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: calc-bounding-rectangle,v 1.2 2007-12-05 17:00:07 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: calc-bounding-rectangle,v 1.3 2007-12-07 09:40:32 francis Exp $';
 
 use strict;
 
@@ -16,7 +16,7 @@ use DBI;
 use Text::CSV_XS;
 
 my ($sqlite_db, $to, $size) = @ARGV;
-die "Parameters are and filename of sqlite database" if !$sqlite_db || !$to || !$size;
+die "Parameters are filename of sqlite database and postcode and size" if !$sqlite_db || !$to || !$size;
 
 my $dbh = DBI->connect("dbi:SQLite:dbname=$sqlite_db", "", "", { AutoCommit => 0 });
 
