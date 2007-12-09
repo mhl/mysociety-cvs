@@ -119,6 +119,7 @@ abstract class pagebase {
     //Get template name - uses reflection to try and guess the template name
     //saves having to assign it in *every* file
     public function get_template_name(){
+
        return str_replace("_","",str_replace("_page", "", get_class($this))) . ".tpl";
     }
 

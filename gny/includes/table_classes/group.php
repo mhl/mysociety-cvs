@@ -6,6 +6,9 @@ require_once('init.php');
 require_once 'DB/DataObject.php';
 
 class tableclass_group extends DB_DataObject {
+
+	public $mode = "user"; //if this is set to admin, the groups is saved without an email confirmation
+
     ###START_AUTOCODE
     /* the code below is auto generated do not remove the above tag */
 

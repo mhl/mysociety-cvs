@@ -16,7 +16,11 @@
     </p>
 
     <div class="buttons">
-        <input type="submit" class="button" value="{l}Confirm this group{/l} &raquo;"/>
+        {if $group->mode == "admin"}
+            <input type="submit" class="button" value="{l}Save changes{/l} &raquo;"/>        
+        {else}
+            <input type="submit" class="button" value="{l}Confirm this group{/l} &raquo;"/>
+        {/if}
     </div>
     
 </form>

@@ -71,27 +71,39 @@ class addpreview_page extends pagebase {
 		//convert raw urls to links
 		$this->group->description = raw_urls_to_links($this->group->description);
 		$this->group->description = new_lines_to_paragraphs($this->group->description);	
-		
-		//save data
-		$this->group->confirmed = 0;
-		$this->group->set_url_id();
-		if(!$this->group->insert()){
-			trigger_error('Error saving group');
-			$this->add_warning($this->smarty->translate("Something went wrong when we tried to save your group. (We're looking into it)."));
+
+		//Standard save, user creating a new group
+		if($this->group->mode == "user"){
+			//save data
+			$this->group->confirmed = 0;
+			$this->group->set_url_id();
+			if(!$this->group->insert()){
+				trigger_error('Error saving group');
+				$this->add_warning($this->smarty->translate("Something went wrong when we tried to save your group. (We're looking into it)."));
+			}else{
+
+				//send confirmation email
+				$confirmation = factory::create('confirmation');
+				$confirmation->send($this->group->created_email, 
+					EMAIL_PREFIX . "Confirm the group '" . $this->group->name . "'  on " . SITE_NAME,
+					"Click on the link below to confirm you want to add " . $this->group->name . " to " . SITE_NAME . ":",
+					"groups", $this->group->group_id);
+
+				//clear the session
+				session_write('group', null);
+
+				//send to check email page
+				redirect(WWW_SERVER . '/checkemail.php?type=group');
+			}
+		}elseif($this->group->mode == "admin"){
+			if(!$this->group->update()){
+				trigger_error('Error saving group (in admin mode)');
+				$this->add_warning($this->smarty->translate("Something went wrong when we tried to update this group."));
+			}else{
+				redirect(WWW_SERVER . "/admin/searchgroups.php?q=" . urlencode($this->group->name) . "&mode=saved");
+			}
 		}else{
-
-			//send confirmation email
-			$confirmation = factory::create('confirmation');
-			$confirmation->send($this->group->created_email, 
-				EMAIL_PREFIX . "Confirm the group '" . $this->group->name . "'  on " . SITE_NAME,
-				"Click on the link below to confirm you want to add " . $this->group->name . " to " . SITE_NAME . ":",
-				"groups", $this->group->group_id);
-		
-			//clear the session
-			session_write('group', null);
-
-			//send to check email page
-			redirect(WWW_SERVER . '/checkemail.php?type=group');
+			trigger_error("Unknown mode when saving group: " . $this->group->mode);	
 		}
 
 	}
