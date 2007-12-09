@@ -14,7 +14,7 @@ class searchgroups_page extends pagebase {
 			$this->viewstate['search'] = $_GET['q'];			
 		}
 		if($_GET['mode'] && $_GET['mode'] == "saved"){
-			$this->add_warning("Changes saved!");
+			$this->add_warning("Changes saved! (the pages are cached, so it might take a little while to filter though)");
 		}
 		
 	}

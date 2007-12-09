@@ -107,7 +107,7 @@ function addRectangle(){
 function load(nCenterLong, nCenterLat, iZoom, bFullMap) {
   if (GBrowserIsCompatible()) {
 
-	if(document.getElementById('mapNo') == true){
+	if(document.getElementById('mapNo')){
     	get('mapNo').style.display = 'none';
 	}
 
