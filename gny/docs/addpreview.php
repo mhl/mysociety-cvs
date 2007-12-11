@@ -26,7 +26,7 @@ class addpreview_page extends pagebase {
 	}
 
 	//Bind
-	protected function bind() {
+	protected function bind() {	
 
 		//convert any urls to links and add paragraphs (we do this perminently on save)
 		$html_desc = raw_urls_to_links($this->group->description);

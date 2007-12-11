@@ -115,8 +115,7 @@ class addcontact_page extends pagebase {
 	protected function process (){
 
 		//save data to session
-		session_write('group', $this->group);
-		
+		session_write('group', $this->group);		
 		if($this->validate()){
 			redirect(WWW_SERVER . "/add/preview/");
 		}else{
