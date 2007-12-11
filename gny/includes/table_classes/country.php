@@ -10,7 +10,7 @@ class tableclass_country extends DB_DataObject
     ###START_AUTOCODE
     /* the code below is auto generated do not remove the above tag */
 
-    public $__table = 'country';                         // table name
+    public $__table = 'country';
     public $iso;                             // char(2)  primary_key not_null
     public $name;                            // varchar(80)   not_null
     public $printable_name;                  // varchar(80)   not_null

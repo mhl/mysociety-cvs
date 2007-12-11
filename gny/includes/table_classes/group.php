@@ -18,6 +18,7 @@ class tableclass_group extends DB_DataObject {
     public $byline;                          // text()   not_null
     public $description;                     // text()   not_null
     public $tags;                            // text()  
+    public $category_id;
     public $involved_type;                   // varchar(50)   not_null
     public $involved_link;                   // varchar(150)  
     public $created_name;                    // varchar(100)   not_null

@@ -100,7 +100,7 @@ class addpreview_page extends pagebase {
 				trigger_error('Error saving group (in admin mode)');
 				$this->add_warning($this->smarty->translate("Something went wrong when we tried to update this group."));
 			}else{
-				redirect(WWW_SERVER . "/admin/searchgroups.php?q=" . urlencode($this->group->name) . "&mode=saved");
+				redirect(ADMIN_SERVER . "/admin/searchgroups.php?q=" . urlencode($this->group->name) . "&mode=saved");
 			}
 		}else{
 			trigger_error("Unknown mode when saving group: " . $this->group->mode);	

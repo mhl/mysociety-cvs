@@ -6,6 +6,7 @@ ini_set('unserialize_callback_func', 'unserialize_callback_factory');
 require_once('table_classes/config.php');
 require_once('table_classes/group.php');
 require_once('table_classes/country.php');
+require_once('table_classes/category.php');
 require_once('table_classes/confirmation.php');
 
 class factory {
@@ -18,6 +19,13 @@ class factory {
 			case 'group':
 				require_once( 'table_classes/config.php' );
 				require_once('table_classes/group.php');
+				if (!$require_only) {
+					$object = DB_DataObject::factory($class_name);
+				}
+				break;
+			case 'category':
+				require_once( 'table_classes/config.php' );
+				require_once('table_classes/category.php');				
 				if (!$require_only) {
 					$object = DB_DataObject::factory($class_name);
 				}

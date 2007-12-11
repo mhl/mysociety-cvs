@@ -5,13 +5,13 @@
 
 	<title>{$site_name} admin| {$page_title}</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<script type="text/javascript" src="{$www_server}/javascript/prototype.js"></script>
-    <script type="text/javascript" src="{$www_server}/javascript/scriptaculous.js"></script>
-    <script type="text/javascript" src="{$www_server}/javascript/functions.js"></script>
-    <script type="text/javascript" src="{$www_server}/javascript/admin.js"></script>
-	<link rel="stylesheet" media="all" type="text/css" href="{$www_server}/css/memespring.css" />
-	<link rel="stylesheet" media="all" type="text/css" href="{$www_server}/css/admin.css" />	
-	<link rel="Shortcut Icon" href="{$www_server}/favicon.ico" type="image/x-icon" />
+	<script type="text/javascript" src="{$admin_server}/javascript/prototype.js"></script>
+    <script type="text/javascript" src="{$admin_server}/javascript/scriptaculous.js"></script>
+    <script type="text/javascript" src="{$admin_server}/javascript/functions.js"></script>
+    <script type="text/javascript" src="{$admin_server}/javascript/admin.js"></script>
+	<link rel="stylesheet" media="all" type="text/css" href="{$admin_server}/css/memespring.css" />
+	<link rel="stylesheet" media="all" type="text/css" href="{$admin_server}/css/admin.css" />	
+	<link rel="Shortcut Icon" href="{$admin_server}/favicon.ico" type="image/x-icon" />
 	
 	{if $rss_link != ''}
 	    <link rel="alternate" type="application/rss+xml" title="{$page_title}" href="{$rss_link}">
@@ -24,8 +24,8 @@
         <div id="divHeader">
             <h1>{$site_name} admin pages</h1>
             <ul id="ulMenu" class="inline">
-                <li {if $menu_item =="home"}class="selected"{/if}><a href="{$www_server}/admin/">Home</a></li>                                     
-                <li {if $menu_item =="edit"}class="selected"{/if}><a href="{$www_server}/admin/searchgroups.php">Manage groups</a></li>                
+                <li {if $menu_item =="home"}class="selected"{/if}><a href="{$admin_server}/admin/">Home</a></li>                                     
+                <li {if $menu_item =="edit"}class="selected"{/if}><a href="{$admin_server}/admin/searchgroups.php">Manage groups</a></li>                
                 <li {if $menu_item =="translate"}class="selected"{/if}><a href="#">Translation</a></li>
             </ul>
         </div>

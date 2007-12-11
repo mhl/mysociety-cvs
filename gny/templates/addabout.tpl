@@ -5,8 +5,6 @@
     <h3>{l}Tell us a bit about this email group, forum or blog{/l}</h3>
 	<p id="pAddInitBlurb">{l}By adding a group you can help people in your neighbourhood get to know each other.{/l}
 	{l}<span class="highlight">Please add any local group you know about</span>, to help more people join up!{/l}
-	GroupsNearYou is happy to accept information on offline groups like parenting or OAP groups, or entirely
-	online groups like local discussion forums.
 	</p>
         <ul class="form nobullets">
             <li>
@@ -17,6 +15,19 @@
                 <label for="txtByline">{l}One line description{/l} *</label>
                 <input type="text" class="textbox{if $warn_txtByline} error{/if}" id="txtByline" name="txtByline" value="{$group->byline}" />
                 <small>{l}e.g. A residents&rsquo; email group for Woking, UK{/l}</small>
+            </li>
+            <li>
+                <label for="ddlCategory">{l}Type of group{/l}</label>
+                <select id="ddlCategory" name="ddlCategory" {if $warn_ddlCategory}class="error"{/if}>
+                    <option value="0" {if $group->category_id == 0 || $group->category_id == ""}selected="selected"{/if}>
+                        &nbsp;
+                    </option>
+                    {foreach from="$categories" item="category"}
+                        <option value="{$category->category_id}" {if $group->category_id == $category->category_id}selected="selected"{/if}>
+                            {$category->name} ({$category->hint})
+                        </option>
+                    {/foreach}
+                </select>
             </li>
             <li>
                 <label for="txtDescription">{l}More information (optional){/l}</label>

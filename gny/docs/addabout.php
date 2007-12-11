@@ -38,6 +38,14 @@ class addabout_page extends pagebase {
 
 		//get group object out of the session
 		$this->group = session_read('group');
+		
+		//get categories for dropdown
+		$search = factory::create('search');
+		$categories = $search->search_cached('category', array(array('category_id', '<>', 0)));
+		
+		if(sizeof($categories) == 0){
+			trigger_error('No categories found');
+		}
 
 		//page vars
 		$this->onloadscript = "";	
@@ -47,6 +55,7 @@ class addabout_page extends pagebase {
 	    $this->tracker_location = 2;			
 	    $this->set_focus_control = "txtName";
 		$this->assign('group', $this->group);
+		$this->assign('categories', $categories);		
 		
 		$this->display_template();
 
@@ -57,7 +66,8 @@ class addabout_page extends pagebase {
 		$this->group->name = strip_tags($this->data['txtName']);
 		$this->group->byline = strip_tags($this->data['txtByline']);		
 		$this->group->description = strip_tags($this->data['txtDescription'], '<a><em><strong>');				
-		$this->group->tags = strip_tags($this->data['txtTags']);				
+		$this->group->tags = strip_tags($this->data['txtTags']);
+		$this->group->category_id = $this->data['ddlCategory'];
 	}
 
 	//Validate
@@ -76,6 +86,12 @@ class addabout_page extends pagebase {
 			$valid = false;
 		}
 		
+		if($this->group->category_id == 0 || $this->group->category_id == ''){
+			$this->add_warning('Please choose a category for this group');
+			$this->add_warn_control('ddlCategory');
+			$valid = false;
+		}
+
 		/*
 		removed this bit of validation as people couldent think what to write
 		if($this->group->description == ''){

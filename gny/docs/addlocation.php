@@ -133,7 +133,8 @@ class addlocation_page extends pagebase {
 			$valid = false;
 		}
 		if($this->group->zoom_level < MAX_MAP_ZOOM){
-			$this->add_warning($this->smarty->translate('The selected area for your group is too big. <strong>Please use the zoom tool to select a smaller area</strong>.'));
+			$this->add_warning($this->smarty->translate(SITE_NAME . 
+				' is a website for local online groups, if your group covers a large area (such as a country) then you will be unable to add it'));
 			$valid = false;
 		}
 		

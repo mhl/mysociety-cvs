@@ -48,28 +48,28 @@
                <ul id="ulTracker" class="collapse">
                	<li{if $tracker_location == 2} class="current" {elseif $tracker_location > 2} class="complete" {/if}>
                		{if $tracker_location >1}
-               			<a href="{$www_server}/add/about/">{l}1. About the group{/l}</a>
+               			<a href="{$www_server}/add/about/" title="edit this section">{l}1. About the group{/l}</a>
                		{else}
                			{l}1. About the group{/l}
                		{/if}
                	</li>
                	<li{if $tracker_location == 3} class="current" {elseif $tracker_location > 3} class="complete" {/if}>
                		{if $tracker_location >2}
-               			<a href="{$www_server}/add/location/">{l}2. Area covered{/l}</a>
+               			<a href="{$www_server}/add/location/" title="edit this section">{l}2. Area covered{/l}</a>
                		{else}	
                			{l}2. Area covered{/l}
                		{/if}
                	</li>
                	<li{if $tracker_location == 4} class="current" {elseif $tracker_location > 4} class="complete" {/if}>
                		{if $tracker_location >3} 
-               			    <a href="{$www_server}/add/contact/">{l}3. Joining the group{/l}</a> 
+               			    <a href="{$www_server}/add/contact/" title="edit this section">{l}3. Joining the group{/l}</a> 
                		{else}	
                			{l}3. Joining the group{/l}
                		{/if}
                	</li>
                	<li{if $tracker_location == 5} class="current" {elseif $tracker_location > 5} class="complete" {/if}>
                		{if $tracker_location >4} 
-               			    <a href="{$www_server}/add/preview/">{l}4. Preview &amp; confirm{/l}</a> 
+               			    <a href="{$www_server}/add/preview/" title="edit this section">{l}4. Preview &amp; confirm{/l}</a> 
                		{else}	
                			{l}4. Preview &amp; confirm{/l}
                		{/if}
