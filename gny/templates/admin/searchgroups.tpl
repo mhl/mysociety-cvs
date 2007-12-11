@@ -1,6 +1,6 @@
 {include file="../templates/admin/header.tpl"}
 
-    <form id="frmGroups" action="{$form_action}" method="post">
+    <form id="frmGroups" action="searchgroups.php" method="post">
         {include file="../templates/formvars.tpl"}
         
         <div id="divSearch">
