@@ -11,7 +11,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: grid-to-ppm,v 1.5 2007-12-07 09:40:32 francis Exp $";
+static const char rcsid[] = "$Id: grid-to-ppm,v 1.6 2007-12-13 12:22:00 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -234,8 +234,8 @@ void do_field(const int width, const int height, const float west, const float e
 //            #define BANDCOUNT 18
 //            #define BANDCOLSEP 10
             #define BANDSIZE 60 /* secs */
-            #define BANDCOUNT 100
-            #define BANDCOLSEP 2
+            #define BANDCOUNT 200
+            #define BANDCOLSEP 1
             r = 255; g = 255; b = 255;
             band = t / BANDSIZE;
             if (band < 0) {
