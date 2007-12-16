@@ -6,7 +6,6 @@
             {$text}
         </p>
         <p><a href="{$link}">{$link_text}</a></p>
-    {/if}
 </div>    
 
 {include file="../templates/footer.tpl"}
