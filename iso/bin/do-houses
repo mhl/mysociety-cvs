@@ -9,13 +9,13 @@
 #
 
 # Parameters:
-#POSTCODE=SW1P4DR
-POSTCODE=W127RJ
-SIZE_M=20000 # length in metres of sides of rectangle round postcode
-SIZE_PX=1000
+POSTCODE=SW1P4DR
+#POSTCODE=W127RJ
+SIZE_M=40000 # length in metres of sides of rectangle round postcode
+SIZE_PX=1600
 DIR=$HOME/toobig/isodata/house
 LANDREGISTRY_IN=$HOME/toobig/landregistry/steinberg010106-311206.txt
-MINPRICE=-1 #50000  # put -1 for banded. put 50000 to remove sheds and things.
+MINPRICE=-1 #50000  # put -1 for banded and edit houseprice-mask for band sizes
 MAXPRICE=500000 
 SEARCHRADIUS=1000
 MINPOINTS=10
@@ -26,6 +26,7 @@ set -e # exit on error
 RECT="`./calc-bounding-rectangle $DIR/postcodes.sqlite $POSTCODE $SIZE_M`"
 RESULTS=housemask-$POSTCODE-${SIZE_M}m-${MAXPRICE}p
 
+# only need to run this once :)
 #./landregistry-to-houseprice $LANDREGISTRY_IN $DIR/postcodes.sqlite > $DIR/all-house-prices
 #cat $DIR/all-house-prices | ./houseprice-inflate > $DIR/all-house-prices-inflated
 

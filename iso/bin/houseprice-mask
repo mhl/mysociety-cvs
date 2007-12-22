@@ -26,7 +26,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: houseprice-mask,v 1.4 2007-12-07 09:40:32 francis Exp $";
+static const char rcsid[] = "$Id: houseprice-mask,v 1.5 2007-12-22 02:23:36 francis Exp $";
 
 #include <assert.h>
 #include <math.h>
@@ -209,12 +209,31 @@ int main(int argc, char *argv[]) {
                 fputc(0, stdout);
             } else {
                 if (minprice < 0) {
+                    // TODO: do banding with integer arithmetic here
+                    #error
+                    
+                    #define BANDSIZE 5000 /* pounds */
+                    #define BANDCOUNT 100
+                    #define BANDCOLSEP 1
+                    int col = 0;
+                    int band = p / BANDSIZE;
+                    if (band < 0) {
+                        col = 0;
+                    } else {
+                        if (band >= BANDCOUNT) {
+                            band = BANDCOUNT;
+                        }
+                        col = 255 - band * BANDCOLSEP;
+                    }
+
+                    /* old floating point one
                     #define BANDS 100
                     float col = p / maxprice;
                     int band = (int)(BANDS * col) + 1;
                     if (band > BANDS) band = BANDS;
                     if (band < 1) band = 1;
-                    int col = band;
+                    int col = band; */
+
                     fputc(col, stdout);
                 } else {
                     if (p > minprice && p < maxprice) {
