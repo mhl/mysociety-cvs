@@ -20,6 +20,34 @@ function setjs() {
  }
 }
 </script>
+
+# and let's add in a clock, so people know what time it
+# is in Blightly.
+# yugh-tastic
+
+<script language="JavaScript">
+// Anytime Anywhere Web Page Clock Generator
+// Clock Script Generated at
+// http://www.rainbow.arch.scriptmania.com/tools/clock
+
+function tS(){ x=new Date(tN().getUTCFullYear(),tN().getUTCMonth(),tN().getUTCDate(),tN().getUTCHours(),tN().getUTCMinutes(),tN().getUTCSeconds()); x.setTime(x.getTime()+dS()+0); return x; } 
+
+function tN(){ return new Date(); } 
+
+function dS(){ return ((tN().getTime()>fD(0,2,3,-1).getTime())&&(tN().getTime()<fD(0,9,2,-1).getTime()))?3600000:0; } 
+
+function fD(d,m,h,p){ var week=(p<0)?7*(p+1):7*(p-1),nm=(p<0)?m+1:m,x=new Date(tN().getUTCFullYear(),nm,1,h,0,0),dOff=0; if(p<0){ x.setTime(x.getTime()-86400000); } if(x.getDay()!=d){ dOff=(x.getDay()<d)?(d-x.getDay()):0-(x.getDay()-d); if(p<0&&dOff>0){ week-=7; } if(p>0&&dOff<0){ week+=7; } x.setTime(x.getTime()+((dOff+week)*86400000)); } return x; } 
+
+function lZ(x){ return (x>9)?x:'0'+x; } 
+
+function y2(x){ x=(x<500)?x+1900:x; return String(x).substring(2,4) } 
+
+function dT(){ if(fr==0){ fr=1; document.write('<font size=2 face=Arial><b><span id="tP">'+eval(oT)+'</span></b></font>'); } document.getElementById('tP').innerHTML=eval(oT); setTimeout('dT()',1000); } 
+
+var dN=new Array('Sun','Mon','Tue','Wed','Thu','Fri','Sat'),mN=new Array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),fr=0,oT="dN[tS().getDay()]+' '+tS().getDate()+' '+mN[tS().getMonth()]+' '+y2(tS().getYear())+' '+':'+':'+' '+lZ(tS().getHours())+':'+lZ(tS().getMinutes())+':'+lZ(tS().getSeconds())+' '";
+
+</script>
+
 <title>mySociety Chat</title>
 </head>
 <body>
@@ -39,6 +67,8 @@ bgcolor="#f1f1f1"><input type="text" name="Nickname" value="Passerby"></td></tr>
 </td></tr></table></form>
 
 <p>If you prefer to use a desktop IRC client, use <a href="http://www.mysociety.org/?p=256">these login details</a>.
+
+<p>mySociety is mainly based in the UK, so you may find the IRC channel ('chatroom') quiet sometimes. To make things a little easier, the time in the UK, now is:<script language="JavaScript">dT();</script></p>
 
 <p id="ietest"><a href="http://www.mysociety.org"><img border="0" src="http://www.mysociety.org/mysociety_sm.gif" alt="mySociety.org"></a></p>
 
