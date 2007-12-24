@@ -19,14 +19,12 @@ function setjs() {
    document.loginform["interface"].value = 'opera';
  }
 }
-</script>
 
 <script language="JavaScript">
 // clock added so folk know what time it is in Blighty
 // Anytime Anywhere Web Page Clock Generator
 // Clock Script Generated at
 // http://www.rainbow.arch.scriptmania.com/tools/clock
-
 
 function tS(){ x=new Date(tN().getUTCFullYear(),tN().getUTCMonth(),tN().getUTCDate(),tN().getUTCHours(),tN().getUTCMinutes(),tN().getUTCSeconds()); x.setTime(x.getTime()+dS()+0); return x; } 
 
@@ -38,12 +36,11 @@ function fD(d,m,h,p){ var week=(p<0)?7*(p+1):7*(p-1),nm=(p<0)?m+1:m,x=new Date(t
 
 function lZ(x){ return (x>9)?x:'0'+x; } 
 
-function y2(x){ x=(x<500)?x+1900:x; return String(x).substring(2,4) } 
+function dT(){ if(fr==0){ fr=1; document.write('<font size=2><strong><span id="tP">'+eval(oT)+'</span></strong></font>'); } document.getElementById('tP').innerHTML=eval(oT); setTimeout('dT()',1000); } 
 
-function dT(){ if(fr==0){ fr=1; document.write('<font size=2 face=Arial><b><span id="tP">'+eval(oT)+'</span></b></font>'); } document.getElementById('tP').innerHTML=eval(oT); setTimeout('dT()',1000); } 
+function y4(x){ return (x<500)?x+1900:x; } 
 
-var dN=new Array('Sun','Mon','Tue','Wed','Thu','Fri','Sat'),mN=new Array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),fr=0,oT="dN[tS().getDay()]+' '+tS().getDate()+' '+mN[tS().getMonth()]+' '+y2(tS().getYear())+' '+':'+':'+' '+lZ(tS().getHours())+':'+lZ(tS().getMinutes())+':'+lZ(tS().getSeconds())+' '";
-
+var dN=new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'),mN=new Array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'),fr=0,oT="dN[tS().getDay()]+' '+lZ(tS().getDate())+' '+mN[tS().getMonth()]+' '+y4(tS().getYear())+' '+':'+' '+lZ(tS().getHours())+':'+lZ(tS().getMinutes())";
 </script>
 
 <title>mySociety Chat</title>
