@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Tests how many postcodes are covered by GroupsNearYou
+
+# Needs a file random-postcodes containing some random postcodes.
+# Do this to the output of this script to get counts:
+#   cat out | grep h3 | sort | uniq -c
+
+function do_postcodes {
+    while read X
+    do
+        echo $X
+        lynx -source http://www.groupsnearyou.com/location/$X | egrep "(Nobody has added|We found)"
+    done
+}
+
+cat random-postcodes | do_postcodes
+
