@@ -8,9 +8,10 @@ include "../../wordpress/wp-content/themes/mysociety/header.php";
 <h1>More travel-time maps and their uses</h1>
 
 <p>
-Richard Pope, mySociety &lt;<a href="mailto:richard@mysociety.org">richard@mysociety.org</a>&gt;<br>
-Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;<br>
+Tom Carden, Stamen &lt;<a href="mailto:tom@tom-carden.co.uk">tom@tom-carden.co.uk</a>&gt;<br>
 Francis Irving, mySociety &lt;<a href="mailto:francis@mysociety.org">francis@mysociety.org</a>&gt;<br>
+Chris Lightfoot, mySociety<br>
+Richard Pope, mySociety &lt;<a href="mailto:richard@mysociety.org">richard@mysociety.org</a>&gt;<br>
 Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.org</a>&gt;<br>
 </p>
 
@@ -63,18 +64,30 @@ difficult to interpret. One major task was to read up on how to display such
 complex and valuable data in more intellible ways, and the results can be seen
 below.
 
+<table border="0">
+<tr>
+
+<td width="45%" valign="top">
 <h3>Old map of London</h3>
 
 <p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM
 
 <p><a href="oldmap.png"><img src="oldmap_small.png" alt="Old map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM"></a>
 <br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+</td>
 
+<td width="10%">&nbsp;</td>
+
+<td width="45%" valign="top">
 <h3>New map of London</h3>
-<p>Showing travel times to work at the Maudsley Hospital, Denmark Hill also arriving at 9AM
+<p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM
 
-<p><a href="southlondon.png"><img src="southlondon_small.png" alt="New map of London showing travel times to work at the Maudsley Hospital, Denmark Hill also arriving at 9AM"></a>
+<p><a href="SW1P4DR_20km_contours_800.png"><img src="SW1P4DR_20km_contours_400.png" alt="New map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM"></a>
 <br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+</td>
+
+</tr>
+</table>
 
 <h2><a name="houseprices"></a>House prices</h2>
 
