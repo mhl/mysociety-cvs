@@ -5,6 +5,8 @@ include "../../wordpress/wp-blog-header.php";
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
 
+<script type="text/javascript" src="swfobject.js"></script>
+
 <h1>More travel-time maps and their uses</h1>
 
 <p>
@@ -61,7 +63,7 @@ decisions on where to live or work in their current form.
  
 <p>Many of the maps we produced last time were very pretty, but could be somewhat
 difficult to interpret. One major task was to read up on how to display such
-complex and valuable data in more intellible ways, and the results can be seen
+complex and valuable data in more intelligible ways, and the results can be seen
 below.
 
 <table border="0">
@@ -101,21 +103,14 @@ contours to the DfT building. However, in areas which are outside the desired
 price band, the contours are greyed out. Let's start at the bottom of the
 London market, less than &pound;200,000 median price.
 
-<p><a href="house-200.png"><img src="house-200_small.png" alt="Travel times to the Department for Transport and house prices less than &pound;200,000"></a>
-<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+<div id="maphouse1">If you can see this for more than a moment, please enable Javascript for this page and make sure you have installed <a href="http://www.adobe.com/products/flashplayer/">Flash Player 9</a> from Adobe.</div>
 
-<p>Oh dear! It seems there's almost nowhere for under &pound;200,000 median
-anywhere within 40 minutes of our target. Let's up the price band.
-
-<p><a href="house-300.png"><img src="house-300_small.png" alt="Travel times to the Department for Transport and house prices less than &pound;300,000"></a>
-<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;3007</small>
-
-<p>Now much more is clearly available, although most of it 30-40 minutes away.
-But what if I want to exclude both prices that are too high and too low?  This
-map shows only areas where the median price is between &pound;300,000 and &pound;400,000.
-
-<p><a href="house-300-400.png"><img src="house-300-400_small.png" alt="Travel times to the Department for Transport and median house prices between &pound;300,000 and &pound;400,000"></a>
-<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;300-4007</small>
+<script type="text/javascript">
+   var so = new SWFObject("MysocietyThresholds.swf", "MysocietyThresholds", "800", "886", "9", "#000000");
+   so.useExpressInstall('expressinstall.swf');
+   so.addVariable("configURL", "W127RJ_houses_travel_800.xml");
+   so.write("maphouse1");
+</script>
 
 <h2><a name="cartrain"></a>Car vs. public transport</h2>
 
