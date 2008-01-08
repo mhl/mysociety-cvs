@@ -63,7 +63,7 @@ class contact_page extends pagebase {
 
 		//populate contact email object
 		$this->contact_email = factory::create('contact_email');
-		$this->contact_email->to_email = $group->involved_email;
+		$this->contact_email->to_email = $group->involved_link;
 		$this->contact_email->from_email = $this->data['txtEmail'];
 		$this->contact_email->from_name = $this->data['txtName'];			
 		$this->contact_email->subject = EMAIL_PREFIX . 'Enquiry about '  . $group->name;
