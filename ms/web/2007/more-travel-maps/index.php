@@ -5,6 +5,19 @@ include "../../wordpress/wp-blog-header.php";
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
 
+<?php function interactive_map($config_file, $id, $width, $height) { ?>
+
+<div id="<?=$id?>">If you can see this for more than a moment, please enable Javascript for this page and make sure you have installed <a href="http://www.adobe.com/products/flashplayer/">Flash Player 9</a> from Adobe.</div>
+
+<script type="text/javascript">
+   var so = new SWFObject("MysocietyThresholds.swf", "MysocietyThresholds", "<?=$width?>", "<?=$height?>", "9", "#000000");
+   so.useExpressInstall('expressinstall.swf');
+   so.addVariable("configURL", "<?= $config_file ?>");
+   so.write("<?=$id?>");
+</script>
+
+<?php } ?>
+
 <script type="text/javascript" src="swfobject.js"></script>
 
 <h1>More travel-time maps and their uses</h1>
@@ -101,37 +114,31 @@ that the complexity of graphical display could be substantially reduced by
 replacing multiple contour lines with a single interactive slider. Have a go
 here.
 
+<?php interactive_map("sw1p4dr-400-20km/config.xml", "mapintro", 400, 484) ?>
+
 <h2><a name="houseprices"></a>House prices</h2>
 
 <p>Next, it is clearly no good to be told that a location is very convenient for
-your work if you can't afford to live there. So we have produced travel maps
-that show not just where someone working can live if they want to get to work
-swiftly, we can also show what areas they can afford to live in. 
+your work if you can't afford to live there. So we have produced some
+interactive maps that allow users to set both the maximum time they're willing
+to commute, and the median houseprice they're willing or able to pay. Slide the
+sliders on the following map and all will come clear.
 
-<p>The next three maps show different bands of house prices PLUS time travel
-contours to the DfT building. However, in areas which are outside the desired
-price band, the contours are greyed out. Let's start at the bottom of the
-London market, less than &pound;200,000 median price.
+<?php interactive_map("sw1p4dr-640-32km/config.xml", "maphouse1", 640, 745) ?>
 
-<div id="maphouse1">If you can see this for more than a moment, please enable Javascript for this page and make sure you have installed <a href="http://www.adobe.com/products/flashplayer/">Flash Player 9</a> from Adobe.</div>
-
-<script type="text/javascript">
-   var so = new SWFObject("MysocietyThresholds.swf", "MysocietyThresholds", "640", "726", "9", "#000000");
-   so.useExpressInstall('expressinstall.swf');
-   so.addVariable("configURL", "sw1p4dr-640-32km/config.xml");
-   so.write("maphouse1");
-</script>
+<p>For more such maps of London, with centers at BBC Television Center and the
+Olympic Stadium Site, <a href="">click here</a>.
 
 <h2><a name="cartrain"></a>Car vs. public transport</h2>
 
-<p>Many people these days are looking to move to public transport, due to
-reasons varying from congestion, to cost, to environmental impact. But where
-can you live if you want to have the chance of getting to work speedily? 
+<p>Many people these days are looking to move to public transport, due to reasons
+varying from congestion, to cost, to environmental impact. But where can you
+live if you want to have the chance of getting to work speedily?   
 
-<p>The following maps show the areas around three cities where getting to work
-(shown by the black dot) is faster by car, and where getting to work by public
-transport is better. Such maps would enable people to choose suitable areas
-according to their needs and preferences around transport.
+<p>The following map shows travel times to get work in downtown Cardiff for
+9AM. If you move your mouse over the map, though, it will switch to show you
+which areas it makes more sense to get public transport to work, and which
+areas in makes more sense to drive.
 
 <h3>Edinburgh University</h3>
 <p><a href="ed.png"><img src="ed_small.png" alt="Getting to Edinburgh University by 09:00 - public transport vs road"></a>
