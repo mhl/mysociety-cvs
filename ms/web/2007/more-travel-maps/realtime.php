@@ -7,15 +7,6 @@ include "../../wordpress/wp-content/themes/mysociety/header.php";
 
 <h1>Real time travel maps</h1>
 
-<p>This work was funded and supported by the <a href="http://www.dft.gov.uk/">Department&nbsp;for&nbsp;Transport</a>.</p>
-
-<ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#screenscraping">Better screen scraping</a></li>
-<li><a href="#railplanner">Using RailPlanner</a></li>
-<li><a href="#"></a></li>
-</ul>
-
 <h2><a name="introduction"></a>Introduction</h2>
 
 After seeing our travel time maps (<a href="/2006/travel-time-maps">here</a>
@@ -53,7 +44,7 @@ This takes a long time to generate, as the query to the website for each
 journey takes 8 seconds. For example, there are about 1900 public transport
 stops in a 20km square around Cardiff central railway station. That makes
 in total about 4 hours and 15 minutes for Cardiff. From that point on, the
-contour maps are quick to produce.
+contour maps are fairly quick to produce.
 
 <p>This table shows the calculation time 
 
@@ -112,8 +103,8 @@ each leg of the journey takes. This will give you the destination time at
 intermediate points, which you then do not have to separately query. 
 
 <p>We estimate that this will speed things up again by a factor of at best 5
-times, and probably about 3 times. Means Cardiff will take about 15 minutes to
-generate.
+times, and probably about 3 times. This means Cardiff will take about 15
+minutes to generate.
 
 <p>Clearly, a faster source of data is needed than the Transport Direct website.
 
@@ -154,6 +145,8 @@ quicker than that.
 service just for generating these maps. It would have access to the same
 underlying data as Transport Direct, but use it in a more optimal manner
 for the task.
+
+<p><a href="index.php">Main page explaining these maps</a>
 
 <?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
 

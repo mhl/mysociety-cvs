@@ -1,0 +1,31 @@
+<config>
+  <centerLabel>Olympic Stadium Site</centerLabel>
+  <mapURL>e152nq-800-40km/london_E152NQ_40km_800.png</mapURL>
+  
+
+  <overlay name="travel time to W127RJ"
+	       url="e152nq-800-40km/tfliso-E152NQ-40000.png"
+	       greyOfMin="255"
+	       greyOfMax="155"
+	       aboveColor="0xff593737"
+	       belowColor="0xff373737"
+	       sliderLabel="${d} mins"
+	       sliderMin="0"
+	       sliderMax="101"
+	       sliderPrecision="1"
+	       descriptionText="from ${l} to ${u} travel by public transport to the Olympic Stadium Site by 9am"
+  />  
+  <overlay name="median house price"
+	       url="e152nq-800-40km/housemask-E152NQ-40000m-1000000p.png"
+	       greyOfMin="255"
+	       greyOfMax="155"
+	       aboveColor="0xff373759"
+	       belowColor="0xff373737"	       
+	       sliderLabel="£${d}"
+	       sliderMin="0"
+	       sliderMax="990000"
+	       sliderPrecision="10000" 
+	       descriptionText="where the median house price is between ${l} and ${u}"
+  />      
+  <labelURL>e152nq-800-40km/london_E152NQ_40km_800_labels.png</labelURL>
+</config>
