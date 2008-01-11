@@ -54,17 +54,20 @@ further, and that is what we are showing here today.
 
 <h2><a name="beware"></a>Buyer beware</h2>
 
-<p>Remember, each of these maps are useful for only <em>one destination</em>.
-They are proof of concept for a system or systems that could deliver custom
-maps for each user. They should not be taken as a basis for making important
-decisions on where to live or work in their current form.
+<p>Remember, each of these maps are useful for only <em>one destination</em>. They are
+proof of concept for a system or systems that could deliver custom maps for
+each user. mySociety is actively seeking partner organisations, especially
+those who already have licencing for transport information (e.g. Transport for
+London, San Francisco BART, Transport Direct, Google Transit) to turn this
+work into the real time service that citizens deserve.
 
 <h2><a name="legibility"></a>Improving legibility and clarity</h2>
  
-<p>Many of the maps we produced last time were very pretty, but could be somewhat
-difficult to interpret. One major task was to read up on how to display such
-complex and valuable data in more intelligible ways, and the results can be seen
-below.
+<p>Many of the maps we produced last time were very pretty, but could be
+somewhat difficult to interpret. Our first approach was to improve the base
+mapping to something more delicate and appropriate, using Open Street Map. We
+then worked on the colours and textures of the contours to make them quicker to
+interpret. Click on the images for larger versions.
 
 <table border="0">
 <tr>
@@ -91,6 +94,13 @@ below.
 </tr>
 </table>
 
+<h2><a name="interactive"></a>Introducing interactive maps</h2>
+
+<p>Whilst working on improving the usability of these maps, we came to realise
+that the complexity of graphical display could be substantially reduced by
+replacing multiple contour lines with a single interactive slider. Have a go
+here.
+
 <h2><a name="houseprices"></a>House prices</h2>
 
 <p>Next, it is clearly no good to be told that a location is very convenient for
@@ -106,9 +116,9 @@ London market, less than &pound;200,000 median price.
 <div id="maphouse1">If you can see this for more than a moment, please enable Javascript for this page and make sure you have installed <a href="http://www.adobe.com/products/flashplayer/">Flash Player 9</a> from Adobe.</div>
 
 <script type="text/javascript">
-   var so = new SWFObject("MysocietyThresholds.swf", "MysocietyThresholds", "800", "886", "9", "#000000");
+   var so = new SWFObject("MysocietyThresholds.swf", "MysocietyThresholds", "640", "726", "9", "#000000");
    so.useExpressInstall('expressinstall.swf');
-   so.addVariable("configURL", "W127RJ_houses_travel_800.xml");
+   so.addVariable("configURL", "sw1p4dr-640-32km/config.xml");
    so.write("maphouse1");
 </script>
 
