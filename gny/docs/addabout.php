@@ -38,7 +38,7 @@ class addabout_page extends pagebase {
 
 		//get group object out of the session
 		$this->group = session_read('group');
-		
+
 		//get categories for dropdown
 		$search = factory::create('search');
 		$categories = $search->search_cached('category', array(array('category_id', '<>', 0)));

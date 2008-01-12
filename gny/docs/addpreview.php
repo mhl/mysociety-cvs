@@ -48,8 +48,6 @@ class addpreview_page extends pagebase {
 		$this->assign('google_maps_key', GOOGLE_MAPS_KEY);
 		$this->onloadscript = 'load(' . $this->group->long_centroid . ', ' .
 		$this->group->lat_centroid .', ' . ($this->group->zoom_level -1) . ')';
-		
-	
 
 		$this->display_template();
 					
@@ -96,12 +94,32 @@ class addpreview_page extends pagebase {
 				redirect(WWW_SERVER . '/checkemail.php?type=group');
 			}
 		}elseif($this->group->mode == "admin"){
+			//admin editing mode
 			if(!$this->group->update()){
 				trigger_error('Error saving group (in admin mode)');
 				$this->add_warning($this->smarty->translate("Something went wrong when we tried to update this group."));
 			}else{
 				redirect(ADMIN_SERVER . "/searchgroups.php?q=" . urlencode($this->group->name) . "&mode=saved");
 			}
+		}elseif($this->group->mode == "edit"){
+			//user editing mode
+			if(!$this->group->update()){
+				trigger_error('Error saving group (in user mode)');
+				$this->add_warning($this->smarty->translate("Something went wrong when we tried to update this group."));
+			}else{
+				//remove any edit confirmations
+				$search = factory::create('search');
+				$results = $search->search('confirmation', array(array('parent_table', '=', 'groups'), 
+					array('parent_id', '=', $this->group->group_id), array('argument', '=', 'edit')));
+				if(sizeof($results) > 0){
+					foreach($results as $result) {
+						$result->delete();
+					}
+		        }	
+			
+				//redirtect
+				redirect(WWW_SERVER . "/groups/" . $this->group->url_id);
+			}					
 		}else{
 			trigger_error("Unknown mode when saving group: " . $this->group->mode);	
 		}

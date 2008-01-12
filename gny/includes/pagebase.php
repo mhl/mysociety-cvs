@@ -112,7 +112,7 @@ abstract class pagebase {
         $this->smarty->lang_path = LANGUAGE_DIR;
 
 		//call setup (basically a standard smarty constuct with the translation thrown in)
-		$this->smarty->setup();
+		$this->smarty->setup("en-us");
 
 		$this->smarty_template = $template_file;
     }

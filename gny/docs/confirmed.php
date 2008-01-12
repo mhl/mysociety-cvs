@@ -16,7 +16,7 @@ class confirmed_page extends pagebase {
 		if($_GET['q']){
 			$this->viewstate['link_key'] = $_GET['q'];
 		}else{
-                	throw_404();
+            throw_404();
 		}
 
 	}
@@ -36,7 +36,7 @@ class confirmed_page extends pagebase {
 
 		//handle different confirmation types
 		if($confirmation->parent_table == 'contact_email'){
-		
+
 			//send the email
 			$contact_email = factory::create('contact_email');
 			$contact_email->get($confirmation->parent_id);
@@ -56,9 +56,29 @@ class confirmed_page extends pagebase {
 
 		}elseif($confirmation->parent_table == 'groups'){
 
-			/* REDIRECT TO USE ALTERNATE CONFIRMED PAGE */
-			/* have left the code below incase we want to treat it as normal at a later date */
-			redirect(WWW_SERVER . "/confirmed2.php?q=" . $this->viewstate['link_key']);
+
+			if($confirmation->argument == "edit"){
+				
+				//get the group
+				$group_id = $confirmation->parent_id;
+				$search = factory::create('search');
+				$result = $search->search('group', array(array('group_id', '=', $group_id)),1);
+				$group = null;
+				if(sizeof($result) == 1){
+					$group = $result[0];
+				}else{
+					trigger_error("Couldent find group from confirmation ID");
+				}
+				
+				//save the group to the session, set mode to edit and redorect to the editing process
+				$group->mode = "edit"; // this saves the group without an email confirmation				
+				session_write('group', $group);
+				redirect(WWW_SERVER . "/add/about/");				
+				
+			}else{
+				/* REDIRECT TO USE ALTERNATE CONFIRMED PAGE */			
+				redirect(WWW_SERVER . "/confirmed2.php?q=" . $this->viewstate['link_key']);
+			}
 			
 			/*
 			//get the group

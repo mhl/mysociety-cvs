@@ -5,8 +5,12 @@
         <input type="hidden" id="hidSaveMapData" value="0" />
         <input type="hidden" id="hidMiniMap" value="{$mini_map}" />        
     </fieldset>
-
-    <h3>{l}This is how your group will appear, review it then click confirm{/l}</h3>
+    
+    {if $group->mode == "admin" || $group->mode == "edit"}
+        <h3>{l}Preview your changes and click save to update this group{/l}</h3>
+    {else}
+        <h3>{l}This is how your group will appear, review it then click confirm{/l}</h3>    
+    {/if}
     {include file="../templates/groupdetail.tpl"}
     
     <p id="pEditGroup">
@@ -18,6 +22,8 @@
     <div class="buttons">
         {if $group->mode == "admin"}
             <input type="submit" class="button" value="{l}Save changes{/l} &raquo;"/>        
+        {elseif $group->mode == "edit"}
+            <input type="submit" class="button" value="{l}Save changes{/l} &raquo;"/>                    
         {else}
             <input type="submit" class="button" value="{l}Confirm this group{/l} &raquo;"/>
         {/if}

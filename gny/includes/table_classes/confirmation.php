@@ -15,6 +15,7 @@ class tableclass_confirmation extends DB_DataObject {
     public $parent_table;                    // varchar(40)   not_null
     public $parent_id;                       // int(4)   not_null
     public $link_key;                        // varchar(40)   not_null
+    public $argument;                     
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('tableclass_Confirmation',$k,$v); }
@@ -22,13 +23,14 @@ class tableclass_confirmation extends DB_DataObject {
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
 
-	public function send($to, $subject, $text, $table, $id){
+	public function send($to, $subject, $text, $table, $id, $argument = ''){
 
 		//generate key etc
-		$this->link_key = crypt($table . $id);
-		$this->link_key = str_replace('.', '', $this->link_key); // remove any full stops as they look weird
+		$this->link_key = crypt($table . $id . $argument);
+		$this->link_key = str_replace('/', '', str_replace('.', '', $this->link_key)); // remove any full stops as they look weird
 		$this->parent_table = $table;
 		$this->parent_id = $id;
+		$this->argument = $argument;		
 
 		//save
 		$this->insert();

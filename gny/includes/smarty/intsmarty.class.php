@@ -1,5 +1,6 @@
 <?php
 
+require_once ("init.php");
 require_once("Smarty.class.php");
 
 /**
@@ -31,7 +32,7 @@ require_once("Smarty.class.php");
     var $lang_path    = LANGUAGE_DIR;
     var $version       = "0.9";
 
-    var $a_languages;
+    var $a_languages = array();
     var $cur_language;
     var $translation;
     var $translation_size = false;
@@ -53,7 +54,7 @@ require_once("Smarty.class.php");
      *
      * @param string $lang The default language to assume when translating or
      *                     omit to auto-detect
-     */  
+     */ 
     function setup($lang = NULL) {
 
         parent::Smarty();
@@ -64,9 +65,9 @@ require_once("Smarty.class.php");
         $this->register_prefilter("smarty_lang_prefilter");
         $this->register_function("i18nfile", "smarty_function_i18nfile");
 
-        $this->a_languages = array_unique($this->_determineLangs());
-         
-        if(! is_null($lang)) {
+        //$this->a_languages = array_unique($this->_determineLangs());
+
+        if(!is_null($lang)) {
             array_unshift($this->a_languages , $lang);
         }
 
@@ -74,10 +75,9 @@ require_once("Smarty.class.php");
             $this->cur_language = $this->a_languages[0];
         } else {
             $this->cur_language = NULL;
-        }
-        
+        }        
         $this->compile_id = $this->cur_language;
-        
+
         foreach( $this->a_languages as $lang) {
 
             $this->cur_language = $lang;
@@ -88,8 +88,7 @@ require_once("Smarty.class.php");
         }
 
     }
-    
-    
+
     /**
      * Used to determine if the provided language is one IntSmarty
      * has translation tables for or not.
@@ -111,7 +110,7 @@ require_once("Smarty.class.php");
         return parent::fetch($file, $cache, $cid, $display);
 
     }
-    
+
     /**
      * A private method used to auto-resolve the accepted language for the 
      * browser by looking at the $_SERVER['HTTP_ACCEPT_LANGUAGE'] variable.
@@ -175,10 +174,16 @@ require_once("Smarty.class.php");
      * @return bool A boolean indicating if the table was saved successfully
      */
     function saveLanguageTable() {
+		
+		//work out new ones translations
 
+		// save them
+		
+		
         if( count($this->translation ) != $this->translation_size) {
 
             $filename = "{$this->lang_path}{$this->cur_language}.php" ;
+
             $code = '<?php $__LANG = '.var_export($this->translation, true).'; ?>';
             $fr = fopen($filename, "w");
 
@@ -204,17 +209,15 @@ require_once("Smarty.class.php");
      *         or the same string passed to the method if no translation was
      *         found.
      */
-    function translate($value)
-    {
+    function translate($value){
         if( is_string($value)) {
 
             $hash = md5($value);
 
             if( key_exists($hash, $this->translation )) {
-
                 return utf8_decode($this->translation[$hash]);
-
             }  else {
+
                 $this->transtable_updated = true;
                 $this->translation[$hash] = $value;
                 return $value;

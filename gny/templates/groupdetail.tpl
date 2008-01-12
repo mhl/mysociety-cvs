@@ -38,7 +38,8 @@
             {l}<em>{$group->name}</em> has been tagged with the keywords <strong>{$group->tags}</strong>.{/l}
             {l}This page was created by <strong>{$group->created_name} on {$group->created_date|date_format}</strong>. 
                 {if !$dead_links}
-                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change to this page</a>.
+                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change</a> or
+                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)
                 {/if}
             {/l}
         </div>

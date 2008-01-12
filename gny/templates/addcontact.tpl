@@ -6,18 +6,19 @@
 	<p id="pAddInitBlurb">{l}Don&rsquo;t worry if you don&rsquo;t run or maintain the group you&rsquo;re adding,
 	it&rsquo;s all valuable information.{/l}</p>
 	</p>
+
     <div>
         <ul id="ulInvolved" class="nobullets">
             <li>
                 <input type="radio" class="radio" id="radInvolvedType_web" name="radInvolvedType" {if $group->involved_type == "link"}checked="checked"{/if} onclick="javascript:changeInvolvedType();" value="link"/>            
                 <label for="radInvolvedType_web">{l}Via a web page{/l}</label>   
-                <input type="text" class="textbox large{if $warn_txtInvolvedLink} error{/if}" id="txtInvolvedLink" name="txtInvolvedLink" value="{$group->involved_link}" />                
+                <input type="text" class="textbox large{if $warn_txtInvolvedLink} error{/if}" id="txtInvolvedLink" name="txtInvolvedLink" value="{if $group->involved_type == "link"}{$group->involved_link}{/if}" />                
                 <small>{l}e.g. a website or a Google/ Yahoo/ Facebook groups page{/l}</small>
             </li>
             <li>
                 <input type="radio" class="radio" id="radInvolvedType_email" name="radInvolvedType" {if $group->involved_type == "email"}checked="checked"{/if} onclick="javascript:changeInvolvedType();" value="email"/>
                 <label for="radInvolvedType_email">{l}Email for more information{/l}</label>        
-                <input type="text" class="textbox large{if $warn_txtInvolvedEmail} error{/if}" id="txtInvolvedEmail" name="txtInvolvedEmail" value="{$group->involved_email}" />
+                <input type="text" class="textbox large{if $warn_txtInvolvedEmail} error{/if}" id="txtInvolvedEmail" name="txtInvolvedEmail" value="{if $group->involved_type == "email"}{$group->involved_link}{/if}" />
                 <small>{l}will <strong>not</strong> be published, but people will be able to contact it{/l}</small>
             </li>
         </ul>

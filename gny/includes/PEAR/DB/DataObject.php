@@ -15,7 +15,7 @@
  * @author     Alan Knowles <alan@akbkhome.com>
  * @copyright  1997-2006 The PHP Group
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
- * @version    CVS: $Id: DataObject.php,v 1.1 2007-09-21 07:18:03 richard Exp $
+ * @version    CVS: $Id: DataObject.php,v 1.2 2008-01-12 11:11:24 richard Exp $
  * @link       http://pear.php.net/package/DB_DataObject
  */
   
@@ -96,10 +96,6 @@ require_once 'PEAR.php';
  */
 define('DB_DATAOBJECT_FETCHMODE_ORDERED',1); 
 define('DB_DATAOBJECT_FETCHMODE_ASSOC',2);
-
-
-
-
 
 /**
  * these are constants for the get_table array
