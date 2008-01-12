@@ -127,6 +127,23 @@ programmatically querying it for journey times. As the data arrives, the
 contours on the map become more complete. It takes about 10 minutes to generate
 a complete map of the whole country.
 
+<p>This shows that on a computer with all the routing information for a simpler
+subset (rail only), maps can be generated reasonably quickly.
+
+<h2><a name="google"></a>Interactive Google maps</h2>
+
+<p>All of the above ideas rely on existing route finding. Much better can be
+done with access to the underlying transport model. The way it calculates routes
+can then be optimised.
+
+<p>For example, <a href="http://maps.google.com">Google Maps</a> has a new
+interactive feature. It lets you drag end or via points of a route in real
+time. It is optimised to do this, and uses Google's cluster of servers, so
+can calculate 10 or 15 routes per second.
+
+<p>This is maybe 20 times quicker than the above, so it could generate a map
+of Cardiff in perhaps 2 minutes.
+
 <h2><a name="background"></a>Future</h2>
 
 <p>There are two clear options for providing custom generation of transport maps.
