@@ -13,8 +13,8 @@ include "interactive_map.php";
 <li><a href="#beware">Buyer beware</a></li>
 <li><a href="#legibility">Improving legibility and clarity</a></li>
 <li><a href="#houseprices">House prices</a> (this is the juicy one)</li>
-<li><a href="#cartrain">Car vs. public transport</a></li>
-<li><a href="#traincycle">Public transport vs. cycling</a></li>
+<li><a href="#cartrain">Car vs public transport</a></li>
+<li><a href="#traincycle">Public transport vs cycling</a></li>
 <li><a href="#realtime">How can I get a map?</a></li>
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 <li><a href="#notes">Technical notes</a></li>
@@ -46,7 +46,7 @@ be taken further, and that is what we are showing here today.
 <p>Many of the maps we produced last time were very pretty, but could be somewhat
 difficult to interpret. We therefore teamed up with Stamen to improve the
 visual clarity and fun. Our first approach was to improve the base mapping to
-something more delicate and appropriate, using Open Street Map. We then worked
+something more delicate and appropriate, using OpenStreetMap. We then worked
 on the colours and textures of the contours to make them quicker to interpret.
 Click on the images for larger versions.
 
@@ -56,9 +56,9 @@ Click on the images for larger versions.
 <td width="45%" valign="top">
 <h3>Old map of London</h3>
 
-<p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM
+<p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9am
 
-<p><a href="oldmap.png"><img src="oldmap_small.png" alt="Old map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM"></a>
+<p><a href="oldmap.png"><img src="oldmap_small.png" alt="Old map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9am"></a>
 <br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
 </td>
 
@@ -66,9 +66,9 @@ Click on the images for larger versions.
 
 <td width="45%" valign="top">
 <h3>New map of London</h3>
-<p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM
+<p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9am
 
-<p><a href="SW1P4DR_20km_contours_800.png"><img src="SW1P4DR_20km_contours_400.png" alt="New map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9AM"></a>
+<p><a href="SW1P4DR_20km_contours_800.png"><img src="SW1P4DR_20km_contours_400.png" alt="New map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9am"></a>
 </td>
 
 </tr>
@@ -95,17 +95,17 @@ sliders on the following map and all will come clear.
 
 <?php interactive_map("sw1p4dr-640-32km/config.xml", "maphouse1", 640, 745) ?>
 
-<p><a href="morehousing.php">Click here for more such maps of London</a>, with centers at BBC Television Center and the
+<p><a href="morehousing.php">Click here for more such maps of London</a>, with centres at BBC Television Centre and the
 Olympic Stadium Site.
 
-<h2><a name="cartrain"></a>Car vs. public transport</h2>
+<h2><a name="cartrain"></a>Car vs public transport</h2>
 
 <p>Many people these days are looking to move to public transport, due to reasons
 varying from congestion, to cost, to environmental impact. But where can you
 live if you want to have the chance of getting to work speedily?   
 
 <p>The following map shows travel times to get work in downtown Cardiff for
-9AM. If you move your mouse over the map, though, it will switch to show you
+9am. If you move your mouse over the map, though, it will switch to show you
 which areas it makes more sense to get public transport to work, and which
 areas in makes more sense to drive.
 
@@ -121,9 +121,9 @@ areas in makes more sense to drive.
 <p>Remember, these are not general maps for the whole city, each map is only
 useful for the specific target place of work or study marked with the black
 dot. Please don't make a mistake and use these to pick your own place of
-residence unless you happen to work at the location these maps are centered on!
+residence unless you happen to work at the location these maps are centred on!
 
-<!-- <h2><a name="traincycle"></a>Public transport vs. cycling</h2>
+<!-- <h2><a name="traincycle"></a>Public transport vs cycling</h2>
 
 <p>For some people, the dilemma is not between the car and the train, it is
 between the bicycle and everything else. This maps comprehensively shows that
@@ -135,7 +135,7 @@ commuting speed is your main concern.
 
 <h2><a name="realtime"></a>How can I get a map?</h2>
 
-<p>There are two ways in which you can get a travel map of this sort centered
+<p>There are two ways in which you can get a travel map of this sort centred
 on a location of interest to you.
 
 <p>If you're a normal user, you can write to your local transport journey planning

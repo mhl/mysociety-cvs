@@ -21,7 +21,9 @@ function interactive_map($config_file, $id, $width, $height) { ?>
      function hashToQuery(h) {
         q = "";
         for (var i in h) {
-            q = q + i + "=" + h[i] + "&";
+            if (i != "") {
+                q = q + i + "=" + h[i] + "&";
+            }
         }
         return "#" + q
      }
