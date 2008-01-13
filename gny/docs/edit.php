@@ -8,7 +8,6 @@ class edit_page extends pagebase {
 
 	}
 
-
 	//setup
 	protected function setup (){
 		if($_GET['group']){

@@ -119,7 +119,10 @@ class addpreview_page extends pagebase {
 
 				//clear the cache (so it appears correctly when we redirect to the page)
 				$search->clear_cache('group', array(array('url_id', '=', $this->group->url_id)));
-			
+				
+				//clear the session
+				session_write('group', null);
+							
 				//redirtect
 				redirect(WWW_SERVER . "/groups/" . $this->group->url_id);
 			}					
