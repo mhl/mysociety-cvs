@@ -16,7 +16,7 @@ class edit_page extends pagebase {
 		}else{
 			throw_404();
 		}
-		
+
 		//set show sent mode to false
 		$this->viewstate['show_sent'] = false;
 	}
