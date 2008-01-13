@@ -97,7 +97,7 @@ class edit_page extends pagebase {
 		$group = $result[0];
 		$confirmation = factory::create('confirmation');
 		$confirmation->send($group->created_email, 
-			EMAIL_PREFIX . "Edit the page for'" . $group->name . "'  on " . SITE_NAME,
+			EMAIL_PREFIX . "Edit the page for '" . $group->name . "'  on " . SITE_NAME,
 			"Click on the link below to start editing " . $group->name . ":",
 			"groups", $group->group_id, 'edit');
 	}
