@@ -34,6 +34,21 @@ class searcher {
 		//return
 		return $return;
 	}
+	
+	public function clear_cache ($class_name, $where_clauses, $clause_join = 'AND', $order_clauses = null,
+		$number=null, $start=null) {
+
+		$return = false;
+
+		//build up the cache key
+		$key = $class_name . print_r($where_clauses, true) . $clause_join . 
+			print_r($order_clauses, true) . $number . $start;
+
+		//check the cache
+		$cache = cache::factory();
+		$cache->delete($key, "search");
+
+	}
 
 	//search
 	public function search ($class_name, $where_clauses, $clause_join = 'AND', $order_clauses = null,

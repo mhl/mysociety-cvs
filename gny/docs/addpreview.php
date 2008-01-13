@@ -115,7 +115,10 @@ class addpreview_page extends pagebase {
 					foreach($results as $result) {
 						$result->delete();
 					}
-		        }	
+		        }
+
+				//clear the cache (so it appears correctly when we redirect to the page)
+				$search->search_cached('group', array(array('url_id', '=', $this->group->url_id)));
 			
 				//redirtect
 				redirect(WWW_SERVER . "/groups/" . $this->group->url_id);

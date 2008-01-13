@@ -93,4 +93,13 @@
   'daa6b483e9f6ca081ec7e0b4a352f9e9' => 'Save changes',
   '72c18dc737bc3adca58c098ae07b8024' => 'Save changes and return to group',
   '1be0b3899ab98c5e6cfad98bb87144dc' => 'Confirm this group',
+  '6d325f3293b99bb8d9d4974f773d2ad8' => 'about us',
+  '3b5e525ef7d3739999b4346dfa5e2359' => 'About {$site_name}',
+  '5da8d4d14c1485da5b0862483a9229a3' => 'We don\'t talk enough. {$site_name} helps people in your neighbourhood get to know each other!',
+  '5c67aa7f8e15828c09da8fe56715c4a7' => 'Find email lists, forums and community blogs where you live',
+  '9ebf524692f65c750e08d77a95123ee6' => 'Help people find a group you know about by <a href="{$www_server}/add/about/">adding it to {$site_name} in 4 simple steps</a>',
+  'df305614063232ccbc29c6c26dfda199' => 'Get people talking about local issues that are important to them. Make a change with the help of others.',
+  'f9ead3f5425cadb383d5f5962be0581e' => 'Want to know more?',
+  '2af8d658fe1869d865fc69d75392c626' => 'Read our FAQ\'s',
+  '02d4482d332e1aef3437cd61c9bcc624' => 'Contact us',
 ); ?>

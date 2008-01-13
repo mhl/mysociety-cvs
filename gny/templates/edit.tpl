@@ -20,11 +20,9 @@
     {else}
 
         <div class="attention">
-            <h3>{l}Thanks! Your comments have been sent to the {$site_name} team{/l}</h3>
+            <h3>{l}Now check your email!{/l}</h3>
             <p>
-                <a href="{$www_server}/groups/{$group->url_id}">{l}Back to <em>{$group->name}</em>{/l}</a>
-                <br/>
-               <a href="{$www_server}">{l}Do a new search{/l}</a> 
+                {l}We have sent you an email, <span class="highlight">click on the link in the email</span> to edit this group.{/l}
             </p>
         </div>
     {/if}
