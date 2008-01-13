@@ -46,7 +46,9 @@ class searcher {
 
 		//check the cache
 		$cache = cache::factory();
-		$cache->delete($key, "search");
+		if(!$cache->delete($key, "search")){
+			trigger_error("Failed to clear database cache");
+		}
 
 	}
 

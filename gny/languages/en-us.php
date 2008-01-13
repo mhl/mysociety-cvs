@@ -20,4 +20,17 @@
   '8cf04a9734132302f96da8e113e80ce5' => 'Home',
   '83e0b45674b9bf38fcaabf779e1604ef' => 'Discussion list',
   'bbaff12800505b22a853e8b7f4eb6a22' => 'Contact',
+  '63347f5d946164a23faca26b78a91e1c' => 'fdsfds',
+  '8bb61ab381878b4131e7837df8d1bb33' => 'back to search results',
+  'd8e40a676a3fd45f93e2db4afa505eb5' => 'Join this group',
+  '641d25308107e2e1c664fbcbaa9a31fd' => 'Explore or join this group',
+  'cef7940ac058cedbcd47be026a9a8a77' => 'approximate area for this group',
+  '9ee1166bbd03c4dba4bda7298d7b1f2e' => '<em>{$group->name}</em> has been tagged with the keywords <strong>{$group->tags}</strong>.',
+  '9f1b7fe798c0d76031f0dd1837ab75fb' => 'This page was created by <strong>{$group->created_name} on {$group->created_date|date_format}</strong>. 
+                {if !$dead_links}
+                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change</a> or
+                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)
+                {/if}
+            ',
+  '1e4166e669c187f2a14abfd815ce48ce' => 'Centroid of the area covered by {$group->name}',
 ); ?>

@@ -22,7 +22,8 @@
         <div class="attention">
             <h3>{l}Now check your email!{/l}</h3>
             <p>
-                {l}We have sent you an email, <span class="highlight">click on the link in the email</span> to edit this group.{/l}
+                {l}We have sent you an email, <span class="highlight">click on the link in the email</span> to edit this group.
+                If you don't receive an email in a few minutes, try checking your spam filter{/l}
             </p>
         </div>
     {/if}
