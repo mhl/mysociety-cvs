@@ -83,7 +83,7 @@ here.
 
 <p>(Remember, each of these maps are useful for only <em>one destination</em>)
 
-<?php interactive_map("sw1p4dr-400-20km/config.xml", "mapintro", 400, 484) ?>
+<?php interactive_map("sw1p4dr-400-20km/config.xml", "mapintro", 400, 482) ?>
 
 <h2><a name="houseprices"></a>House prices</h2>
 
@@ -93,7 +93,7 @@ interactive maps that allow users to set both the maximum time they're willing
 to commute, and the median houseprice they're willing or able to pay. Slide the
 sliders on the following map and all will come clear.
 
-<?php interactive_map("sw1p4dr-640-32km/config.xml", "maphouse1", 640, 745) ?>
+<?php interactive_map("sw1p4dr-640-32km/config.xml", "maphouse1", 640, 726) ?>
 
 <p><a href="morehousing.php">Click here for more such maps of London</a>, with centres at BBC Television Centre and the
 Olympic Stadium Site.

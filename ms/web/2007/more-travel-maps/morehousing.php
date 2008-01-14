@@ -17,7 +17,7 @@ London. Read the <a href="index.php">main page</a> to learn more about these map
 W12 7RJ. Adjust the sliders to see areas within varying travel times to work
 and with varying house prices.
 
-<?php interactive_map("w127rj-800-20km/config.xml", "maphouse2", 800, 909) ?>
+<?php interactive_map("w127rj-800-20km/config.xml", "maphouse2", 800, 886) ?>
 
 <h2>Olympic Stadium Site</h2>
 
@@ -25,7 +25,7 @@ and with varying house prices.
 Stratford at E15 2NQ. Adjust the sliders to see areas within varying travel
 times to work and with varying house prices.
 
-<?php interactive_map("e152nq-800-40km/config.xml", "maphouse3", 800, 909) ?>
+<?php interactive_map("e152nq-800-40km/config.xml", "maphouse3", 800, 886) ?>
 
 <p><a href="index.php">Main page explaining these maps</a>
 
