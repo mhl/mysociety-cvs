@@ -43,12 +43,12 @@ class group_page extends pagebase {
 		$result = $search->search_cached('category', array(array('category_id', '=', $group->category_id)));
 
 		if(sizeof($result) == 1){
-			$category = $result[0];
+			$category = $result[0];			
 		}
 
 		//page vars
 		$this->onloadscript = "";	
-	    $this->page_title = $result[0]->name;
+	    $this->page_title = $group->name;
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "";
 		$this->assign('group', $group);
