@@ -31,12 +31,20 @@ class group_page extends pagebase {
 		//try and get the group
 		$search = factory::create('search');
 		$result = $search->search_cached('group', array(array('url_id', '=', $this->viewstate['url_id'])));
-	
+
 		if(sizeof($result) != 1){
 			throw_404();			
 		}
-		
+
 		$group = $result[0];
+		
+		//get the group's category
+		$category = null;
+		$result = $search->search_cached('category', array(array('category_id', '=', $group->category_id)));
+
+		if(sizeof($result) == 1){
+			$category = $result[0];
+		}
 
 		//page vars
 		$this->onloadscript = "";	
@@ -44,6 +52,7 @@ class group_page extends pagebase {
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "";
 		$this->assign('group', $group);
+		$this->assign('category', $category);		
 		$this->assign('show_return', strpos($this->viewstate['refering_url'], '/search/') > -1);
 		$this->assign('refering_url', $this->viewstate['refering_url']);		
 		$this->assign('map_js', true);

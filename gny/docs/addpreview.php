@@ -6,6 +6,7 @@ class addpreview_page extends pagebase {
 
 	//properties
 	private $group = null;
+	private $category = null;	
 	
 	public function __construct(){
 		parent::__construct();
@@ -18,6 +19,15 @@ class addpreview_page extends pagebase {
 		}else{
 			$this->group = session_read('group');
 		}
+		
+		//get the group's category
+		$search = factory::create('search');		
+		$result = $search->search_cached('category', array(array('category_id', '=', $this->group->category_id)));
+
+		if(sizeof($result) == 1){
+			$this->category = $result[0];
+		}
+		
 	}
 	
 	//setup
@@ -40,6 +50,7 @@ class addpreview_page extends pagebase {
 	    $this->show_tracker = true;		
 	    $this->tracker_location = 5;			
 		$this->assign('group', $this->group);
+		$this->assign('category', $this->category);		
 		$this->assign('description', $html_desc);
 		$this->assign('preview', true);
 		$this->assign('dead_links', true);
