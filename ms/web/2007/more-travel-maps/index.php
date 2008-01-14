@@ -125,9 +125,10 @@ residence unless you happen to work at the location these maps are centred on!
 <h2><a name="traincycle"></a>Public transport vs cycling</h2>
 
 <p>For some people, the dilemma is not between the car and the train, it is
-between the bicycle and everything else. This maps comprehensively shows that
-if you live anywhere near the centre of this map, it's best to get on a bike if
-commuting speed is your main concern.
+between the bicycle and public transport. This map comprehensively shows that
+if you want to commute to the Department for Transport, and you live anywhere
+near the centre of London, it's best to get on a bike if commuting speed is
+your main concern.
 
 <p style="text-align: center"><a href="SW1P4DR_20km_cycling_800.png"><img width="400" src="SW1P4DR_20km_cycling_400.png" alt=""></a>
 <br><b>Click image for bigger version.</b>
