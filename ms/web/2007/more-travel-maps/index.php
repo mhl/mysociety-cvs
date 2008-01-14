@@ -59,7 +59,7 @@ Click on the images for larger versions.
 <p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9am
 
 <p><a href="oldmap.png"><img src="oldmap_small.png" alt="Old map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9am"></a>
-<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small>
+<br><b>Click image for bigger version.</b><br><em><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small></em>
 </td>
 
 <td width="10%">&nbsp;</td>
@@ -69,6 +69,7 @@ Click on the images for larger versions.
 <p>Showing travel times to work at the Department for Transport in Pimlico, arriving at 9am
 
 <p><a href="SW1P4DR_20km_contours_800.png"><img src="SW1P4DR_20km_contours_400.png" alt="New map of London showing travel times to work at the Department for Transport in Pimlico, arriving at 9am"></a>
+<br><b>Click image for bigger version.</b>
 </td>
 
 </tr>
@@ -83,7 +84,7 @@ here.
 
 <p>(Remember, each of these maps are useful for only <em>one destination</em>)
 
-<?php interactive_map("sw1p4dr-400-20km/config.xml", "mapintro", 400, 482) ?>
+<?php interactive_map("sw1p4dr-400-20km/config.xml", "mapintro", 400, 474) ?>
 
 <h2><a name="houseprices"></a>House prices</h2>
 
@@ -93,7 +94,7 @@ interactive maps that allow users to set both the maximum time they're willing
 to commute, and the median houseprice they're willing or able to pay. Slide the
 sliders on the following map and all will come clear.
 
-<?php interactive_map("sw1p4dr-640-32km/config.xml", "maphouse1", 640, 726) ?>
+<?php interactive_map("sw1p4dr-640-32km/config.xml", "maphouse1", 640, 731) ?>
 
 <p><a href="morehousing.php">Click here for more such maps of London</a>, with centres at BBC Television Centre and the
 Olympic Stadium Site.
@@ -109,8 +110,8 @@ live if you want to have the chance of getting to work speedily?
 which areas it makes more sense to get public transport to work, and which
 areas in makes more sense to drive.
 
-<h3>Edinburgh University</h3>
-<p><a href="EH12QL_driving_800.png"><img src="EH12QL_driving_400.png" alt="Getting to Edinburgh University by 09:00 - public transport vs road"></a>
+<p style="text-align: center"><a href="EH12QL_driving_800.png"><img src="EH12QL_driving_400.png" alt="Getting to Edinburgh University by 09:00 - public transport vs road"></a>
+<br><b>Click image for bigger version.</b>
 
 <!-- <h3>Cardiff Central Railway Station</h3>
 <p><a href="cardiff.png"><img src="cardiff_small.png" alt="Getting to Cardiff central railway station by 09:00 - public transport vs road"></a>
@@ -123,15 +124,15 @@ useful for the specific target place of work or study marked with the black
 dot. Please don't make a mistake and use these to pick your own place of
 residence unless you happen to work at the location these maps are centred on!
 
-<!-- <h2><a name="traincycle"></a>Public transport vs cycling</h2>
+<h2><a name="traincycle"></a>Public transport vs cycling</h2>
 
 <p>For some people, the dilemma is not between the car and the train, it is
 between the bicycle and everything else. This maps comprehensively shows that
 if you live anywhere near the centre of this map, it's best to get on a bike if
 commuting speed is your main concern.
 
-<p><a href="cycling.png"><img width="400" src="cycling_small.png" alt=""></a>
--->
+<p style="text-align: center"><a href="SW1P4DR_20km_cycling_800.png"><img width="400" src="SW1P4DR_20km_cycling_400.png" alt=""></a>
+<br><b>Click image for bigger version.</b>
 
 <h2><a name="realtime"></a>How can I get a map?</h2>
 
