@@ -105,10 +105,8 @@ Olympic Stadium Site.
 varying from congestion, to cost, to environmental impact. But where can you
 live if you want to have the chance of getting to work speedily?   
 
-<p>The following map shows travel times to get work in downtown Cardiff for
-9am. If you move your mouse over the map, though, it will switch to show you
-which areas it makes more sense to get public transport to work, and which
-areas in makes more sense to drive.
+<p>The following map shows which areas it makes more sense to get public
+transport to work in Edinburgh, and which areas it makes more sense to drive.
 
 <p style="text-align: center"><a href="EH12QL_driving_800.png"><img src="EH12QL_driving_400.png" alt="Getting to Edinburgh University by 09:00 - public transport vs road"></a>
 <br><b>Click image for bigger version.</b>
