@@ -205,8 +205,6 @@ Find out on <a href="http://www.theyworkforyou.com">TheyWorkForYou</a>.
 <p><strong>Change the world</strong> by saying "I'll do it <strong>but only if</strong> you will too". 
 Make a pledge on <a href="http://www.pledgebank.com">PledgeBank</a>.
 
-<p><a href="http://www.theyworkforyou.com">TheyWorkForYou</a>
-
 
 <?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
 
