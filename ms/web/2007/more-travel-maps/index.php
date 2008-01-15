@@ -139,9 +139,9 @@ your main concern.
 on a location of interest to you.
 
 <p>If you're a interested user, you can contact your local transport journey
-planning organisation, for example Transport for London or San Francisco BART
+planning organisation, for example Transport for London or San Francisco BART,
 and encourage them to work with us to get a system like this working
-interactively on those organisation's websites.
+interactively on their websites.
 
 <p>If you're a rich user, or company, you can commission us to create bespoke
 maps - we're a non-profit after all and all the money will help run our other
@@ -150,7 +150,7 @@ realtime service of the sort that the transport agencies should be doing.
 Francis Irving from mySociety has written a <a href="realtime">technical
 review</a> on the challenges of developing a realtime map generation system.
 
-<p>To take this further, email <a href="mailto:karl@mysociety.org">karl@mysociety.org</a>.
+<p>To take this further, email <a href="mailto:karl&#64;mysociety.org">karl&#64;mysociety.org</a>.
 
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>
 
