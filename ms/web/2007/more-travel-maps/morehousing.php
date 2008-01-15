@@ -9,7 +9,7 @@ include "interactive_map.php";
 <h1>Travel time and house price maps</h1>
 
 <p>This page contains two larger, more detailed travel time and house price maps of
-London. Read the <a href="index.php">main page</a> to learn more about these maps.
+London. Read the <a href="./">main page</a> to learn more about these maps.
 
 <h2>BBC Television Center</h2>
 
@@ -27,6 +27,6 @@ times to work and with varying house prices.
 
 <?php interactive_map("e152nq-800-40km/config.xml", "maphouse3", 800, 893) ?>
 
-<p><a href="index.php">Main page explaining these maps</a>
+<p><a href="./">Main page explaining these maps</a>
 
 <?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>

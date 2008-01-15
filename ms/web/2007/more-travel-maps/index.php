@@ -96,7 +96,7 @@ sliders on the following map and all will come clear.
 
 <?php interactive_map("sw1p4dr-640-32km/config.xml", "maphouse1", 640, 731) ?>
 
-<p><a href="morehousing.php">Click here for more such maps of London</a>, with centres at BBC Television Centre and the
+<p>We have <a href="morehousing">more such maps of London</a>, with centres at BBC Television Centre and the
 Olympic Stadium Site.
 
 <h2><a name="cartrain"></a>Car vs public transport</h2>
@@ -145,9 +145,9 @@ on those organisation's websites.
 
 <p>If you're a rich user, or company, you can commission us to create bespoke
 maps - we're a non-profit after all and all the money will help run our other
-projects. And if you're <strong>*really*</strong> rich, you can work with us to develop a
+projects. And if you're <strong>really</strong> rich, you can work with us to develop a
 realtime service of the sort that the transport agencies should be doing.
-Francis Irving from mySociety has written a <a href="realtime.php">technical
+Francis Irving from mySociety has written a <a href="realtime">technical
 review</a> on the challenges of developing a realtime map generation system.
 
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>

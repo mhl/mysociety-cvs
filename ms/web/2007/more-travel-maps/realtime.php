@@ -9,8 +9,8 @@ include "../../wordpress/wp-content/themes/mysociety/header.php";
 
 <h2><a name="introduction"></a>Introduction</h2>
 
-After seeing our travel time maps (<a href="/2006/travel-time-maps">here</a>
-and <a href="index.php">here</a>), the next thing that everyone asks is "can I
+After seeing our travel time maps (<a href="/2006/travel-time-maps/">here</a>
+and <a href="./">here</a>), the next thing that everyone asks is "can I
 have one for my journey to work?". We investigated in detail two ways
 of providing real time versions of these maps, and we suggest a third way
 which requires new data.
@@ -26,7 +26,7 @@ stops and railway stations. First, some background explanation.
 
 <p>"Basic screen scraping" is the technique which we used to generate the
 example travel time maps which you've seen. This was done by "screen scraping"
-the <a href="http://www.transportdirect.info">Transport Direct</a> website.
+the <a href="http://www.transportdirect.info/">Transport Direct</a> website.
 That is, writing a computer program which operated the normal web interface of
 the site to calculate journey times between lots of points and the destination
 postcode.
@@ -136,7 +136,7 @@ subset (rail only), maps can be generated reasonably quickly.
 done with access to the underlying transport model. The way it calculates routes
 can then be optimised.
 
-<p>For example, <a href="http://maps.google.com">Google Maps</a> has a new
+<p>For example, <a href="http://maps.google.com/">Google Maps</a> has a new
 interactive feature. It lets you drag end or via points of a route in real
 time. It is optimised to do this, and uses Google's cluster of servers, so
 can calculate 10 or 15 routes per second.
@@ -163,7 +163,7 @@ service just for generating these maps. It would have access to the same
 underlying data as Transport Direct, but use it in a more optimal manner
 for the task.
 
-<p><a href="index.php">Main page explaining these maps</a>
+<p><a href="./">Main page explaining these maps</a>
 
 <?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
 
