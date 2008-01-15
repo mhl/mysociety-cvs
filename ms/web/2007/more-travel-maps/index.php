@@ -28,18 +28,18 @@ mySociety maps mailing list</a>.)</p> -->
 
 <p>In 2006, our <a
 href="http://www.mysociety.org/2007/03/05/rip-chris-lightfoot-1978-to-2007/">late
-friend</a> and colleague Chris Lightfoot produced a series of time travel
-contour maps, after the Department for Transport approached mySociety about
+friend</a> and colleague Chris Lightfoot produced a 
+<a href="/2006/travel-time-maps/">series of time travel
+contour maps</a>, after the Department for Transport approached mySociety about
 experimenting with novel ways of re-using public sector data.
 
-<p>If you have not seen this previous work it is important that you now take a <a
-href="/2006/travel-time-maps/">read through the original page</a> to see what
-we are building on. 
+<p>This mapping work was very important because it provides a potentially
+revolutionary new way of working out the best place for people to live and
+work.
 
-<p>The original maps were very popular online, and the Evening Standard even
-published a large article with a copy of one of the maps which covered greater
-London. The Department for Transport asked us to show them how this work could
-be taken further, and that is what we are showing here today.
+<p>Following widespread interest across the net and a major feature in
+the Evening Standard, the Department for Transport asked us to show them how
+this work could be taken further, and that is what we are showing here today.
 
 <h2><a name="legibility"></a>Improving legibility and clarity</h2>
  
@@ -150,7 +150,8 @@ realtime service of the sort that the transport agencies should be doing.
 Francis Irving from mySociety has written a <a href="realtime">technical
 review</a> on the challenges of developing a realtime map generation system.
 
-<p>To take this further, email <a href="mailto:karl&#64;mysociety.org">karl&#64;mysociety.org</a>.
+<p>If you're interested in working with us on this, email <a
+href="mailto:karl&#64;mysociety.org">karl&#64;mysociety.org</a>.
 
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>
 
@@ -168,6 +169,22 @@ to Tom Carden at <a href="http://stamen.com/">Stamen</a>.  Tom Steinberg of
 <a href="http://www.mysociety.org">mySociety</a> herded all the cats together.
 The work was funded by the <a href="http://www.dft.gov.uk/">Department for
 Transport</a>.
+
+<h2><a name="crosssell"></a>If you liked this...</h2>
+
+<p>mySociety, who produced this report, is a non-profit. We build websites
+that give people simple, tangible benefits in the civic and community aspects
+of their lives. Try some of them out.
+
+<p><strong>Grafitti, fly tipping, broken paving slabs or street lighting?</strong>
+Get them fixed on <a href="http://www.fixmystreet.com/">FixMyStreet</a>.
+
+<p>Want to know what <strong>your MP is doing in your name</strong>? 
+Find out on <a href="http://www.theyworkforyou.com">TheyWorkForYou</a>.
+
+<p><strong>Change the world</strong> by saying "I'll do it <strong>but only if</strong> you will too". 
+Make a pledge on <a href="http://www.pledgebank.com">PledgeBank</a>.
+
 
 <h2><a name="notes"></a>Technical notes</h2>
 
@@ -189,22 +206,6 @@ inflation adjusted to be the price as in December 2006.
 code</a> for the scripts that made these maps, and we can give you copies of
 the OpenStreetMap base mapping. Some other data, such as NaPTAN, will require
 permission from their owners.
-
-<h2><a name="crosssell"></a>If you liked this...</h2>
-
-<p>mySociety, who produced this report, is a non-profit. We build websites
-that give people simple, tangible benefits in the civic and community aspects
-of their lives. Try some of them out.
-
-<p><strong>Grafitti, fly tipping, broken paving slabs or street lighting?</strong>
-Get them fixed on <a href="http://www.fixmystreet.com/">FixMyStreet</a>.
-
-<p>Want to know what <strong>your MP is doing in your name</strong>? 
-Find out on <a href="http://www.theyworkforyou.com">TheyWorkForYou</a>.
-
-<p><strong>Change the world</strong> by saying "I'll do it <strong>but only if</strong> you will too". 
-Make a pledge on <a href="http://www.pledgebank.com">PledgeBank</a>.
-
 
 <?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
 
