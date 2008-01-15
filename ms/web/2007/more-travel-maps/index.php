@@ -138,10 +138,10 @@ your main concern.
 <p>There are two ways in which you can get a travel map of this sort centred
 on a location of interest to you.
 
-<p>If you're a normal user, you can write to your local transport journey planning
-organisation, for example Transport for London or San Francisco BART and
-encourage them to work with us to get a system like this working interactively
-on those organisation's websites.
+<p>If you're a interested user, you can contact your local transport journey
+planning organisation, for example Transport for London or San Francisco BART
+and encourage them to work with us to get a system like this working
+interactively on those organisation's websites.
 
 <p>If you're a rich user, or company, you can commission us to create bespoke
 maps - we're a non-profit after all and all the money will help run our other
@@ -149,6 +149,8 @@ projects. And if you're <strong>really</strong> rich, you can work with us to de
 realtime service of the sort that the transport agencies should be doing.
 Francis Irving from mySociety has written a <a href="realtime">technical
 review</a> on the challenges of developing a realtime map generation system.
+
+<p>To take this further, email <a href="mailto:karl@mysociety.org">karl@mysociety.org</a>.
 
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>
 
@@ -176,17 +178,35 @@ such stops) to the destination were calculated using the journey planner. Points
 not immediately on top of a stop or station were interpolated using a walking
 speed to get to the nearest public transport stop.   
 
-<p>House prices are based on house sales recorded in the Land Registry for a large
-random sample of London postcodes (cost of data &pound;2000). For each point the
-median is calculated from the price of sales in a 1km radius round that point.
-Sales from all of 2006 are included in calculating this median, but are house
-price inflation adjusted to be the price as in December 2006.  
+<p>House prices are based on house sales recorded in the Land Registry for a
+large random sample of London postcodes. For each point the median is
+calculated from the price of sales in a 1km radius round that point.  Sales
+from all of 2006 are included in calculating this median, but are house price
+inflation adjusted to be the price as in December 2006.  
 
 <p>mySociety makes open source software, so you can get the 
 <a href="https://secure.mysociety.org/cvstrac/dir?d=mysociety/iso">source
 code</a> for the scripts that made these maps, and we can give you copies of
 the OpenStreetMap base mapping. Some other data, such as NaPTAN, will require
 permission from their owners.
+
+<h2><a name="crosssell"></a>If you liked this...</h2>
+
+<p>mySociety, who produced this report, is a non-profit. We build websites
+that give people simple, tangible benefits in the civic and community aspects
+of their lives. Try some of them out.
+
+<p><strong>Grafitti, fly tipping, broken paving slabs or street lighting?</strong>
+Get them fixed on <a href="http://www.fixmystreet.com/">FixMyStreet</a>.
+
+<p>Want to know what <strong>your MP is doing in your name</strong>? 
+Find out on <a href="http://www.theyworkforyou.com">TheyWorkForYou</a>.
+
+<p><strong>Change the world</strong> by saying "I'll do it <strong>but only if</strong> you will too". 
+Make a pledge on <a href="http://www.pledgebank.com">PledgeBank</a>.
+
+<p><a href="http://www.theyworkforyou.com">TheyWorkForYou</a>
+
 
 <?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
 
