@@ -1,9 +1,15 @@
 <?php 
-/* XXX can't override the title easily, which will make us look like total
- * morons. For this page it should be, "Travel-time maps". */
+
+$body_id = 'moretravel';
+
+# XXX This is hideous
+ob_start();
+include "interactive_map.php";
 include "../../wordpress/wp-blog-header.php";
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
-include "interactive_map.php";
+$header = ob_get_clean();
+$header = str_replace('<title>mySociety', '<title>mySociety &raquo; More travel-time maps &raquo; Travel time / house price maps (BBC Television Centre &amp; Olympic Stadium site)', $header);
+print $header;
 ?>
 
 <h1>Travel time and house price maps</h1>
@@ -11,9 +17,9 @@ include "interactive_map.php";
 <p>This page contains two larger, more detailed travel time and house price maps of
 London. Read the <a href="./">main page</a> to learn more about these maps.
 
-<h2>BBC Television Center</h2>
+<h2>BBC Television Centre</h2>
 
-<p>This map is quite zoomed in, showing 20km round the BBC Television Center at
+<p>This map is quite zoomed in, showing 20km round the BBC Television Centre at
 W12 7RJ. Adjust the sliders to see areas within varying travel times to work
 and with varying house prices.
 

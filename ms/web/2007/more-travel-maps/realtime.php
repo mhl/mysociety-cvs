@@ -1,16 +1,23 @@
 <?php 
-/* XXX can't override the title easily, which will make us look like total
- * morons. For this page it should be, "Travel-time maps". */
+
+$body_id = 'moretravel';
+
+# XXX This is hideous
+ob_start();
 include "../../wordpress/wp-blog-header.php";
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
+$header = ob_get_clean();
+$header = str_replace('<title>mySociety', '<title>mySociety &raquo; Travel-time maps &raquo; Real time travel maps', $header);
+print $header;
 ?>
 
 <h1>Real time travel maps</h1>
 
 <h2><a name="introduction"></a>Introduction</h2>
 
-After seeing our travel time maps (<a href="/2006/travel-time-maps/">here</a>
-and <a href="./">here</a>), the next thing that everyone asks is "can I
+<p>After seeing our travel time maps (<a href="/2006/travel-time-maps/">original
+report from 2006</a>
+and <a href="./">the current report</a>), the next thing that everyone asks is "can I
 have one for my journey to work?". We investigated in detail two ways
 of providing real time versions of these maps, and we suggest a third way
 which requires new data.

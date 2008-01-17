@@ -1,9 +1,15 @@
 <?php 
-/* XXX can't override the title easily, which will make us look like total
- * morons. For this page it should be, "Travel-time maps". */
+
+$body_id = 'moretravel';
+
+# XXX This is hideous
+ob_start();
+include "interactive_map.php";
 include "../../wordpress/wp-blog-header.php";
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
-include "interactive_map.php";
+$header = ob_get_clean();
+$header = str_replace('<title>mySociety', '<title>mySociety &raquo; Travel-time maps', $header);
+print $header;
 ?>
 
 <h1>More travel-time maps and their uses</h1>

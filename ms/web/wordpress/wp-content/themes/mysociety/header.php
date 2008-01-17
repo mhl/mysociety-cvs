@@ -19,15 +19,23 @@
     href="<?php bloginfo('atom_url'); ?>?cat=<?=$cat?>" />
 	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 
-	<?php wp_get_archives('type=monthly&format=link'); ?>
+<?php
 
-	<?php wp_head(); ?>
+if (isset($scripts)) {
+    foreach ($scripts as $script) {
+        echo '<script type="text/javascript" src="', $script, '"></script>';
+    }
+}
+
+wp_get_archives('type=monthly&format=link');
+wp_head();
+?>
 </head>
 
-<body>
+<body<? if (isset($body_id)) print " id='$body_id'"; ?>>
 <?php
 if ($_SERVER['HTTP_HOST'] != 'www.mysociety.org') {
-	print '<p align="center">This is a test site, the real site is <a href="http://www.mysociety.org">over here</a>.<br />mySociety developers test new things here, you can <a href="http://www.mysociety.org/volunteertasks">join us</a> if you like.</p>';
+	#print '<p align="center">This is a test site, the real site is <a href="http://www.mysociety.org">over here</a>.<br />mySociety developers test new things here, you can <a href="http://www.mysociety.org/volunteertasks">join us</a> if you like.</p>';
 }
 ?>
 
