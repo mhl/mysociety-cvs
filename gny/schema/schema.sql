@@ -313,3 +313,20 @@ CREATE TABLE  `groups`.`stat` (
   `stat_id` int(11) NOT NULL auto_increment,
   PRIMARY KEY  (`stat_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `groups`.`tag` (
+  `tag_id` INT NOT NULL AUTO_INCREMENT,
+  `tag` varchar(255) NOT NULL,
+  PRIMARY KEY (`tag_id`)
+)
+CHARACTER SET utf8;
+
+CREATE TABLE `groups`.`group_to_tag` (
+  `group_to_tag_id` INT NOT NULL AUTO_INCREMENT,
+  `group_id` INT NOT NULL,
+  `tag_id` INT NOT NULL,
+  PRIMARY KEY (`group_to_tag_id`)
+)
+CHARACTER SET utf8;
+
+ALTER TABLE `groupsnearyou`.`groups` MODIFY COLUMN `created_name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;

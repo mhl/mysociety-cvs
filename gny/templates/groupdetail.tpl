@@ -35,8 +35,8 @@
         </div>
 
         <div id="divMeta">
-            {l}<em>{$group->name}</em> has been tagged with the keywords <strong>{$group->tags}</strong>.{/l}
-            {l}This page was created by <strong>{$group->created_name} on {$group->created_date|date_format}</strong>. 
+            {l}<em>{$group->name}</em>{if $category} is a <strong>{$category->name|lower} group</strong> and{/if} has been tagged with the keywords <strong>{$group->tags}</strong>.{/l}
+            {l}This page was created by <strong>{if $group->created_name == ''}anonymous{else}{$group->created_name}{/if} on {$group->created_date|date_format}</strong>. 
                 {if !$dead_links}
                     <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change</a> or
                     <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)

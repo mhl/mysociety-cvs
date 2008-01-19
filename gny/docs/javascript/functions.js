@@ -80,3 +80,8 @@ function setControlWarning (oControl, bState){
     }
 
 }
+
+
+function newWindow(sUrl){
+	window.open(sUrl, 'name');
+}

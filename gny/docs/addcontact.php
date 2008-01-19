@@ -100,12 +100,6 @@ class addcontact_page extends pagebase {
 			$this->add_warn_control('txtCreatedEmail');
 			$valid = false;				
 		}
-		
-		if($this->group->created_name == ''){
-			$this->add_warning($this->smarty->translate('Please enter your name'));
-			$this->add_warn_control('txtCreatedName');
-			$valid = false;				
-		}
 	
 		return $valid;
 	

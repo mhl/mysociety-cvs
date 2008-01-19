@@ -83,4 +83,35 @@
   '63347f5d946164a23faca26b78a91e1c' => 'fdsfds',
   '8bb61ab381878b4131e7837df8d1bb33' => 'back to search results',
   '1e4166e669c187f2a14abfd815ce48ce' => 'Centroid of the area covered by {$group->name}',
+  'd767c6420f28b1c792d91500d1f907a7' => 'enter a place, postcode or zip code',
+  'd1c7d059a1771548ccd08ef586246012' => 'Find email groups and web communities <br/>where you live',
+  '5f075ae3e1f9d0382bb8c4632991f96f' => 'Go',
+  '70188a92cc3d8e013dcc6738f7efe5fe' => 'Recently added groups',
+  'e7e0bda2eeeb05496e127221399ae5a5' => 'Browse all groups',
+  'de7e28662c585f54a25d4263c498e092' => 'Help map the world&rsquo;s online communities!',
+  '6bbe35d61e6f682eac53c53b658fb270' => 'It takes 4 simple steps to add a group you know about',
+  'e4d569f4295d323310eeda1e6f4fa491' => 'Tell us what the group does, the area it covers and how 
+                people can get involved, then confirm the details.',
+  '4940e1f59d9f216ac8d7eff4c8e768a2' => 'Add a group now',
+  '6d9f702cb95280b130d19a0cd2fe71c1' => 'Something went wrong when we tried to update this group.',
+  '8ccd572fb84872e7c7675681f2508301' => 'Community discussion',
+  'f5075365f9185587eee519e9171eab8f' => '<em>{$group->name}</em> has been tagged with the keywords <strong>{$group->tags}</strong>',
+  '4910c52c77e8309419534d9254395c4f' => ' and categorised as a {$category->name}',
+  '45e2965804171c4d54e31219e9eadcd6' => ' It is categorised as a {$category->name}',
+  '9b47631ba4e8304dd8acdfa04a761045' => '<em>{$group->name}</em>{if $category} is a {$category->name} group{/if} and has been tagged with the keywords <strong>{$group->tags}</strong>.',
+  '5bb2f1b90c1fd13e5f5a2c6d5bc968dd' => '<em>{$group->name}</em>{if $category} is a <strong>{$category->name}</strong> group{/if} and has been tagged with the keywords <strong>{$group->tags}</strong>.',
+  '784bdf32a674f37d5f30a5529aedfafd' => '<em>{$group->name}</em>{if $category} is a <strong>{$category->name} group</strong>{/if} and has been tagged with the keywords <strong>{$group->tags}</strong>.',
+  'd41d8cd98f00b204e9800998ecf8427e' => '',
+  'e92198dbd3b99870bf3b4c358438c273' => '<em>{$group->name}</em>{if $category} is a <strong>{$category->name} group</strong> and{/if} has been tagged with the keywords <strong>{$group->tags}</strong>.',
+  '6535c57ff34cec4310fd1a0caa67269d' => '<em>{$group->name}</em>{if $category} is a <strong>{$category->name:lower} group</strong> and{/if} has been tagged with the keywords <strong>{$group->tags}</strong>.',
+  '7587132db9c84eff0dfa55bc86f5daee' => '<em>{$group->name}</em>{if $category} is a <strong>{$category->name:|lower} group</strong> and{/if} has been tagged with the keywords <strong>{$group->tags}</strong>.',
+  '1d3a77e542fc8d0691494ddc8dbe6076' => '<em>{$group->name}</em>{if $category} is a <strong>{$category->name|lower} group</strong> and{/if} has been tagged with the keywords <strong>{$group->tags}</strong>.',
+  'c1069a480848e06782b81b8bea9c0c94' => 'Short description',
+  'a0534ae588ab3a3e2e51d114cc9252c1' => 'A group',
+  'a6c4caa8f49fb53ed663cff4a20b73b6' => 'This page was created by <strong>{if $group->created_name == \'\'}anonymous{else}{$group->created_name}{/if} on {$group->created_date|date_format}</strong>. 
+                {if !$dead_links}
+                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change</a> or
+                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)
+                {/if}
+            ',
 ); ?>

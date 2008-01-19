@@ -12,8 +12,8 @@
                 <input type="text" class="textbox{if $warn_txtName} error{/if}" id="txtName" name="txtName" value="{$group->name}" />
             </li>
             <li>
-                <label for="txtByline">{l}One line description{/l} *</label>
-                <input type="text" class="textbox{if $warn_txtByline} error{/if}" id="txtByline" name="txtByline" value="{$group->byline}" />
+                <label for="txtByline">{l}Short description{/l} *</label>
+                <input type="text" class="textbox{if $warn_txtByline} error{/if}" id="txtByline" name="txtByline" maxlength="40" value="{$group->byline}" />
                 <small>{l}e.g. A residents&rsquo; email group for Woking, UK{/l}</small>
             </li>
             <li>

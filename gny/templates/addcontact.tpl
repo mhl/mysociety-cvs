@@ -27,8 +27,9 @@
     <h3>{l}About you{/l}</h3>
     <ul class="form nobullets">
         <li>
-            <label for="txtCreatedName">{l}Your name{/l} *</label>
+            <label for="txtCreatedName">{l}Your name{/l}</label>
             <input type="text" class="textbox large{if $warn_txtCreatedName} error{/if}" id="txtCreatedName" name="txtCreatedName" value="{$group->created_name}" />
+            <small>Leave blank to add this group anonymously</small>
         </li>
         <li>
             <label for="txtCreatedEmail">{l}Your email{/l} *</label>
