@@ -13,7 +13,7 @@
             </li>
             <li>
                 <label for="txtByline">{l}Short description{/l} *</label>
-                <input type="text" class="textbox{if $warn_txtByline} error{/if}" id="txtByline" name="txtByline" maxlength="40" value="{$group->byline}" />
+                <input type="text" class="textbox{if $warn_txtByline} error{/if}" id="txtByline" name="txtByline" maxlength="70" value="{$group->byline}" />
                 <small>{l}e.g. A residents&rsquo; email group for Woking, UK{/l}</small>
             </li>
             <li>

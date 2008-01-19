@@ -35,7 +35,7 @@ class edit_page extends pagebase {
 	    $this->page_title = "edit " . $result[0]->name;
 	    $this->menu_item = "search";
 	
-		if($this->viewstate['show_sent']){
+		if(!$this->viewstate['show_sent']){
 	    	$this->set_focus_control = "txtEmail";
 		}
 	

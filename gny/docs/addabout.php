@@ -98,7 +98,7 @@ class addabout_page extends pagebase {
 		}
 
 		//if valid so far, check if this group already exists
-		if($valid){
+		if($valid && $this->group->mode == 'user'){
 			$search = factory::create('search');
 			$result = $search->search_cached('group', array(array('name', '=', $this->group->name), array('confirmed', '=', true)));
 
