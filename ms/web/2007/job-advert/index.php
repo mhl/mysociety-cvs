@@ -6,18 +6,6 @@ include "../../wordpress/wp-content/themes/mysociety/header.php";
 # Needs reorganising to have more important things at the top
 ?>
 
-<style type="text/css">
-#notice {
-    background-color: #ff6666;
-    color: #ffffff;
-    margin: 0 auto;
-    padding: 2px 5px 5px 5px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 120%;
-}
-</style>
-
 <div id="betteritemdiv">
 
 <div id="notice">
