@@ -1,6 +1,6 @@
 <?php 
 
-$scripts = array('swfobject.js', 'js.js');
+$scripts = array('swfobject.js');  #, js.js (for Flash adding # links for positions)
 
 function interactive_map($config_file, $id, $width, $height) { ?>
 
