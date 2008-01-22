@@ -57,7 +57,7 @@ contour maps are fairly quick to produce.</p>
 <p>This table shows the calculation time:</p>
 
 <table border=1>
-<tr><th>City</th><th>Public transport stops<br>in 20km square (approx)</th><th>Basic screen scraping<br>Generation time (estimate)</th></tr>
+<tr><th>City</th><th>Public transport stops<br />in 20km square (approx)</th><th>Basic screen scraping<br />Generation time (estimate)</th></tr>
 <tr><td>Cardiff</td><td>1900</td><td>4 hours 15 mins</td></tr>
 <tr><td>Edinburgh</td><td>2700</td><td>6 hours</td></tr>
 <tr><td>Birmingham</td><td>6600</td><td>14 hours 45 mins</td></tr>
@@ -91,7 +91,7 @@ it takes about 1.5 seconds per query. This is over 5 times quicker than using
 basic screen scraping:</p>
 
 <table border=1>
-<tr><th>City</th><th>Public transport stops<br>in 20km square (approx)</th><th>Parallel screen scraping<br>Generation time (estimate)</th></tr>
+<tr><th>City</th><th>Public transport stops<br />in 20km square (approx)</th><th>Parallel screen scraping<br />Generation time (estimate)</th></tr>
 <tr><td>Cardiff</td><td>1900</td><td>47 mins</td></tr>
 <tr><td>Edinburgh</td><td>2700</td><td>1 hour 8 mins</td></tr>
 <tr><td>Birmingham</td><td>6600</td><td>2 hours 45 mins</td></tr>
@@ -126,8 +126,8 @@ given start, destination and arrival or departure time.</p>
 
 <p>Here is a screenshot of our application, which runs on top of Rail Planner.</p>
 
-<p><a href="ttm-screenshot.png"><img src="ttm-screenshot_small.png" alt="Realtime isochrone maps"></a>
-<br><em>Click image for bigger version.</em><br><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small></p>
+<p><a href="ttm-screenshot.png"><img src="ttm-screenshot_small.png" alt="Realtime isochrone maps" /></a>
+<br /><em>Click image for bigger version.</em><br /><small>&copy; Crown copyright. All rights reserved. Department&nbsp;for&nbsp;Transport&nbsp;100020237&nbsp;2007</small></p>
 
 <p>After you enter a postcode, it starts immediately filling in the map. It does
 this by running a copy of Rail Planner separately in the background, and
