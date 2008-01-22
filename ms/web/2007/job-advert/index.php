@@ -1,11 +1,30 @@
 <?php
 include "../../wordpress/wp-blog-header.php";
+header('HTTP/1.0 200 OK');
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 
 # Needs reorganising to have more important things at the top
 ?>
 
+<style type="text/css">
+#notice {
+    background-color: #ff6666;
+    color: #ffffff;
+    margin: 0 auto;
+    padding: 2px 5px 5px 5px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 120%;
+}
+</style>
+
 <div id="betteritemdiv">
+
+<div id="notice">
+This is an old job advert, now filled &ndash; see our
+<a href="http://www.mysociety.org/2007/11/23/welcome-angie-thursdays-tech-talk/">blog post</a>
+for more information.
+</div>
 
 <h2>mySociety is hiring an open source web developer</h2>
 

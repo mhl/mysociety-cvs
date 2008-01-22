@@ -2,6 +2,7 @@
 /* XXX can't override the title easily, which will make us look like total
  * morons. For this page it should be, "Travel-time maps: methods". */
 include "../../wordpress/wp-blog-header.php";
+header('HTTP/1.0 200 OK');
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 ?>
 
