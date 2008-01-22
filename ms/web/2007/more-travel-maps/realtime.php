@@ -56,7 +56,7 @@ contour maps are fairly quick to produce.</p>
 
 <p>This table shows the calculation time:</p>
 
-<table border=1>
+<table border="1">
 <tr><th>City</th><th>Public transport stops<br />in 20km square (approx)</th><th>Basic screen scraping<br />Generation time (estimate)</th></tr>
 <tr><td>Cardiff</td><td>1900</td><td>4 hours 15 mins</td></tr>
 <tr><td>Edinburgh</td><td>2700</td><td>6 hours</td></tr>
@@ -90,7 +90,7 @@ slightly slower again. The optimum is somewhere near 32 processes. Roughly,
 it takes about 1.5 seconds per query. This is over 5 times quicker than using
 basic screen scraping:</p>
 
-<table border=1>
+<table border="1">
 <tr><th>City</th><th>Public transport stops<br />in 20km square (approx)</th><th>Parallel screen scraping<br />Generation time (estimate)</th></tr>
 <tr><td>Cardiff</td><td>1900</td><td>47 mins</td></tr>
 <tr><td>Edinburgh</td><td>2700</td><td>1 hour 8 mins</td></tr>
