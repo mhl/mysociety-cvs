@@ -9,6 +9,7 @@ include "../../wordpress/wp-blog-header.php";
 include "../../wordpress/wp-content/themes/mysociety/header.php"; 
 $header = ob_get_clean();
 $header = str_replace('<title>mySociety', '<title>mySociety &raquo; Travel-time maps', $header);
+header('HTTP/1.0 200 OK');
 print $header;
 ?>
 
