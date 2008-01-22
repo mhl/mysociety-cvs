@@ -2233,10 +2233,16 @@ function status_header( $header ) {
 }
 
 function nocache_headers() {
+/*
+
+XXX: Commented out due to bad interaction between WP and non-WP pages on the site,
+meaning all non-WP pages are sent with these headers
+
 	@ header('Expires: Wed, 11 Jan 1984 05:00:00 GMT');
 	@ header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 	@ header('Cache-Control: no-cache, must-revalidate, max-age=0');
 	@ header('Pragma: no-cache');
+*/
 }
 
 function get_usermeta( $user_id, $meta_key = '') {
