@@ -21,6 +21,7 @@ abstract class pagebase {
     protected $smarty_template ="";
 	protected $data = null;
 	protected $rss_link = '';
+	protected $track = '';
 
     //Constructor
     public function __construct(){
@@ -34,20 +35,19 @@ abstract class pagebase {
             $this->get_postback_command();
         }
 
-		 $this->warnings = array();
+        $this->warnings = array();
 		
-		//load function (a way of child classes running code at the point of class construction)
-		$this->load();
-		//check for postback vs load
-		if (isset($_POST["_is_postback"])) {
-			$this->get_data();
-			$this->unbind();
-		    $this->process();		
-		}else{
-		    $this->setup();
-			$this->bind();
-		}
-        
+        //load function (a way of child classes running code at the point of class construction)
+        $this->load();
+        //check for postback vs load
+        if (isset($_POST["_is_postback"])) {
+            $this->get_data();
+            $this->unbind();
+            $this->process();		
+        }else{
+            $this->setup();
+            $this->bind();
+        }
     }
 
     //Display template (also assigns default properties)
@@ -59,30 +59,33 @@ abstract class pagebase {
         $this->smarty->assign("www_server", WWW_SERVER);
         $this->smarty->assign("admin_server", ADMIN_SERVER);
         $this->smarty->assign("domain", DOMAIN);
-		$this->smarty->assign("secure_server", SECURE_SERVER);
+        $this->smarty->assign("secure_server", SECURE_SERVER);
         $this->smarty->assign("form_action", htmlspecialchars($_SERVER['PHP_SELF']) . '?' . $_SERVER["QUERY_STRING"]);
         $this->smarty->assign("onloadscript", $this->onloadscript);
-		if(sizeof($this->warn_controls) == 0){
-        	$this->smarty->assign("set_focus_control", $this->set_focus_control);
-		}else{
-        	$this->smarty->assign("set_focus_control", $this->warn_controls[0]);		
-		}
+        if ($this->track)
+            $this->track = track_code($this->track);
+        $this->smarty->assign('track', $this->track);
+        if(sizeof($this->warn_controls) == 0){
+            $this->smarty->assign("set_focus_control", $this->set_focus_control);
+        }else{
+            $this->smarty->assign("set_focus_control", $this->warn_controls[0]);		
+        }
         $this->smarty->assign("warnings", $this->warnings);
         $this->smarty->assign("data", $this->data);
         $this->smarty->assign("show_warnings", sizeof($this->warnings) >0);
         $this->smarty->assign("warn_controls", $this->warn_controls);        
-		$this->smarty->assignLang("page_title", htmlspecialchars($this->page_title));
-		$this->smarty->assign("menu_item", $this->menu_item);		
-		$this->smarty->assign("tracker_location", $this->tracker_location);				
-		$this->smarty->assign("show_tracker",$this->show_tracker);				
+        $this->smarty->assignLang("page_title", htmlspecialchars($this->page_title));
+        $this->smarty->assign("menu_item", $this->menu_item);		
+        $this->smarty->assign("tracker_location", $this->tracker_location);				
+        $this->smarty->assign("show_tracker",$this->show_tracker);				
         $this->smarty->assign("viewstate", $this->serialize_viewstate());
         $this->smarty->assign("googleanalytics", DOC_DIR . "templates/googleanalytics.tpl");
-		$this->smarty->assign("rss_link", $this->rss_link);
-		$this->smarty->assign("current_url", $_SERVER['REQUEST_URI']);
+        $this->smarty->assign("rss_link", $this->rss_link);
+        $this->smarty->assign("current_url", $_SERVER['REQUEST_URI']);
 
-		foreach($this->warn_controls  as $warn_control) {
-			$this->assign('warn_' . $warn_control, true);
-		}
+        foreach($this->warn_controls  as $warn_control) {
+            $this->assign('warn_' . $warn_control, true);
+        }
 
         if ($echo != false){
             $this->smarty->display($this->smarty_template);
@@ -111,10 +114,10 @@ abstract class pagebase {
         $this->smarty->template_dir = TEMPLATE_DIR;
         $this->smarty->lang_path = LANGUAGE_DIR;
 
-		//call setup (basically a standard smarty constuct with the translation thrown in)
-		$this->smarty->setup("en-us");
+        //call setup (basically a standard smarty constuct with the translation thrown in)
+        $this->smarty->setup("en-us");
 
-		$this->smarty_template = $template_file;
+        $this->smarty_template = $template_file;
     }
     
     //Get template name - uses reflection to try and guess the template name
