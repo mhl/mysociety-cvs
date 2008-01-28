@@ -26,8 +26,8 @@ class tableclass_confirmation extends DB_DataObject {
 	public function send($to, $subject, $text, $table, $id, $argument = ''){
 
 		//generate key etc
-		$this->link_key = crypt($table . $id . $argument);
-		$this->link_key = str_replace('/', '', str_replace('.', '', $this->link_key)); // remove any full stops as they look weird
+		$this->link_key = substr(crypt($table . $id . $argument . microtime()), 3);
+		$this->link_key = str_replace(array('$','/','.'), '', $this->link_key)); // remove any full stops as they look weird
 		$this->parent_table = $table;
 		$this->parent_id = $id;
 		$this->argument = $argument;		
