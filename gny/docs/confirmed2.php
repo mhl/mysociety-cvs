@@ -82,6 +82,7 @@ class confirmed2_page extends pagebase {
 		if(!$this->viewstate['show_sent']){
 			$this->page_title = "Your group has been added!";
 			$this->set_focus_control = "txtEmails";	
+			$this->track = 'added-group';
 			
 			//work out the name of the person
 			$name_split = explode(' ', $result[0]->created_name);			
@@ -120,7 +121,7 @@ class confirmed2_page extends pagebase {
 		
 		//Emails
 		if($this->data['txtEmails'] == ''){
-			$this->add_warning($this->smarty->translate('Please enter one or more valid email address seperated by commas'));
+			$this->add_warning($this->smarty->translate('Please enter one or more valid email address separated by commas'));
 			$this->add_warn_control('txtEmails');
 			$valid = false;
 		}else{
@@ -135,7 +136,7 @@ class confirmed2_page extends pagebase {
 			}
 			
 			if($invalid_emails){
-				$this->add_warning($this->smarty->translate('Please enter one or more valid email address seperated by commas'));
+				$this->add_warning($this->smarty->translate('Please enter one or more valid email address separated by commas'));
 				$this->add_warn_control('txtEmails');
 				$valid = false;				
 			}

@@ -1,6 +1,7 @@
 <?php
 require_once ("init.php");
 require_once ("smarty/intsmarty.class.php");
+require_once 'tracking.php';
 
 abstract class pagebase {
 
