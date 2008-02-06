@@ -4,7 +4,7 @@ use strict;
 use FindBin;
 use lib "$FindBin::Bin/../../perllib";
 use lib "$FindBin::Bin/../../track/perllib";
-use mySociety::CGIFast;
+use mySociety::CGIFast qw(-no_xhtml);
 
 use Track::Stats;
 use Track;
@@ -13,7 +13,15 @@ while (my $q = new mySociety::CGIFast()) {
     my %out = Track::Stats::generate();
 
     print $q->header;
-    print $q->h1('Conversion tracking');
+    print $q->start_html(
+        -title => 'mySociety Conversion tracking'
+        -style => { src => '/track/track.css' },
+        -encoding => 'utf-8'
+    ) . <<EOF
+<div id="masthead"><img src="mslogo.gif" alt="mySociety.org"></div>
+<div id="content">
+EOF
+        . $q->h1('Conversion tracking');
     print $q->h2('Live');
     print "<table>\n";
     foreach my $site (sort keys %out) {
@@ -40,4 +48,6 @@ while (my $q = new mySociety::CGIFast()) {
         }
     }
     print "</table>\n";
+    print $q->h2('Historical');
+    print $q->p('TODO');
 }
