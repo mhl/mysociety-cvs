@@ -18,7 +18,7 @@ while (my $q = new mySociety::CGIFast()) {
         -style => { src => '/track/track.css' },
         -encoding => 'utf-8'
     ) . <<EOF
-<div id="masthead"><img src="mslogo.gif" alt="mySociety.org"></div>
+<div id="masthead"><img src="/track/mslogo.gif" alt="mySociety.org"></div>
 <div id="content">
 EOF
         . $q->h1('Conversion tracking');
