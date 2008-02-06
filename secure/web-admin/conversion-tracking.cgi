@@ -17,19 +17,19 @@ while (my $q = new mySociety::CGIFast()) {
     print $q->h2('Live');
     foreach my $period (reverse sort keys %out) {
         my $sites = $out{$period};
-        print "$period\n" . '=' x length($period) . "\n\n";
+        print "<h3>$period</h3>\n";
         foreach my $site (sort keys %$sites) {
             my $adverts = $sites->{$site};
-            print "$site\n" . '-' x length($site) . "\n\n";
+            print "<h4>$site</h4>\n<table><tr><th scope='col'>Advert</th><th>Shown</th><th>Converted</th><th>First</th><th>Last</th></tr>\n";
             foreach my $ad (sort keys %$adverts) {
-	        my $data = $adverts->{$ad};
-                print "$ad : ";
+                my $data = $adverts->{$ad};
+                print "<tr><th scope='row'>$ad</th>";
                 $data->{1} = 0 unless defined $data->{1};
                 my $shown = (defined($data->{0}) ? $data->{0} : 0) + $data->{1};
-                print "$shown shown, $data->{1} converted (first $data->{first}, last $data->{last}";
-                print "\n";
+                print "<td>$shown</td><td>$data->{1}</td><td>$data->{first}</td><td>$data->{last}</td>";
+                print "</tr>\n";
             }
-           print "\n";
+            print "</table>\n";
         }
     }
 }
