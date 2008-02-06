@@ -14,7 +14,7 @@ while (my $q = new mySociety::CGIFast()) {
 
     print $q->header;
     print $q->start_html(
-        -title => 'mySociety Conversion tracking'
+        -title => 'mySociety Conversion tracking',
         -style => { src => '/track/track.css' },
         -encoding => 'utf-8'
     ) . <<EOF
