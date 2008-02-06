@@ -15,23 +15,27 @@ while (my $q = new mySociety::CGIFast()) {
     print $q->header;
     print $q->h1('Conversion tracking');
     print $q->h2('Live');
-    foreach my $period (reverse sort keys %out) {
-        my $sites = $out{$period};
-        print "<h3>\u$period</h3>\n<table>\n";
-        foreach my $site (sort keys %$sites) {
-            my $adverts = $sites->{$site};
-            my $rowspan = scalar (keys %$adverts) + 1;
-            print "<tr><th rowspan=$rowspan><h4>$site</h4></th>\n";
-            print "<th scope='col'>Advert</th><th>Shown</th><th>Converted</th><th>First</th><th>Last</th></tr>\n";
-            foreach my $ad (sort keys %$adverts) {
-                my $data = $adverts->{$ad};
-                print "<tr><th scope='row'>$ad</th>";
-                $data->{1} = 0 unless defined $data->{1};
-                my $shown = (defined($data->{0}) ? $data->{0} : 0) + $data->{1};
-                print "<td>$shown</td><td>$data->{1}</td><td>$data->{first}</td><td>$data->{last}</td>";
-                print "</tr>\n";
-            }
+    print "<table>\n";
+    foreach my $site (sort keys %out) {
+        my $adverts = $out{$site};
+        my $rowspan = scalar (keys %$adverts) + 2;
+        print "<tr><th rowspan=$rowspan valign='top'><h4>$site</h4></th>\n";
+        print "<th rowspan=2 valign='bottom' scope='col'>Advert</th>";
+        print '<th colspan=2>Shown</th><th colspan=2>Converted</th><th colspan=2>First</th><th colspan=2>Last</th>';
+        print "</tr>\n<tr>" . ('<th>Week</th><th>Month</th>' x 4) . "</tr>\n";
+        foreach my $ad (sort keys %$adverts) {
+            my %periods = %{$adverts->{$ad}};
+            $periods{week}{1} = 0 unless defined $periods{week}{1};
+            $periods{month}{1} = 0 unless defined $periods{month}{1};
+            my $shown_week = (defined($periods{week}{0}) ? $periods{week}{0} : 0) + $periods{week}{1};
+            my $shown_month = (defined($periods{month}{0}) ? $periods{month}{0} : 0) + $periods{month}{1};
+            print "<tr><th scope='row'>$ad</th>";
+            print "<td>$shown_week</td><td>$shown_month</td>";
+	    print "<td>$periods{week}{1}</td><td>$periods{month}{1}</td>";
+	    print "<td>$periods{week}{first}</td><td>$periods{month}{first}</td>";
+	    print "<td>$periods{week}{last}</td><td>$periods{month}{last}</td>";
+            print "</tr>\n";
         }
-        print "</table>\n";
     }
+    print "</table>\n";
 }
