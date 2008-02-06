@@ -20,7 +20,7 @@ while (my $q = new mySociety::CGIFast()) {
         print "<h3>\u$period</h3>\n<table>\n";
         foreach my $site (sort keys %$sites) {
             my $adverts = $sites->{$site};
-            my $rowspan = scalar keys %$adverts + 1;
+            my $rowspan = scalar (keys %$adverts) + 1;
             print "<tr><th rowspan=$rowspan><h4>$site</h4></th>\n";
             print "<th scope='col'>Advert</th><th>Shown</th><th>Converted</th><th>First</th><th>Last</th></tr>\n";
             foreach my $ad (sort keys %$adverts) {
@@ -31,7 +31,7 @@ while (my $q = new mySociety::CGIFast()) {
                 print "<td>$shown</td><td>$data->{1}</td><td>$data->{first}</td><td>$data->{last}</td>";
                 print "</tr>\n";
             }
-            print "</table>\n";
         }
+        print "</table>\n";
     }
 }
