@@ -37,13 +37,15 @@ EOF
             $periods{month}{1} = 0 unless defined $periods{month}{1};
             my $shown_week = (defined($periods{week}{0}) ? $periods{week}{0} : 0) + $periods{week}{1};
             my $shown_month = (defined($periods{month}{0}) ? $periods{month}{0} : 0) + $periods{month}{1};
+            my $pc_week = $shown_week ? int($periods{week}{1}/$shown_week*10000+0.5)/100 : '-';
+            my $pc_month = $shown_month ? int($periods{month}{1}/$shown_month*10000+0.5)/100 : '-';
             print "<tr><th scope='row'>$ad</th>";
             print "<td>$shown_week</td><td>$shown_month</td>";
-	    print "<td>$periods{week}{1}</td><td>$periods{month}{1}</td>";
-	    print '<td>' . int($periods{week}{1}/$shown_week*10000+0.5)/100 . '%</td>';
-	    print '<td>' . int($periods{month}{1}/$shown_month*10000+0.5)/100 . '%</td>';
-	    print "<td>$periods{week}{first}</td><td>$periods{month}{first}</td>";
-	    print "<td>$periods{week}{last}</td><td>$periods{month}{last}</td>";
+            print "<td>$periods{week}{1}</td><td>$periods{month}{1}</td>";
+            print '<td>' . $pc_week . '%</td>';
+            print '<td>' . $pc_month . '%</td>';
+            print "<td>$periods{week}{first}</td><td>$periods{month}{first}</td>";
+            print "<td>$periods{week}{last}</td><td>$periods{month}{last}</td>";
             print "</tr>\n";
         }
     }
