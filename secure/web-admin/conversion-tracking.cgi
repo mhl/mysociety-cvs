@@ -12,6 +12,49 @@ use Track;
 while (my $q = new mySociety::CGIFast()) {
     my %out = Track::Stats::generate();
 
+    # Find out current WTT ads, bit yucky...
+    open (FP, '/data/vhost/www.writetothem.com/mysociety/fyr/phplib/fyr.php');
+    my $in_ad = 0;
+    my $c = 0;
+    my %current;
+    while (<FP>) {
+        $in_ad = 1 if /crosssell_display_advert\(/;
+        next unless $in_ad;
+        last if /^\s*\)\s*$/;
+        next unless /^\s*array\('(.*?)', '(.*?)'\),\s*$/;
+        $current{writetothem}{"advert=$1$c"} = $2;
+        $c++;
+    }
+    close FP;
+    
+    # FixMyStreet
+    open (FP, '/data/vhost/www.fixmystreet.com/mysociety/bci/perllib/CrossSell.pm');
+    $in_ad = 0;
+    $c = 0;
+    while (<FP>) {
+        $in_ad = 1 if /\@adverts = /;
+        next unless $in_ad;
+        last if /^\s*\);\s*$/;
+        next unless /^\s*\[\s*'(.*?)', '(.*?)'\s*\],\s*$/;
+        $current{fixmystreet}{"advert=$1$c"} = $2;
+        $c++;
+    }
+    close FP;
+
+    # TheyWorkForYou
+    open (FP, '/data/mysociety/twfy/www/includes/easyparliament/alert.php');
+    $in_ad = 0;
+    $c = 0;
+    while (<FP>) {
+        $in_ad = 1 if /\$adverts = array\(/;
+        next unless $in_ad;
+        last if /^\s*\);\s*$/;
+        next unless /^\s*array\('(.*?)', '(.*?)'\),\s*$/;
+        $current{theyworkforyou}{"advert=$1$c"} = $2;
+        $c++;
+    }
+    close FP;
+
     print $q->header;
     print $q->start_html(
         -title => 'mySociety Conversion tracking',
@@ -39,13 +82,19 @@ EOF
             my $shown_month = (defined($periods{month}{0}) ? $periods{month}{0} : 0) + $periods{month}{1};
             my $pc_week = $shown_week ? int($periods{week}{1}/$shown_week*10000+0.5)/100 : '-';
             my $pc_month = $shown_month ? int($periods{month}{1}/$shown_month*10000+0.5)/100 : '-';
-            print "<tr><th scope='row'>$ad</th>";
+            print "<tr><th scope='row'>";
+            print "<span title='$current{$site}{$ad}'>" if $current{$site}{$ad};
+            print $ad;
+            print '</span>' if $current{$site}{$ad};
+            print "</th>";
             print "<td>$shown_week</td><td>$shown_month</td>";
             print "<td>$periods{week}{1}</td><td>$periods{month}{1}</td>";
             print '<td>' . $pc_week . '%</td>';
             print '<td>' . $pc_month . '%</td>';
-            print "<td>$periods{week}{first}</td><td>$periods{month}{first}</td>";
-            print "<td>$periods{week}{last}</td><td>$periods{month}{last}</td>";
+            print $q->td(defined $periods{week}{first} ? $periods{week}{first} : '');
+            print $q->td(defined $periods{month}{first} ? $periods{month}{first} : '');
+            print $q->td(defined $periods{week}{last} ? $periods{week}{last} : '');
+            print $q->td(defined $periods{month}{last} ? $periods{month}{last} : '');
             print "</tr>\n";
         }
     }
