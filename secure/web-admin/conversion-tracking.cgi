@@ -66,7 +66,7 @@ EOF
         my $rowspan = scalar (keys %$adverts) + 2;
         print "<tr><th rowspan=$rowspan valign='top'><h4>$site</h4></th>\n";
         print "<th rowspan=2 valign='bottom' scope='col'>Advert</th>";
-        print '<th colspan=2>Shown</th><th colspan=2>Converted</th><th colspan=2>Percentage Conversion</th>';
+        print '<th colspan=3>Shown</th><th colspan=3>Converted</th><th colspan=3>Percentage Conversion</th>';
         print "</tr>\n<tr>" . ('<th>Week</th><th>Month</th><th>Year</th>' x 3) . "</tr>\n";
         foreach my $ad (sort keys %$adverts) {
             my %periods = %{$adverts->{$ad}};
@@ -79,14 +79,14 @@ EOF
             my $pc_week = $shown_week ? int($periods{week}{1}/$shown_week*10000+0.5)/100 : '-';
             my $pc_month = $shown_month ? int($periods{month}{1}/$shown_month*10000+0.5)/100 : '-';
             my $pc_year = $shown_year ? int($periods{year}{1}/$shown_year*10000+0.5)/100 : '-';
-            print "<tr><th scope='row'>";
+            print "<tr><th scope='row' align='right'>";
             print "<span title='$current{$site}{$ad}'>" if $current{$site}{$ad};
             print $ad;
             print '</span>' if $current{$site}{$ad};
             print "</th>";
-            print "<td>$shown_week</td><td>$shown_month</td><td>$shown_year</td>";
-            print "<td>$periods{week}{1}</td><td>$periods{month}{1}</td><td>$conv_year</td>";
-            print "<td>$pc_week%</td><td>$pc_month%</td><td>$pc_year%</td>";
+            print "<td align='right'>$shown_week</td><td align='right'>$shown_month</td><td align='right'>$shown_year</td>";
+            print "<td align='right'>$periods{week}{1}</td><td align='right'>$periods{month}{1}</td><td align='right'>$conv_year</td>";
+            print "<td align='right'>$pc_week%</td><td align='right'>$pc_month%</td><td align='right'>$pc_year%</td>";
             print "</tr>\n";
         }
     }
