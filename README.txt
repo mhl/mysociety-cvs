@@ -4,7 +4,7 @@ mySociety source code
 Here you can find the source code for various mySociety projects. This file
 contains a description of the top level files and folders.
 
-LICENSE.txt - Details of open source licensing terms, mainly the Affero GPL
+LICENSE.txt - Details of open source licensing terms, mainly the GNU Affero GPL
 README-check - Run this to check everything is documented here
 
 Main projects

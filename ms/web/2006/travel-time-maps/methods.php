@@ -179,7 +179,7 @@ custom software written in C,
 <p>If you'd like a copy of the custom software we wrote, or if you have any
 other questions or comments, please email me at
 <a href="mailto:chris@mysociety.org">chris@mysociety.org</a>. Our software is
-available under the terms of the Affero GPL.</p>
+available under the terms of the GNU Affero GPL.</p>
 
 <h2>Summary of data used</h2>
 
