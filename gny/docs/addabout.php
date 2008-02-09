@@ -57,7 +57,7 @@ class addabout_page extends pagebase {
 	    $this->page_title = "about your group";
 	    $this->menu_item = "add";	
 	    $this->show_tracker = true;		
-	    $this->tracker_location = 2;			
+	    $this->tracker_location = 2;
 	    $this->set_focus_control = "txtName";
 		$this->assign('group', $this->group);
 		$this->assign('categories', $categories);		

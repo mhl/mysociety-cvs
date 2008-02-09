@@ -133,8 +133,7 @@ class addlocation_page extends pagebase {
 			$valid = false;
 		}
 		if($this->group->zoom_level < MAX_MAP_ZOOM){
-			$this->add_warning($this->smarty->translate(SITE_NAME . 
-				' is a website for local online groups, if your group covers a large area (such as a country) then you will be unable to add it'));
+			$this->add_warning($this->smarty->translate('Sorry, your group is too large to add to ' . SITE_NAME . ', we are currently only mapping small local groups, like an email list for your street or village. We may start accepting larger groups in the future though.'));
 			$valid = false;
 		}
 		

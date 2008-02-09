@@ -14,6 +14,7 @@ function Rectangle(bounds, opt_weight, opt_color) {
   this.weight_ = opt_weight || 5;
   this.color_ = opt_color || '#EF2C2C';
 }
+
 Rectangle.prototype = new GOverlay();
 
 // Creates the DIV representing this rectangle.
@@ -132,6 +133,33 @@ function load(nCenterLong, nCenterLat, iZoom, bFullMap) {
 	GEvent.addListener(map, 'moveend', addRectangle);	
 	
   }
+}
+
+function loadLatest (){
+ if (GBrowserIsCompatible()) {
+
+    map = new GMap2(document.getElementById("divLatestMap"));
+    map.setCenter(new GLatLng(30, 7), 0);
+	map.disableDragging();
+
+	// Create our "tiny" marker icon
+	var tinyIcon = new GIcon();
+	tinyIcon.image = "/images/point.png";
+	tinyIcon.iconSize = new GSize(6, 6);
+	tinyIcon.iconAnchor = new GPoint(3, 3);
+	tinyIcon.infoWindowAnchor = new GPoint(5, 1);
+	
+	//get group data
+	var aGroupData = document.getElementsByClassName('groupdata');
+	for (var i=0; i < aGroupData.length; i++) {
+		var oGroup = eval('(' + aGroupData[i].value + ')' )
+	    var point = new GLatLng(oGroup.lat, oGroup.long);
+		markerOptions = {icon:tinyIcon, title: oGroup.name, link: 'http://www.bbc.co.uk'};
+		map.addOverlay(new GMarker(point, markerOptions));
+		
+	};
+
+  }	
 }
 
 function searchMap(){

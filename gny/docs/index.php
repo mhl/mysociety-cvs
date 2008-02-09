@@ -22,20 +22,19 @@ class index_page extends pagebase {
 
 		//show postcode hint?
 		$show_postcode_hint == false;
-		
+
 		//latest groups
-		$search = factory::create('search');
-		$groups = $search->search_cached('group', array(array('group_id', '>', 0), array('confirmed', '=', 1)),  
-			'AND',
-			array(array('group_id', 'DESC')),
-			3);
+		$latest_groups = $this->latest_groups();
+		$map_groups = $this->get_representative_groups();
 
 		//page vars
-		$this->onloadscript = "";	
+		$this->onloadscript = "loadLatest()";	
 	    $this->page_title = "meet your neighbours";
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "";			
-		$this->assign('groups', $groups);
+		$this->assign('latest_groups', $latest_groups);
+		$this->assign('map_groups', $map_groups);		
+		$this->assign('map_js', true);		
 		$this->assignLang('search_hint', 'enter a place, postcode or zip code');
 		$this->assign('country', strtoupper($this->viewstate['country']));
 	
@@ -66,6 +65,47 @@ class index_page extends pagebase {
 		}else{
 			$this->bind();
 		}
+	}
+	
+	private function latest_groups(){
+		$search = factory::create('search');
+		$groups = $search->search('group', array(array('group_id', '>', 0), array('confirmed', '=', 1)),  
+			'AND',
+			array(array('group_id', 'DESC')),
+			4);
+			
+		return $groups;
+	}
+	
+	
+	private function get_representative_groups(){
+
+		//get a representative sample of new groups from round the world
+		$count = 3;
+		$americas_groups = $this->groups_by_box(array(-150, 60, -30, -50), $count);
+		$european_groups = $this->groups_by_box(array(-5, 70, 50, 30), $count);
+		$african_groups = $this->groups_by_box(array(-15, 25, 60, -40), $count);
+		$asian_groups = $this->groups_by_box(array(60, 90, 170, -60), $count);			
+
+		return array_merge($european_groups, $americas_groups, $african_groups, $asian_groups);	
+	}
+	
+	private function groups_by_box($box, $count){
+		$search = factory::create('search');
+		$groups = $search->search_cached('group', 
+			array(
+				array('group_id', '>', 0), 
+				array('confirmed', '=', 1),
+				array('long_centroid', '>', $box[0]),
+				array('long_centroid', '<', $box[2]),				 
+				array('lat_centroid', '<', $box[1]),
+				array('lat_centroid', '>', $box[3]),				
+			),  
+			'AND',
+			array(array('group_id', 'DESC')),
+			$count);
+			
+		return $groups;
 	}
 
 }
