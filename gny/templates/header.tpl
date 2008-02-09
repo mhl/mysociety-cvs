@@ -30,7 +30,7 @@
         {l}This site is currently in beta (test) mode. <a href="mailto:team@{$domain}">We'd love to hear what you think about it!</a>{/l}
     </div>
     <div id="divHeader">
-        <h1><a href="{$www_server}"><span class="hide">{l}Groups<span>NearYou</span>.com</a>{/l}</span></h1>
+        <h1><a href="{$www_server}"><span class="hide">{l}GroupsNearYou.com{/l}</span></a></h1>
         <h2 class="hide">{l}Meet your neighbours{/l}</h2>
         <ul id="ulMenu" class="collapse">
             <li {if $menu_item =="about"}class="selected"{/if}><a href="{$www_server}/about/">{l}About{/l}</a></li>                                     
