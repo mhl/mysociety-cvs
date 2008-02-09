@@ -6,7 +6,9 @@
     </div>
 {/if}
 
-{include file="../templates/groupdetail.tpl"}
+<div class="contentfull">
+    {include file="../templates/groupdetail.tpl"}
+</div>
 
 {include file="../templates/hcard.tpl"}
 

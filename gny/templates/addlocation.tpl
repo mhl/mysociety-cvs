@@ -13,13 +13,14 @@
         <input type="hidden" id="hidZoomLevel" name="hidZoomLevel" value="{$group->zoom_level|escape:html}" />
     </fieldset>
 
-    <div>
-	<div id="mapNo">
-	        <h3>{l}Describe the <em>approximate</em> area covered by the group{/l}</h3>
+    <div class="contentfull">
+        
+    	<div id="mapNo">
+    	        <h3>{l}Describe the <em>approximate</em> area covered by the group{/l}</h3>
 
-		<textarea name="txtLocationDesc" id="txtLocationDesc" rows=10 cols=70>{$group->location_desc|escape:html}</textarea>
+    		<textarea name="txtLocationDesc" id="txtLocationDesc" rows=10 cols=70>{$group->location_desc|escape:html}</textarea>
 
-	</div>
+    	</div>
 
         <div id="mapYes">
 

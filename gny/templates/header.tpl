@@ -14,7 +14,7 @@
         <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={$google_maps_key}" type="text/javascript"></script>
         <script src="{$url}/javascript/map.js" type="text/javascript"></script>
     {/if}
-    
+
 	<link rel="stylesheet" media="all" type="text/css" href="{$www_server}/css/memespring.css" />
 	<link rel="stylesheet" media="all" type="text/css" href="{$www_server}/css/main.css" />	
 	<link rel="Shortcut Icon" href="{$www_server}/favicon.ico" type="image/x-icon" />
@@ -29,52 +29,58 @@
     <div id="divBeta">
         {l}This site is currently in beta (test) mode. <a href="mailto:team@{$domain}">We'd love to hear what you think about it!</a>{/l}
     </div>
+    <div id="divHeader">
+        <h1><a href="{$www_server}"><span class="hide">{l}Groups<span>NearYou</span>.com</a>{/l}</span></h1>
+        <h2 class="hide">{l}Meet your neighbours{/l}</h2>
+        <ul id="ulMenu" class="collapse">
+            <li {if $menu_item =="about"}class="selected"{/if}><a href="{$www_server}/about/">{l}About{/l}</a></li>                                     
+            <li {if $menu_item =="faq"}class="selected"{/if}><a href="{$www_server}/faq/"><acronym title="{l}Frequently asked questions{/l}">{l}FAQs{/l}</acronym></a></li>                
+            <li {if $menu_item =="add"}class="selected"{/if}><a href="{$www_server}/add/about/">{l}Add a group{/l}</a></li>                        
+            <li {if $menu_item =="search"}class="selected"{/if}><a href="{$www_server}">{l}Search{/l}</a></li>            
+        </ul>
+    </div>
     <div id="divPage">
-        <div id="divHeader">
-            <h1><a href="{$www_server}">{l}Groups<span>NearYou</span>.com</a>{/l}</h1>
-            <h2>{l}Meet your neighbours{/l}</h2>
-            <ul id="ulMenu" class="collapse">
-                <li {if $menu_item =="about"}class="selected"{/if}><a href="{$www_server}/about/">{l}About{/l}</a></li>                                     
-                <li {if $menu_item =="faq"}class="selected"{/if}><a href="{$www_server}/faq/"><acronym title="{l}Frequently asked questions{/l}">{l}FAQs{/l}</acronym></a></li>                
-                <li {if $menu_item =="add"}class="selected"{/if}><a href="{$www_server}/add/about/">{l}Add a group{/l}</a></li>                        
-                <li {if $menu_item =="search"}class="selected"{/if}><a href="{$www_server}">{l}Search{/l}</a></li>            
-            </ul>
-        </div>
-
         <div id="divContent">
+            <span class="corner_tl corner">&nbsp;</span>
+            <span class="corner_tr corner">&nbsp;</span>            
+            <span class="corner_bl corner">&nbsp;</span>
+            <span class="corner_br corner">&nbsp;</span>            
             {if $show_tracker == true}
-            
                 {* Tracker *}
-               <ul id="ulTracker" class="collapse">
-               	<li{if $tracker_location == 2} class="current" {elseif $tracker_location > 2} class="complete" {/if}>
-               		{if $tracker_location >1}
-               			<a href="{$www_server}/add/about/" title="edit this section">{l}1. About the group{/l}</a>
-               		{else}
-               			{l}1. About the group{/l}
-               		{/if}
-               	</li>
-               	<li{if $tracker_location == 3} class="current" {elseif $tracker_location > 3} class="complete" {/if}>
-               		{if $tracker_location >2}
-               			<a href="{$www_server}/add/location/" title="edit this section">{l}2. Area covered{/l}</a>
-               		{else}	
-               			{l}2. Area covered{/l}
-               		{/if}
-               	</li>
-               	<li{if $tracker_location == 4} class="current" {elseif $tracker_location > 4} class="complete" {/if}>
-               		{if $tracker_location >3} 
-               			    <a href="{$www_server}/add/contact/" title="edit this section">{l}3. Joining the group{/l}</a> 
-               		{else}	
-               			{l}3. Joining the group{/l}
-               		{/if}
-               	</li>
-               	<li{if $tracker_location == 5} class="current" {elseif $tracker_location > 5} class="complete" {/if}>
-               		{if $tracker_location >4} 
-               			    <a href="{$www_server}/add/preview/" title="edit this section">{l}4. Preview &amp; confirm{/l}</a> 
-               		{else}	
-               			{l}4. Preview &amp; confirm{/l}
-               		{/if}
-               	</li>
-               </ul>
+                <div id="divTracker">
+                   <ul id="ulTracker" class="collapse">
+                   	<li{if $tracker_location == 2} class="current" {elseif $tracker_location > 2} class="complete" {/if}>
+                   		{if $tracker_location >1}
+                   			<a href="{$www_server}/add/about/" title="edit this section">{l}1. About the group{/l}</a>
+                   		{else}
+                   			{l}1. About the group{/l}
+                   		{/if}
+                   	</li>
+                   	<li{if $tracker_location == 3} class="current" {elseif $tracker_location > 3} class="complete" {/if}>
+                   		{if $tracker_location >2}
+                   			<a href="{$www_server}/add/location/" title="edit this section">{l}2. Area covered{/l}</a>
+                   		{else}
+                   			{l}2. Area covered{/l}
+                   		{/if}
+                   	</li>
+                   	<li{if $tracker_location == 4} class="current" {elseif $tracker_location > 4} class="complete" {/if}>
+                   		{if $tracker_location >3} 
+                   			    <a href="{$www_server}/add/contact/" title="edit this section">{l}3. Joining the group{/l}</a> 
+                   		{else}	
+                   			{l}3. Joining the group{/l}
+                   		{/if}
+                   	</li>
+                   	<li{if $tracker_location == 5} class="current" {elseif $tracker_location > 5} class="complete" {/if}>
+                   		{if $tracker_location >4} 
+                   			    <a href="{$www_server}/add/preview/" title="edit this section">{l}4. Preview &amp; confirm{/l}</a> 
+                   		{else}	
+                   			{l}4. Preview &amp; confirm{/l}
+                   		{/if}
+                   	</li>
+                   </ul>
+                   <span class="corneralt_tl corner">&nbsp;</span>
+                   <span class="corneralt_tr corner">&nbsp;</span>
+               </div>
             {/if}
         
             <div id="divWarning" class="altfont {if $hide_tracker == true} notracker {/if} {if $show_warnings == false}hide{/if}">

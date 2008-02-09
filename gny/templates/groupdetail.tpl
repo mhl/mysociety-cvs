@@ -28,21 +28,20 @@
     <div id="divDescription">
         <div id="divDescriptionText">
             {if $description}{$description}{else}{$group->description}{/if}
+            <div id="divMeta">
+                {l}<em>{$group->name}</em>{if $category} is a <strong>{$category->name|lower} group</strong> and{/if} has been tagged with the keywords <strong>{$group->tags}</strong>.{/l}
+                {l}This page was created by <strong>{if $group->created_name == ''}anonymous{else}{$group->created_name}{/if} on {$group->created_date|date_format}</strong>. 
+                    {if !$dead_links}
+                        <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change</a> or
+                        <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)
+                    {/if}
+                {/l}
+            </div>
         </div>
         <div id="divMapMiniWrapper">
             <div id="divMap"></div>
             <small>({l}approximate area for this group{/l})</small>
         </div>
-
-        <div id="divMeta">
-            {l}<em>{$group->name}</em>{if $category} is a <strong>{$category->name|lower} group</strong> and{/if} has been tagged with the keywords <strong>{$group->tags}</strong>.{/l}
-            {l}This page was created by <strong>{if $group->created_name == ''}anonymous{else}{$group->created_name}{/if} on {$group->created_date|date_format}</strong>. 
-                {if !$dead_links}
-                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change</a> or
-                    <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)
-                {/if}
-            {/l}
-        </div>
-
     </div>
+
 </div>
