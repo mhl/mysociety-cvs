@@ -81,8 +81,9 @@ abstract class pagebase {
         $this->smarty->assign("show_tracker",$this->show_tracker);				
         $this->smarty->assign("viewstate", $this->serialize_viewstate());
         $this->smarty->assign("googleanalytics", DOC_DIR . "templates/googleanalytics.tpl");
-        $this->smarty->assign("rss_link", $this->rss_link);
-        $this->smarty->assign("current_url", $_SERVER['REQUEST_URI']);
+		$this->smarty->assign("rss_link", $this->rss_link);
+		$this->smarty->assign("current_url", $_SERVER['REQUEST_URI']);
+		$this->smarty->assign("google_maps_key", GOOGLE_MAPS_KEY);
 
         foreach($this->warn_controls  as $warn_control) {
             $this->assign('warn_' . $warn_control, true);
