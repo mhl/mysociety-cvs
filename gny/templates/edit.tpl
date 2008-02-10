@@ -1,5 +1,5 @@
 {include file="../templates/header.tpl"}
-
+<div class="contentfull">
     {if $show_sent == false}
         <h3>Edit <em>{$group->name}</em> (creator only)</h3>
 
@@ -27,5 +27,5 @@
             </p>
         </div>
     {/if}
-
+</div>
 {include file="../templates/footer.tpl"}

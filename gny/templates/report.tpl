@@ -1,5 +1,5 @@
 {include file="../templates/header.tpl"}
-
+<div class="contentfull">
     {if $show_sent == false}
         <h3>Contact {$site_name} about <em>{$group->name}</em></h3>
         <p>
@@ -45,5 +45,5 @@
             </p>
         </div>
     {/if}
-
+</div>
 {include file="../templates/footer.tpl"}

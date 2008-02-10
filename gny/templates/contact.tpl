@@ -1,4 +1,5 @@
 {include file="../templates/header.tpl"}
+<div class="contentfull">
     <form action="{$form_action}" method="post">
         {include file="../templates/formvars.tpl"}
         <h3>Contact {$group->name}</h3>
@@ -31,4 +32,5 @@ All the best{/l}
             <input type="submit" value="{l}Next{/l} &raquo;" />
         </div>
     </form>
+</div>    
 {include file="../templates/footer.tpl"}    
