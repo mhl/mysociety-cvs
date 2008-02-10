@@ -67,7 +67,9 @@
         <ul class="nobullets">
             {foreach name="groups" from="$map_groups" item="group"}
                 <li>
-                    <a href="{$www_server}/groups/{$group->url_id}">{$group->name}</a> -  <em>{$group->byline}</em>
+                    <a href="{$www_server}/groups/{$group->url_id}" title="{$group->byline}">
+                        {$group->name}
+                    </a>
                 </li>
             {/foreach}
         </ul>
