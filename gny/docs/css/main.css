@@ -5,7 +5,7 @@ body {font-family: Georgia, serif; text-align:center;line-height:1.8em;margin:0;
 
 /* Header */
 #divHeader {position:relative; background:white url(../images/buildingtile.png) repeat-x left bottom;
-height:130px;padding:0 5%;}
+height:130px;padding:0 5%; text-align:left;}
 #divHeader h1 a {display:block; width:350px; height:80px; background:url(../images/logo.png) no-repeat 0 16px;}
 #divHeader h1 span {font-weight:bold;}
 #divHeader h2 {color:#525252;margin-left:145px; font-weight:normal; font-size:1.1em;}
@@ -24,12 +24,12 @@ div.processheader {position:relative}
 #ulMenu li {float:right;text-align:center;padding-top:0.2em;}
 #ulMenu li a {margin-left:1em;padding-right:1em;display:block; color:black; 
 	text-decoration:none;padding-bottom:0.2em;}
-#ulMenu li.selected {background: #0066ff url(../images/menuleft.png) bottom left no-repeat;}
+#ulMenu li.selected {background: #ff6600 url(../images/menuleft.png) bottom left no-repeat;}
 #ulMenu li.selected a {background:url(../images/menuright.png) bottom right no-repeat; color:white}
 
 /* Layout */
 #divContent {background:white;position:relative;margin-bottom:2em;text-align:left;
-	padding:1em 0;overflow:hidden;}
+	padding:1em 0;overflow:hidden;width:100%;}
 div.contentleft, div.contentright, div.contentwide, div.contentnarrow {float:left;}
 div.contentleft {width:45%; padding: 0 1.5% 0 3%;}
 div.contentright {width:45%; padding: 0 3% 0 1.5%;}
@@ -42,16 +42,16 @@ div.contentwide input.textbox, div.contentwide select {width:55%;}
 input.textbox, textarea, select {padding:5px;}
 
 /* Home page */
-#divHome {background:#ff6600;position:relative; top:-1em;
-	border-bottom:solid 3px #c04e02;padding:2em 0 0 0;}
+#divHome {background:#ff6600; top:-1em; position:relative; width:100%;
+	border-bottom:solid 3px #c04e02;padding:2em 0 1em 0;}
 
 #frmSearchMain {background:white; border-bottom:solid 3px #c04e02; border-top:solid 3px #c04e02;
-	padding:6px 16px;}
+	padding:6px 16px; position:relative;top:-4px;}
 #frmSearchMain #txtSearch {width:80%;}
 
 #divBubble {background:white url(../images/bubble_tr.png) no-repeat top right;position:relative;
-	color:#ff6600; font-size:1.4em;line-height:1.4em;top:-1em;}
-#divBubble p {padding:1em 0.7em 0 0.7em;}	
+	color:#ff6600; font-size:1.4em;line-height:1.4em;padding:0; width:100%;}
+#divBubble p {padding:1em 0.7em 0 0.7em; margin:0;}	
 #divBubble strong {color:black; font-weight:normal;}
 #divBubble span {background:url(../images/bubble_tl.png); top:0;left:0;}
 #divBubble #divPeople {background:#ff6600 url(../images/bubble_br.png) no-repeat top right; height:57px;
@@ -78,12 +78,12 @@ input.textbox, textarea, select {padding:5px;}
 
 /* curned corners */
 span.corner {display:block; position:absolute; width:8px;height:8px;overflow:hidden;}
-span.corner_tl {background:url(../images/white_tl.png);top:0;left:0;}
-span.corner_tr {background:url(../images/white_tr.png);top:0;right:0;}
-span.corner_bl {background:url(../images/white_bl.png);bottom:0;left:0;}
-span.corner_br {background:url(../images/white_br.png);bottom:0;right:0;}
-span.corneralt_tl {background:url(../images/orange_tl.png);top:0;left:0;}
-span.corneralt_tr {background:url(../images/orange_tr.png);top:0;right:0;}
+span.corner_tl {background:url(../images/white_tl.png) no-repeat;top:0;left:0;}
+span.corner_tr {background:url(../images/white_tr.png) no-repeat; top:0;right:0;}
+span.corner_bl {background:url(../images/white_bl.png) no-repeat; bottom:0;left:0;}
+span.corner_br {background:url(../images/white_br.png) no-repeat; bottom:0;right:0;}
+span.corneralt_tl {background:url(../images/orange_tl.png) no-repeat; top:0;left:0;}
+span.corneralt_tr {background:url(../images/orange_tr.png) no-repeat; top:0;right:0;}
 
 /* Index */
 #divFrontLeft, #divFrontRight {width:44%; float:left; text-align:left;
@@ -133,9 +133,10 @@ small.error {background:#ff6f75;}
 small.required {background:#fafafa;padding:8px;}
 small.required span {font-size:1.4em;position:relative; top:4px;}
 
-
+/* Add about page */
 #txtDescription {width: 55%;height: 8em;font-size: 100%;}
 small.textboxhint {padding-left:170px;display:block;}
+ * html  #liCategory {height:1.3em;}
 
 /* Signup map */
 #divMapWrapper {text-align:center;border:solid 1px #ccc;background:#efefef;
