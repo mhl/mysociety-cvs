@@ -21,11 +21,11 @@
             <form id="frmSearchMain" action="{$form_action}" method="post" class="pod">
                 <fieldset>
                     {include file="../templates/formvars.tpl"}
-                    <h3>Find a group near you</h3>
+                    <h4>
                     <label for="txtSearch">
-                        {l}Search for email groups and community blogs and social networks where you live{/l},
+                        {l}Find email groups and social networks where you live{/l},
                     </label>
-                    <br/>
+                    </h4>
                     <input type="text" id="txtSearch" name="txtSearch" class="textbox{if $warn_txtSearch} error{/if}" 
                         onclick="if (this.value=='{$search_hint}') this.value='';" value="{if $data.txtSearch == ''}{$search_hint}{else}$data.txtSearch{/if}"/>
                     <input type="submit" id="btnSearch" name="btnIndex" value="{l}Go{/l}" />
@@ -79,7 +79,7 @@
     <div id="divStartGroup" class="contentfull">
         <h4>{l}No groups near you? Start your own instead!{/l}</h4>
         <p>
-            {l}Starting an email group for your neighbourhood can make a real difference to the community you live in
+            {l}Starting an email group for your neighbourhood can make a real difference to the community you live in.
             You can start one now, for free using one of these sites.{/l}
         </p>
         <ul id="ulGroupSoftware" class="inline">

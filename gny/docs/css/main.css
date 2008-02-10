@@ -17,6 +17,7 @@ height:130px;padding:0 5%; text-align:left;}
 h3 {font-weight:normal; font-size:1.4em; color:#ff6600;padding:0.4em 0 1em 0;}
 h3.centerpage {text-align:center;border-bottom:dotted 1px #808080;margin-bottom:1em;margin-top:0.5em;}
 h4 {font-size:1.4em; font-weight:normal;}
+h5 {font-weight:normal; font-size:1.1em;}
 div.processheader {position:relative}
 
 /* Menu */
@@ -46,12 +47,17 @@ input.textbox, textarea, select {padding:5px;}
 	border-bottom:solid 3px #c04e02;padding:2em 0 1em 0;}
 
 #frmSearchMain {background:white; border-bottom:solid 3px #c04e02; border-top:solid 3px #c04e02;
-	padding:6px 16px; position:relative;top:-4px;}
-#frmSearchMain #txtSearch {width:80%;}
+	padding:0.7em 16px; position:relative;top:-3px;}
+#frmSearchMain h4 {padding:0 0 0.3em 0;}	
+#frmSearchMain label {padding-bottom:2em;}
+#frmSearchMain #txtSearch {width:80%;font-size:1.2em;}
+#frmSearchMain small {font-size:1em;display:block;text-align:right;
+	padding-right:4em;}
 
 #divBubble {background:white url(../images/bubble_tr.png) no-repeat top right;position:relative;
 	color:#ff6600; font-size:1.4em;line-height:1.4em;padding:0; width:100%;}
-#divBubble p {padding:1em 0.7em 0 0.7em; margin:0;}	
+#divBubble p {padding:0.7em 0.7em 0 0.7em; margin:0;}	
+
 #divBubble strong {color:black; font-weight:normal;}
 #divBubble span {background:url(../images/bubble_tl.png); top:0;left:0;}
 #divBubble #divPeople {background:#ff6600 url(../images/bubble_br.png) no-repeat top right; height:57px;
@@ -98,7 +104,8 @@ span.corneralt_tr {background:url(../images/orange_tr.png) no-repeat; top:0;righ
 
 /* Location page */
 #frmSearchPlaceName #ddlCountry, #frmSearchAgain #ddlCountry {width:150px;}
-#frmSearchAgain {padding:1em;}
+#frmSearchAgain {padding-bottom:400px;}
+#frmSearchPlaceName {padding-top:2em;}
 
 /* Pods */
 .pod {padding:0 1em;}
@@ -114,10 +121,6 @@ span.corneralt_tr {background:url(../images/orange_tr.png) no-repeat; top:0;righ
 #ulTracker li.complete a {color:#333;}
 #ulTracker li.current a {color:white;}
 #ulTracker li a {display: block;}
-
-/* Attention grabbers */
-div.attention {text-align:center; padding-top:1em;}
-div.attention h3 {font-size:2em;padding-bottom:0.3em;font-style:normal; color:#456FB1;}
 
 /* Notes */
 p.note, div.note {border-top:solid 4px #90c0c7; border-bottom:solid 4px #90c0c7; background:#ebf5f6;
@@ -154,47 +157,50 @@ small.textboxhint {padding-left:170px;display:block;}
 #ulInvolved  input.radio {float:left;}
 
 /* Search results */
-#frmSearchPage {text-align:center; padding-bottom:1em;}
+#divSearchHeader {padding-right:250px;border-bottom:dotted 1px #808080;
+	margin-bottom:1.2em;}
+#divSearchHeader form {padding-bottom:1em;position:absolute;top:1.5em; right:3%;}
+
+#divSearchResult {border-bottom:dotted 1px #808080;}
 div.searchresult {margin-bottom:1em;}
 div.searchresult h4 {font-size:1.2em;}
 div.searchresult em {font-weight:normal; color:#5e5e5e;}
 div.searchresult p {margin:0;padding:0;}
 
-#divResultsHelp {background:#ffffaa;width:650px;margin:0 auto 16px auto;}
-#divResultsHelp h3 {color:black;padding-top:24px;}
-#divResultsHelp a {font-size:1.3em;}	
-#divResultsHelp p {margin:8px 40px; padding:0 0 16px 0;}
-#emOr {font-size:1.8em; color:#808080;display:block;text-align:center;padding: 16px 0 8px 0;}	
+#divResultsHelp {text-align:center; border-bottom:dotted 1px #808080;}
+#divResultsHelp h4 {font-size:1.8em;text-align:center;padding-bottom:0.5em;
+	padding-top:0.5em;}
+#divResultsHelp p {padding:0 3em;}
 
+#divResultStart {padding-top:2em;}
+#divResultStart h4 {padding-bottom:0.5em;}
+
+/* pledgebank form */
 #frmPledge {margin:1em;background-color:#F6E5FF;border:1px solid #522994;
-	padding:20px 16px 5px 16px;margin:8px auto 16px auto;width:460px;}
+	padding:8px;margin:8px auto 16px auto;position:relative;}
 #frmPledge h4 {padding-bottom:1em;}
-#frmPledge label {width:100px; font-weight:bold;font-size:1.1em;}
-#frmPledge textarea {width:350px;}
-#pPledgeBank {width:480px;margin:0 auto; padding-bottom:16px;}
+#frmPledge label {width:100px; font-weight:bold;}
+#frmPledge textarea {width:350px; width:90%;}
+#frmPledge #txtSignup {width:50%;}
 
 /* Group page */
-#divReturnToSearch {padding:0.5em 0 1em 0;}
 #divGroup {position:relative;}
-#divGroup.preview {margin:15px; border:solid 1px #ccc; padding:10px;}
-#divGroup h3 {margin-bottom:0.3em;margin:0;padding-right:200px; padding-top:14px;}
-#divGroup h4 {color:#5e5e5e;font-size:1.3em; font-style:italic;font-weight:normal;margin-bottom:0.2em;
-	padding-right:250px;padding-bottom:3px;}
+#divGroup.preview {margin:15px; border:solid 1px #808080; padding:10px;}
+#divGroup h3 {margin-bottom:0.3em;margin:0;padding:14px 200px 0 0;}
+#divGroup h4 {color:#5e5e5e;font-size:1.3em; font-style:italic;font-weight:normal;
+	margin-bottom:0.2em; padding-right:250px;padding-bottom:3px;}
 #divGroup h4:first-letter {text-transform:uppercase;}	
-#divInvolved {position:absolute; right:0; top:12px;display:block; width:220px;
-	background:url(../images/involvedbottom.png) no-repeat bottom left;}
-#divInvolved a {display:block;background:url(../images/involvedtop.png) no-repeat;
-	min-height:42px;_min-height:42px;font-size:1.2em; text-align:center;padding-top:15px;}	
+#divInvolved {position:absolute; right:0; top:12px;display:block; }
 
 #divDescription {margin-bottom:1.5em;position:relative; padding-right:266px;
-	border-top:dotted 1px #ccc;}
+	border-top:dotted 1px #808080;}
 #divDescriptionText	{min-height:270px;_min-height:194px; }
 #divMapMiniWrapper {width:250px;height:250px;position:absolute;right:1px;top:16px;
 	border:solid 1px #ccc;}
 #divMapMiniWrapper #divMap {width:250px;height:250px;}
 #divMapMiniWrapper small {position:absolute; bottom:-2.5em; display:block;text-align:center;width:250px;
 	display:block;}
-#divMeta {border-top:dotted 1px #ccc; margin-top:1em;margin-bottom:1.5em;padding:0.3em 1em;}
+#divMeta {border-top:dotted 1px #808080; margin-top:1em;margin-bottom:1.5em;padding:0.3em 0;}
 
 /* Contact */
 #txtContactMessage {width:400px; height:300px;}
@@ -210,7 +216,7 @@ div.searchresult p {margin:0;padding:0;}
 /* Attention grabbers */
 div.attention {text-align:center; padding-top:1em;}
 div.attention.large {font-size:1.4em;}
-div.attention h3 {font-size:2em;padding-bottom:0.3em;font-style:normal; color:#456FB1;}
+div.attention h3 {font-size:2em;padding-bottom:1em;font-style:normal;}
 div.shout {text-align:center; font-size:1.5em;}
 .shout em {color:#ff6600; font-style:normal;}
 ul.shout, p.shout {font-size:1.2em;margin-top:0;}
@@ -264,6 +270,7 @@ a:visited {color:#0048af;}
 a.quiet {color: #808080}
 a:visited.quiet {color: #808080}
 a.rss {padding-left:20px; background:url(../images/rss.png) no-repeat 3px 0;}
+a.largelink {font-size:1.3em;}
 
 /* paragraphs */
 p.flattop {margin-top:0;padding-top:0;}

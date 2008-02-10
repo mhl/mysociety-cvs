@@ -10,15 +10,31 @@
             <div id="divInvolved">
                 {if $group->involved_type == 'email'}
                     {if !$dead_links}
-                        <a href="{$www_server}/groups/{$group->url_id}/contact/">{l}Join this group{/l}</a>
+                        <a class="buttonlink" href="{$www_server}/groups/{$group->url_id}/contact/">
+                            <span class="left">&nbsp;</span>
+                            <span class="middle">{l}Contact this group{/l} &raquo;</span>                
+                            <span class="right">&nbsp;</span>
+                        </a>
                     {else}
-                        <a href="#" title="link disabled for preview">{l}Join this group{/l}</a>
+                        <a href="#" title="link disabled for preview">
+                            <span class="left">&nbsp;</span>
+                            <span class="middle">{l}Contact this group{/l} &raquo;</span>                
+                            <span class="right">&nbsp;</span>
+                        </a>
                     {/if}
                 {else}
                     {if !$dead_links}
-                        <a href="{$group->involved_link}">{l}Explore or join this group{/l}</a>
+                        <a class="linkbutton" href="{$group->involved_link}">
+                            <span class="left">&nbsp;</span>
+                            <span class="middle">{l}Explore or join this group{/l} &raquo;</span>                
+                            <span class="right">&nbsp;</span>
+                        </a>
                     {else}
-                        <a href="#" title="link disabled for preview">{l}Explore or join this group{/l}</a>
+                        <a href="#" title="link disabled for preview">
+                            <span class="left">&nbsp;</span>
+                            <span class="middle">{l}Explore or join this group{/l} &raquo;</span>                
+                            <span class="right">&nbsp;</span>
+                        </a>
                     {/if}
                 {/if}
             </div>

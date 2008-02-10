@@ -35,7 +35,7 @@ class index_page extends pagebase {
 		$this->assign('latest_groups', $latest_groups);
 		$this->assign('map_groups', $map_groups);		
 		$this->assign('map_js', true);		
-		$this->assignLang('search_hint', 'enter a place, postcode or zip code');
+		$this->assignLang('search_hint', 'enter a place, postcode or zip');
 		$this->assign('country', strtoupper($this->viewstate['country']));
 	
 		$this->display_template();

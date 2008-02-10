@@ -7,7 +7,7 @@ CREATE TABLE  `groups`.`category` (
   `url_id` varchar(20) NOT NULL,
   PRIMARY KEY  (`category_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-INSERT INTO `groups`.`category` VALUES  (1,'Community discussion','e.g. general chat about this place','community'),
+INSERT INTO `category` VALUES  (1,'Community discussion','e.g. general chat about this place','community'),
  (2,'Society, club or hobby','e.g. Sports club or historical society','society'),
  (3,'Campaign group','e.g. climate change or political party','campaign');
 CREATE TABLE  `groups`.`confirmation` (

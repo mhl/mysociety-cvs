@@ -114,4 +114,278 @@
                     <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)
                 {/if}
             ',
+  '2c3f75b52322665b71bd1e6050924082' => 'frequently asked questions',
+  'e042dd4e55c360b44cf7aefcde30bc93' => 'What does {$site_name} do?',
+  'e1fe954cbd98af824bc6c8b5b0196df9' => 'It lets you find out about all those hidden email lists, forums and community blogs near where you live.',
+  '4dab823a21f6c52b9691cb812acd1993' => 'I run a local email group, forum or blog and want to add it to {$site_name}',
+  '45b796ef1d0275d413fbbf001ad2c4bc' => 'It\'s very easy. Tell us a bit about the group, the approximate area it covers and how people
+            can get involved. <a href="{$www_server}/add/about/">Get started</a>.',
+  'ea0b6adc40d11b60426346930f379662' => 'How do I find a group near me?',
+  '0fa59f5e2ddf6ac881a1c25825cfa5f4' => 'Enter a place name anywhere in the world, or a UK post code or USA Zip code in the search box on <a href="{$www_server}">the front page</a>.',
+  'ed1908b23f975f836f7c1bb10287d561' => 'Once I find a group how to join it?',
+  '50679a0a9ef3f62f9707f4e8eab1bf3d' => 'Click on the "join this group" link. If the group lets you join online then you\'ll get taken to their website.  
+            If not, you can contact the group owner via this site.',
+  '4f14bbf0b2bd1389feaaee6e9fd72d90' => 'I can\'t find any groups near me, but would like to start one.',
+  '70a3656325de8c2b4bef78449a3a20f1' => 'There are lots of free tools on the internet to help you start an online group. 
+            Companies like <a href="http://groups.yahoo.com/start">Yahoo</a> and 
+            <a href="http://groups.google.com/groups/create">Google</a> 
+            provide free email groups services that is simple to set up. If you need help getting other 
+            local people to promise to join your group before you start it, 
+            you can use <a href="http://www.pledgebank.com">PledgeBank</a>.',
+  'c1bd7d7de2f076ff42d557388a618567' => 'I run a local group and would like to share my experiences or get advice',
+  '18906424a0580148d93ca245745a4851' => 'We have setup an <a href="http://groups.google.com/group/groupsnearyou">email discussion group</a> for people
+            who run local email groups or online communities.',
+  '63a0ee3a46b11bd727aabfe85a4be2f8' => 'If I add a group will people be able to contact me?',
+  '9cb033706593f813f80b21d4cbed3156' => 'If you choose to be contacted people will be able to email you via this website. 
+            Your email will not be published though and we will not spam you or pass it on to anyone else.
+            ',
+  '72f3afdae56d724639c33ec656b4e28e' => 'Who runs {$site_name}?',
+  '503f1ddddd4ccc136df558eac65de570' => '{$site_name} is run by <a href="http://www.mysociety.org">mySociety.org</a>, a charity 
+            which builds useful websites which give people simple, tangible benefits in the 
+            civic and community aspects of their lives. It was built by 
+            <a href="http://www.memespring.co.uk">Richard Pope</a>.
+            ',
+  'cbf80c91068998e1ccf7dbe35c1e1e7c' => 'There is something wrong / inappropriate about a group, how do I report it?',
+  '77937160908ca01c579919ce8c58f2f7' => 'Click on the "Something wrong with this group?" link at the bottom of the group\'s page. This will let you 
+            send us an email telling us what is up.',
+  'c4261b9dd01a8bb7da8a80c1ebebe373' => 'I am a geek and want to know how this site works',
+  '9c731fffab38b9fb1ddd85f0f4bf1cee' => 'The site is built using <a href="http://www.php.net">php</a>, <a href="http://www.smarty.net">smarty</a>,
+            <a href="http://www.mysql.com/">mySql</a> and <a href="http://script.aculo.us/">Scriptaculous</a>.
+            It uses the <a href="gaze.mysociety.org">mySociety GAZE web service</a> to do place name searches, and
+            Emad\'s <a href="http://emad.fano.us/blog/?p=277">free geocoder</a>.',
+  'd280f204f76cb074f4d9f8a685fea733' => 'Does the site have an <acronym title="Application Programming Interface">API</acronym>?',
+  '85d983ce09192f0f3c6bb9ffd52a0be6' => 'Yep. Group data is available via <a href="{$www_server}/api/">geoRSS feeds</a>.',
+  '6d325f3293b99bb8d9d4974f773d2ad8' => 'about us',
+  '3b5e525ef7d3739999b4346dfa5e2359' => 'About {$site_name}',
+  '5da8d4d14c1485da5b0862483a9229a3' => 'We don\'t talk enough. {$site_name} helps people in your neighbourhood get to know each other!',
+  '5c67aa7f8e15828c09da8fe56715c4a7' => 'Find email lists, forums and community blogs where you live',
+  '9ebf524692f65c750e08d77a95123ee6' => 'Help people find a group you know about by <a href="{$www_server}/add/about/">adding it to {$site_name} in 4 simple steps</a>',
+  'df305614063232ccbc29c6c26dfda199' => 'Get people talking about local issues that are important to them. Make a change with the help of others.',
+  'f9ead3f5425cadb383d5f5962be0581e' => 'Want to know more?',
+  '2af8d658fe1869d865fc69d75392c626' => 'Read our FAQ\'s',
+  '02d4482d332e1aef3437cd61c9bcc624' => 'Contact us',
+  'a04955bfc67d470ba829e3eb353b9056' => 'It\'s very easy. Tell us a bit about the group, the approximate area it covers and how people
+                can get involved. <a href="{$www_server}/add/about/">Get started</a>.',
+  'ae02204deb6af1e6fc26426576f8a2d4' => 'Click on the "join this group" link. If the group lets you join online then you\'ll get taken to their website.  
+                If not, you can contact the group owner via this site.',
+  'bb8fd7368824ba5c675564c8be1afe4c' => 'There are lots of free tools on the internet to help you start an online group. 
+                Companies like <a href="http://groups.yahoo.com/start">Yahoo</a> and 
+                <a href="http://groups.google.com/groups/create">Google</a> 
+                provide free email groups services that is simple to set up. If you need help getting other 
+                local people to promise to join your group before you start it, 
+                you can use <a href="http://www.pledgebank.com">PledgeBank</a>.',
+  '7a6a30175876066cbbfd564f12fe2ac7' => 'We have setup an <a href="http://groups.google.com/group/groupsnearyou">email discussion group</a> for people
+                who run local email groups or online communities.',
+  '5c1c696a90d4a3e850da21e52b49c6fd' => 'If you choose to be contacted people will be able to email you via this website. 
+                Your email will not be published though and we will not spam you or pass it on to anyone else.
+                ',
+  'ca398ae6e736954e23ef0e283e26753f' => '{$site_name} is run by <a href="http://www.mysociety.org">mySociety.org</a>, a charity 
+                which builds useful websites which give people simple, tangible benefits in the 
+                civic and community aspects of their lives. It was built by 
+                <a href="http://www.memespring.co.uk">Richard Pope</a>.
+                ',
+  '33e7a776f8eb6eae4201b350fe5cf19d' => 'Click on the "Something wrong with this group?" link at the bottom of the group\'s page. This will let you 
+                send us an email telling us what is up.',
+  '953b3c5a0efbbbb9ec31d988668b79d1' => 'The site is built using <a href="http://www.php.net">php</a>, <a href="http://www.smarty.net">smarty</a>,
+                <a href="http://www.mysql.com/">mySql</a> and <a href="http://script.aculo.us/">Scriptaculous</a>.
+                It uses the <a href="gaze.mysociety.org">mySociety GAZE web service</a> to do place name searches, and
+                Emad\'s <a href="http://emad.fano.us/blog/?p=277">free geocoder</a>.',
+  'a7db891382a91566d6e4c0b193e4479b' => 'Find email groups and web communities where you live',
+  'd561aa0f39da727de954346b59cbf542' => 'Find email groups and community blogs and social networks where you live',
+  '129e57b5192ec6115d0e5fed64341000' => '{$site_name} is run by <a href="http://www.mysociety.org">mySociety.org</a>, a charity 
+                which builds useful websites which give people simple, tangible benefits in the 
+                civic and community aspects of their lives. It was built by 
+                <a href="http://www.memespring.co.uk">Richard Pope</a>, <a href="http://www.dracos.co.uk">Matthew Somerville</a>
+                and <a href="http://www.styledeficit.com">Denise Wilton</a>
+                ',
+  'a01882250fdb1076c847801daf5c6281' => 'Search results for barcelona',
+  '99cd56390e798f102817d83c29becb20' => 'We found some groups for you!',
+  'cb43a3cc39acfc9c8ef3ab459e714f18' => 'read more...',
+  '9ca2a1e550ee425049f72d5ef30d1314' => 'Nobody has added any groups {if $place_name !=\'\'}for {$place_name|escape:html}{else}for that location{/if} yet!',
+  '78eb96ea0e206355db438a59a783d656' => 'Add a group you know about {if $place_name !=\'\'}in {$place_name|escape:html}{else}near {$query}{/if} &raquo;</a>',
+  '1769a62cf1990ba1dc26709ce91ad3c1' => 'Add a group you know about {if $place_name !=\'\'}in {$place_name|escape:html}{else}this location{/if}',
+  'ff5fe1abe91975f58c497136d5267a97' => '
+                    Help map the world&rsquo;s online communities by adding a community email group, <br/>forum or blog you know about{if $place_name !=\'\'} in {$place_name|escape:html}{/if}.
+                    <strong>It takes 4 simple steps to add a group.</strong>
+                ',
+  'ac146dfebab39f3b79b616172933693d' => 'There {if $groups|@sizeof == 1}is{else}are{/if} currently <strong>{$groups|@sizeof}</strong> {if $groups|@sizeof == 1}group{else}groups{/if} near {$query_display_text|escape:html}',
+  '1182c09029c9ce8ab44b32300335be88' => 'You can get updates of new groups near {$query_display_text|escape:html} by subscribing to <a class="rss" href="{$rss_link}">this 
+        <acronym title="Really simple syndication">rss</acronym> feed</a> or view the areas covered by 
+        groups on this page <a href="http://maps.google.com/maps?f=q&hl=en&q={$rss_link|escape:url}&layer=&ie=UTF8&z=13&om=1">on a map</a>',
+  'd7b8236ecca0cadebdc67cd5fdc4f42a' => 'You can permanently link to this page <a href="{$current_url}">here</a>',
+  '5bdd41f39109ce477ebc7a9e7ad499b2' => 'I will',
+  '133dc32fb8e65be2d8f9aeb48e7733ed' => 'setup a local email group to discuss what\'s going on in {if $place_name !=\'\'}{$place_name}{else}[MY TOWN]{/if}',
+  '6cb0796018001542a198adf17b8d978a' => 'but only if',
+  'cee5ea24af2728bbf2012d18e051925b' => 'other local people',
+  '18218139eec55d83cf82679934e5cd75' => 'will',
+  '314646303fa4c03a5c7b5c46a25f1312' => 'join the email group',
+  '5a22bf25346ffd1cefa5215920bc4b32' => 'Continue on Pledgebank.com',
+  '1cf61331900a72bf7f29ee73227ed039' => 'PledgeBank is a website that lets you say you will do something, but only if some other people will help you. You get your own web page and TXT number to help you gather support, plus you can print posters to promote your pledge.',
+  '32043a7919b0675e4e1e5a1edcda761a' => 'Search for email groups and community blogs and social networks where you live',
+  '5e820b10ddb5e526225a5ea26cce09ea' => 'Start your own group',
+  'f25dca14b7f69bb0c04aa65ec859d694' => 'Starting an email group for your neighbourhood can make a real difference to the community you live in
+            You can start one now, for free using one of these sites.',
+  '1637ca408d8c9baa801b833375655262' => 'We need *your* help to map all those hidden email lists, forums and community blogs where you live.
+                It\'s simple and takes just 4 steps.',
+  'e0317ab42ffb3706c00848e3abea5ea9' => 'Help out',
+  'fced2b847945e2f53d080c0b6c27b427' => 'This page was created by <strong>{if $group->created_name == \'\'}anonymous{else}{$group->created_name}{/if} on {$group->created_date|date_format}</strong>. 
+            {if !$dead_links}
+                <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change</a> or
+                <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)
+            {/if}
+        ',
+  'bc07eb2726505852d60af928a491839d' => 'This page was created by <strong>{if $group->created_name == \'\'}anonymous{else}{$group->created_name}{/if} on {$group->created_date|date_format}</strong>. 
+                    {if !$dead_links}
+                        <a href="{$www_server}/groups/{$group->url_id|escape:url}/report/">Suggest a change</a> or
+                        <a href="{$www_server}/groups/{$group->url_id|escape:url}/edit/">Edit this page</a> (creator only)
+                    {/if}
+                ',
+  '4d4f4e3e82a76ad36fa6233e5a890e56' => 'Groups Near You - Frequently asked questions',
+  'ff89f05aeac792986f56e1b1f1821e6f' => '{$site_name} - Frequently asked questions',
+  'cec95fe098d6bf17f6e6d1b8c3db8fb6' => 'GroupsNearYou.com is a website for local online groups, if your group covers a large area (such as a country) then you will be unable to add it',
+  'dbcd769a6553b40ceeec2519772fe559' => 'Sorry, your group is too large to add to GroupsNearYou.com, we are currently only mapping small local groups like email lists for your street or village. We may start accepting larger groups in the future though.',
+  'c6b9db2beb23e4affac68a600f1b2c30' => 'Sorry, your group is too large to add to GroupsNearYou.com, we are currently only mapping small local groups like an email list for your street or village. We may start accepting larger groups in the future though.',
+  '3ad0fab28adcf5250bd40725e6a7c17c' => 'Sorry, your group is too large to add to GroupsNearYou.com, we are currently only mapping small local groups, like an email list for your street or village. We may start accepting larger groups in the future though.',
+  '1df4d84258ba2ca8690fc1ccaf0e23fc' => 'Sorry, your group is too large to add to Groups Near You, we are currently only mapping small local groups, like an email list for your street or village. We may start accepting larger groups in the future though.',
+  'ef3d425952254828275c672e647f8450' => 'Groups Near You',
+  '2cfc08ff3466e976c9334d1322c337db' => 'Sorry, your group is too large to add to Groups Near You, as we are currently only mapping small local groups, like an email list for your street or village. We may start accepting larger groups in the future though.',
+  'c6b166f53254c2b8415a27a9d917dcaa' => 'Don&rsquo;t worry if you don&rsquo;t run or maintain the group you&rsquo;re adding,
+    	it&rsquo;s all valuable information.',
+  '392736900e9d0a4e7135bd6ba9864043' => 'How do people join the group?',
+  'b96fe7a8931c9297e59e8933e84b68f9' => 'Please enter a valid web address people can visit to get involved with the group',
+  'b73b88ded7cd61aeab6ed8de6e3e11b3' => 'Please add any local group you know about, to help more people join up!',
+  '9ba1dd13407aba3d6381869a212cd653' => 'Please add any local group you know about, to help more people join up! email group for your neighbourhood can make a real difference to the community you live in',
+  'baf9b66fcc1a3a05c56643c79610bbb7' => 'Please add any local group you know about. Adding to help more people join up! email group for your neighbourhood can make a real difference to the community you live in',
+  '598a53372f5bc4b7ecdea95fb59e9bb6' => 'Please add any local online groups you know about. Getting people talking could make a real difference to the community you live in.',
+  '75b5d519c277aeb52f2bba3a789f41f6' => 'Please add any local online groups you know about, it\'ll help people in your community get chatting.',
+  '1a0295e4ff4eaf2d0856fcf1acda1eb8' => 'Please add any local online groups you know about, it\'ll help more people in your community to get chatting.',
+  '6d07c250ac701ab9f6169bd3dff5167e' => 'Please add any local online groups you know about, it\'ll help more people in your community to start talking.',
+  '837e83a9326dc3aca166ad2eb1012ab0' => 'Please add any local online groups you know about, it\'ll help more people in your community to start talking!',
+  'fec721b6deae8335e9d821190864b9e1' => 'Another groups',
+  'ab066b3292d8ab61ef3b5c77169cdd19' => 'More information',
+  '10ac3d04253ef7e1ddc73e6091c0cd55' => 'Next',
+  '6cf133c9f129a9bac9aeed000637795e' => 'Next (Area covered)',
+  'a3c25484ce4051aa5696947b5ca24e10' => 'Don&rsquo;t worry if you don&rsquo;t run or maintain the group you&rsquo;re adding, it&rsquo;s all valuable information.',
+  '75813677e9e31ef9454d0d6c21b5f9c7' => 'Email for info',
+  '31dc68eed60b2451b4c31d3e5e9d4c8c' => 'Visit a web page',
+  '620c0867b097f3bfc3fd048aec23014c' => 'this will <strong>not</strong> be published, but people will be able to contact it',
+  '7ca28e34123973d1b2d8e796524ada05' => 'this will not be published and <span class="highlight">we will not spam you</span>',
+  '0b6396d633e83e33c3cd92552caeea7e' => 'Get people talking about local issues that are important to them.',
+  '0ba7972337c61463586b30f0fbf79a7a' => '{$site_name} is run by <a href="http://www.mysociety.org">mySociety.org</a>, a charity 
+                which builds useful websites which give people simple, tangible benefits in the 
+                civic and community aspects of their lives. It was built by 
+                <a href="http://www.memespring.co.uk">Richard Pope</a>, <a href="http://www.dracos.co.uk">Matthew Somerville</a>
+                and <a href="http://www.styledeficit.com">Denise Wilton</a>.
+                ',
+  'c7b0b1b7d5f96b0b3beab5a4221bc4f2' => 'Feeds and API',
+  '4efd4c3ad56438d999982e69739cbe73' => '{$site_name} feeds / <acronym title="Application Programming Interface">API</acronym>',
+  '8da6383b82669a77adce1c520e209e5b' => '{$site_name} data is available programmatically as <a href="http://georss.org/">GeoRSS</a>
+        feeds. These can be used in most web mapping APIs and desktop <acronym title="Geographic Information System">GIS</acronym> software like 
+        <a href="http://mapufacture.com">mapufacture</a>, 
+        <a href="http://maps.google.com">Google Maps</a>, <a href="http://developer.yahoo.com/maps/georss/index.html">Yahoo maps</a> 
+        and <a href="http://pipes.yahoo.com/">Yahoo Pipes</a>. 
+        Details of the API are listed below.
+        We will add more feeds in the near future. Please <a href="{$www_server}/about/#contact">
+            get in touch</a> if you want anything specific that isn\'t listed here.</span>',
+  'a920c73c5c2238899d2bbe9c4e54753d' => 'Groups by location (bounding boxes)',
+  'e8806f2db1ef9027093af51696931433' => 'Returns bounding boxes of groups near a given location. Location can be defined by 
+	   <a href="http://en.wikipedia.org/wiki/UK_postcodes"><acronym title="United Kingdom">UK</acronym> postcode</a>,
+	   <a href="http://en.wikipedia.org/wiki/ZIP_Code"><acronym title="United States of America">USA ZIP code</a> </a>
+	   or longitude / latitude.',
+  '65ba07d2339d1de1c4a964580cbd80c8' => 'view example',
+  'c57b33d900a1ca80bc12dc89df4eb02f' => 'view on a map',
+  'ce5808700ccdf70beb0a74688ea58ba9' => 'License information',
+  '26a9247590eb7fccf2466c317cd4f6bc' => 'Data via the {$site_name} <acronym title="Application Programming Interface">api</acronym> 
+        feeds is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">
+        Creative Commons Attribution-ShareAlike 3.0 license</a>.',
+  'fcf8f9a97d8fcd1e34319328f196008a' => '{$site_name} data is available programmatically as <a href="http://georss.org/">GeoRSS</a>
+            feeds. These can be used in most web mapping APIs and desktop <acronym title="Geographic Information System">GIS</acronym> software like 
+            <a href="http://mapufacture.com">mapufacture</a>, 
+            <a href="http://maps.google.com">Google Maps</a>, <a href="http://developer.yahoo.com/maps/georss/index.html">Yahoo maps</a> 
+            and <a href="http://pipes.yahoo.com/">Yahoo Pipes</a>. 
+            Details of the API are listed below.
+            We will add more feeds in the near future. Please <a href="{$www_server}/about/#contact">
+                get in touch</a> if you want anything specific that isn\'t listed here.</span>',
+  'b08906a694c681215928b9939d0f4212' => 'Returns bounding boxes of groups near a given location. Location can be defined by 
+    	   <a href="http://en.wikipedia.org/wiki/UK_postcodes"><acronym title="United Kingdom">UK</acronym> postcode</a>,
+    	   <a href="http://en.wikipedia.org/wiki/ZIP_Code"><acronym title="United States of America">USA ZIP code</a> </a>
+    	   or longitude / latitude.',
+  '732164fe8eda15a19dc9d01379e7433e' => 'Data via the {$site_name} <acronym title="Application Programming Interface">api</acronym> 
+            feeds is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">
+            Creative Commons Attribution-ShareAlike 3.0 license</a>.',
+  '867f4e39b5fe98f8b983da43051585bc' => 'More about mySociety',
+  '3f004ebe4b5355a45cd3f962679ea0ba' => 'Read about mySociety',
+  '0bddee4d29167dc8af48bccf84fe49f9' => 'We don\'t talk enough. <strong>{$site_name}</styrong> helps people in your neighbourhood get to know each other!',
+  'f2f0cdf6777219d2dd61fbe0a20e9a8d' => 'We don\'t talk enough. <strong>{$site_name}</strong> helps people in your neighbourhood get to know each other!',
+  '64d9f64560dfb6a35bffa601d11bf686' => 'We don\'t talk enough. <em>{$site_name}</em> helps people in your neighbourhood get to know each other!',
+  '420b7a0d0b712843841d06005308a76b' => 'We don\'t talk enough... <em>{$site_name}</em> helps people in your neighbourhood get to know each other!',
+  'c098e57b31cc937ed33d3fbf54abbf0e' => 'We don\'t talk enough... <em>{$site_name}</em> helps people in your neighbourhood get to know each other',
+  '8372692ac95eb7fc27fe8f964e134d59' => 'Get involved',
+  'e1fd60e0f3945d44a4b4a15731b0be61' => 'american group',
+  '143e2b3d8b9e2e9e06abdbc7ef08892b' => 'We need *your* help to map all those hidden email lists, forums and community blogs where you live.
+            It\'s simple and takes just 4 steps.',
+  '2e99f940a1317c19b6c02266e45e347c' => 'Help map the world\'s online communities!',
+  '19d2149973d1446ea790cfeffd7f0e97' => 'Help us map the world\'s online communities!',
+  '4faf3b67c3c0391256e00ddd9b077362' => '
+                We need *your* help to map all those hidden email lists, forums and community blogs where you live.
+                It\'s simple and takes just 4 steps. 
+                You don\'t need to be the organiser of the group, just know a bit about it and what area it covers.
+            ',
+  '0d6d36a03138aaf1642321f3660b6159' => '
+                We need *your* help to map all those hidden email lists, forums and community blogs where you live.
+                It\'s simple and takes just 4 steps and you don\'t need to be the organiser of the group.
+            ',
+  'c0fdb1c7009aedaa8f3f40498c4af13c' => '
+                We need *your* help to map all those hidden email lists, forums and community blogs where you live.
+                It\'s simple and takes just 4 steps, and you don\'t need to be the organiser of the group.
+            ',
+  '54778abc2f862a69d6f12108f4f43e6d' => '
+                We need *your* help to map all those hidden email lists, forums and community blogs where you live.
+                It only takes 4 simple steps, and you don\'t need to be the organiser of the group.
+            ',
+  'a9cbc9993863e3acf8f1ee3288fe5948' => 'american group 2',
+  '808a317580fbc5680b8ee77969b6bedb' => '
+                We need *your* help to map all those hidden neighbourhood email lists, forums and community blogs where you live.
+                It only takes 4 simple steps, and you don\'t need to be the organiser of the group.
+            ',
+  'e8f1ade4ae40d6d13a000bc9246bf376' => 'No groups near you? Start your own instead!',
+  '61e9e371d8891e9e289c56ee5b8f44de' => 'Browse groups',
+  '21020da4968446118c00a4cce6cdea21' => 'Choose a location',
+  'c48a674bcaa512b173e7447a9ecc8a50' => 'Please confirm which place you are looking for',
+  'e176e4e231b324cf147f727b605fc7cf' => 'Change location?',
+  'c272e2dfd34f4a996fe0e301366a3a36' => 'Try another place name?',
+  'd2b5fc6e9a5f092e299db6689aecc43c' => 'Please choose which country you are in',
+  '81fa24240d94d49791e0a016fdaf5012' => 'Unable to search by place name',
+  'a07eeaa07c95386448b095ec020c26d1' => 'Sorry, searching by place name is currently unavailable. Please try again later, or <a href="{$www_server}">search by post code or zip code</a>',
+  '0eef9d9b19ba4ffbb3127c34103ff5d2' => 'Search results for woking',
+  '8819556e3c26974f3ef4272f8fe74360' => '
+                        Help map the world&rsquo;s online communities by adding a community email group, <br/>forum or blog you know about{if $place_name !=\'\'} in {$place_name|escape:html}{/if}.
+                        <strong>It takes 4 simple steps to add a group.</strong>
+                    ',
+  '550be85012438dd504c792f2b72caa54' => 'You can get updates of new groups near {$query_display_text|escape:html} by subscribing to <a class="rss" href="{$rss_link}">this 
+            <acronym title="Really simple syndication">rss</acronym> feed</a> or view the areas covered by 
+            groups on this page <a href="http://maps.google.com/maps?f=q&hl=en&q={$rss_link|escape:url}&layer=&ie=UTF8&z=13&om=1">on a map</a>',
+  '0711a50eff503df24a5cf234c85a7069' => 'Search results for brixton',
+  '61416ba8799e2f1bde436d5d7036de36' => 'Search results - we found some groups for you!',
+  'aa219ef0af45e8bcf4cb3646f956bfaf' => 'Search results for {$query_display_text}',
+  'e45f6aca21e0174a41d18cc4690cb449' => 'Search results for <em>{$query_display_text}</em>',
+  'cf8b92bceb589c21fb83355bccdd8bb1' => 'Search for email groups and social networks where you live',
+  '6e2ed37018253aa69973789b4c69088d' => 'Find email groups and social networks where you live',
+  'b8fd1fb078e2f2c493b14a3d22764c9d' => 'enter a place, postcode or zip',
+  '22b48eec4e59922d4660a7aebda77ff1' => 'Starting an email group for your neighbourhood can make a real difference to the community you live in.
+            You can start one now, for free using one of these sites.',
+  '7e8a5319cf76f2f789d23135b729422d' => 'Keywords for group',
+  '4e258e5513e9db4f84e510c1c910d995' => 'No groups found',
+  '9140a4ef62739f237a00b8b7ccb5d171' => 'Sorry, no groups found',
+  '638f6c84b383a0e6ec4610b03d675e64' => 'Sorry, would couldn\'t find any  groups',
+  '82c9d4d8f0a307efc9c647eb50f50e66' => 'Sorry, we couldn\'t find any  groups',
+  '203b42f4be2fcf2eed6487c2a1df644d' => '
+                        We need *your* help to map all those hidden neighbourhood email lists, forums and community blogs where you live.
+                        It only takes 4 simple steps, and you don\'t need to be the organiser of the group.
+                    ',
+  '133b3bd62ca9ffa4622e52354cc67030' => 'Nobody has added any groups {if $place_name !=\'\'}for {$place_name|escape:html}{else}for that location{/if} yet',
+  'ddbb1ff51addde81d2441d16d8842a37' => 'No groups near you? Start your own instead',
+  '5cea39e28e09df90b1fadc94ddf28d6e' => 'Start a group for free using one of these sites',
+  'd28f560ed3e125b724099ba85db256f5' => 'Use Pledge Bank to gather support',
+  '400ec8477d6850a504c87ec3d71947a0' => 'Contact this group',
 ); ?>
