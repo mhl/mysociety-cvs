@@ -60,7 +60,7 @@
             </a>
         </p>
     </div>
-
+    <hr/>
     {* Recent groups *}
     <div id="divRecent" class="contentfull">
         <h4>{l}Recently added groups{/l}</h4>
@@ -76,11 +76,14 @@
         
         </div>
     </div>
+    <hr/>    
     <div id="divStartGroup" class="contentfull">
         <h4>{l}No groups near you? Start your own instead!{/l}</h4>
         <p>
             {l}Starting an email group for your neighbourhood can make a real difference to the community you live in.
-            You can start one now, for free using one of these sites.{/l}
+            You can start one now, for free using one of these sites. 
+            Then use <a href="http://www.pledgebank.com">Pledge Bank</a> to gather support.
+            {/l}
         </p>
         <ul id="ulGroupSoftware" class="inline">
             <li>

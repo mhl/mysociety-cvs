@@ -388,4 +388,8 @@
   '5cea39e28e09df90b1fadc94ddf28d6e' => 'Start a group for free using one of these sites',
   'd28f560ed3e125b724099ba85db256f5' => 'Use Pledge Bank to gather support',
   '400ec8477d6850a504c87ec3d71947a0' => 'Contact this group',
+  '48913bb846be53b727fb749753619f63' => 'Starting an email group for your neighbourhood can make a real difference to the community you live in.
+            You can start one now, for free using one of these sites. 
+            Then use <a href="http://www.pledgebank.com">Pledge Bank</a> to gather support.
+            ',
 ); ?>
