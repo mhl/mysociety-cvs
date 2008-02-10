@@ -10,13 +10,13 @@
             <div id="divInvolved">
                 {if $group->involved_type == 'email'}
                     {if !$dead_links}
-                        <a class="buttonlink" href="{$www_server}/groups/{$group->url_id}/contact/">
+                        <a class="linkbutton" href="{$www_server}/groups/{$group->url_id}/contact/">
                             <span class="left">&nbsp;</span>
                             <span class="middle">{l}Contact this group{/l} &raquo;</span>                
                             <span class="right">&nbsp;</span>
                         </a>
                     {else}
-                        <a href="#" title="link disabled for preview">
+                        <a class="linkbutton" href="#" title="link disabled for preview">
                             <span class="left">&nbsp;</span>
                             <span class="middle">{l}Contact this group{/l} &raquo;</span>                
                             <span class="right">&nbsp;</span>
@@ -30,7 +30,7 @@
                             <span class="right">&nbsp;</span>
                         </a>
                     {else}
-                        <a href="#" title="link disabled for preview">
+                        <a class="linkbutton" href="#" title="link disabled for preview">
                             <span class="left">&nbsp;</span>
                             <span class="middle">{l}Explore or join this group{/l} &raquo;</span>                
                             <span class="right">&nbsp;</span>
