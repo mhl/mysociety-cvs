@@ -41,7 +41,7 @@
         {/if}
     </div>
     <div id="divResultStart" class="contentfull">
-        <h4>{l}No groups near you? Start your own instead{/l}.</h4>
+        <h4>{l}No groups near you? Start your own.{/l}</h4>
     </div>
     <div class="contentleft">
         <h5><strong>1.</strong> {l}Start a group for free using one of these sites{/l}</h5>

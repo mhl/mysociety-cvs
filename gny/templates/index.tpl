@@ -80,7 +80,7 @@
     </div>
     <hr/>    
     <div id="divStartGroup" class="contentfull">
-        <h4>{l}No groups near you? Start your own instead!{/l}</h4>
+        <h4>{l}No groups near you? Start your own.{/l}</h4>
         <p>
             {l}Starting an email group for your neighbourhood can make a real difference to the community you live in.
             You can start one now, for free using one of these sites. 
