@@ -27,7 +27,8 @@
 
 <body>
     <div id="divBeta">
-        {l}This site is currently in beta (test) mode. <a href="mailto:team@{$domain}">We'd love to hear what you think about it!</a>{/l}
+        This site hasn't officially launched yet, we need your local knowledge to help it grow. 
+        <a href="{$www_server}/add/about/">Add a group now</a>.
     </div>
     <div id="divHeader">
         <h1><a href="{$www_server}"><span class="hide">{l}GroupsNearYou.com{/l}</span></a></h1>

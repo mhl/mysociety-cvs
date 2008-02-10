@@ -392,4 +392,10 @@
             You can start one now, for free using one of these sites. 
             Then use <a href="http://www.pledgebank.com">Pledge Bank</a> to gather support.
             ',
+  '82ebf1c05dad5390582594cbd0e0e8f8' => 'meet the neighbours',
+  'bc5657b10d56a9de587832d11581774f' => 'No groups near you? Start your own.',
+  'f72d95d6f2af10d84822972d73d5e055' => 'Starting an email group for your neighbourhood can make a real difference to the community you live in.
+            You can start one now, for free, using one of these sites. 
+            Then use <a href="http://www.pledgebank.com">Pledge Bank</a> to gather support.
+            ',
 ); ?>
