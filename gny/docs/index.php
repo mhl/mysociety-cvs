@@ -77,15 +77,13 @@ class index_page extends pagebase {
 		return $groups;
 	}
 	
-	
 	private function get_representative_groups(){
 
 		//get a representative sample of new groups from round the world
-		$count = 3;
-		$americas_groups = $this->groups_by_box(array(-150, 60, -30, -50), $count);
-		$european_groups = $this->groups_by_box(array(-5, 70, 50, 30), $count);
-		$african_groups = $this->groups_by_box(array(-15, 25, 60, -40), $count);
-		$asian_groups = $this->groups_by_box(array(60, 90, 170, -60), $count);			
+		$americas_groups = $this->groups_by_box(array(-150, 60, -30, -50), 2);
+		$european_groups = $this->groups_by_box(array(-5, 70, 50, 30), 1);
+		$african_groups = $this->groups_by_box(array(-15, 25, 60, -40), 1);
+		$asian_groups = $this->groups_by_box(array(60, 90, 170, -60), 2);			
 
 		return array_merge($european_groups, $americas_groups, $african_groups, $asian_groups);	
 	}

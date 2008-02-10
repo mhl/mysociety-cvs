@@ -65,7 +65,7 @@
     <div id="divRecent" class="contentfull">
         <h4>{l}Recently added groups{/l}</h4>
         <ul class="nobullets">
-            {foreach name="groups" from="$latest_groups" item="group"}
+            {foreach name="groups" from="$map_groups" item="group"}
                 <li>
                     <a href="{$www_server}/groups/{$group->url_id}">{$group->name}</a> -  <em>{$group->byline}</em>
                 </li>

@@ -154,8 +154,9 @@ function loadLatest (){
 	for (var i=0; i < aGroupData.length; i++) {
 		var oGroup = eval('(' + aGroupData[i].value + ')' )
 	    var point = new GLatLng(oGroup.lat, oGroup.long);
-		markerOptions = {icon:tinyIcon, title: oGroup.name, link: 'http://www.bbc.co.uk'};
-		map.addOverlay(new GMarker(point, markerOptions));
+		markerOptions = {icon:tinyIcon, title: oGroup.name, clickable: false};
+		var oMarker = new GMarker(point, markerOptions)
+		map.addOverlay(oMarker);
 		
 	};
 
