@@ -4,7 +4,7 @@
 # Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org. WWW: http://www.mysociety.org/
 #
-# $Id: crontab.ugly,v 1.4 2006-02-01 11:30:01 francis Exp $
+# $Id: crontab.ugly,v 1.5 2008-02-12 12:52:13 francis Exp $
 
 MAILTO=team@mysociety.com
 
@@ -12,6 +12,6 @@ MAILTO=team@mysociety.com
 0 2 * * * mswww /bin/chmod -R a+rx /data/vhost/!!(*= $vhost *)!!/moindata/
 
 # Make tarball of CVS repository
-2 * * * * mswww cd /data/vhost/!!(*= $vhost *)!!/mysociety/ms/bin && ./make-cvs-tarball
+39 3 * * * mswww cd /data/vhost/!!(*= $vhost *)!!/mysociety/ms/bin && ./make-cvs-tarball
 
 
