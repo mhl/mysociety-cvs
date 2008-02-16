@@ -9,7 +9,7 @@
             <li><a href="mailto:team@{$domain}">{l}Contact{/l}</a></li>                
         </ul>
     </div>
-    {if $onloadscript !="" || $set_focus_control !=""}
+    {if $onloadscript !="" || $set_focus_control !="" && use_body_script == false}
 		<script type="text/javascript" defer="defer">
 			{if $set_focus_control !=""}setFocus('{$set_focus_control}');{/if}
 			{if $onloadscript !=""}{$onloadscript} {/if}

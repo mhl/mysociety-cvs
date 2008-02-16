@@ -23,6 +23,7 @@ abstract class pagebase {
 	protected $data = null;
 	protected $rss_link = '';
 	protected $track = '';
+	protected $use_body_script = false;	
 
     //Constructor
     public function __construct(){
@@ -84,6 +85,7 @@ abstract class pagebase {
 		$this->smarty->assign("rss_link", $this->rss_link);
 		$this->smarty->assign("current_url", $_SERVER['REQUEST_URI']);
 		$this->smarty->assign("google_maps_key", GOOGLE_MAPS_KEY);
+		$this->smarty->assign("use_body_script", $this->use_body_script);
 
         foreach($this->warn_controls  as $warn_control) {
             $this->assign('warn_' . $warn_control, true);
