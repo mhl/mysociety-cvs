@@ -54,8 +54,8 @@
             <dd>
                 {l}The site is built using <a href="http://www.php.net">php</a>, <a href="http://www.smarty.net">smarty</a>,
                 <a href="http://www.mysql.com/">mySql</a> and <a href="http://script.aculo.us/">Scriptaculous</a>.
-                It uses the <a href="gaze.mysociety.org">mySociety GAZE web service</a> to do place name searches, and
-                Emad's <a href="http://emad.fano.us/blog/?p=277">free geocoder</a>.{/l}
+                It uses the <a href="http://gaze.mysociety.org">mySociety GAZE web service</a> to do place name searches, and
+                the Google Maps API to do place lookups.{/l}
             </dd>
             <dt>{l}Does the site have an <acronym title="Application Programming Interface">API</acronym>?{/l}</dt>
             <dd>
