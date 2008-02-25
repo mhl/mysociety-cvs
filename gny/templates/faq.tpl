@@ -57,8 +57,8 @@
             <dd>
                 {l}The site is built using <a href="http://www.php.net">php</a>, <a href="http://www.smarty.net">smarty</a>,
                 <a href="http://www.mysql.com/">mySql</a> and <a href="http://script.aculo.us/">Scriptaculous</a>.
-                It uses the <a href="http://gaze.mysociety.org">mySociety GAZE web service</a> to do place name searches, and
-                the Google Maps API to do place lookups. You can browse and download the source code 
+                It uses the <a href="http://gaze.mysociety.org">mySociety GAZE web service</a> and
+                the Google Maps API to do place location lookups. You can browse and download the source code 
                 <a href="https://secure.mysociety.org/cvstrac/dir?d=mysociety/gny">here</a>{/l}
             </dd>
             <dt>{l}Does the site have an <acronym title="Application Programming Interface">API</acronym>?{/l}</dt>
