@@ -45,7 +45,7 @@ class addpreview_page extends pagebase {
 		$this->group->created_date = mktime();
 
 		//page vars
-	    $this->page_title = "preview your group";
+	    $this->page_title = "Preview your group";
 	    $this->menu_item = "add";	
 	    $this->show_tracker = true;		
 	    $this->tracker_location = 5;			

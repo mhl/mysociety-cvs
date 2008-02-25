@@ -30,7 +30,7 @@ class index_page extends pagebase {
 		//page vars
 		$this->onloadscript = "loadLatest()";	
 		$this->use_body_script = true;
-	    $this->page_title = "meet the neighbours";
+	    $this->page_title = "Meet the neighbours";
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "";			
 		$this->assign('latest_groups', $latest_groups);

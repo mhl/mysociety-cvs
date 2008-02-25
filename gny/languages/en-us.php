@@ -398,4 +398,46 @@
             You can start one now, for free, using one of these sites. 
             Then use <a href="http://www.pledgebank.com">Pledge Bank</a> to gather support.
             ',
+  '7ae7f0058491ecedae486598197d7248' => 'No groups near you? Start your own...',
+  '7df49633da484418188371f3015d0d0f' => 'Groups Near You - meet the neighbours',
+  '054d15aa99353736808418f536187612' => 'About Groups Near You',
+  'cf23ee279844016288ea1c076638f3be' => 'About us',
+  '3ec6e5830bb6dffcc6ab9d696e32044c' => 'Suggest a change',
+  '8ff2954237dacdac9d8159e4b988e6a8' => '
+                If you would like to suggest a change to the page for <em><strong>{$group->name}</strong></em>, 
+                or want to report something inappropriate, please use the form below to contact the {$site_name} team.
+            ',
+  '198584454b0ce1101ff5b50323325aa8' => 'Your email address',
+  'cfe1b4b75fb8dc152b124f9305835a11' => 'Your message',
+  '3b1c9a7a3f80b718e02d590b321aecf2' => 'Thanks! Your comments have been sent to the {$site_name} team',
+  '17b0833d6c23226603bc55109656ace5' => 'Back to <em>{$group->name}</em>',
+  'f13a1864a020f1a3c9259b4448c39ec2' => 'Do a new search',
+  'f9ee194477369fbc30cc2d9556bce6a8' => 'Meet the neighbours',
+  '825191fa6fedb77b6f4d53b35d92c7e6' => 'It\'s very easy. Tell us a bit about the group, the approximate area it covers and how people
+                can get involved. <a href="{$www_server}/add/about/">Get started now</a>.',
+  '584984b2d584519a43dd987a8f8c45f1' => 'If you choose to be contacted people will be able to email you via this website. 
+                Your email will not be published though, and we will not spam you or pass it on to anyone else.
+                ',
+  '37bdd3cfaec06317af24e1b03ce95e5a' => 'Click on the "Suggest a change" link at the bottom of the group\'s page. This will let you 
+                send us an email telling us what is up.',
+  'ec4c304c72fe4fdaaf3e91fbdb53bbb5' => 'Can I help translate this site to another language?',
+  '2b441ad68d4996d29aff93f9bb81851c' => 'Yes! We are all setup and ready to go to make {$site_name} available in any language.
+                But we need <em>your</em> help to get it translated, please <a href="mailto:team@{$domain}">get in touch</a>.',
+  'dbb73391bf503b61bfc6115269d0d67b' => 'The site is built using <a href="http://www.php.net">php</a>, <a href="http://www.smarty.net">smarty</a>,
+                <a href="http://www.mysql.com/">mySql</a> and <a href="http://script.aculo.us/">Scriptaculous</a>.
+                It uses the <a href="gaze.mysociety.org">mySociety GAZE web service</a> to do place name searches, and
+                Emad\'s <a href="http://emad.fano.us/blog/?p=277">free geocoder</a>. You can browse the source code 
+                <a href="https://secure.mysociety.org/cvstrac/dir?d=mysociety/gny">here</a>.',
+  'fc5c09fcaf698f8b7a58d95434463931' => 'The site is built using <a href="http://www.php.net">php</a>, <a href="http://www.smarty.net">smarty</a>,
+                <a href="http://www.mysql.com/">mySql</a> and <a href="http://script.aculo.us/">Scriptaculous</a>.
+                It uses the <a href="gaze.mysociety.org">mySociety GAZE web service</a> to do place name searches. You can browse the source code 
+                <a href="https://secure.mysociety.org/cvstrac/dir?d=mysociety/gny">here</a>.',
+  '1c5f6fcd19e304d70a28a37b57bf0efd' => 'Yep. Group data is available via <a href="{$www_server}/api/">geoRSS feeds</a>. 
+                It\'s a bit basic at the moment, but if you want anything specific adding please <a href="mailto:team@{$domain}">get in touch</a>',
+  'b6dc6f74dd7aefe063805a1882bbc185' => 'The site is built using <a href="http://www.php.net">php</a>, <a href="http://www.smarty.net">smarty</a>,
+                <a href="http://www.mysql.com/">mySql</a> and <a href="http://script.aculo.us/">Scriptaculous</a>.
+                It uses the <a href="gaze.mysociety.org">mySociety GAZE web service</a> to do place name searches. 
+                You can browse and download the source code 
+                <a href="https://secure.mysociety.org/cvstrac/dir?d=mysociety/gny">here</a>.',
+  '8fef13564aa5e1510c7aaf5ba10bdab8' => 'Groups near berlin',
 ); ?>

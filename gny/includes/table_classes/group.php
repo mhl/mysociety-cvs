@@ -34,7 +34,7 @@ class tableclass_group extends DB_DataObject {
     public $lat_centroid;                    // float()   not_null
     public $location_desc;                   // text() default '' not_null
     public $url_id;                          // varchar(150)   not_null
-    public $involved_email;                  // varchar(150)  
+    public $involved_email;                  // varchar(150)
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('tableclass_Groups',$k,$v); }

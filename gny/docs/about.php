@@ -20,7 +20,7 @@ class about_page extends pagebase {
 
 		//page vars
 		$this->onloadscript = "";	
-	    $this->page_title = "about us";
+	    $this->page_title = "About us";
 	    $this->menu_item = "about";	
 	    $this->set_focus_control = "";
 	

@@ -80,7 +80,7 @@ class addlocation_page extends pagebase {
 		//page vars
 		$this->onloadscript = 'load(' . $this->group->long_centroid . ', ' .
 		$this->group->lat_centroid .', ' . $this->group->zoom_level . ')';	
-	    $this->page_title = "location of your group";
+	    $this->page_title = "Location of your group";
 	    $this->menu_item = "add";	
 	    $this->show_tracker = true;		
 	    $this->tracker_location = 3;			

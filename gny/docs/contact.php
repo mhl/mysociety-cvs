@@ -40,7 +40,7 @@ class contact_page extends pagebase {
 		$this->viewstate['group_name'] = $result[0]->name;
 
 		//page vars
-	    $this->page_title = "contact " . $result[0]->name;
+	    $this->page_title = "Contact " . $result[0]->name;
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "txtName";
 		$this->assign('group', $result[0]);

@@ -53,7 +53,7 @@
                 We need *your* help to map all those hidden neighbourhood email lists, forums and community blogs where you live.
                 It only takes 4 simple steps, and you don't need to be the organiser of the group.
             {/l}
-            <a class="linkbutton" href="{$www_server}/add/about/">
+            <a class="largelinkbutton" href="{$www_server}/add/about/">
                 <span class="left">&nbsp;</span>
                 <span class="middle">{l}Add a group now{/l} &raquo;</span>                
                 <span class="right">&nbsp;</span>                
@@ -80,7 +80,7 @@
     </div>
     <hr/>    
     <div id="divStartGroup" class="contentfull">
-        <h4>{l}No groups near you? Start your own.{/l}</h4>
+        <h4>{l}No groups near you? Start your own...{/l}</h4>
         <p>
             {l}Starting an email group for your neighbourhood can make a real difference to the community you live in.
             You can start one now, for free, using one of these sites. 

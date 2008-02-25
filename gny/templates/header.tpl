@@ -3,7 +3,7 @@
 <html lang="en" xml:lang="en"  xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-	<title>{$site_name} | {$page_title}</title>
+	<title>{$page_title} | {$site_name}</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta name="keywords" content="GroupsNearYou, local, groups, local groups, neighbours, neighbors{if $group->tags}, {$group->tags|escape:html}{/if}" />
 	<script type="text/javascript" src="{$www_server}/javascript/prototype.js"></script>
@@ -27,7 +27,7 @@
 
 <body onload="javacript:{if $use_body_script == true && $onloadscript !=""}{$onloadscript}{/if};">
     <div id="divBeta">
-        This site hasn't officially launched yet, we need your local knowledge to help it grow. 
+        This site is currently in beta (testing mode), we need your local knowledge to help it grow! 
         <a href="{$www_server}/add/about/">Add a group now</a>.
     </div>
     <div id="divHeader">

@@ -35,7 +35,7 @@ class addcontact_page extends pagebase {
 	protected function bind() {
 
 		//page vars
-	    $this->page_title = "how do people join the group?";
+	    $this->page_title = "How do people join the group?";
 	    $this->menu_item = "add";	
 	    $this->show_tracker = true;		
 	    $this->tracker_location = 4;			

@@ -44,7 +44,7 @@ class confirmed_page extends pagebase {
 			$contact_email->delete();
 
 			//show page
-	    	$this->page_title = "your email has been sent";					
+	    	$this->page_title = "Your email has been sent";					
 	    	$this->menu_item = "search";				
 			$this->assignLang('title', "Your email has been sent");			
 			$this->assignLang('text', "Hopefully someone from that group will contact you soon.");						

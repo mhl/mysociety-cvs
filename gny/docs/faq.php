@@ -19,7 +19,7 @@ class faq_page extends pagebase {
 	
 		//page vars
 		$this->onloadscript = "";	
-	    $this->page_title = "frequently asked questions";
+	    $this->page_title = "Frequently asked questions";
 	    $this->menu_item = "faq";	
 	    $this->set_focus_control = "";
 		$this->assign("team_email", CONTACT_EMAIL);

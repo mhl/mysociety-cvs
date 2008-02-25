@@ -54,7 +54,7 @@ class addabout_page extends pagebase {
 
 		//page vars
 		$this->onloadscript = "";	
-	    $this->page_title = "about your group";
+	    $this->page_title = "About your group";
 	    $this->menu_item = "add";	
 	    $this->show_tracker = true;		
 	    $this->tracker_location = 2;

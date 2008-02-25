@@ -69,7 +69,7 @@ class results_page extends pagebase {
 
 		//page vars
 		$this->onloadscript = "";	
-	    $this->page_title = "Search results for " . $this->query_display_text;
+	    $this->page_title = "Groups near " . $this->query_display_text;
 	    $this->menu_item = "search";	
 	    $this->set_focus_control = "txtSearch";
 		$this->rss_link = WWW_SERVER . '/rss.php?q=' . urlencode($this->query);

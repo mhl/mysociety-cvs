@@ -32,7 +32,7 @@ class edit_page extends pagebase {
 	
 		//page vars
 		$this->onloadscript = "";	
-	    $this->page_title = "edit " . $result[0]->name;
+	    $this->page_title = "Edit " . $result[0]->name;
 	    $this->menu_item = "search";
 	
 		if(!$this->viewstate['show_sent']){
