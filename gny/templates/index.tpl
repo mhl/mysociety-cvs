@@ -111,7 +111,7 @@
     {* group info for populated google map *}
     <fieldset>
         {foreach name="groups" from="$map_groups" item="group"}
-            <input type="hidden" class="groupdata" value="{literal}{{/literal}long: {$group->long_centroid}, lat: {$group->lat_centroid}, name:'{$group->name}'{literal}}{/literal}"/>
+            <input type="hidden" class="groupdata" value="{literal}{{/literal}long: {$group->long_centroid}, lat: {$group->lat_centroid}, name:'{$group->name|escape:javascript}'{literal}}{/literal}"/>
         {/foreach}
     </fieldset>
     
