@@ -37,7 +37,7 @@
                             e.g. <em><a href="{$www_server}/search/94105/">94105</a></em> or <em><a href="{$www_server}/search/San Francisco/">San Francisco</a></em>
                         {elseif  $country == 'GB'}
                         *}
-                            e.g. <em><a href="{$www_server}/search/sw98jx/">SW9 8JX</a></em> or <em><a href="{$www_server}/search/brixton/">Brixton</a></em>
+                            e.g. <em><a href="{$www_server}/search/sw98jx/">SW9 8JX</a></em> or <em><a href="{$www_server}/search/brixton/-0.100,51.467">Brixton</a></em>
                         {*
                         {else}
                             e.g. <em><a href="{$www_server}/search/berlin/13.400,52.517">Berlin</a></em> or <em><a href="{$www_server}/search/barcelona/2.183,41.383">Barcelona</a></em>
