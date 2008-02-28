@@ -17,6 +17,7 @@
                 </div>
             </div>
         </div>
+
         <div class="contentright">
             <form id="frmSearchMain" action="{$form_action}" method="post" class="pod">
                 <fieldset>
@@ -31,13 +32,17 @@
                     <input type="submit" id="btnSearch" name="btnIndex" value="{l}Go{/l}" />
                     <br/>
                     <small>
+                        {*
                         {if $country == 'US'}
                             e.g. <em><a href="{$www_server}/search/94105/">94105</a></em> or <em><a href="{$www_server}/search/San Francisco/">San Francisco</a></em>
                         {elseif  $country == 'GB'}
+                        *}
                             e.g. <em><a href="{$www_server}/search/sw98jx/">SW9 8JX</a></em> or <em><a href="{$www_server}/search/brixton/">Brixton</a></em>
+                        {*
                         {else}
                             e.g. <em><a href="{$www_server}/search/berlin/13.400,52.517">Berlin</a></em> or <em><a href="{$www_server}/search/barcelona/2.183,41.383">Barcelona</a></em>
                         {/if}
+                        *}
                     </small>
                 </fieldset>
             </form>

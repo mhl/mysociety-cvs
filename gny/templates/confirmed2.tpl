@@ -24,11 +24,11 @@
     <textarea id="txtContactMessage" name="txtContactMessage" {if $warn_txtContactMessage}class="error"{/if}>{if $data.txtContactMessage == ''}
     {l}Hi,
 
-    I've just added {$group->name} to {$site_name}, which is a website that helps people find local email lists, blogs and forums where they live, and thought you might want to add your group?
+I've just added {$group->name} to {$site_name}, which is a website that helps people find local email lists, blogs and forums where they live, and thought you might want to add your group?
 
-    To add a group go to: {$www_server}
+To add a group go to: {$www_server}
 
-    All the best
+All the best
 
     {$name}{/l}
         {else}{$data.txtContactMessage}{/if}</textarea>
@@ -42,7 +42,7 @@
         {else}
         <h3>{l}Your email has been sent!{/l}</h3>
             <p>
-                {l}We have set up an email group for people who organise groups like yours{/l}
+                {l}We have also set up an email group for people who organise groups like yours{/l}
             </p>
             <p><a href="{$organisers_group_url}">{l}Click here to join the group organisers&rsquo; email group.{/l}</a></p>
         {/if}

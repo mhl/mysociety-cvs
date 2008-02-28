@@ -440,4 +440,11 @@
                 You can browse and download the source code 
                 <a href="https://secure.mysociety.org/cvstrac/dir?d=mysociety/gny">here</a>.',
   '8fef13564aa5e1510c7aaf5ba10bdab8' => 'Groups near berlin',
+  'a1582d72c2b2ba76252e91ef8bbfbd34' => 'About your group',
+  '902655a19e6ed37a3b1e3143319fcf8b' => 'Location of your group',
+  '43e7968e991e934b3846874b0b7d3575' => 'Preview your group',
+  '70d9be9b139893aa6c69b5e77e614311' => 'Confirm',
+  'bcb678b1283e23c0f033822adea0bd0e' => 'Review this group, then click confirm',
+  'd96831d0769e891d721d2c7dde6c931d' => 'Nearly done, review it then click confirm',
+  '920c38af68a4db7a38ad63718ac72bcf' => 'Nearly done, review this group then click confirm',
 ); ?>

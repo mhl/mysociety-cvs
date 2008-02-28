@@ -10,8 +10,9 @@
         {if $group->mode == "admin" || $group->mode == "edit"}
             <h3>{l}Preview your changes and click save to update this group{/l}</h3>
         {else}
-            <h3>{l}This is how your group will appear, review it then click confirm{/l}</h3>    
+            <h3>{l}Nearly done, review this group then click confirm{/l}</h3>    
         {/if}
+        
         {include file="../templates/groupdetail.tpl"}
     
         <p id="pEditGroup">
@@ -29,7 +30,6 @@
                 <input type="submit" class="button" value="{l}Confirm this group{/l} &raquo;"/>
             {/if}
         </div>
-    
     </form>
 </div>
 {include file="../templates/footer.tpl"}
