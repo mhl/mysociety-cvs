@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-02-12 00:34+0000\n"
+"POT-Creation-Date: 2008-02-24 10:26+0000\n"
 "PO-Revision-Date: 2008-02-04 20:16+0200\n"
 "Last-Translator: Markushyn Oleksandr <markushyn@pledgebank.org.ua>\n"
 "Language-Team: Oleksandr Markushyn <markushyn@pledgebank.org.ua>\n"
@@ -2068,27 +2068,28 @@ msgid "Address"
 msgstr "Ваш адрес:"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:136 pb/phplib/page.php:399
+#: pb/phplib/page.php:136 pb/phplib/page.php:405
 msgid "PledgeBank"
 msgstr "Банк обещаний"
 
-#: pb/phplib/page.php:208
-msgid "Hello, "
+#: pb/phplib/page.php:216 pb/phplib/page.php:218
+#, fuzzy, php-format
+msgid "Hello, %s"
 msgstr "Здравствуйте, "
 
-#: pb/phplib/page.php:214
+#: pb/phplib/page.php:220
 msgid "this isn't you?  click here"
 msgstr "это не Вы? нажмите здесь"
 
-#: pb/phplib/page.php:220 pb/web/search.php:435
+#: pb/phplib/page.php:226 pb/web/search.php:435
 msgid "Search for pledges:"
 msgstr "Поиск обещаний:"
 
-#: pb/phplib/page.php:222 pb/web/search.php:437
+#: pb/phplib/page.php:228 pb/web/search.php:437
 msgid "Search"
 msgstr "Поиск"
 
-#: pb/phplib/page.php:232
+#: pb/phplib/page.php:238
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
@@ -2096,31 +2097,31 @@ msgstr ""
 "Это тестовый сайт, только для разработчиков.\n"
 " Вам возможно необходим <a href=\"http://www.pledgebank.com/\">действующий сайт</a>."
 
-#: pb/phplib/page.php:237
+#: pb/phplib/page.php:243
 msgid "Note: On this test site, the date is faked to be"
 msgstr "Внимание: на этом тестовом сайте дата не настоящая"
 
-#: pb/phplib/page.php:280
+#: pb/phplib/page.php:286
 msgid "Navigation"
 msgstr "Перемещение"
 
-#: pb/phplib/page.php:294
+#: pb/phplib/page.php:300
 msgid "Translate into your language..."
 msgstr "Перевести на свой язык..."
 
-#: pb/phplib/page.php:295
+#: pb/phplib/page.php:301
 msgid "Change"
 msgstr "Изменить"
 
-#: pb/phplib/page.php:318 pb/web/lang.php:44
+#: pb/phplib/page.php:324 pb/web/lang.php:44
 msgid "Translate PledgeBank into your language"
 msgstr "Перевести PledgeBank на свой язык"
 
-#: pb/phplib/page.php:319
+#: pb/phplib/page.php:325
 msgid "Built by mySociety"
 msgstr "Разработано организацией mySociety"
 
-#: pb/phplib/page.php:320
+#: pb/phplib/page.php:326
 msgid "Powered by Easynet"
 msgstr "При поддержке Easynet"
 
@@ -3163,7 +3164,7 @@ msgstr "Вернуться к обещанию"
 msgid "<h2>Here's how your comment will appear</h2>"
 msgstr "<h2>Здесь будет Ваш комментарий</h2>"
 
-#: pb/web/contact.php:30 pb/web/faq.php:504
+#: pb/web/contact.php:30 pb/web/faq.php:498
 msgid "Contact Us"
 msgstr "Свяжитесь с нами"
 
@@ -3382,7 +3383,7 @@ msgstr "Спасибо за отправку обещания Вашим дру�
 msgid "Here are some more pledges you might like."
 msgstr "Вот несколько обещаний которые возможно Вам понравятся."
 
-#: pb/web/faq.php:18 pb/web/faq.php:357 pb/web/faq.php:501
+#: pb/web/faq.php:18 pb/web/faq.php:351 pb/web/faq.php:495
 msgid "Frequently Asked Questions"
 msgstr "Часто Задаваемые Вопросы"
 
@@ -3612,8 +3613,7 @@ msgid ""
 "    href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">download the source\n"
 "    code</a> (look under 'pb') and help us develop it. You're welcome to use it\n"
 "    in your own projects, although you must also make available the source code to\n"
-"    any such projects.\n"
-"    "
+"    any such projects."
 msgstr ""
 "Исходный код проекта является открытым, и доступен на\n"
 "     основании лицензии Affero GPL software. Вы можете\n"
@@ -3624,11 +3624,12 @@ msgstr ""
 "     всем похожим проектам.\n"
 "     "
 
-#: pb/web/faq.php:137
+#: pb/web/faq.php:136
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr "За каждой организацией стоят люди. Кто же <em>именно</em> создавал данный проект?"
 
-#: pb/web/faq.php:139
+#: pb/web/faq.php:138
+#, fuzzy
 msgid ""
 "OK, we are\n"
 "    Mike Bracken,\n"
@@ -3639,8 +3640,7 @@ msgid ""
 "    Etienne Pollard,\n"
 "    Richard Pope,\n"
 "    Matthew Somerville,\n"
-"    Tom Steinberg.\n"
-"    "
+"    Tom Steinberg."
 msgstr ""
 "OK, мы:\n"
 "    Mike Bracken,\n"
@@ -3654,7 +3654,8 @@ msgstr ""
 "    Tom Steinberg.\n"
 "    "
 
-#: pb/web/faq.php:151
+#: pb/web/faq.php:149
+#, fuzzy
 msgid ""
 "<strong>Translations by</strong>\n"
 "    Nic Dafis (Welsh),\n"
@@ -3667,8 +3668,7 @@ msgid ""
 "    maidan.org.ua team (Ukrainian),\n"
 "    Hugo Lamoureux (French),\n"
 "    Oliver Ding, Isaac Mao, Danny Yu, Nan Yang, Jacky Peng (Chinese),\n"
-"    Aliaksej Lavońčyk (Belarusian).\n"
-"    "
+"    Aliaksej Lavońčyk (Belarusian)."
 msgstr ""
 "<strong>Переводчики</strong>\n"
 "    Nic Dafis (Уэльсский перевод),\n"
@@ -3684,7 +3684,8 @@ msgstr ""
 "    Aliaksej Lavońčyk (Белорусский перевод).\n"
 "    "
 
-#: pb/web/faq.php:165
+#: pb/web/faq.php:162
+#, fuzzy
 msgid ""
 "<strong>Thanks also to</strong>\n"
 "    <a href=\"http://www.tangentlabs.co.uk/\">Tangent Labs</a> (for SMS in the UK), \n"
@@ -3697,9 +3698,7 @@ msgid ""
 "    <a href=\"http://www.easynet.net/publicsector/\">Easynet</a> (who kindly host all\n"
 "    our servers).\n"
 "\n"
-"    Let us know if we've missed anyone.\n"
-"\n"
-"    "
+"    Let us know if we've missed anyone."
 msgstr ""
 "<strong>Также мы благодарны</strong>\n"
 "    <a href=\"http://www.tangentlabs.co.uk/\">Tangent Labs</a> (за SMS-сервис в Соединённом Королевстве), \n"
@@ -3716,15 +3715,15 @@ msgstr ""
 "\n"
 "    "
 
-#: pb/web/faq.php:185
+#: pb/web/faq.php:180
 msgid "Pledge Creators' Questions"
 msgstr "Вопросы от авторов обещаний"
 
-#: pb/web/faq.php:188
+#: pb/web/faq.php:183
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Какае типы обещаний оказываются успешными, а какие - нет?"
 
-#: pb/web/faq.php:190
+#: pb/web/faq.php:185
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
 "    which will apply. First, the lower a pledge target (in terms of\n"
@@ -3748,11 +3747,11 @@ msgstr ""
 "    необходимое к-во людей чем у того, кто создаст обещание и\n"
 "    забудет о нем."
 
-#: pb/web/faq.php:199
+#: pb/web/faq.php:194
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Скольких людей следует просить поддержать обещание?</a>"
 
-#: pb/web/faq.php:201
+#: pb/web/faq.php:196
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
 "    Choose the number of people for which you could only just be bothered to carry\n"
@@ -3767,11 +3766,11 @@ msgstr ""
 "   Это увеличит шансы Вашего обещания на успех. В любом случае\n"
 "   к Вашему обещанию всегда cмогут присоединиться люди сверх указанного числа."
 
-#: pb/web/faq.php:216
+#: pb/web/faq.php:211
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Почему мое новое обещание не появилось на странице \"Все обещания\"?"
 
-#: pb/web/faq.php:218
+#: pb/web/faq.php:213
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
 "    the site, until a few people have signed up to them. This is to make\n"
@@ -3787,12 +3786,12 @@ msgstr ""
 "   Так что, не сидите сложа руки, расскажите своим друзьям\n"
 "    и соседям о своем обещании!"
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:219
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Удаляете ли Вы глупые или незаконные обещания?"
 
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:227
+#: pb/web/faq.php:222
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "    consider to be inappropriate. This means that your pledge will work, but will\n"
@@ -3810,11 +3809,11 @@ msgstr ""
 "    или абсолютно несерьезными. Также мы будем УДАЛЯТЬ обещания,\n"
 "    которые способствуют или подстрекают к НЕЗАКОННОМУ поведению."
 
-#: pb/web/faq.php:234
+#: pb/web/faq.php:229
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Почему я не могу изменить обещание после его создания?</a>"
 
-#: pb/web/faq.php:236
+#: pb/web/faq.php:231
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "    the pledge.  If you change the wording, then their signatures would no longer\n"
@@ -3832,11 +3831,11 @@ msgstr ""
 "     людей, поддержать новое обещание. Это можно сделать\n"
 "     из раздела 'Явите миру свое обещание' на странице Вашего обещания."
 
-#: pb/web/faq.php:243
+#: pb/web/faq.php:238
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Могу ли я связаться с людьми, которые присоединились к моему обещанию?"
 
-#: pb/web/faq.php:245
+#: pb/web/faq.php:240
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
 "    to your pledge's page, and follow the link under 'Spread the word'.\n"
@@ -3859,11 +3858,11 @@ msgstr ""
 "    Тот кто присоединяется к обещанию после достижения цели получает Ваше последнее сообщение\n"
 "    и ссылку на сообщения, разосланные ранее."
 
-#: pb/web/faq.php:254
+#: pb/web/faq.php:249
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Возможно ли присоединиться к обещанию посредством SMS? Если да, то каким образом ?"
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:251
 #, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -3884,11 +3883,11 @@ msgstr ""
 "    Для жителей %s в листовке указано какой текст SMS указывать\n"
 "    и куда отправлять."
 
-#: pb/web/faq.php:264
+#: pb/web/faq.php:259
 msgid "How do I add a picture to my pledge?"
 msgstr "Как мне добавить картинку к своему обещанию?"
 
-#: pb/web/faq.php:266
+#: pb/web/faq.php:261
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
 "    (creator only)' under 'Spread the word on and offline'. Either find a picture\n"
@@ -3899,11 +3898,11 @@ msgstr ""
 "   только автор) в разделе 'Явите миру свое обещание'. Картинка может\n"
 "   быть любая. Можете например использовать свою фотографию!"
 
-#: pb/web/faq.php:270
+#: pb/web/faq.php:265
 msgid "Can you make a special version of PledgeBank for my organisation?"
 msgstr "Можете ли Вы создать специализированную версию банка обещаний для моей организации?"
 
-#: pb/web/faq.php:272
+#: pb/web/faq.php:267
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
 "    colours or complete style to match your branding. We can intimately\n"
@@ -3922,15 +3921,15 @@ msgstr ""
 "    назад в mySociety). <a href=\"/contact\">Свяжитесь с нами</a> чтобы рассказать о Вашем варианте проекта.\n"
 "    Внизу <a href=\"/where\">данной страницы</a> есть список реализованных нами спец. сайтов."
 
-#: pb/web/faq.php:285
+#: pb/web/faq.php:280
 msgid "International Questions"
 msgstr "Интернациональные вопросы"
 
-#: pb/web/faq.php:288
+#: pb/web/faq.php:283
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Могу ли я создавать обещания не на английском языке?"
 
-#: pb/web/faq.php:290
+#: pb/web/faq.php:285
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
 "    If your browser is configured to use one of those languages, PledgeBank will \n"
@@ -3945,11 +3944,11 @@ msgstr ""
 "    Если языка на котором Вы говорите нет, и Вы хотели бы сделать перевод,\n"
 "    то, пожалуйста, <a href=\"/translate\">прочтите страницу с правилами перевода</a>."
 
-#: pb/web/faq.php:297
+#: pb/web/faq.php:292
 msgid "What countries does PledgeBank work in?"
 msgstr "В каких странах можно пользоваться банком обещаний?"
 
-#: pb/web/faq.php:299
+#: pb/web/faq.php:294
 #, fuzzy
 msgid ""
 "All of them. We try to detect which country you are in\n"
@@ -3966,17 +3965,17 @@ msgstr ""
 "     <a href=\"/contact\">свяжитесь с нами</a> если можете\n"
 "     помочь расширить аудиторию пользователей банка обещаний в Вашей стране."
 
-#: pb/web/faq.php:305
+#: pb/web/faq.php:300
 msgid "Why do you only have UK postcodes?"
 msgstr "Почему Вы работаете только с почтовыми индексами Соединенного Королевства?"
 
-#: pb/web/faq.php:307
+#: pb/web/faq.php:302
+#, fuzzy
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
 "    the postcode search overseas&mdash;please <a\n"
 "    href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">join this\n"
-"    email list</a> to help us out.\n"
-"    "
+"    email list</a> to help us out."
 msgstr ""
 "Мы будем очень рады пообщаться со всеми, кто может\n"
 "    помочь нам внедрить преимущества поиска по почтовому индексу\n"
@@ -3985,11 +3984,11 @@ msgstr ""
 "    на данную раccылку</a> чтобы помочь нам.\n"
 "    "
 
-#: pb/web/faq.php:313
+#: pb/web/faq.php:307
 msgid "... and SMS?"
 msgstr "... и SMS?"
 
-#: pb/web/faq.php:315
+#: pb/web/faq.php:309
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "    can help add text messaging in your country."
@@ -3997,15 +3996,15 @@ msgstr ""
 "Пожалуйста, <a href=\"/contact\">свяжитесь с нами</a>,\n"
 "    если Вы можете помочь реализовать SMS-сервис в своей стране."
 
-#: pb/web/faq.php:322
+#: pb/web/faq.php:316
 msgid "Privacy Questions"
 msgstr "Вопросы безопастности"
 
-#: pb/web/faq.php:325
+#: pb/web/faq.php:319
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Я не хочу чтобы после присоединения к обещанию мое имя было доступно всем!"
 
-#: pb/web/faq.php:327
+#: pb/web/faq.php:321
 #, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -4020,11 +4019,11 @@ msgstr ""
 "   Если Вы хотите создать очень личное обещание, то возможно захотите\n"
 "   защитить его сделав доступным для прочтения только тем у кого есть PIN."
 
-#: pb/web/faq.php:333
+#: pb/web/faq.php:327
 msgid "Who gets to see my email address?"
 msgstr "Кому будет доступен мой email-адрес?"
 
-#: pb/web/faq.php:335
+#: pb/web/faq.php:329
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
 "    creator of your pledge, unless we are obliged to by law. We do let the pledge\n"
@@ -4042,11 +4041,11 @@ msgstr ""
 "   Только если Вы ответите на письмо автора лично (с помощью почтового\n"
 "   клиента например) &mdash; Вы раскроете свой email-адрес. Будьте внимательны!"
 
-#: pb/web/faq.php:343
+#: pb/web/faq.php:337
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "Будете ли Вы присылать на мой email-адрес СПАМ?"
 
-#: pb/web/faq.php:345
+#: pb/web/faq.php:339
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
 "    relation to your pledge. These will be a mixture of status emails from\n"
@@ -4061,7 +4060,7 @@ msgstr ""
 "   Мы никогда не передадим и не\n"
 "   продадим Ваш email-адрес никому, если не потребует того закон."
 
-#: pb/web/faq.php:505
+#: pb/web/faq.php:499
 msgid ""
 "If your question isn&rsquo;t answered here, or you just\n"
 "wanted to let us know something about the site, <a href=\"/contact\">contact&nbsp;us</a>."

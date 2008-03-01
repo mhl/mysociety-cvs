@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-02-12 00:34+0000\n"
+"POT-Creation-Date: 2008-02-24 10:26+0000\n"
 "PO-Revision-Date: 2006-06-27 11:26+0100\n"
 "Last-Translator: Leo De Cooman <Leo.De.Cooman@pandora.be>\n"
 "Language-Team: Esperanto <team@pledgebank.com>\n"
@@ -2096,29 +2096,30 @@ msgid "Address"
 msgstr "Uw website"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:136 pb/phplib/page.php:399
+#: pb/phplib/page.php:136 pb/phplib/page.php:405
 #, fuzzy
 msgid "PledgeBank"
 msgstr "PledgeBank Ploeg"
 
-#: pb/phplib/page.php:208
-msgid "Hello, "
+#: pb/phplib/page.php:216 pb/phplib/page.php:218
+#, fuzzy, php-format
+msgid "Hello, %s"
 msgstr "Gegroet, "
 
-#: pb/phplib/page.php:214
+#: pb/phplib/page.php:220
 msgid "this isn't you?  click here"
 msgstr "Bent u dat niet? klik hier"
 
-#: pb/phplib/page.php:220 pb/web/search.php:435
+#: pb/phplib/page.php:226 pb/web/search.php:435
 #, fuzzy
 msgid "Search for pledges:"
 msgstr "Zoek een belofte"
 
-#: pb/phplib/page.php:222 pb/web/search.php:437
+#: pb/phplib/page.php:228 pb/web/search.php:437
 msgid "Search"
 msgstr "Zoeken"
 
-#: pb/phplib/page.php:232
+#: pb/phplib/page.php:238
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
@@ -2126,33 +2127,33 @@ msgstr ""
 "Dit is een voorlopige bladzijde, enkel voor ontwikkelwerk. U zoekt waarschijnlijk\n"
 "<a href=\"http://www.pledgebank.com/\">de echte website</a>."
 
-#: pb/phplib/page.php:237
+#: pb/phplib/page.php:243
 msgid "Note: On this test site, the date is faked to be"
 msgstr "Nota: Op deze proefsite wordt de datum nagebootst als"
 
-#: pb/phplib/page.php:280
+#: pb/phplib/page.php:286
 msgid "Navigation"
 msgstr "Navigatie"
 
-#: pb/phplib/page.php:294
+#: pb/phplib/page.php:300
 #, fuzzy
 msgid "Translate into your language..."
 msgstr "PledgeBank in uw taal vertalen"
 
-#: pb/phplib/page.php:295
+#: pb/phplib/page.php:301
 #, fuzzy
 msgid "Change"
 msgstr "(wijzigen)"
 
-#: pb/phplib/page.php:318 pb/web/lang.php:44
+#: pb/phplib/page.php:324 pb/web/lang.php:44
 msgid "Translate PledgeBank into your language"
 msgstr "PledgeBank in uw taal vertalen"
 
-#: pb/phplib/page.php:319
+#: pb/phplib/page.php:325
 msgid "Built by mySociety"
 msgstr "Gemaakt door mySociety"
 
-#: pb/phplib/page.php:320
+#: pb/phplib/page.php:326
 msgid "Powered by Easynet"
 msgstr ""
 
@@ -3193,7 +3194,7 @@ msgstr "Terugkeren naar de belofte"
 msgid "<h2>Here's how your comment will appear</h2>"
 msgstr "<h2>Zo ziet uw commentaar er uit</h2>"
 
-#: pb/web/contact.php:30 pb/web/faq.php:504
+#: pb/web/contact.php:30 pb/web/faq.php:498
 msgid "Contact Us"
 msgstr "Contacteer ons"
 
@@ -3400,7 +3401,7 @@ msgstr "Bedankt voor uw onderschrijven!"
 msgid "Here are some more pledges you might like."
 msgstr "Er zijn op dit ogenblik geen benadrukte beloften voor  %s (%s)."
 
-#: pb/web/faq.php:18 pb/web/faq.php:357 pb/web/faq.php:501
+#: pb/web/faq.php:18 pb/web/faq.php:351 pb/web/faq.php:495
 msgid "Frequently Asked Questions"
 msgstr "Vaak gestelde vragen"
 
@@ -3606,15 +3607,14 @@ msgid ""
 "    href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">download the source\n"
 "    code</a> (look under 'pb') and help us develop it. You're welcome to use it\n"
 "    in your own projects, although you must also make available the source code to\n"
-"    any such projects.\n"
-"    "
+"    any such projects."
 msgstr "De programmatie achter PledgeBank is vrij en werd uitgegeven vooral door de GPL-vergunning van Affero. U kan<a href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\"> de broncode ophalen </a> (zoek onder 'pb') en ons helpen ze verder te ontwikkelen. Het staat u helemaal vrij ze te gebruiken in uw eigen projecten, maar u moet altijd de broncode van die projecten ter beschikking stellen.\n"
 
-#: pb/web/faq.php:137
+#: pb/web/faq.php:136
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr "Mensen bouwen dingen op, niet organisaties. Wie bouwt het <em>nu</em>?"
 
-#: pb/web/faq.php:139
+#: pb/web/faq.php:138
 msgid ""
 "OK, we are\n"
 "    Mike Bracken,\n"
@@ -3625,11 +3625,10 @@ msgid ""
 "    Etienne Pollard,\n"
 "    Richard Pope,\n"
 "    Matthew Somerville,\n"
-"    Tom Steinberg.\n"
-"    "
+"    Tom Steinberg."
 msgstr ""
 
-#: pb/web/faq.php:151
+#: pb/web/faq.php:149
 msgid ""
 "<strong>Translations by</strong>\n"
 "    Nic Dafis (Welsh),\n"
@@ -3642,11 +3641,10 @@ msgid ""
 "    maidan.org.ua team (Ukrainian),\n"
 "    Hugo Lamoureux (French),\n"
 "    Oliver Ding, Isaac Mao, Danny Yu, Nan Yang, Jacky Peng (Chinese),\n"
-"    Aliaksej Lavońčyk (Belarusian).\n"
-"    "
+"    Aliaksej Lavońčyk (Belarusian)."
 msgstr ""
 
-#: pb/web/faq.php:165
+#: pb/web/faq.php:162
 #, fuzzy
 msgid ""
 "<strong>Thanks also to</strong>\n"
@@ -3660,9 +3658,7 @@ msgid ""
 "    <a href=\"http://www.easynet.net/publicsector/\">Easynet</a> (who kindly host all\n"
 "    our servers).\n"
 "\n"
-"    Let us know if we've missed anyone.\n"
-"\n"
-"    "
+"    Let us know if we've missed anyone."
 msgstr ""
 "OK, wij zijn\n"
 "Mike Bracken,\n"
@@ -3697,15 +3693,15 @@ msgstr ""
 "Laat het ons weten als we iemand vergeten hebben.\n"
 "\n"
 
-#: pb/web/faq.php:185
+#: pb/web/faq.php:180
 msgid "Pledge Creators' Questions"
 msgstr "Vragen van Beloftemakers"
 
-#: pb/web/faq.php:188
+#: pb/web/faq.php:183
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Welke soort beloften doen het goed, en welke mislukken?"
 
-#: pb/web/faq.php:190
+#: pb/web/faq.php:185
 #, fuzzy
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
@@ -3720,11 +3716,11 @@ msgstr ""
 "Wij zijn er nog niet zeker van, maar door na te denken geloven we dat er enkele algemene regels te volgen zijn. Ten eerste, hoe lager het beoogde doel is, des te waarschijnlijker dat het zal slagen. Ten tweede, die slaagkans hangt ook rechtstreeks af van de energie, die u inzet voor een grootse belofte,\n"
 "zowel die van u zelf, als die van een onderschrijver. Indien u met een draagbare computer van deur tot deur gaat om personen aan te sporen onmiddellijk te onderschrijven, is uw succes veel waarschijnlijker dan voor wie zijn belofte opstelt en ze daarna vergeet."
 
-#: pb/web/faq.php:199
+#: pb/web/faq.php:194
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Hoeveel personen moet ik vragen?</a>"
 
-#: pb/web/faq.php:201
+#: pb/web/faq.php:196
 #, fuzzy
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
@@ -3738,11 +3734,11 @@ msgstr ""
 "Kies het aantal personen, waarmee u nauwelijks de aansporing zou vinden om uw deel van de belofte te doen. Kies één meer dan dat getal, dat u zou doen opgeven. \n"
 "Vraag niet meer dan dat. Zo heeft u de grootste kans op slagen en niets verhindert dat eventueel meer personen onderschrijven."
 
-#: pb/web/faq.php:216
+#: pb/web/faq.php:211
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Waarom verschijnt mijn nieuwe belote niet op het blad Alle Beloften?"
 
-#: pb/web/faq.php:218
+#: pb/web/faq.php:213
 #, fuzzy
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
@@ -3752,13 +3748,13 @@ msgid ""
 "    neighbours about your pledge!"
 msgstr "Nieuwe beloften worden getoond op een apart blad en niet elders tot wanneer enkele personen ze onderschreven hebben. Zo zijn we er zeker van dat we enkel kwaliteitsbeloften tonen, die een actieve maker hebben en enige steun. Informeer dus zeker uw vrienden en buren over de belofte! "
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:219
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Verwijdert u domme of onwettige beloften?"
 
 # Translated your neologism "backpage" as simply "hide", because that's what it seems to mean. (Tim Morley, 2005-11-22)
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:227
+#: pb/web/faq.php:222
 #, fuzzy
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
@@ -3773,11 +3769,11 @@ msgstr ""
 " Normaal zullen we beloften verbergen, die gewoon reklame of propaganda zijn of die niets betekenen.\n"
 "Bovendien zullen we alle beloften volledig verwijderen, die onwettige acties steunen of er toe aanzetten."
 
-#: pb/web/faq.php:234
+#: pb/web/faq.php:229
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Waarom mag ik mijn belofte niet wijzigen nadat ik ze gemaakt heb?</a>"
 
-#: pb/web/faq.php:236
+#: pb/web/faq.php:231
 #, fuzzy
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
@@ -3791,11 +3787,11 @@ msgstr ""
 "ons</a> contacteren als er een te verbeteren foutje in staat. Voor grotere wijzigingen moet u een nieuwe belofte maken en vragen dat uw onderschrijvers de nieuwe zouden onderschrijven. Er is een verwijzing \n"
 "om dat te doen in het deel 'Bekendmaking' van uw belofteblad."
 
-#: pb/web/faq.php:243
+#: pb/web/faq.php:238
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Kan ik mijn onderschrijvers contacteren?"
 
-#: pb/web/faq.php:245
+#: pb/web/faq.php:240
 #, fuzzy
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
@@ -3811,11 +3807,11 @@ msgstr ""
 "Ga naar uw belofteblad en volg de verwijzing onder 'Bekendmaking'. Omwille van de kosten zullen die berichten niet diegenen bereiken die per SMS onderschreven hebben. Als uw belofte slaagt zal u een verwijzing krijgen, waarmee u een bericht kan zenden naar iedereen die u steunt, ook zij die onderschreven via een SMS.\n"
 "U moet uw contactinformatie geven en de hunne vragen om het in contacte teblijven als u de belofte uitvoert. Als iemand later uw belofte onderschrijft zal het laatste bericht dat u zendt automatisch naar hen doorgestuurd worden en ze zullen een verwijzing krijgen om oudere berichten te lezen."
 
-#: pb/web/faq.php:254
+#: pb/web/faq.php:249
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Kan men per SMS onderschrijven (een tekstbericht per zaktelefoon)? Hoe?"
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:251
 #, fuzzy, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -3829,11 +3825,11 @@ msgstr ""
 "gelieve met ons contact op te nemen. De vlugschriften voor uw belofte leggen uit hoe te onderschrijven per SMS, druk er dus een stapeltje van en neem ze altijd bij u in uw tas. U zal de vlugschriften vinden in het deel 'Bekendmaking' van uw belofteblad. U kan ook aan de geïnteresserden zeggen dat ze een bericht <strong>pledge REFERENTIE</strong> zenden naar <strong>\n"
 "%s</strong>, waarin ze REFERENTIE vervangen door de korte referentie van uw belofte, die u gekozen hebt toen u ze maakte en die verschijnt aan het einde van haar internetadres."
 
-#: pb/web/faq.php:264
+#: pb/web/faq.php:259
 msgid "How do I add a picture to my pledge?"
 msgstr "Hoe voeg ik een afbeelding bij mijn belofte?"
 
-#: pb/web/faq.php:266
+#: pb/web/faq.php:261
 #, fuzzy
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
@@ -3841,11 +3837,11 @@ msgid ""
 "    of something to do with your pledge, or even just use a photo of yourself!"
 msgstr "Klik op de verwijzing 'Een afbeelding bijvoegen bij uw belofte (enkel voor de maker)' in het deel 'Bekendmaking' van uw belofteblad. Zoek een afbeelding van iets, wat te maken heeft met uw belofte, of eenvoudig een foto van uzelf."
 
-#: pb/web/faq.php:270
+#: pb/web/faq.php:265
 msgid "Can you make a special version of PledgeBank for my organisation?"
 msgstr ""
 
-#: pb/web/faq.php:272
+#: pb/web/faq.php:267
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
 "    colours or complete style to match your branding. We can intimately\n"
@@ -3857,15 +3853,15 @@ msgid ""
 "    bottom of <A href=\"/where\">this page</a>."
 msgstr ""
 
-#: pb/web/faq.php:285
+#: pb/web/faq.php:280
 msgid "International Questions"
 msgstr "Internationale Vragen"
 
-#: pb/web/faq.php:288
+#: pb/web/faq.php:283
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Mag ik beloften doen in andere talen?"
 
-#: pb/web/faq.php:290
+#: pb/web/faq.php:285
 #, fuzzy
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
@@ -3879,11 +3875,11 @@ msgstr ""
 "maar we kunnen ze maar maken met medewerking van anderstaligen. Als u zich wil voorstellen als vertaler,  <a href=\"/translate\">lees dan\n"
 "onze bladzijde daarover</a>."
 
-#: pb/web/faq.php:297
+#: pb/web/faq.php:292
 msgid "What countries does PledgeBank work in?"
 msgstr "In welke landen werkt PledgeBank?"
 
-#: pb/web/faq.php:299
+#: pb/web/faq.php:294
 #, fuzzy
 msgid ""
 "All of them. We try to detect which country you are in\n"
@@ -3896,42 +3892,41 @@ msgstr ""
 "en tonen u enkel beloften die uw land betreffen. Om te zien hoe PledgeBank er uit ziet in andere landen, klik op '(change)' bovenaan eender welk blad, rechts naast het PledgeBank-logo. Wil <a href=\"/ons contacteren\">contact\n"
 "us</a> als u anderen in uw land PledgeBank zou willen helpen gebruiken."
 
-#: pb/web/faq.php:305
+#: pb/web/faq.php:300
 msgid "Why do you only have UK postcodes?"
 msgstr "Waarom heeft u enkel UK postcodes?"
 
-#: pb/web/faq.php:307
+#: pb/web/faq.php:302
 #, fuzzy
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
 "    the postcode search overseas&mdash;please <a\n"
 "    href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">join this\n"
-"    email list</a> to help us out.\n"
-"    "
+"    email list</a> to help us out."
 msgstr ""
 "We zouden blij zijn met iemand te spreken die ons kan helpen de postcode te zoeken in het buitenland - gelieve <a\n"
 "href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\"> deze e-post lijst email list</a> te vervoegen om ons daarbij te helpen.\n"
 
-#: pb/web/faq.php:313
+#: pb/web/faq.php:307
 msgid "... and SMS?"
 msgstr "... en SMS?"
 
-#: pb/web/faq.php:315
+#: pb/web/faq.php:309
 #, fuzzy
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "    can help add text messaging in your country."
 msgstr "Wil ons opnieuw <a href=\"/contact\">contacteren</a> als u kan helpen tekstberichten toe te voegen un uw land. "
 
-#: pb/web/faq.php:322
+#: pb/web/faq.php:316
 msgid "Privacy Questions"
 msgstr "Vragen over het private karakter"
 
-#: pb/web/faq.php:325
+#: pb/web/faq.php:319
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Ik wil mijn naam niet laten zien als ik een belofte onderschrijf!"
 
-#: pb/web/faq.php:327
+#: pb/web/faq.php:321
 #, fuzzy, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -3941,11 +3936,11 @@ msgid ""
 "    view the pledge page."
 msgstr "U kan in het geheim een belofte onderschrijven, door 'Mijn naam tonen voor deze belofte' uit te schakelen bij het onderschrijven. Anders kan u onderschrijven via een SMS (enkel in %s). Indien u van plan bent een delicate, misschien hinderlijke belofte te doen, overweeg de mogelijkheid ze privé te maken; zo kunnen alleen zij, aan wie u de PIN gegeven hebt (geheim codenummer) het blad kunnen zien."
 
-#: pb/web/faq.php:333
+#: pb/web/faq.php:327
 msgid "Who gets to see my email address?"
 msgstr "Wie mag mijn e-adres zien?"
 
-#: pb/web/faq.php:335
+#: pb/web/faq.php:329
 #, fuzzy
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
@@ -3957,11 +3952,11 @@ msgid ""
 "    aware!"
 msgstr "Wj zullen nooit uw e-adres aan iemand geven, ook niet aan de maker van uw belofte. Wij staan wel toe dat de maker e-berichten zendt aan onderschrijvers om hen aan te moedigen verder nieuws te geven, enz. Maar wij tonen aan de beloftemaker nooit de adressen van wie het bericht zal krijgen. Pas op: als u zou op een bericht van een beloftemaker zou antwoorden, zou u hem/haar zelf uw e-adres geven. "
 
-#: pb/web/faq.php:343
+#: pb/web/faq.php:337
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "Gaat u afschuwelijke spam zenden naar mijn e-adres?"
 
-#: pb/web/faq.php:345
+#: pb/web/faq.php:339
 #, fuzzy
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
@@ -3971,7 +3966,7 @@ msgid ""
 "    else, unless we are obliged to by law."
 msgstr "Zeker niet. Nadat u een belofte onderschreven hebt zullen wij daarover berichten zenden. Dat zullen berichten zijn over de toestand van PledgeBank zelf en teksten van de beloftemaker, die u zullen aansporen tot grotere steun. Vanzelfsprekend zullen we nooit uw e-adres aan iemand geven of verkopen."
 
-#: pb/web/faq.php:505
+#: pb/web/faq.php:499
 msgid ""
 "If your question isn&rsquo;t answered here, or you just\n"
 "wanted to let us know something about the site, <a href=\"/contact\">contact&nbsp;us</a>."

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pledgebank-de\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-02-12 00:34+0000\n"
+"POT-Creation-Date: 2008-02-24 10:26+0000\n"
 "PO-Revision-Date: 2007-10-12 23:32+0200\n"
 "Last-Translator: Felix Zesch <post@felix-zesch.de>\n"
 "Language-Team:  <de@li.org>\n"
@@ -2057,58 +2057,59 @@ msgid "Address"
 msgstr "Ihre Adresse:"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:136 pb/phplib/page.php:399
+#: pb/phplib/page.php:136 pb/phplib/page.php:405
 msgid "PledgeBank"
 msgstr "PledgeBank"
 
-#: pb/phplib/page.php:208
-msgid "Hello, "
+#: pb/phplib/page.php:216 pb/phplib/page.php:218
+#, fuzzy, php-format
+msgid "Hello, %s"
 msgstr "Hallo,"
 
-#: pb/phplib/page.php:214
+#: pb/phplib/page.php:220
 msgid "this isn't you?  click here"
 msgstr "Das sind Sie nicht? Klicken Sie hier"
 
-#: pb/phplib/page.php:220 pb/web/search.php:435
+#: pb/phplib/page.php:226 pb/web/search.php:435
 #, fuzzy
 msgid "Search for pledges:"
 msgstr "Nach einem Versprechen suchen"
 
-#: pb/phplib/page.php:222 pb/web/search.php:437
+#: pb/phplib/page.php:228 pb/web/search.php:437
 msgid "Search"
 msgstr "Suchen"
 
-#: pb/phplib/page.php:232
+#: pb/phplib/page.php:238
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
 msgstr "Das ist eine Testseite für Entwickler. Sie möchten wahrscheinlich zur <a href=\"http://www.pledgebank.com/\">richtigen Seite</a>."
 
-#: pb/phplib/page.php:237
+#: pb/phplib/page.php:243
 msgid "Note: On this test site, the date is faked to be"
 msgstr "Beachten Sie: Auf dieser Testseite, ist das Datum nicht echt"
 
-#: pb/phplib/page.php:280
+#: pb/phplib/page.php:286
 msgid "Navigation"
 msgstr "Navigation"
 
-#: pb/phplib/page.php:294
+#: pb/phplib/page.php:300
 msgid "Translate into your language..."
 msgstr "In Ihre Sprache übersetzen"
 
-#: pb/phplib/page.php:295
+#: pb/phplib/page.php:301
 msgid "Change"
 msgstr "Ändern"
 
-#: pb/phplib/page.php:318 pb/web/lang.php:44
+#: pb/phplib/page.php:324 pb/web/lang.php:44
 msgid "Translate PledgeBank into your language"
 msgstr "Übersetzen Sie Pledgebank in Ihre Sprache"
 
-#: pb/phplib/page.php:319
+#: pb/phplib/page.php:325
 msgid "Built by mySociety"
 msgstr "Realisiert von mySociety"
 
-#: pb/phplib/page.php:320
+#: pb/phplib/page.php:326
 msgid "Powered by Easynet"
 msgstr "Unterstützt von Easynet"
 
@@ -3139,7 +3140,7 @@ msgstr "Zurückgehen zum Versprechen"
 msgid "<h2>Here's how your comment will appear</h2>"
 msgstr "<h2>Vorschau: So wird Ihr Kommentar später erscheinen"
 
-#: pb/web/contact.php:30 pb/web/faq.php:504
+#: pb/web/contact.php:30 pb/web/faq.php:498
 msgid "Contact Us"
 msgstr "Kontaktieren Sie uns"
 
@@ -3352,7 +3353,7 @@ msgstr "Danke, dass Sie das Versprechen ab Ihre Freunde geschickt haben!"
 msgid "Here are some more pledges you might like."
 msgstr "Hier sind einige andere Versprechen, die Sie interessieren könnten."
 
-#: pb/web/faq.php:18 pb/web/faq.php:357 pb/web/faq.php:501
+#: pb/web/faq.php:18 pb/web/faq.php:351 pb/web/faq.php:495
 msgid "Frequently Asked Questions"
 msgstr "Häufig gestellte Fragen"
 
@@ -3566,8 +3567,7 @@ msgid ""
 "    href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">download the source\n"
 "    code</a> (look under 'pb') and help us develop it. You're welcome to use it\n"
 "    in your own projects, although you must also make available the source code to\n"
-"    any such projects.\n"
-"    "
+"    any such projects."
 msgstr ""
 "Die Software hinter PledgeBank ist Open Source. Sie wurde vorwiegend unter der\n"
 "Affero GPL Softwarelizenz veröffentlicht.\n"
@@ -3577,11 +3577,12 @@ msgstr ""
 "bereitstellen.\n"
 "   "
 
-#: pb/web/faq.php:137
+#: pb/web/faq.php:136
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr "Wer hat denn nun aber <em>wirklich</EM> PledgeBank aufgebaut?"
 
-#: pb/web/faq.php:139
+#: pb/web/faq.php:138
+#, fuzzy
 msgid ""
 "OK, we are\n"
 "    Mike Bracken,\n"
@@ -3592,8 +3593,7 @@ msgid ""
 "    Etienne Pollard,\n"
 "    Richard Pope,\n"
 "    Matthew Somerville,\n"
-"    Tom Steinberg.\n"
-"    "
+"    Tom Steinberg."
 msgstr ""
 "OK, wir sind\n"
 "    Mike Bracken,\n"
@@ -3607,7 +3607,8 @@ msgstr ""
 "    Tom Steinberg.\n"
 "    "
 
-#: pb/web/faq.php:151
+#: pb/web/faq.php:149
+#, fuzzy
 msgid ""
 "<strong>Translations by</strong>\n"
 "    Nic Dafis (Welsh),\n"
@@ -3620,8 +3621,7 @@ msgid ""
 "    maidan.org.ua team (Ukrainian),\n"
 "    Hugo Lamoureux (French),\n"
 "    Oliver Ding, Isaac Mao, Danny Yu, Nan Yang, Jacky Peng (Chinese),\n"
-"    Aliaksej Lavońčyk (Belarusian).\n"
-"    "
+"    Aliaksej Lavońčyk (Belarusian)."
 msgstr ""
 "<strong>Übersetzungen von</strong>\n"
 "    Nic Dafis (Walisisch),\n"
@@ -3638,7 +3638,8 @@ msgstr ""
 "    Felix Zesch (Deutsch).\n"
 "    "
 
-#: pb/web/faq.php:165
+#: pb/web/faq.php:162
+#, fuzzy
 msgid ""
 "<strong>Thanks also to</strong>\n"
 "    <a href=\"http://www.tangentlabs.co.uk/\">Tangent Labs</a> (for SMS in the UK), \n"
@@ -3651,9 +3652,7 @@ msgid ""
 "    <a href=\"http://www.easynet.net/publicsector/\">Easynet</a> (who kindly host all\n"
 "    our servers).\n"
 "\n"
-"    Let us know if we've missed anyone.\n"
-"\n"
-"    "
+"    Let us know if we've missed anyone."
 msgstr ""
 "<strong>Danke auch an</strong>\n"
 "<a href=\"http://www.tangentlabs.co.uk/\">Tangent Labs</a> (für SMS in Großbritannien), \n"
@@ -3667,15 +3666,15 @@ msgstr ""
 "\n"
 "    "
 
-#: pb/web/faq.php:185
+#: pb/web/faq.php:180
 msgid "Pledge Creators' Questions"
 msgstr "Fragen der Ersteller von Versprechen"
 
-#: pb/web/faq.php:188
+#: pb/web/faq.php:183
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "Welche Arten von Versprechen gelingen und welche versanden einfach?"
 
-#: pb/web/faq.php:190
+#: pb/web/faq.php:185
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
 "    which will apply. First, the lower a pledge target (in terms of\n"
@@ -3692,11 +3691,11 @@ msgstr ""
 " und Leute überzeugen an Ort und Stelle zu unterzeichnen,\n"
 " steigt die Wahrscheinlichkeit, dass Ihr Versprechen Erfolg hat ungemein. Anders sieht es aus, wenn jemand sein Versprechen einfach erstellt und es danach hier vergisst."
 
-#: pb/web/faq.php:199
+#: pb/web/faq.php:194
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">Wie viele Unterzeichner sollte ich fordern?</a>"
 
-#: pb/web/faq.php:201
+#: pb/web/faq.php:196
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
 "    Choose the number of people for which you could only just be bothered to carry\n"
@@ -3706,11 +3705,11 @@ msgid ""
 "    can always sign up."
 msgstr "Wir empfehlen das niedrigste Ziel zu wählen, mit dem Sie irgendwie leben können. Wählen Sie die Zahl an Leuten, die Sie gerade noch annehmen würden, um Ihr Versprechen einzulösen. Einen mehr als die Zahl, bei der es nicht wert sein würde, es zu tun. Geben Sie keine höhere Zahl an. So erhöhen Sie die Wahrscheinlichkeit, dass Ihr Versprechen erfolgreich ist am meisten. Mehr Leute als Sie erwarten können immer unterzeichnen."
 
-#: pb/web/faq.php:216
+#: pb/web/faq.php:211
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "Warum erscheint mein neues Versprechen nicht in der Liste aller Versprechen?"
 
-#: pb/web/faq.php:218
+#: pb/web/faq.php:213
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
 "    the site, until a few people have signed up to them. This is to make\n"
@@ -3719,12 +3718,12 @@ msgid ""
 "    neighbours about your pledge!"
 msgstr "Neue Versprechen haben ihre eigene Seite und werden woanders nicht angezeigt, solange nicht ein paar Leute unterzeichnet haben. Damit wollen wir erreichen, dass nur Versprechen hoher Qualität angezeigt werden, die einen aktiven Ersteller und etwas Unterstützung haben. Also ab auf die Straße und Freunden und Nachbarn von Ihrem Versprechen überzeugen!"
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:219
 msgid "Do you remove silly or illegal pledges?"
 msgstr "Werden sinnlose oder illegale Versprechen entfernt?"
 
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:227
+#: pb/web/faq.php:222
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "    consider to be inappropriate. This means that your pledge will work, but will\n"
@@ -3734,11 +3733,11 @@ msgid ""
 "    illegal behaviour."
 msgstr "PledgeBank behält sich das Recht vor jedes Versprechen, das wir für unangebracht halten zu verstecken. Dies bedeutet, dass das Versprechen funktioniert, wir es aber nicht in der Liste aller Versprechen oder in der Suchfunktion anzeigen. Normalerweise werden wir nur Versprechen verstecken, die nichts anderes als Werbung oder Propaganda oder einfach nur obszön sind. Wir werden auch Versprechen löschen, die zu illegalen Handlungen aufrufen."
 
-#: pb/web/faq.php:234
+#: pb/web/faq.php:229
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">Warum kann ich mein Versprechen nicht ändern, nachdem ich es eingetragen habe?</A>"
 
-#: pb/web/faq.php:236
+#: pb/web/faq.php:231
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "    the pledge.  If you change the wording, then their signatures would no longer\n"
@@ -3748,11 +3747,11 @@ msgid ""
 "    this from the 'Spread the word' section of your pledge page."
 msgstr "Leute, die ein Versprechen unterzeichnen, erwägen dabei den genauen Wortlaut. Wenn Sie diesen im Nachhinein ändern, wären ihre Unterschriften nicht mehr gültig. Sie können <a href=\"/contact\">uns kontaktieren</A> wenn es Sie nur eine kosmetische Änderung vornehmen wollen. Für größere Änderungen können Sie ein neues Versprechen erstellen und die bisherigen Unterzeichner bitten, auch dies zu unterzeichnen. Es gibt einen Verweis darauf im Abschnitt \"Weitersagen\" Ihrer Versprechensseite."
 
-#: pb/web/faq.php:243
+#: pb/web/faq.php:238
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "Kann ich mit den Leuten, die mein Versprechen unterzeichnet haben, Kontakt aufnehmen?"
 
-#: pb/web/faq.php:245
+#: pb/web/faq.php:240
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
 "    to your pledge's page, and follow the link under 'Spread the word'.\n"
@@ -3766,11 +3765,11 @@ msgstr ""
 "Sie können zu jedem Zeitpunkt allen, die bisher das Versprechen unterzeichnet haben eine Nachricht schicken. Gehen Sie zu der Seite Ihres Versprechens und folgen Sie dem Verweis unter \"Weitersagen\". Aus Kostengründen ist dies für Leute, die per SMS unterschrieben haben, nicht möglich. Wenn Ihr Versprechen erfolgreich ist, werden Sie eine Adresse erhalten, um eine Nachricht an alle Unterzeichner zu schicken, einschließlich derer, die per Kurznachricht unterschrieben haben. Sie sollten dabei Ihre Kontaktdaten angeben und um die der anderen bitten, damit Sie mit Ihnen während der Erfüllung des Versprechens in Verbindung bleiben können.\n"
 " Falls jemand später noch Ihr Versprechen unterschreibt, werden die letzte versandte Nachricht und eine Adresse unter der er ältere Nachrichten lesen kann, an ihn geschickt."
 
-#: pb/web/faq.php:254
+#: pb/web/faq.php:249
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "Kann man per SMS (Kurznachricht) unterzeichnen? Wenn ja, wie?"
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:251
 #, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -3781,22 +3780,22 @@ msgid ""
 "    where to text it to at the bottom of each relevant pledge signup box."
 msgstr "Ja, aber nur in %s. Wenn Sie uns helfen möchten, SMS-Dienste für andere Länder zu organisieren, nehmen Sie bitte mit uns <a href=\"/contact\">Kontakt</a> auf. Die Flugblätter für Ihr Versprechen beschreiben, wie man per SMS unterzeichnen kann. Der einfachste Weg sich das zu merken, ist sie auszudrucken und immer ein paar dabei zu haben. Sie können die Flugblätter im Bereich \"Weitersagen\" auf Ihrer Versprechensseite finden. Ansonsten beschreibt es am unteren Ende jeder Unterzeichnerbox für Leute in %s, wie der Inhalt der SMS lauten muss und wohin man sie schickt."
 
-#: pb/web/faq.php:264
+#: pb/web/faq.php:259
 msgid "How do I add a picture to my pledge?"
 msgstr "Wie kann ich meinem Versprechen ein Bild hinzufügen?"
 
-#: pb/web/faq.php:266
+#: pb/web/faq.php:261
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
 "    (creator only)' under 'Spread the word on and offline'. Either find a picture\n"
 "    of something to do with your pledge, or even just use a photo of yourself!"
 msgstr "Gehen Sie zu Ihrer Versprechensseite und klicken Sie auf \"Dem Versprechen ein Bild hinzufügen (nur Ersteller)\" unter \"On- und offline weitersagen\". Nehmen Sie entweder ein Bild, das irgendwie mit Ihrem Versprechen in Verbindung steht, oder einfach ein Foto von sich selbst."
 
-#: pb/web/faq.php:270
+#: pb/web/faq.php:265
 msgid "Can you make a special version of PledgeBank for my organisation?"
 msgstr "Können Sie eine spezielle Version von PledgeBank für meine Organisation bauen?"
 
-#: pb/web/faq.php:272
+#: pb/web/faq.php:267
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
 "    colours or complete style to match your branding. We can intimately\n"
@@ -3810,15 +3809,15 @@ msgstr ""
 "Ja. Wir können Ihre Versprechen zusammen anzeigen lassen und Logo, Farben oder das gesamte Erscheinungsbild verändern, damit es zu Ihrer Marke passt. Wir können PledgeBank nahtlos in Ihre Internetseiten integrieren oder auf andere Art und Weise verbinden - ganz wie Sie wollen. Wir können die Seite öffentlich zugänglich oder nur für Sie erstellen. Dieser Dienst ist normalerweise kostenpflichtig. Die Abwicklung erfolgt über unsere Tochterfirma, wobei der gesamte Profit dem Verein mySociety zu Gute kommt.\n"
 "<a href=\"/contact\">Setzen Sie sich mit uns in Verbindung</a> und erzählen Sie etwas über Ihre Vorstellungen. Es gibt eine Liste maßgeschneiderter PledgeBank-Installationen am Ende <A href=\"/where\">dieser Seite</a>."
 
-#: pb/web/faq.php:285
+#: pb/web/faq.php:280
 msgid "International Questions"
 msgstr "Fragen zu Internationalem"
 
-#: pb/web/faq.php:288
+#: pb/web/faq.php:283
 msgid "Can I put up pledges in languages other than English?"
 msgstr "Kann ich Versprechen in einer anderen Sprache als Englisch einstellen?"
 
-#: pb/web/faq.php:290
+#: pb/web/faq.php:285
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
 "    If your browser is configured to use one of those languages, PledgeBank will \n"
@@ -3828,11 +3827,11 @@ msgid ""
 "    help page</a>."
 msgstr "Ja! Wir haben mehrere vollständig übersetzte Versionen von Pledgebank. Ihr Browser ist so konfiguriert, dass er eine dieser Sprachen benutzt, PledgeBank erscheint automatisch in ihr. Ansonsten können Sie den Verweisen am Ende jeder Seite folgen. Wenn Sie mithelfen möchten die Seite in Ihre Sprache zu übersetzen, lesen Sie bitte unsere <a href=\"/translate\">Übersetzerseite</A>"
 
-#: pb/web/faq.php:297
+#: pb/web/faq.php:292
 msgid "What countries does PledgeBank work in?"
 msgstr "In welchen Ländern funktioniert PledgeBank?"
 
-#: pb/web/faq.php:299
+#: pb/web/faq.php:294
 #, fuzzy
 msgid ""
 "All of them. We try to detect which country you are in\n"
@@ -3845,41 +3844,41 @@ msgstr ""
 " jeden Seite, gleich rechts vom PledgeBank-Logo. Bitte nehmen Sie mit uns <a href=\"/contact\">Kontakt\n"
 "</A> auf, wenn Sie mehr Leute in Ihrem Land von PledgeBank überzeugen wollen."
 
-#: pb/web/faq.php:305
+#: pb/web/faq.php:300
 msgid "Why do you only have UK postcodes?"
 msgstr "Warum gibt es nur Postleitzahlen für Großbritannien?"
 
-#: pb/web/faq.php:307
+#: pb/web/faq.php:302
+#, fuzzy
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
 "    the postcode search overseas&mdash;please <a\n"
 "    href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">join this\n"
-"    email list</a> to help us out.\n"
-"    "
+"    email list</a> to help us out."
 msgstr ""
 "Wir würden sehr gerne mit jemandem sprechen, der uns helfen kann, die Postleitzahlensuche in anderen Teilen der Welt zu verwirklichen. Bitte <a\n"
 "href=\"http://www.mysociety.org/mailman/listinfo/mysociety-i18n\">tragen Sie sich auf diesem E-Mail-Verteiler ein</A> um uns dabei zu helfen.\n"
 "    "
 
-#: pb/web/faq.php:313
+#: pb/web/faq.php:307
 msgid "... and SMS?"
 msgstr "... und SMS?"
 
-#: pb/web/faq.php:315
+#: pb/web/faq.php:309
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "    can help add text messaging in your country."
 msgstr "Das Gleiche, bitte <a href=\"/contact\">setzen Sie sich mit uns in Verbindung</A> wenn Sie helfen können den SMS-Dienst für ein Land hinzuzufügen."
 
-#: pb/web/faq.php:322
+#: pb/web/faq.php:316
 msgid "Privacy Questions"
 msgstr "Fragen zum Datenschutz"
 
-#: pb/web/faq.php:325
+#: pb/web/faq.php:319
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "Ich möchte nicht, dass mein Name veröffentlicht wird, wenn ich ein Versprechen unterschreibe."
 
-#: pb/web/faq.php:327
+#: pb/web/faq.php:321
 #, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -3889,11 +3888,11 @@ msgid ""
 "    view the pledge page."
 msgstr "Sie können ein Versprechen verdeckt  unterzeichnen wenn Sie das Häkchen neben \"Meinen Namen unter diesem Versprechen anzeigen\" entfernen. Alternativ können Sie per SMS unterschreiben (nur in %s). Wenn Sie ein heikles Versprechen abgeben, können Sie es geschützt einstellen. Das bedeutet, dass nur Leute mit einer Geheimzahl, die Sie ihnen geben, die Versprechensseite sehen können."
 
-#: pb/web/faq.php:333
+#: pb/web/faq.php:327
 msgid "Who gets to see my email address?"
 msgstr "Wer kann meine E-Mail-Adresse sehen?"
 
-#: pb/web/faq.php:335
+#: pb/web/faq.php:329
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
 "    creator of your pledge, unless we are obliged to by law. We do let the pledge\n"
@@ -3904,11 +3903,11 @@ msgid ""
 "    aware!"
 msgstr "Wir werden Ihre E-Mail-Adresse nie jemandem geben, auch nicht dem Ersteller eines Versprechens. Wir lassen die Ersteller E-Mails an die Unterzeichner schicken um zu erklären, wie es weitergeht, um sie zu motivieren usw. Wir zeigen jedoch dem Ersteller nicht die Adressen der Unterzeichner, die seine E-Mail bekommen. Wenn Sie auf eine E-Mail von einem Ersteller antworten, geben Sie selbst diesem Ihre E-Mail-Adresse &mdash; seien Sie sich dessen bitte bewusst."
 
-#: pb/web/faq.php:343
+#: pb/web/faq.php:337
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "Werden Sie unerwünschte Werbe-E-Mails an meine Adresse schicken?"
 
-#: pb/web/faq.php:345
+#: pb/web/faq.php:339
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
 "    relation to your pledge. These will be a mixture of status emails from\n"
@@ -3917,7 +3916,7 @@ msgid ""
 "    else, unless we are obliged to by law."
 msgstr "Nein. Nachdem Sie ein Versprechen unterzeichnet haben, werden wir Ihnen E-Mails senden, die mit etwas mit Ihrem Versprechen zu tun  haben. Es handelt sich dabei um eine Mischung von Statusinformationen von PledgeBank selbst und Nachrichten des Erstellers um Sie zu mehr Einsatz anzuspornen . Es versteht sich von selbst, dass wir niemals Ihre E-Mail-Adresse an jemanden weitergeben oder verkaufen, solange wir nicht gesetzlich dazu verpflichtet werden."
 
-#: pb/web/faq.php:505
+#: pb/web/faq.php:499
 msgid ""
 "If your question isn&rsquo;t answered here, or you just\n"
 "wanted to let us know something about the site, <a href=\"/contact\">contact&nbsp;us</a>."

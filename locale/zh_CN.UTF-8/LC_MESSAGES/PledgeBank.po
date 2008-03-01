@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-02-12 00:34+0000\n"
+"POT-Creation-Date: 2008-02-24 10:26+0000\n"
 "PO-Revision-Date: 2007-06-04 11:44+0800\n"
 "Last-Translator: Oliver Ding <swordi@gmail.com>\n"
 "Language-Team: Chinese <team@pledgebank.com>\n"
@@ -2033,28 +2033,29 @@ msgid "Address"
 msgstr "你的地址："
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:136 pb/phplib/page.php:399
+#: pb/phplib/page.php:136 pb/phplib/page.php:405
 msgid "PledgeBank"
 msgstr "祈愿行网站(PledgeBank.com)"
 
-#: pb/phplib/page.php:208
-msgid "Hello, "
+#: pb/phplib/page.php:216 pb/phplib/page.php:218
+#, fuzzy, php-format
+msgid "Hello, %s"
 msgstr "你好，"
 
-#: pb/phplib/page.php:214
+#: pb/phplib/page.php:220
 msgid "this isn't you?  click here"
 msgstr "不是你的帐号？点这里修改"
 
-#: pb/phplib/page.php:220 pb/web/search.php:435
+#: pb/phplib/page.php:226 pb/web/search.php:435
 #, fuzzy
 msgid "Search for pledges:"
 msgstr "搜索祈愿"
 
-#: pb/phplib/page.php:222 pb/web/search.php:437
+#: pb/phplib/page.php:228 pb/web/search.php:437
 msgid "Search"
 msgstr "搜索"
 
-#: pb/phplib/page.php:232
+#: pb/phplib/page.php:238
 msgid ""
 "This is a test site for developers only. You probably want\n"
 "<a href=\"http://www.pledgebank.com/\">the real site</a>."
@@ -2062,33 +2063,33 @@ msgstr ""
 "这是一个仅供开发者使用的测试页面。你大概想要\n"
 "<a href=\"http://www.pledgebank.com/\">真实页面</a>。"
 
-#: pb/phplib/page.php:237
+#: pb/phplib/page.php:243
 msgid "Note: On this test site, the date is faked to be"
 msgstr "注意: 在这个测试页面上，数据是假的"
 
-#: pb/phplib/page.php:280
+#: pb/phplib/page.php:286
 msgid "Navigation"
 msgstr "导航"
 
-#: pb/phplib/page.php:294
+#: pb/phplib/page.php:300
 #, fuzzy
 msgid "Translate into your language..."
 msgstr "翻译祈愿行网站(PledgeBank.com)为你所使用的语言"
 
-#: pb/phplib/page.php:295
+#: pb/phplib/page.php:301
 #, fuzzy
 msgid "Change"
 msgstr "(更改)"
 
-#: pb/phplib/page.php:318 pb/web/lang.php:44
+#: pb/phplib/page.php:324 pb/web/lang.php:44
 msgid "Translate PledgeBank into your language"
 msgstr "翻译祈愿行网站(PledgeBank.com)为你所使用的语言"
 
-#: pb/phplib/page.php:319
+#: pb/phplib/page.php:325
 msgid "Built by mySociety"
 msgstr "由mySociety创建"
 
-#: pb/phplib/page.php:320
+#: pb/phplib/page.php:326
 msgid "Powered by Easynet"
 msgstr "由Easynet提供空间支持"
 
@@ -3106,7 +3107,7 @@ msgstr "返回祈愿"
 msgid "<h2>Here's how your comment will appear</h2>"
 msgstr "<h2>你的评论将会按照这样显示</h2>"
 
-#: pb/web/contact.php:30 pb/web/faq.php:504
+#: pb/web/contact.php:30 pb/web/faq.php:498
 msgid "Contact Us"
 msgstr "联络我们"
 
@@ -3289,7 +3290,7 @@ msgstr "感谢你在%s签名支持这个祈愿！"
 msgid "Here are some more pledges you might like."
 msgstr "目前没有符合特征的愿望。"
 
-#: pb/web/faq.php:18 pb/web/faq.php:357 pb/web/faq.php:501
+#: pb/web/faq.php:18 pb/web/faq.php:351 pb/web/faq.php:495
 msgid "Frequently Asked Questions"
 msgstr "常见问题"
 
@@ -3458,15 +3459,15 @@ msgid ""
 "    href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">download the source\n"
 "    code</a> (look under 'pb') and help us develop it. You're welcome to use it\n"
 "    in your own projects, although you must also make available the source code to\n"
-"    any such projects.\n"
-"    "
+"    any such projects."
 msgstr "祈愿行网站(PledgeBank.com)的后台程序是开源的，可以在Affero GPL软件协议授权下使用。你可以 <a href=\"https://secure.mysociety.org/cvstrac/dir?d=mysociety\">下载英文版网站的源代码 </a>(可以在'pb'下看到)，帮助我们继续开发它。欢迎你在你自己的项目中使用它"
 
-#: pb/web/faq.php:137
+#: pb/web/faq.php:136
 msgid "People build things, not organisations. Who <em>actually</em> built it?"
 msgstr "是人们在做事，而不是某个组织。那么，<em>具体是</em>哪些人建立了祈愿行(PledgeBank)呢？"
 
-#: pb/web/faq.php:139
+#: pb/web/faq.php:138
+#, fuzzy
 msgid ""
 "OK, we are\n"
 "    Mike Bracken,\n"
@@ -3477,13 +3478,12 @@ msgid ""
 "    Etienne Pollard,\n"
 "    Richard Pope,\n"
 "    Matthew Somerville,\n"
-"    Tom Steinberg.\n"
-"    "
+"    Tom Steinberg."
 msgstr ""
 "祈愿行(PledgeBank)团队由以下成员组成：Mike Bracken、Edmund von der Burg、James Cronin、Francis Irving、Chris Lightfoot、Etienne Pollard、Richard Pope、Matthew Somerville和Tom Steinberg。\n"
 "    "
 
-#: pb/web/faq.php:151
+#: pb/web/faq.php:149
 #, fuzzy
 msgid ""
 "<strong>Translations by</strong>\n"
@@ -3497,14 +3497,14 @@ msgid ""
 "    maidan.org.ua team (Ukrainian),\n"
 "    Hugo Lamoureux (French),\n"
 "    Oliver Ding, Isaac Mao, Danny Yu, Nan Yang, Jacky Peng (Chinese),\n"
-"    Aliaksej Lavońčyk (Belarusian).\n"
-"    "
+"    Aliaksej Lavońčyk (Belarusian)."
 msgstr ""
 "    <strong>其他语言版本由以下人员和组织翻译：</strong>\n"
 "    群智基金会团队:Oliver Ding, Isaac Mao, Danny Yu, Nan Yang, Jacky Peng (中文简体)，Nic Dafis (威尔士语)，Hugo Caballero Figueroa (西班牙语)，Tim Morley (世界语)，Diego Galli (意大利语)，LaPingvino and Leo De Cooman (德语)，Creso Moraes (巴西葡萄牙语)，Alexander Markushin (俄语)，maidan.org.ua team (乌克兰语)，Aliaksej Lavońčyk (白俄罗斯语)。\n"
 "    "
 
-#: pb/web/faq.php:165
+#: pb/web/faq.php:162
+#, fuzzy
 msgid ""
 "<strong>Thanks also to</strong>\n"
 "    <a href=\"http://www.tangentlabs.co.uk/\">Tangent Labs</a> (for SMS in the UK), \n"
@@ -3517,9 +3517,7 @@ msgid ""
 "    <a href=\"http://www.easynet.net/publicsector/\">Easynet</a> (who kindly host all\n"
 "    our servers).\n"
 "\n"
-"    Let us know if we've missed anyone.\n"
-"\n"
-"    "
+"    Let us know if we've missed anyone."
 msgstr ""
 "    <strong>还要感谢</strong>\n"
 "    <a href=\"http://www.tangentlabs.co.uk/\">Tangent Labs</a> (为我们提供了英国的短信服务)，<a href=\"http://earth-info.nga.mil/gns/html/\">美国军队</a> (为我们提供了世界地名数据)，<a href=\"http://sedac.ciesin.columbia.edu/gpw/\">CIESIN</a> (为我们提供了人口密度数据)，<a href=\"http://www.ordnancesurvey.co.uk\">Ordnance Survey</a> (为我们提供了英国的邮政编码)，感谢Ben Furber制作了域名前的小图标，感谢所有自由软件社区 (FreeBSD、Linux、PHP、Perl、Python、Apache、MySQL和PostgreSQL，热爱你们，并在网站中使用了你们！) \n"
@@ -3529,15 +3527,15 @@ msgstr ""
 "\n"
 "    "
 
-#: pb/web/faq.php:185
+#: pb/web/faq.php:180
 msgid "Pledge Creators' Questions"
 msgstr "祈愿者疑问解答"
 
-#: pb/web/faq.php:188
+#: pb/web/faq.php:183
 msgid "What sort of pledges work and what sort of pledges languish in obscurity?"
 msgstr "哪些祈愿能够成功？哪些不能成功？"
 
-#: pb/web/faq.php:190
+#: pb/web/faq.php:185
 msgid ""
 "We're not sure yet, but we reckon that there are some general rules\n"
 "    which will apply. First, the lower a pledge target (in terms of\n"
@@ -3549,11 +3547,11 @@ msgid ""
 "    puts their pledge up and forgets about it."
 msgstr "我们也无法确定，但估计以下原则应该有用：首先，祈愿的目标越小(以吸引签名者人数来计算)，祈愿越容易成功；其次，你推动祈愿的热情越高，无论这个祈愿是你自己的，还是你签名支持的，成功的希望越大。如果你带着无线上网的笔记本电脑，挨家挨户到处请人签名，你一定会比那些祈过了愿，就将祈愿丢在那儿不管的人更加容易成功。"
 
-#: pb/web/faq.php:199
+#: pb/web/faq.php:194
 msgid "<a name=\"targets\">How many people should I ask for?</a>"
 msgstr "<a name=\"targets\">我需要获得多少人的签名呢？</a>"
 
-#: pb/web/faq.php:201
+#: pb/web/faq.php:196
 msgid ""
 "We recommend that you pick the lowest target you can possibly bear to.\n"
 "    Choose the number of people for which you could only just be bothered to carry\n"
@@ -3563,11 +3561,11 @@ msgid ""
 "    can always sign up."
 msgstr "建议你选择你能够承受的最低目标数字。选择一个你不会感到困扰的能够参与支持签名的人数，低于这个数字就无法实现祈愿。你的期望值不要高过这个数字，这会使你的祈愿成功。一般来说，总是会有超乎你期待的人们来签名。"
 
-#: pb/web/faq.php:216
+#: pb/web/faq.php:211
 msgid "Why does my new pledge not appear on the All Pledges page?"
 msgstr "为什么我的新祈愿不会出现在所有的祈愿页面呢？"
 
-#: pb/web/faq.php:218
+#: pb/web/faq.php:213
 msgid ""
 "New pledges have just their own page, and are not shown elsewhere on\n"
 "    the site, until a few people have signed up to them. This is to make\n"
@@ -3576,12 +3574,12 @@ msgid ""
 "    neighbours about your pledge!"
 msgstr "新的祈愿只会显示在祈愿页中，不会在网站别的地方出现，一直到有一些人签名支持后。这是为了确保我们展示的都是比较有价值的祈愿，这类祈愿有一个积极的祈愿者和足够的支持者。所以，祈愿以后赶紧出门去告诉你的朋友和邻居，请他们来签名支持吧！"
 
-#: pb/web/faq.php:224
+#: pb/web/faq.php:219
 msgid "Do you remove silly or illegal pledges?"
 msgstr "你们会删除无聊的和违法的祈愿吗？"
 
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
-#: pb/web/faq.php:227
+#: pb/web/faq.php:222
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "    consider to be inappropriate. This means that your pledge will work, but will\n"
@@ -3591,11 +3589,11 @@ msgid ""
 "    illegal behaviour."
 msgstr "祈愿行(PledgeBank)保留“隐藏”任何我们认为不恰当祈愿的权利。这意味着你的祈愿将继续存在，但不会在所有页面显示，也不会被搜索到。通常我们会隐藏那些广告或者宣传祈愿，或者那些完全琐碎、无聊的祈愿，我们也会直接删除那些煽动、引发违法行为的祈愿。"
 
-#: pb/web/faq.php:234
+#: pb/web/faq.php:229
 msgid "<a name=\"editpledge\">Why can't I modify my pledge after I've made it?</a>"
 msgstr "<a name=\"editpledge\">为什么祈愿创建后无法修改？</a>"
 
-#: pb/web/faq.php:236
+#: pb/web/faq.php:231
 msgid ""
 "People who sign up to a pledge are signing up to the specific wording of\n"
 "    the pledge.  If you change the wording, then their signatures would no longer\n"
@@ -3605,11 +3603,11 @@ msgid ""
 "    this from the 'Spread the word' section of your pledge page."
 msgstr "人们签名支持的祈愿是特定语言所表述的祈愿。如果你改变了祈愿的描述，签名者的支持就将失去了依据。如果你需要作小小的修饰，你可以<a href=\"/contact\">联络我们</a>。如果要作大的改动，你可以重新建立一个祈愿，要求老的签名者们支持这个新祈愿。你可以通过祈愿页上“传播祈愿”处提供的链接来连接新旧祈愿。"
 
-#: pb/web/faq.php:243
+#: pb/web/faq.php:238
 msgid "Can I contact the people who have signed my pledge?"
 msgstr "我能联络签名支持我祈愿的人吗？"
 
-#: pb/web/faq.php:245
+#: pb/web/faq.php:240
 #, fuzzy
 msgid ""
 "At any time, you can send a message to your signers so far.  Go \n"
@@ -3622,11 +3620,11 @@ msgid ""
 "    forwarded to them, and they will be given a link to read older messages."
 msgstr "任何时候你都可以向你的签名者发送消息。登录你的祈愿页，在“传播祈愿”下方会有一个链接引导你如何做。出于成本考虑，这则消息还没有使用手机短信发送。 如果祈愿成功，你会得到一个链接去电邮发送消息给所有的签名者，包括那些通过短信息签名的人。(备注，本网站只在英国适用手机短信息功能。)你可以给出你的详细联络信息，同时要求签名者提供他们的，这样你就可在祈愿完成时与他们保持联络。如果有人晚些签名，你发送的最后一条消息将会自动传送给他/她，他们也将获得一个链接，去阅读那些老的消息。"
 
-#: pb/web/faq.php:254
+#: pb/web/faq.php:249
 msgid "Can people sign up by SMS (text message), and if so how?"
 msgstr "人们可以通过SMS文本短信息方式来签名吗?？如果可以该如何操作？"
 
-#: pb/web/faq.php:256
+#: pb/web/faq.php:251
 #, fuzzy, php-format
 msgid ""
 "Yes, although only in %s. If you'd like to help us organise\n"
@@ -3637,22 +3635,22 @@ msgid ""
 "    where to text it to at the bottom of each relevant pledge signup box."
 msgstr "是的，虽然只在 %s。如果你想帮助我们为其他国家开发SMS短信息平台，请联系我们。你的祈愿的广告传单描述了如何去通过SMS来签名。所以记得最简单的方法是打印一些传单并且随身带着他们。你可以从你的祈愿页面的“传播祈愿”这个地方找到你的广告传单。此外，对于在%s的人们来说，每一个相关的祈愿签名按纽意味着输入什么和在哪里输入。  "
 
-#: pb/web/faq.php:264
+#: pb/web/faq.php:259
 msgid "How do I add a picture to my pledge?"
 msgstr "我怎样才能添加一幅照片到我的祈愿中？"
 
-#: pb/web/faq.php:266
+#: pb/web/faq.php:261
 msgid ""
 "Go to your pledge page and click 'Add a picture to your pledge\n"
 "    (creator only)' under 'Spread the word on and offline'. Either find a picture\n"
 "    of something to do with your pledge, or even just use a photo of yourself!"
 msgstr "登录你的祈愿页面，点击“通过线上或线下传播祈愿”下方的“添加图片到祈愿(只限祈愿者本人)”，找一幅与你的祈愿相联系的图片，或仅仅只是用一幅你自己的照片！"
 
-#: pb/web/faq.php:270
+#: pb/web/faq.php:265
 msgid "Can you make a special version of PledgeBank for my organisation?"
 msgstr "你们能够为我们的组织特别作一个定制版本的祈愿行网站吗？"
 
-#: pb/web/faq.php:272
+#: pb/web/faq.php:267
 msgid ""
 "Yes. We can group your pledges together, and alter the logo,\n"
 "    colours or complete style to match your branding. We can intimately\n"
@@ -3664,15 +3662,15 @@ msgid ""
 "    bottom of <A href=\"/where\">this page</a>."
 msgstr "是的。我们可以将你的祈愿集中到一起，配合你的品牌特征来改变网站图标、颜色或全部风格。我们可以按照任何你希望的方式，将祈愿行与你的其他网站密切联系起来。通常，我们会通过我们的商业服务部门对此收取费用(所获利润均会返还到mySociety中)。请<a href=\"/contact\">联系我们</a>，具体说明你的构想。在<A href=\"/where\">这个页面</a>的底部，有一些类似站点的案例。 "
 
-#: pb/web/faq.php:285
+#: pb/web/faq.php:280
 msgid "International Questions"
 msgstr "国际化问题"
 
-#: pb/web/faq.php:288
+#: pb/web/faq.php:283
 msgid "Can I put up pledges in languages other than English?"
 msgstr "我可以建立一个英语以外语言的祈愿吗？"
 
-#: pb/web/faq.php:290
+#: pb/web/faq.php:285
 msgid ""
 "Yes! We have several fully internationalised versions of PledgeBank.\n"
 "    If your browser is configured to use one of those languages, PledgeBank will \n"
@@ -3682,11 +3680,11 @@ msgid ""
 "    help page</a>."
 msgstr "是的！我们有一些完全国际化的祈愿行版本。如果你的浏览器设定了某种默认语言，祈愿行将自动显示出该版本来。另外，你可以查看在每个页面的最底部版本链接说明。如果你有兴趣加入志愿者，翻译本站到你的母语，请<a href=\"/translate\">阅读我们的翻译帮助页面</a>。"
 
-#: pb/web/faq.php:297
+#: pb/web/faq.php:292
 msgid "What countries does PledgeBank work in?"
 msgstr "祈愿行网站(PledgeBank.com)现在有哪些国家的语言版本？"
 
-#: pb/web/faq.php:299
+#: pb/web/faq.php:294
 #, fuzzy
 msgid ""
 "All of them. We try to detect which country you are in\n"
@@ -3696,38 +3694,38 @@ msgid ""
 "    us</a> if you'd like to help get more people in your country using PledgeBank."
 msgstr "所有这些。我们尝试自动测试你所在的国家，然后只显示与你国家相关的祈愿。如果希望看到祈愿行网站(PledgeBank.com)在其他国家的样子，请在任何页面顶端靠近网站图标处点击“(改变)”。 如果你希望帮助更多你所在国家的人们使用祈愿行网站(PledgeBank.com)，请<a href=\"/contact\">联络我们</a> "
 
-#: pb/web/faq.php:305
+#: pb/web/faq.php:300
 msgid "Why do you only have UK postcodes?"
 msgstr "为什么只有英国的邮政编码？"
 
-#: pb/web/faq.php:307
+#: pb/web/faq.php:302
+#, fuzzy
 msgid ""
 "We'd be happy to talk to anyone who could help us extend\n"
 "    the postcode search overseas&mdash;please <a\n"
 "    href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">join this\n"
-"    email list</a> to help us out.\n"
-"    "
+"    email list</a> to help us out."
 msgstr "我们非常高兴和任何人交流扩展海外邮政编码搜索，请<a    href=\"https://secure.mysociety.org/admin/lists/mailman/listinfo/internationalisation\">加入此邮件列表</a>来帮助我们。"
 
-#: pb/web/faq.php:313
+#: pb/web/faq.php:307
 msgid "... and SMS?"
 msgstr ".... 以及短信？"
 
-#: pb/web/faq.php:315
+#: pb/web/faq.php:309
 msgid ""
 "Again, please <a href=\"/contact\">contact us</a> if you\n"
 "    can help add text messaging in your country."
 msgstr "再一次说明，如果你希望帮助我们在你的国家增加文字信息，请<a href=\"/contact\">联络我们</a>"
 
-#: pb/web/faq.php:322
+#: pb/web/faq.php:316
 msgid "Privacy Questions"
 msgstr "隐私问题"
 
-#: pb/web/faq.php:325
+#: pb/web/faq.php:319
 msgid "I don't want my name visible to everyone when I sign a pledge!"
 msgstr "我不希望我的名字在联署某个祈愿的时候被任何人看到！"
 
-#: pb/web/faq.php:327
+#: pb/web/faq.php:321
 #, php-format
 msgid ""
 "You can add yourself secretly to a pledge by unchecking the 'Show\n"
@@ -3737,11 +3735,11 @@ msgid ""
 "    view the pledge page."
 msgstr "你可以在登录后去除“在这个祈愿中显示我的名字”的框，悄悄地把你自己加入到该祈愿中。或者，你还可以用短信登录（仅在 %s 有效）。如果你打算做一个敏感的祈愿，你可能希望把它变成私有的，这意味着只有拥有你给的口令(PIN)的人们才能够看到这个祈愿的页面。"
 
-#: pb/web/faq.php:333
+#: pb/web/faq.php:327
 msgid "Who gets to see my email address?"
 msgstr "谁会看到我的电邮地址？"
 
-#: pb/web/faq.php:335
+#: pb/web/faq.php:329
 #, fuzzy
 msgid ""
 "We will never disclose your email address to anyone, including the\n"
@@ -3753,11 +3751,11 @@ msgid ""
 "    aware!"
 msgstr "我们不会泄露你的电邮地址给任何人，以及你的祈愿的创建者，除非法律有所要求。我们确实让祈愿的创建者给祈愿的订阅者解释发生了什么，用以激励他们等。但是我们决不会把订阅者的电邮信息显示给祈愿的创建者。如果你自己给祈愿的创建者回复电邮，你会把自己的电邮地址给他们，请知晓这一点。"
 
-#: pb/web/faq.php:343
+#: pb/web/faq.php:337
 msgid "Will you send nasty, brutish spam to my email address?"
 msgstr "你们会把垃圾信件发到我的邮箱吗？"
 
-#: pb/web/faq.php:345
+#: pb/web/faq.php:339
 #, fuzzy
 msgid ""
 "Nope. After you sign up to a pledge we will send you emails in\n"
@@ -3767,7 +3765,7 @@ msgid ""
 "    else, unless we are obliged to by law."
 msgstr "不会。当你登录到某个祈愿，我们会发给你关于你的祈愿的邮件。其中包括来自祈愿行网站(PledgeBank.com)自身的通知邮件，还有来自祈愿创建者的招徕你更多支持的消息。我们永远不会把你的邮件地址给与或者销售给任何人，除非被法律所要求。"
 
-#: pb/web/faq.php:505
+#: pb/web/faq.php:499
 msgid ""
 "If your question isn&rsquo;t answered here, or you just\n"
 "wanted to let us know something about the site, <a href=\"/contact\">contact&nbsp;us</a>."
