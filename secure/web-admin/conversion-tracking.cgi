@@ -5,12 +5,26 @@ use FindBin;
 use lib "$FindBin::Bin/../../perllib";
 use lib "$FindBin::Bin/../../track/perllib";
 use mySociety::CGIFast qw(-no_xhtml);
+use POSIX qw(mktime strftime);
 
 use Track::Stats;
 use Track;
 
 while (my $q = new mySociety::CGIFast()) {
     my %out = Track::Stats::generate();
+
+    my @lt = localtime();
+    $lt[5]--;
+    my $lastyear = strftime('%Y-%m-%d', @lt);
+    open FP, '../../../trackstats.log';
+    while (<FP>) {
+        chomp;
+        my ($date, $site, $ad, $shown_week, $shown_month, $conv_week, $conv_month) = split /;/;
+        next if $date le $lastyear;
+        $out{$site}{$ad}{year}{0} += $shown_week;
+        $out{$site}{$ad}{year}{1} += $conv_week;
+    }
+    close FP;
 
     my %current;
     $current{writetothem}{'advert=cheltenhamhfyc0'} = "<h2>Cool! You live in Cheltenham!</h2> <p>We&rsquo;ve got an exciting new free service that works exclusively for people in Cheltenham. Please sign up to help the charity that runs WriteToThem, and to get a sneak preview of our new service.</p>";
@@ -64,7 +78,6 @@ while (my $q = new mySociety::CGIFast()) {
 <div id="content">
 EOF
         . $q->h1('Conversion tracking');
-    print $q->h2('Live');
     print "<table>\n";
     foreach my $site (sort keys %out) {
         my $adverts = $out{$site};
@@ -77,10 +90,10 @@ EOF
             my %periods = %{$adverts->{$ad}};
             $periods{week}{1} = 0 unless defined $periods{week}{1};
             $periods{month}{1} = 0 unless defined $periods{month}{1};
+            $periods{year}{1} = 0 unless defined $periods{year}{1};
             my $shown_week = (defined($periods{week}{0}) ? $periods{week}{0} : 0) + $periods{week}{1};
             my $shown_month = (defined($periods{month}{0}) ? $periods{month}{0} : 0) + $periods{month}{1};
-            my $shown_year = '';
-            my $conv_year = '';
+            my $shown_year = (defined($periods{year}{0}) ? $periods{year}{0} : 0);
             my $pc_week = $shown_week ? int($periods{week}{1}/$shown_week*10000+0.5)/100 : '-';
             my $pc_month = $shown_month ? int($periods{month}{1}/$shown_month*10000+0.5)/100 : '-';
             my $pc_year = $shown_year ? int($periods{year}{1}/$shown_year*10000+0.5)/100 : '-';
@@ -90,7 +103,7 @@ EOF
             print '</span>' if $current{$site}{$ad};
             print "</th>";
             print "<td align='right'>$shown_week</td><td align='right'>$shown_month</td><td align='right'>$shown_year</td>";
-            print "<td align='right'>$periods{week}{1}</td><td align='right'>$periods{month}{1}</td><td align='right'>$conv_year</td>";
+            print "<td align='right'>$periods{week}{1}</td><td align='right'>$periods{month}{1}</td><td align='right'>$periods{year}{1}</td>";
             print "<td align='right'>$pc_week%</td><td align='right'>$pc_month%</td><td align='right'>$pc_year%</td>";
             print "</tr>\n";
         }
