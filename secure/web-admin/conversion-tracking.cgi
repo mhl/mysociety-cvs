@@ -29,6 +29,9 @@ while (my $q = new mySociety::CGIFast()) {
     my %current;
     $current{writetothem}{'advert=cheltenhamhfyc0'} = "<h2>Cool! You live in Cheltenham!</h2> <p>We&rsquo;ve got an exciting new free service that works exclusively for people in Cheltenham. Please sign up to help the charity that runs WriteToThem, and to get a sneak preview of our new service.</p>";
     $current{writetothem}{'advert=cheltenhamhfyc1'} = "<h2>Get to know your councillors.</h2> <p>Local councillors are really important, but hardly anyone knows them.  Use our new free service to build a low-effort, long term relationship with your councillor.</p>";
+    $current{fixmystreet}{'advert=cheltenhamhfyc0'} = "<h2>Cool! You're interested in Cheltenham!</h2> <p>We've got an exciting new free service that works exclusively for people in Cheltenham. Please sign up to help the charity that runs WriteToThem, and to get a sneak preview of our new service.</p>";
+    $current{fixmystreet}{'advert=cheltenhamhfyc1'} = "<h2>Get to know your councillors.</h2> <p>Local councillors are really important, but hardly anyone knows them.  Use our new free service to build a low-effort, long term relationship with your councillor.</p>";
+
     $current{theyworkforyou}{'advert=twfy-alert-word'} = "<p>Did you know that TheyWorkForYou can also email you when a certain word or phrases is mentioned in parliament? For example, it could mail you when your town is mentioned, or an issue you care about. Don&rsquo;t rely on the newspapers to keep you informed about your interests - find out what&rsquo;s happening straight from the horse&rsquo;s mouth. <a href=\"/alert/\"><strong>Sign up for an email alert</strong></a></p>";
     $current{theyworkforyou}{'advert=twfy-alert-person'} = "<p>Did you know that TheyWorkForYou can also email you when a certain MP or Lord contributes in parliament? Don&rsquo;t rely on the newspapers to keep you informed about someone you&rsquo;re interested in - find out what&rsquo;s happening straight from the horse&rsquo;s mouth. <a href=\"/alert/\"><strong>Sign up for an email alert</strong></a></p>";
 
@@ -36,9 +39,9 @@ while (my $q = new mySociety::CGIFast()) {
     open (FP, '/data/vhost/www.writetothem.com/mysociety/fyr/phplib/fyr.php');
     my $in_ad = 0;
     while (<FP>) {
-        $in_ad = 1 if /crosssell_display_advert\(/;
+        $in_ad = 1 if /\$adverts = array\(/;
         next unless $in_ad;
-        last if /^\s*\)\s*$/;
+        last if /^\s*\);\s*$/;
         next unless /^\s*array\('(.*?)', '(.*?)'\),\s*$/;
         $current{writetothem}{"advert=$1"} = $2;
     }
