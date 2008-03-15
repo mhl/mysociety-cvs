@@ -44,7 +44,7 @@ require_once("Smarty.class.php");
      */
     function __destruct()
     {
-        $this->saveLanguageTable();
+        //$this->saveLanguageTable();
 
     }
 

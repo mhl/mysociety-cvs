@@ -56,7 +56,7 @@ abstract class pagebase {
     public function display_template($echo = false){
 
         $this->smarty->assignLang("site_name", SITE_NAME);                  
-        $this->smarty->assignLang("site_tag_line", SITE_TAG_LINE);                  
+        $this->smarty->assignLang("site_tag_line", SITE_TAG_LINE);                 
         $this->smarty->assign("root_dir", ROOT_DIR);        
         $this->smarty->assign("www_server", WWW_SERVER);
         $this->smarty->assign("admin_server", ADMIN_SERVER);
@@ -76,7 +76,7 @@ abstract class pagebase {
         $this->smarty->assign("data", $this->data);
         $this->smarty->assign("show_warnings", sizeof($this->warnings) >0);
         $this->smarty->assign("warn_controls", $this->warn_controls);        
-        $this->smarty->assignLang("page_title", htmlspecialchars($this->page_title));
+        $this->smarty->assign("page_title", htmlspecialchars($this->page_title));
         $this->smarty->assign("menu_item", $this->menu_item);		
         $this->smarty->assign("tracker_location", $this->tracker_location);				
         $this->smarty->assign("show_tracker",$this->show_tracker);				
