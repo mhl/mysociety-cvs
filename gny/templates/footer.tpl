@@ -5,7 +5,8 @@
             <li><a href="{$www_server}">{l}Home{/l}</a>&nbsp;|</li>
             <li><a href="{$www_server}/api/"><acronym title="Application Programming Interface">API</acronym> &amp; feeds</a>&nbsp;|</li>                                
             <li><a href="http://groups.google.com/group/groupsnearyou">{l}Discussion list{/l}</a>&nbsp;|</li>
-            <li><a href="{$www_server}/about/">{l}About{/l}</a>&nbsp;|</li>                         
+            <li><a href="{$www_server}/about/">{l}About{/l}</a>&nbsp;|</li>            
+            <li><a href="http://blog.{$domain}">Blog</a>&nbsp;|</li>                             
             <li><a href="mailto:team@{$domain}">{l}Contact{/l}</a></li>                
         </ul>
     </div>
