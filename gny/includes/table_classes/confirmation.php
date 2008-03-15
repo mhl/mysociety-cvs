@@ -30,7 +30,7 @@ class tableclass_confirmation extends DB_DataObject {
 		$this->link_key = str_replace(array('$','/','.'), '', $this->link_key); // remove any full stops as they look weird
 		$this->parent_table = $table;
 		$this->parent_id = $id;
-		$this->argument = $argument;		
+		$this->argument = $argument;
 
 		//save
 		$this->insert();

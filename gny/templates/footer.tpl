@@ -7,6 +7,7 @@
             <li><a href="http://groups.google.com/group/groupsnearyou">{l}Discussion list{/l}</a>&nbsp;|</li>
             <li><a href="{$www_server}/about/">{l}About{/l}</a>&nbsp;|</li>                         
             <li><a href="mailto:team@{$domain}">{l}Contact{/l}</a></li>                
+            <li><a href="blog.{$domain}">{l}Blog{/l}</a></li>
         </ul>
     </div>
     {if $onloadscript !="" || $set_focus_control !="" && use_body_script == false}

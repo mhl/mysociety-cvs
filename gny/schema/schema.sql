@@ -329,4 +329,4 @@ CREATE TABLE `groups`.`group_to_tag` (
 )
 CHARACTER SET utf8;
 
-ALTER TABLE `groupsnearyou`.`groups` MODIFY COLUMN `created_name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE `groups`.`groups` MODIFY COLUMN `created_name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci;
