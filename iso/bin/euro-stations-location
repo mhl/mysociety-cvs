@@ -1,0 +1,77 @@
+#!/usr/bin/perl -w
+#
+# euro-stations-location:
+# Look up station locations using Google Maps API
+#
+# Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
+# Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: euro-stations-location,v 1.1 2008-04-02 16:53:32 matthew Exp $';
+
+use strict;
+require 5.8.0;
+use WWW::Mechanize;
+use HTML::Entities;
+use URI::Escape;
+use Time::HiRes qw(time);
+use mySociety::Config
+mySociety::Config::set_file('../conf/general');
+
+my $key = mySociety::Config::get('GOOGLE_MAPS_API_KEY');
+my @times = ();
+my $queries_per_day = 14500;
+
+open FP, 'StationsList' or die;
+my @list = <FP>;
+close FP;
+
+my $lookups = 0;
+foreach (@list) {
+    my $name = $_;
+    chomp $name;
+    decode_entities($name);
+
+    # Be sure to not braek Google's limit on key use
+    my $use_key = 0;
+    if (!@times) {
+        $use_key = 1;
+    } else {
+        my $l = time() - $times[0];
+        $use_key = 1 if @times < $queries_per_day || $l > 86460; # Extra minute for safety
+    }
+
+    if (!$use_key) {
+        sleep(1);
+	redo;
+    }
+
+    lookup_name($name);
+    $lookups++;
+
+    push @times, time();
+    shift @times if (scalar @times) > $queries_per_day;
+    print STDERR "\rSo far: $lookups/" . (scalar @list)
+        . "; " . (scalar @times) . ' queries in last '
+	. (time()-$times[0]) . 's' . ' ' x 20;
+
+    sleep(1);
+}
+print "\n";
+
+sub lookup_name {
+    my ($n) = @_;
+    my $url = 'http://maps.google.com/maps/geo?output=csv&key=' . $key . '&q=';
+    $url .= uri_escape($n);
+    my $m = new WWW::Mechanize();
+    $m->agent_alias('Windows IE 6');
+    $m->get($url);
+    my $c = $m->content();
+    if ($c =~ /^620/) {
+        die "\nReceived TOO_MANY_QUERIES status from API, dying at $n";
+    } else {
+        print "$c,$n\n";
+    }
+    $m = undef;
+}
+

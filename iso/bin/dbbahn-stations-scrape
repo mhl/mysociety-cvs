@@ -1,0 +1,80 @@
+#!/usr/bin/perl -w
+#
+# dbbahn-stations-scrape:
+# Screenscrapes Deutsche Bahn to try and get list of railway stations in Europe
+#
+# Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
+# Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: dbbahn-stations-scrape,v 1.1 2008-04-02 16:53:32 matthew Exp $';
+
+use strict;
+require 5.8.0;
+
+use WWW::Mechanize;
+
+my $start_time = time();
+my $lookups = 0;
+for (my $s = 'aaaa'; $s le 'zzzz' && length($s)==4;) {
+    my $from = $s;
+    $s++;
+    my $to = $s;
+    $s++;
+    print STDERR "Looking up $from $to...\n";
+    get_station_names($from, $to);
+    $lookups++;
+    if ((time() - $start_time) / $lookups < 1) {
+        sleep(1);
+    }
+}
+
+sub get_station_names {
+    my ($from, $to) = @_;
+
+    my @params = (
+        queryPageDisplayed => 'yes',
+	REQ0JourneyStopsSA => 1,
+	REQ0JourneyStopsSG => $from,
+	REQ0JourneyStopsZA => 1,
+	REQ0JourneyStopsZG => $to,
+
+	REQ0JourneyDate    => 'Tu, 18.03.08',
+	wDayExt0 => 'Mo|Tu|We|Th|Fr|Sa|Su',
+	REQ0JourneyTime    => '07:00',
+	REQ0HafasSearchForw => 1,
+	REQ1JourneyDate    => '',
+	wDayExt1 => 'Mo|Tu|We|Th|Fr|Sa|Su',
+	REQ1JourneyTime    => '',
+	REQ1HafasSearchForw => 1,
+
+	REQ0JourneyProduct_prod_list => '1:1111111111000000',
+	existOptimizePrice => 1,
+	REQ0HafasOptimize1 => '0:1',
+	existOptionBits => 'yes',
+	REQ0HafasChangeTime => '0:1',
+
+	'REQ0Tariff_TravellerType.1' => 'E',
+	#'REQ0Tariff_TravellerAge.1' => 30,
+	'REQ0Tariff_TravellerReductionClass.1' => '0',
+	'REQ0Tariff_Class' => '2',
+
+	start => 'Search connection',
+    );
+
+    my $url = 'http://reiseauskunft.bahn.de/bin/query.exe/en?ld=212.139&rt=1&OK';
+    my $m = new WWW::Mechanize();
+    $m->agent_alias('Windows IE 6');
+    $m->post($url, \@params);
+
+    my $html = $m->content();
+    my @places;
+    push @places, $html =~ m#<input type="hidden" name="REQ0JourneyStops[SZ]K".*?>\s*<span class="bold">(.*?)</span>#g;
+    while ($html =~ /<select name="REQ0JourneyStops[SZ]K">(.*?)<\/select>/sg) {
+        my $opts = $1;
+	push @places, $opts =~ />(.*?)</g;
+    }
+    print join("\n", @places) . "\n";
+    $m = undef;
+}
+
