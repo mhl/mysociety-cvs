@@ -31,7 +31,7 @@ class rss_page extends pagebase {
 			
 			//if we are in placename mode, we need to 404, (sorry!)
 			if($this->mode == 'placename'){
-				thow_404();
+				throw_404();
 			}
 			
 		}else{
