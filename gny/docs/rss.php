@@ -31,7 +31,7 @@ class rss_page extends pagebase {
 			
 			//if we are in placename mode, we need to 404, (sorry!)
 			if($this->mode == 'placename'){
-				throw_404();
+//				throw_404();
 			}
 			
 		}else{
@@ -49,7 +49,7 @@ class rss_page extends pagebase {
 	protected function bind() {
 
 		if($this->mode == 'all'){
-			throw_404();
+//			throw_404();
 		}
 		
 		if($this->mode == 'postcode' || $this->mode == 'zipcode'|| $this->mode == 'longlat'){
