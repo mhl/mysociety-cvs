@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-04-08 11:31+0100\n"
+"POT-Creation-Date: 2008-04-10 00:54+0100\n"
 "PO-Revision-Date: 2008-04-06 18:35-0600\n"
 "Last-Translator: Oliver Ding <swordi@gmail.com>\n"
 "Language-Team: Chinese <team@pledgebank.com>\n"
@@ -2063,14 +2063,6 @@ msgstr "由mySociety创建"
 msgid "Powered by Easynet"
 msgstr "由Easynet提供空间支持"
 
-#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
-msgid "Sorry! Something's gone wrong."
-msgstr "对不起！出错啦。"
-
-#: pb/phplib/pb.php:61
-msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
-msgstr "请待会儿再试一次，或者 <a href=\"mailto:team&#64;pledgebank.com\">给我们发电邮</a> 我们会帮助你解决问题。"
-
 #: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
 #: pb/web/ref-index.php:406 pb/web/ref-plain.php:40
 msgid "I will"
@@ -2085,7 +2077,7 @@ msgid "on"
 msgstr "在"
 
 #: pb/phplib/pbfacebook.php:191 pb/web/contact.php:107
-#: pb/web/ref-announce.php:336 pb/web/ref-announcearchive.php:67
+#: pb/web/ref-announcearchive.php:67 pb/web/ref-announce.php:336
 msgid "Subject"
 msgstr "主题"
 
@@ -2125,6 +2117,14 @@ msgstr "你已经签名支持过这个祈愿了！"
 #: pb/phplib/pbfacebook.php:622 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "很抱歉！不能签名支持这个祈愿。"
+
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
+msgid "Sorry! Something's gone wrong."
+msgstr "对不起！出错啦。"
+
+#: pb/phplib/pb.php:61
+msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
+msgstr "请待会儿再试一次，或者 <a href=\"mailto:team&#64;pledgebank.com\">给我们发电邮</a> 我们会帮助你解决问题。"
 
 #: pb/phplib/pledge.php:47
 msgid "PledgeBank reference not known"
@@ -4527,6 +4527,51 @@ msgstr "祈愿行(PledgeBank.com)用于WordPress的插件"
 msgid "Get the code"
 msgstr "获取代码"
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
+#: pb/web/ref-plain.php:31
+msgid "Invalid parameters, please try again"
+msgstr "参数不全请重试"
+
+#: pb/web/ref-announcearchive.php:34
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "想要浏览一个祈愿的公告信息，我们需要检查你是否已经签名支持这个祈愿。"
+
+#: pb/web/ref-announcearchive.php:35
+msgid "Then you will be able to view announcement messages."
+msgstr "你将可以浏览公告信息。"
+
+#: pb/web/ref-announcearchive.php:36
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "浏览存档于祈愿行网站(PledgeBank.com)的祈愿公告"
+
+#: pb/web/ref-announcearchive.php:51
+msgid "Messages sent by creator to signers: "
+msgstr "由祈愿者发送给祈愿签名支持者的信息："
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers"
+msgstr "由祈愿者发送给祈愿签名支持者的信息"
+
+#: pb/web/ref-announcearchive.php:65
+msgid "From"
+msgstr "来自"
+
+#: pb/web/ref-announcearchive.php:69
+msgid "Date"
+msgstr "日期"
+
+#: pb/web/ref-announcearchive.php:79
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "祈愿者还没有发送任何公告。"
+
+#: pb/web/ref-announcearchive.php:82
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr ""
+"仅供已签名支持祈愿者浏览的\n"
+"        信息。"
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 #: pb/web/ref-survey.php:26
 msgid "Missing pledge reference"
@@ -4862,51 +4907,6 @@ msgstr "<h3>发送公告</h3>"
 #: pb/web/ref-announce.php:381
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(请注意，当你发送这个信息后<strong>你的电子邮件地址将会告知给每一个人</strong>包括已经或者将来以电子邮件注册的祈愿支持者)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
-#: pb/web/ref-plain.php:31
-msgid "Invalid parameters, please try again"
-msgstr "参数不全请重试"
-
-#: pb/web/ref-announcearchive.php:34
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "想要浏览一个祈愿的公告信息，我们需要检查你是否已经签名支持这个祈愿。"
-
-#: pb/web/ref-announcearchive.php:35
-msgid "Then you will be able to view announcement messages."
-msgstr "你将可以浏览公告信息。"
-
-#: pb/web/ref-announcearchive.php:36
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "浏览存档于祈愿行网站(PledgeBank.com)的祈愿公告"
-
-#: pb/web/ref-announcearchive.php:51
-msgid "Messages sent by creator to signers: "
-msgstr "由祈愿者发送给祈愿签名支持者的信息："
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers"
-msgstr "由祈愿者发送给祈愿签名支持者的信息"
-
-#: pb/web/ref-announcearchive.php:65
-msgid "From"
-msgstr "来自"
-
-#: pb/web/ref-announcearchive.php:69
-msgid "Date"
-msgstr "日期"
-
-#: pb/web/ref-announcearchive.php:79
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "祈愿者还没有发送任何公告。"
-
-#: pb/web/ref-announcearchive.php:82
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr ""
-"仅供已签名支持祈愿者浏览的\n"
-"        信息。"
 
 #: pb/web/ref-contact.php:21
 msgid "Contact the pledge creator"
@@ -5671,10 +5671,7 @@ msgid ""
 "host of other actions.  We&rsquo;re happy to say that people all over the world\n"
 "have created change and taken initiative in a wide variety of ways, and would\n"
 "like to share some of our favourite success stories with you."
-msgstr ""
-"当看到人们通过祈愿行网站倡议行动，为改善他们所在的社区而努力，我们由衷地感到自豪。"
-"祈愿行网站上的每一个成功祈愿，让许多事情变得意味深长 ——种下的树、发放的书、新结识的朋友、投出的选票、捐出的钱、写好的信，以及许许多多事情都因为饱含彼此承诺和支持而令我们铭记在心。"
-"我们欣喜于世界各地的人们自发地想出各种各样的方法，改善人们赖以生存的社区。我们也很乐意分享我们特别喜欢的一些成功祈愿故事给大家。"
+msgstr "当看到人们通过祈愿行网站倡议行动，为改善他们所在的社区而努力，我们由衷地感到自豪。祈愿行网站上的每一个成功祈愿，让许多事情变得意味深长 ——种下的树、发放的书、新结识的朋友、投出的选票、捐出的钱、写好的信，以及许许多多事情都因为饱含彼此承诺和支持而令我们铭记在心。我们欣喜于世界各地的人们自发地想出各种各样的方法，改善人们赖以生存的社区。我们也很乐意分享我们特别喜欢的一些成功祈愿故事给大家。"
 
 #: pb/web/success.php:51
 #, fuzzy

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-04-08 11:31+0100\n"
+"POT-Creation-Date: 2008-04-10 00:54+0100\n"
 "PO-Revision-Date: 2008-02-04 20:16+0200\n"
 "Last-Translator: Markushyn Oleksandr <markushyn@pledgebank.org.ua>\n"
 "Language-Team: Oleksandr Markushyn <markushyn@pledgebank.org.ua>\n"
@@ -2118,14 +2118,6 @@ msgstr "Разработано организацией mySociety"
 msgid "Powered by Easynet"
 msgstr "При поддержке Easynet"
 
-#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
-msgid "Sorry! Something's gone wrong."
-msgstr "Извините! Что-то пошло не так."
-
-#: pb/phplib/pb.php:61
-msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
-msgstr "Пожалуйста, попытайтесь еще раз позже, или <a href=\"mailto:team&#64;pledgebank.com\">свяжитесь с нами</a>, чтобы получить помощь в решении проблемы."
-
 #: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
 #: pb/web/ref-index.php:406 pb/web/ref-plain.php:40
 msgid "I will"
@@ -2140,7 +2132,7 @@ msgid "on"
 msgstr "на"
 
 #: pb/phplib/pbfacebook.php:191 pb/web/contact.php:107
-#: pb/web/ref-announce.php:336 pb/web/ref-announcearchive.php:67
+#: pb/web/ref-announcearchive.php:67 pb/web/ref-announce.php:336
 msgid "Subject"
 msgstr "Тема"
 
@@ -2180,6 +2172,14 @@ msgstr "Вы уже поддержали данное обещание!"
 #: pb/phplib/pbfacebook.php:622 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Извините &mdash; нам не удалось присоединить Вас к данному обещанию."
+
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
+msgid "Sorry! Something's gone wrong."
+msgstr "Извините! Что-то пошло не так."
+
+#: pb/phplib/pb.php:61
+msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
+msgstr "Пожалуйста, попытайтесь еще раз позже, или <a href=\"mailto:team&#64;pledgebank.com\">свяжитесь с нами</a>, чтобы получить помощь в решении проблемы."
 
 #: pb/phplib/pledge.php:47
 msgid "PledgeBank reference not known"
@@ -4961,6 +4961,51 @@ msgstr "Pledgebank плугин для Wordpress"
 msgid "Get the code"
 msgstr "Получить код"
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
+#: pb/web/ref-plain.php:31
+msgid "Invalid parameters, please try again"
+msgstr "Неправильные параметры, пожалуйста, попытайтесь еще раз"
+
+#: pb/web/ref-announcearchive.php:34
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Чтобы показать сообщения автора обещания, нам необходимо проверить, поддерживаете ли Вы обещание."
+
+#: pb/web/ref-announcearchive.php:35
+msgid "Then you will be able to view announcement messages."
+msgstr "Затем Вы сможете просмотреть сообщения автора обещания."
+
+#: pb/web/ref-announcearchive.php:36
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Просмотр архива сообщений обещания на PledgeBank.com"
+
+#: pb/web/ref-announcearchive.php:51
+msgid "Messages sent by creator to signers: "
+msgstr "Сообщения отосланные автором обещания подписчикам: "
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers"
+msgstr "Сообщения отосланные автором обещания подписчикам"
+
+#: pb/web/ref-announcearchive.php:65
+msgid "From"
+msgstr "От"
+
+#: pb/web/ref-announcearchive.php:69
+msgid "Date"
+msgstr "Дата"
+
+#: pb/web/ref-announcearchive.php:79
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "Автор обещания еще не отсылал сообщений."
+
+#: pb/web/ref-announcearchive.php:82
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr ""
+"Сообщение будет доступно только тем, кто присоединился к\n"
+"    обещанию."
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 #: pb/web/ref-survey.php:26
 msgid "Missing pledge reference"
@@ -5327,51 +5372,6 @@ msgstr "<h3>Отправка объявления</h3>"
 #: pb/web/ref-announce.php:381
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(Помните о том, что когда Вы отошлете данное сообщение, то <strong>Ваш email-адрес узнают все</strong>, кто присоединился, или присоединится в будущем к Вашему обещанию)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
-#: pb/web/ref-plain.php:31
-msgid "Invalid parameters, please try again"
-msgstr "Неправильные параметры, пожалуйста, попытайтесь еще раз"
-
-#: pb/web/ref-announcearchive.php:34
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Чтобы показать сообщения автора обещания, нам необходимо проверить, поддерживаете ли Вы обещание."
-
-#: pb/web/ref-announcearchive.php:35
-msgid "Then you will be able to view announcement messages."
-msgstr "Затем Вы сможете просмотреть сообщения автора обещания."
-
-#: pb/web/ref-announcearchive.php:36
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Просмотр архива сообщений обещания на PledgeBank.com"
-
-#: pb/web/ref-announcearchive.php:51
-msgid "Messages sent by creator to signers: "
-msgstr "Сообщения отосланные автором обещания подписчикам: "
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers"
-msgstr "Сообщения отосланные автором обещания подписчикам"
-
-#: pb/web/ref-announcearchive.php:65
-msgid "From"
-msgstr "От"
-
-#: pb/web/ref-announcearchive.php:69
-msgid "Date"
-msgstr "Дата"
-
-#: pb/web/ref-announcearchive.php:79
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "Автор обещания еще не отсылал сообщений."
-
-#: pb/web/ref-announcearchive.php:82
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr ""
-"Сообщение будет доступно только тем, кто присоединился к\n"
-"    обещанию."
 
 #: pb/web/ref-contact.php:21
 msgid "Contact the pledge creator"

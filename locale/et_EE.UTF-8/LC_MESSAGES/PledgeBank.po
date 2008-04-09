@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-04-08 11:31+0100\n"
+"POT-Creation-Date: 2008-04-10 00:54+0100\n"
 "PO-Revision-Date: 2008-02-11 17:17+0100\n"
 "Last-Translator: Joel Hirv <joelhirv@gmail.com>\n"
 "Language-Team: ESTONIA <silver@meikar.ee>\n"
@@ -2148,15 +2148,6 @@ msgstr "Rajatud mySociety poolt"
 msgid "Powered by Easynet"
 msgstr ""
 
-#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
-msgid "Sorry! Something's gone wrong."
-msgstr "Vabandust! Midagi läks valesti."
-
-#: pb/phplib/pb.php:61
-#, fuzzy
-msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
-msgstr "Palun proovi hiljem uuesti, või <a href=\"mailto:team@pledgebank.com\">saada meile e-kiri</a> ja küsi abi probleemi lahendamisel."
-
 #: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
 #: pb/web/ref-index.php:406 pb/web/ref-plain.php:40
 msgid "I will"
@@ -2173,7 +2164,7 @@ msgid "on"
 msgstr "Ei ole"
 
 #: pb/phplib/pbfacebook.php:191 pb/web/contact.php:107
-#: pb/web/ref-announce.php:336 pb/web/ref-announcearchive.php:67
+#: pb/web/ref-announcearchive.php:67 pb/web/ref-announce.php:336
 msgid "Subject"
 msgstr "Teema"
 
@@ -2218,6 +2209,15 @@ msgstr "Sa oled juba selle lubadusega liitunud!"
 #: pb/phplib/pbfacebook.php:622 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Vabandame &mdash; lubadusega liitumine ei õnnestunud."
+
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
+msgid "Sorry! Something's gone wrong."
+msgstr "Vabandust! Midagi läks valesti."
+
+#: pb/phplib/pb.php:61
+#, fuzzy
+msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
+msgstr "Palun proovi hiljem uuesti, või <a href=\"mailto:team@pledgebank.com\">saada meile e-kiri</a> ja küsi abi probleemi lahendamisel."
 
 #: pb/phplib/pledge.php:47
 msgid "PledgeBank reference not known"
@@ -4749,6 +4749,51 @@ msgstr ""
 msgid "Get the code"
 msgstr ""
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
+#: pb/web/ref-plain.php:31
+msgid "Invalid parameters, please try again"
+msgstr "Vigased parameetrid, palun proovi uuesti"
+
+#: pb/web/ref-announcearchive.php:34
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Et vaadata lubaduse teadaandeid, peame kontrollima, et oled selle lubadusega liitunud."
+
+#: pb/web/ref-announcearchive.php:35
+msgid "Then you will be able to view announcement messages."
+msgstr "Siis saad teadaandeid vaadata."
+
+#: pb/web/ref-announcearchive.php:36
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Vaata lubaduse teadaannete arhiivi PledgeBank.com-is"
+
+#: pb/web/ref-announcearchive.php:51
+msgid "Messages sent by creator to signers: "
+msgstr "Algatajalt saadetud sõnumid liitunutele:"
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers"
+msgstr "Algatajalt saadetud sõnumid liitunutele"
+
+#: pb/web/ref-announcearchive.php:65
+msgid "From"
+msgstr "Kellelt"
+
+#: pb/web/ref-announcearchive.php:69
+msgid "Date"
+msgstr "Kuupäev"
+
+#: pb/web/ref-announcearchive.php:79
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "Lubaduse algataja ei ole seni ühtegi teadaannet saatnud."
+
+#: pb/web/ref-announcearchive.php:82
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr ""
+"Sõnumeid näidatakse ainult nendele, kes on lubadusega\n"
+"    liitunud."
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 #: pb/web/ref-survey.php:26
 msgid "Missing pledge reference"
@@ -5098,51 +5143,6 @@ msgstr "<h3>Saada teadaanne</h3>"
 #: pb/web/ref-announce.php:381
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(Pea meeles, et kui saadad selle sõnumi,<strong> saavad Su e-posti aadressi kõik</strong>, kes on juba liitunud või tulevikus liituvad Sinu lubadusega e-kirja teel)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
-#: pb/web/ref-plain.php:31
-msgid "Invalid parameters, please try again"
-msgstr "Vigased parameetrid, palun proovi uuesti"
-
-#: pb/web/ref-announcearchive.php:34
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Et vaadata lubaduse teadaandeid, peame kontrollima, et oled selle lubadusega liitunud."
-
-#: pb/web/ref-announcearchive.php:35
-msgid "Then you will be able to view announcement messages."
-msgstr "Siis saad teadaandeid vaadata."
-
-#: pb/web/ref-announcearchive.php:36
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Vaata lubaduse teadaannete arhiivi PledgeBank.com-is"
-
-#: pb/web/ref-announcearchive.php:51
-msgid "Messages sent by creator to signers: "
-msgstr "Algatajalt saadetud sõnumid liitunutele:"
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers"
-msgstr "Algatajalt saadetud sõnumid liitunutele"
-
-#: pb/web/ref-announcearchive.php:65
-msgid "From"
-msgstr "Kellelt"
-
-#: pb/web/ref-announcearchive.php:69
-msgid "Date"
-msgstr "Kuupäev"
-
-#: pb/web/ref-announcearchive.php:79
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "Lubaduse algataja ei ole seni ühtegi teadaannet saatnud."
-
-#: pb/web/ref-announcearchive.php:82
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr ""
-"Sõnumeid näidatakse ainult nendele, kes on lubadusega\n"
-"    liitunud."
 
 #: pb/web/ref-contact.php:21
 #, fuzzy

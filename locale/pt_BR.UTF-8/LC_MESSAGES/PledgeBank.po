@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-04-08 11:31+0100\n"
+"POT-Creation-Date: 2008-04-10 00:54+0100\n"
 "PO-Revision-Date: 2007-12-23 06:56-0300\n"
 "Last-Translator: Creso Moraes <creso@enfoquecivico.org.br>\n"
 "Language-Team: pt_BR <team@pledgebank.com>\n"
@@ -2113,14 +2113,6 @@ msgstr "Construído por mySociety"
 msgid "Powered by Easynet"
 msgstr "Servidores da Easynet"
 
-#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
-msgid "Sorry! Something's gone wrong."
-msgstr "Desculpe! Algo deu errado."
-
-#: pb/phplib/pb.php:61
-msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
-msgstr "Tente mais tarde, ou <a href=\"mailto:team@pledgebank.com\">escreva-nos</a> pedindo ajuda."
-
 #: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
 #: pb/web/ref-index.php:406 pb/web/ref-plain.php:40
 msgid "I will"
@@ -2135,7 +2127,7 @@ msgid "on"
 msgstr "sobre"
 
 #: pb/phplib/pbfacebook.php:191 pb/web/contact.php:107
-#: pb/web/ref-announce.php:336 pb/web/ref-announcearchive.php:67
+#: pb/web/ref-announcearchive.php:67 pb/web/ref-announce.php:336
 msgid "Subject"
 msgstr "Assunto"
 
@@ -2175,6 +2167,14 @@ msgstr "Você já apoiou essa promessa!"
 #: pb/phplib/pbfacebook.php:622 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Desculpe &mdash; não foi possível apoiar a promessa."
+
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
+msgid "Sorry! Something's gone wrong."
+msgstr "Desculpe! Algo deu errado."
+
+#: pb/phplib/pb.php:61
+msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
+msgstr "Tente mais tarde, ou <a href=\"mailto:team@pledgebank.com\">escreva-nos</a> pedindo ajuda."
 
 #: pb/phplib/pledge.php:47
 msgid "PledgeBank reference not known"
@@ -5021,6 +5021,51 @@ msgstr "Plugin do EuPrometo para Wordpress"
 msgid "Get the code"
 msgstr "Obter o código"
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
+#: pb/web/ref-plain.php:31
+msgid "Invalid parameters, please try again"
+msgstr "Parâmetros inválidos, tente outra vez"
+
+#: pb/web/ref-announcearchive.php:34
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Para ver mensagens anunciando promessa, temos que checar se você a apoiou"
+
+#: pb/web/ref-announcearchive.php:35
+msgid "Then you will be able to view announcement messages."
+msgstr "Aí você poderá visualizar mensagens de anúncio."
+
+#: pb/web/ref-announcearchive.php:36
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Visualizar o arquivo de seus anúncios de promessas no EuPrometo.org"
+
+#: pb/web/ref-announcearchive.php:51
+msgid "Messages sent by creator to signers: "
+msgstr "Mensagens enviadas pelo criador aos apoiadores: "
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers"
+msgstr "Mensagens enviadas pelo criador aos apoiadores"
+
+#: pb/web/ref-announcearchive.php:65
+msgid "From"
+msgstr "De"
+
+#: pb/web/ref-announcearchive.php:69
+msgid "Date"
+msgstr "Data"
+
+#: pb/web/ref-announcearchive.php:79
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "O criador da promessa ainda não mandou comunicados."
+
+#: pb/web/ref-announcearchive.php:82
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr ""
+"As mensagens só podem ser mostradas a pessoas que tenham apoiado\n"
+"    a promessa. "
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 #: pb/web/ref-survey.php:26
 msgid "Missing pledge reference"
@@ -5387,51 +5432,6 @@ msgstr ""
 "(Lembre-se: ao enviar esta mensagem, <strong>seu endereço de email será\n"
 "fornecido a qualquer um</strong> que já tenha apoiado, ou vier a apoiar,\n"
 "via email, a sua promessa)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
-#: pb/web/ref-plain.php:31
-msgid "Invalid parameters, please try again"
-msgstr "Parâmetros inválidos, tente outra vez"
-
-#: pb/web/ref-announcearchive.php:34
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Para ver mensagens anunciando promessa, temos que checar se você a apoiou"
-
-#: pb/web/ref-announcearchive.php:35
-msgid "Then you will be able to view announcement messages."
-msgstr "Aí você poderá visualizar mensagens de anúncio."
-
-#: pb/web/ref-announcearchive.php:36
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Visualizar o arquivo de seus anúncios de promessas no EuPrometo.org"
-
-#: pb/web/ref-announcearchive.php:51
-msgid "Messages sent by creator to signers: "
-msgstr "Mensagens enviadas pelo criador aos apoiadores: "
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers"
-msgstr "Mensagens enviadas pelo criador aos apoiadores"
-
-#: pb/web/ref-announcearchive.php:65
-msgid "From"
-msgstr "De"
-
-#: pb/web/ref-announcearchive.php:69
-msgid "Date"
-msgstr "Data"
-
-#: pb/web/ref-announcearchive.php:79
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "O criador da promessa ainda não mandou comunicados."
-
-#: pb/web/ref-announcearchive.php:82
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr ""
-"As mensagens só podem ser mostradas a pessoas que tenham apoiado\n"
-"    a promessa. "
 
 #: pb/web/ref-contact.php:21
 msgid "Contact the pledge creator"

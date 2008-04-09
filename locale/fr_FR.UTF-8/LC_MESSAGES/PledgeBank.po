@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pledgebank\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-04-08 11:31+0100\n"
+"POT-Creation-Date: 2008-04-10 00:54+0100\n"
 "PO-Revision-Date: 2006-09-17 11:45-0500\n"
 "Last-Translator: Hugo Lamoureux <hugolamoureux@videotron.ca>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -2102,14 +2102,6 @@ msgstr "Construit par mySociety"
 msgid "Powered by Easynet"
 msgstr "Optimisé par Easynet"
 
-#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
-msgid "Sorry! Something's gone wrong."
-msgstr "Désolé! Une erreur est survenue."
-
-#: pb/phplib/pb.php:61
-msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
-msgstr "Veuillez réessayer plus tard, ou <a href=\"mailto:team&#64;pledgebank.com\">envoyez-nous un courriel</a> pour que nous vous aidions à résoudre le problème."
-
 #: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
 #: pb/web/ref-index.php:406 pb/web/ref-plain.php:40
 msgid "I will"
@@ -2126,7 +2118,7 @@ msgid "on"
 msgstr "Aucun"
 
 #: pb/phplib/pbfacebook.php:191 pb/web/contact.php:107
-#: pb/web/ref-announce.php:336 pb/web/ref-announcearchive.php:67
+#: pb/web/ref-announcearchive.php:67 pb/web/ref-announce.php:336
 msgid "Subject"
 msgstr "Sujet"
 
@@ -2171,6 +2163,14 @@ msgstr "Vous avez déjà souscrit cette promesse! "
 #: pb/phplib/pbfacebook.php:622 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Désolé &mdash; il n'a pas été possible de souscrire cette promesse."
+
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
+msgid "Sorry! Something's gone wrong."
+msgstr "Désolé! Une erreur est survenue."
+
+#: pb/phplib/pb.php:61
+msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
+msgstr "Veuillez réessayer plus tard, ou <a href=\"mailto:team&#64;pledgebank.com\">envoyez-nous un courriel</a> pour que nous vous aidions à résoudre le problème."
 
 #: pb/phplib/pledge.php:47
 msgid "PledgeBank reference not known"
@@ -4904,6 +4904,49 @@ msgstr "Plug-in de Promessothèque pour WordPress"
 msgid "Get the code"
 msgstr "Obtenir le code source"
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
+#: pb/web/ref-plain.php:31
+msgid "Invalid parameters, please try again"
+msgstr "Paramètres invalides; veuillez réessayer"
+
+#: pb/web/ref-announcearchive.php:34
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Pour que vous puissiez lire les messages d'annonces relatives à une promesse, nous devons nous assurer que vous l'avez souscrite."
+
+#: pb/web/ref-announcearchive.php:35
+msgid "Then you will be able to view announcement messages."
+msgstr "Vous pourrez alors lire les messages d'annonces."
+
+#: pb/web/ref-announcearchive.php:36
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Voir les archives d'annonces de promesses à Promessothèque.com"
+
+#: pb/web/ref-announcearchive.php:51
+msgid "Messages sent by creator to signers: "
+msgstr "Messages envoyés aux signataires par l'auteur&nbsp;:"
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers"
+msgstr "Messages envoyés aux signataires par l'auteur"
+
+#: pb/web/ref-announcearchive.php:65
+msgid "From"
+msgstr "De"
+
+#: pb/web/ref-announcearchive.php:69
+msgid "Date"
+msgstr "Date"
+
+#: pb/web/ref-announcearchive.php:79
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "L'auteur de la promesse n'a pas encore envoyé d'annonce."
+
+#: pb/web/ref-announcearchive.php:82
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr "Seuls les signataires de la promesse peuvent voir les messages."
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 #: pb/web/ref-survey.php:26
 msgid "Missing pledge reference"
@@ -5250,49 +5293,6 @@ msgstr "<h3>Annonce d'envoi</h3>"
 #: pb/web/ref-announce.php:381
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(Rappelez-vous que lorsque vous envoyez ce message, <strong>votre adresse courriel sera fournie à toutes les personnes</strong> ayant déjà souscrit votre promesse par courriel ou s'apprêtant à le faire)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
-#: pb/web/ref-plain.php:31
-msgid "Invalid parameters, please try again"
-msgstr "Paramètres invalides; veuillez réessayer"
-
-#: pb/web/ref-announcearchive.php:34
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Pour que vous puissiez lire les messages d'annonces relatives à une promesse, nous devons nous assurer que vous l'avez souscrite."
-
-#: pb/web/ref-announcearchive.php:35
-msgid "Then you will be able to view announcement messages."
-msgstr "Vous pourrez alors lire les messages d'annonces."
-
-#: pb/web/ref-announcearchive.php:36
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Voir les archives d'annonces de promesses à Promessothèque.com"
-
-#: pb/web/ref-announcearchive.php:51
-msgid "Messages sent by creator to signers: "
-msgstr "Messages envoyés aux signataires par l'auteur&nbsp;:"
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers"
-msgstr "Messages envoyés aux signataires par l'auteur"
-
-#: pb/web/ref-announcearchive.php:65
-msgid "From"
-msgstr "De"
-
-#: pb/web/ref-announcearchive.php:69
-msgid "Date"
-msgstr "Date"
-
-#: pb/web/ref-announcearchive.php:79
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "L'auteur de la promesse n'a pas encore envoyé d'annonce."
-
-#: pb/web/ref-announcearchive.php:82
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr "Seuls les signataires de la promesse peuvent voir les messages."
 
 #: pb/web/ref-contact.php:21
 msgid "Contact the pledge creator"
