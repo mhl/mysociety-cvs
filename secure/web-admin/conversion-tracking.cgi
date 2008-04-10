@@ -101,7 +101,10 @@ EOF
             my $pc_month = $shown_month ? int($periods{month}{1}/$shown_month*10000+0.5)/100 : '-';
             my $pc_year = $shown_year ? int($periods{year}{1}/$shown_year*10000+0.5)/100 : '-';
             print "<tr><th scope='row' align='right'>";
-            print "<span title='$current{$site}{$ad}'>" if $current{$site}{$ad};
+            if ($current{$site}{$ad}) {
+                (my $a = $current{$site}{$ad}) =~ s/'/&apos;/g;
+                print "<span title='$a'>";
+            }
             print $ad;
             print '</span>' if $current{$site}{$ad};
             print "</th>";
