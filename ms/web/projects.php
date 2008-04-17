@@ -80,10 +80,10 @@ available as open source code for reuse elsewhere.
 
 <h1>Sites being built</h1>
 
-<h2>Freedom of Information Filer and Archive</h2>
+<h2><a href="http://www.whatdotheyknow.com/">WhatDoTheyKnow</a></h2>
 <p>
 We're building a website to help people make Freedom of Information requests
-from different parts of government. It will then archive the responses on the
+to different parts of government. It will then archive the responses on the
 web. We've got <a
 href="http://www.mysociety.org/2006/12/06/funding-for-freedom-of-information/">funding
 from one of Joseph Rowntree's trusts</a> for this (yes, the dead chocolate mogul;
