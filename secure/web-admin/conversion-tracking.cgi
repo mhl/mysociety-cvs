@@ -42,7 +42,7 @@ while (my $q = new mySociety::CGIFast()) {
         $in_ad = 1 if /\$adverts = array\(/;
         next unless $in_ad;
         last if /^\s*\);\s*$/;
-        next unless /^\s*array\('(.*?)', '(.*?)'\),\s*$/;
+        next unless /^[\s#]*array\('(.*?)', '(.*?)'\),\s*$/;
         $current{writetothem}{"advert=$1"} = $2;
     }
     close FP;
@@ -54,7 +54,7 @@ while (my $q = new mySociety::CGIFast()) {
         $in_ad = 1 if /\@adverts = /;
         next unless $in_ad;
         last if /^\s*\);\s*$/;
-        next unless /^\s*\[\s*'(.*?)', '(.*?)'\s*\],\s*$/;
+        next unless /^[\s#]*\[\s*'(.*?)', '(.*?)'\s*\],\s*$/;
         $current{fixmystreet}{"advert=$1"} = $2;
     }
     close FP;
@@ -66,7 +66,7 @@ while (my $q = new mySociety::CGIFast()) {
         $in_ad = 1 if /\$adverts = array\(/;
         next unless $in_ad;
         last if /^\s*\);\s*$/;
-        next unless /^\s*array\('(.*?)', '(.*?)'\),\s*$/;
+        next unless /^[\s#]*array\('(.*?)', '(.*?)'\),\s*$/;
         $current{theyworkforyou}{"advert=$1"} = $2;
     }
     close FP;
