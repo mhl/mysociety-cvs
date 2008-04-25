@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# do-camcycle:
+# Generate diagram of time travel for Cambridge cycling. Uses lat/lon
+# rather than OSGB, XXX not sure how dodgy this is.
+#
+# Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
+# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+# Parameters:
+POSTCODE=CB23PQ
+SIZE_M=25000 # length in metres of sides of rectangle round postcode
+SIZE_PX=400
+DIR=$HOME/toobig/isodata/camcycle
+WALKSPEED=0.00004 # roughly 4 m/s assume "0.1" of lat/lon is a km
+
+set -x # print each line
+set -e # exit on error
+
+RECT="`./calc-bounding-rectangle-latlon $DIR/postcodes.sqlite $POSTCODE $SIZE_M`"
+echo $RECT
+RESULTS=five_miles_to_great_st_marys
+
+# walkspeed = 1 m/s maxwalktime = 900 sec
+cat $DIR/$RESULTS | ./transportdirect-journeys-to-grid grid $RECT $SIZE_PX $SIZE_PX $WALKSPEED 900 > $DIR/$RESULTS-grid
+cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX > $DIR/$RESULTS.ppm
+
+convert $DIR/$RESULTS.ppm $DIR/$RESULTS.png
+eog $DIR/$RESULTS.png
+
+
+

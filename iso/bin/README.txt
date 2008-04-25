@@ -38,8 +38,15 @@ houseprice-inflate - inflate a set of house prices to the last month in the data
 houseprice-mask - convert "E N date price" file into a bitmap mask according to a threshold
 do-houses - runs all scripts in house price mask generator and makes final PNG
 
+Cambridge cycling map
+=====================
+
+do-camcycle - never really finished/used, but useful if you have lat/lon coords in UK
+calc-bounding-rectangle-latlon - goes from UK postcode to lat/lon bounding rectangle 
+
 Not yet used/ready/named properly
 =================================
 
 map-from-cycle.c - XXX
+
 
