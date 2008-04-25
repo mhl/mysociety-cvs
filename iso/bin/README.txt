@@ -44,6 +44,13 @@ Cambridge cycling map
 do-camcycle - never really finished/used, but useful if you have lat/lon coords in UK
 calc-bounding-rectangle-latlon - goes from UK postcode to lat/lon bounding rectangle 
 
+European train maps
+===================
+
+dbbahn-stations-scrape - get list of European rail stations from bahn.de
+euro-stations-location - use Google Maps to find the location of stations by name
+dbbahn-timings-scrape - grab HTML pages of route queries for a list of stations
+
 Not yet used/ready/named properly
 =================================
 
