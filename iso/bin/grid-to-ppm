@@ -4,14 +4,13 @@
  * vim:syntax=c
  *
  * Convert grid file into a displayable image. Was originally traveltimemaps/cycle/map2.c
- * TODO: Remove all options other than field
  *
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
  */
 
-static const char rcsid[] = "$Id: grid-to-ppm,v 1.6 2007-12-13 12:22:00 francis Exp $";
+static const char rcsid[] = "$Id: grid-to-ppm,v 1.7 2008-04-28 09:40:42 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -23,7 +22,7 @@ static const char rcsid[] = "$Id: grid-to-ppm,v 1.6 2007-12-13 12:22:00 francis 
 #include <string.h>
 #include <time.h>
 
-#define err(...)    do { fprintf(stderr, "map: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+#define err(...)    do { fprintf(stderr, "grid-to-ppm: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
 #define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
 
 #define debug(...)  err(__VA_ARGS__)
@@ -136,6 +135,11 @@ float west, east, south, north;
 /* Pixel size of plot. */
 int width, height;
 
+/* Band sizes to use */
+float bandsize; /* secs */
+#define BANDCOUNT 200
+#define BANDCOLSEP 1
+
 /* traveltime E N
  * Return the minimum time for a journey from (E, N) to the destination, or
  * TIME_INFINITY if no journey is possible. */
@@ -230,14 +234,8 @@ void do_field(const int width, const int height, const float west, const float e
 
             t = traveltime(E, N);
 #ifdef LONGERBANDS
-//            #define BANDSIZE 300 /* secs */
-//            #define BANDCOUNT 18
-//            #define BANDCOLSEP 10
-            #define BANDSIZE 60 /* secs */
-            #define BANDCOUNT 200
-            #define BANDCOLSEP 1
             r = 255; g = 255; b = 255;
-            band = t / BANDSIZE;
+            band = t / bandsize;
             if (band < 0) {
                 r = 0; g = 0; b = 0;
             } else {
@@ -266,231 +264,6 @@ void do_field(const int width, const int height, const float west, const float e
 
 }
 
-void do_mask(const int width, const int height, const float west, const float east, const float south, const float north, const float threshold) {
-    int x, y;
-
-    printf("P5\n%d %d\n255\n", width, height);
-
-    fprintf(stderr, "0/%d", height);
-    for (y = 0; y < height; ++y) {
-        float N;
-        N = south + (north - south) * (height - y - 1) / (float)(height - 1);
-
-        for (x = 0; x < width; ++x) {
-            float E, t;
-            E = west + (east - west) * x / (float)(width - 1);
-
-            t = traveltime(E, N);
-
-            if (t < threshold)
-                putc(0, stdout);
-            else
-                putc(255, stdout);
-        }
-
-        fprintf(stderr, "\r%d/%d", y + 1, height);
-    }
-
-    fprintf(stderr, "\n");
-}
-
-/* do_scale WIDTH HEIGHT INTERVAL
- * Draw a scale bar of WIDTH by HEIGHT pixels, with white horizontal lines
- * every INTERVAL in time. */
-void do_scale(const int width, const int height, const float interval) {
-    int x, y;
-    float max, tlast;
-
-    max = timehist[NTIMEHIST - 1];
-
-    printf("P6\n%d %d\n255\n", width, height);
-
-    for (y = 0, tlast = 0; y < height; ++y) {
-        float t;
-        uint8_t r, g, b;
-        t = max * y / (height - 1.);
-
-        if ((int)(t / interval) != (int)(tlast / interval))
-            r = g = b = 255;
-        else
-            time_to_colour(histinvert(t), &r, &g, &b);
-
-        for (x = 0; x < width; ++x) {
-            putc((int)r, stdout);
-            putc((int)g, stdout);
-            putc((int)b, stdout);
-        }
-
-        tlast = t;
-    }
-}
-
-void do_contours(const int width, const int height, const float west, const float east, const float south, const float north, const float interval) {
-    gdImagePtr im;
-    int white, black, nx, ny, x, y, i, nundef;
-    float dx, dy, dx2, dy2, maxval = 0.;
-    struct gridpoint {
-        bool defined;
-        float value;
-    } **grid;
-
-    im = gdImageCreate(width, height);
-    white = gdImageColorAllocate(im, 255, 255, 255);    /* background */
-    black = gdImageColorAllocate(im, 0, 0, 0);
-
-    nx = (int)(0.5 + width / 8.);
-    ny = (int)(0.5 + height / 8.);
-
-    /* Grid spacing in pixel coordinates. */
-    dx2 = dx = (float)width / (nx - 1.);
-    dx2 *= dx2;
-    dy2 = dy = (float)height / (ny - 1.);
-    dy2 *= dy2;
-
-    grid = malloc(nx * ny * sizeof **grid + ny * sizeof *grid);
-    for (y = 0; y < ny; ++y)
-        grid[y] = (struct gridpoint*)((char*)grid + ny * sizeof *grid + y * nx * sizeof **grid);
-    
-    nundef = 0;
-    for (y = 0; y < ny; ++y) {
-        float N;
-        N = north + (south - north) * y / (ny - 1.);
-        for (x = 0; x < nx; ++x) {
-            float E;
-            E = west + (east - west) * x / (nx - 1.);
-            grid[y][x].value = traveltime(E, N);
-            if (grid[y][x].value == TIME_INFINITY) {
-                grid[y][x].defined = 0;
-                grid[y][x].value = 0.;
-                ++nundef;
-            } else {
-                grid[y][x].defined = 1;
-                if (grid[y][x].value > maxval)
-                    maxval = grid[y][x].value;
-            }
-        }
-    }
-
-    if (nundef > 0) {
-        unsigned nchgs;
-        debug("%d undefined cells, interpolating values by relaxation", nundef);
-
-        do {
-            nchgs = 0;
-            for (y = 0; y < ny; ++y) {
-                for (x = 0; x < nx; ++x) {
-                    float v, v_xm1, v_xp1, v_ym1, v_yp1, v_new;
-                    if (grid[y][x].defined)
-                        continue;
-
-                    /* Zero-gradient bc */
-                    v = v_xm1 = v_xp1 = v_ym1 = v_yp1 = grid[y][x].value;
-                    if (x > 0)
-                        v_xm1 = grid[y][x - 1].value;
-                    if (x < nx - 1)
-                        v_xp1 = grid[y][x + 1].value;
-                    
-                    if (y > 0)
-                        v_ym1 = grid[y - 1][x].value;
-                    if (y < ny - 1)
-                        v_yp1 = grid[y + 1][x].value;
-
-                    v_new = dy2 * (v_xm1 + v_xp1) + dx2 * (v_ym1 + v_yp1);
-                    v_new /= 2 * (dx2 + dy2);
-
-                    grid[y][x].value = v_new;
-
-                    if ((v_new != 0 || v != 0) && fabs(v - v_new) / fmax(fabs(v), fabs(v_new)) > 0.01)
-                        ++nchgs;
-                }
-            }   
-        } while (nchgs > 0);
-    }
-
-    /* Now draw the contours. */
-    for (i = 1; i * interval < maxval; ++ i) {
-        float level;
-        level = i * interval;
-#define xintersection(xa, ya)   (dx * ((xa) + (level - grid[ya][xa].value) / (grid[ya][(xa) + 1].value - grid[ya][xa].value)))
-#define yintersection(xa, ya)   (dy * ((ya) + (level - grid[ya][xa].value) / (grid[(ya) + 1][xa].value - grid[ya][xa].value)))
-        for (y = 0; y < ny - 1; ++y) {
-            for (x = 0; x < nx - 1; ++x) {
-                unsigned bits = 0;
-                if (grid[y][x].value > level)
-                    bits |= 1;
-                if (grid[y][x + 1].value > level)
-                    bits |= 2;
-                if (grid[y + 1][x].value > level)
-                    bits |= 4;
-                if (grid[y + 1][x + 1].value > level)
-                    bits |= 8;
-                
-                if (!grid[y][x].defined && !grid[y][x + 1].defined && !grid[y + 1][x].defined && !grid[y + 1][x + 1].defined)
-                    continue;
-
-                if (bits > 7)
-                    bits = 15 & ~bits;
-                if (bits == 0)
-                    continue;
-                else if (1 == bits) {
-                    /* /  
-                     *    */
-                    gdImageLine(im, xintersection(x, y), y * dy, x * dx, yintersection(x, y), black);
-                } else if (2 == bits) {
-                    /*  \ 
-                     *    */
-                    gdImageLine(im, xintersection(x, y), y * dy, (x + 1) * dx, yintersection(x + 1, y), black);
-                } else if (3 == bits) {
-                    /* __
-                     *    */
-                    gdImageLine(im, x * dx, yintersection(x, y), (x + 1) * dx, yintersection(x + 1, y), black);
-                } else if (4 == bits) {
-                    /*
-                     * \  */
-                    gdImageLine(im, x * dx, yintersection(x, y), xintersection(x, y + 1), (y + 1) * dy, black);
-                } else if (5 == bits) {
-                    /* |  
-                     * |  */
-                    gdImageLine(im, xintersection(x, y), y * dy, xintersection(x, y + 1), (y + 1) * dy, black);
-                } else if (6 == bits) {
-                    /* /\
-                     * \/ */
-                
-                    /* This case is ambiguous, so find the real value of the
-                     * function in the middle of the cell. */
-                    float E, N, vc;
-                    E = west + (east - west) * (x + 0.5) / (nx - 1.);
-                    N = north + (south - north) * (y + 0.5) / (ny - 1.);
-                    vc = traveltime(E, N);
-
-                    if (vc > level && grid[y][x].value > level && grid[y + 1][x + 1].value > level) {
-                        /*  \
-                         * \  */
-                        gdImageLine(im, xintersection(x, y), y * dy, (x + 1) * dx, yintersection(x + 1, y), black);
-                        gdImageLine(im, x * dx, yintersection(x, y), xintersection(x, y + 1), (y + 1) * dy, black);
-                    } else {
-                        /* / 
-                         *  / */
-                        gdImageLine(im, xintersection(x, y), y * dy, x * dx, yintersection(x, y), black);
-                        gdImageLine(im, (x + 1) * dx, yintersection(x + 1, y), xintersection(x, y + 1), (y + 1) * dy, black);
-                    }
-                } else if (7 == bits) {
-                    /*
-                     *  / */
-                    gdImageLine(im, xintersection(x, y + 1), (y + 1) * dy, (x + 1) * dx, yintersection(x + 1, y), black);
-                }
-#undef xintersection
-#undef yintersection
-            }
-        }
-    }
-
-    gdImagePng(im, stdout);
-    gdImageDestroy(im);
-
-    free(grid);
-}
-
 void do_grid(const bool plain, const int width, const int height, const float west, const float east, const float south, const float north) {
     int x, y;
 
@@ -514,9 +287,8 @@ void do_grid(const bool plain, const int width, const int height, const float we
 }
 
 int main(int argc, char *argv[]) {
-    enum { m_field = 0, m_scale = 1, m_contour = 2, m_mask = 3 } mode = m_field;
-    const unsigned numargs[4] = { 6, 7, 7, 7 };
-    float contour_interval, threshold;
+    enum { m_field = 0 } mode = m_field;
+    const unsigned numargs[4] = { 7 };
     
     srand(time(NULL));
 
@@ -525,12 +297,6 @@ int main(int argc, char *argv[]) {
 
     if (0 == strcmp(argv[1], "field"))
         mode = m_field;
-    else if (0 == strcmp(argv[1], "scale"))
-        mode = m_scale;
-    else if (0 == strcmp(argv[1], "contour"))
-        mode = m_contour;
-    else if (0 == strcmp(argv[1], "mask"))
-        mode = m_mask;
     else
         die("unknown mode '%s'", argv[1]);
 
@@ -552,18 +318,14 @@ int main(int argc, char *argv[]) {
         die("bad width '%s'", argv[5]);
     if (!parse_int(argv[6], &height))
         die("bad height '%s'", argv[6]);
-
-    if ((mode == m_scale || mode == m_contour)
-        && !parse_float(argv[7], &contour_interval))
-        die("bad contour interval '%s'", argv[7]);
-    else if (mode == m_mask && !parse_float(argv[7], &threshold))
-        die("bad threshold '%s'", argv[7]);
+    if (!parse_float(argv[7], &bandsize))
+        die("bad bandsize '%s'", argv[7]); /* secs, for 200 bands */
 
     /* Read in the previously-computed grid of values. */
     grid = malloc(width * height * sizeof *grid);
     fread(grid, width, height * sizeof *grid, stdin);
     
-    if (mode == m_field || mode == m_scale) {
+    if (mode == m_field) {
         /* Histogram equalisation. We need to form the cumulative distribution
          * of travel times within the domain, so that we can allocate colours
          * to them equally. But since the function is slow to evaluate, do it
@@ -585,12 +347,6 @@ int main(int argc, char *argv[]) {
 
     if (mode == m_field)
         do_field(width, height, west, east, south, north);
-    else if (mode == m_scale)
-        do_scale(width, height, contour_interval);
-    else if (mode == m_contour)
-        do_contours(width, height, west, east, south, north, contour_interval);
-    else if (mode == m_mask)
-        do_mask(width, height, west, east, south, north, threshold);
     else
         abort();
 

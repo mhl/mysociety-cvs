@@ -1,79 +1,28 @@
 #! /usr/bin/tcc -run -lgd -I/usr/local/ncarg/include/ncarg/ -lncarg -lngmath -L/usr/local/ncarg/lib/
 /*
- * transportdirect-journeys-to-grid:
+ * eurotrain-journeys-to-grid:
  * vim:syntax=c
  *
  * Convert journeys text file into a grid file, for feeding into grid-to-ppm.
  * The journeys file is times to arrive at work from public transport stops,
  * this script includes extra time to walk to the stop.
  *
- * The journeys grid file is made by transportdirect-scrape.
- * 
+ * Input file is CSV: north(lat), east(lon), time-in-secs
+ *
  * Paramters are:
  * west, east, south, north boundary
  * width, height (pixels)
  * walk speed in m/s (choose 1 m/s)
- * max walk time in seconds (15 mins = 900 secs0
+ * max walk time in seconds (15 mins = 900 secs)
  *
- * TODO: Remove non-grid options from this
+ * XXX remove unused types (i.e. other than grid)
  *
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
  */
 
-/* Example usages:
- *  
- * cat ../tube/results-SW1P4DR-40km.2  | ./map field 509959 549959 158958 198958 1600 1600 1 900 >../tube/results-SW1P4DR-40km.2.out.ppm
- * The 250k TQ tile begins at 500000,100000 and is 4000x4000 pixels, 100000x100000 nat grid cells, 25 natgrid/pix
- * So you want to start at: 9959.0 / 100000 * 4000 = 398.3 px
- *                         58958.0 / 100000 * 4000 = 2358.3 px
- * and take 1600,1600 pixels
- *
- * Miniscale is 1:1000k. 7000 by 13000 pixels. And 100 natgrid/pix.
- *
- *
- *
- * results-SE58AZ-100km.0
- * center = (532664, 176146)
- * bounds = (482664, 126146) to (582664, 226146)
- *
- * Suppose miniscale starts at 0,0: Then we want to start at 4826 right and 1261 up,
- * or 4826 right and 10739 down. And take it 1000 x 1000 pixels.
- *
- * 
- * results-CF101EP-100km
- * bounds = (268244 368244 125971 225971)
- * We want to start at 2682 right and 1259 up, or 10741 down
- *
- *
- * Red spot: 1447, 98
- * = 536175 197550
- * sqlite> select * from stop2 where easting > 536000 and northing > 197000 and easting < 537000 and northing < 198000;
- * Green St / Brimsdown Station|BCT|536413|197002|EN37PJ
- * Brimsdown Station/Mollison Av|BCT|536413|197002|EN37PJ
- * Brimsdown|BCT|536246|197031|EN37SH
- * Brimsdown|BCT|536246|197031|EN37SH
- * Brimsdown-Entrance-1|RSE|536290|197060|EN35EN
- * Brimsdown|BCT|536280|197098|EN35EN
- * Green St / Brimsdown Station|BCT|536428|197100|EN37JZ
- * Brimsdown Station/Mollison Av|BCT|536428|197100|EN37JZ
- * Brimsdown Bus Station|BCT|536285|197116|EN35EN
- * Millmarsh Lane|BCT|536358|197400|EN35HZ
- * Lockfield Avenue|BCT|536401|197401|EN37NJ
- * Fouracres|BCT|536271|197510|EN35DS
- * Fouracres|BCT|536298|197573|EN35ER
- * Brancroft Way|BCT|536437|197700|EN37NE
- * Brancroft Way|BCT|536429|197801|EN37NE
- * Leys Road East|BCT|536286|197847|EN35ES
- * Leys Road East|BCT|536312|197910|EN35HX
- *
- *
- * Grid reference conversion site: http://www.nearby.org.uk/coord.html
- *
- */
-
-static const char rcsid[] = "$Id: transportdirect-journeys-to-grid,v 1.4 2008-04-28 09:40:42 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.1 2008-04-28 09:40:42 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -85,7 +34,7 @@ static const char rcsid[] = "$Id: transportdirect-journeys-to-grid,v 1.4 2008-04
 #include <string.h>
 #include <time.h>
 
-#define err(...)    do { fprintf(stderr, "transportdirect-journeys-to-grid: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+#define err(...)    do { fprintf(stderr, "eurotrain-journeys-to-grid: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
 #define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
 
 #define debug(...)  err(__VA_ARGS__)
@@ -94,7 +43,7 @@ struct point {
     float E, N, time;
 };
 
-#define TIME_INFINITY       100000.
+#define TIME_INFINITY       10000000.  /* This is over 24 hours */
 
 void time_to_colour(float y, uint8_t *r, uint8_t *g, uint8_t *b) {
     if (y == TIME_INFINITY)
@@ -211,6 +160,7 @@ float mintime(const float E, const float N, const float maxwalkdist, const float
         i1 = npp - 1;
         while (i1 > i0 + 1) {
             i = (i0 + i1) / 2;
+            // fprintf(stderr, "ppN:%f N: %f maxwalkdist:%f\n", pp[i].N, N, maxwalkdist);
             if (pp[i].N > N - maxwalkdist)
                 i1 = i;
             else if (pp[i].N < N - maxwalkdist)
@@ -244,10 +194,11 @@ float mintime(const float E, const float N, const float maxwalkdist, const float
         if (d > maxwalkdist)
             continue;
         t = d / walkspeed;
+        // fprintf(stderr, "ppE:%f E:%f ppN:%f N:%f maxwalkdist:%f d:%f pptime:%f d/walkspeed:%f\n", pp[i].N, N, pp[i].E, E, maxwalkdist, d, pp[i].time, t);
         t += pp[i].time;
         if (t < 0) {
             // ignore negative times - effectively infinite
-            // fprintf(stderr, "< 0 for %f - d: %f walkspeed: %f pptime: %f\n", t, d, walkspeed, pp[i].time);
+            fprintf(stderr, "< 0 for %f - d: %f walkspeed: %f pptime: %f\n", t, d, walkspeed, pp[i].time);
         } else if (t < min)
             min = t;
 
@@ -619,6 +570,7 @@ void do_grid(const bool plain, const int width, const int height, const float we
             float E, t;
             E = west + (east - west) * x / (float)(width - 1);
             t = mintime(E, N, maxwalkdist, walkspeed);
+            // fprintf(stderr, "found time %f\n", t);
 
             if (plain)
                 printf("%f %f %f\n", E, N, t);
@@ -709,7 +661,7 @@ int main(int argc, char *argv[]) {
     pp = malloc((nppalloc = 16) * sizeof *pp);
     
     while (3 == fscanf(fp, "%f %f %f\n",
-                        &pp[npp].E, &pp[npp].N, &pp[npp].time)) {
+                        &pp[npp].N, &pp[npp].E, &pp[npp].time)) {
         ++npp;
         if (npp == nppalloc)
             pp = realloc(pp, (nppalloc *= 2) * sizeof *pp);

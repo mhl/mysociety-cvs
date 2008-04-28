@@ -26,14 +26,14 @@
  *
  */
 
-static const char rcsid[] = "$Id: houseprice-mask,v 1.6 2008-01-09 17:47:32 francis Exp $";
+static const char rcsid[] = "$Id: houseprice-mask,v 1.7 2008-04-28 09:40:42 francis Exp $";
 
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#define err(...)    do { fprintf(stderr, "mask: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+#define err(...)    do { fprintf(stderr, "houseprice-mask: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
 #define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
 
 #define debug(...)  err(__VA_ARGS__)

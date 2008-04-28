@@ -20,7 +20,7 @@ set -e # exit on error
 
 RECT="`./calc-bounding-rectangle-latlon $DIR/postcodes.sqlite $POSTCODE $SIZE_M`"
 echo $RECT
-RESULTS=five_miles_to_great_st_marys
+RESULTS=five_miles_to_great_st_marys # input has lat/lon/time-in-secs
 
 # walkspeed = 1 m/s maxwalktime = 900 sec
 cat $DIR/$RESULTS | ./transportdirect-journeys-to-grid grid $RECT $SIZE_PX $SIZE_PX $WALKSPEED 900 > $DIR/$RESULTS-grid

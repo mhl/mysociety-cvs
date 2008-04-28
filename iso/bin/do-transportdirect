@@ -17,6 +17,7 @@ SIZE_M=20000 # length in metres of sides of rectangle round postcode
 SIZE_PX=400
 DIR=$HOME/toobig/isodata/td
 DATE=11122007 # XXX you may want to wipe the journey's table in the db if you change this
+BANDSIZE=60
 
 #set -x # print each line
 set -e # exit on error
@@ -28,7 +29,7 @@ RESULTS=tdiso-$POSTCODE-$SIZE_M
 
 # walkspeed = 1 m/s maxwalktime = 900 sec
 cat $DIR/$RESULTS | ./transportdirect-journeys-to-grid grid $RECT $SIZE_PX $SIZE_PX 1 900 > $DIR/$RESULTS-grid
-cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX > $DIR/$RESULTS.ppm
+cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX $BANDSIZE > $DIR/$RESULTS.ppm
 
 convert $DIR/$RESULTS.ppm $DIR/$RESULTS.png
 eog $DIR/$RESULTS.png

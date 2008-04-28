@@ -22,7 +22,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: map-from-cycle.c,v 1.3 2007-12-05 17:00:08 francis Exp $";
+static const char rcsid[] = "$Id: map-from-cycle.c,v 1.4 2008-04-28 09:40:42 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -36,7 +36,7 @@ static const char rcsid[] = "$Id: map-from-cycle.c,v 1.3 2007-12-05 17:00:08 fra
 #include <string.h>
 #include <time.h>
 
-#define err(...)    do { fprintf(stderr, "map: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+#define err(...)    do { fprintf(stderr, "map-from-cycle: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
 #define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
 
 #define debug(...)  err(__VA_ARGS__)
