@@ -7,7 +7,7 @@
  * The journeys file is times to arrive at work from public transport stops,
  * this script includes extra time to walk to the stop.
  *
- * Input file is CSV: north(lat), east(lon), time-in-secs
+ * Input file is space separated north(lat), east(lon), time-in-secs
  *
  * Paramters are:
  * west, east, south, north boundary
@@ -22,7 +22,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.1 2008-04-28 09:40:42 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.2 2008-04-28 09:49:57 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -44,74 +44,6 @@ struct point {
 };
 
 #define TIME_INFINITY       10000000.  /* This is over 24 hours */
-
-void time_to_colour(float y, uint8_t *r, uint8_t *g, uint8_t *b) {
-    if (y == TIME_INFINITY)
-        *r = *b = *g = 150;
-    else {
-        int i;
-        float f;
-        /* XXX histogram equalisation */
-        struct {
-            float y;
-            uint8_t r, g, b;
-        } palette[] = {
-#ifndef MUNSELL
-            /* this is GMT's rainbow spectrum */
-                {   0.0,  170,   0,   0 },
-                {   0.1,  246,   0,   0 },
-                {   0.2,  255,  68,   0 },
-                {   0.3,  255, 144,   0 },
-                {   0.4,  255, 221,   0 },
-                {   0.5,  255, 255,   0 },
-                {   0.6,  189, 255,  12 },
-                {   0.7,   63, 250,  54 },
-                {   0.8,    0, 208, 139 },
-                {   0.9,    0,  72, 250 },
-                {   1.0,    0,   0, 205 },
-                {     -1                }
-#else
-            /* Munsell */
-                { 0.000000, 233,  59,  36 },
-                { 0.052632, 234,  64,  38 },
-                { 0.105263, 235,  97,  25 },
-                { 0.157895, 247, 153,   0 },
-                { 0.210526, 252, 202,   0 },
-                { 0.263158, 255, 231,   0 },
-                { 0.315789, 185, 198,   0 },
-                { 0.368421,  83, 166,  57 },
-                { 0.421053,  59, 149,  42 },
-                { 0.473684,  35, 162,  56 },
-                { 0.526316,  14, 151, 114 },
-                { 0.578947,  22, 170, 129 },
-                { 0.631579,  23, 158, 151 },
-                { 0.684211,  58, 152, 205 },
-                { 0.736842,  89, 113, 157 },
-                { 0.789474,  86,  63, 127 },
-                { 0.842105, 104,  68, 127 },
-                { 0.894737, 169,  79, 122 },
-                { 0.947368, 224,  61, 114 },
-                { 1.000000, 216,  81, 113 },
-                {       -1,               }
-#endif /* MUNSELL */
-            };
-
-        for (i = 1; palette[i].y >= 0; ++i)
-            if (palette[i].y > y)
-                break;
-
-        if (palette[i].y < 0) {
-            *r = palette[i - 1].r;
-            *g = palette[i - 1].g;
-            *b = palette[i - 1].b;
-        } else {
-            f = (y - palette[i - 1].y) / (palette[i].y - palette[i - 1].y);
-            *r = palette[i - 1].r + (palette[i].r - palette[i - 1].r) * f;
-            *g = palette[i - 1].g + (palette[i].g - palette[i - 1].g) * f;
-            *b = palette[i - 1].b + (palette[i].b - palette[i - 1].b) * f;
-        }
-    }
-}
 
 /* point_sorter A B
  * qsort(3) callback to compare northings of A and B. */
@@ -219,344 +151,8 @@ float frand(void) {
     return rand() / (float)RAND_MAX;
 }
 
-#define NTIMEHIST       1000
-float timehist[NTIMEHIST];
-
-#ifndef NOHISTEQ
-float histinvert(const float t) {
-    int il = 0, ih = NTIMEHIST - 1;
-
-    if (t == TIME_INFINITY)
-        return t;
-    
-    if (t < timehist[il])
-        return 0.;
-    else if (t > timehist[ih])
-        return 1.;
-    
-    while (ih > il + 1) {
-        int i;
-        i = (il + ih) / 2;
-        if (timehist[i] < t)
-            il = i;
-        else if (timehist[i] > t)
-            ih = i;
-        else
-            return i / (NTIMEHIST - 1.);
-    }
-
-    return (il + ih) / (2. * (NTIMEHIST - 1.));
-}
-#else
-float histinvert(const float t) {
-    int il = 50, ih = NTIMEHIST - 51;
-
-    if (t == TIME_INFINITY)
-        return t;
-
-    if (t < 0)
-        return 0.;
-    else if (t > timehist[ih])
-        return 1.;
-    else
-        return t / timehist[ih];
-}
-#endif  /* NOHISTEQ */
-
 double fmax(const double a, const double b) {
     return a > b ? a : b;
-}
-
-void do_mask(const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed, const float min, const float max) {
-    int x, y;
-
-    printf("P5\n%d %d\n255\n", width, height);
-    for (y = 0; y < height; ++y) {
-        float N;
-        N = south + (north - south) * (height - y - 1) / (float)(height - 1);
-
-        for (x = 0; x < width; ++x) {
-            float E, t;
-            E = west + (east - west) * x / (float)(width - 1);
-
-            t = mintime(E, N, maxwalkdist, walkspeed);
-
-            if (t >= min && t <= max)
-                fputc(255, stdout);
-            else
-                fputc(0, stdout);
-        }
-        
-        fprintf(stderr, "\r%d/%d", y + 1, height);
-    }
-    fprintf(stderr, "\n");
-}
-
-void do_field(const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed) {
-    int x, y;
-
-    printf("P6\n%d %d\n255\n", width, height);
-
-    fprintf(stderr, "0/%d", height);
-    for (y = 0; y < height; ++y) {
-        float N;
-        N = south + (north - south) * (height - y - 1) / (float)(height - 1);
-
-        for (x = 0; x < width; ++x) {
-            float E, t;
-            uint8_t r, g, b;
-            int intt;
-            E = west + (east - west) * x / (float)(width - 1);
-
-            t = mintime(E, N, maxwalkdist, walkspeed);
-
-#ifdef TENMINUTES
-            r = 255; g = 255; b = 255;
-            if (t > 600) {
-                r = 0; g = 200; b = 0;
-            }
-            if (t > 1200) {
-                r = 0; g = 150; b = 0;
-            }
-            if (t > 1800) {
-                r = 0; g = 100; b = 0;
-            }
-            if (t > 2400) {
-                r = 0; g = 50; b = 0;
-            }
-            if (t > 3000) {
-                r = 0; g = 0; b = 0;
-            }
-            if (t < 0) {
-                r = 255; g = 0; b= 0;
-            } 
-#else /* TENMINUTES */
-    #ifdef LONGERBANDS
-                r = 255; g = 255; b = 255;
-                intt = t / 600;
-                if (intt < 4) {
-                    r = 0;
-                    g = 255 - intt * 30;
-                    b = 0;
-                } else {
-                    r = 0; g = 0; b = 0;
-                }
-                if (t < 0) {
-                    r = 255; g = 0; b= 0;
-                } 
-    #else
-        #ifdef BANDED
-                if (t != TIME_INFINITY) t = 5. * (int)(t / 5.);   /* XXX rounding */
-        #endif /* BANDED */
-            time_to_colour(histinvert(t), &r, &g, &b);
-    #endif
-#endif
-            putc((int)r, stdout);
-            putc((int)g, stdout);
-            putc((int)b, stdout);
-        }
-
-        fprintf(stderr, "\r%d/%d", y + 1, height);
-    }
-
-    fprintf(stderr, "\n");
-}
-
-/* do_scale WIDTH HEIGHT INTERVAL
- * Draw a scale bar of WIDTH by HEIGHT pixels, with white horizontal lines
- * every INTERVAL in time. */
-void do_scale(const int width, const int height, const float interval) {
-    int x, y;
-    float max, tlast;
-
-    max = timehist[NTIMEHIST - 1];
-
-    printf("P6\n%d %d\n255\n", width, height);
-
-    for (y = 0, tlast = 0; y < height; ++y) {
-        float t;
-        uint8_t r, g, b;
-        t = max * y / (height - 1.);
-
-        if ((int)(t / interval) != (int)(tlast / interval))
-            r = g = b = 255;
-        else
-            time_to_colour(histinvert(t), &r, &g, &b);
-
-        for (x = 0; x < width; ++x) {
-            putc((int)r, stdout);
-            putc((int)g, stdout);
-            putc((int)b, stdout);
-        }
-
-        tlast = t;
-    }
-}
-
-void do_contours(const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed, const float interval) {
-    gdImagePtr im;
-    int white, black, nx, ny, x, y, i, nundef;
-    float dx, dy, dx2, dy2, maxval = 0.;
-    struct gridpoint {
-        bool defined;
-        float value;
-    } **grid;
-
-    im = gdImageCreate(width, height);
-    white = gdImageColorAllocate(im, 255, 255, 255);    /* background */
-    black = gdImageColorAllocate(im, 0, 0, 0);
-
-    nx = (int)(0.5 + width / 4.);
-    ny = (int)(0.5 + height / 4.);
-
-    /* Grid spacing in pixel coordinates. */
-    dx2 = dx = (float)width / (nx - 1.);
-    dx2 *= dx2;
-    dy2 = dy = (float)height / (ny - 1.);
-    dy2 *= dy2;
-
-    grid = malloc(nx * ny * sizeof **grid + ny * sizeof *grid);
-    for (y = 0; y < ny; ++y)
-        grid[y] = (struct gridpoint*)((char*)grid + ny * sizeof *grid + y * nx * sizeof **grid);
-    
-    nundef = 0;
-    for (y = 0; y < ny; ++y) {
-        float N;
-        N = north + (south - north) * y / (ny - 1.);
-        for (x = 0; x < nx; ++x) {
-            float E;
-            E = west + (east - west) * x / (nx - 1.);
-            grid[y][x].value = mintime(E, N, maxwalkdist, walkspeed);
-            if (grid[y][x].value == TIME_INFINITY) {
-                grid[y][x].defined = 0;
-                grid[y][x].value = 0.;
-                ++nundef;
-            } else {
-                grid[y][x].defined = 1;
-                if (grid[y][x].value > maxval)
-                    maxval = grid[y][x].value;
-            }
-        }
-    }
-
-    if (nundef > 0) {
-        unsigned nchgs;
-        debug("%d undefined cells, interpolating values by relaxation", nundef);
-
-        do {
-            nchgs = 0;
-            for (y = 0; y < ny; ++y) {
-                for (x = 0; x < nx; ++x) {
-                    float v, v_xm1, v_xp1, v_ym1, v_yp1, v_new;
-                    if (grid[y][x].defined)
-                        continue;
-
-                    /* Zero-gradient bc */
-                    v = v_xm1 = v_xp1 = v_ym1 = v_yp1 = grid[y][x].value;
-                    if (x > 0)
-                        v_xm1 = grid[y][x - 1].value;
-                    if (x < nx - 1)
-                        v_xp1 = grid[y][x + 1].value;
-                    
-                    if (y > 0)
-                        v_ym1 = grid[y - 1][x].value;
-                    if (y < ny - 1)
-                        v_yp1 = grid[y + 1][x].value;
-
-                    v_new = dy2 * (v_xm1 + v_xp1) + dx2 * (v_ym1 + v_yp1);
-                    v_new /= 2 * (dx2 + dy2);
-
-                    grid[y][x].value = v_new;
-
-                    if ((v_new != 0 || v != 0) && fabs(v - v_new) / fmax(fabs(v), fabs(v_new)) > 0.01)
-                        ++nchgs;
-                }
-            }   
-        } while (nchgs > 0);
-    }
-
-    /* Now draw the contours. */
-    for (i = 1; i * interval < maxval; ++ i) {
-        float level;
-        level = i * interval;
-#define xintersection(xa, ya)   (dx * ((xa) + (level - grid[ya][xa].value) / (grid[ya][(xa) + 1].value - grid[ya][xa].value)))
-#define yintersection(xa, ya)   (dy * ((ya) + (level - grid[ya][xa].value) / (grid[(ya) + 1][xa].value - grid[ya][xa].value)))
-        for (y = 0; y < ny - 1; ++y) {
-            for (x = 0; x < nx - 1; ++x) {
-                unsigned bits = 0;
-                if (grid[y][x].value > level)
-                    bits |= 1;
-                if (grid[y][x + 1].value > level)
-                    bits |= 2;
-                if (grid[y + 1][x].value > level)
-                    bits |= 4;
-                if (grid[y + 1][x + 1].value > level)
-                    bits |= 8;
-                
-                if (!grid[y][x].defined && !grid[y][x + 1].defined && !grid[y + 1][x].defined && !grid[y + 1][x + 1].defined)
-                    continue;
-
-                if (bits > 7)
-                    bits = 15 & ~bits;
-                if (bits == 0)
-                    continue;
-                else if (1 == bits) {
-                    /* /  
-                     *    */
-                    gdImageLine(im, xintersection(x, y), y * dy, x * dx, yintersection(x, y), black);
-                } else if (2 == bits) {
-                    /*  \ 
-                     *    */
-                    gdImageLine(im, xintersection(x, y), y * dy, (x + 1) * dx, yintersection(x + 1, y), black);
-                } else if (3 == bits) {
-                    /* __
-                     *    */
-                    gdImageLine(im, x * dx, yintersection(x, y), (x + 1) * dx, yintersection(x + 1, y), black);
-                } else if (4 == bits) {
-                    /*
-                     * \  */
-                    gdImageLine(im, x * dx, yintersection(x, y), xintersection(x, y + 1), (y + 1) * dy, black);
-                } else if (5 == bits) {
-                    /* |  
-                     * |  */
-                    gdImageLine(im, xintersection(x, y), y * dy, xintersection(x, y + 1), (y + 1) * dy, black);
-                } else if (6 == bits) {
-                    /* /\
-                     * \/ */
-                
-                    /* This case is ambiguous, so find the real value of the
-                     * function in the middle of the cell. */
-                    float E, N, vc;
-                    E = west + (east - west) * (x + 0.5) / (nx - 1.);
-                    N = north + (south - north) * (y + 0.5) / (ny - 1.);
-                    vc = mintime(E, N, maxwalkdist, walkspeed);
-
-                    if (vc > level && grid[y][x].value > level && grid[y + 1][x + 1].value > level) {
-                        /*  \
-                         * \  */
-                        gdImageLine(im, xintersection(x, y), y * dy, (x + 1) * dx, yintersection(x + 1, y), black);
-                        gdImageLine(im, x * dx, yintersection(x, y), xintersection(x, y + 1), (y + 1) * dy, black);
-                    } else {
-                        /* / 
-                         *  / */
-                        gdImageLine(im, xintersection(x, y), y * dy, x * dx, yintersection(x, y), black);
-                        gdImageLine(im, (x + 1) * dx, yintersection(x + 1, y), xintersection(x, y + 1), (y + 1) * dy, black);
-                    }
-                } else if (7 == bits) {
-                    /*
-                     *  / */
-                    gdImageLine(im, xintersection(x, y + 1), (y + 1) * dy, (x + 1) * dx, yintersection(x + 1, y), black);
-                }
-#undef xintersection
-#undef yintersection
-            }
-        }
-    }
-
-    gdImagePng(im, stdout);
-    gdImageDestroy(im);
-
-    free(grid);
 }
 
 void do_grid(const bool plain, const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed) {
@@ -585,10 +181,8 @@ void do_grid(const bool plain, const int width, const int height, const float we
 int main(int argc, char *argv[]) {
     float west, east, south, north, walkspeed, maxwalktime, maxwalkdist;
     int width, height;
-    enum { m_field = 0, m_scale = 1, m_contour = 2, m_mask = 3,
-            m_query = 4, m_grid = 5, m_plaingrid = 6 } mode = m_field;
-    const unsigned numargs[7] = { 8, 9, 9, 10, 3, 8, 8 };
-    float contour_interval, min, max;
+    enum { m_query = 0, m_grid = 1, m_plaingrid = 2 } mode = m_query;
+    const unsigned numargs[7] = { 3, 8, 8 };
     FILE *fp;
     
     fp = stdin;
@@ -597,15 +191,7 @@ int main(int argc, char *argv[]) {
     if (argc < 2)
         die("first argument gives mode");
 
-    if (0 == strcmp(argv[1], "field"))
-        mode = m_field;
-    else if (0 == strcmp(argv[1], "scale"))
-        mode = m_scale;
-    else if (0 == strcmp(argv[1], "contour"))
-        mode = m_contour;
-    else if (0 == strcmp(argv[1], "mask"))
-        mode = m_mask;
-    else if (0 == strcmp(argv[1], "query"))
+    if (0 == strcmp(argv[1], "query"))
         mode = m_query;
     else if (0 == strcmp(argv[1], "grid"))
         mode = m_grid;
@@ -646,16 +232,6 @@ int main(int argc, char *argv[]) {
             die("bad max walk time '%s'", argv[8]);
     }
 
-    if (mode == m_contour || mode == m_scale) {
-        if (mode != m_field && !parse_float(argv[9], &contour_interval))
-            die("bad contour interval '%s'", argv[9]);
-    } else if (mode == m_mask) {
-        if (!parse_float(argv[9], &min))
-            die("bad min journey time '%s'", argv[9]);
-        if (!parse_float(argv[10], &max))
-            die("bad max journey time '%s'", argv[10]);
-    }
-    
     maxwalkdist = maxwalktime * walkspeed;
     
     pp = malloc((nppalloc = 16) * sizeof *pp);
@@ -672,35 +248,7 @@ int main(int argc, char *argv[]) {
 
     qsort(pp, npp, sizeof *pp, point_sorter);
 
-    if (0 /*mode == m_field || mode == m_scale*/) {
-        /* Histogram equalisation. We need to form the cumulative distribution
-         * of travel times within the domain, so that we can allocate colours
-         * to them equally. But since the function is slow to evaluate, do it
-         * by sampling random points until we have enough possible journeys to
-         * estimate the distribution. */
-        int i;
-        debug("sampling travel-time histogram");
-
-        for (i = 0; i < NTIMEHIST; ++i) {
-            float E, N;
-            do {
-                E = west + frand() * (east - west);
-                N = south + frand() * (north - south);
-            } while (TIME_INFINITY == (timehist[i] = mintime(E, N, maxwalkdist, walkspeed)));
-        }
-
-        qsort(timehist, NTIMEHIST, sizeof *timehist, float_sorter);
-    }
-
-    if (mode == m_field)
-        do_field(width, height, west, east, south, north, maxwalkdist, walkspeed);
-    else if (mode == m_scale)
-        do_scale(width, height, contour_interval);
-    else if (mode == m_contour)
-        do_contours(width, height, west, east, south, north, maxwalkdist, walkspeed, contour_interval);
-    else if (mode == m_mask)
-        do_mask(width, height, west, east, south, north, maxwalkdist, walkspeed, min, max);
-    else if (mode == m_query) {
+    if (mode == m_query) {
         float E, N;
         while (2 == scanf("%f %f", &E, &N)) {
             float t;
