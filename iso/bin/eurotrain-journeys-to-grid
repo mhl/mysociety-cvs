@@ -5,7 +5,7 @@
  *
  * Convert journeys text file into a grid file, for feeding into grid-to-ppm.
  * The journeys file is times to arrive at work from public transport stops,
- * this script includes extra time to walk to the stop.
+ * this script includes extra time to walk (drive!) to the stop.
  *
  * Input file is space separated north(lat), east(lon), time-in-secs
  *
@@ -22,7 +22,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.2 2008-04-28 09:49:57 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.3 2008-04-28 14:54:39 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -86,8 +86,9 @@ float mintime(const float E, const float N, const float maxwalkdist, const float
     static float last_N;
     float min = TIME_INFINITY;
 
+    /* Search for points within maxwalkdist of this one. */
     if (N != last_N) {
-        /* Search for points within maxwalkdist of this one. */
+        /* npp is sorted by northings. Binary search to find low index any points must be within */
         i0 = 0;
         i1 = npp - 1;
         while (i1 > i0 + 1) {
@@ -103,6 +104,7 @@ float mintime(const float E, const float N, const float maxwalkdist, const float
 
         il = i0;
 
+        /* And binary sort to find the highest index that the points near the northing must be within */
         i0 = 0;
         i1 = npp - 1;
         while (i1 > i0 + 1) {
@@ -120,13 +122,16 @@ float mintime(const float E, const float N, const float maxwalkdist, const float
         last_N = N;
     }
 
+    /* Now il, ih is an index range within which all points a maxwalkdist north/south must be */
+
+    /* Straightforward scan through all points to find the nearest one */
     for (i = il; i <= ih; ++i) {
         float d, t;
         d = hypot(E - pp[i].E, N - pp[i].N);
         if (d > maxwalkdist)
             continue;
         t = d / walkspeed;
-        // fprintf(stderr, "ppE:%f E:%f ppN:%f N:%f maxwalkdist:%f d:%f pptime:%f d/walkspeed:%f\n", pp[i].N, N, pp[i].E, E, maxwalkdist, d, pp[i].time, t);
+//        fprintf(stderr, "ppE:%f E:%f ppN:%f N:%f maxwalkdist:%f d:%f pptime:%f d/walkspeed:%f\n", pp[i].N, N, pp[i].E, E, maxwalkdist, d, pp[i].time, t);
         t += pp[i].time;
         if (t < 0) {
             // ignore negative times - effectively infinite
@@ -166,7 +171,7 @@ void do_grid(const bool plain, const int width, const int height, const float we
             float E, t;
             E = west + (east - west) * x / (float)(width - 1);
             t = mintime(E, N, maxwalkdist, walkspeed);
-            // fprintf(stderr, "found time %f\n", t);
+            fprintf(stderr, "found time %f\n", t);
 
             if (plain)
                 printf("%f %f %f\n", E, N, t);

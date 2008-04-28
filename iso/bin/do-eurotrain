@@ -6,31 +6,34 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
+# TODO:
+# Read Geo::Helmert docs carefully
+# Work out how to change mindist to use correct great circle distances
+# Change maxwalkdist and speeds to be in km again
+# Check out TIME_INFINITY
+
 # Parameters:
-POSTCODE=CB23PQ
 SIZE_M=250000 # length in metres of sides of rectangle round postcode
-SIZE_PX=400
+SIZE_PX=1000
 DIR=$HOME/toobig/isodata/eurotrainmaps/
 WALKSPEED=0.00004 # roughly 4 m/s assume "0.1" of lat/lon is a km
 MAXWALKTIME=900000 # 900 m default, assuming same
-BANDSIZE=6000
+#BANDSIZE=6000; BANDCOUNT=200; BANDCOLSEP=1
+BANDSIZE=6000; BANDCOUNT=10; BANDCOLSEP=20
 
 #set -x # print each line
 set -e # exit on error
 
-# 35 -9 = sw of spain
-
-# 35N -- 66.3N
-# -9E -- 30E
 # W E S N
-#RECT="`./calc-bounding-rectangle-latlon $DIR/postcodes.sqlite $POSTCODE $SIZE_M`"
-RECT="-9 39 35 66.3"
+RECT="-9 39 35 66.3" # 35 -9 = sw of spain
 echo $RECT
-RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
+#RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
+INPUT=stations-lat-lon-dur
+RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT # input has east/north/time-in-secs
 
 # walkspeed = 1 m/s maxwalktime = 900 sec
-cat $DIR/$RESULTS | ./eurotrain-journeys-to-grid grid $RECT $SIZE_PX $SIZE_PX $WALKSPEED $MAXWALKTIME > $DIR/$RESULTS-grid
-cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX $BANDSIZE > $DIR/$RESULTS.ppm
+cat $DIR/$INPUT | ./eurotrain-journeys-to-grid grid $RECT $SIZE_PX $SIZE_PX $WALKSPEED $MAXWALKTIME > $DIR/$RESULTS-grid
+cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX $BANDSIZE $BANDCOUNT $BANDCOLSEP > $DIR/$RESULTS.ppm
 #cat $DIR/$RESULTS-grid | ./xxx field $RECT $SIZE_PX $SIZE_PX > $DIR/$RESULTS.ppm
 
 convert $DIR/$RESULTS.ppm $DIR/$RESULTS.png

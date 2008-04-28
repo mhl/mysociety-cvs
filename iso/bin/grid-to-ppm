@@ -10,7 +10,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: grid-to-ppm,v 1.7 2008-04-28 09:40:42 francis Exp $";
+static const char rcsid[] = "$Id: grid-to-ppm,v 1.8 2008-04-28 14:54:39 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -136,9 +136,9 @@ float west, east, south, north;
 int width, height;
 
 /* Band sizes to use */
-float bandsize; /* secs */
-#define BANDCOUNT 200
-#define BANDCOLSEP 1
+float bandsize; /* secs, try 600 */
+int bandcount; /* try 200 */
+int bandcolsep; /* try 1 */
 
 /* traveltime E N
  * Return the minimum time for a journey from (E, N) to the destination, or
@@ -239,10 +239,10 @@ void do_field(const int width, const int height, const float west, const float e
             if (band < 0) {
                 r = 0; g = 0; b = 0;
             } else {
-                if (band >= BANDCOUNT) {
-                    band = BANDCOUNT;
+                if (band >= bandcount) {
+                    band = bandcount;
                 }
-                g = 255 - band * BANDCOLSEP;
+                g = 255 - band * bandcolsep;
                 r = g;
                 b = g;
             }
@@ -288,7 +288,7 @@ void do_grid(const bool plain, const int width, const int height, const float we
 
 int main(int argc, char *argv[]) {
     enum { m_field = 0 } mode = m_field;
-    const unsigned numargs[4] = { 7 };
+    const unsigned numargs[4] = { 9 };
     
     srand(time(NULL));
 
@@ -319,7 +319,11 @@ int main(int argc, char *argv[]) {
     if (!parse_int(argv[6], &height))
         die("bad height '%s'", argv[6]);
     if (!parse_float(argv[7], &bandsize))
-        die("bad bandsize '%s'", argv[7]); /* secs, for 200 bands */
+        die("bad bandsize '%s'", argv[7]); /* secs */
+    if (!parse_int(argv[8], &bandcount))
+        die("bad count '%s'", argv[8]); 
+    if (!parse_int(argv[9], &bandcolsep))
+        die("bad colsep '%s'", argv[9]); 
 
     /* Read in the previously-computed grid of values. */
     grid = malloc(width * height * sizeof *grid);
