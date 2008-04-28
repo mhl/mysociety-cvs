@@ -1,0 +1,26 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+my %station_location;
+open FP, 'StationsLocatedAll' or die;
+while (<FP>) {
+    next unless /^200/;
+    chomp;
+    my ($ok, $accuracy, $lat, $lon, $name) = split /,/;
+    $station_location{$name} = "$lat $lon";
+}
+close FP;
+
+open FP, 'AllStationsFirstDuration' or die;
+while (<FP>) {
+    chomp;
+    my ($time, $name) = split /\t/;
+    next unless $station_location{$name};
+    my ($hour, $min) = split /:/, $time;
+    $time = ($hour*60 + $min) * 60;
+    print "$station_location{$name} $time\n";
+}
+close FP;
+
+
