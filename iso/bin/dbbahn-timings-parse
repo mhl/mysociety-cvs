@@ -1,0 +1,39 @@
+#!/usr/bin/perl -w
+#
+# dbbahn-timings-parse:
+# Parses HTML files to get out journey durations
+#
+# Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
+# Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+my $rcsid = ''; $rcsid .= '$Id: dbbahn-timings-parse,v 1.1 2008-04-28 09:44:25 matthew Exp $';
+
+use strict;
+require 5.8.0;
+
+use HTML::Entities;
+
+while (</data/deutsche-bahn/*/*>) {
+    next if m{^/data/deutsche-bahn/(multiple|no-route|problem)};
+    if (-f) {
+        parse_file($_);
+    } elsif (-d) {
+        my $dir = quotemeta($_);
+        while (<$dir/*>) {
+	    parse_file($_);
+	}
+    } else {
+        die "Argh, $_";
+    }
+}
+
+sub parse_file {
+    my $filename = shift;
+    open FP, $filename or die $!;
+    my $file = join('', <FP>);
+    close FP;
+    (my $name = $filename) =~ s{^.*/}{};
+    my @dur = ($file =~ /Duration: (.*?);/g);
+    print "$dur[0]\t$name\n";
+}
