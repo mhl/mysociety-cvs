@@ -11,30 +11,21 @@
 # Change maxwalkdist and speeds to be in km again
 # Check out TIME_INFINITY
 
-# Use this, more trustworthy:  tilestuff.pl in /home/matthew/euro/
-
-#(16:31:10) Matthew Somerville: yo
-#(16:31:39) Matthew Somerville: ok, so if you have lat of LAT and lon of LON
-#(16:31:44) Matthew Somerville: and this map: http://bitter.ukcod.org.uk/~matthew/euro/test.html
-#(16:31:58) Matthew Somerville: then the X and Y of the coordinates from the top-left are:
-#(16:32:19) Matthew Somerville: X = (LON+11.25)/(45+11.25)*1280
-#(16:33:00) Matthew Somerville: Y = (log(tan(LAT*pi/180)+sec(LAT*pi/180))/pi - MINY)/(MAXY-MINY)*1280
-#(16:33:14) Matthew Somerville: where MINY = 0.187499652486244 and MAXY = 0.499999073296651
-#(16:33:17) Matthew Somerville: dada!
-#(16:35:50) Matthew Somerville: whoops, that gives you Y from bottom, do 1280-Y to get from top
-#(16:36:13) Matthew Somerville: or a 1- in the middle somewhere
-#(16:36:20) Matthew Somerville: maybe
-#(16:36:43) Matthew Somerville: anyway, that does appear to work, let me just check on berlin
-#(16:39:47) Matthew Somerville: http://bitter.ukcod.org.uk/~matthew/euro/test.html
+# Test with Berlin:
+# cat /home/francis/toobig/isodata/eurotrainmaps//stations-lat-lon-dur |  ./eurotrain-journeys-to-grid query 1280 1280 25 1800 561 638 2>&1 |less
 
 # Parameters:
 SIZE_M=250000 # length in metres of sides of rectangle round postcode
-SIZE_PX=500
+SIZE_PX=1280
 DIR=$HOME/toobig/isodata/eurotrainmaps/
-WALKSPEED=25 # 4 m/s == 8.9 mph, 25 m/s = 55 mph
-MAXWALKTIME=900 # 900 seconds default in old system
-#BANDSIZE=6000; BANDCOUNT=200; BANDCOLSEP=1
-BANDSIZE=7200; BANDCOUNT=25; BANDCOLSEP=10 # 2 hour bands
+
+#WALKSPEED=25 # 4 m/s == 8.9 mph, 25 m/s = 55 mph
+#MAXWALKTIME=900 # 900 seconds default in old system
+#BANDSIZE=7200; BANDCOUNT=25; BANDCOLSEP=10 # 2 hour bands
+
+WALKSPEED=15 # 4 m/s == 8.9 mph, 25 m/s = 55 mph # tom thinks use 15 m/s
+MAXWALKTIME=1800 # 900 seconds  = 15 minutes default in old system
+BANDSIZE=720; BANDCOUNT=200; BANDCOLSEP=1
 
 set -x # print each line
 set -e # exit on error
@@ -44,7 +35,7 @@ set -e # exit on error
 RECT="0 $SIZE_PX 0 $SIZE_PX" # in pixel coordinates for this
 #RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
 INPUT=stations-lat-lon-dur
-RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT # input has east/north/time-in-secs
+RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT-walksp$WALKSPEED # input has east/north/time-in-secs
 
 # walkspeed = 1 m/s maxwalktime = 900 sec
 cat $DIR/$INPUT | ./eurotrain-journeys-to-grid grid $SIZE_PX $SIZE_PX $WALKSPEED $MAXWALKTIME > $DIR/$RESULTS-grid
