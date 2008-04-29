@@ -15,6 +15,11 @@
  * walk speed in m/s (choose 1 m/s)
  * max walk time in seconds (15 mins = 900 secs)
  *
+ * Projections:
+ * The input file of travel times is in lat/lon.
+ * The input rectangle, and the pixel width/height, are in a square mercator
+ * projection mapping to pixels, as described by function wgs84_to_map.
+ *
  * XXX remove unused types (i.e. other than grid)
  *
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
@@ -22,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.4 2008-04-29 00:31:13 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.5 2008-04-29 11:17:29 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -37,10 +42,11 @@ static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.4 2008-04-29 00
 #define err(...)    do { fprintf(stderr, "eurotrain-journeys-to-grid: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
 #define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
 
-#define debug(...)  err(__VA_ARGS__)
+// #define debug(...)    do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+#define debug(...)    do { } while (0)
 
 struct point {
-    float E, N, time;
+    double E, N, time;
 };
 
 #define TIME_INFINITY       10000000.  /* This is over 24 hours */
@@ -59,12 +65,12 @@ int point_sorter(const void *a, const void *b) {
         return 0;
 }
 
-/* float_sorter A B
- * qsort(3) callback to sort floats. */
-int float_sorter(const void *a, const void *b) {
-    const float *fa, *fb;
-    fa = (const float*)a;
-    fb = (const float*)b;
+/* double_sorter A B
+ * qsort(3) callback to sort doubles. */
+int double_sorter(const void *a, const void *b) {
+    const double *fa, *fb;
+    fa = (const double*)a;
+    fb = (const double*)b;
     if (*fa < *fb)
         return -1;
     else if (*fa > *fb)
@@ -109,6 +115,7 @@ double map_to_wgs84(double size, double x, double y, double* lat, double* lon) {
     // tan(radians(-lat)) + 1/cos(radians(lat)) == exp(-y);
     // Subtracting: 2 * tan(radians(lat)) == exp(y) - exp(-y)
     *lat = degrees(atan((exp(*lat) - exp(-*lat)) / 2));
+    debug("map_to_wgs84 size:%lf x:%lf y:%lf lat:%lf lon:%lf", size, x, y, *lat, *lon);
 }
 
 /* great_circle_distance lat1(n) lon1(e) lat2(n) lon2(e) 
@@ -125,26 +132,34 @@ double great_circle_distance(const double lat1, const double lon1, const double 
 }
 
 
-/* mintime E N
- * Return the minimum time for a journey from (E, N) to the destination, or
- * TIME_INFINITY if no journey is possible. */
-float mintime(const float E, const float N, const float maxwalkdist, const float walkspeed) {
+/* size mintime E N
+ * Return the minimum time for a journey from (E, N) (in pixel map coordinates, size is square size)
+ to the destination, or * TIME_INFINITY if no journey is possible. */
+double mintime(const double size, const double E, const double N, const double maxwalkdist, const double walkspeed) {
     int i0, i1, i;
     static int il, ih;
-    static float last_N;
-    float min = TIME_INFINITY;
+    static double last_lat;
+    double min = TIME_INFINITY;
+    double lat, lon;
+
+    // LATITUDE IS NORTHLY
+    // LONGITUDE IS EASTLY
+
+    /* Find where we are in lat / lon space */
+    map_to_wgs84(size, E, N, &lat, &lon);
 
     /* Search for points within maxwalkdist of this one. */
-    if (N != last_N) {
+    if (lat != last_lat) {
         /* npp is sorted by northings. Binary search to find low index any points must be within */
         i0 = 0;
         i1 = npp - 1;
         while (i1 > i0 + 1) {
             i = (i0 + i1) / 2;
-            // fprintf(stderr, "ppN:%f N: %f maxwalkdist:%f\n", pp[i].N, N, maxwalkdist);
-            if (pp[i].N > N - maxwalkdist)
+            debug("upper i:%d ppN(lat):%lf lat: %lf maxwalkdist:%lf", i, pp[i].N, lat, maxwalkdist);
+
+            if (radians(pp[i].N) > radians(lat) - (maxwalkdist / RADIUS_OF_EARTH))
                 i1 = i;
-            else if (pp[i].N < N - maxwalkdist)
+            else if (radians(pp[i].N) < radians(lat) - (maxwalkdist / RADIUS_OF_EARTH))
                 i0 = i;
             else
                 break;
@@ -157,9 +172,10 @@ float mintime(const float E, const float N, const float maxwalkdist, const float
         i1 = npp - 1;
         while (i1 > i0 + 1) {
             i = (i0 + i1) / 2;
-            if (pp[i].N > N + maxwalkdist)
+            debug("lower i:%d ppN(lat):%lf lat: %lf maxwalkdist:%lf", i, pp[i].N, lat, maxwalkdist);
+            if (radians(pp[i].N) > radians(lat) + (maxwalkdist / RADIUS_OF_EARTH))
                 i1 = i;
-            else if (pp[i].N < N + maxwalkdist)
+            else if (radians(pp[i].N) < radians(lat) + (maxwalkdist / RADIUS_OF_EARTH))
                 i0 = i;
             else
                 break;
@@ -167,64 +183,66 @@ float mintime(const float E, const float N, const float maxwalkdist, const float
 
         ih = i1;
 
-        last_N = N;
+        last_lat = lat;
     }
 
     /* Now il, ih is an index range within which all points a maxwalkdist north/south must be */
+    debug("Indices min: %d max: %d", il, ih);
 
     /* Straightforward scan through all points to find the nearest one */
     for (i = il; i <= ih; ++i) {
-        float d, t;
-        d = hypot(E - pp[i].E, N - pp[i].N);
+        double d, t;
+        d = great_circle_distance(lat, lon, pp[i].N, pp[i].E);
+        //d = hypot(E - pp[i].E, N - pp[i].N);
         if (d > maxwalkdist)
             continue;
         t = d / walkspeed;
-//        fprintf(stderr, "ppE:%f E:%f ppN:%f N:%f maxwalkdist:%f d:%f pptime:%f d/walkspeed:%f\n", pp[i].N, N, pp[i].E, E, maxwalkdist, d, pp[i].time, t);
         t += pp[i].time;
         if (t < 0) {
             // ignore negative times - effectively infinite
-            fprintf(stderr, "< 0 for %f - d: %f walkspeed: %f pptime: %f\n", t, d, walkspeed, pp[i].time);
-        } else if (t < min)
+            fprintf(stderr, "< 0 for %lf - d: %lf walkspeed: %lf pptime: %lf\n", t, d, walkspeed, pp[i].time);
+        } else if (t < min) {
+        debug("ppN(lat):%lf lat:%lf ppE(lon):%lf lon:%lf maxwalkdist:%lf walkd:%lf traintime:%lf train+walktime:%lf", pp[i].N, lat, pp[i].E, lon, maxwalkdist, d, pp[i].time, t);
             min = t;
+        }
 
     }
 
     return min;
 }
 
-int parse_float(const char *s, float *f) {
-    return 1 == sscanf(s, "%f", f);
+int parse_double(const char *s, double *f) {
+    return 1 == sscanf(s, "%lf", f);
 }
 
 int parse_int(const char *s, int *i) {
     return 1 == sscanf(s, "%d", i);
 }
 
-float frand(void) {
-    return rand() / (float)RAND_MAX;
+double frand(void) {
+    return rand() / (double)RAND_MAX;
 }
 
 double fmax(const double a, const double b) {
     return a > b ? a : b;
 }
 
-void do_grid(const bool plain, const int width, const int height, const float west, const float east, const float south, const float north, const float maxwalkdist, const float walkspeed) {
+void do_grid(const bool plain, const int width, const int height, const double maxwalkdist, const double walkspeed) {
     int x, y;
+    if (width != height)
+        err("width not equal to height");
 
     for (y = 0; y < height; ++y) {
-        float N;
-        N = south + (north - south) * (height - y - 1) / (float)(height - 1);
-
         for (x = 0; x < width; ++x) {
-            float E, t;
-            E = west + (east - west) * x / (float)(width - 1);
-            t = mintime(E, N, maxwalkdist, walkspeed);
-            fprintf(stderr, "found time %f\n", t);
+            double t = mintime(width, (double)x, (double)y, maxwalkdist, walkspeed);
+            fprintf(stderr, "found time %lf for x:%d y:%d\n", t, x, y);
 
             if (plain)
-                printf("%f %f %f\n", E, N, t);
-            else
-                fwrite(&t, sizeof t, 1, stdout);
+                printf("%d %d %lf\n", x, y, t);
+            else {
+                float singlet = (float)t;
+                fwrite(&singlet, sizeof singlet, 1, stdout);
+            }
         }
         if (plain)
             printf("\n");
@@ -232,24 +250,26 @@ void do_grid(const bool plain, const int width, const int height, const float we
 }
 
 int main(int argc, char *argv[]) {
-    float west, east, south, north, walkspeed, maxwalktime, maxwalkdist;
+    double walkspeed, maxwalktime, maxwalkdist;
     int width, height;
     enum { m_query = 0, m_grid = 1, m_plaingrid = 2 } mode = m_query;
-    const unsigned numargs[7] = { 3, 8, 8 };
+    const unsigned numargs[7] = { 6, 4, 4 };
     FILE *fp;
+    double query_e, query_n;
 
-/* Testing individual functions
+    // Testing individual functions
+    /*
     double mapx, mapy;
-    wgs84_to_map(1280, 52.516667, 13.416667, &mapx, &mapy);
-    printf("mapx, mapy: %f %f\n", mapx, mapy);
+    wgs84_to_map(1280, 52.516667, 13.416667, &mapx, &mapy); // Berlin
+    printf("mapx, mapy: %lf %lf\n", mapx, mapy);
     double lat, lon;
     map_to_wgs84(1280, 561.303711288889, 638.730705204974, &lat, &lon);
-    printf("reverse: lat, lon: %f %f\n", lat, lon);
+    printf("reverse: lat, lon: %lf %lf\n", lat, lon); // Berlin
 
     double dist = great_circle_distance(51.507778, -0.128056, 48.866667, 2.333056);
-    printf("London to Paris: %fm\n", dist);
+    printf("London to Paris: %lfm\n", dist);
     return 0;
-   */ 
+    */
     
     fp = stdin;
     srand(time(NULL));
@@ -272,37 +292,26 @@ int main(int argc, char *argv[]) {
     if (argc - 1 != numargs[mode])
         die("need %d arguments", numargs[mode]);
  
+    if (!parse_int(argv[1], &width))
+        die("bad width '%s'", argv[1]);
+    if (!parse_int(argv[2], &height))
+        die("bad height '%s'", argv[2]);
+    if (!parse_double(argv[3], &walkspeed))
+        die("bad walk speed '%s'", argv[3]);
+    if (!parse_double(argv[4], &maxwalktime))
+        die("bad max walk time '%s'", argv[4]);
     if (mode == m_query) {
-        if (!(fp = fopen(argv[1], "r")))
-            die("%s: %s", argv[1], strerror(errno));
-        if (!parse_float(argv[2], &walkspeed)) /* probably want 1 m/s */
-            die("bad walk speed '%s'", argv[2]);
-        if (!parse_float(argv[3], &maxwalktime)) /* probably want 15 minutes = 900 seconds*/
-            die("bad max walk time '%s'", argv[3]);
-    } else {
-        if (!parse_float(argv[1], &west))
-            die("bad west boundary '%s'", argv[1]);
-        if (!parse_float(argv[2], &east))
-            die("bad east boundary '%s'", argv[2]);
-        if (!parse_float(argv[3], &south))
-            die("bad south boundary '%s'", argv[3]);
-        if (!parse_float(argv[4], &north))
-            die("bad north boundary '%s'", argv[4]);
-        if (!parse_int(argv[5], &width))
-            die("bad width '%s'", argv[5]);
-        if (!parse_int(argv[6], &height))
-            die("bad height '%s'", argv[6]);
-        if (!parse_float(argv[7], &walkspeed))
-            die("bad walk speed '%s'", argv[7]);
-        if (!parse_float(argv[8], &maxwalktime))
-            die("bad max walk time '%s'", argv[8]);
+        if (!parse_double(argv[5], &query_e))
+            die("bad query E '%s'", argv[5]);
+        if (!parse_double(argv[6], &query_n))
+            die("bad query N '%s'", argv[6]);
     }
 
     maxwalkdist = maxwalktime * walkspeed;
     
     pp = malloc((nppalloc = 16) * sizeof *pp);
     
-    while (3 == fscanf(fp, "%f %f %f\n",
+    while (3 == fscanf(fp, "%lf %lf %lf\n",
                         &pp[npp].N, &pp[npp].E, &pp[npp].time)) {
         ++npp;
         if (npp == nppalloc)
@@ -310,20 +319,18 @@ int main(int argc, char *argv[]) {
     }
 
     debug("have %d points", npp);
-    debug("max walk dist = %f", maxwalkdist);
+    debug("max walk dist = %lf", maxwalkdist);
 
     qsort(pp, npp, sizeof *pp, point_sorter);
 
     if (mode == m_query) {
-        float E, N;
-        while (2 == scanf("%f %f", &E, &N)) {
-            float t;
-            t = mintime(E, N, maxwalkdist, walkspeed);
-            if (t == TIME_INFINITY) t = -1;
-            printf("%f %f %f\n", E, N, t);
-        }
+        if (width != height)
+            err("width not equal to height");
+        double t = mintime(width, query_e, query_n, maxwalkdist, walkspeed);
+        if (t == TIME_INFINITY) t = -1;
+        printf("Result: %lf %lf %lf\n", query_e, query_n, t);
     } else if (mode == m_grid || mode == m_plaingrid)
-        do_grid(mode == m_plaingrid, width, height, west, east, south, north, maxwalkdist, walkspeed);
+        do_grid(mode == m_plaingrid, width, height, maxwalkdist, walkspeed);
     else
         abort();
 

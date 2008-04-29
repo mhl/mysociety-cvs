@@ -5,12 +5,14 @@
  *
  * Convert grid file into a displayable image. Was originally traveltimemaps/cycle/map2.c
  *
+ * XXX remove or fix hist stuff (sampling is commented out currently)
+ *
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
  */
 
-static const char rcsid[] = "$Id: grid-to-ppm,v 1.8 2008-04-28 14:54:39 francis Exp $";
+static const char rcsid[] = "$Id: grid-to-ppm,v 1.9 2008-04-29 11:17:29 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -25,7 +27,8 @@ static const char rcsid[] = "$Id: grid-to-ppm,v 1.8 2008-04-28 14:54:39 francis 
 #define err(...)    do { fprintf(stderr, "grid-to-ppm: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
 #define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
 
-#define debug(...)  err(__VA_ARGS__)
+//#define debug(...)    do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+#define debug(...)    do { } while (0)
 
 struct point {
     float E, N, time;
@@ -221,10 +224,11 @@ void do_field(const int width, const int height, const float west, const float e
     int x, y;
 
     printf("P6\n%d %d\n255\n", width, height);
+    debug("width, height: %d %d W E S N: %f %f %f %f", width, height, west, east, south, north);
 
     for (y = 0; y < height; ++y) {
         float N;
-        N = south + (north - south) * (height - y - 1) / (float)(height - 1);
+        N = south + (north - south) * (float)(height - y - 1) / (float)(height - 1);
 
         for (x = 0; x < width; ++x) {
             float E, t;
@@ -255,6 +259,7 @@ void do_field(const int width, const int height, const float west, const float e
             putc((int)r, stdout);
             putc((int)g, stdout);
             putc((int)b, stdout);
+            debug("x,y: %d %d E,N: %f %f t: %f rgb: %d %d %d", x, y, E, N, t, r, g, b);
         }
 
         fprintf(stderr, "\r%d/%d", y + 1, height);
@@ -328,6 +333,15 @@ int main(int argc, char *argv[]) {
     /* Read in the previously-computed grid of values. */
     grid = malloc(width * height * sizeof *grid);
     fread(grid, width, height * sizeof *grid, stdin);
+
+    /* Print out grid for debug
+    int i,j;
+    for (i=0; i < width; ++i)  {
+        for (j=0; j < height; ++j)  {
+            debug("grid i, j: %d %d: val: %f", i, j, grid[i + j * width]);
+        }
+    }
+    */
     
     if (mode == m_field) {
         /* Histogram equalisation. We need to form the cumulative distribution
@@ -335,7 +349,7 @@ int main(int argc, char *argv[]) {
          * to them equally. But since the function is slow to evaluate, do it
          * by sampling random points until we have enough possible journeys to
          * estimate the distribution. */
-        int i;
+/*        int i;
         debug("sampling travel-time histogram");
 
         for (i = 0; i < NTIMEHIST; ++i) {
@@ -346,7 +360,7 @@ int main(int argc, char *argv[]) {
             } while (TIME_INFINITY == (timehist[i] = traveltime(E, N)));
         }
 
-        qsort(timehist, NTIMEHIST, sizeof *timehist, float_sorter);
+        qsort(timehist, NTIMEHIST, sizeof *timehist, float_sorter); */
     }
 
     if (mode == m_field)
