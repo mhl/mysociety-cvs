@@ -68,7 +68,8 @@
 				array('confirmed', '=', 1)				
 				),
 				'AND',
-				array(array("zoom_level", 'DESC'))
+				# XXX category_id is currently the right order
+				array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 			);
 		
 			
