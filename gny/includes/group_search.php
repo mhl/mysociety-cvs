@@ -68,8 +68,6 @@
 				array('confirmed', '=', 1)				
 				),
 				'AND',
-				# XXX category_id is currently the right order
-				array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 			);
 		
 			
@@ -100,7 +98,6 @@
 					array('confirmed', '=', 1)				
 					),
 					'AND',
-					array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered1);
 				
@@ -112,7 +109,6 @@
 					array('confirmed', '=', 1)				
 					),
 					'AND',
-					array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered2);
 				
@@ -124,7 +120,6 @@
 					array('confirmed', '=', 1)				
 					),
 					'AND',
-					array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered3);
 				
@@ -136,7 +131,6 @@
 					array('confirmed', '=', 1)				
 					),
 					'AND',
-					array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered4);
 
@@ -156,6 +150,16 @@
 			
 			}
 			
+			usort($groups, create_function('$a,$b',
+				'
+				if ($a->{category_id} < $b->{category_id}) return -1;
+				if ($a->{category_id} > $b->{category_id}) return  1;
+				if ($a->{zoom_level} < $b->{zoom_level}) return 1;
+				if ($a->{zoom_level} > $b->{zoom_level}) return -1;
+				return 0;
+				'
+			);
+
 			//Update the stats table
 			tableclass_stat::increment_stat("search.count");
 			
