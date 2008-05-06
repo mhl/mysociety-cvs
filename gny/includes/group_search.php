@@ -67,7 +67,7 @@
 				array('lat_top_right', '>', $lat),
 				array('confirmed', '=', 1)				
 				),
-				'AND',
+				'AND'
 			);
 		
 			
@@ -97,7 +97,7 @@
 					array('lat_bottom_left', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
 					),
-					'AND',
+					'AND'
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered1);
 				
@@ -108,7 +108,7 @@
 					array('lat_top_right', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
 					),
-					'AND',
+					'AND'
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered2);
 				
@@ -119,7 +119,7 @@
 					array('lat_top_right', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
 					),
-					'AND',
+					'AND'
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered3);
 				
@@ -130,7 +130,7 @@
 					array('lat_bottom_left', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
 					),
-					'AND',
+					'AND'
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered4);
 
@@ -158,7 +158,7 @@
 				if ($a->{zoom_level} > $b->{zoom_level}) return -1;
 				return 0;
 				'
-			);
+			));
 
 			//Update the stats table
 			tableclass_stat::increment_stat("search.count");
