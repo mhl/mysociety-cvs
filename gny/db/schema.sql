@@ -1,6 +1,5 @@
-/* 
-	database schema for groupsnearyou.com. Needs to be run against a mysql database
-*/
+-- Database schema for groupsnearyou.com.
+-- Needs to be run against a mysql database
 
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL auto_increment
@@ -59,10 +58,9 @@ CREATE TABLE `groups` (
   `zoom_level` int(11) NOT NULL default '0',
   `long_centroid` float NOT NULL default '0',
   `lat_centroid` float NOT NULL default '0',
-  `location_desc` text NOT NULL default '',
+  `location_desc` text,
   `url_id` varchar(150) NOT NULL default '',
   `involved_email` varchar(150) default NULL,
-  `location_desc` text,
   PRIMARY KEY  (`group_id`),
   KEY `url` (`url_id`),
 );
