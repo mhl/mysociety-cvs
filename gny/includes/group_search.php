@@ -100,7 +100,7 @@
 					array('confirmed', '=', 1)				
 					),
 					'AND',
-					array(array("zoom_level", 'DESC'))
+					array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered1);
 				
@@ -112,7 +112,7 @@
 					array('confirmed', '=', 1)				
 					),
 					'AND',
-					array(array("zoom_level", 'DESC'))
+					array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered2);
 				
@@ -124,7 +124,7 @@
 					array('confirmed', '=', 1)				
 					),
 					'AND',
-					array(array("zoom_level", 'DESC'))
+					array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered3);
 				
@@ -136,7 +136,7 @@
 					array('confirmed', '=', 1)				
 					),
 					'AND',
-					array(array("zoom_level", 'DESC'))
+					array(array('category_id', 'ASC'), array("zoom_level", 'DESC'))
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered4);
 
