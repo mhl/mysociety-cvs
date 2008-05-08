@@ -4,7 +4,7 @@
 
 # Needs a file random-postcodes containing some random postcodes.
 # Do this to the output of this script to get counts:
-#   cat out | grep h3 | sort | uniq -c
+#   cat out | egrep "h3|h4" | sort | uniq -c
 
 function do_postcodes {
     while read X
