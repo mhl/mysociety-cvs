@@ -11,9 +11,11 @@ include "wordpress/wp-content/themes/mysociety/header.php";
 
 <dt>By email</dt>
 <dd>
-  Email the <span class="fn org">mySociety</span> team
+  You can email the <span class="fn org">mySociety</span> team on 
   <a class="email" href="mailto:team&#64;mysociety.org">team&#64;mysociety.org</a>,
-  or just Tom Steinberg <a href="mailto:tom&#64;mysociety.org">tom&#64;mysociety.org</a>.
+  our Commercial Director Karl Grundy on
+  <a href="mailto:karl&#64;mysociety.org">karl&#64;mysociety.org</a>,
+  or our director Tom Steinberg <a href="mailto:tom&#64;mysociety.org">tom&#64;mysociety.org</a>.
 </dd>
 
 <dt>By phone</dt>
