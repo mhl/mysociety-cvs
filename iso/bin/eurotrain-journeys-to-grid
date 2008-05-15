@@ -27,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.5 2008-04-29 11:17:29 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.6 2008-05-15 22:54:10 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -261,11 +261,14 @@ int main(int argc, char *argv[]) {
     /*
     double mapx, mapy;
     wgs84_to_map(1280, 52.516667, 13.416667, &mapx, &mapy); // Berlin
-    printf("mapx, mapy: %lf %lf\n", mapx, mapy);
+    printf("Berlin mapx, mapy: %lf %lf\n", mapx, mapy);
+    wgs84_to_map(1280, 53.466667, -2.233333, &mapx, &mapy); // Manchester
+    printf("Manchester mapx, mapy: %lf %lf\n", mapx, mapy); // 205.179267 602.814743
+    wgs84_to_map(1280, 53.4, -2.983333, &mapx, &mapy); // Liverpool
+    printf("Liverpool mapx, mapy: %lf %lf\n", mapx, mapy); //  188.112600 605.361160
     double lat, lon;
     map_to_wgs84(1280, 561.303711288889, 638.730705204974, &lat, &lon);
-    printf("reverse: lat, lon: %lf %lf\n", lat, lon); // Berlin
-
+    printf("Berlin reverse: lat, lon: %lf %lf\n", lat, lon); // Berlin
     double dist = great_circle_distance(51.507778, -0.128056, 48.866667, 2.333056);
     printf("London to Paris: %lfm\n", dist);
     return 0;
