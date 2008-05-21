@@ -34,8 +34,10 @@
 			<div class="itembox">
 			<h2>What we do</h2>
 			<p>mySociety builds <a href="/projects">websites</a> which give
-			people simple, tangible benefits in the civic and community aspects of their
-			lives. <a href="/faq">More info on our aims</a>.</p>
+			people simple, tangible benefits. If you'd like us to build
+            something for you then <a href="/contact">contact us</a>.
+
+			<p><a href="/faq">More info on our aims</a>.</p>
 			</div>
 				<div class="item_head">Developer's Blog</div>
 				<div class="item"><ul class="archive_list">
