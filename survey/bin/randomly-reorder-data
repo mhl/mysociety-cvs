@@ -12,7 +12,7 @@
 #
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # 
-# $Id: randomly-reorder-data,v 1.1 2008-06-05 13:11:36 francis Exp $
+# $Id: randomly-reorder-data,v 1.2 2008-06-05 13:19:03 francis Exp $
 
 cd `dirname $0`
 cd ../../
@@ -27,4 +27,16 @@ echo "
     alter table data_item_randsort rename to data_item;
     commit;
 " | psql -q --host $OPTION_SURVEY_DB_HOST --port $OPTION_SURVEY_DB_PORT -A -F " " $OPTION_SURVEY_DB_NAME $OPTION_SURVEY_DB_USER
+
+
+# This one isn't so clearly useful, except possibly if somebody has both
+# databases but not the secret.
+echo "
+    begin;
+    create table survey_done_randsort as (select * from survey_done order by random());
+    drop table survey_done;
+    alter table survey_done_randsort rename to survey_done;
+    commit;
+" | psql -q --host $OPTION_SURVEY_DB_HOST --port $OPTION_SURVEY_DB_PORT -A -F " " $OPTION_SURVEY_DB_NAME $OPTION_SURVEY_DB_USER
+
 
