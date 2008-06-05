@@ -1,0 +1,30 @@
+#!/bin/bash
+# randomly-reorder-data
+# PostgreSQL tables have extra columns (e.g. xmax) which potentially reveal
+# information about the order rows were inserted. This could be a privacy
+# violation if somebody also had access to the main fyr database, and carefully
+# compared the order of arrival of surveys on a particular day.
+#
+# This simple script rebuilds the table anew with the rows in a random order.
+#
+# See here for more information about the hidden columns:
+# http://www.postgresql.org/docs/8.1/static/ddl-system-columns.html
+#
+# Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
+# 
+# $Id: randomly-reorder-data,v 1.1 2008-06-05 13:11:36 francis Exp $
+
+cd `dirname $0`
+cd ../../
+source shlib/deployfns
+
+read_conf survey/conf/general
+
+echo "
+    begin;
+    create table data_item_randsort as (select * from data_item order by random());
+    drop table data_item;
+    alter table data_item_randsort rename to data_item;
+    commit;
+" | psql -q --host $OPTION_SURVEY_DB_HOST --port $OPTION_SURVEY_DB_PORT -A -F " " $OPTION_SURVEY_DB_NAME $OPTION_SURVEY_DB_USER
+
