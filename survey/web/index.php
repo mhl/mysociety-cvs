@@ -6,7 +6,7 @@
  * Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: index.php,v 1.2 2008-06-03 19:05:32 francis Exp $
+ * $Id: index.php,v 1.3 2008-06-24 16:41:21 francis Exp $
  * 
  */
 
@@ -30,6 +30,16 @@ if (get_http_var('querydone')) {
         err("Signature wasn't verified.");
     $already_done = db_getOne('select count(*) from survey_done where user_code = ?', array($user_code));
     print $already_done ? 1 : 0;
+    return;
+} elseif (get_http_var('allownewsurvey')) {
+    // called from test scripts, to let another survey happen
+    $user_code = get_http_var('user_code');
+    $signature = get_http_var('auth_signature');
+    $verified = auth_verify_with_shared_secret($user_code, OPTION_SURVEY_SECRET, $signature);
+    if (!$verified)
+        err("Signature wasn't verified.");
+    db_do('delete from survey_done where user_code = ?', array($user_code));
+    db_commit();
     return;
 } else {
     # Get input fields
