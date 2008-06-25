@@ -6,7 +6,7 @@
  * Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: survey.csv.php,v 1.1 2008-06-25 11:44:44 francis Exp $
+ * $Id: survey.csv.php,v 1.2 2008-06-25 12:01:20 francis Exp $
  * 
  */
 
@@ -60,21 +60,24 @@ function csv_all_data() {
     // print column headings
     $columns = get_column_names();
     array_unshift($columns, "batch");
+    array_unshift($columns, "site");
+    array_unshift($columns, "whenstored");
     foreach ($columns as $column) {
         print escape_csv($column) . ",";
     }
     print "\n";
 
     // print data
-    $q = db_query('select batch, key, value from data_item order by batch, random()');
+    $q = db_query('select batch, key, value, whenstored, site from data_item order by batch');
     $values = array();
     $lastbatch = "";
     while ($r = db_fetch_row($q)) {
-        list($batch, $key, $value) = $r;
+        list($batch, $key, $value, $whenstored, $site) = $r;
+        #print "$batch, $key, $value, $whenstored, $site\n";
         if ($batch != $lastbatch) {
             if ($lastbatch != "")
                 all_data_print_row($columns, $values);
-            $values = array('batch' => $batch);
+            $values = array('batch' => $batch, 'whenstored' => $whenstored, 'site' => $site);
             $lastbatch = $batch;
         }
         $values[$key] = $value;
