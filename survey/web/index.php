@@ -6,7 +6,7 @@
  * Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: index.php,v 1.3 2008-06-24 16:41:21 francis Exp $
+ * $Id: index.php,v 1.4 2008-06-25 14:57:17 francis Exp $
  * 
  */
 
@@ -64,7 +64,8 @@ if (get_http_var('querydone')) {
     # See if already there
     $already_done = db_getOne('select count(*) from survey_done where user_code = ?', array($user_code));
     if ($already_done) {
-        err("Done already");
+        header('Location: ' . $return_url);
+        exit;
     }
     db_query('insert into survey_done (user_code) values (?)', array($user_code));
 
