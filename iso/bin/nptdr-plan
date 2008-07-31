@@ -1,0 +1,35 @@
+#!/usr/bin/env python2.5
+#
+# nptdr-plan
+# Calculate journey times across a network to a destination at a specific time,
+# using the NPTDR accessibilty planning data.
+#
+# Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
+# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+# Notes:
+# Does not allow for train routing guides or easements - the journeys generated
+# are possible, but you have to buy the right ticket(s)
+
+
+import sys
+import logging
+import datetime
+
+nptdr_file = "/home/francis/toobig/nptdr/sample/ATCO_040_TRAIN.CIF"
+logging.basicConfig(level=logging.DEBUG)
+
+sys.path.append("../../pylib")
+import mysociety.atcocif
+
+atco = mysociety.atcocif.ATCO()
+atco.read(nptdr_file)
+atco.index_by_short_codes()
+
+#print atco.adjacent_location_times('9100AYLSBRY', datetime.datetime(2007, 10, 9, 9, 0))
+print atco.adjacent_location_times('9100AMERSHM', datetime.datetime(2007, 10, 9, 9, 0))
+
+#print atco
+
+
