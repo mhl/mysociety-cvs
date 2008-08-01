@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# do-nptdr:
+# Generate diagram of time travel to arrive by a certain time by public
+# transport using NPTDR.
+#
+# Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
+# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+# Parameters:
+POSTCODE=HP224LY
+SIZE_M=80000 # length in metres of sides of rectangle round postcode
+SIZE_PX=400
+DIR=$HOME/toobig/nptdr/gen
+POSTCODE_DB=$HOME/toobig/isodata/td/postcodes.sqlite
+#BANDSIZE=60; BANDCOUNT=200; BANDCOLSEP=1
+BANDSIZE=2400; BANDCOUNT=5; BANDCOLSEP=40
+WALKSPEED=1; WALKTIME=3600 # m/s (1), sec (900)
+
+set -x # print each line
+set -e # exit on error
+
+RECT="`./calc-bounding-rectangle $POSTCODE_DB $POSTCODE $SIZE_M`"
+RESULTS=nptdr-$POSTCODE-$SIZE_M
+
+./nptdr-plan >$DIR/$RESULTS
+
+cat $DIR/$RESULTS | ./transportdirect-journeys-to-grid grid $RECT $SIZE_PX $SIZE_PX $WALKSPEED $WALKTIME > $DIR/$RESULTS-grid
+cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX $BANDSIZE $BANDCOUNT $BANDCOLSEP > $DIR/$RESULTS.ppm
+
+convert $DIR/$RESULTS.ppm $DIR/$RESULTS.png
+eog $DIR/$RESULTS.png
+
