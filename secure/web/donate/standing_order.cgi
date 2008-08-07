@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.3
+#!/usr/bin/env python2.4
 #
 # standing_order.cgi:
 # Creates standing order mandates for printing out.
@@ -8,7 +8,7 @@
 # Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: standing_order.cgi,v 1.2 2007-09-06 17:11:29 matthew Exp $
+# $Id: standing_order.cgi,v 1.3 2008-08-07 09:40:33 matthew Exp $
 #
 
 
