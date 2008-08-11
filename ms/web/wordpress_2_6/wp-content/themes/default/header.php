@@ -19,7 +19,7 @@
 
 <div id="header">
 	<div id="headerimg">
-	<img src="/wordpress/wp-content/themes/mysociety2008/images/navimg/mslogo.png" alt="mySociety Logo" width="338" height="68" border="0" />
+	<img src="/wp/wp-content/themes/mysociety2008/images/navimg/mslogo.png" alt="mySociety Logo" width="338" height="68" border="0" />
 <!--
 		<h1><a href="<?php echo get_option('home'); ?>/"><?php bloginfo('name'); ?></a></h1>
 		<div class="description"><?php bloginfo('description'); ?></div>
