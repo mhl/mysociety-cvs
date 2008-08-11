@@ -134,3 +134,4 @@ if ($cat == 3)
 <?php get_sidebar(); ?>
 
 <?php get_footer(); ?>
+

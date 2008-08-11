@@ -66,5 +66,3 @@ mySociety Call for Proposals 2006
         print file_get_contents("http://www.mysociety.org/menu.html"); 
     }
 ?>
-
-
