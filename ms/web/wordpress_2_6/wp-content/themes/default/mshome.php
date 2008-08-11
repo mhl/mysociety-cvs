@@ -6,7 +6,7 @@ Template Name: Mysociety2008 Home
 
 <?php get_header(); ?>
 
-	<div id="content" class="home">
+	<div id="content" class="fullcolumn">
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 		<div class="post" id="post-<?php the_ID(); ?>">

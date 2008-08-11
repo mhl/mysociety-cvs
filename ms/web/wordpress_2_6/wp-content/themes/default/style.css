@@ -1,11 +1,10 @@
 /*------------------------------------------------------ colours
 
 
-logo: dark green 
-				color: #2C9E2C;
 logo: light green 
 				color: #CCEA64;
-
+logo: dark green 
+				color: #2C9E2C;
 very dark green:
 				color: #175218;
 
@@ -60,7 +59,7 @@ h6 {font-size: 0.9em;}
 {
 	position: relative;
 	clear: both;
-	top: 100px;
+	top: 50px;
 	padding: 0px;
 	margin: 0px auto 1.2em auto;
 	width: 52em;
@@ -102,7 +101,7 @@ h6 {font-size: 0.9em;}
 			div.menu li a, div.menu li a:visited
 			{
 				display: block;
-				margin: 0px 0px 0px 20px;
+				margin: 0px 0px 0px 0px;
 				padding: 1px 10px 4px 14px;
 				color: #2C9E2C;
 				background-image: url(/wordpress/wp-content/themes/mysociety2008/images/navimg/mysoc-menu.png);
@@ -117,18 +116,34 @@ h6 {font-size: 0.9em;}
 				
 /*------------------------------------------------------ search -----------*/
 
-#searchform {}
+div#searchform { position: absolute; top: 20px; left: 520px; color: #2C9E2C; text-align: right;}
+
+#searchform input
+{
+color: #2C9E2C;
+	border-color: #CCEA64;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #fff;
+}
+
+#searchform label
+{
+	font-size: 0.75em;
+	color: #CCEA64;
+}
 	
 /*------------------------------------------------------ content -----------*/
 
-#content {width: 38em; float: left; clear:none;}
+#content { float: left; clear:none; font-size: 0.9em;}
 
-	#content.narrowcolumn { }
+	#content.narrowcolumn { width: 38em; }
+	#content.fullcolumn { width: 100%; }
 	
 	.post
 	{
 		clear: both;
-		padding: 1em 0 1em 0;
+		padding: 0em 0 1.5em 0;
 	}
 		.post h2 {color: #175218;}
 		.post h2 a {color: #175218;} 
@@ -154,9 +169,10 @@ h6 {font-size: 0.9em;}
 		}
 
 		.post .postmetadata { float: left; clear: both; font-size: 0.75em;}
+			.post .postmetadata small { font-size: 1.1em;}
 		
 
-.navigation {}
+.navigation { padding: 1em 0 0 0; }
 
 .navigation .alignleft, .navigation .alignright,
 .navigation .alignleft a, .navigation .alignright a
@@ -167,11 +183,17 @@ h6 {font-size: 0.9em;}
 .navigation .alignleft { float: left; clear: none;}
 .navigation .alignright { float: right; clear: none;}
 
-		
-.twocol, .threecol { float: left; clear: none;}
+.editlink { clear: both;}
 
-.twocol { width: 49%; }
-.threecol { width: 30%; }
+.twocol, .threecol
+{
+	float: left;
+	clear: none;
+	margin: 0 2% 0 0;
+}
+
+.twocol { width: 48%; }
+.threecol { width: 29%; }
 
 /*------------------------------------------------------ sidebar -----------*/
 
