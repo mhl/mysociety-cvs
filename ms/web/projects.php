@@ -67,7 +67,7 @@ Sites In Testing
 
 <h1>Sites we built for other people</h1>
 
-<h2><a href="http://petitions.pm.gov.uk">E-Petitions</a> <small>(launched 14th November 2006)</small></h2>
+<h2><a href="http://petitions.number10.gov.uk/">E-Petitions</a> <small>(launched 14th November 2006)</small></h2>
 <p>
 We built the 10 Downing Street e-Petitions site as a civil service commissioned
 project to allow members of the public to petition the Prime Minister about
