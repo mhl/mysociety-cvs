@@ -19,8 +19,6 @@ Information about the GNU Affero GPL:
 http://www.fsf.org/licensing/licenses/agpl-3.0.html
 */
 
-include("option_init.php");
-
 function includer_path_callback($content) {
     $pattern = '#(?:<p>)?<!-- includer:(.*)-->(?:</p>)?#';
     return preg_replace_callback(
