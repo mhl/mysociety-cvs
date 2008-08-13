@@ -1,4 +1,8 @@
 <div id="footer">
+<?
+    print file_get_contents("footer.html"); 
+?>
+
 <!-- If you'd like to support WordPress, having the "powered by" link somewhere on your blog is the best way; it's our only promotion or advertising. -->
 	<p>
 		mySociety is a project of <a href="http://www.ukcod.org.uk/">UKCOD</a> | powered by
