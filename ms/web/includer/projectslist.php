@@ -13,7 +13,3 @@ query_posts('cat=7&orderby=title&order=asc&posts_per_page=-1');
 
     </div>
 <?php endwhile; ?>
-
-<?php
-query_posts('posts_per_page=1');
- ?>
