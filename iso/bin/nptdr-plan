@@ -22,7 +22,7 @@ import pqueue
 sys.path.append("../../pylib")
 import mysociety.atcocif
 
-# Parameters
+# Parameters (should be input on the command line or via a config file)
 nptdr_files = [
     "/home/francis/toobig/nptdr/sample/ATCO_040_COACH.CIF",
     "/home/francis/toobig/nptdr/sample/ATCO_040_METRO.CIF",
@@ -106,6 +106,8 @@ for nptdr_file in nptdr_files:
     atco.read(nptdr_file)
 atco.index_by_short_codes()
 
+#atco.find_journeys_crossing_midnight()
+
 # Calculate shortest route from everywhere on network
 (results, routes) = do_dijkstra(atco, target_location, target_when)
 
@@ -117,7 +119,9 @@ if output_format == 'human':
     print len(s) * '='
     print
 
-    for location, when in results.iteritems():
+    for location in sorted(results.keys()):
+        when = results[location]
+
         delta = target_when - when
         mins = delta.seconds / 60 + delta.days * 24 * 60
         print location.ljust(12) + " " + str(mins) + " mins"
