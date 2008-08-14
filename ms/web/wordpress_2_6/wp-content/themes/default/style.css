@@ -173,6 +173,7 @@ color: #2C9E2C;
 		.post .postmetadata { float: left; clear: both; font-size: 0.75em;}
 			.post .postmetadata small { font-size: 1.1em;}
 		
+/*------------ content : post navigation -----------*/
 
 .navigation { padding: 1em 0 0 0; }
 
@@ -186,6 +187,9 @@ color: #2C9E2C;
 .navigation .alignright { float: right; clear: none;}
 
 .editlink { clear: both;}
+
+/*------------ content : two and three col layouts -----------*/
+
 
 .twocol, .threecol, .threecolcentre
 {
@@ -208,6 +212,46 @@ color: #2C9E2C;
 	{ 
 		margin: 0em 0 0.5em 0;
 	}
+/*------------ content : image containers -----------*/
+
+.wp-caption { 
+				display: block; 
+				clear: none;
+				padding: 0px;
+				font-size: 0.9em;
+				line-height: 1em;
+				text-align: center;
+				background-color: transparent;
+				color: #6E6E6E;
+				
+}
+.wp-caption.alignleft { float: left;margin: 0px 15px 5px 0px;}
+.wp-caption.alignright { float: right;margin: 0px 0px 5px 15px;}
+
+p.wp-caption-text 
+{
+	position: relative;
+	display: block;
+	float: none;
+	clear: both;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+		.wp-caption img, 
+		{
+			float: none;
+			margin: 5px 0px 7px 0px;
+			/*
+			margin for imgbox with borders
+			margin: 15px 15px 7px 15px;
+			*/
+			padding: 0px;
+			border: 0px;
+		}
 
 /*------------------------------------------------------ sidebar -----------*/
 
