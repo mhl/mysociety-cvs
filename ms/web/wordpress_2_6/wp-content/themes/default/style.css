@@ -134,7 +134,7 @@ color: #2C9E2C;
 	font-size: 0.75em;
 	color: #CCEA64;
 }
-	
+
 /*------------------------------------------------------ content -----------*/
 
 #content { float: left; clear:none; font-size: 0.85em;}
@@ -330,3 +330,59 @@ p.wp-caption-text
 	
 				#footer ul + p { clear: both; }
 
+/* Main layout */
+body {text-align:center;font-family:Tahoma, Geneva, sans-serif; font-size:1em;}
+#divPage {text-align:left; width:770px; margin:0 auto; position:relative;}
+
+/* Layout blocks */
+div.contenthalf, div.contentwide, div.contentnarrow {float:left;}
+div.contenthalf, div.contentwide, div.contentnarrow, div.contentfull, 
+	div.contentnarrowalt, div.contentwidealt {padding:16px;}
+div.contenthalf.left, div.contentwide.left, div.contentnarrow.left, div.contentfull.left {padding-right:8px;}
+div.contenthalf.right, div.contentwide.right, div.contentnarrow.right, div.contentfull.right {padding-left:8px;float:right;}
+div.contenthalf {width:353px;}
+div.contentwide {width:522px;padding-right:8px;}
+div.contentnarrow {width:200px; padding-left:8px;}
+div.contentfull {padding: 0 20px 20px; min-height: 48px;}
+
+/* dividers */
+div.dividertop {border-top:dotted 1px #ccc;}
+div.dividerbottom {border-bottom:dotted 1px #ccc;}
+
+/* Link buttons */
+a.linkbutton {background:url(images/buttonmiddle.png) repeat-x;position:relative;height:44px;display:block; float:left;
+	padding:0 14px;text-decoration:none; font-size:1.3em; color:#2c9e2c;}
+a.linkbutton span.left {background:url(images/buttonleft.png) top left no-repeat;position:absolute;left:0; top:0;
+	display:block;width:8px; height:44px;}
+a.linkbutton span.middle {position:relative; top:11px;}
+a.linkbutton span.right {background:url(images/buttonright.png) top right no-repeat;position:absolute;right:0; top:0;
+		display:block;width:8px; height:44px;}
+
+/* tick list */
+ul.ticklist {list-style-type:none;margin:0 0 1.5em 0;padding:0;}
+ul.ticklist li {margin:0;padding:0 0 8px 29px; background:url(images/tick.png) no-repeat 2px 2px;}
+
+/* info box */
+div.infobox {background:#f7eaf8; padding:6px; text-align:center; border:dotted 1px #e4c8e5;}
+
+/* tech spec boxes */
+div.techspec {background:#efefef; font-size:0.8em; border-top:solid 4px #ddd; border-bottom:solid 4px #ddd; color:#333; margin-bottom:1em;}
+div.techspec ul {list-style-type:square;margin:0 0 0 1.5em;padding:1%; float:left; width:28%;}
+
+/* citations, quotes etc */
+blockquote, quote {font-style:italic;}
+blockquote {padding:0 0 0.3em 0;margin:0;}
+cite {font-style:normal; font-size:0.9em;}
+
+/* Product pages */
+#divProductHeadline a.linkbutton {float:none; margin:0 20px;}
+#divProductHeadline p {font-size:1.3em;}
+div.productdetail dl {float:left; width:50%;}
+div.productdetail dt {font-weight:bold;}
+
+/* images */
+img {border:dotted 1px #ccc; padding:6px;}
+ul img {border:none;}
+
+/* highlight */
+span.highlight {padding: 0 4px; background:#ffffaa;}

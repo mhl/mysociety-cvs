@@ -7,10 +7,11 @@
 	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
 
 	<title><?php bloginfo('name'); ?> <?php if ( is_single() ) { ?> &raquo; Blog Archive <?php } ?> <?php wp_title(); ?></title>
-	
+
 	<meta name="generator" content="WordPress <?php bloginfo('version'); ?>" /> <!-- leave this for stats -->
 
-	<link rel="stylesheet" href="/global.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/wordpress/wp-content/themes/mysociety/memespring.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="/global.css" type="text/css" media="screen" />	
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0"
     href="<?php bloginfo('rss2_url'); ?>?cat=<?=$cat?>" />
 	<link rel="alternate" type="text/xml" title="RSS .92" href="<?php
