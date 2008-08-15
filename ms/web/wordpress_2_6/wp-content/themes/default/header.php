@@ -11,7 +11,6 @@
 <link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> RSS Feed" href="<?php bloginfo('rss2_url'); ?>" />
 <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 
-
 <?php wp_head(); ?>
 </head>
 <body>
@@ -29,7 +28,7 @@
 </div>
 
 <?
-    print file_get_contents("nav.html"); 
+    print file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/nav.html"); 
 ?>
 
 <?php include (TEMPLATEPATH . '/searchform.php'); ?>
