@@ -7,14 +7,19 @@
 	</p>
 	
 	<!-- Quote -->
+	<?php
+	/*
 	<blockquote>
 		<strike>"A really nice quote about how great this is"</strike>
 	</blockquote>
 	<cite>
 		<strike>- Mr Web No 10 website</strike>
 	</cite>
+	*/
+	?>
+	
 	<!-- More info -->
-	<a class="linkbutton" href="#">
+	<a class="linkbutton" href="/services/request-a-quote/?p=map">
         <span class="left">&nbsp;</span>
         <span class="middle">Get a quote now</span>                
         <span class="right">&nbsp;</span>
@@ -75,12 +80,16 @@
 	</ul>
 	
 	<!--- Quote 2 -->
+	<?php
+	/*
 	<div class="infobox">
 		<blockquote>
 			<strike>"It was really simple to use and let me communicate with my council in a better way."</strike>
 		</blockquote>
 		<cite><strike>- a satisfied punter</strike></cite>
 	</div>
+	*/
+	?>
 </div>
 <br class="clear"/>
 
@@ -239,7 +248,7 @@
 	<!--- Quote 3 -->
 	<div class="infobox">
 		<blockquote>
-			"A quote form the White Paper"
+			"mySociety has produced a number of online services which reuse basic public"
 		</blockquote>
 		<cite>- <acronym title="Department of Communities &amp; Local Government">CLG</acronym> White Paper: Communities in control</cite>
 	</div>

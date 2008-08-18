@@ -7,7 +7,7 @@
 	</p>
 
 	<!-- More info -->
-	<a class="linkbutton" href="#">
+	<a class="linkbutton" href="/services/request-a-quote/?p=map">
         <span class="left">&nbsp;</span>
         <span class="middle">Get a quote for your map now</span>                
         <span class="right">&nbsp;</span>
@@ -50,7 +50,12 @@
 	
 	<h4>Relocating an office?</h4>
 	<p>
-		Want to move offices? Wondering how it will affect your staff commutes? Get in touch and we'll get you the maps and statistics you need
+		Want to move offices? Wondering how it will affect your staff commutes? Get in touch and we'll get you the maps and statistics you need.
+	</p>
+	
+	<h4>Are you an estate agent?</h4>
+	<p>
+	Generate custom maps showing potential property buyers their travel options, substantially differentiating yourselves from competitor.	
 	</p>
 
 </div>
