@@ -17,9 +17,22 @@
 	
 	<?php edit_post_link('Edit this entry.', '<p class="editlink">', '</p>'); ?>
 
+<?PHP
+    $uri = $_SERVER['SCRIPT_URL'];
+
+preg_match('#^/projects/(.*?)/#', $uri, $matches);
+$catname = $matches[1];
+print ' cat is ' . $catname;
+
+// list categories to find if this one exists there:
+
+
+?>
+
 	</div>
 
 <?php get_sidebar(); ?>
 
 
 <?php get_footer(); ?>
+
