@@ -23,7 +23,7 @@
 		if(isset($_POST['txtOrganisation']) && $_POST['txtOrganisation'] != ''){
 			$subject = $subject . ' - ' . $_POST['txtOrganisation'];
 		}
-		
+
 		//build up body
 		$body = "Product: " . $_POST['hidProduct'] . '\n';
 		$body .= "Name: " . $_POST['txtName'] . '\n';
@@ -39,14 +39,14 @@
 		
 		print $body;
 
-/*		//send
+		//send
 		evel_send(array(
 	            '_body_' => $body,
 	            'To' => $to,
 	            'From' => array($from_email, $from_name),
 	            'Subject' => $subject,
 	        ), $to);
-*/	
+
 		$sent = true;
 
 	}
