@@ -45,14 +45,12 @@
 	            'From' => array($from_email, $from_name),
 	            'Subject' => $subject,
 	        ), $to);
-
 		$sent = true;
 
 	}
 
 ?>
 
-	<div id="divContent">
 
 		<div class="contentfull">
 			<h1>Request a quote</h1>
