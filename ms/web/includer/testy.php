@@ -1,16 +1,7 @@
-<?PHP
-
-foreach($_SERVER as $key_name => $key_value) {
-print $key_name . " = " . $key_value . "<br>";
-}
-
-?>
-
 <?php
 
 	//includes
-	print TOP_PATH;
-	//require_once TOP_PATH . "/phplib/evel.php";
+	require_once "../../phplib/evel.php";
 	
 	//sent?
 	$sent = false;
