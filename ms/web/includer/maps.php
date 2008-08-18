@@ -15,7 +15,7 @@
 </div>
 
 <div class="contenthalf aligncenter">
-	<img src="images/traveltime.png" alt="Travel time to Department of Transport" title="Travel time to Department of Transport" width="300px" height="300px"/>
+	<img src="/contimg/traveltime.png" alt="Travel time to Department of Transport" title="Travel time to Department of Transport" width="300px" height="300px"/>
 </div>
 
 <br class="clear" />

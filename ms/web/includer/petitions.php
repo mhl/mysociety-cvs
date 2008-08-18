@@ -24,7 +24,7 @@
 </div>
 
 <div class="contenthalf aligncenter">
-	<img src="images/brighton1.png" alt="" title="" width="300px" height="300px"/>
+	<img src="/contimg/brighton1.png" alt="" title="" width="300px" height="300px"/>
 </div>
 
 <br class="clear" />
@@ -229,10 +229,10 @@
 	<!-- Awards -->
 	<ul class="nobullets">
 		<li>
-			<img src="images/nominet.png" alt="Nominet Best Practice Challenge 2008" tile="Winner - Nominet Best Practice Challenge 2008"/>
+			<img src="/contimg/nominet.png" alt="Nominet Best Practice Challenge 2008" tile="Winner - Nominet Best Practice Challenge 2008"/>
 		</li>
 		<li>
-			<img src="images/nma.png" alt="New Media Awards 2007" tile="Winner - New Media Awards 2007"/>
+			<img src="/contimg/nma.png" alt="New Media Awards 2007" tile="Winner - New Media Awards 2007"/>
 		</li>
 	</ul>
 	<br/>
