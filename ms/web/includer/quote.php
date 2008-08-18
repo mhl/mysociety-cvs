@@ -27,6 +27,7 @@
 		//build up body
 		$body = "Product: " . $_POST['hidProduct'] . '\n';
 		$body .= "Name: " . $_POST['txtName'] . '\n';
+		$body .= "Email: " . $_POST['txtEmail'] . '\n';		
 		$body .= "Organisation: " . $_POST['txtOrganisation'] . '\n';		
 		if ($product_type == 'map') {
 			$body .= "Purpose: " . $_POST['txtPurpose'] . '\n';							
@@ -36,8 +37,6 @@
 			$body .= "Special requests: " . $_POST['txtCentre'] . '\n';			
 			$body .= "Special requests: " . $_POST['txtRequests'] . '\n';																
 		}
-		
-		print $body;
 
 		//send
 		evel_send(array(
