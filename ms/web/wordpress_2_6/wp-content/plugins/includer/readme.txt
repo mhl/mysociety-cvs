@@ -11,7 +11,7 @@ Include php and other files in your posts and pages.
 
 Allows you you embedd php and text from files on your server into your posts.
 
-To use you need to have a folder called includer at the root of your web serving directory.
+To use you need to have a folder called includer above the root of your web serving directory.
 You place files you will be wanting to include in pages or posts here.
 eg a file called testy.php 
 
@@ -40,3 +40,7 @@ You can of course use php and access your server variables and the like here so 
 =1.0 (12/08/2008)= 
 
 Initial release
+
+=1.1 (12/08/2008)= 
+
+Moved files outside web serving dir
