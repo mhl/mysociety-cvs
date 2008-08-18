@@ -1,6 +1,7 @@
 <?php
 
 	//includes
+	print TOP_PATH;
 	//require_once TOP_PATH . "/phplib/evel.php";
 	
 	//sent?
