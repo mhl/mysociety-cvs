@@ -37,7 +37,7 @@
 			$body .= "Special requests: " . $_POST['txtCentre'] . '\n';			
 			$body .= "Special requests: " . $_POST['txtRequests'] . '\n';																
 		}
-
+/*
 		//send
 		evel_send(array(
 	            '_body_' => $body,
@@ -45,6 +45,7 @@
 	            'From' => array($from_email, $from_name),
 	            'Subject' => $subject,
 	        ), $to);
+*/
 		$sent = true;
 
 	}
