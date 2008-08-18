@@ -1,7 +1,7 @@
 <?php
 
 	//includes
-	require_once "../../phplib/evel.php";
+    require_once dirname(__FILE__) . "/../../../phplib/evel.php";
 	
 	//sent?
 	$sent = false;
