@@ -5,7 +5,7 @@
 
 	//thread count
 	$thread_count_tracker = array();
-	$minimum_thread_count = 10;
+	$minimum_thread_count = 20;
 
 	//get all cities list
 	$usa_url = "http://outside.in/us_country_map";
