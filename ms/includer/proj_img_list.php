@@ -22,7 +22,7 @@ $pages = get_pages('child_of=403&echo=0');
 <p class="wp-caption-text"><?php print $page[post_title]; ?></p></div>
 
 <h4><a href="<?php print $url;?>"><?php print $page[post_title]; ?></a></h4>
-<p><?php print $page[post_excerpt]; ?></p>
+<?php print $page[post_excerpt]; ?>
 
 <hr />
 <?php } 
