@@ -20,6 +20,10 @@ $pages = get_pages('child_of=403&echo=0');
 <div class="wp-caption alignleft" style="width: 129px"><a href="<?php print $url;?>">
 <img src="<?php print $imageurl ?>" alt="image of <?php print $page[post_title]; ?>" title="<?php print $page[post_title]; ?>" width="125" height="126" class="size-thumbnail" border="0"/></a>
 <p class="wp-caption-text"><?php print $page[post_title]; ?></p></div>
+
+<h4><a href="<?php print $url;?>"><?php print $page[post_title]; ?></a></h4>
+<p><?php print $page[post_excerpt]; ?></p>
+
 <?php } 
 } // end projects list
 
