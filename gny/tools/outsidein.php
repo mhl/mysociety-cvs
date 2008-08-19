@@ -3,11 +3,14 @@
 	require_once(dirname(__FILE__) .'../../conf/general');	
 	require_once(dirname(__FILE__) .'../../includes/init.php');
 
+	//thread count
+	$thread_count_tracker = array();
+	$minimum_thread_count = 10;
+
 	//get all cities list
 	$usa_url = "http://outside.in/us_country_map";
-	
+
 	$usa_html = safe_scrape($usa_url);
-	
 
 	//get list of citoes
 	$city_regex = "/<a href=\"http:\/\/outside.in.*?_[A-Z][A-Z]\">/";
@@ -20,7 +23,7 @@
 		//get city name and URL
 		$city_url = str_replace('<a href="', '', $city_match);
 		$city_url = str_replace('">', '', $city_url);		
-		$city_name = str_replace("http://outside.in","", $city_url);
+		$city_name = trim(str_replace("http://outside.in","", $city_url));
 		$city_name = str_replace("/", "", $city_name);
 
 		//grab neighbourhood urls
@@ -37,16 +40,31 @@
 				$hood_url = str_replace('">', '', $hood_url);		
 				$hood_name = trim(str_replace("http://outside.in","", $hood_url));
 				$hood_name = str_replace("/", "", $hood_name);
-				$hood_name = str_replace($city_name, "", $hood_name);				
+				
+				// if this is a neighbourhood rather than a full city, then remove the city name form the end of the hood name
+				if($city_name != $hood_name){
+					$hood_name = str_replace($city_name, "", $hood_name);				
+				}
+
 				$hood_discussion_url = $hood_url . "/discussions";
 				
 				//check if the board has any threads
-				//0 threads
+
 				$board_html = safe_scrape($hood_discussion_url);
-				
+				$board_html = str_replace("\n", "", str_replace("\r\n","", $board_html));
+
+				$post_count_regex = "/[0-9]*?threads/";
+				preg_match_all($post_count_regex, $board_html, $post_count_matches, PREG_PATTERN_ORDER);						
+
+				$thread_count = $post_count_matches[0][0];
+
+				array_push($thread_count_tracker, str_replace("threads", "", $thread_count));
+
+				/*
 				$no_threads = strpos($board_html, "No discussions") > 0;
+				*/
 				
-				if(!$no_threads){
+				if($thread_count >= $minimum_thread_count){
 
 					//grab the neighbourhood page
 					$hood_html = safe_scrape($hood_url);
@@ -78,7 +96,11 @@
 					$group->lat_bottom_left = $latlong_bottom_left[0];
 					$group->long_top_right = $latlong_top_right[1];
 					$group->lat_top_right = $latlong_top_right[0];
-					$group->zoom_level = 13;
+					if($city_name != $hood_name){
+						$group->zoom_level = 13;
+					}else{
+						$group->zoom_level = 10;						
+					}
 					$group->long_centroid = ($latlong_bottom_left[1] + $latlong_top_right[1]) / 2;
 					$group->lat_centroid = ($latlong_bottom_left[0] + $latlong_top_right[0]) / 2;
 
@@ -91,22 +113,27 @@
 						$group->set_url_id();
 				
 						if($group->insert()){
-							print "saved " . $hood_name . "\n";
+							print "saved: " . $hood_name . "\n";
 						}else{
-							print "failed to save " . $hood_name . "\n";
+							print "failed: " . $hood_name . "\n";
 						}
 					}else{
-						print $hood_name . " has already been imported" . "\n";
+						print "duplicate: " . $hood_name. "\n";
 					}
 				}else{
-					print $hood_name . " has no threads" . "\n";
+					print "no threads: " . $hood_name . "\n";
 				}
 			}
 		}
 
 	}
 
-	print_r( $item_matches)
+	//print distribution of posts
+	/*
+	foreach ($thread_count_tracker as $thread_count) {
+		print $thread_count . ", ";
+	}
+	*/
 
 
 ?>
