@@ -24,6 +24,7 @@ $pages = get_pages('child_of=403&echo=0');
 <h4><a href="<?php print $url;?>"><?php print $page[post_title]; ?></a></h4>
 <p><?php print $page[post_excerpt]; ?></p>
 
+<hr />
 <?php } 
 } // end projects list
 
