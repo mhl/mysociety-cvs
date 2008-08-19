@@ -2,7 +2,7 @@
 
 	<div id="content" class="narrowcolumn">
 
-		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+		<?php if (have_posts()) : while (have_posts()) : the_post();?>
 		<div class="post" id="post-<?php the_ID(); ?>">
 		<h2><?php the_title(); ?></h2>
 			<div class="entry">
@@ -13,8 +13,6 @@
 			</div>
 		</div>
 		<?php endwhile; endif; ?>
-	
-	
 	<?php edit_post_link('Edit this entry.', '<p class="editlink">', '</p>'); ?>
 
 <?PHP
@@ -23,20 +21,25 @@
     preg_match('#^/projects/(.*?)/#', $uri, $matches);
     $catname = $matches[1];
     $categories =  get_categories();
+    $hasblog = 0;
     foreach ($categories as $cat) {
     if ($cat->category_nicename == $catname) {
         $posts = query_posts('category_name=' . $catname . '&order=asc&posts_per_page=-1');
+        $hasblog = 1;
     }
 }
 
-    if ($catname) {
-?>
+    if ($hasblog) {
+// print 'id is ' . $post->get_id;
+ ?>
 
     <hr />
         <h2>Blog entries for <?php print single_cat_title(''); ?></h2>
-		<?php while (have_posts()) : the_post(); ?>
+		<?php while (have_posts()) : the_post(); 
+?>
 		<div class="post">
-				<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
+		 
+				<h3 id="post-<?php the_ID();  ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 				<small><?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong></small>
 
 				<div class="entry">
