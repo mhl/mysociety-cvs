@@ -1,5 +1,5 @@
 <?php
-query_posts('cat=7&orderby=title&order=asc&posts_per_page=-1');
+//query_posts('cat=7&orderby=title&order=asc&posts_per_page=-1');
 $pages = get_pages('child_of=403&echo=0');
     foreach ($pages as $page_obj) {
         $page = get_object_vars($page_obj);
