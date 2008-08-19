@@ -1,5 +1,4 @@
 #!/usr/bin/php5
-
 <?php
 
 	require_once(dirname(__FILE__) .'../../conf/general');	
