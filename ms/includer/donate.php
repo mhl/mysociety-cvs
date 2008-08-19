@@ -1,3 +1,5 @@
+<h3 class="d">Make a one off donation via PayPal</h3>
+
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="business" value="james@mysociety.org">
