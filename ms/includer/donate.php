@@ -1,3 +1,4 @@
+<div id="donate">
 <h3 class="d">Make a one off donation via PayPal</h3>
 
 <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -135,3 +136,4 @@ You must pay an amount of Income
 Tax and/or Capital Gains Tax at least equal to the tax that we'll
 reclaim on your donations (currently 28p for each &pound;1 you give).
 </p>
+</div>
