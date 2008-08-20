@@ -16,7 +16,7 @@
 	if(isset($_POST['_is_postback']) && $_POST['_is_postback'] != ''){
 
 		//email details
-		$to = "richard@mysociety.org";
+		$to = "team@mysociety.org";
 		$from_email = $_POST['txtEmail'];		
 		$from_name = $_POST['txtName'];				
 		$subject = "[mySociety Quote Request] " .  $_POST['hidProduct'];
