@@ -22,7 +22,7 @@
                         <li>
                             <label for="txtMessage">{l}Your message{/l} *</label>
     <textarea id="txtContactMessage" name="txtContactMessage" {if $warn_txtContactMessage}class="error"{/if}>{if $data.txtContactMessage == ''}
-    {l}Hi,
+{l}Hi,
 
 I've just added {$group->name} to {$site_name}, which is a website that helps people find local email lists, blogs and forums where they live, and thought you might want to add your group?
 
