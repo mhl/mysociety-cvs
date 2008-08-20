@@ -14,7 +14,7 @@
 <?php wp_head(); ?>
 </head>
 <body>
-<div id="Page">
+<div id="page">
 
 	<div id="header">
 		<div id="headerimg">
