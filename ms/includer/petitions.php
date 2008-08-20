@@ -25,7 +25,7 @@
         <span class="right">&nbsp;</span>
     </a>
 	<br/>
-	<a href="#">or try our demo</a>
+	<a href="http://brighton.matthew.pet.mysociety.org/">or try our demo</a>
 </div>
 
 <div class="contenthalf aligncenter">
