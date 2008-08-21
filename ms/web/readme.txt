@@ -3,7 +3,7 @@ Notes on the 2008 rebuild.
 The templates, css and images for navigation are all inside the wordpress theme for this design which is called mySociety2008
 
 which can be found in (from cvs root):
-mysociety/ms/web/wordpress/wp-content/themes/mySociety2008/
+mysociety/ms/web/wordpress/wp-content/themes/default/
 
 images are in the folder called images, these are jsut images for the theme not for the content.
 
