@@ -6,8 +6,10 @@
 if (!@include "../conf/general") {
     if (!@include "../../conf/general") {
         if (!@include "../../../conf/general") {
-            print "Error including conf/general in wp-config.php on mysociety.org WordPress";
-            exit;
+            if (!@include(dirname(__FILE__) . "../../../conf/general")) {
+                print "Error including conf/general in wp-config.php on mysociety.org WordPress";
+                exit;
+            }
         }
     }
 }
