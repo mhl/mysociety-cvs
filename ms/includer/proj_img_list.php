@@ -13,17 +13,20 @@ $pages = get_pages('child_of=403&echo=0');
 
 ?> 
 
-<?php  if ($imageurl) {
-
-?>
 <div class="projects-entry">
+
+<?php  if ($imageurl) { ?>
 <h2><a href="<?=$url ?>"><img src="<?php print $imageurl ?>" alt="" title="<?php print $page['post_title']; ?> screenshot" width="125" height="126" class="size-thumbnail" border="0" /><?=$page['post_title'] ?></a></h2>
+<?php } else { ?>
+<h2><a href="<?=$url ?>"><?=$page['post_title'] ?></a></h2>
+<?php }  ?>
+
 <?=$page['post_excerpt'] ?>
 </div>
 
-<?php } 
+ 
+<?php
 } // end projects list
-
  ?>
 
 
