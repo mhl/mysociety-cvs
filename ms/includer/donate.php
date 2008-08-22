@@ -113,7 +113,7 @@ Gift Aid donations:
 </form>
 
 <h3 class="d">Donate by BACs or set up a regular donation via Standing Order</h3>
-<form action="details" method="post">
+<form action="https://secure.mysociety.org/donate/details" method="post">
 <p>We'll collect your name and address, and then give you our BACs details or let you download a standing order form.</p>
 
 <p>I want all donations I make to UK Citizens Online Democracy from this date until further notice to be Gift Aid donations:
