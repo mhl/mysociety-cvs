@@ -11,7 +11,7 @@
                 <guid isPermaLink="true">{$www_server}/groups/{$group->url_id}</guid>
                 <georss:featurename>{$group->name|escape:html}</georss:featurename>
                 <georss:polygon>{$group->lat_bottom_left} {$group->long_bottom_left} {$group->lat_top_right} {$group->long_bottom_left} {$group->lat_top_right} {$group->long_top_right} {$group->lat_bottom_left} {$group->long_top_right} {$group->lat_bottom_left} {$group->long_bottom_left}</georss:polygon>
-                <description><![CDATA[{$group->description|escape:html}]]></description>
+                <description><![CDATA[{$group->description|strip_tags}]]></description>
                 <link><![CDATA[{$www_server}/groups/{$group->url_id}/]]></link>
             </item>
         {/foreach}

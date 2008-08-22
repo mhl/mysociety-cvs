@@ -17,7 +17,6 @@
                 </div>
             </div>
         </div>
-
         <div class="contentright">
             <form id="frmSearchMain" action="{$form_action}" method="post" class="pod">
                 <fieldset>
