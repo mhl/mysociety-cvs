@@ -37,14 +37,17 @@ body
 }
 
 
-a
-{
-	text-decoration: none;
-	color: #1236B4;
+a {
+    text-decoration: underline;
+    color: #1236B4;
 }
-	a:visited { color: #9243AC; }
-	a:hover { color: #1544E7; }
-	a:active {}
+    a:visited {
+        color: #9243AC;
+    }
+    a:active, a:hover {
+        color: #1544E7;
+        text-decoration: none;
+    }
 
 h1, h2, h3, h4, h5, h6,
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
@@ -111,35 +114,33 @@ hr
 
 .menu {}
 
-	div.menu ul
-	{
-		list-style: none;
-		margin: 0px; 
-		padding: 0px;
-		font-size: 0.85em;
-	}
-	
-		div.menu li 
-		{
-			float: left;
-		}
-		
-			div.menu li a, div.menu li a:visited
-			{
-				display: block;
-				margin: 0px 0px 0px 0px;
-				padding: 1px 10px 4px 14px;
-				color: #2C9E2C;
-				background-image: url(/wp/wp-content/themes/default/images/navimg/mysoc-menu.png);
-				background-repeat: no-repeat;
-				background-position: left center;
-			}
-							
-				div.menu li a:hover
-				{ color: #175218; text-decoration: underline; } 
-	
-				div.menu li a:active {}
-				
+    div.menu ul {
+        list-style: none;
+        margin: 0px; 
+        padding: 0px;
+        font-size: 0.85em;
+    }
+    
+        div.menu li {
+            float: left;
+        }
+        
+            div.menu li a, div.menu li a:visited {
+                display: block;
+                margin: 0px 0px 0px 0px;
+                padding: 1px 10px 4px 14px;
+                color: #2C9E2C;
+                background-image: url(/wp/wp-content/themes/default/images/navimg/mysoc-menu.png);
+                background-repeat: no-repeat;
+                background-position: left center;
+                text-decoration: none;
+            }
+                            
+                div.menu li a:active, div.menu li a:hover {
+                    color: #175218;
+                    text-decoration: underline;
+                } 
+
 /*------------------------------------------------------ search -----------*/
 
 div#searchdiv { position: absolute; top: 20px; left: 520px; color: #2C9E2C; text-align: right;}
@@ -330,48 +331,48 @@ p.wp-caption-text
 
 /*------------------------------------------------------ footer -----------*/
 
-#footer
-{
-	display: block;
-	clear: both;
-	font-size: 0.75em;
-	text-align: center;
-	padding-top: 62px;
-	background-image: url(/wp/wp-content/themes/default/images/navimg/mysoc-square-bug.jpg);
-	background-repeat: no-repeat;
-	background-position: center top;
-	text-align: center;
+#footer {
+    display: block;
+    clear: both;
+    font-size: 0.75em;
+    text-align: center;
+    padding-top: 62px;
+    background-image: url(/wp/wp-content/themes/default/images/navimg/mysoc-square-bug.jpg);
+    background-repeat: no-repeat;
+    background-position: center top;
+    text-align: center;
 }
 
-	#footer ul
-	{
-		list-style: none;
-		margin: 0px;
-		padding: 20px 0px 10px 0px;
-	}
-	
-		#footer li 
-		{
-			display: inline;
-			/*float: left;*/
-		}
-		
-			#footer li a, #footer li a:visited
-			{
-				/*display: block;*/
-				margin: 0px 0px 0px 0px;
-				padding: 1px 10px 4px 14px;
-				color: #2C9E2C;
-				background-image: url(/wp/wp-content/themes/default/images/navimg/mysoc-menu.png);
-				background-repeat: no-repeat;
-				background-position: left center;
-			}
-							
-				#footer li a:hover
-				{ color: #175218; text-decoration: underline; } 
-	
-				#footer ul + p { clear: both; }
-				
+    #footer ul {
+        list-style: none;
+        margin: 0px;
+        padding: 20px 0px 10px 0px;
+    }
+    
+        #footer li {
+            display: inline;
+            /*float: left;*/
+        }
+        
+            #footer li a, #footer li a:visited {
+                /*display: block;*/
+                margin: 0px 0px 0px 0px;
+                padding: 1px 10px 4px 14px;
+                color: #2C9E2C;
+                background-image: url(/wp/wp-content/themes/default/images/navimg/mysoc-menu.png);
+                background-repeat: no-repeat;
+                background-position: left center;
+                text-decoration: none;
+            }
+                            
+                #footer li a:active, #footer li a:hover {
+                    color: #175218;
+                    text-decoration: underline;
+                } 
+    
+                #footer ul + p {
+                    clear: both;
+                }
 
 /* Main layout */
 body {text-align:center;font-family:Tahoma, Geneva, sans-serif; font-size:1em;}
