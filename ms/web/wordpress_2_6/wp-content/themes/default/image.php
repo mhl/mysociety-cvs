@@ -20,7 +20,7 @@
 
 				<p class="postmetadata alt">
 					<small>
-						This entry was posted on <?php the_time('l, F jS, Y') ?> at <?php the_time() ?>
+						This entry was posted on <?php the_time('l, F jS, Y') ?> at <?php the_time('g:ia') ?>
 						and is filed under <?php the_category(', ') ?>.
 						<?php the_taxonomies(); ?>
 						You can follow any responses to this entry through the <?php post_comments_feed_link('RSS 2.0'); ?> feed.
