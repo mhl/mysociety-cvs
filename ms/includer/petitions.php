@@ -19,7 +19,7 @@
 	?>
 	
 	<!-- More info -->
-	<a class="linkbutton" href="/services/request-a-quote/?p=map">
+	<a class="linkbutton" href="/services/request-a-quote/?p=petition">
         <span class="left">&nbsp;</span>
         <span class="middle">Get a quote now</span>                
         <span class="right">&nbsp;</span>
@@ -260,7 +260,7 @@
 			You can read more about us at <a href="http://www.mysociety.org/about">mysociety.org/about</a> or contact a human being who would be happy to chat things over:
 		</p>
 		<!-- More info -->
-		<a class="linkbutton" href="#">
+		<a class="linkbutton" href="/services/request-a-quote/?p=petition">
             <span class="left">&nbsp;</span>
             <span class="middle">Contact mySociety for more information</span>                
             <span class="right">&nbsp;</span>
