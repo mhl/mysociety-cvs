@@ -2,7 +2,7 @@
 
 	//includes
     require_once dirname(__FILE__) . "/../../phplib/evel.php";
-	
+
 	//sent?
 	$sent = false;
 
@@ -17,25 +17,25 @@
 
 		//email details
 		$to = "team@mysociety.org";
-		$from_email = $_POST['txtEmail'];		
-		$from_name = $_POST['txtName'];				
+		$from_email = $_POST['txtEmail'];
+		$from_name = $_POST['txtName'];
 		$subject = "[mySociety Quote Request] " .  $_POST['hidProduct'];
 		if(isset($_POST['txtOrganisation']) && $_POST['txtOrganisation'] != ''){
 			$subject = $subject . ' - ' . $_POST['txtOrganisation'];
 		}
 
 		//build up body
-		$body = "Product: " . $_POST['hidProduct'] . '\n';
-		$body .= "Name: " . $_POST['txtName'] . '\n';
-		$body .= "Email: " . $_POST['txtEmail'] . '\n';		
-		$body .= "Organisation: " . $_POST['txtOrganisation'] . '\n';		
+		$body = "Product: " . $_POST['hidProduct'] . "\n";
+		$body .= "Name: " . $_POST['txtName'] . "\n";
+		$body .= "Email: " . $_POST['txtEmail'] . "\n";
+		$body .= "Organisation: " . $_POST['txtOrganisation'] . "\n";
 		if ($product_type == 'map') {
-			$body .= "Purpose: " . $_POST['txtPurpose'] . '\n';							
-			$body .= "Maximum travel time: " . $_POST['txtMaximum'] . '\n';										
-			$body .= "Centre point: " . $_POST['txtCentre'] . '\n';													
-			$body .= "Type (interactive/print): " . $_POST['radType'] . '\n';																
-			$body .= "Special requests: " . $_POST['txtCentre'] . '\n';			
-			$body .= "Special requests: " . $_POST['txtRequests'] . '\n';																
+			$body .= "Purpose: " . $_POST['txtPurpose'] . "\n";
+			$body .= "Maximum travel time: " . $_POST['txtMaximum'] . "\n";
+			$body .= "Centre point: " . $_POST['txtCentre'] . "\n";
+			$body .= "Type (interactive/print): " . $_POST['radType'] . "\n";
+			$body .= "Special requests: " . $_POST['txtCentre'] . "\n";
+			$body .= "Special requests: " . $_POST['txtRequests'] . "\n";
 		}
 
 		//send
@@ -55,14 +55,14 @@
 
 		<div class="contentfull">
 			<h1>Request a quote</h1>
-			
+
 			<?php if($sent == false) { ?>
 				<form method="POST">
 					<fieldset>
 						<input type="hidden" name="_is_postback" value="1"/>
 						<input type="hidden" name="hidProduct" value = "<?php print $product_type ?>"/>
 					</fieldset>
-				
+
 					<ul class="nobullets form">
 						<li>
 							<label for="txtName">Name *</label>
@@ -95,16 +95,16 @@
 								<fieldset>
 									<input type="radio" name="radType" value="print"/>
 									<label class="radiolabel">Print </label>
-									<input type="radio" name="radType" value="interactive"/>						
+									<input type="radio" name="radType" value="interactive"/>
 									<label class="radiolabel">Interactive</label>
-									<input type="radio" name="radType" value="both"/>												
+									<input type="radio" name="radType" value="both"/>
 									<label class="radiolabel">Both</label>
 								</fieldset>
 							</li>
 							<li>
 								<label for="txtRequests">Special requests</label>
 								<textarea id="txtRequests">
-						
+
 								</textarea>
 								<small>i.e. 'no tube' or 'with houseprices'</small>
 							</li>
@@ -114,9 +114,9 @@
 						<input type="submit" value="Request quote" />
 					</div>
 				</form>
-				
+
 			<?php }else{ ?>
-				
+
 				<div class="contentfull">
 					<p>
 						Thanks, your request has been sent and someone will get back to you soon.
@@ -124,6 +124,6 @@
 						<a href="/">Click here to return to the mySociety homepage</a>
 					</p>
 				</div>
-				
+
 			<?php } ?>
 		</div>
