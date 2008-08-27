@@ -3,16 +3,20 @@
 
 set -e
 
+cd /tmp
+rm -fr make-cvs-tarball
+mkdir -p make-cvs-tarball
+cd make-cvs-tarball
+
+export CVSROOT=:pserver:anonymous@cvs.mysociety.org:/repos
+cvs -Q export -D now mysociety
+tar cfz mysociety-new.tar.gz mysociety
+
+cd `dirname $0`
 cd ../../../mysociety/ms/web
 mkdir -p cvs
 cd cvs
 
-rm -fr mysociety
-export CVSROOT=:pserver:anonymous@cvs.mysociety.org:/repos
-cvs -Q export -D now mysociety
-
-rm -fr mysociety-new.tar.gz
-tar cfz mysociety-new.tar.gz mysociety
-mv mysociety-new.tar.gz mysociety.tar.gz
+mv /tmp/make-cvs-tarball/mysociety-new.tar.gz mysociety.tar.gz
 
 
