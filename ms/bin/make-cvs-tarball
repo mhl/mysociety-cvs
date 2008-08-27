@@ -2,7 +2,7 @@
 # Make tarball of source
 
 set -e
-PWD=`pwd`
+MAIN_DIR=`pwd`
 
 cd /tmp
 rm -fr make-cvs-tarball
@@ -13,7 +13,7 @@ export CVSROOT=:pserver:anonymous@cvs.mysociety.org:/repos
 cvs -Q export -D now mysociety
 tar cfz mysociety-new.tar.gz mysociety
 
-cd $PWD
+cd $MAIN_DIR
 cd ../../../mysociety/ms/web
 mkdir -p cvs
 cd cvs
