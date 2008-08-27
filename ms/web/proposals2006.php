@@ -19,8 +19,8 @@ if (empty($_GET['cat'])) {
 }
 
 if ($q_page == 'submit') {
-    include "wordpress/wp-blog-header.php";
-    include "wordpress/wp-content/themes/mysociety/header.php";     
+    include "wp/wp-blog-header.php";
+    include "wp/wp-content/themes/mysociety/header.php";     
 
     $errors = array();
     if ($_POST['proposal_submit'] && !get_http_var("submitreedit")) {
@@ -228,10 +228,10 @@ exit;
     </div>
 -->
 <?
-    include "wordpress/wp-content/themes/mysociety/footer.php";
+    include "wp/wp-content/themes/mysociety/footer.php";
 } elseif ($q_page == 'about') {
-    include "wordpress/wp-blog-header.php";
-    include "wordpress/wp-content/themes/mysociety/header.php"; 
+    include "wp/wp-blog-header.php";
+    include "wp/wp-content/themes/mysociety/header.php"; 
 ?>
 
     <div class="item_head">
@@ -283,10 +283,32 @@ exit;
 
 
 <?
-    include "wordpress/wp-content/themes/mysociety/footer.php";
+    include "wp/wp-content/themes/mysociety/footer.php";
 } else {
-    /* Short and sweet */
-    define('WP_USE_THEMES', true);
-    require('wordpress/wp-blog-header.php');
-}
+    include "wp/wp-blog-header.php";
+    include "wp/wp-content/themes/mysociety/header.php";     
+    ?>
+    <div id="content" class="narrowcolumn">
+	<h2 class="pagetitle">Proposals 2006</h2>
+<?php 
+	$posts = get_posts('cat=3&numberposts=10000');
 ?>
+	<?php foreach ($posts as $post) : ?>
+	<div class="post">
+			<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a>
+			<small><?php the_time('l, F jS, Y') ?> </small>
+			</h3>
+	</div>
+
+	<?php endforeach; ?>
+
+	<div class="navigation">
+		<div class="alignleft"><?php next_posts_link('&laquo; Older Entries') ?></div>
+		<div class="alignright"><?php previous_posts_link('Newer Entries &raquo;') ?></div>
+	</div>
+    </div>
+
+<?
+    include "wp/wp-content/themes/mysociety/footer.php";
+}
+
