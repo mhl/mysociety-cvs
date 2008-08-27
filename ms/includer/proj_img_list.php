@@ -7,8 +7,8 @@ $pages = get_pages('child_of=403&echo=0');
         //$keys = array_keys($page);
         //print_r($keys);
         $imageurl = '';
-        if (file_exists(dirname(__FILE__) . '/../web/contimg/projtns/' . str_replace(" ", "", strtolower($page['post_title']) . '.jpg'))) {
-            $imageurl = '/contimg/projtns/' . str_replace(" ", "", strtolower($page['post_title'])) . '.jpg';
+        if (file_exists(dirname(__FILE__) . '/../web/contimg/projtns/' . str_replace(" ", "-", strtolower($page['post_title']) . '.jpg'))) {
+            $imageurl = '/contimg/projtns/' . str_replace(" ", "-", strtolower($page['post_title'])) . '.jpg';
         }
 
 ?> 
