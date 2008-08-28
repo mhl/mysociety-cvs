@@ -24,7 +24,7 @@
     $hasblog = 0;
     foreach ($categories as $cat) {
     if ($cat->category_nicename == $catname) {
-        $posts = query_posts('category_name=' . $catname . '&order=asc&posts_per_page=-1');
+        $posts = query_posts('category_name=' . $catname . '&orderby=date&order=desc&posts_per_page=-1');
         $hasblog = 1;
     }
 }
