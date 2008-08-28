@@ -27,7 +27,7 @@
 							/* $entry_datetime = abs(strtotime($post->post_date) - (60*120)); echo time_since($entry_datetime); echo ' ago'; */ ?>
 						on <?php the_time('l, F jS, Y') ?> at <?php the_time() ?>
 						and is filed under <?php the_category(', ') ?>.
-						You can follow any responses to this entry through the <?php post_comments_feed_link('RSS 2.0'); ?> feed.
+						<?php post_comments_feed_link('Follow responses to this entry'); ?> (RSS2 feed).
 
 						<?php if (('open' == $post-> comment_status) && ('open' == $post->ping_status)) {
 							// Both Comments and Pings are open ?>
@@ -38,10 +38,10 @@
 							Responses are currently closed, but you can <a href="<?php trackback_url(); ?> " rel="trackback">trackback</a> from your own site.
 
 						<?php } elseif (('open' == $post-> comment_status) && !('open' == $post->ping_status)) {
-							// Comments are open, Pings are not ?>
-							You can skip to the end and leave a response. Pinging is currently not allowed.
+							// Comments are open, Pings are not
+							// You can skip to the end and leave a response. Pinging is currently not allowed.
 
-						<?php } elseif (!('open' == $post-> comment_status) && !('open' == $post->ping_status)) {
+						} elseif (!('open' == $post-> comment_status) && !('open' == $post->ping_status)) {
 							// Neither Comments, nor Pings are open ?>
 							Both comments and pings are currently closed.
 
