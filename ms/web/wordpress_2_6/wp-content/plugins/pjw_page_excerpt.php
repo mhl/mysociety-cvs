@@ -9,6 +9,13 @@
 
  */
 
+/* 
+License note; Peter Westwood's web page and this file do not state the license
+of this plugin. However, I emailed him and he said in reply that "The licence
+for PJW Page Excerpt (and all my other plugins) is GPL2" on 27 Aug 2008.
+Francis <francis@mysociety.org>
+*/
+
 class pjw_page_excerpt
 {
 		function pjw_page_excerpt()
