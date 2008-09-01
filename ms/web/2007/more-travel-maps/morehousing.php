@@ -5,8 +5,9 @@ $body_id = 'moretravel';
 # XXX This is hideous
 ob_start();
 include "interactive_map.php";
-include "../../wordpress/wp-blog-header.php";
-include "../../wordpress/wp-content/themes/mysociety/header.php"; 
+include "../../wp/wp-blog-header.php";
+add_action('wp_head', 'add_swfobject_js');
+include "../../wp/wp-content/themes/default/header.php"; 
 $header = ob_get_clean();
 $header = str_replace('<title>mySociety', '<title>mySociety &raquo; More travel-time maps &raquo; Travel time / house price maps (BBC Television Centre &amp; Olympic Stadium site)', $header);
 header('HTTP/1.0 200 OK');
@@ -36,4 +37,4 @@ times to work and with varying house prices.</p>
 
 <p><a href="./">Main page explaining these maps</a></p>
 
-<?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
+<?php include "../../wp/wp-content/themes/default/footer.php"; ?>

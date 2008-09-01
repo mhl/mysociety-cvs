@@ -5,8 +5,9 @@ $body_id = 'moretravel';
 # XXX This is hideous
 ob_start();
 include "interactive_map.php";
-include "../../wordpress/wp-blog-header.php";
-include "../../wordpress/wp-content/themes/mysociety/header.php"; 
+include "../../wp/wp-blog-header.php";
+add_action('wp_head', 'add_swfobject_js');
+include "../../wp/wp-content/themes/default/header.php"; 
 $header = ob_get_clean();
 $header = str_replace('<title>mySociety', '<title>mySociety &raquo; Travel-time maps', $header);
 header('HTTP/1.0 200 OK');
@@ -217,5 +218,5 @@ code</a> for the scripts that made these maps, and we can give you copies of
 the OpenStreetMap base mapping. Some other data, such as NaPTAN, will require
 permission from their owners.</p>
 
-<?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
+<?php include "../../wp/wp-content/themes/default/footer.php"; ?>
 

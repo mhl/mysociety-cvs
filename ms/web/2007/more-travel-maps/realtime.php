@@ -4,8 +4,8 @@ $body_id = 'moretravel';
 
 # XXX This is hideous
 ob_start();
-include "../../wordpress/wp-blog-header.php";
-include "../../wordpress/wp-content/themes/mysociety/header.php"; 
+include "../../wp/wp-blog-header.php";
+include "../../wp/wp-content/themes/default/header.php"; 
 $header = ob_get_clean();
 $header = str_replace('<title>mySociety', '<title>mySociety &raquo; Travel-time maps &raquo; Real time travel maps', $header);
 header('HTTP/1.0 200 OK');
@@ -173,5 +173,5 @@ for the task.</p>
 
 <p><a href="./">Main page explaining these maps</a></p>
 
-<?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
+<?php include "../../wp/wp-content/themes/default/footer.php"; ?>
 

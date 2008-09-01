@@ -1,9 +1,9 @@
 <?php 
 /* XXX can't override the title easily, which will make us look like total
  * morons. For this page it should be, "Travel-time maps". */
-include "../../wordpress/wp-blog-header.php";
+include "../../wp/wp-blog-header.php";
 header('HTTP/1.0 200 OK');
-include "../../wordpress/wp-content/themes/mysociety/header.php"; 
+include "../../wp/wp-content/themes/default/header.php"; 
 ?>
 
 <h1>Travel-time Maps and their Uses</h1>
@@ -369,4 +369,4 @@ done what we've done years ago, with no cost to the taxpayer. We'd love it if
 others extend the work that we've done, but realistically there aren't very
 many people in a position to do this cheaply.</p>
 
-<?php include "../../wordpress/wp-content/themes/mysociety/footer.php"; ?>
+<?php include "../../wp/wp-content/themes/default/footer.php"; ?>

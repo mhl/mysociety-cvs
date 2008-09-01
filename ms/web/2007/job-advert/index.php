@@ -1,7 +1,7 @@
 <?php
-include "../../wordpress/wp-blog-header.php";
+include "../../wp/wp-blog-header.php";
 header('HTTP/1.0 200 OK');
-include "../../wordpress/wp-content/themes/mysociety/header.php"; 
+include "../../wp/wp-content/themes/default/header.php"; 
 
 # Needs reorganising to have more important things at the top
 ?>
@@ -65,5 +65,5 @@ mySociety, contact Tom on +44 7811 082158.</strong>
 
 </div>
 
-<?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
+<?php include "wp/wp-content/themes/default/footer.php"; ?>
 
