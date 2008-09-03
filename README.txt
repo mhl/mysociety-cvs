@@ -37,6 +37,7 @@ ivfyb - I Voted For You Because
 yhh - YourHistoryHere
 placeopedia - Placeopedia
 panopticon - RSS aggregator
+hm - HassleMe
 
 Incomplete or dormant projects
 ==============================
