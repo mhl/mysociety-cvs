@@ -14,20 +14,33 @@
 <?php wp_head(); ?>
 </head>
 <body>
-<div id="page">
+<div id="divPage">
 
-	<div id="header">
-		<div id="headerimg">
-		<a href="/" title="mySociety.org homepage"><img src="/wp/wp-content/themes/default/images/navimg/mslogo.png" alt="mySociety" width="338" height="68" border="0" /></a>
-	<!--
-			<h1><a href="<?php echo get_option('home'); ?>/"><?php bloginfo('name'); ?></a></h1>
-			<div class="description"><?php bloginfo('description'); ?></div>
-	-->
+	<a href="#divContent" class="hide">Skip navigation</a>
+	
+	<!--Header-->
+	<div id="divHeader">
+		<div id="imgLogo">
+			<a href="/" title="mySociety.org homepage">
+				<img src="/contimg/logo.png" alt="mySociety.org" width="297" height="62" />
+			</a>
 		</div>
+
+		<p id="pHeaderDontate" >
+			<a id="aPiggy" href="/dotate/" title="Dontate to mySociety" >
+				&nbsp;
+			</a>
+			Help us to keep making<br/> useful things!
+			<br/>
+			<a href="/dotate/">Donate to mySociety</a>
+		</p>
 	</div>
 
-<?
-    print file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/nav.html"); 
-?>
+	<!-- Menu -->
+	<div id="divMenu">
+	<?php print file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/nav.html"); ?>
+	<?php include (TEMPLATEPATH . '/searchform.php'); ?>
+	</div>
 
-<?php include (TEMPLATEPATH . '/searchform.php'); ?>
+
+	<div id="divContent">
