@@ -2,8 +2,8 @@
 
 // Quick script for easier newsletter subscribes, by Francis 2004-11-25 
 
-include "wordpress/wp-blog-header.php";
-include "wordpress/wp-content/themes/mysociety/header.php"; 
+include "wp/wp-blog-header.php";
+include "wp/wp-content/themes/default/header.php"; 
 
 function send_email ($from) {
     $to = "news-request@lists.mysociety.org";
@@ -63,4 +63,4 @@ Subscribe for occasional <strong>mySociety news updates</strong>
 ?>
 <p><a href="/">Return to mySociety homepage</a>
 
-<?php include "wordpress/wp-content/themes/mysociety/footer.php"; ?>
+<?php include "wp/wp-content/themes/default/footer.php"; ?>
