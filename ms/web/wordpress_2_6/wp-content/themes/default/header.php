@@ -26,13 +26,13 @@
 			</a>
 		</div>
 
-		<p id="pHeaderDontate" >
-			<a id="aPiggy" href="/donate/" title="Dontate to mySociety" >
+		<p id="pHeaderDonate" >
+			<a id="aPiggy" href="/donate/" title="Donate to mySociety" >
 				&nbsp;
 			</a>
 			Help us to keep making<br/> useful things!
 			<br/>
-			<a href="/dotate/">Donate to mySociety</a>
+			<a href="/donate/">Donate to mySociety</a>
 		</p>
 	</div>
 
