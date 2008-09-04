@@ -1,4 +1,5 @@
 <?php
+
 //query_posts('cat=7&orderby=title&order=asc&posts_per_page=-1');
 $pages = get_pages('child_of=403&echo=0&sort_column=menu_order');
     foreach ($pages as $page_obj) {
@@ -12,16 +13,15 @@ $pages = get_pages('child_of=403&echo=0&sort_column=menu_order');
         }
 
 ?> 
-
 <div class="projects-entry">
 
 <?php  if ($imageurl) { ?>
-<h2><a href="<?=$url ?>"><img src="<?php print $imageurl ?>" alt="" title="<?php print $page['post_title']; ?> screenshot" width="125" height="126" class="size-thumbnail" border="0" /><?=$page['post_title'] ?></a></h2>
+<h3><a href="<?=$url ?>"><img src="<?php print $imageurl ?>" alt="" title="<?php print $page['post_title']; ?> screenshot" width="125" height="126" class="size-thumbnail" border="0" /><?=$page['post_title'] ?></a></h3>
 <?php } else { ?>
-<h2><a href="<?=$url ?>"><?=$page['post_title'] ?></a></h2>
+<h3><a href="<?=$url ?>"><?=$page['post_title'] ?></a></h3>
 <?php }  ?>
 
-<?=$page['post_excerpt'] ?>
+<?=$page['post_excerpt'] ?> <a href="<?=$url ?>">Find out more ...</a>
 </div>
 
  
