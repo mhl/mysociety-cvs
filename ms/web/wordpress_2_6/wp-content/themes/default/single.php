@@ -1,18 +1,22 @@
 <?php get_header(); ?>
 
-	<div id="content" class="widecolumn">
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-		<div class="navigation">
-			<div class="alignleft"><?php previous_post_link('&laquo; %link') ?></div>
-			<div class="alignright"><?php next_post_link('%link &raquo;') ?></div>
+		<!--Title-->
+		<div class="contentfull">
+			<h1>mySociety blog &raquo; <?php the_title(); ?></h1>
 		</div>
-
-		<div class="post" id="post-<?php the_ID(); ?>">
-			<h2><?php the_title(); ?></h2>
-
-			<div class="entry">
+		<!--
+			<div class="navigation">
+				<div class="alignleft"><?php previous_post_link('&laquo; %link') ?></div>
+				<div class="alignright"><?php next_post_link('%link &raquo;') ?></div>
+			</div>
+		-->
+		
+		<!--Post-->
+		<div class="contentwide left">
+			<div class="entry" id="post-<?php the_ID(); ?>">
 				<?php the_content('<p class="serif">Read the rest of this entry &raquo;</p>'); ?>
 
 				<?php wp_link_pages(array('before' => '<p><strong>Pages:</strong> ', 'after' => '</p>', 'next_or_number' => 'number')); ?>
@@ -49,12 +53,15 @@
 
 					</small>
 				</p>
-
 			</div>
+			
+			<!-- Comments -->		
+			<?php comments_template(); ?>
 		</div>
-
-	<?php comments_template(); ?>
-
+		
+		<!-- Sidebar -->
+		<?php get_sidebar(); ?>
+		<br class="clear"/>
 	<?php endwhile; else: ?>
 
 		<p>Sorry, no posts matched your criteria.</p>

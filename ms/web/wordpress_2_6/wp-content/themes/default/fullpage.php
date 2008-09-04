@@ -6,7 +6,7 @@ Template Name: Full width
 
 <?php get_header(); ?>
 
-	<div id="content">
+	<div class="contentfull">
 
 		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 				<?php the_content('<p class="serif">Read the rest of this page &raquo;</p>'); ?>

@@ -1,31 +1,34 @@
 <?php get_header(); ?>
-	<div id="content" class="narrowcolumn">
 
+	<div class="contentfull">
 		<?php if (have_posts()) : ?>
 
  	  <?php $post = $posts[0]; // Hack. Set $post so that the_date() works. ?>
  	  <?php /* If this is a category archive */ if (is_category()) { ?>
-		<h2 class="pagetitle"><?php single_cat_title(); ?></h2>
+		<h1 class="pagetitle">mySociety blog &raquo; <?php single_cat_title(); ?></h1>
  	  <?php /* If this is a tag archive */ } elseif( is_tag() ) { ?>
-		<h2 class="pagetitle">Posts Tagged &#8216;<?php single_tag_title(); ?>&#8217;</h2>
+		<h1 class="pagetitle">mySociety blog &raquo; posts tagged &#8216;<?php single_tag_title(); ?>&#8217;</h1>
  	  <?php /* If this is a daily archive */ } elseif (is_day()) { ?>
-		<h2 class="pagetitle">Archive for <?php the_time('F jS, Y'); ?></h2>
+		<h1 class="pagetitle">mySociety blog &raquo; archive for <?php the_time('F jS, Y'); ?></h1>
  	  <?php /* If this is a monthly archive */ } elseif (is_month()) { ?>
-		<h2 class="pagetitle">Archive for <?php the_time('F, Y'); ?></h2>
+		<h1 class="pagetitle">mySociety blog &raquo; archive for <?php the_time('F, Y'); ?></h1>
  	  <?php /* If this is a yearly archive */ } elseif (is_year()) { ?>
-		<h2 class="pagetitle">Archive for <?php the_time('Y'); ?></h2>
+		<h1 class="pagetitle">mySociety blog &raquo;  archive for <?php the_time('Y'); ?></h1>
 	  <?php /* If this is an author archive */ } elseif (is_author()) { ?>
-		<h2 class="pagetitle">Author Archive</h2>
+		<h1 class="pagetitle">mySociety blog &raquo; author Archive</h1>
  	  <?php /* If this is a paged archive */ } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) { ?>
-		<h2 class="pagetitle">Blog Archives</h2>
+		<h1 class="pagetitle">mySociety blog &raquo; archives</h1>
  	  <?php } ?>
+	</div>
+	<div class="contentwide">
+
 
 <?php if (is_category('Projects')) {
      $posts = query_posts($query_string . '&orderby=title&order=asc&posts_per_page=-1');
 } 
 ?>
 		<?php while (have_posts()) : the_post(); ?>
-		<div class="post">
+		<div class="post dividerbottom">
 				<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 				<small><?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong></small>
 
@@ -52,5 +55,9 @@
 	<?php endif; ?>
 
 	</div>
+	
 
+	<?php get_sidebar(); ?>
+	
+	<br class="clear"/>
 <?php get_footer(); ?>
