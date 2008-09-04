@@ -2,7 +2,7 @@
 <!--Hero-->
 <div id="divHero" class="infoboxpurple contentfull">
 	<img src="/contimg/sitesanimation.gif" alt="TheyWorkForYou, WriteToThem and GroupsNearYou" title="TheyWorkForYou, WriteToThem and GroupsNearYou" width="349" height="173"/>
-	<h3>Hello! We are mySociety, and we run most of 
+	<h3>Hello! We are mySociety &ndash; we run most of 
 	the UK’s best known democracy websites.</h3>
 	<p>
 Helped by our services, <strong>200,000</strong> people have written to their
