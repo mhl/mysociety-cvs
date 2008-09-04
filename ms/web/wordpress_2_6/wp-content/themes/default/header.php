@@ -27,7 +27,7 @@
 		</div>
 
 		<p id="pHeaderDontate" >
-			<a id="aPiggy" href="/dotate/" title="Dontate to mySociety" >
+			<a id="aPiggy" href="/donate/" title="Dontate to mySociety" >
 				&nbsp;
 			</a>
 			Help us to keep making<br/> useful things!
