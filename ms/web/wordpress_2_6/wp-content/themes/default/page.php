@@ -61,8 +61,8 @@
     ?>
 	</div>
 
-<?php include('sidemenu.php'); ?>
+<?php
 
-
-<?php get_footer(); ?>
+# get_sidebar();
+get_footer();
 
