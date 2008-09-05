@@ -13,7 +13,7 @@
 	}
 
 	//if posting back, then send the email
-	if(isset($_POST['_is_postback']) && $_POST['_is_postback'] != ''){
+	if(isset($_POST['_is_postback']) && $_POST['_is_postback'] != '' && ($_POST['theWord'] == 'tangent' || $_POST['theWord'] == 'Tangent')){
 
 		//email details
 		$to = "team@mysociety.org";
@@ -49,7 +49,6 @@
 		$sent = true;
 
 	}
-
 ?>
 
 
@@ -75,6 +74,11 @@
 						<li>
 							<label for="txtOrganisation">Organisation</label>
 							<input type="text" class="textbox large" id="txtOrganisation" name="txtOrganisation" />
+						</li>
+						<li>
+						  <p>Please enter  the word "tangent" into the box below so we know that it's not just spam</p>
+							<label for="theWord">Enter "tangent"</label>							
+							<input type="text" class="textbox large" id="theWord" name="theWord" />
 						</li>
 						<?php if ($product_type == 'map') {?>
 							<li>
