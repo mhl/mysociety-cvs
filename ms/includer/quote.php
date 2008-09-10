@@ -16,7 +16,7 @@
 	if(isset($_POST['_is_postback']) && $_POST['_is_postback'] != '' && ($_POST['theWord'] == 'tangent' || $_POST['theWord'] == 'Tangent')){
 
 		//email details
-		$to = "team@mysociety.org";
+		$to = OPTION_QUOTE_EMAIL;
 		$from_email = $_POST['txtEmail'];
 		$from_name = $_POST['txtName'];
 		$subject = "[mySociety Quote Request] " .  $_POST['hidProduct'];
