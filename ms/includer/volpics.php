@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-   var maxlink=4;
+   var maxlink=5;
 
    var frontpage_images=new Array(maxlink);
    frontpage_images[0]= "/contimg/volpics/away-weekend.jpg"; 
@@ -10,7 +10,7 @@
    frontpage_images[4]= "/contimg/volpics/tarn.jpg"; 
 
 
-   var showpic= Math.ceil(Math.random() * ( 1 + maxlink ) ) - 1 ;
+   var showpic= Math.ceil(Math.random() * maxlink ) - 1 ;
 
    document.getElementById('randomphoto').src=frontpage_images[showpic]; 
 
