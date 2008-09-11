@@ -1,4 +1,7 @@
-<a href="/helpus/"><img src="/contimg/volpics/mysoc-opentech.jpg" alt=" " id="randomphoto" /></a>
+<div class="wp-caption alignleft" style="width: 210px">
+<img src="/contimg/volpics/mysoc-opentech.jpg" alt=" " id="randomphoto" />
+</div>
+
 <script type="text/javascript">
 
    var maxlink=4;
