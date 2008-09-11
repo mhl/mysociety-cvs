@@ -29,7 +29,7 @@ function includer_path_callback($content) {
 }
 
 function get_includer_contents($matches) {
-    $path = '../../includer/' . trim($matches[1]);
+    $path = '../includer/' . trim($matches[1]);
 
     if (is_file($path)) {
         ob_start();
