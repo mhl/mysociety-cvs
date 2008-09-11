@@ -23,8 +23,8 @@ a:visited {color:#445587;}
 a.morelink {position:relative; top:0.5em;}
 
 /* Headers */
-h1 {font-weight:normal;font-size:1.5em;}
-h2 {font-weight:normal; color:#639F67;}
+h1 {font-weight:normal;font-size:1.5em;padding-left:0.4em; padding-bottom:0.3em;}
+h2 {font-weight:normal; color:#639F67; padding-bottom:0.5em;}
 h3 {font-weight:normal; font-size:1.2em;}
 
 /* Layout blocks */
@@ -37,7 +37,7 @@ div.contenthalf.right, div.contentwide.right, div.contentnarrow.right, div.conte
 div.contenthalf {width:24.2em;}
 div.contentwide {width:37em;padding-right:0.8em;}
 div.contentnarrow {width:12.5em; padding-left:0.8em;}
-div.contentfull {padding: 0 1.3em 1.3em; min-height: 3em;}
+div.contentfull {padding:0 1.3em; min-height: 3em;}
 
 /* dividers */
 div.dividertop {border-top:dotted 1px #ccc;}
@@ -71,6 +71,9 @@ div.infoboxpurple span.infobottom {background:url(images/purplefadebottom.png); 
 div.infoboxgreen span.infobottom {background:url(images/greenfadebottom.png); }
 div.infoboxblue span.infobottom {background:url(images/bluefadebottom.png); }
 
+div.contentfull.infoboxpurple, div.contentfull.infoboxgreen, div.contentfull.infoboxblue
+    {padding-top:1.6em;}
+
 /* sidebar */
 div.sidebar h4 {color:#1c6f1b; margin-bottom:0.3em;}
 div.sidebar a, #divSidebar a:visited {color:#333;text-decoration:none;}
@@ -93,8 +96,9 @@ cite {font-style:normal; font-size:0.9em;}
 div.productdetail dl {float:left; width:50%;}
 div.productdetail dt {font-weight:bold;}
 
-/* Posts */
+/* Blog */
 div.post {margin-bottom:1.5em;}
+#divElsewhere {margin-top:1em;}
 
 /* images */
 img {border:dotted 1px #ccc; padding:6px;}

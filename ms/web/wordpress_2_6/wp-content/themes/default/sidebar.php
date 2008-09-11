@@ -34,22 +34,6 @@
 
 		<?php }?>
 
-
-		<?php /* If this is the frontpage */ if ( is_home() || is_page() ) { ?>
-			<?php wp_list_bookmarks(); ?>
-
-			<li><h2>Meta</h2>
-			<ul>
-				<?php wp_register(); ?>
-				<li><?php wp_loginout(); ?></li>
-				<li><a href="http://validator.w3.org/check/referer" title="This page validates as XHTML 1.0 Transitional">Valid <abbr title="eXtensible HyperText Markup Language">XHTML</abbr></a></li>
-				<li><a href="http://gmpg.org/xfn/"><abbr title="XHTML Friends Network">XFN</abbr></a></li>
-				<li><a href="http://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress</a></li>
-				<?php wp_meta(); ?>
-			</ul>
-			</li>
-		<?php } ?>
-
 		<?php endif; ?>
 	</ul>
 	</div>
@@ -70,5 +54,25 @@
 				<input type="Submit" name="email-button" value="Add me to the list" />
 			</li>
 		</ul>
+	</form>
+</div>
+
+<!-- News list -->
+<div id="divElsewhere" class="infoboxblue contentnarrow right dividerright">
+	<form method=post action="https://secure.mysociety.org/admin/lists/mailman/subscribe/news">
+		<h4>Other ways to stay up to date</h4>
+		<p>
+			<ul class="nobullets">
+				<li>
+					<a href="http://localhost.mysociety/lists/">Join a mailing list</a>
+				</li>
+				<li>
+					<a href="http://www.facebook.com/pages/mySociety/7262005939">Facebook page</a>
+				</li>
+				<li>
+					<a href="http://twitter.com/mysociety">Follow us on Twitter</a>
+				</li>
+			</ul>
+		</p>
 	</form>
 </div>

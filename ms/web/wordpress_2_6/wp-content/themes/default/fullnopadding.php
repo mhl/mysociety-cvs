@@ -1,11 +1,10 @@
 <?php
 /*
-Template Name: Mysociety2008 Home
+Template Name: Full width, no padding
 */
 ?>
-
 <?php get_header(); ?>
-
+		<h1><?php the_title(); ?></h1>
 		<?php $count=0; if (have_posts()) : while (have_posts()) : the_post(); $count++ ?>
 		<?php if ($count > 1) break; ?>
 					<?php the_content('<p class="serif">Read the rest of this page &raquo;</p>'); ?>

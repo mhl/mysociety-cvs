@@ -17,7 +17,7 @@
 <div id="divPage">
 
 	<a href="#divContent" class="hide">Skip navigation</a>
-	
+
 	<!--Header-->
 	<div id="divHeader">
 		<div id="imgLogo">
