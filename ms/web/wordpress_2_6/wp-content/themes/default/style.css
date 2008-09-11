@@ -9,7 +9,7 @@ body {text-align:center;font-family:tahoma, Geneva, sans-serif; font-size:1em; c
 #pHeaderDonate #aPiggy:hover {background:url(images/piggy.png) 0 -97px;}
 #divMenu {background:url(images/menu.png) left bottom repeat-x; border:solid 1px #dfdfdf;
         height:2em; position:relative;}
-#divMenu ul {position:relative; top:0.3em; left:0.8em;}
+#divMenu ul {position:relative; top:0.3em; left:0.8em;width:100%;}
 #divMenu ul li a {padding-right:1.3em;}
 #divMenu ul li a, #divMenu ul li a:visited {text-decoration:none; color:#535353;}        
 #divMenu ul li a:hover {color:#2c4a9e;}
@@ -32,9 +32,9 @@ h3 {font-weight:normal; font-size:1.2em;}
 div.contenthalf, div.contentwide, div.contentnarrow {float:left;}
 div.contenthalf, div.contentwide, div.contentnarrow, div.contentfull, 
 	div.contentnarrowalt, div.contentwidealt {padding:1em;}
-div.contenthalf.left, div.contentwide.left, div.contentnarrow.left, div.contentfull.left {padding-right:0.8em;}
-div.contenthalf.right, div.contentwide.right, div.contentnarrow.right, div.contentfull.right {padding-left:0.8em;float:right;}
-div.contenthalf {width:24.2em;}
+div.contenthalf.left, div.contentwide.left, div.contentnarrow.left, div.contentfull.left {margin-right:0.6em;}
+div.contenthalf.right, div.contentwide.right, div.contentnarrow.right, div.contentfull.right {margin-left:0.6em;}
+div.contenthalf {width:23.9em;}
 div.contentwide {width:37em;padding-right:0.8em;}
 div.contentnarrow {width:12.5em; padding-left:0.8em;}
 div.contentfull {padding:0 1.3em; min-height: 3em;}
@@ -66,8 +66,8 @@ div.infoboxpurple h3, div.infoboxgreen h3, div.infoboxblue h3 {font-weight:bold;
 div.infoboxpurple {border:solid 1px #e4c8e5;background:#f1e2f2 url(images/purplefade.png) repeat-x;}
 div.infoboxgreen {border:solid 1px #ceead0;background:#e2ffeb url(images/greenfade.png) repeat-x;}
 div.infoboxblue {border:solid 1px #c1deff;background:#e9f3fe url(images/bluefade.png) repeat-x;}
-span.infobottom {display:block; height:2px; width:100%; position:absolute; bottom:0; left:0;}
-div.infoboxpurple span.infobottom {background:url(images/purplefadebottom.png); }
+span.infobottom {display:block; height:2px!important; overflow:hidden;width:100%; position:absolute; bottom:0; left:0;}
+div.infoboxpurple span.infobottom {background:url(images/purplefadebottom.png)}
 div.infoboxgreen span.infobottom {background:url(images/greenfadebottom.png); }
 div.infoboxblue span.infobottom {background:url(images/bluefadebottom.png); }
 
@@ -108,9 +108,10 @@ ul img {border:none;}
 span.highlight {padding: 0 4px; background:#ffffaa;}
 
 /* Hero section */
-#divHero {border:solid 1px #e4c8e5;position:relative; margin-top:1.5em; margin-bottom:1em;padding-bottom:1em;}
+#divHero {border:solid 1px #e4c8e5;position:relative; margin-top:1.5em; margin-bottom:1.2em;padding-bottom:1em;
+width:53.2em;padding-left:0;padding-right:0;}
 #divHero h3 {padding-top:0;}
-#divHero h3, #divHero p {padding-left:350px; position:relative;top:-0.4em;}
+#divHero h3, #divHero p {padding-left:370px; position:relative;top:-0.4em; padding-right:1em;}
 #divHero p {margin-bottom:0; margin-top:0.4em;}
 #divHero img {position:absolute; top:-27px; left:3px;}
 
