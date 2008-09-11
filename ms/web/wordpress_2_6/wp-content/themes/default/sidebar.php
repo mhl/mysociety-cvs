@@ -59,12 +59,11 @@
 
 <!-- News list -->
 <div id="divElsewhere" class="infoboxblue contentnarrow right dividerright">
-	<form method=post action="https://secure.mysociety.org/admin/lists/mailman/subscribe/news">
 		<h4>Other ways to stay up to date</h4>
 		<p>
 			<ul class="nobullets">
 				<li>
-					<a href="http://localhost.mysociety/lists/">Join a mailing list</a>
+					<a href="https://secure.mysociety.org/admin/lists/mailman/listinfo">Join a mailing list</a>
 				</li>
 				<li>
 					<a href="http://www.facebook.com/pages/mySociety/7262005939">Facebook page</a>
@@ -74,5 +73,4 @@
 				</li>
 			</ul>
 		</p>
-	</form>
 </div>
