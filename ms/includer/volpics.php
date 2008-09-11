@@ -16,6 +16,4 @@
 
 </script>
 
-<div class="wp-caption alignright" style="width: 210px">
-<img src="/contimg/volpics/mysoc-opentech.jpg" alt=" " id="randomphoto" />
-</div>
+<div class="wp-caption alignright" style="width: 210px"><img src="/contimg/volpics/mysoc-opentech.jpg" alt="mysociety volunteers" id="randomphoto" /></div>
