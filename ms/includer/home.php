@@ -28,7 +28,7 @@ hats have been knitted for charity.
 	
 	<p>Or just joining our discussion groups and telling us how to make stuff better.
 		<br/>
-		<a href="#" class="morelink">See what you could do &raquo;</a>
+		<a href="/helpus/" class="morelink">See what you could do &raquo;</a>
 	</p>
 	<span class="infobottom">&nbsp;</span>	
 </div>
@@ -45,7 +45,7 @@ hats have been knitted for charity.
 	<p>
 		We’ve worked for No10, the BBC, and Google, and we’d
 		love to work for you.  <br/>
-		<a href="#" class="morelink">Find out more &raquo;</a>
+		<a href="/services/" class="morelink">Find out more &raquo;</a>
 	</p>
 	<span class="infobottom">&nbsp;</span>	
 </div>
