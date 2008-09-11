@@ -1,3 +1,5 @@
+<div class="wp-caption alignright" style="width: 210px"><img src="/contimg/volpics/mysoc-opentech.jpg" alt="mysociety volunteers" id="randomphoto" /></div>
+
 <script type="text/javascript">
 
    var maxlink=5;
@@ -15,5 +17,3 @@
    document.getElementById('randomphoto').src=frontpage_images[showpic]; 
 
 </script>
-
-<div class="wp-caption alignright" style="width: 210px"><img src="/contimg/volpics/mysoc-opentech.jpg" alt="mysociety volunteers" id="randomphoto" /></div>
