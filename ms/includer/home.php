@@ -1,7 +1,9 @@
 
 <!--Hero-->
 <div id="divHero" class="infoboxpurple contentfull">
-	<img src="/contimg/sitesanimation.gif" alt="TheyWorkForYou, WriteToThem and GroupsNearYou" title="TheyWorkForYou, WriteToThem and GroupsNearYou" width="349" height="173"/>
+	<a href="/projects/">
+		<img src="/contimg/sitesanimation.gif" alt="TheyWorkForYou, WriteToThem and GroupsNearYou" title="TheyWorkForYou, WriteToThem and GroupsNearYou" width="349" height="173"/>
+	</a>
 	<h3>Hello! We are mySociety &ndash; we run most of 
 	the UK’s best known democracy websites.</h3>
 	<p>
