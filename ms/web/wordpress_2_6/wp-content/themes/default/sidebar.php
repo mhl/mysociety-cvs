@@ -74,3 +74,12 @@
 			</ul>
 		</p>
 </div>
+
+<!-- Navigation -->
+<div class="sidebar contentnarrow right">
+	<h4>Navigation</h4>
+	<p>
+		<div class="alignleft"><?php previous_post_link('&laquo; %link') ?></div>
+		<div class="alignright"><?php next_post_link('%link &raquo;') ?></div>
+	</p>
+</div>

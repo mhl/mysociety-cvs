@@ -2,20 +2,11 @@
 
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-
 		<!--Title-->
-		<div class="contentfull">
-			<h1>mySociety blog &raquo; <?php the_title(); ?></h1>
-		</div>
-		<!--
-			<div class="navigation">
-				<div class="alignleft"><?php previous_post_link('&laquo; %link') ?></div>
-				<div class="alignright"><?php next_post_link('%link &raquo;') ?></div>
-			</div>
-		-->
+		<h1>mySociety blog &raquo; <?php the_title(); ?></h1>
 		
 		<!--Post-->
-		<div class="contentwide left">
+		<div class="contentwide">
 			<div class="entry" id="post-<?php the_ID(); ?>">
 				<?php the_content('<p class="serif">Read the rest of this entry &raquo;</p>'); ?>
 
@@ -54,10 +45,12 @@
 					</small>
 				</p>
 			</div>
-			
+
 			<!-- Comments -->		
 			<?php comments_template(); ?>
+
 		</div>
+
 		
 		<!-- Sidebar -->
 		<?php get_sidebar(); ?>
