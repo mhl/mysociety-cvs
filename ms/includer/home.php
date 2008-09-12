@@ -7,7 +7,7 @@
 	<h3>Hello! We are mySociety &ndash; we run most of 
 	the UK’s best known democracy websites.</h3>
 	<p>
-Helped by our services, <strong>200,000</strong> people have written to their
+Using our services, <strong>200,000</strong> people have written to their
 MP for the first time, over <strong>8,000</strong> potholes and other broken
 things have been fixed, nearly <strong>9,000,000</strong> signatures have been
 left on petitions to the Prime Minister, and at least <strong>77</strong> tiny
@@ -40,7 +40,7 @@ hats have been knitted for charity.
 		If you work in the public, private or third sector, and are
 		trying to adapt to the new world of citizens empowering
 		themselves through the internet, mySociety can help you by
-		building sites, consulting, or helping you plan. 
+		building sites, consulting, or helping you to make plans. 
 	</p>
 	<p>
 		We’ve worked for No10, the BBC, and Google, and we’d
@@ -49,4 +49,5 @@ hats have been knitted for charity.
 	</p>
 	<span class="infobottom">&nbsp;</span>	
 </div>
+<br class="clear"/>
 <br class="clear"/>

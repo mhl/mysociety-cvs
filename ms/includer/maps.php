@@ -59,7 +59,7 @@
 	</p>
 
 </div>
-<div class="contentnarrow right">
+<div class="contentnarrow">
 	
 	<!-- Reasons to buy -->
 	<ul class="ticklist">
