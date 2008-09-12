@@ -1,6 +1,4 @@
 <?php get_header(); ?>
-
-	<div class="contentfull">
 		<?php if (have_posts()) : ?>
 
  	  <?php $post = $posts[0]; // Hack. Set $post so that the_date() works. ?>
@@ -19,7 +17,6 @@
  	  <?php /* If this is a paged archive */ } elseif (isset($_GET['paged']) && !empty($_GET['paged'])) { ?>
 		<h1 class="pagetitle">mySociety blog &raquo; archives</h1>
  	  <?php } ?>
-	</div>
 	<div class="contentwide">
 
 
