@@ -1,12 +1,11 @@
 <?php get_header(); ?>
-
-
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 		<!--Title-->
 		<h1>mySociety blog &raquo; <?php the_title(); ?></h1>
 		
 		<!--Post-->
 		<div class="contentwide">
+        <small>By <strong><?php the_author() ?></strong> on <?php the_time('l, F jS, Y') ?></small>
 			<div class="entry" id="post-<?php the_ID(); ?>">
 				<?php the_content('<p class="serif">Read the rest of this entry &raquo;</p>'); ?>
 
