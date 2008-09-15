@@ -34,7 +34,9 @@ print $header;
 <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/maps">the
 mySociety maps mailing list</a>.)</p> -->
 
-<p>In 2006, our <a
+
+<div class="contenthalf">
+<p> In 2006, our <a
 href="http://www.mysociety.org/2007/03/05/rip-chris-lightfoot-1978-to-2007/">late
 friend</a> and colleague Chris Lightfoot produced a 
 <a href="/2006/travel-time-maps/">series of time travel
@@ -45,9 +47,15 @@ experimenting with novel ways of re-using public sector data.</p>
 revolutionary new way of working out the best place for people to live and
 work.</p>
 
+</div>
+
+<?php print file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/../includer/maps_ad.php"); ?>
+
+<br class="clear"/>
 <p>Following widespread interest across the net and a major feature in
 the Evening Standard, the Department for Transport asked us to show them how
 this work could be taken further, and that is what we are showing here today.</p>
+
 
 <h2><a name="legibility"></a>Improving legibility and clarity</h2>
  
