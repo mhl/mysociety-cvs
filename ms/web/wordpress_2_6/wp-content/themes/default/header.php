@@ -8,7 +8,12 @@
 
 <link rel="stylesheet" href="/wp/wp-content/themes/default/memespring.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" media="screen" />
-<link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> RSS Feed" href="<?php bloginfo('rss2_url'); ?>" />
+<?php if (is_category()) {
+	$cat = intval( get_query_var('cat') );
+?>
+<link rel="alternate" type="application/rss+xml" title="<?php single_cat_title(); ?> RSS feed, mySociety blog" href="<?php echo get_category_feed_link($cat); ?>" />
+<?php } ?>
+<link rel="alternate" type="application/rss+xml" title="<?php bloginfo('name'); ?> RSS feed" href="<?php bloginfo('rss2_url'); ?>" />
 <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 
 <?php wp_head(); ?>

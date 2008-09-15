@@ -13,12 +13,17 @@
 			</li>
 			-->
 
+<?php
+if (is_category()) {
+	$cat = intval( get_query_var('cat') );
+	echo '<p><a href="', get_category_feed_link($cat), '"><img src="/wp/wp-includes/images/rss.png" alt=""> RSS feed</a></p>';
+}
+?>
 
-		
 			<!-- Categories -->
 			<h4>Categories</h4>
 			<ul class="nobullets">
-				<?php wp_list_categories('show_count=1&title_li=&show_count=0&feed=RSS'); ?>
+				<?php wp_list_categories('title_li=&show_count=0'); ?>
 			</ul>
 		
 			<?php if ( is_404() || is_category() || is_day() || is_month() ||
