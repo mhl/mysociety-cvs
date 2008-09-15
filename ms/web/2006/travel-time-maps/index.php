@@ -8,6 +8,7 @@ include "../../wp/wp-content/themes/default/header.php";
 
 <h1>Travel-time Maps and their Uses</h1>
 
+<div class="contenthalf">
 <p>Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;<br>
 Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.org</a>&gt;<br>
 </p>
@@ -27,11 +28,17 @@ Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.or
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 <li><a href="#data">The data we used</a></li>
 </ul>
+</div>
+
+<?php print file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/../includer/maps_ad.php"); ?>
+<br class="clear"/>
 
 <p>(See also: <a href="methods.php">description of methods</a>;
 <a href="slides.pdf">presentation slides</a>. You may also be interested in
 <a href="https://secure.mysociety.org/admin/lists/mailman/listinfo/maps">the
 mySociety maps mailing list</a>.)</p>
+
+
 
 <h2><a name="introduction"></a>Introduction</h2>
 
