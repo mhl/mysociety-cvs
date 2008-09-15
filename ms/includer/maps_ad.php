@@ -2,7 +2,7 @@
 	<!-- Header -->
 	<h1>Commuting Time Maps</h1>
 	<p>
-		A World First - Custom maps that help house hunters and office managers find the best places quick and for easy commutes
+		<a href="/projects/travelmaps/">A World First - Custom maps that help house hunters and office managers find the best places quick and for easy commutes</a>
 	</p>
 
 	<!-- More info -->
