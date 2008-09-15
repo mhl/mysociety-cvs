@@ -21,4 +21,5 @@ Template Name: Full width
 
 	</div>
 
+<?php include (TEMPLATEPATH . '/catposts.php'); ?>
 <?php get_footer(); ?>
