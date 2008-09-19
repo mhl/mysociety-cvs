@@ -72,6 +72,14 @@ CREATE TABLE `stat` (
   PRIMARY KEY  (`stat_id`)
 );
 
+
+CREATE TABLE  `game_user` (
+  `game_user_id` int(11) NOT NULL auto_increment,
+  `name` varchar(150) NOT NULL default '',
+  `email` varchar(150) NOT NULL default '',
+  PRIMARY KEY  (`game_user_id`)
+)
+
 CREATE TABLE  `game_group` (
   `game_group_id` int(11) NOT NULL auto_increment,
   `name` varchar(150) NOT NULL default '',
@@ -84,11 +92,4 @@ CREATE TABLE  `game_group` (
   `guid` varchar(100) default NULL,
   `by_line` varchar(255) default NULL,
   PRIMARY KEY  (`game_group_id`)
-)
-
-CREATE TABLE  `game_user` (
-  `game_user_id` int(11) NOT NULL auto_increment,
-  `name` varchar(150) NOT NULL default '',
-  `email` varchar(150) NOT NULL default '',
-  PRIMARY KEY  (`game_user_id`)
 )
