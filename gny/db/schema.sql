@@ -74,7 +74,7 @@ CREATE TABLE `stat` (
 
 CREATE TABLE  `game_group` (
   `game_group_id` int(11) NOT NULL auto_increment,
-  `name` varchar(150) NOT NULL,
+  `name` varchar(150) NOT NULL default '',
   `link` varchar(255) NOT NULL default '',
   `category` varchar(255) default NULL,
   `description` text,
