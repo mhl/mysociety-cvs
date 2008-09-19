@@ -85,3 +85,16 @@ function setControlWarning (oControl, bState){
 function newWindow(sUrl){
 	window.open(sUrl, 'name');
 }
+
+function replaceAll (sSubject,sSearch,sReplace){
+
+	var sTemp = sSubject;
+	var i = sTemp.indexOf(sSearch);
+	
+	while(i > -1) {
+		sTemp = sTemp.replace(sSearch, sReplace);
+		i = sTemp.indexOf(sSearch, i + sReplace.length);
+	}
+
+	return sTemp;
+}

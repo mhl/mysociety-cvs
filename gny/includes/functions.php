@@ -329,7 +329,7 @@
 	//scrape by pear
     function scrape_page_pear($url){
         $page = "";
-        $request = new HTTP_Request($url, array("method" => "GET"));
+        $request = new HTTP_Request($url, array("method" => "GET", "allowRedirects" => true));
         $request->sendRequest();
         $page = $request->getResponseBody();
         
@@ -480,5 +480,10 @@
 		$km_per_degree = 111.321;
 		return $distance_km / $km_per_degree;
 	}
-	
+
+	//Remove Line Breaks
+	function remove_line_breaks($string){
+		return str_replace("\n", "", str_replace("\r\n","", $string));
+	}
+		
 ?>

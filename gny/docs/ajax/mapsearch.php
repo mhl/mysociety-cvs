@@ -9,6 +9,7 @@
 	require_once('group_search.php');
 
 	$search = trim(get_http_var('q'));
+	$guess_country = get_http_var('g');	
 	$result = false;
 	$zoom_level = 0;
 
@@ -29,7 +30,7 @@
 		//Place name search
 		$parts = get_place_parts($search);
 		
-		if (!$parts['country']) {
+		if (!$parts['country'] && $guess_country) {
 			$gaze = factory::create('gaze');
 			$gaze_country_code = $gaze->get_country_from_ip($_SERVER['REMOTE_ADDR']);
 			if ($gaze_country_code != false && $gaze->status != 'service unavaliable') {

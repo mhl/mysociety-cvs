@@ -30,7 +30,7 @@
             <div id="divMapSearch">
                 <label for="txtMapSearch">{l}Go to location{/l}</label>
                 <input type="text" class="text" id="txtSearchMap" onkeypress="return submitMapSearch(event);"/>
-                <input id="btnMapSearch" type="button" onclick="javascript:searchMap();"value="Go" />
+                <input id="btnMapSearch" type="button" onclick="javascript:searchMap(true);"value="Go" />
                 <img id="imgMapLoading" src="{$www_server}/images/maploading.gif" width="16px" height="16px" alt="Loading ..." title="Loading ..."/>
                 <small>
                     {if $country_code == 'US'}

@@ -47,17 +47,20 @@
 				//Update the stats table
 				tableclass_stat::increment_stat("search.type.zipcode");				
 			}
-
 			//long lat?
 			if($this->search_type == 'longlat'){
+
+				print $search_term;
+
 				$split = split(",", trim($search_term));
 				$long = $split[0];
 				$lat = $split[1];
 
+
 				//Update the stats table
 				tableclass_stat::increment_stat("search.type.longlat");				
 			}
-
+			
 			//Do the search for groups directly covering this location
 			$search = factory::create('search');
 			$groups = $search->search('group', array(
@@ -65,11 +68,10 @@
 				array('long_top_right', '>', $long),
 				array('lat_bottom_left', '<', $lat),
 				array('lat_top_right', '>', $lat),
-				array('confirmed', '=', 1)				
+				array('confirmed', '=', 1)		
 				),
 				'AND'
 			);
-		
 			
 			//Do another search with buffeering based on population density 
 			$gaze = factory::create('gaze');

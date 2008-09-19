@@ -8,6 +8,8 @@ require_once('table_classes/group.php');
 require_once('table_classes/country.php');
 require_once('table_classes/category.php');
 require_once('table_classes/confirmation.php');
+require_once('table_classes/gamegroup.php');
+require_once('table_classes/game_user.php');
 
 class factory {
 
@@ -57,7 +59,21 @@ class factory {
 				if (!$require_only) {
 					$object = DB_DataObject::factory($class_name);
 				}
-				break;									
+				break;		
+			case 'gamegroup':
+				require_once( 'table_classes/config.php' );
+				require_once( 'table_classes/gamegroup.php' );				
+				if (!$require_only) {
+					$object = DB_DataObject::factory($class_name);
+				}
+				break;	
+			case 'game_user':
+				require_once( 'table_classes/config.php' );
+				require_once( 'table_classes/game_user.php' );				
+				if (!$require_only) {
+					$object = DB_DataObject::factory($class_name);
+				}
+				break;														
 			case 'group_search':
 				require_once('group_search.php');
 				if (!$require_only) {

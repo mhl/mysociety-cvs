@@ -163,7 +163,7 @@ function loadLatest (){
   }	
 }
 
-function searchMap(){
+function searchMap(bGuessCountry){
 	
 	sSearch = get('txtSearchMap').value;
 	if(sSearch != ''){
@@ -175,8 +175,11 @@ function searchMap(){
 		//show spinny thing
 		get('btnMapSearch').style.display = "none";
 		get('imgMapLoading').style.display = "inline";
-		
+
 		sPost = "q=" + sSearch;
+		if(bGuessCountry == false){
+		    sPost += "&g=0";
+	    }
 		var oAjax = new Ajax.Request("/ajax/mapsearch.php", {method: 'post',  postBody: sPost,  onComplete: searchmapCallback});
 	}else{
 		showWarning('Please enter a location');

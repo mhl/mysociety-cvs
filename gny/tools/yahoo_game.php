@@ -5,7 +5,6 @@
 	require_once(dirname(__FILE__) .'/../includes/init.php');
 
 
-
     //get keyword
     $swiches = getopt('q:');
 
@@ -53,35 +52,41 @@
             $title_regex = "/<span class=\"ygrp-grdescr\">&middot; (.*?)<\/span>/";
 	        preg_match_all($title_regex, $group_html, $title_matches, PREG_PATTERN_ORDER); 
 	        
-	        $title = $title_matches[1][0];
+	        $title = html_entity_decode($title_matches[1][0]);
 	        
 	        //Description
 	        $description_regex = "/<div id=\"ygr_desc\" class=\"group-description\">(.*?)<\/div>/s";
 	        preg_match_all($description_regex, $group_html, $description_matches, PREG_PATTERN_ORDER);             
-	        
+
 	        $description = $description_matches[1][0];
 	        $description = strip_tags($description);
+	        $description = trim($description);
+	        $description = html_entity_decode($description);
 
             //Category
             $category_regex = "/Category: <a href=\".*?\">(.*?)<\/a>/";
             preg_match_all($category_regex, $group_html, $category_matches, PREG_PATTERN_ORDER);
             
             $category = $category_matches[1][0];
-            
-            
+
             //Save group
             $game_group = factory::create('gamegroup');
             $success = $game_group->insert();
-            $game_group->name = $title;
+            $game_group->name = str_replace("_", "", $link_match);
+            $game_group->by_line = $title;            
             $game_group->link = $url;
             $game_group->description = $description;
             $game_group->category = $category;
           
-            $success = $game_group->insert();
-            if($success){
-                print "Saved: " . $title . "\n";
+            if($game_group->name != '' && $game_group->by_line != '' && $game_group->description != ''){
+                $success = $game_group->insert();
+                if($success){
+                    print "Saved: " . $title . "\n";
+                }else{
+                    print "Failed: " . $title . "\n";   
+                }
             }else{
-                print "Failed: " . $title . "\n";   
+                    print "Failed: " . $title . "\n";                   
             }
             
         }
