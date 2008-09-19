@@ -72,3 +72,25 @@ CREATE TABLE `stat` (
   PRIMARY KEY  (`stat_id`)
 );
 
+DROP TABLE IF EXISTS `game_group`;
+CREATE TABLE  `game_group` (
+  `game_group_id` int(11) NOT NULL auto_increment,
+  `name` varchar(150) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `category` varchar(255) default NULL,
+  `description` text,
+  `notlocal` tinyint(1) default '0',
+  `game_user_id` int(11) default NULL,
+  `matched` tinyint(1) default '0',
+  `guid` varchar(100) default NULL,
+  `by_line` varchar(255) default NULL,
+  PRIMARY KEY  (`game_group_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2946 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `game_user`;
+CREATE TABLE  `game_user` (
+  `game_user_id` int(11) NOT NULL auto_increment,
+  `name` varchar(150) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  PRIMARY KEY  (`game_user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
