@@ -75,7 +75,7 @@ CREATE TABLE `stat` (
 CREATE TABLE  `game_group` (
   `game_group_id` int(11) NOT NULL auto_increment,
   `name` varchar(150) NOT NULL,
-  `link` varchar(255) NOT NULL,
+  `link` varchar(255) NOT NULL default '',
   `category` varchar(255) default NULL,
   `description` text,
   `notlocal` tinyint(1) default '0',
@@ -88,7 +88,7 @@ CREATE TABLE  `game_group` (
 
 CREATE TABLE  `game_user` (
   `game_user_id` int(11) NOT NULL auto_increment,
-  `name` varchar(150) NOT NULL,
-  `email` varchar(150) NOT NULL,
+  `name` varchar(150) NOT NULL default '',
+  `email` varchar(150) NOT NULL default '',
   PRIMARY KEY  (`game_user_id`)
 )
