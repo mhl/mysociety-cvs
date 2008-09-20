@@ -50,8 +50,6 @@
 			//long lat?
 			if($this->search_type == 'longlat'){
 
-				print $search_term;
-
 				$split = split(",", trim($search_term));
 				$long = $split[0];
 				$lat = $split[1];
