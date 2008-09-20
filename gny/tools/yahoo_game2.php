@@ -32,7 +32,13 @@
 
     //loop through pages
     for ($i=0; $i <= $count; $i += 10) { 
-
+        
+        
+        $sleep_time = get_random_numbers(1, 1, 25);
+        
+        sleep($sleep_time[0]);
+        
+        
         $url = "http://groups.yahoo.com/search?query=" . urlencode($keyword) . "&sc=-1&sg=" . $i . "&ss=1";
         
         $html = safe_scrape($url);
