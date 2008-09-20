@@ -62,7 +62,7 @@ class addstart_page extends pagebase {
 
 			//no cache, get from DB
 			$game_user = factory::create('game_user');
-			$game_user->query("select game_user.name, count(game_group_id) as mapped from game_user inner join game_group on game_user.game_user_id = game_group.game_user_id group by game_user.name order by count(game_group_id) DESC");
+			$game_user->query("select game_user.name, count(game_group_id) as mapped from game_user inner join game_group on game_user.game_user_id = game_group.game_user_id group by game_user.name order by mapped DESC");
 
 			$league_table = array();
 
