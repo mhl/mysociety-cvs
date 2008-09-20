@@ -4,7 +4,7 @@
 
 	$debug_level = SQL_DEBUG_LEVEL;
 	if(isset($_GET['sqldebug'])){
-		//$debug_level = $_GET['sqldebug'];
+		$debug_level = $_GET['sqldebug'];
 	}
 
 
