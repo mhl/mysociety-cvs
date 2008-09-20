@@ -58,7 +58,7 @@
 		<p class="flattop">
 			If you already know of a local email group, blog or forum, you can add it directly.
 		</p>
-		<a class="linkbutton" href="{$www_server}/groups/{$group->url_id}/contact/">
+		<a class="linkbutton" href="{$www_server}/add/about/">
             <span class="left">&nbsp;</span>
             <span class="middle">Add a group &raquo;</span>                
             <span class="right">&nbsp;</span>

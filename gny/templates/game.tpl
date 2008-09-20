@@ -76,7 +76,7 @@
 					</li>
 				</ul>
 
-				<h3>3) Try and locate the approximate area it covers (click cancel you can't find it)</h3>
+				<h3>3) Try and locate the approximate area it covers (if you are unsure, click)</h3>
 				<div id="divMapWrapper">
 		            <div id="divMapSearch">
 		                <label for="txtMapSearch">Go to location</label>
