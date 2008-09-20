@@ -2,6 +2,12 @@
 	//define database configuration values
 	$options = &PEAR::getStaticProperty('DB_DataObject','options');
 
+	$debug_level = SQL_DEBUG_LEVEL;
+	if(isset($_GET['sqldebug'])){
+		//$debug_level = $_GET['sqldebug'];
+	}
+
+
 	$options = array(
 	'database' => 'mysql://' . DB_USER . ':'. DB_PASS .'@' . DB_HOST . '/' . DB_NAME,
 	'schema_location' => INCLUDE_DIR . '/table_classes/',
@@ -10,6 +16,6 @@
 	'class_prefix' => 'tableclass_',
 	'db_driver' => 'MDB2',
 	'ini_' . DB_NAME => INCLUDE_DIR . '/table_classes/groups.ini',	
-	"debug" => SQL_DEBUG_LEVEL
+	"debug" => $debug_level
 	);
 ?>

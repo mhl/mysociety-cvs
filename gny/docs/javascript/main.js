@@ -36,7 +36,10 @@ function setupGameCallback(oResponse){
 	    $('aGoogle2').href = 'http://www.google.com/search?q=' + oResult['by_line'];
 	    
 	    //hash id
-	    $('hidGameHash').value = oResult['id'];	    	    
+	    $('hidGameHash').value = oResult['id'];	    	 
+	    
+	    //clear the map search
+	    $('txtSearchMap').value = '';
 
         //description
         var sDescriptionRaw = oResult['description'];
