@@ -33,9 +33,8 @@
     //loop through pages
     for ($i=0; $i <= $count; $i += 10) { 
         
-        
-        $sleep_time = get_random_numbers(1, 1, 25);
-        
+        //sleepy time
+        $sleep_time = get_random_numbers(1, 1, 60);
         sleep($sleep_time[0]);
         
         

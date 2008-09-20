@@ -485,5 +485,21 @@
 	function remove_line_breaks($string){
 		return str_replace("\n", "", str_replace("\r\n","", $string));
 	}
+
+	function get_random_numbers($return_size, $start, $end) {
+	     $random_numbers = array();
+	     $rand_temp = array();
+
+	     while(count($random_numbers) < $return_size) {
+	        $temp = rand($start, $end);
+	        if(!isset($rand_temp[$temp])) {
+	           $rand_temp[$temp] = true;
+	           $random_numbers[] = $temp;
+	        }
+	     }
+
+	     return $random_numbers;
+	  }
+
 		
 ?>

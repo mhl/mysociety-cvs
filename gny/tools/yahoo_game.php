@@ -27,13 +27,12 @@
 	    $count = $count_matches[1][0];
 	}else{
 	    print "Something went wrong counting number of pages \n";
-	    exit;
     }
 
     //loop through pages
     for ($i=0; $i <= $count; $i += 10) { 
 
-        sleep(5);
+        sleep(10);
 
         $url = "http://groups.yahoo.com/search?query=" . urlencode($keyword) . "&sc=-1&sg=" . $i . "&ss=1";
         
@@ -74,7 +73,7 @@
             //Save group
             $game_group = factory::create('gamegroup');
             $success = $game_group->insert();
-            $game_group->name = str_replace("_", "", $link_match);
+            $game_group->name = $title; //str_replace("_", "", $link_match);
             $game_group->by_line = $title;            
             $game_group->link = $url;
             $game_group->description = $description;
