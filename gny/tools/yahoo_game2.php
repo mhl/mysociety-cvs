@@ -49,10 +49,10 @@
             print "Scraping " . $link_match . "\n";
             
             //build url and check if already imported
-            $url = "http://groups.yahoo.com/group/" . $link_match;
+            $url = "http://groups.yahoo.com/group/" . trim($link_match);
             $is_imported = tableclass_gamegroup::is_imported($url);
             
-            if(!$is_imported){
+            if($is_imported == false){
                 
                 //sleepy time
                 $sleep_time = get_random_numbers(1, 1, 15);
