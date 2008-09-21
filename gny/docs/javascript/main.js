@@ -193,7 +193,7 @@ function gameSavedCallback(oResponse){
         
         //show thanks
         $('divThanks').style.display = "block";
-        $('divThanks').innerHTML = "Thanks, <em>" + $('hidGroupName').value + " </em>has been added to Groups Near You! Add another?";
+        $('divThanks').innerHTML = "Thanks :) <em>" + $('hidGroupName').value + " </em>has been added to Groups Near You! Add another?";
         new Effect.Highlight($('divThanks'), {duration:6});
         
         //reset the game
