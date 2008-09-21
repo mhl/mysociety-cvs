@@ -93,3 +93,13 @@ CREATE TABLE `game_group` (
   `by_line` varchar(255) default NULL,
   PRIMARY KEY  (`game_group_id`)
 );
+
+CREATE TABLE  `game_group_seq` (
+  `sequence` int(11) NOT NULL auto_increment,
+  PRIMARY KEY  (`sequence`)
+);
+
+CREATE TABLE  `game_user_seq` (
+  `sequence` int(11) NOT NULL auto_increment,
+  PRIMARY KEY  (`sequence`)
+);
