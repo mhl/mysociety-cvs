@@ -105,7 +105,7 @@
                         print "Failed: " . $title . "\n";                   
                 }
             }else{
-                print "Already imported " . $url;
+                print "Already imported " . $url . "\n";
             }
             
         }
