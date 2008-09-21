@@ -34,7 +34,7 @@
     //loop through pages
     for ($i=0; $i <= $count; $i += 10) { 
         
-        print "scraping page " . $i;
+        print "scraping page " . $i . "\n";
         
         //get page of results
         $url = "http://groups.yahoo.com/search?query=" . urlencode($keyword) . "&sc=-1&sg=" . $i . "&ss=1";
@@ -46,14 +46,14 @@
         //get the group pages
         foreach ($link_matches[2] as $link_match) {
             
-            print "Scraping " . $link_match . "\n";
-            
             //build url and check if already imported
             $url = "http://groups.yahoo.com/group/" . trim($link_match);
             $is_imported = tableclass_gamegroup::is_imported($url);
             
             if($is_imported == false){
                 
+                 print "Scraping " . $link_match . "\n";
+                 
                 //sleepy time
                 $sleep_time = get_random_numbers(1, 1, 15);
                 sleep($sleep_time[0]);
@@ -67,6 +67,9 @@
 	        
     	        $title = html_entity_decode($title_matches[1][0]);
     	        $title = mk_utf8($title);
+    	        if($title == ''){
+    	           $title =  $link_match;
+	            }
         
     	        //Description
     	        $description_regex = "/<div id=\"ygr_desc\" class=\"group-description\">(.*?)<\/div>/s";
