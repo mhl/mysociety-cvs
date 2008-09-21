@@ -62,7 +62,7 @@ class tableclass_gamegroup  extends DB_DataObject{
 			print "ready to save \n";
 			$return = parent::insert();
 		}else{
-			 print "exists \n"
+			 print "exists \n";
 		}
 		
 		return $return;

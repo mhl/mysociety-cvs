@@ -90,7 +90,6 @@
 
                 //Save group
                 $game_group = factory::create('gamegroup');
-                $success = $game_group->insert();
                 $game_group->name =  $title; //str_replace("_", "", $link_match);
                 $game_group->by_line = $title;            
                 $game_group->link = $url;
