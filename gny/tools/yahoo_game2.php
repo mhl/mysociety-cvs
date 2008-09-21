@@ -88,21 +88,20 @@
                 $category = $category_matches[1][0];
 
                 //Save group
-                $game_group = factory::create('gamegroup');
-                $game_group->game_group_id = null;                
-                $game_group->name =  $title; //str_replace("_", "", $link_match);
-                $game_group->by_line = $title;            
-                $game_group->link = $url;
-                $game_group->description = $description;
-                $game_group->category = $category;
+                $game_group_new = factory::create('gamegroup');                
+                $game_group_new->name =  $title; //str_replace("_", "", $link_match);
+                $game_group_new->by_line = $title;            
+                $game_group_new->link = $url;
+                $game_group_new->description = $description;
+                $game_group_new->category = $category;
 
-                if($game_group->name != '' && $game_group->by_line != '' && $game_group->description != ''){
-                    $success = $game_group->insert();
+                if($game_group_new->name != '' && $game_group_new->by_line != '' && $game_group_new->description != ''){
+                    $success = $game_group_new->insert();
                     if($success){
                         print "Saved: " . $title . "\n";
                     }else{
                         print "Failed to save: " . $title . "\n";   
-                        print_r($game_group);
+                        print_r($game_group_new);
                         print "\n";
                     }
                 }else{
