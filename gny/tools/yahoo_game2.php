@@ -59,14 +59,14 @@
                 sleep($sleep_time[0]);
                 
                 //scrape
-                $group_html = safe_scrape($url);
+                $group_html = safe_scrape($url, 3600);
             
                 //Title
                 $title_regex = "/<span class=\"ygrp-grdescr\">&middot; (.*?)<\/span>/";
     	        preg_match_all($title_regex, $group_html, $title_matches, PREG_PATTERN_ORDER); 
 	        
     	        $title = html_entity_decode($title_matches[1][0]);
-	        
+        
     	        //Description
     	        $description_regex = "/<div id=\"ygr_desc\" class=\"group-description\">(.*?)<\/div>/s";
     	        preg_match_all($description_regex, $group_html, $description_matches, PREG_PATTERN_ORDER);             
@@ -91,7 +91,7 @@
                 $game_group->link = $url;
                 $game_group->description = $description;
                 $game_group->category = $category;
-          
+    
                 if($game_group->name != '' && $game_group->by_line != '' && $game_group->description != ''){
                     $success = $game_group->insert();
                     if($success){

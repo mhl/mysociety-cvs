@@ -57,10 +57,12 @@ class tableclass_gamegroup  extends DB_DataObject{
 		//check not already in main group table
 		$groups = $search->search('group', 
 			array(array('involved_link', '=', $this->link)));
-		
+
 		if(sizeof($game_groups) == 0 && sizeof($groups) == 0){
 			$return = parent::insert();
-		}	
+		}else{
+		
+		}
 		
 		return $return;
 	}
@@ -68,7 +70,7 @@ class tableclass_gamegroup  extends DB_DataObject{
 	public static function is_imported($url){
 		$search = factory::create('search');
 		$game_groups = $search->search('gamegroup', 
-			array(array('link', '=', $url)));
+			array(array('involved_link', '=', $url)));
 			
 		return sizeof($game_groups) == 0;
 	}

@@ -46,6 +46,8 @@
 				<h4 id="hTitle2">
 
 				</h4>		
+				<a id="aLink2" accesskey="v" href="" target="_new"><span class="accesskey">V</span>iew website (new window)</a>&nbsp;&nbsp;
+				<a id="aGoogle2" accesskey="g" href="" target="_new"><span class="accesskey">G</span>oogle this group(new window)</a>
 				<ul class="form nobullets">
 					<li>
 						<textarea id="txtGameDetail" taborder="20"></textarea>
@@ -76,8 +78,6 @@
 				</ul>
 
 				<h3>3) Try and locate the approximate area it covers (if you are unsure, click cancel)</h3>
-				<a id="aLink2" accesskey="v" href="" target="_new"><span class="accesskey">V</span>iew website (new window)</a>&nbsp;&nbsp;
-				<a id="aGoogle2" accesskey="g" href="" target="_new"><span class="accesskey">G</span>oogle this group(new window)</a>
 				<div id="divMapWrapper">
 		            <div id="divMapSearch">
 		                <label for="txtMapSearch">Go to location</label>
