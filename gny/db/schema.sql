@@ -94,12 +94,12 @@ CREATE TABLE `game_group` (
   PRIMARY KEY  (`game_group_id`)
 );
 
-CREATE TABLE  `game_group_seq` (
+CREATE TABLE `game_group_seq` (
   `sequence` int(11) NOT NULL auto_increment,
   PRIMARY KEY  (`sequence`)
 );
 
-CREATE TABLE  `game_user_seq` (
+CREATE TABLE `game_user_seq` (
   `sequence` int(11) NOT NULL auto_increment,
   PRIMARY KEY  (`sequence`)
 );

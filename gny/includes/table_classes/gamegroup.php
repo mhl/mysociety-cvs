@@ -61,7 +61,7 @@ class tableclass_gamegroup  extends DB_DataObject{
 		if(sizeof($game_groups) == 0 && sizeof($groups) == 0){
 			$return = parent::insert();
 		}
-		
+
 		return $return;
 	}
 	
