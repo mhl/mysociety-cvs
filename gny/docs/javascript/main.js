@@ -18,7 +18,10 @@ function popup_map(link){
 
 
 function setupGame (){
+
+        //hide warning
         hideWarning();
+        
     	sPost = "mode=get";
 		var oAjax = new Ajax.Request("/ajax/game.php", {method: 'post',  postBody: sPost,  onComplete: setupGameCallback});
 		
@@ -40,7 +43,7 @@ function setupGameCallback(oResponse){
 	    $('hidGameHash').value = oResult['id'];	    	 
 	    
 	    //clear the map search
-	    $('txtSearchMap').value = '';
+	    $('txtSearchMap').value = '';	    
 
         //description
         var sDescriptionRaw = oResult['description'];
@@ -52,6 +55,7 @@ function setupGameCallback(oResponse){
         $('hTitle1').innerHTML = oResult['by_line'];
         $('hTitle2').innerHTML = oResult['by_line'];        
         $('txtGameTags').value = oResult['category'];
+	    $('hidGroupName').value = oResult['by_line'];        
 
         //reset fields
         $('hidZoomLevel').value = 2;
@@ -112,6 +116,7 @@ function gameHighlight(sText){
 }
 
 function showGameDetail(){
+    $('divThanks').style.display = "none";
     $('divGameChoose').style.display = 'none';    
     $('divGameDetail').style.display = 'block';
     setFocus('txtGameDetail');
@@ -182,11 +187,16 @@ function gameNotLocal(){
 //games saved callback
 function gameSavedCallback(oResponse){
     
-var oResult = eval('(' + oResponse.responseText + ')');
-
  	var oResult = eval('(' + oResponse.responseText + ')');
 
     if(oResult == true){
+        
+        //show thanks
+        $('divThanks').style.display = "block";
+        $('divThanks').innerHTML = "Thanks, <em>" + $('hidGroupName').value + " </em>has been added to Groups Near You! Add another?";
+        new Effect.Highlight($('divThanks'), {duration:6});
+        
+        //reset the game
         hideGameDetail();
         setupGame();
     }else{

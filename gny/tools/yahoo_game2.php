@@ -88,7 +88,7 @@
                 $category = $category_matches[1][0];
 
                 //Save group
-                $game_group_new = factory::create('gamegroup');                
+                $game_group_new = factory::create('gamegroup');            
                 $game_group_new->name =  $title; //str_replace("_", "", $link_match);
                 $game_group_new->by_line = $title;            
                 $game_group_new->link = $url;

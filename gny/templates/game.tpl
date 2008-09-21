@@ -15,9 +15,15 @@
         <input type="hidden" id="hidZoomLevel" name="hidZoomLevel" value="" />
         <input type="hidden" id="hidName" value="{$game_name}" />
         <input type="hidden" id="hidEmail" value="{$game_email}" />
+        <input type="hidden" id="hidGroupName" value="" />
     </fieldset>
 
         <div class="contentfull">
+			
+			<!-- thanks -->
+			<div id="divThanks">
+				
+			</div>
 			
 			<!-- choose -->
 			<div id="divGameChoose">
