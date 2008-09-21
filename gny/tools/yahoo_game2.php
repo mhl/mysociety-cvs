@@ -102,10 +102,10 @@
                     if($success){
                         print "Saved: " . $title . "\n";
                     }else{
-                        print "Failed: " . $title . "\n";   
+                        print "Failed to save: " . $title . "\n";   
                     }
                 }else{
-                        print "Failed: " . $title . "\n";                   
+                        print "Failed, missing info: " . $title . "\n";                   
                 }
             }else{
                 print "Already imported " . $url . "\n";
