@@ -66,6 +66,7 @@
     	        preg_match_all($title_regex, $group_html, $title_matches, PREG_PATTERN_ORDER); 
 	        
     	        $title = html_entity_decode($title_matches[1][0]);
+    	        $title = mk_utf8($title);
         
     	        //Description
     	        $description_regex = "/<div id=\"ygr_desc\" class=\"group-description\">(.*?)<\/div>/s";
@@ -76,6 +77,7 @@
     	        $description = trim($description);
     	        $description = html_entity_decode($description);
     	        $description = str_replace("&#39;", "'", $description);
+    	        $description = mk_utf8($description);
 
                 //Category
                 $category_regex = "/Category: <a href=\".*?\">(.*?)<\/a>/";
