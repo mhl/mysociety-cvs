@@ -18,6 +18,7 @@ function popup_map(link){
 
 
 function setupGame (){
+        hideWarning();
     	sPost = "mode=get";
 		var oAjax = new Ajax.Request("/ajax/game.php", {method: 'post',  postBody: sPost,  onComplete: setupGameCallback});
 		
@@ -60,7 +61,7 @@ function setupGameCallback(oResponse){
         setFocus('divGameGroupText');
         
 	}else{
-	    alert('Sorry, somehting went wrong');
+	    alert('Sorry, something went wrong');
     }
 
     hideGameDetail();
@@ -141,7 +142,11 @@ function validateGame(){
 
     //map zoom
     if(parseInt($('hidZoomLevel').value) < parseInt($('hidMaxMapZoom').value)){
-        sWarnings += "Sorry, that group covers too large an area.We are currently only mapping small local groups, like an email list for a street town. Please adjust the map or cancel and try another group.'\n";        
+        sWarnings += 'The area currently defined is too big - we are only interested in really local groups. Please better define the area covered by the group, or if it really does cover this wide an area <a href="javascript:hideGameDetail();setupGame();">try a different group</a>\n';        
+    }
+
+    if($('ddlCategory').value == 0){
+        sWarnings += 'Please choose a category for this group\n';
     }
 
     if(sWarnings == ''){

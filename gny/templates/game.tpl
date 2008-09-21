@@ -28,7 +28,7 @@
 				</h4>
 				<a id="aLink1" accesskey="v" href="" target="_new"><span class="accesskey">V</span>iew website (new window)</a>&nbsp;&nbsp;
 				
-				<a id="aGoogle1" accesskey="g" href="" target="_new"><span class="accesskey">G</span>oogle group (new window)</a>
+				<a id="aGoogle1" accesskey="g" href="" target="_new"><span class="accesskey">G</span>oogle this group (new window)</a>
 				<div id="divGameGroupText" taborder="10">
 					&nbsp;
 				</div>
@@ -45,9 +45,7 @@
 				<h3>2) Tidy up the description and choose a category</h3>
 				<h4 id="hTitle2">
 
-				</h4>
-				<a id="aLink2" accesskey="v" href="" target="_new"><span class="accesskey">V</span>iew website (new window)</a>&nbsp;&nbsp;
-				<a id="aGoogle2" accesskey="g" href="" target="_new"><span class="accesskey">G</span>oogle group (new window)</a>				
+				</h4>		
 				<ul class="form nobullets">
 					<li>
 						<textarea id="txtGameDetail" taborder="20"></textarea>
@@ -55,6 +53,7 @@
 					<li>
 						<label for="ddlCategory">Choose a category</label>
 	                    <select id="ddlCategory" taborder="30">
+								<option value="0">&nbsp;</option>
 	                        {foreach from="$categories" item="category"}
 	                            <option value="{$category->category_id}">
 	                                {$category->name} ({$category->hint})
@@ -76,7 +75,9 @@
 					</li>
 				</ul>
 
-				<h3>3) Try and locate the approximate area it covers (if you are unsure, click)</h3>
+				<h3>3) Try and locate the approximate area it covers (if you are unsure, click cancel)</h3>
+				<a id="aLink2" accesskey="v" href="" target="_new"><span class="accesskey">V</span>iew website (new window)</a>&nbsp;&nbsp;
+				<a id="aGoogle2" accesskey="g" href="" target="_new"><span class="accesskey">G</span>oogle this group(new window)</a>
 				<div id="divMapWrapper">
 		            <div id="divMapSearch">
 		                <label for="txtMapSearch">Go to location</label>

@@ -122,6 +122,9 @@ function load(nCenterLong, nCenterLat, iZoom, bFullMap) {
 		map.disableDragging();
 	}
 
+    //add overview control
+    map.addControl(new GOverviewMapControl());
+    
 	//add default rectangle
 	addRectangle();
 	

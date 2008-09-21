@@ -3,6 +3,7 @@
 
 	require_once(dirname(__FILE__) .'/../conf/general');  
 	require_once(dirname(__FILE__) .'/../includes/init.php');
+	require_once(dirname(__FILE__) .'/../includes/table_classes/gamegroup.php');	
 
 
     //get keyword
@@ -17,7 +18,7 @@
 
     //grab first page and figure out how many pages there are
     print "cheking number of pages for this keyword \n";
-    $html = safe_scrape("http://groups.yahoo.com/search?query=" . urlencode($keyword));
+    $html = safe_scrape("http://groups.yahoo.com/search?query=" . urlencode($keyword), 43200);
 
     $count_regex = "/<em>1 - 10<\/em> of ([0-9]*?) &nbsp;/";
 
@@ -33,14 +34,12 @@
     //loop through pages
     for ($i=0; $i <= $count; $i += 10) { 
         
-        //sleepy time
-        $sleep_time = get_random_numbers(1, 1, 60);
-        sleep($sleep_time[0]);
+        print "scraping page " . $i;
         
-        
+        //get page of results
         $url = "http://groups.yahoo.com/search?query=" . urlencode($keyword) . "&sc=-1&sg=" . $i . "&ss=1";
         
-        $html = safe_scrape($url);
+        $html = safe_scrape($url, 43200);
         $link_regex = "/<em><a href=\"\/group\/(.*?)?.*?\">(.*?)<\/a><\/em>/";
 	    preg_match_all($link_regex, $html, $link_matches, PREG_PATTERN_ORDER);        
         
@@ -49,49 +48,62 @@
             
             print "Scraping " . $link_match . "\n";
             
+            //build url and check if already imported
             $url = "http://groups.yahoo.com/group/" . $link_match;
+            $is_imported = tableclass_gamegroup::is_imported($url);
             
-            $group_html = safe_scrape($url);
+            if(!$is_imported){
+                
+                //sleepy time
+                $sleep_time = get_random_numbers(1, 1, 15);
+                sleep($sleep_time[0]);
+                
+                //scrape
+                $group_html = safe_scrape($url);
             
-            //Title
-            $title_regex = "/<span class=\"ygrp-grdescr\">&middot; (.*?)<\/span>/";
-	        preg_match_all($title_regex, $group_html, $title_matches, PREG_PATTERN_ORDER); 
+                //Title
+                $title_regex = "/<span class=\"ygrp-grdescr\">&middot; (.*?)<\/span>/";
+    	        preg_match_all($title_regex, $group_html, $title_matches, PREG_PATTERN_ORDER); 
 	        
-	        $title = html_entity_decode($title_matches[1][0]);
+    	        $title = html_entity_decode($title_matches[1][0]);
 	        
-	        //Description
-	        $description_regex = "/<div id=\"ygr_desc\" class=\"group-description\">(.*?)<\/div>/s";
-	        preg_match_all($description_regex, $group_html, $description_matches, PREG_PATTERN_ORDER);             
+    	        //Description
+    	        $description_regex = "/<div id=\"ygr_desc\" class=\"group-description\">(.*?)<\/div>/s";
+    	        preg_match_all($description_regex, $group_html, $description_matches, PREG_PATTERN_ORDER);             
 
-	        $description = $description_matches[1][0];
-	        $description = strip_tags($description);
-	        $description = trim($description);
-	        $description = html_entity_decode($description);
+    	        $description = $description_matches[1][0];
+    	        $description = strip_tags($description);
+    	        $description = trim($description);
+    	        $description = html_entity_decode($description);
+    	        $description = str_replace("&#39;", "'", $description);
 
-            //Category
-            $category_regex = "/Category: <a href=\".*?\">(.*?)<\/a>/";
-            preg_match_all($category_regex, $group_html, $category_matches, PREG_PATTERN_ORDER);
+                //Category
+                $category_regex = "/Category: <a href=\".*?\">(.*?)<\/a>/";
+                preg_match_all($category_regex, $group_html, $category_matches, PREG_PATTERN_ORDER);
             
-            $category = $category_matches[1][0];
+                $category = $category_matches[1][0];
 
-            //Save group
-            $game_group = factory::create('gamegroup');
-            $success = $game_group->insert();
-            $game_group->name =  $title; //str_replace("_", "", $link_match);
-            $game_group->by_line = $title;            
-            $game_group->link = $url;
-            $game_group->description = $description;
-            $game_group->category = $category;
-          
-            if($game_group->name != '' && $game_group->by_line != '' && $game_group->description != ''){
+                //Save group
+                $game_group = factory::create('gamegroup');
                 $success = $game_group->insert();
-                if($success){
-                    print "Saved: " . $title . "\n";
+                $game_group->name =  $title; //str_replace("_", "", $link_match);
+                $game_group->by_line = $title;            
+                $game_group->link = $url;
+                $game_group->description = $description;
+                $game_group->category = $category;
+          
+                if($game_group->name != '' && $game_group->by_line != '' && $game_group->description != ''){
+                    $success = $game_group->insert();
+                    if($success){
+                        print "Saved: " . $title . "\n";
+                    }else{
+                        print "Failed: " . $title . "\n";   
+                    }
                 }else{
-                    print "Failed: " . $title . "\n";   
+                        print "Failed: " . $title . "\n";                   
                 }
             }else{
-                    print "Failed: " . $title . "\n";                   
+                print "Already imported " . $url;
             }
             
         }

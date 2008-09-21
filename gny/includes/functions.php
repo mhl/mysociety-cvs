@@ -296,9 +296,9 @@
     }
 
 	//Scarpe a url and cache it
-    function safe_scrape_cached($url){
+    function safe_scrape_cached($url, $cache_time = CACHE_TIME){
 
-		$cache = cache::factory();
+		$cache = cache::factory($cache_time);
 
 		$cached = $cache->get($url);
 		if (isset($cached) && $cached !== false) {
