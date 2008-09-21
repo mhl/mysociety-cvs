@@ -102,6 +102,8 @@
                         print "Saved: " . $title . "\n";
                     }else{
                         print "Failed to save: " . $title . "\n";   
+                        print_r($game_group);
+                        print "\n";
                     }
                 }else{
                         print "Failed, missing info: " . $title . "\n";                   

@@ -59,10 +59,7 @@ class tableclass_gamegroup  extends DB_DataObject{
 			array(array('involved_link', '=', $this->link)));
 
 		if(sizeof($game_groups) == 0 && sizeof($groups) == 0){
-			print "ready to save \n";
 			$return = parent::insert();
-		}else{
-			 print "exists \n";
 		}
 		
 		return $return;
