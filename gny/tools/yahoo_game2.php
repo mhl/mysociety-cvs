@@ -15,7 +15,6 @@
 	    exit;
     }
 
-
     //grab first page and figure out how many pages there are
     print "cheking number of pages for this keyword \n";
     $html = safe_scrape("http://groups.yahoo.com/search?query=" . urlencode($keyword), 43200);
@@ -90,12 +89,13 @@
 
                 //Save group
                 $game_group = factory::create('gamegroup');
+                $game_group->game_group_id = null;                
                 $game_group->name =  $title; //str_replace("_", "", $link_match);
                 $game_group->by_line = $title;            
                 $game_group->link = $url;
                 $game_group->description = $description;
                 $game_group->category = $category;
-    
+
                 if($game_group->name != '' && $game_group->by_line != '' && $game_group->description != ''){
                     $success = $game_group->insert();
                     if($success){
