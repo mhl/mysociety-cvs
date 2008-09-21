@@ -68,11 +68,12 @@ class tableclass_gamegroup  extends DB_DataObject{
 	}
 	
 	public static function is_imported($url){
+
 		$search = factory::create('search');
 		$game_groups = $search->search('gamegroup', 
-			array(array('involved_link', '=', $url)));
-			
-		return sizeof($game_groups) == 0;
+			array(array('link', '=', $url)));
+
+		return sizeof($game_groups) > 0;
 	}
 
 }
