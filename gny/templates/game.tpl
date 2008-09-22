@@ -42,7 +42,7 @@
 					<small>(Windows &amp; Unix: Alt + n, Alt + k, Alt + y / Mac: Ctrl + n, Ctrl + k, Ctrl + y)</small>					
 					<input type="button" onclick="gameNotLocal();setupGame();" accesskey="n" value="Nope"/>
 					<input type="button" onclick="setupGame();" accesskey="k" value="Unsure, skip it"/>					
-					<input type="button" onclick="showGameDetail();load(-48,48, 2);" accesskey="y" value="Yes it does!"/>
+					<input type="button" onclick="showGameDetail();" accesskey="y" value="Yes it does!"/>
 				</div>
 			</div>
 

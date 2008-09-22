@@ -120,6 +120,7 @@ function showGameDetail(){
     $('divGameChoose').style.display = 'none';    
     $('divGameDetail').style.display = 'block';
     setFocus('txtGameDetail');
+    load(-48,48, 2);
 }
 
 function hideGameDetail(){
