@@ -53,7 +53,7 @@
 
 				</h4>		
 				<a id="aLink2" accesskey="v" href="" target="_new"><span class="accesskey">V</span>iew website (new window)</a>&nbsp;&nbsp;
-				<a id="aGoogle2" accesskey="g" href="" target="_new"><span class="accesskey">G</span>oogle this group(new window)</a>
+				<a id="aGoogle2" accesskey="g" href="" target="_new"><span class="accesskey">G</span>oogle this group (new window)</a>
 				<ul class="form nobullets">
 					<li>
 						<textarea id="txtGameDetail" taborder="20"></textarea>
@@ -103,7 +103,7 @@
 				<div class="buttons">
 					<small>(Windows &amp; Unix: Alt + c, Alt + s / Mac: Ctrl + c, Ctrl + s)</small>										
 					<input type="button" accesskey="c" onclick="javascript:hideGameDetail();setupGame();" value="Cancel" taborder="90"/>
-					<input type="button" accesskey="s" onclick="javascript:validateGame();" value="Save &amp; do another" taborder="100"/>
+					<input type="button" accesskey="s" onclick="javascript:validateGame();" value="Save &amp; do another" taborder="100" id="saveGame" />
 				</div>
 			</div>
 			
