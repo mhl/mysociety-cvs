@@ -18,19 +18,19 @@
                             {$group->name}&nbsp;<a target="_new" href="{$url}/groups/{$group->url_id}?admin=1">[view group]</a>
                         </td>
                         <td class="buttoncell">
-                            <input type="button" class="edit" value="Edit" onclick="javascript:editGroup({$group->group_id});"/>
+                            <input type="button" class="edit" value="Edit" onclick="editGroup({$group->group_id});"/>
                         </td>
                         {if $group->confirmed == true}
                         <td class="buttoncell">
-                            <input type="button" class="disable" value="Disable" onclick="javascript:disableGroup('{$group->name|escape:url}', {$group->group_id});"/>
+                            <input type="button" class="disable" value="Disable" onclick="disableGroup('{$group->name|escape:url}', {$group->group_id});"/>
                         </td>
                         {else}
                             <td class="buttoncell">
-                                <input type="button" class="enable" value="Enable" onclick="javascript:enableGroup('{$group->name|escape:url}', {$group->group_id});"/>
+                                <input type="button" class="enable" value="Enable" onclick="enableGroup('{$group->name|escape:url}', {$group->group_id});"/>
                             </td>
                         {/if}
                         <td class="buttoncell">
-                            <input type="button" class="delete" value="Delete" onclick="javascript:deleteGroup('{$group->name|escape:url}', {$group->group_id});"/>
+                            <input type="button" class="delete" value="Delete" onclick="deleteGroup('{$group->name|escape:url}', {$group->group_id});"/>
                         </td>
                     </tr>
                 {/foreach}

@@ -40,9 +40,9 @@
 				</div>
 				<div class="buttons">
 					<small>(Windows &amp; Unix: Alt + n, Alt + k, Alt + y / Mac: Ctrl + n, Ctrl + k, Ctrl + y)</small>					
-					<input type="button" onclick="javascript:gameNotLocal();setupGame();" accesskey="n" value="Nope"/>
+					<input type="button" onclick="gameNotLocal();setupGame();" accesskey="n" value="Nope"/>
 					<input type="button" onclick="setupGame();" accesskey="k" value="Unsure, skip it"/>					
-					<input type="button" onclick="javaascript:showGameDetail();load(-48,48, 2);" accesskey="y" value="Yes it does!"/>
+					<input type="button" onclick="showGameDetail();load(-48,48, 2);" accesskey="y" value="Yes it does!"/>
 				</div>
 			</div>
 
@@ -88,7 +88,7 @@
 		            <div id="divMapSearch">
 		                <label for="txtMapSearch">Go to location</label>
 		                <input type="text" class="textbox large" id="txtSearchMap" onkeypress="return submitMapSearch(event);" taborder="50"/>
-		                <input id="btnMapSearch" type="button" onclick="javascript:searchMap(false);"value="Go" taborder="60"/>
+		                <input id="btnMapSearch" type="button" onclick="searchMap(false);" value="Go" taborder="60"/>
 		                <img id="imgMapLoading" src="{$www_server}/images/maploading.gif" width="16px" height="16px" alt="Loading ..." title="Loading ..."/>
 		                <small>
 		                       {l}e.g. <em>Paris, France</em> or <em>Sydney, Australia</em>{/l}
@@ -102,8 +102,8 @@
 				<!-- Buttons -->
 				<div class="buttons">
 					<small>(Windows &amp; Unix: Alt + c, Alt + s / Mac: Ctrl + c, Ctrl + s)</small>										
-					<input type="button" accesskey="c" onclick="javascript:hideGameDetail();setupGame();" value="Cancel" taborder="90"/>
-					<input type="button" accesskey="s" onclick="javascript:validateGame();" value="Save &amp; do another" taborder="100" id="saveGame" />
+					<input type="button" accesskey="c" onclick="hideGameDetail();setupGame();" value="Cancel" taborder="90"/>
+					<input type="button" accesskey="s" onclick="validateGame();" value="Save &amp; do another" taborder="100" id="saveGame" />
 				</div>
 			</div>
 			

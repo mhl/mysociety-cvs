@@ -6,13 +6,13 @@
             <div>
                 <ul id="ulInvolved" class="nobullets">
                     <li>
-                        <input type="radio" class="radio" id="radInvolvedType_web" name="radInvolvedType" {if $group->involved_type == "link"}checked="checked"{/if} onclick="javascript:changeInvolvedType();" value="link"/>            
+                        <input type="radio" class="radio" id="radInvolvedType_web" name="radInvolvedType" {if $group->involved_type == "link"}checked="checked"{/if} onclick="changeInvolvedType();" value="link"/>            
                         <label for="radInvolvedType_web">{l}Visit a web page{/l}</label>   
                         <input type="text" class="textbox large{if $warn_txtInvolvedLink} error{/if}" id="txtInvolvedLink" name="txtInvolvedLink" value="{if $group->involved_type == "link"}{$group->involved_link}{/if}" />                
                         <small class="textboxhint">{l}e.g. a website or a Google/ Yahoo/ Facebook groups page{/l}</small>
                     </li>
                     <li>
-                        <input type="radio" class="radio" id="radInvolvedType_email" name="radInvolvedType" {if $group->involved_type == "email"}checked="checked"{/if} onclick="javascript:changeInvolvedType();" value="email"/>
+                        <input type="radio" class="radio" id="radInvolvedType_email" name="radInvolvedType" {if $group->involved_type == "email"}checked="checked"{/if} onclick="changeInvolvedType();" value="email"/>
                         <label for="radInvolvedType_email">{l}Email for info{/l}</label>        
                         <input type="text" class="textbox large{if $warn_txtInvolvedEmail} error{/if}" id="txtInvolvedEmail" name="txtInvolvedEmail" value="{if $group->involved_type == "email"}{$group->involved_link}{/if}" />
                         <small class="textboxhint">{l}this will <strong>not</strong> be published, but people will be able to contact it{/l}</small>
