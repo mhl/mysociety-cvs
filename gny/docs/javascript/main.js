@@ -47,7 +47,7 @@ function setupGameCallback(oResponse){
 
         //description
         var sDescriptionRaw = oResult['description'];
-	    var sDescriptionHtml = replaceAll(oResult['description'], '\n', '<br/>');
+        var sDescriptionHtml = replaceAll(oResult['description'], '\n', '<br />');
 
         var sDescriptionHtml = gameHighlight(sDescriptionHtml);
         $('divGameGroupText').innerHTML = sDescriptionHtml;	    
