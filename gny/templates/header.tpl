@@ -25,7 +25,7 @@
 
 </head>
 
-<body onload="javacript:{if $use_body_script == true && $onloadscript !=""}{$onloadscript}{/if};">
+<body onload="{if $use_body_script == true && $onloadscript !=""}{$onloadscript}{/if};">
     <div id="divBeta">
         This site is currently in beta (testing mode), we need your local knowledge to help it grow! 
         <a href="{$www_server}/add/about/">Add a group now</a>.
