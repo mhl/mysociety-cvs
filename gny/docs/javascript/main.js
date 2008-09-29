@@ -197,6 +197,15 @@ function gameSavedCallback(oResponse){
         $('divThanks').innerHTML = "Thanks :) <em>" + $('hidGroupName').value + " </em>has been added to Groups Near You! Add another?";
         new Effect.Highlight($('divThanks'), {duration:6});
         
+        //increase counter
+        var iCount = parseInt($('spnAddedCount').innerHTML) + 1;
+        $('spnAddedCount').innerHTML = iCount;
+        if(iCount == 1){
+           $('spnAddedText').innerHTML = "group"; 
+        }else{
+           $('spnAddedText').innerHTML = "groups";            
+        }
+        
         //reset the game
         hideGameDetail();
         setupGame();

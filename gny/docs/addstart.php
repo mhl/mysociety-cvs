@@ -13,6 +13,16 @@ class addstart_page extends pagebase {
 			array( 
 				array('matched', '=', 1)
 			));
+			
+		$game_groups_not_local = $search->search_cached('gamegroup', 
+			array( 
+				array('notlocal', '=', 1)
+			));
+			
+		$game_groups_total = $search->search_cached('gamegroup', 
+			array( 
+				array('1', '=', 1)
+			));			
 		
 		// count of users	
 		$game_users = $search->search_cached('game_user', 
@@ -27,7 +37,11 @@ class addstart_page extends pagebase {
 	    $this->page_title = "Add a group";
 	    $this->menu_item = "add";
 		$this->assign("match_count", sizeof($game_groups));
+		$this->assign("not_local_count", sizeof($game_groups_not_local));		
+		$this->assign("total_count", sizeof($game_groups_total));				
 		$this->assign("user_count", sizeof($game_users));	
+		$this->assign("percent_complete", sizeof($game_groups_total) / 100 * (sizeof($game_groups_not_local) + sizeof($game_groups_not_local)));
+		$this->assign("total_sorted", sizeof($game_groups_not_local) + sizeof($game_groups_not_local));		
 		$this->assign("league_table", $this->get_league_table());			
 		$this->assign('game_name', $game_name);		
 		$this->assign('game_email', $game_email);

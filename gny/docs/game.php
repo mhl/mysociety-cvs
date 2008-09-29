@@ -25,14 +25,26 @@ class game_page extends pagebase {
 			trigger_error('No categories found');
 		}
 		
-		//name & email
+		// user count, name & email
+		$added_count = 0;
 		$game_name = session_read('game_name');
 		$game_email = session_read('game_email');
 		if($game_name == '' || $game_email == ''){
 			$game_name = "Anonymous";
 			$game_email = "anonymous@groupsnearyou.com";				
-		}
+		}else{
+			
+			//get user
+			$game_users = $search->search('game_user', array(array('email', '=', $game_email)));
 
+			//get count for this user
+			$added_groups = $search->search('game_user', array(array('game_user_id', '=', $game_users[0]->game_user_id)));
+			
+			$added_count = sizeof($added_groups);
+			
+		}
+		
+		
 		//page vars
 		$this->onloadscript = "setupGame();";	
 	    $this->page_title = "Add a group";
@@ -44,7 +56,7 @@ class game_page extends pagebase {
 		$this->assign('max_map_zoom', MAX_MAP_ZOOM);
 		$this->assign('game_name', $game_name);		
 		$this->assign('game_email', $game_email);				
-		
+		$this->assign('added_count', $added_count);						
 		
 	
 		$this->display_template();

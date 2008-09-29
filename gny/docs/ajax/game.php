@@ -12,7 +12,7 @@
 	if($mode == 'save'){
 		save_group();
 	}
-	
+
 	if($mode == 'notlocal'){
 		not_local();
 	}
@@ -36,7 +36,7 @@
 				$game_group->update();
 			}else{
 				$success = false;
-				error_log('couldent frind game group from guid');
+				error_log("couldn't find game group from guid");
 			}			
 		}
 	}
