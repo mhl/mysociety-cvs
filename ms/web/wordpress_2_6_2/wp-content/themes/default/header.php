@@ -35,7 +35,7 @@
 			<a id="aPiggy" href="/donate/" title="Donate to mySociety" >
 				&nbsp;
 			</a>
-			Help us to keep making<br/> useful things!
+			Help us to make more<br/> useful things.
 			<br/>
 			<a href="/donate/">Donate to mySociety</a>
 		</p>
