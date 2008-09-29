@@ -55,7 +55,7 @@
         <p>
             {l}
                 We need *your* help to map all those hidden neighbourhood email lists, forums and community blogs where you live.
-                It only takes 4 simple steps, and you don't need to be the organiser of the group.
+               Help us map some random groups from the web, or add a group you know about.
             {/l}
             <a class="largelinkbutton" href="{$www_server}/add/about/">
                 <span class="left">&nbsp;</span>
