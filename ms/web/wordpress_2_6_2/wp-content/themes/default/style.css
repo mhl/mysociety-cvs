@@ -1,0 +1,178 @@
+/* Main layout */
+body {text-align:center;font-family:tahoma, Geneva, sans-serif; font-size:1em; color:#333;}
+#divPage {text-align:left; width:48em; margin:0 auto; position:relative;}
+
+/* Header & menu */
+#pHeaderDonate {position:absolute; float:left; padding-left:57px;
+        font-size:0.7em; height:100px; right:0; top:0;}
+#pHeaderDonate #aPiggy {position:absolute; top:-5px; left:0; width:42px; height:56px;background:url(images/piggy.png) 0 0; text-decoration:none;}
+#pHeaderDonate #aPiggy:hover {background:url(images/piggy.png) 0 -97px;}
+#divMenu {background:url(images/menu.png) left bottom repeat-x; border:solid 1px #dfdfdf;
+        height:2em; position:relative;}
+#divMenu ul {position:relative; top:0.3em; left:0.8em;width:100%;}
+#divMenu ul li a {padding-right:1.3em;}
+#divMenu ul li a, #divMenu ul li a:visited {text-decoration:none; color:#535353;}        
+#divMenu ul li a:hover {color:#2c4a9e;}
+
+#divMenu form {position:absolute; right:0.4em; top:0.2em;}
+#divMenu label {display:none;}
+
+/* Links */
+a {color:#2c4a9e;}
+a:visited {color:#445587;}
+a.morelink {position:relative; top:0.5em;}
+
+/* Headers */
+h1 {font-weight:normal;font-size:1.5em;padding-left:0.4em; padding-bottom:0.3em;}
+h2 {font-weight:normal; color:#639F67; padding-bottom:0.5em;}
+h3 {font-weight:normal; font-size:1.2em;}
+
+/* Layout blocks */
+#divContent {padding-top:1.2em; font-size:0.9em;}
+div.contenthalf, div.contentwide, div.contentnarrow {float:left;}
+div.contenthalf, div.contentwide, div.contentnarrow, div.contentfull, 
+	div.contentnarrowalt, div.contentwidealt {padding:1em;}
+div.contenthalf.left, div.contentwide.left, div.contentnarrow.left, div.contentfull.left {margin-right:0.6em;}
+div.contenthalf.right, div.contentwide.right, div.contentnarrow.right, div.contentfull.right {margin-left:0.6em;}
+div.contenthalf {width:23.9em;}
+div.contentwide {width:36em;}
+div.contentnarrow {width:12.5em;}
+div.contentfull {padding:0 1.3em; min-height: 3em;}
+
+/* dividers */
+div.dividertop {border-top:dotted 1px #ccc;}
+div.dividerbottom {border-bottom:dotted 1px #ccc;}
+div.dividerright {border-bottom:dotted 1px #ccc;}
+div.dividerleft {border-left:solid 1px #ccc;}
+
+/* Link buttons */
+a.linkbutton {background:url(images/buttonmiddle.png) repeat-x;position:relative;height:44px;display:block; float:left;
+	padding:0 14px;text-decoration:none; font-size:1.3em; color:#2c9e2c;}
+a.linkbutton span.left {background:url(images/buttonleft.png) top left no-repeat;position:absolute;left:0; top:0;
+	display:block;width:8px; height:44px;}
+a.linkbutton span.middle {position:relative; top:11px;}
+a.linkbutton span.right {background:url(images/buttonright.png) top right no-repeat;position:absolute;right:0; top:0;
+		display:block;width:8px; height:44px;}
+
+/* tick list */
+ul.ticklist {list-style-type:none;margin:0 0 1.5em 0;padding:0;}
+ul.ticklist li {margin:0;padding:0 0 8px 29px; background:url(images/tick.png) no-repeat 2px 2px;}
+
+/* info boxes */
+div.infobox img, div.infoboxpurple img {border:none;}
+div.infobox {background:#f7eaf8; padding:6px; text-align:center; border:dotted 1px #e4c8e5;}
+div.infoboxpurple p, div.infoboxgreen p, div.infoboxblue p {margin-top:0.4em}
+div.infoboxpurple h3, div.infoboxgreen h3, div.infoboxblue h3 {font-weight:bold;}
+div.infoboxpurple {border:solid 1px #e4c8e5;background:#f1e2f2 url(images/purplefade.png) repeat-x;}
+div.infoboxgreen {border:solid 1px #ceead0;background:#e2ffeb url(images/greenfade.png) repeat-x;}
+div.infoboxblue {border:solid 1px #c1deff;background:#e9f3fe url(images/bluefade.png) repeat-x;}
+span.infobottom {display:block; height:2px!important; overflow:hidden;width:100%; position:absolute; bottom:0; left:0;}
+div.infoboxpurple span.infobottom {background:url(images/purplefadebottom.png)}
+div.infoboxgreen span.infobottom {background:url(images/greenfadebottom.png); }
+div.infoboxblue span.infobottom {background:url(images/bluefadebottom.png); }
+
+div.contentfull.infoboxpurple, div.contentfull.infoboxgreen, div.contentfull.infoboxblue
+    {padding-top:1.6em;}
+
+/* sidebar */
+div.sidebar h4 {color:#1c6f1b; margin-bottom:0.3em;}
+div.sidebar a, #divSidebar a:visited {color:#333;text-decoration:none;}
+div.sidebar a:hover {color:#2c4a9e!important}
+div.sidebar ul {margin-bottom:1.1em;}
+div.sidebar ul ul {margin-bottom:0;}
+
+#sidebar_rss {
+    margin-bottom: 1em;
+    margin-top: 0;
+}
+#sidebar_rss img {
+    padding: 0;
+}
+
+/* tech spec boxes */
+div.techspec {background:#efefef; font-size:0.8em; border-top:solid 4px #ddd; border-bottom:solid 4px #ddd; color:#333; margin-bottom:1em;}
+div.techspec ul {list-style-type:square;margin:0 0 0 1.5em;padding:1%; float:left; width:28%;}
+
+/* citations, quotes etc */
+blockquote, quote {font-style:italic;}
+blockquote {padding:0 0 0.3em 0;margin:0;}
+cite {font-style:normal; font-size:0.9em;}
+
+/* Product pages */
+#divProductHeadline a.linkbutton {float:none; margin:0 20px;}
+#divProductHeadline p {font-size:1.3em;}
+div.productdetail dl {float:left; width:50%;}
+div.productdetail dt {font-weight:bold;}
+
+/* Blog */
+div.post {margin-bottom:1.5em;}
+#divElsewhere {margin-top:1em;}
+
+/* images */
+img {border:dotted 1px #ccc; padding:6px;}
+ul img {border:none;}
+
+/* highlight */
+span.highlight {padding: 0 4px; background:#ffffaa;}
+
+/* Hero section */
+#divHero {border:solid 1px #e4c8e5;position:relative; margin-top:1.5em; margin-bottom:1.2em;padding-bottom:1em;
+width:53.2em;padding-left:0;padding-right:0;}
+#divHero h3 {padding-top:0;}
+#divHero h3, #divHero p {padding-left:370px; position:relative;top:-0.4em; padding-right:1em;}
+#divHero p {margin-bottom:0; margin-top:0.4em;}
+#divHero img {position:absolute; top:-27px; left:3px;}
+
+/* Projects list */
+ul#project_list {
+    font-size: 1.1em;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ul#project_list li {
+    margin: 1em 0 1.5em 0;
+}
+
+/* Projects page */
+div.projects-entry {
+    clear: both;
+    margin: 1em 0;
+    border-bottom: solid 1px #dfdfdf;
+}
+div.projects-entry:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+div.projects-entry div {
+    width: 129px;
+}
+
+div.projects-entry h3 {
+    font-size: 1.1em;
+    margin-top: 0;
+}
+
+div.projects-entry h3 img {
+    float: left;
+    margin: 0 15px 5px 0;
+    border:dotted 1px #ccc;
+}
+
+/* Footer */
+#divFooter {font-size:0.8em;}
+#divFooter dl {border-top:solid 1px #dfdfdf;border-bottom:solid 1px #dfdfdf;
+        padding-top:0.7em;height:10em;}
+#divFooter dt {float:left; width:13em; color:#616161;clear:left;font-weight:bold;}
+#divFooter dd {float:left; width:50em; padding-bottom:0.5em;}
+#divFooter dd ul li {padding-right:0.8em; line-height:1.5em;}
+#divFooter p {margin:0;padding:0;color:#616161; position:relative; top:-0.4em; clear: both; }
+
+/* Styles for wordpress elements */
+.wp-caption.alignleft { float: left;margin: 0px 15px 5px 0px;}
+.wp-caption.alignright { float: right;margin: 0px 0px 5px 15px;}
