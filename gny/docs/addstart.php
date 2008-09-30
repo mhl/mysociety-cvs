@@ -40,7 +40,7 @@ class addstart_page extends pagebase {
 		$this->assign("not_local_count", sizeof($game_groups_not_local));		
 		$this->assign("total_count", sizeof($game_groups_total));				
 		$this->assign("user_count", sizeof($game_users));	
-		$this->assign("percent_complete", sizeof($game_groups_total) / 100 * (sizeof($game_groups_not_local) + sizeof($game_groups_not_local)));
+		$this->assign("percent_complete", sizeof($game_groups_total) / 100 * ((sizeof($game_groups_not_local) + sizeof($game_groups_not_local))));
 		$this->assign("total_sorted", sizeof($game_groups_not_local) + sizeof($game_groups_not_local));		
 		$this->assign("league_table", $this->get_league_table());			
 		$this->assign('game_name', $game_name);		
