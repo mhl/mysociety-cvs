@@ -3,7 +3,7 @@
     <div class="contentwide">
 		<h3>Help map some random groups</h3>
 		<p class="flattop">
-			There are nearly 30,000 yahoo groups containing the word 'residents' and over 15,000 with the word 'neighbo<strike>u</strike>rhood' in, but we've no idea what towns and cities they actually cover. That means loads of local knowlage locked away where no one can find it (boo). So we need your help to map them! (don't worry google, you're next).
+			There are nearly 30,000 yahoo groups containing the word 'residents' and over 15,000 with the word 'neighbo<strike>u</strike>rhood' in, but we've no idea what towns and cities they actually cover. That means loads of local knowledge locked away where no one can find it (boo). So we need your help to map them! (don't worry google, you're next).
 		</p>
 		<h4>How it works</h4>
 		<p class="flattop">

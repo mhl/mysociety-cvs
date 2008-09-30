@@ -81,7 +81,7 @@ class index_page extends pagebase {
 	private function get_representative_groups(){
 
 		//get a representative sample of new groups from round the world
-		$americas_groups = $this->groups_by_box(array(-150, 60, -30, -50), 2);
+		$americas_groups = $this->groups_by_box(array(-150, 60, -30, -50), 4);
 		$european_groups = $this->groups_by_box(array(-5, 70, 50, 30), 1);
 		$african_groups = $this->groups_by_box(array(-15, 25, 60, -40), 1);
 		$asian_groups = $this->groups_by_box(array(60, 90, 170, -60), 2);			
