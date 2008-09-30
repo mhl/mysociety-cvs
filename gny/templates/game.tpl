@@ -20,6 +20,12 @@
 
         <div class="contentfull">
 			
+			<div id="divAddedCount">
+				You have added
+				<span id="spnAddedCount">{$added_count}</span> <span id="spnAddedText">{if $added_count == 1}group{else}groups{/if}</span> 
+				<a href="{$www_server}/add/start/">(view the league table)</a>
+			</div>
+			
 			<!-- thanks -->
 			<div id="divThanks">
 				

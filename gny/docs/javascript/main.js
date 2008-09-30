@@ -192,6 +192,9 @@ function gameSavedCallback(oResponse){
 
     if(oResult == true){
         
+        //hide stuff
+        hideGameDetail();
+        
         //show thanks
         $('divThanks').style.display = "block";
         $('divThanks').innerHTML = "Thanks :) <em>" + $('hidGroupName').value + " </em>has been added to Groups Near You! Add another?";
@@ -207,7 +210,6 @@ function gameSavedCallback(oResponse){
         }
         
         //reset the game
-        hideGameDetail();
         setupGame();
     }else{
         alert('Sorry, something went wrong saving this group. Please try again, or click cancel and pick another group')
