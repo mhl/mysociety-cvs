@@ -75,7 +75,7 @@
 
 	<div class="contentnarrow">
 		<h4>Overall progress</h4>
-		<img src="http://chart.apis.google.com/chart?chs=300x150&amp;cht=gom&amp;chd=t:{math equation="total / 100 *  sorted" total=$total_count sorted=$total_sorted}&amp;chco=ffffff,FF6600"/>
+		<img src="http://chart.apis.google.com/chart?chs=300x150&amp;cht=gom&amp;chd=t:{math equation="100 / total *  sorted" total=$total_count sorted=$total_sorted}&amp;chco=ffffff,FF6600"/>
 		<strong>{$total_sorted}</strong> of <strong>{$total_count}</strong> potential groups have been sorted or mapped
 
 	</div>
