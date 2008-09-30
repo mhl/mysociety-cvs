@@ -178,7 +178,7 @@ function validateGame(){
     }else{
         showWarning(sWarnings);
     }
-    
+
 }
 
 function gameNotLocal(){
