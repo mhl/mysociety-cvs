@@ -59,6 +59,7 @@ function setupGameCallback(oResponse){
 
         //reset fields
         $('hidZoomLevel').value = 2;
+        $('ddlCategory').value = 0;
 
 
         //set focus to text
