@@ -36,7 +36,7 @@
         <ul id="ulMenu" class="collapse">
             <li {if $menu_item =="about"}class="selected"{/if}><a href="{$www_server}/about/">{l}About{/l}</a></li>                                     
             <li {if $menu_item =="faq"}class="selected"{/if}><a href="{$www_server}/faq/"><acronym title="{l}Frequently asked questions{/l}">{l}FAQs{/l}</acronym></a></li>                
-            <li {if $menu_item =="add"}class="selected"{/if}><a href="{$www_server}/add/about/">{l}Add a group{/l}</a></li>                        
+            <li {if $menu_item =="add"}class="selected"{/if}><a href="{$www_server}/add/start/">{l}Add a group{/l}</a></li>                        
             <li {if $menu_item =="search"}class="selected"{/if}><a href="{$www_server}">{l}Search{/l}</a></li>            
         </ul>
     </div>

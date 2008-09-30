@@ -57,7 +57,7 @@
                 We need *your* help to map all those hidden neighbourhood email lists, forums and community blogs where you live.
                Help us map some random groups from the web, or add a group you know about.
             {/l}
-            <a class="largelinkbutton" href="{$www_server}/add/about/">
+            <a class="largelinkbutton" href="{$www_server}/add/start/">
                 <span class="left">&nbsp;</span>
                 <span class="middle">{l}Add a group now{/l} &raquo;</span>                
                 <span class="right">&nbsp;</span>                
