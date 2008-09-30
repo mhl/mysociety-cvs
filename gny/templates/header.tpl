@@ -28,7 +28,7 @@
 <body onload="{if $use_body_script == true && $onloadscript !=""}{$onloadscript}{/if};">
     <div id="divBeta">
         This site is currently in beta (testing mode), we need your local knowledge to help it grow! 
-        <a href="{$www_server}/add/about/">Add a group now</a>.
+        <a href="{$www_server}/add/start/">Add a group now</a>.
     </div>
     <div id="divHeader">
         <h1><a href="{$www_server}"><span class="hide">{l}GroupsNearYou.com{/l}</span></a></h1>
