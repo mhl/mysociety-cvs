@@ -198,7 +198,7 @@ function searchmapCallback(oResponse){
 	get('imgMapLoading').style.display = "none";
 	
 	var oResult = eval('(' + oResponse.responseText + ')');
-	if (oResponse != false) {
+	if (oResult != false) {
 		map.setCenter(new GLatLng(oResult['location'][1], oResult['location'][0]),oResult['zoom']);
 	}else{
 		showWarning('Sorry, we couldent find any results for <em>' + get('txtSearchMap').value + '</em>');

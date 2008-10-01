@@ -45,10 +45,11 @@
 					&nbsp;
 				</div>
 				<div class="buttons">
-					<small>(Windows &amp; Unix: Alt + n, Alt + k, Alt + y / Mac: Ctrl + n, Ctrl + k, Ctrl + y)</small>					
 					<input type="button" onclick="gameNotLocal();setupGame();" accesskey="n" value="Nope"/>
 					<input type="button" onclick="setupGame();" accesskey="k" value="Unsure, skip it"/>					
 					<input type="button" onclick="showGameDetail();" accesskey="y" value="Yes it does!"/>
+					<br/>
+					<small>(Windows &amp; Unix: Alt + n, Alt + k, Alt + y / Mac: Ctrl + n, Ctrl + k, Ctrl + y)</small>					
 				</div>
 			</div>
 
@@ -64,7 +65,7 @@
 					<li>
 						<textarea id="txtGameDetail" taborder="20"></textarea>
 					</li>
-					<li>
+					<li id="liCategory">
 						<label for="ddlCategory">Choose a category</label>
 	                    <select id="ddlCategory" taborder="30">
 								<option value="0">&nbsp;</option>
@@ -107,9 +108,10 @@
 		        </div>
 				<!-- Buttons -->
 				<div class="buttons">
-					<small>(Windows &amp; Unix: Alt + c, Alt + s / Mac: Ctrl + c, Ctrl + s)</small>										
 					<input type="button" accesskey="c" onclick="hideGameDetail();setupGame();" value="Cancel" taborder="90"/>
 					<input type="button" accesskey="s" onclick="validateGame();" value="Save &amp; do another" taborder="100" id="saveGame" />
+					<br/>
+					<small>(Windows &amp; Unix: Alt + c, Alt + s / Mac: Ctrl + c, Ctrl + s)</small>										
 				</div>
 			</div>
 			
