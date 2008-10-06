@@ -68,7 +68,7 @@
 		print $json->encode($return);
 
 	}
-	
+
 	function save_group(){
 
 		$success = true;
@@ -85,13 +85,13 @@
 					array('guid', '=', $hash), 
 					array('matched', '=', 0)
 				));
-				
+
 			if(sizeof($game_groups) == 1){
 				$game_group = $game_groups[0];
 			}else{
 				$success = false;
-				error_log('couldent frind game group from guid');
-			}			
+				error_log('couldn\'t find game group from guid: ' . $hash);
+			}
 		}else{
 			$success = false;
 				error_log('no guid passed');			
