@@ -57,12 +57,13 @@ $wgEnotifUserTalk = true; # UPO
 $wgEnotifWatchlist = true; # UPO
 $wgEmailAuthentication = true;
 
+require_once '../conf/general';
 $wgDBtype           = "mysql";
-$wgDBserver         = "localhost";
-$wgDBname           = "ukcodwww_staging";
-$wgDBuser           = "ukcodwww_staging";
-$wgDBpassword       = "XXXXXXXX";
-$wgDBport           = "5432";
+$wgDBserver         = OPTION_UKCOD_DB_HOST;
+$wgDBname           = OPTION_UKCOD_DB_NAME;
+$wgDBuser           = OPTION_UKCOD_DB_USER;
+$wgDBpassword       = OPTION_UKCOD_DB_PASS;
+$wgDBport           = OPTION_UKCOD_DB_PORT;
 $wgDBprefix         = "";
 
 # Schemas for Postgres
