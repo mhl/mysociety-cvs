@@ -63,7 +63,7 @@ $wgDBserver         = OPTION_UKCOD_DB_HOST;
 $wgDBname           = OPTION_UKCOD_DB_NAME;
 $wgDBuser           = OPTION_UKCOD_DB_USER;
 $wgDBpassword       = OPTION_UKCOD_DB_PASS;
-$wgDBport           = OPTION_UKCOD_DB_PORT;
+$wgDBport           = ""; # Unused for MySQL
 $wgDBprefix         = "";
 
 # Schemas for Postgres
