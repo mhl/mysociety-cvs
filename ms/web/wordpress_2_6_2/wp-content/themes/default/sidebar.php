@@ -16,7 +16,9 @@
 <?php
 if (is_category()) {
 	$cat = intval( get_query_var('cat') );
-	echo '<p id="sidebar_rss"><a href="', get_category_feed_link($cat), '"><img align="top" src="/feed.png" alt=""> RSS feed</a></p>';
+	echo '<p id="sidebar_rss"><a href="', get_category_feed_link($cat), '"><img align="top" src="/feed.png" alt=""> RSS feed for this category</a></p>';
+} else {
+	echo '<p id="sidebar_rss"><a href="', bloginfo('rss2_url'), '"><img align="top" src="/feed.png" alt=""> RSS feed</a></p>';
 }
 ?>
 

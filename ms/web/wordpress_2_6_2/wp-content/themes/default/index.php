@@ -1,18 +1,19 @@
-<?php get_header(); ?>
+<?php
 
-	<div class="contentfull">
-		<?php if (have_posts()) : ?>
+get_header();
 
-		<h1 class="pagetitle">mySociety blog</h1>
-	</div>
+if (have_posts()) : ?>
+
+	<h1 class="pagetitle">mySociety blog</h1>
 	<div class="contentwide">
 
+<?php
+    if (is_category('Projects')) {
+        $posts = query_posts($query_string . '&orderby=title&order=asc&posts_per_page=-1');
+    }
 
-<?php if (is_category('Projects')) {
-     $posts = query_posts($query_string . '&orderby=title&order=asc&posts_per_page=-1');
-} 
+    while (have_posts()) : the_post();
 ?>
-		<?php while (have_posts()) : the_post(); ?>
 		<div class="post dividerbottom">
 				<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 				<small><?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong></small>
@@ -31,18 +32,18 @@
 			<div class="alignleft"><?php next_posts_link('&laquo; Older Entries') ?></div>
 			<div class="alignright"><?php previous_posts_link('Newer Entries &raquo;') ?></div>
 		</div>
+	</div>
 
-	<?php else : ?>
+<?php else : ?>
 
+	<div class="contentfull">
 		<h2 class="center">Not Found</h2>
 		<?php include (TEMPLATEPATH . '/searchform.php'); ?>
-
-	<?php endif; ?>
-
 	</div>
-	
 
-	<?php get_sidebar(); ?>
+<?php endif;
 	
-	<br class="clear"/>
-<?php get_footer(); ?>
+get_sidebar();
+echo '<br class="clear"/>';
+get_footer();
+
