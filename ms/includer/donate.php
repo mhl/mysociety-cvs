@@ -121,10 +121,10 @@
 	<p>We'll collect your name and address, and then give you our BACs details or let you download a standing order form.</p>
 
 	<p>I want all donations I make to UK Citizens Online Democracy from this date until further notice to be Gift Aid donations:
-	<input type="radio" id="giftaid_yes" name="giftaid" value="Yes">
-	<label for="giftaid_yes">Yes</label>
-	<input type="radio" id="giftaid_no" name="giftaid" value="No" checked>
-	<label for="giftaid_no">No</label>
+	<input type="radio" id="giftaid_yes_o" name="giftaid" value="Yes">
+	<label for="giftaid_yes_o">Yes</label>
+	<input type="radio" id="giftaid_no_o" name="giftaid" value="No" checked>
+	<label for="giftaid_no_o">No</label>
 
 	(<a href="#giftaid">?</a>)</p>
 
