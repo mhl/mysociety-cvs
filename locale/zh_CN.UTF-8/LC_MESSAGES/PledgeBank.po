@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-10-28 14:36+0000\n"
+"POT-Creation-Date: 2008-11-03 09:36+0000\n"
 "PO-Revision-Date: 2008-04-13 11:20-0600\n"
 "Last-Translator: Oliver Ding <swordi@gmail.com>\n"
 "Language-Team: Chinese <team@pledgebank.com>\n"
@@ -1522,8 +1522,8 @@ msgstr "适用于任何国家及地区！"
 msgid "Postcode:"
 msgstr "邮编："
 
-#: pb/phplib/fns.php:517 pb/phplib/microsites.php:922 pb/web/pb.js:134
-#: pb/web/pb.js:136
+#: pb/phplib/fns.php:517 pb/phplib/microsites.php:922 pb/web/pb.js:133
+#: pb/web/pb.js:135
 msgid "Town:"
 msgstr "城市："
 
@@ -1602,7 +1602,7 @@ msgstr "对不起，我们不知道'%s' 在哪里。我们知道这些相近的�
 msgid "If it isn't any of those, try a different spelling, or the name of another nearby town:"
 msgstr "如果其中没有一个是你想要的，试试另外的拼音，或者临近的一个城市："
 
-#: pb/phplib/gaze-controls.php:129 pb/web/new.php:1123 pb/web/pb.js:111
+#: pb/phplib/gaze-controls.php:129 pb/web/new.php:1123 pb/web/pb.js:110
 msgid "(choose one)"
 msgstr "(选择一个)"
 
@@ -1618,7 +1618,7 @@ msgstr "---------------------------------------------------"
 msgid "Now please select one of the possible places; if none of them is right, please type the name of another nearby place"
 msgstr "现在请选择一个可能的地方。如果其中没有一个地名是你所想要的，请输入临近的另外一个地名。"
 
-#: pb/phplib/gaze-controls.php:233 pb/web/pb.js:147
+#: pb/phplib/gaze-controls.php:233 pb/web/pb.js:146
 msgid "Place name:"
 msgstr "地名："
 
@@ -2020,7 +2020,7 @@ msgid "Address"
 msgstr "地址"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:136 pb/phplib/page.php:416
+#: pb/phplib/page.php:136 pb/phplib/page.php:419
 msgid "PledgeBank"
 msgstr "祈愿行网站(PledgeBank.com)"
 
@@ -6256,32 +6256,32 @@ msgstr "<Date>"
 msgid "other local person"
 msgstr "其它的本地人"
 
-#: pb/web/pb.js:111
+#: pb/web/pb.js:110
 msgid "Global"
 msgstr "全球"
 
-#: pb/web/pb.js:111
+#: pb/web/pb.js:110
 msgid "(separator)"
 msgstr "(separator)"
 
-#: pb/web/pb.js:129 pb/web/pb.js:130 pb/web/pb.js:133
+#: pb/web/pb.js:128 pb/web/pb.js:129 pb/web/pb.js:132
 msgid "Postcode or town:"
 msgstr "邮编或地名："
 
-#: pb/web/pb.js:131 pb/web/pb.js:132 pb/web/pb.js:135
+#: pb/web/pb.js:130 pb/web/pb.js:131 pb/web/pb.js:134
 msgid "Town or zipcode:"
 msgstr "城镇或邮编"
 
-#: pb/web/pb.js:144 pb/web/pb.js:145 pb/web/pb.js:146
+#: pb/web/pb.js:143 pb/web/pb.js:144 pb/web/pb.js:145
 msgid "Place name or zipcode:"
 msgstr "地名或邮编："
 
-#: pb/web/pb.js:211
+#: pb/web/pb.js:210
 #, python-format
 msgid "You have used %d characters; %d remain."
 msgstr "你已经输入了 %d 个字符；还可以输入%d 个字符。"
 
-#: pb/web/pb.js:213
+#: pb/web/pb.js:212
 #, python-format
 msgid "You have used %d characters, which is %d more than will fit in an SMS. Please make your message shorter."
 msgstr "你已经输入了%d个字符，比一条短信可输入的数目多出了%d 个。请简短你的信息。"
@@ -7326,6 +7326,7 @@ msgstr ""
 "<?=$values['local_alert_url']?>\n"
 
 #: pb/templates/emails/survey
+#, fuzzy
 msgid ""
 "Subject: Pledge survey - '<?=$values['title']?>' at PledgeBank.com\n"
 "\n"
@@ -7334,7 +7335,7 @@ msgid ""
 "This is just a quick automatic email to ask: have you carried out\n"
 "your pledge yet?\n"
 "\n"
-"If you HAVE done your pledge, please click the link below:\n"
+"If you HAVE done your pledge, please click the link below to let us know:\n"
 "\n"
 "    <?=$values['survey_url']?>\n"
 "\n"
@@ -7343,9 +7344,11 @@ msgid ""
 "\n"
 "Obviously, some pledges might take a while until you can carry them\n"
 "out; if so, you can keep this email safe until you do.  Or, you can\n"
-"say you've done a pledge at any time by going to My Pledges.\n"
+"say you've done a pledge at any time by logging in to PledgeBank and\n"
+"going to My Pledges.\n"
 "\n"
-"Just to remind you, the pledge, created by <?=$values['creator_name']?>, reads:\n"
+"Just to remind you, the pledge, created by <?=$values['creator_name']?>,\n"
+"can be found at <?=$values['pledge_url']?> and reads:\n"
 "'<?=$values['sentence_first']?>'\n"
 "\n"
 "<?=$values['signature']?>\n"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pledgebank-de\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-10-28 14:36+0000\n"
+"POT-Creation-Date: 2008-11-03 09:36+0000\n"
 "PO-Revision-Date: 2007-10-12 23:32+0200\n"
 "Last-Translator: Felix Zesch <post@felix-zesch.de>\n"
 "Language-Team:  <de@li.org>\n"
@@ -1546,8 +1546,8 @@ msgstr "Geht in jedem Land!"
 msgid "Postcode:"
 msgstr "Postleitzahl:"
 
-#: pb/phplib/fns.php:517 pb/phplib/microsites.php:922 pb/web/pb.js:134
-#: pb/web/pb.js:136
+#: pb/phplib/fns.php:517 pb/phplib/microsites.php:922 pb/web/pb.js:133
+#: pb/web/pb.js:135
 msgid "Town:"
 msgstr "Stadt"
 
@@ -1626,7 +1626,7 @@ msgstr "Verzeihung, wir wissen nicht, wo %s liegt. Wir kennen diese Orte mit ein
 msgid "If it isn't any of those, try a different spelling, or the name of another nearby town:"
 msgstr "Wenn keiner richtig ist, probieren Sie eine andere Schreibweise oder den Namen einer Stadt in der Nähe"
 
-#: pb/phplib/gaze-controls.php:129 pb/web/new.php:1123 pb/web/pb.js:111
+#: pb/phplib/gaze-controls.php:129 pb/web/new.php:1123 pb/web/pb.js:110
 msgid "(choose one)"
 msgstr "(eins auswählen)"
 
@@ -1642,7 +1642,7 @@ msgstr "---------------------------------------------------"
 msgid "Now please select one of the possible places; if none of them is right, please type the name of another nearby place"
 msgstr "Bitte wählen Sie nun einen der möglichen Orte aus. Wenn keiner von ihnen richtig ist, geben Sie bitte den Namen eines nahegelegenen Orts ein."
 
-#: pb/phplib/gaze-controls.php:233 pb/web/pb.js:147
+#: pb/phplib/gaze-controls.php:233 pb/web/pb.js:146
 msgid "Place name:"
 msgstr "Ort:"
 
@@ -2064,7 +2064,7 @@ msgid "Address"
 msgstr "Ihre Adresse:"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:136 pb/phplib/page.php:416
+#: pb/phplib/page.php:136 pb/phplib/page.php:419
 msgid "PledgeBank"
 msgstr "PledgeBank"
 
@@ -6549,33 +6549,33 @@ msgstr "<Datum>"
 msgid "other local person"
 msgstr "andere in der Nähe wohnende Menschen"
 
-#: pb/web/pb.js:111
+#: pb/web/pb.js:110
 msgid "Global"
 msgstr "Weltweit"
 
-#: pb/web/pb.js:111
+#: pb/web/pb.js:110
 msgid "(separator)"
 msgstr " (Trenner)"
 
-#: pb/web/pb.js:129 pb/web/pb.js:130 pb/web/pb.js:133
+#: pb/web/pb.js:128 pb/web/pb.js:129 pb/web/pb.js:132
 msgid "Postcode or town:"
 msgstr "Postleitzahl oder Stadt"
 
-#: pb/web/pb.js:131 pb/web/pb.js:132 pb/web/pb.js:135
+#: pb/web/pb.js:130 pb/web/pb.js:131 pb/web/pb.js:134
 msgid "Town or zipcode:"
 msgstr ""
 
-#: pb/web/pb.js:144 pb/web/pb.js:145 pb/web/pb.js:146
+#: pb/web/pb.js:143 pb/web/pb.js:144 pb/web/pb.js:145
 #, fuzzy
 msgid "Place name or zipcode:"
 msgstr "Ort:"
 
-#: pb/web/pb.js:211
+#: pb/web/pb.js:210
 #, python-format
 msgid "You have used %d characters; %d remain."
 msgstr "Sie haben %d Zeichen benutzt; %d verfügbar."
 
-#: pb/web/pb.js:213
+#: pb/web/pb.js:212
 #, python-format
 msgid "You have used %d characters, which is %d more than will fit in an SMS. Please make your message shorter."
 msgstr "Sie haben %d Zeichen benutzt, %d mehr, als in eine SMS passen. Bitte kürzen Sie die Nachricht."
@@ -7664,7 +7664,7 @@ msgid ""
 "This is just a quick automatic email to ask: have you carried out\n"
 "your pledge yet?\n"
 "\n"
-"If you HAVE done your pledge, please click the link below:\n"
+"If you HAVE done your pledge, please click the link below to let us know:\n"
 "\n"
 "    <?=$values['survey_url']?>\n"
 "\n"
@@ -7673,9 +7673,11 @@ msgid ""
 "\n"
 "Obviously, some pledges might take a while until you can carry them\n"
 "out; if so, you can keep this email safe until you do.  Or, you can\n"
-"say you've done a pledge at any time by going to My Pledges.\n"
+"say you've done a pledge at any time by logging in to PledgeBank and\n"
+"going to My Pledges.\n"
 "\n"
-"Just to remind you, the pledge, created by <?=$values['creator_name']?>, reads:\n"
+"Just to remind you, the pledge, created by <?=$values['creator_name']?>,\n"
+"can be found at <?=$values['pledge_url']?> and reads:\n"
 "'<?=$values['sentence_first']?>'\n"
 "\n"
 "<?=$values['signature']?>\n"

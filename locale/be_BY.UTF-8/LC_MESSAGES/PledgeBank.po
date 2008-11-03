@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-10-28 14:36+0000\n"
+"POT-Creation-Date: 2008-11-03 09:36+0000\n"
 "PO-Revision-Date: 2008-02-17 17:22+0100\n"
 "Last-Translator: Alaksiej Lavončyk <aliaxej@gmail.com>\n"
 "Language-Team: Беларуская (Bełaruskaja) <aliaxej@gmail.com>\n"
@@ -1544,8 +1544,8 @@ msgstr "Працуе ў любой краіне!"
 msgid "Postcode:"
 msgstr "Індэкс:"
 
-#: pb/phplib/fns.php:517 pb/phplib/microsites.php:922 pb/web/pb.js:134
-#: pb/web/pb.js:136
+#: pb/phplib/fns.php:517 pb/phplib/microsites.php:922 pb/web/pb.js:133
+#: pb/web/pb.js:135
 msgid "Town:"
 msgstr "Горад/мястэчка:"
 
@@ -1624,7 +1624,7 @@ msgstr "Нажаль, мы ня ведаем, што гэта за '%s'. Абя�
 msgid "If it isn't any of those, try a different spelling, or the name of another nearby town:"
 msgstr "Калі нічога не дапасоўвае, паспрабуйце напісаць імя інакш або ўвядзіце імя іншага места ў навакольлі:"
 
-#: pb/phplib/gaze-controls.php:129 pb/web/new.php:1123 pb/web/pb.js:111
+#: pb/phplib/gaze-controls.php:129 pb/web/new.php:1123 pb/web/pb.js:110
 msgid "(choose one)"
 msgstr "(абярыце штосьці)"
 
@@ -1640,7 +1640,7 @@ msgstr "---------------------------------------------------"
 msgid "Now please select one of the possible places; if none of them is right, please type the name of another nearby place"
 msgstr "Зараз калі ласка абярыце месца, што пасуе; калі нічога не пасуе, увядзіце назоў бліжэйшага месца ўручную"
 
-#: pb/phplib/gaze-controls.php:233 pb/web/pb.js:147
+#: pb/phplib/gaze-controls.php:233 pb/web/pb.js:146
 msgid "Place name:"
 msgstr "Назоў:"
 
@@ -2067,7 +2067,7 @@ msgid "Address"
 msgstr "Адрэса"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:136 pb/phplib/page.php:416
+#: pb/phplib/page.php:136 pb/phplib/page.php:419
 msgid "PledgeBank"
 msgstr "PledgeBank"
 
@@ -6822,32 +6822,32 @@ msgstr "<Дата>"
 msgid "other local person"
 msgstr "другі месьціч"
 
-#: pb/web/pb.js:111
+#: pb/web/pb.js:110
 msgid "Global"
 msgstr "Глябальна"
 
-#: pb/web/pb.js:111
+#: pb/web/pb.js:110
 msgid "(separator)"
 msgstr "(знак разьдзелу)"
 
-#: pb/web/pb.js:129 pb/web/pb.js:130 pb/web/pb.js:133
+#: pb/web/pb.js:128 pb/web/pb.js:129 pb/web/pb.js:132
 msgid "Postcode or town:"
 msgstr "Індэкс або места:"
 
-#: pb/web/pb.js:131 pb/web/pb.js:132 pb/web/pb.js:135
+#: pb/web/pb.js:130 pb/web/pb.js:131 pb/web/pb.js:134
 msgid "Town or zipcode:"
 msgstr "Места або паштовы індэкс:"
 
-#: pb/web/pb.js:144 pb/web/pb.js:145 pb/web/pb.js:146
+#: pb/web/pb.js:143 pb/web/pb.js:144 pb/web/pb.js:145
 msgid "Place name or zipcode:"
 msgstr "Імя месца або код:"
 
-#: pb/web/pb.js:211
+#: pb/web/pb.js:210
 #, python-format
 msgid "You have used %d characters; %d remain."
 msgstr "Скарыстана %d сымбаляў; засталося %d."
 
-#: pb/web/pb.js:213
+#: pb/web/pb.js:212
 #, python-format
 msgid "You have used %d characters, which is %d more than will fit in an SMS. Please make your message shorter."
 msgstr "Паведамленьне ўтрымлівае %d сымбаляў, што на %d болей, чым зьмяшчае адна смска. Калі ласка, скараціце паведамленьне."
@@ -7947,6 +7947,7 @@ msgstr ""
 "<?=$values['local_alert_url']?>\n"
 
 #: pb/templates/emails/survey
+#, fuzzy
 msgid ""
 "Subject: Pledge survey - '<?=$values['title']?>' at PledgeBank.com\n"
 "\n"
@@ -7955,7 +7956,7 @@ msgid ""
 "This is just a quick automatic email to ask: have you carried out\n"
 "your pledge yet?\n"
 "\n"
-"If you HAVE done your pledge, please click the link below:\n"
+"If you HAVE done your pledge, please click the link below to let us know:\n"
 "\n"
 "    <?=$values['survey_url']?>\n"
 "\n"
@@ -7964,9 +7965,11 @@ msgid ""
 "\n"
 "Obviously, some pledges might take a while until you can carry them\n"
 "out; if so, you can keep this email safe until you do.  Or, you can\n"
-"say you've done a pledge at any time by going to My Pledges.\n"
+"say you've done a pledge at any time by logging in to PledgeBank and\n"
+"going to My Pledges.\n"
 "\n"
-"Just to remind you, the pledge, created by <?=$values['creator_name']?>, reads:\n"
+"Just to remind you, the pledge, created by <?=$values['creator_name']?>,\n"
+"can be found at <?=$values['pledge_url']?> and reads:\n"
 "'<?=$values['sentence_first']?>'\n"
 "\n"
 "<?=$values['signature']?>\n"

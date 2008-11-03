@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pledgebank\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-10-28 14:36+0000\n"
+"POT-Creation-Date: 2008-11-03 09:36+0000\n"
 "PO-Revision-Date: 2008-09-15 23:31-0500\n"
 "Last-Translator: Hugo <hugolamoureux@videtron.ca>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -1533,8 +1533,8 @@ msgstr "Ça marche dans tous les pays!"
 msgid "Postcode:"
 msgstr "Code postal&nbsp;:"
 
-#: pb/phplib/fns.php:517 pb/phplib/microsites.php:922 pb/web/pb.js:134
-#: pb/web/pb.js:136
+#: pb/phplib/fns.php:517 pb/phplib/microsites.php:922 pb/web/pb.js:133
+#: pb/web/pb.js:135
 msgid "Town:"
 msgstr "Ville&nbsp;:"
 
@@ -1613,7 +1613,7 @@ msgstr "Désolés, nous ne savons pas où se trouve '%s'. Nous connaissons des v
 msgid "If it isn't any of those, try a different spelling, or the name of another nearby town:"
 msgstr "Si vous ne voyez toujours pas le bon nom, essayez une ortographe différente (peut-être le nom en anglais, si vous le connaissez), ou bien le nom d'une ville voisine&nbsp;:"
 
-#: pb/phplib/gaze-controls.php:129 pb/web/new.php:1123 pb/web/pb.js:111
+#: pb/phplib/gaze-controls.php:129 pb/web/new.php:1123 pb/web/pb.js:110
 msgid "(choose one)"
 msgstr "(en sélectionner un)"
 
@@ -1629,7 +1629,7 @@ msgstr "---------------------------------------------------"
 msgid "Now please select one of the possible places; if none of them is right, please type the name of another nearby place"
 msgstr "Maintenant, sélectionnez un de ces endroits; si aucun d'entre eux ne correspond à ce que vous cherchez, tapez le nom d'une ville voisine"
 
-#: pb/phplib/gaze-controls.php:233 pb/web/pb.js:147
+#: pb/phplib/gaze-controls.php:233 pb/web/pb.js:146
 msgid "Place name:"
 msgstr "Ville&nbsp;:"
 
@@ -2055,7 +2055,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #. TRANS: 'PledgeBank' here is the second part of the title used in the RSS files
-#: pb/phplib/page.php:136 pb/phplib/page.php:416
+#: pb/phplib/page.php:136 pb/phplib/page.php:419
 msgid "PledgeBank"
 msgstr "Promessothèque"
 
@@ -6836,33 +6836,33 @@ msgstr "<Date>"
 msgid "other local person"
 msgstr "autre personne de la région"
 
-#: pb/web/pb.js:111
+#: pb/web/pb.js:110
 msgid "Global"
 msgstr "Global"
 
-#: pb/web/pb.js:111
+#: pb/web/pb.js:110
 msgid "(separator)"
 msgstr "(séparateur)"
 
-#: pb/web/pb.js:129 pb/web/pb.js:130 pb/web/pb.js:133
+#: pb/web/pb.js:128 pb/web/pb.js:129 pb/web/pb.js:132
 msgid "Postcode or town:"
 msgstr "Code postal ou ville&nbsp;:"
 
-#: pb/web/pb.js:131 pb/web/pb.js:132 pb/web/pb.js:135
+#: pb/web/pb.js:130 pb/web/pb.js:131 pb/web/pb.js:134
 msgid "Town or zipcode:"
 msgstr "Ville ou code postal&nbsp;:"
 
-#: pb/web/pb.js:144 pb/web/pb.js:145 pb/web/pb.js:146
+#: pb/web/pb.js:143 pb/web/pb.js:144 pb/web/pb.js:145
 msgid "Place name or zipcode:"
 msgstr "Ville ou code postal&nbsp;:"
 
-#: pb/web/pb.js:211
+#: pb/web/pb.js:210
 #, python-format
 msgid "You have used %d characters; %d remain."
 msgstr "Vous avez utilisé %d caractères; il vous en reste %d."
 
 # Tim Morley : J'ai vu dans une banque de terminologie que SMS en anglais se traduit par Message SMS en français.
-#: pb/web/pb.js:213
+#: pb/web/pb.js:212
 #, python-format
 msgid "You have used %d characters, which is %d more than will fit in an SMS. Please make your message shorter."
 msgstr "Vous avez utilisé %d caractères, donc %d de trop pour tenir dans un message SMS. Veuillez raccourcir votre message."
@@ -7955,7 +7955,7 @@ msgid ""
 "This is just a quick automatic email to ask: have you carried out\n"
 "your pledge yet?\n"
 "\n"
-"If you HAVE done your pledge, please click the link below:\n"
+"If you HAVE done your pledge, please click the link below to let us know:\n"
 "\n"
 "    <?=$values['survey_url']?>\n"
 "\n"
@@ -7964,9 +7964,11 @@ msgid ""
 "\n"
 "Obviously, some pledges might take a while until you can carry them\n"
 "out; if so, you can keep this email safe until you do.  Or, you can\n"
-"say you've done a pledge at any time by going to My Pledges.\n"
+"say you've done a pledge at any time by logging in to PledgeBank and\n"
+"going to My Pledges.\n"
 "\n"
-"Just to remind you, the pledge, created by <?=$values['creator_name']?>, reads:\n"
+"Just to remind you, the pledge, created by <?=$values['creator_name']?>,\n"
+"can be found at <?=$values['pledge_url']?> and reads:\n"
 "'<?=$values['sentence_first']?>'\n"
 "\n"
 "<?=$values['signature']?>\n"
