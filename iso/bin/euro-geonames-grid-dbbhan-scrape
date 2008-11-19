@@ -8,9 +8,10 @@ use DBBahn;
 
 my $url = 'http://ws.geonames.org/cities?north=%d&south=%d&east=%d&west=%d&maxRows=100&lang=de';
 
-my ($n, $e, $s, $w);
-
-$n = 48; $s = $n-1; $e = 14; $w = $e-1;
+my $n = shift;
+my $e = shift;
+my $s = $n - 1;
+my $w = $e - 1;
 my $cities = get(sprintf($url, $n, $s, $e, $w));
 $cities = XMLin($cities, KeyAttr => []);
 $cities = $cities->{geoname};
@@ -22,9 +23,3 @@ foreach (@$cities) {
     print "$_->{geonameId}\t$name\t$_->{lat}\t$_->{lng}\t$dur\n";
     sleep 1;
 }
-exit;
-
-#foreach () {
-#    print $city;
-#    #get_timings($city);
-#}
