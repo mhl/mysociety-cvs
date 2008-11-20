@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.1 2008-11-19 20:32:11 matthew Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.2 2008-11-20 10:10:34 matthew Exp $';
 
 use strict;
 require 5.8.0;
@@ -93,7 +93,7 @@ sub get_timings {
     $results = $results->as_HTML;
     $results =~ />dep<\/td>.*?<\/td>\s*<td[^>]*>\s*(.*?)\s*<\/td>/s;
     my $duration = $1;
-    $duration .= " ($switched)" if $switched;
+    $duration .= "\t$switched" if $switched;
     return $duration;
 }
 

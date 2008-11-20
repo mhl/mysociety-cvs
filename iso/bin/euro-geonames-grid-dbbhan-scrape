@@ -3,23 +3,22 @@
 use strict;
 use warnings;
 use LWP::Simple;
-use XML::Simple;
+use JSON;
 use DBBahn;
 
-my $url = 'http://ws.geonames.org/cities?north=%d&south=%d&east=%d&west=%d&maxRows=100&lang=de';
+my $url = 'http://ws.geonames.org/citiesJSON?north=%d&south=%d&east=%d&west=%d&maxRows=100&lang=de';
 
 my $n = shift;
 my $e = shift;
 my $s = $n - 1;
 my $w = $e - 1;
 my $cities = get(sprintf($url, $n, $s, $e, $w));
-$cities = XMLin($cities, KeyAttr => []);
-$cities = $cities->{geoname};
-use Data::Dumper;
+$cities = from_json($cities, { utf8 => 1 });
+$cities = $cities->{geonames};
 foreach (@$cities) {
     my $name = $_->{name};
     my $dur = get_timings($name);
     utf8::encode($name);
-    print "$_->{geonameId}\t$name\t$_->{lat}\t$_->{lng}\t$dur\n";
+    print "$_->{geonameId}\t$_->{fcode}\t$name\t$_->{population}\t$_->{wikipedia}\t$_->{lat}\t$_->{lng}\t$dur\n";
     sleep 1;
 }
