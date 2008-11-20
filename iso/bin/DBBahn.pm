@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.2 2008-11-20 10:10:34 matthew Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.3 2008-11-20 10:24:43 matthew Exp $';
 
 use strict;
 require 5.8.0;
@@ -87,12 +87,15 @@ sub get_timings {
         return 'Unknown error';
     }
 
+    $html =~ /Pancras International<br \/>(.*?)<\/span>/;
+    my $actual_to = $1;
+    
     my $tree = HTML::TreeBuilder->new_from_content($html);
     my @results = $tree->look_down('class', 'result');
     my $results = $results[1];
     $results = $results->as_HTML;
     $results =~ />dep<\/td>.*?<\/td>\s*<td[^>]*>\s*(.*?)\s*<\/td>/s;
-    my $duration = $1;
+    my $duration = "$1\t$actual_to";
     $duration .= "\t$switched" if $switched;
     return $duration;
 }
