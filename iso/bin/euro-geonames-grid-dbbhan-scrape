@@ -6,19 +6,31 @@ use LWP::Simple;
 use JSON;
 use DBBahn;
 
-my $url = 'http://ws.geonames.org/citiesJSON?north=%d&south=%d&east=%d&west=%d&maxRows=100';
+my $url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=100';
 
-my $n = shift;
-my $e = shift;
-my $s = $n - 1;
-my $w = $e - 1;
-my $cities = get(sprintf($url, $n, $s, $e, $w));
-$cities = from_json($cities, { utf8 => 1 });
-$cities = $cities->{geonames};
-foreach (@$cities) {
-    my $name = $_->{name};
-    my $dur = get_timings($name);
-    utf8::encode($name);
-    print "$_->{geonameId}\t$_->{fcode}\t$name\t$_->{population}\t$_->{wikipedia}\t$_->{lat}\t$_->{lng}\t$dur\n";
-    sleep 1;
+#my $lat = shift;
+#my $lon = shift;
+#for (my $s = $lat - 0.2; $s <= $lat + 0.2; $s += 0.1) {
+#    for (my $w = $lon - 0.2; $w <= $lon + 0.2; $w += 0.1) {
+for (my $s = 36.1; $s <= 70.7; $s += 5) {
+    for (my $w = -9.7; $w <= 27.0; $w += 5) {
+        my $n = $s + 5;
+        my $e = $w + 5;
+        print "$w-$e $s-$n...\n";
+        my $urlF = sprintf($url, $n, $s, $e, $w);
+        my $cities = get($urlF);
+        $cities = from_json($cities, { utf8 => 1 });
+        if ($cities->{status}) {
+            print $cities->{status}{message} . "\n";
+            next;
+        }
+        $cities = $cities->{geonames};
+        foreach (@$cities) {
+            my $name = $_->{name};
+            my $dur = get_timings($name);
+            utf8::encode($name);
+            print "$_->{geonameId}\t$_->{fcode}\t$name\t$_->{population}\t$_->{wikipedia}\t$_->{lat}\t$_->{lng}\t$dur\n";
+            sleep 1;
+        }
+    }
 }
