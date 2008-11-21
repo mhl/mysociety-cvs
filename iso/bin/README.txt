@@ -50,6 +50,12 @@ European train maps
 dbbahn-stations-scrape - get list of European rail stations from bahn.de
 euro-stations-location - use Google Maps to find the location of stations by name
 dbbahn-timings-scrape - grab HTML pages of route queries for a list of stations
+dbbahn-timings-parse - parses HTML pages to get journey durations
+euro-merge-located-duration - script to merge together the above
+eurotrain-journeys-to-grid - mercator projection lat/lon map making C code
+do-euro - script that makes the maps for the European trains
+
+
 
 Not yet used/ready/named properly
 =================================

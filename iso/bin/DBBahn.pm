@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.3 2008-11-20 10:24:43 matthew Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.4 2008-11-21 12:04:16 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -59,21 +59,21 @@ sub get_timings {
     my $html = $m->content();
     if ($html =~ /several possible stops/) {
         if ($html =~ /<option value="([^"]*?)">\Q$to\E<\/option>/) {
-	    $m->submit_form(
-	        form_name => 'formular',
-	        fields => { 'REQ0JourneyStopsZK' => $1 },
-	        button => 'start'
-	    );
-	    $html = $m->content();
-	} elsif ($html =~ /<option value="([^"]*?)">(.*?)<\/option>/) {
-	    $m->submit_form(
-	        form_name => 'formular',
-	        fields => { 'REQ0JourneyStopsZK' => $1 },
-	        button => 'start'
-	    );
-	    $switched = $2;
-	    $html = $m->content();
-	}
+            $m->submit_form(
+                form_name => 'formular',
+                fields => { 'REQ0JourneyStopsZK' => $1 },
+                button => 'start'
+            );
+            $html = $m->content();
+        } elsif ($html =~ /<option value="([^"]*?)">(.*?)<\/option>/) {
+            $m->submit_form(
+                form_name => 'formular',
+                fields => { 'REQ0JourneyStopsZK' => $1 },
+                button => 'start'
+            );
+            $switched = $2;
+            $html = $m->content();
+        }
     }
     $m = undef;
 
