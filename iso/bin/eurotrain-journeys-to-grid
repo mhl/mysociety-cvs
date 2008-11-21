@@ -27,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.6 2008-05-15 22:54:10 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.7 2008-11-21 18:37:07 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -208,6 +208,9 @@ double mintime(const double size, const double E, const double N, const double m
 
     }
 
+    double distance_to_st_pancras = great_circle_distance(51.53, -0.125, lat, lon);
+    fprintf(stderr, "time %lf for E:%d N:%d lat:%f lon:%f pancras:%fm\n", min, E, N, lat, lon, distance_to_st_pancras);
+
     return min;
 }
 
@@ -235,7 +238,6 @@ void do_grid(const bool plain, const int width, const int height, const double m
     for (y = 0; y < height; ++y) {
         for (x = 0; x < width; ++x) {
             double t = mintime(width, (double)x, (double)y, maxwalkdist, walkspeed);
-            fprintf(stderr, "found time %lf for x:%d y:%d\n", t, x, y);
 
             if (plain)
                 printf("%d %d %lf\n", x, y, t);
@@ -258,7 +260,7 @@ int main(int argc, char *argv[]) {
     double query_e, query_n;
 
     // Testing individual functions
-    /*
+/*    
     double mapx, mapy;
     wgs84_to_map(1280, 52.516667, 13.416667, &mapx, &mapy); // Berlin
     printf("Berlin mapx, mapy: %lf %lf\n", mapx, mapy);
@@ -269,11 +271,14 @@ int main(int argc, char *argv[]) {
     double lat, lon;
     map_to_wgs84(1280, 561.303711288889, 638.730705204974, &lat, &lon);
     printf("Berlin reverse: lat, lon: %lf %lf\n", lat, lon); // Berlin
+    map_to_wgs84(1280, 736, 572, &lat, &lon);
+    printf("Test reverse: lat, lon: %lf %lf\n", lat, lon);
     double dist = great_circle_distance(51.507778, -0.128056, 48.866667, 2.333056);
     printf("London to Paris: %lfm\n", dist);
+
     return 0;
     */
-    
+
     fp = stdin;
     srand(time(NULL));
 

@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.4 2008-11-21 12:04:16 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.1 2008-11-21 18:37:08 francis Exp $';
 
 use strict;
 require 5.8.0;

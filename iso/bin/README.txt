@@ -47,15 +47,32 @@ calc-bounding-rectangle-latlon - goes from UK postcode to lat/lon bounding recta
 European train maps
 ===================
 
+Old scrapers 
+------------
+
 dbbahn-stations-scrape - get list of European rail stations from bahn.de
 euro-stations-location - use Google Maps to find the location of stations by name
 dbbahn-timings-scrape - grab HTML pages of route queries for a list of stations
 dbbahn-timings-parse - parses HTML pages to get journey durations
 euro-merge-located-duration - script to merge together the above
+
+Newer simpler scrapers
+----------------------
+
+euro-geonames-grid-dbbhan-scrape - takes city names from geonames, and feeds into bahn.de
+euro-tsv-to-located-duration - converts output of above into input for do-eurotrain below
+
+Map renderer
+------------
+
 eurotrain-journeys-to-grid - mercator projection lat/lon map making C code
-do-euro - script that makes the maps for the European trains
+do-eurotrain - script that makes the maps for the European trains
 
+Real time isochrones with NPTDR
+===============================
 
+nptdr-plan - generate journey times by doing route finding on the NPTDR accessibility planning data set
+do-nptdr - shell script to make full map from NPTDR data
 
 Not yet used/ready/named properly
 =================================
