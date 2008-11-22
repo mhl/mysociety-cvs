@@ -38,9 +38,8 @@
                 new GLatLng({$group->lat_top_right}, {$group->long_top_right}));
 
 
-
         	//add the new one						
-            map.addOverlay(new Rectangle(rectBounds));
+            map.addOverlay(new Rectangle(rectBounds, 2, '#280FFF', 0.5));
 
         {/foreach}
         
