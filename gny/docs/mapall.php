@@ -1,5 +1,6 @@
 <?php
-require_once('init.php');
+
+require_once('../includes/init.php');
 
 class mapall_page extends pagebase {
 

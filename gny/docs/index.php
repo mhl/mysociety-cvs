@@ -55,7 +55,7 @@ class index_page extends pagebase {
 			$this->add_warning($this->smarty->translate('Please enter a post code, zip code or place name'));
 			$this->add_warn_control('txtSearch');			
 		}
-		
+
 		return sizeof($this->warnings) == 0;
 	}
 

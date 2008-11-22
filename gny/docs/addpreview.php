@@ -19,7 +19,7 @@ class addpreview_page extends pagebase {
 		}else{
 			$this->group = session_read('group');
 		}
-		
+
 		//get the group's category
 		$search = factory::create('search');		
 		$result = $search->search_cached('category', array(array('category_id', '=', $this->group->category_id)));
