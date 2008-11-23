@@ -59,7 +59,7 @@
           		  new GLatLng({$group->lat_top_right}, {$group->long_top_right}),
           		  new GLatLng({$group->lat_bottom_left}, {$group->long_top_right}),
           		  new GLatLng({$group->lat_bottom_left}, {$group->long_bottom_left})          		         		            		  
-        		], "#2300AF", 4, 0.7);
+        		], "#2300AF", 1, 0.6);
         		map.addOverlay(polyline);
 
 
