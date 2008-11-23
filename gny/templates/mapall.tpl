@@ -17,7 +17,11 @@
 	<link rel="stylesheet" media="all" type="text/css" href="{$www_server}/css/memespring.css" />
 	<link rel="stylesheet" media="all" type="text/css" href="{$www_server}/css/main.css" />	
 	<link rel="Shortcut Icon" href="{$www_server}/favicon.ico" type="image/x-icon" />
-
+	{literal}
+        <style>
+            #divMap img {display:none;}
+        </style>
+    {/literal}
 
 </head>
 <body>
