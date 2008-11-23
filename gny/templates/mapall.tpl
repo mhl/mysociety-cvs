@@ -19,7 +19,7 @@
 	<link rel="Shortcut Icon" href="{$www_server}/favicon.ico" type="image/x-icon" />
 	{literal}
         <style>
-            #divMap img {display:none;}
+            #divMap img {opacity:0.2;}
         </style>
     {/literal}
 
@@ -63,7 +63,7 @@
           		  new GLatLng({$group->lat_top_right}, {$group->long_top_right}),
           		  new GLatLng({$group->lat_bottom_left}, {$group->long_top_right}),
           		  new GLatLng({$group->lat_bottom_left}, {$group->long_bottom_left})          		         		            		  
-        		], "#2300AF", 1, 0.6);
+        		], "#005aaf", 1, 0.6);
         		map.addOverlay(polyline);
 
 
