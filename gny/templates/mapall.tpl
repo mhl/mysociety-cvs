@@ -33,13 +33,22 @@
       
         //add groups
         {foreach name="groups" from="$groups" item="group"}
-            rectBounds = new GLatLngBounds(
-                new GLatLng({$group->lat_bottom_left}, {$group->long_bottom_left}),
-                new GLatLng({$group->lat_top_right}, {$group->long_top_right}));
+            //rectBounds = new GLatLngBounds(
+             //   new GLatLng({$group->lat_bottom_left}, {$group->long_bottom_left}),
+              //  new GLatLng({$group->lat_top_right}, {$group->long_top_right}));
+
+                var polyline = new GPolyline([
+          		  new GLatLng({$group->lat_bottom_left}, {$group->long_bottom_left}),
+          		  new GLatLng({$group->lat_top_right}, {$group->long_bottom_left}),
+          		  new GLatLng({$group->lat_top_right}, {$group->long_top_right}),
+          		  new GLatLng({$group->lat_bottom_left}, {$group->long_top_right}),
+          		  new GLatLng({$group->lat_bottom_left}, {$group->long_bottom_left})          		         		            		  
+        		], "#2300AF", 4, 0.05);
+        		map.addOverlay(polyline);
 
 
         	//add the new one						
-            map.addOverlay(new Rectangle(rectBounds, 2, '#280FFF', 0.5));
+           // map.addOverlay(new Rectangle(rectBounds, 2, '#280FFF'));
 
         {/foreach}
         
