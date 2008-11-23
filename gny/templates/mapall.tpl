@@ -28,7 +28,23 @@
     <script>
     
         //make map
-        map = new GMap2(document.getElementById("divMap"));
+        //map = new GMap2(document.getElementById("divMap"));
+        {literal}
+        
+        //copyright
+        var copyOSM = new GCopyrightCollection("<a href=\"http://www.openstreetmap.org/\">OpenStreetMap</a>");
+        copyOSM.addCopyright(new GCopyright(1, new GLatLngBounds(new GLatLng(-90,-180), new GLatLng(90,180)), 0, " "));
+        
+        
+        //tiles
+        var tilesMapnik     = new GTileLayer(copyOSM, 1, 17, {tileUrlTemplate: 'http://tile.openstreetmap.org/{Z}/{X}/{Y}.png'});
+        var tilesOsmarender = new GTileLayer(copyOSM, 1, 17, {tileUrlTemplate: 'http://tah.openstreetmap.org/Tiles/tile.php/{Z}/{X}/{Y}.png'});
+
+        //map
+        var mapMapnik     = new GMapType([tilesMapnik],     G_NORMAL_MAP.getProjection(), "Mapnik");
+        this.map           = new GMap2(document.getElementById("divMap"), { mapTypes: [mapMapnik] });
+        {/literal}
+        
         map.setCenter(new GLatLng(52, 0), 6);
       
         //add groups
@@ -43,7 +59,7 @@
           		  new GLatLng({$group->lat_top_right}, {$group->long_top_right}),
           		  new GLatLng({$group->lat_bottom_left}, {$group->long_top_right}),
           		  new GLatLng({$group->lat_bottom_left}, {$group->long_bottom_left})          		         		            		  
-        		], "#2300AF", 4, 0.3);
+        		], "#2300AF", 4, 0.7);
         		map.addOverlay(polyline);
 
 
