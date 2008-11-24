@@ -6,7 +6,13 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-# TODO:
+# Include also stations which begin with name, with word separator (including hypen)
+# Get geonames variant spellings
+# - fire local name
+# - match it against other geonames spellings
+# Deal better with characters sets
+
+# Old TODO (check these were done OK):
 # Work out how to change mindist to use correct great circle distances
 # Change maxwalkdist and speeds to be in km again
 # Check out TIME_INFINITY
@@ -15,14 +21,14 @@
 # cat /home/francis/toobig/isodata/eurotrainmaps//stations-lat-lon-dur |  ./eurotrain-journeys-to-grid query 1280 1280 15 1800 561 638 2>&1 |less
 
 # Parameters:
-SIZE_PX=100 # 1280
+SIZE_PX=1280 # 1280
 DIR=$HOME/toobig/isodata/neweurotrainmaps/
 
 #WALKSPEED=25 # 4 m/s == 8.9 mph, 25 m/s = 55 mph
 #MAXWALKTIME=900 # 900 seconds default in old system
 #BANDSIZE=7200; BANDCOUNT=25; BANDCOLSEP=10 # 2 hour bands
 
-WALKSPEED=15 # 4 m/s == 8.9 mph, 25 m/s = 55 mph # tom thinks use 15 m/s
+WALKSPEED=5 # 15 # 4 m/s == 8.9 mph, 25 m/s = 55 mph # tom thinks use 15 m/s
 MAXWALKTIME=1800 # 900 seconds  = 15 minutes default in old system
 BANDSIZE=720; BANDCOUNT=200; BANDCOLSEP=1
 
@@ -34,7 +40,7 @@ set -e # exit on error
 RECT="0 $SIZE_PX 0 $SIZE_PX" # in pixel coordinates for this
 #RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
 #INPUT=around-cambridge-lat-lon-dur
-INPUT=all-europe-7-lat-lon-dur
+INPUT=all-europe-9-lat-lon-dur
 #INPUT=stations-lat-lon-dur
 RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT-walksp$WALKSPEED # input has east/north/time-in-secs
 

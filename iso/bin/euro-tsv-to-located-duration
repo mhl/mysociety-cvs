@@ -5,21 +5,12 @@ use strict;
 # Skip heading
 <>;
 
-# Read grid size
-<>;
-
 while (<>) {
     chomp;
-    my ($geonameid, $code, $name, $population, $wikipedia, $lat, $lon, $duration, $rest_of_line) = split /\t/;
+    my ($geonameid, $code, $name, $population, $wikipedia, $lat, $lon, $seconds, $rest_of_line) = split /\t/;
 
-    if ($lat && $lon && $duration) {
-        #print STDERR "$duration\n";
-        if ($duration !~ m/^([0-9]+):([0-9]+)$/) {
-            warn "time $duration not parsed";
-        } else {
-            my $seconds = $1 * 60 * 60 + $2 * 60;
-            print "$lat $lon $seconds\n";
-        }
+    if ($lat && $lon && $seconds) {
+        print "$lat $lon $seconds\n";
     }
 }
 

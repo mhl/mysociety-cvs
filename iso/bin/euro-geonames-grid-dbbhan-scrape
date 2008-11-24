@@ -10,7 +10,7 @@ use DBBahn;
 
 $|=1;
 
-my $spacing = 1;
+my $spacing = 0.5;
 my $maxgeonames = 10;
 my $url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=' . $maxgeonames;
 
@@ -39,12 +39,15 @@ print "geonameId\tfcode\tname\tpopulation\twikipedia\tlat\tlon\tduration\tactual
 
 for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
     for (my $w = -9.7; $w <= 27.0; $w += $spacing) {
+
+        # Work out bounds of a small grid cell
         my $n = $s + $spacing;
         my $e = $w + $spacing;
         print STDERR "W:$w E:$e S:$s N:$n...\n";
         my $urlF = sprintf($url, $n, $s, $e, $w);
         print STDERR "geonames: $urlF\n";
 
+        # Get list of cities from geonames in that grid cell
         my $cities = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlF);
         if (!$cities) {
             $cities = get($urlF);
@@ -57,11 +60,12 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
             next;
         }
 
+        # For each city, look up travel time to get there on bahn.de
         $cities = $cities->{geonames};
         foreach (@$cities) {
             my $city = $_;
             my $name = $city->{name};
-            print STDERR "bahn.de: $name\n";
+            print STDERR "bahn.de: $name";
 
             my $dur = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $name);
             if (!$dur) {
@@ -70,8 +74,96 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                 $dbh->commit();
                 sleep 1;
             }
-            utf8::encode($name);
-            print "$city->{geonameId}\t$city->{fcode}\t$name\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$dur\n";
+        
+            my ($time, $actual_to, $switched_to) = split(/\t/, $dur);
+            $city->{db_time} = $time;
+            $city->{db_actual_to} = $actual_to;
+            $city->{db_switched_to} = $switched_to;
+
+            if ($time !~ m/^([0-9]+):([0-9]+)$/) {
+                #warn "time $time not parsed";
+                $city->{db_seconds} = undef;
+            } else {
+                $city->{db_seconds} = $1 * 60 * 60 + $2 * 60;
+            }
+
+            my $use = 1;
+            $use = 0 if (!$city->{db_actual_to} || $city->{db_actual_to} ne $city->{name}); # Name doesn't match exactly
+            $use = 0 if ($city->{population} <= 0); # Population not known by geonames
+            $use = 0 if (!$city->{db_seconds}); # time didn't parse
+            $city->{use} = $use;
+            
+            if ($city->{use}) {
+                print STDERR " $time $city->{db_seconds}s\n";
+            } else {
+                print STDERR " skip\n";
+            }
+         }
+
+        # Decide which ones to use
+        my $count;
+        while (1) {
+            # Find average time taken, and count of number of cities
+            my $min_time = 1000000000;
+            my $max_time = -1;
+            my $sum_time = 0;
+            $count = 0;
+            foreach (@$cities) {
+                my $city = $_;
+                next if !$city->{use};
+
+                $min_time = $city->{db_seconds} if $city->{db_seconds} < $min_time;
+                $max_time = $city->{db_seconds} if $city->{db_seconds} > $max_time;
+                $sum_time += $city->{db_seconds};
+                $count++;
+            }
+            if ($count > 2) {
+                my $avg_time = $sum_time / $count;
+                my $percent_from_mean_1 = ($max_time - $avg_time) / $avg_time * 100;
+                my $percent_from_mean_2 = ($avg_time - $min_time) / $avg_time * 100;
+                my $max_precent_from_mean = $percent_from_mean_1 > $percent_from_mean_2 ? $percent_from_mean_1 : $percent_from_mean_2;
+                print STDERR "cell time range min $min_time avg $avg_time max $max_time\n";
+
+                # Find which city is most away from mean time
+                my $worst_precent_from_mean = -1;
+                my $worst_precent_from_mean_city = undef;
+                foreach (@$cities) {
+                    my $city = $_;
+                    next if !$city->{use};
+
+                    my $percent_from_mean = abs($city->{db_seconds} - $avg_time) / $avg_time * 100;
+                    if ($percent_from_mean > $worst_precent_from_mean) {
+                        $worst_precent_from_mean = $percent_from_mean;
+                        $worst_precent_from_mean_city = $city;
+                    }
+                }
+
+                print STDERR "variation " . ($max_time - $min_time) . " max_percent_from_mean $max_precent_from_mean\n";
+
+                # Threshold of maximum variation in grid cell of times from
+                # mean, remove any data where it is larger than that.
+                if ($max_precent_from_mean > 52.1) {
+                    print "removing outlier " . $worst_precent_from_mean_city->{name} . "\n";
+                    $worst_precent_from_mean_city->{use} = 0;
+                    next;
+                }
+            }
+            last;
         }
+
+        # For grid cells with at least 3 points in, print any cities left
+        if ($count > 2) {
+            foreach (@$cities) {
+                my $city = $_;
+               
+                if ($city->{use}) {
+                    # Print out
+                    utf8::encode($city->{name});
+                    print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{db_seconds}\t$city->{db_actual_to}\n";
+                }
+            }
+        }
+
+        print STDERR "\n";
     }
 }

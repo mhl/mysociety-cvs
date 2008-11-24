@@ -27,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.7 2008-11-21 18:37:07 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.8 2008-11-24 17:28:02 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -190,6 +190,7 @@ double mintime(const double size, const double E, const double N, const double m
     debug("Indices min: %d max: %d", il, ih);
 
     /* Straightforward scan through all points to find the nearest one */
+    double used_lat, used_lon;
     for (i = il; i <= ih; ++i) {
         double d, t;
         d = great_circle_distance(lat, lon, pp[i].N, pp[i].E);
@@ -202,14 +203,15 @@ double mintime(const double size, const double E, const double N, const double m
             // ignore negative times - effectively infinite
             fprintf(stderr, "< 0 for %lf - d: %lf walkspeed: %lf pptime: %lf\n", t, d, walkspeed, pp[i].time);
         } else if (t < min) {
-        debug("ppN(lat):%lf lat:%lf ppE(lon):%lf lon:%lf maxwalkdist:%lf walkd:%lf traintime:%lf train+walktime:%lf", pp[i].N, lat, pp[i].E, lon, maxwalkdist, d, pp[i].time, t);
+            debug("ppN(lat):%lf lat:%lf ppE(lon):%lf lon:%lf maxwalkdist:%lf walkd:%lf traintime:%lf train+walktime:%lf", pp[i].N, lat, pp[i].E, lon, maxwalkdist, d, pp[i].time, t);
+            used_lat = pp[i].N;
+            used_lon = pp[i].E;
             min = t;
         }
 
     }
 
-    double distance_to_st_pancras = great_circle_distance(51.53, -0.125, lat, lon);
-    fprintf(stderr, "time %lf for E:%d N:%d lat:%f lon:%f pancras:%fm\n", min, E, N, lat, lon, distance_to_st_pancras);
+    fprintf(stderr, "time %lf for N:%lf E:%lf lat:%lf lon:%lf used_lat:%lf used_lon:%lf\n", min, N, E, lat, lon, used_lat, used_lon);
 
     return min;
 }
@@ -319,11 +321,21 @@ int main(int argc, char *argv[]) {
     
     pp = malloc((nppalloc = 16) * sizeof *pp);
     
+    //fprintf(stderr, "lat\tlon\tdistance-to-pancras-km\ttime-in-hours\tcrow-speed-kmh\n");
     while (3 == fscanf(fp, "%lf %lf %lf\n",
                         &pp[npp].N, &pp[npp].E, &pp[npp].time)) {
-        ++npp;
-        if (npp == nppalloc)
-            pp = realloc(pp, (nppalloc *= 2) * sizeof *pp);
+
+        double distance_to_st_pancras = great_circle_distance(51.53, -0.125, pp[npp].N, pp[npp].E) / 1000;
+        double time_in_hours = pp[npp].time / 60 / 60;
+        double crow_speed = distance_to_st_pancras / time_in_hours;
+        //fprintf(stderr, "%f\t%f\t%lf\t%lfh\t%lf\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed);
+        if (crow_speed >= 160 || crow_speed <= 10) {
+            fprintf(stderr, "ignored lat:%f lon:%f pancras:%lfkm time:%lfh crow:%lfkm/h\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed);
+        } else {
+            ++npp;
+            if (npp == nppalloc)
+                pp = realloc(pp, (nppalloc *= 2) * sizeof *pp);
+        }
     }
 
     debug("have %d points", npp);

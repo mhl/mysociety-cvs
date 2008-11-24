@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.1 2008-11-21 18:37:08 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.2 2008-11-24 17:28:02 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -22,32 +22,32 @@ sub get_timings {
 
     my @params = (
         queryPageDisplayed => 'yes',
-	REQ0JourneyStopsSA => 1,
-	REQ0JourneyStopsSG => 'London St Pancras International',
-	REQ0JourneyStopsZA => 1,
-	REQ0JourneyStopsZG => $to,
+        REQ0JourneyStopsSA => 1,
+        REQ0JourneyStopsSG => 'London St Pancras International',
+        REQ0JourneyStopsZA => 1,
+        REQ0JourneyStopsZG => $to,
 
-	REQ0JourneyDate    => 'Tu, 25.11.08',
-	wDayExt0 => 'Mo|Tu|We|Th|Fr|Sa|Su',
-	REQ0JourneyTime    => '07:00',
-	REQ0HafasSearchForw => 1,
-	REQ1JourneyDate    => '',
-	wDayExt1 => 'Mo|Tu|We|Th|Fr|Sa|Su',
-	REQ1JourneyTime    => '',
-	REQ1HafasSearchForw => 1,
+        REQ0JourneyDate    => 'Tu, 25.11.08',
+        wDayExt0 => 'Mo|Tu|We|Th|Fr|Sa|Su',
+        REQ0JourneyTime    => '07:00',
+        REQ0HafasSearchForw => 1,
+        REQ1JourneyDate    => '',
+        wDayExt1 => 'Mo|Tu|We|Th|Fr|Sa|Su',
+        REQ1JourneyTime    => '',
+        REQ1HafasSearchForw => 1,
 
-	REQ0JourneyProduct_prod_list => '1:1111111111000000',
-	existOptimizePrice => 1,
-	REQ0HafasOptimize1 => '0:1',
-	existOptionBits => 'yes',
-	REQ0HafasChangeTime => '0:1',
+        REQ0JourneyProduct_prod_list => '1:1111111111000000',
+        existOptimizePrice => 1,
+        REQ0HafasOptimize1 => '0:1',
+        existOptionBits => 'yes',
+        REQ0HafasChangeTime => '0:1',
 
-	'REQ0Tariff_TravellerType.1' => 'E',
-	'REQ0Tariff_TravellerAge.1' => 30,
-	'REQ0Tariff_TravellerReductionClass.1' => '0',
-	'REQ0Tariff_Class' => '2',
+        'REQ0Tariff_TravellerType.1' => 'E',
+        'REQ0Tariff_TravellerAge.1' => 30,
+        'REQ0Tariff_TravellerReductionClass.1' => '0',
+        'REQ0Tariff_Class' => '2',
 
-	start => 'Search connection',
+        start => 'Search connection',
     );
 
     my $url = 'http://reiseauskunft.bahn.de/bin/query.exe/en?ld=212.139&rt=1&OK';
