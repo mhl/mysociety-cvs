@@ -42,6 +42,63 @@ print "geonameId\tfcode\tname\tpopulation\twikipedia\tlat\tlon\tduration\tactual
 #for (my $s = $lat - 0.2; $s <= $lat + 0.2; $s += 0.1) {
 #    for (my $w = $lon - 0.2; $w <= $lon + 0.2; $w += 0.1) {
 
+sub consider_one_city($$) {
+    my $city = shift;
+    my $raw_name = shift;
+
+    # Look up timings to travel there by train
+    my $dur = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $raw_name);
+    if (!$dur) {
+        $dur = get_timings($raw_name);
+        $dbh->do('insert into cache (url, content) values (?, ?)', {}, $raw_name, $dur);
+        $dbh->commit();
+        sleep 1;
+    }
+
+    my ($time, $actual_to, $switched_to) = split(/\t/, $dur);
+    $city->{db_time} = $time;
+    $city->{db_actual_to} = $actual_to;
+    $city->{db_switched_to} = $switched_to;
+
+    if ($time !~ m/^([0-9]+):([0-9]+)$/) {
+        #warn "time $time not parsed";
+        $city->{db_seconds} = undef;
+    } else {
+        $city->{db_seconds} = $1 * 60 * 60 + $2 * 60;
+    }
+
+    my $use = 1;
+    # Name doesn't match exactly
+    $use = 0 if (!$city->{db_actual_to});
+    if ($use && $city->{db_actual_to} ne $city->{name}) {
+        # Convert both names to same character set and encoding and
+        # flatten accents and case.
+        my $db_name = $city->{db_actual_to};
+        $db_name = decode_entities($db_name);
+        utf8::encode($db_name);
+        $db_name = unac_string("utf-8", $db_name);
+        $db_name = lc($db_name);
+
+        my $geo_name = $city->{name};
+        $geo_name = unac_string("utf-8", $geo_name);
+        $geo_name = lc($geo_name);
+
+        # Match exact ones, or ones where bahn.de returns with - after geonames name
+        # (those are usually named stations within large cities, the city name
+        # coming before the hyphen). Or ones with space why not.
+        if ($db_name =~ m/^\Q$geo_name\E[-\s\(]/ || $db_name eq $geo_name) {
+            print STDERR " name MATCH db:'$db_name' geo:'$geo_name'";
+        } else {
+            $use = 0;
+            print STDERR " name mismatch db:'$db_name' geo:'$geo_name'";
+        }
+    }
+    $use = 0 if ($city->{population} <= 0); # Population not known by geonames
+    $use = 0 if (!$city->{db_seconds}); # time didn't parse
+    $city->{use} = $use;
+    
+}
+
 for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
     for (my $w = -9.7; $w <= 27.0; $w += $spacing) {
 
@@ -74,7 +131,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
             utf8::encode($city->{name});
             print STDERR "geoid: $city->{geonameId} to bahn.de: $city->{name}";
         
-            # Get alternative names
+            # Get list of alternative names
             my $urlG = $geonames_get_url . $city->{geonameId};
             my $names = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlG);
             if (!$names) {
@@ -83,81 +140,39 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                 $dbh->commit();
             }
             $names = from_json($names, { utf8 => 1 });
-            # Look for alternative name that is same language as spoken in country
-            my $country = lc($names->{countryCode});
-            my $alternateNames = $names->{alternateNames};
-            #print Dumper($names);
-            foreach my $nameref (@$alternateNames) {
-                # XXX Hackily look for ones with same language code as country code (covers most cases for now)
-                if ($nameref->{lang} && $nameref->{lang} eq $country) {
-                    my $name_utf8 = $nameref->{name};
-                    utf8::encode($name_utf8);
-                    if ($name_utf8 ne $city->{name}) {
-                        $city->{name} = $name_utf8;
-                        print STDERR " langname '$name_utf8'";
+
+            # See whether to use city
+            consider_one_city($city, $raw_name);
+
+            if (!$city->{use}) {
+                # Look for alternative name that is same language as spoken in country
+                my $country = lc($names->{countryCode});
+                my $alternateNames = $names->{alternateNames};
+                #print Dumper($names);
+                foreach my $nameref (@$alternateNames) {
+                    # XXX Hackily look for ones with same language code as country code (covers most cases for now)
+                    if ($nameref->{lang} && $nameref->{lang} eq $country) {
+                        my $name_utf8 = $nameref->{name};
+                        utf8::encode($name_utf8);
+                        if ($name_utf8 ne $city->{name}) {
+                            $city->{name} = $name_utf8;
+                            print STDERR " langname '$name_utf8'";
+                        }
+                        $raw_name = $nameref->{name};
+                        last;
                     }
-                    $raw_name = $nameref->{name};
-                    last;
                 }
+
+                # See whether to use city
+                consider_one_city($city, $raw_name);
             }
 
-            # Look up timings to travel there by train
-            my $dur = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $raw_name);
-            if (!$dur) {
-                $dur = get_timings($raw_name);
-                $dbh->do('insert into cache (url, content) values (?, ?)', {}, $raw_name, $dur);
-                $dbh->commit();
-                sleep 1;
-            }
-
-            my ($time, $actual_to, $switched_to) = split(/\t/, $dur);
-            $city->{db_time} = $time;
-            $city->{db_actual_to} = $actual_to;
-            $city->{db_switched_to} = $switched_to;
-
-            if ($time !~ m/^([0-9]+):([0-9]+)$/) {
-                #warn "time $time not parsed";
-                $city->{db_seconds} = undef;
-            } else {
-                $city->{db_seconds} = $1 * 60 * 60 + $2 * 60;
-            }
-
-            my $use = 1;
-            # Name doesn't match exactly
-            $use = 0 if (!$city->{db_actual_to});
-            if ($use && $city->{db_actual_to} ne $city->{name}) {
-                # Convert both names to same character set and encoding and
-                # flatten accents and case.
-                my $db_name = $city->{db_actual_to};
-                $db_name = decode_entities($db_name);
-                utf8::encode($db_name);
-                $db_name = unac_string("utf-8", $db_name);
-                $db_name = lc($db_name);
-
-                my $geo_name = $city->{name};
-                $geo_name = unac_string("utf-8", $geo_name);
-                $geo_name = lc($geo_name);
-
-                # Match exact ones, or ones where bahn.de returns with - after geonames name
-                # (those are usually named stations within large cities, the city name
-                # coming before the hyphen). Or ones with space why not.
-                if ($db_name =~ m/^\Q$geo_name\E[-\s\(]/ || $db_name eq $geo_name) {
-                    print STDERR " name MATCH db:'$db_name' geo:'$geo_name'";
-                } else {
-                    $use = 0;
-                    print STDERR " name mismatch db:'$db_name' geo:'$geo_name'";
-                }
-            }
-            $use = 0 if ($city->{population} <= 0); # Population not known by geonames
-            $use = 0 if (!$city->{db_seconds}); # time didn't parse
-            $city->{use} = $use;
-            
             if ($city->{use}) {
-                print STDERR " $time $city->{db_seconds}s\n";
+                print STDERR " $city->{db_time} $city->{db_seconds}s\n";
             } else {
                 print STDERR " skip\n";
             }
-         }
+        }
 
         # Decide which ones to use
         my $count;
