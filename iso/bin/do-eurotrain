@@ -6,11 +6,19 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-# Include also stations which begin with name, with word separator (including hypen)
 # Get geonames variant spellings
-# - fire local name
 # - match it against other geonames spellings
 # Deal better with characters sets
+# Don't throw away grid cells with only two points in if they are within variance range
+# Bigger grid squares, or accept solitary things are OK
+# Flatten accents out e.g. for Lodz, Rīga before feeding into bahn.de (maybe only in Poland)
+# Perhaps we are using the wrong character set
+# Match against non-lang name if lang name doesn't work?
+# Include brackets in separator list:
+#   geoid: 3019259 to bahn.de: Évron name mismatch db:'evron(laval)' geo:'evron' skip
+#   geoid: 2833242 to bahn.de: Seligenstadt name mismatch db:'seligenstadt(b wurzburg)' geo:'seligenstadt' skip
+
+
 
 # Old TODO (check these were done OK):
 # Work out how to change mindist to use correct great circle distances
@@ -40,7 +48,7 @@ set -e # exit on error
 RECT="0 $SIZE_PX 0 $SIZE_PX" # in pixel coordinates for this
 #RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
 #INPUT=around-cambridge-lat-lon-dur
-INPUT=all-europe-9-lat-lon-dur
+INPUT=all-europe-10-lat-lon-dur
 #INPUT=stations-lat-lon-dur
 RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT-walksp$WALKSPEED # input has east/north/time-in-secs
 

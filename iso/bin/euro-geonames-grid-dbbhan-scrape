@@ -2,11 +2,13 @@
 
 use strict;
 use warnings;
+
 use LWP::Simple;
 use JSON;
 use DBI;
 use HTML::Entities;
 use Text::Unaccent;
+use Data::Dumper;
 
 use DBBahn;
 
@@ -14,7 +16,8 @@ $|=1;
 
 my $spacing = 0.5;
 my $maxgeonames = 10;
-my $url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=' . $maxgeonames;
+my $geonames_cities_url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=' . $maxgeonames;
+my $geonames_get_url = 'http://ws.geonames.org/getJSON?geonameId=';
 
 my ($sqlite_db) = @ARGV;
 die "Parameter is sqlite database" if !$sqlite_db;
@@ -46,7 +49,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
         my $n = $s + $spacing;
         my $e = $w + $spacing;
         print STDERR "W:$w E:$e S:$s N:$n...\n";
-        my $urlF = sprintf($url, $n, $s, $e, $w);
+        my $urlF = sprintf($geonames_cities_url, $n, $s, $e, $w);
         print STDERR "geonames: $urlF\n";
 
         # Get list of cities from geonames in that grid cell
@@ -66,18 +69,47 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
         $cities = $cities->{geonames};
         foreach (@$cities) {
             my $city = $_;
-            utf8::encode($city->{name});
-            my $name = $city->{name};
-            print STDERR "bahn.de: $name";
 
-            my $dur = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $name);
+            my $raw_name = $city->{name};
+            utf8::encode($city->{name});
+            print STDERR "geoid: $city->{geonameId} to bahn.de: $city->{name}";
+        
+            # Get alternative names
+            my $urlG = $geonames_get_url . $city->{geonameId};
+            my $names = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlG);
+            if (!$names) {
+                $names = get($urlG);
+                $dbh->do('insert into cache (url, content) values (?, ?)', {}, $urlG, $names);
+                $dbh->commit();
+            }
+            $names = from_json($names, { utf8 => 1 });
+            # Look for alternative name that is same language as spoken in country
+            my $country = lc($names->{countryCode});
+            my $alternateNames = $names->{alternateNames};
+            #print Dumper($names);
+            foreach my $nameref (@$alternateNames) {
+                # XXX Hackily look for ones with same language code as country code (covers most cases for now)
+                if ($nameref->{lang} && $nameref->{lang} eq $country) {
+                    my $name_utf8 = $nameref->{name};
+                    utf8::encode($name_utf8);
+                    if ($name_utf8 ne $city->{name}) {
+                        $city->{name} = $name_utf8;
+                        print STDERR " langname '$name_utf8'";
+                    }
+                    $raw_name = $nameref->{name};
+                    last;
+                }
+            }
+
+            # Look up timings to travel there by train
+            my $dur = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $raw_name);
             if (!$dur) {
-                $dur = get_timings($name);
-                $dbh->do('insert into cache (url, content) values (?, ?)', {}, $name, $dur);
+                $dur = get_timings($raw_name);
+                $dbh->do('insert into cache (url, content) values (?, ?)', {}, $raw_name, $dur);
                 $dbh->commit();
                 sleep 1;
             }
-        
+
             my ($time, $actual_to, $switched_to) = split(/\t/, $dur);
             $city->{db_time} = $time;
             $city->{db_actual_to} = $actual_to;
@@ -102,14 +134,14 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                 $db_name = unac_string("utf-8", $db_name);
                 $db_name = lc($db_name);
 
-                my $geo_name = $name;
+                my $geo_name = $city->{name};
                 $geo_name = unac_string("utf-8", $geo_name);
                 $geo_name = lc($geo_name);
 
                 # Match exact ones, or ones where bahn.de returns with - after geonames name
                 # (those are usually named stations within large cities, the city name
-                # coming before the hyphen)
-                if ($db_name =~ m/^\Q$geo_name\E[-]/ || $db_name eq $geo_name) {
+                # coming before the hyphen). Or ones with space why not.
+                if ($db_name =~ m/^\Q$geo_name\E[-\s]/ || $db_name eq $geo_name) {
                     print STDERR " name MATCH db:'$db_name' geo:'$geo_name'";
                 } else {
                     $use = 0;
@@ -170,8 +202,8 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                 # Threshold of maximum variation in grid cell of times from
                 # mean, remove any data where it is larger than that.
                 # XXX suspect this should be as low as 20% or even 10%
-                if ($max_precent_from_mean > 52.1) {
-                    print "removing outlier " . $worst_precent_from_mean_city->{name} . "\n";
+                if ($max_precent_from_mean > 28.0) {
+                    print STDERR "removing outlier " . $worst_precent_from_mean_city->{name} . "\n";
                     $worst_precent_from_mean_city->{use} = 0;
                     next;
                 }
