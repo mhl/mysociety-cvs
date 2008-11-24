@@ -5,6 +5,8 @@ use warnings;
 use LWP::Simple;
 use JSON;
 use DBI;
+use HTML::Entities;
+use Text::Unaccent;
 
 use DBBahn;
 
@@ -64,6 +66,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
         $cities = $cities->{geonames};
         foreach (@$cities) {
             my $city = $_;
+            utf8::encode($city->{name});
             my $name = $city->{name};
             print STDERR "bahn.de: $name";
 
@@ -88,7 +91,31 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
             }
 
             my $use = 1;
-            $use = 0 if (!$city->{db_actual_to} || $city->{db_actual_to} ne $city->{name}); # Name doesn't match exactly
+            # Name doesn't match exactly
+            $use = 0 if (!$city->{db_actual_to});
+            if ($use && $city->{db_actual_to} ne $city->{name}) {
+                # Convert both names to same character set and encoding and
+                # flatten accents and case.
+                my $db_name = $city->{db_actual_to};
+                $db_name = decode_entities($db_name);
+                utf8::encode($db_name);
+                $db_name = unac_string("utf-8", $db_name);
+                $db_name = lc($db_name);
+
+                my $geo_name = $name;
+                $geo_name = unac_string("utf-8", $geo_name);
+                $geo_name = lc($geo_name);
+
+                # Match exact ones, or ones where bahn.de returns with - after geonames name
+                # (those are usually named stations within large cities, the city name
+                # coming before the hyphen)
+                if ($db_name =~ m/^\Q$geo_name\E[-]/ || $db_name eq $geo_name) {
+                    print STDERR " name MATCH db:'$db_name' geo:'$geo_name'";
+                } else {
+                    $use = 0;
+                    print STDERR " name mismatch db:'$db_name' geo:'$geo_name'";
+                }
+            }
             $use = 0 if ($city->{population} <= 0); # Population not known by geonames
             $use = 0 if (!$city->{db_seconds}); # time didn't parse
             $city->{use} = $use;
@@ -142,6 +169,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
 
                 # Threshold of maximum variation in grid cell of times from
                 # mean, remove any data where it is larger than that.
+                # XXX suspect this should be as low as 20% or even 10%
                 if ($max_precent_from_mean > 52.1) {
                     print "removing outlier " . $worst_precent_from_mean_city->{name} . "\n";
                     $worst_precent_from_mean_city->{use} = 0;
@@ -158,7 +186,6 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                
                 if ($city->{use}) {
                     # Print out
-                    utf8::encode($city->{name});
                     print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{db_seconds}\t$city->{db_actual_to}\n";
                 }
             }
