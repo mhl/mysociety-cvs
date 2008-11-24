@@ -141,7 +141,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                 # Match exact ones, or ones where bahn.de returns with - after geonames name
                 # (those are usually named stations within large cities, the city name
                 # coming before the hyphen). Or ones with space why not.
-                if ($db_name =~ m/^\Q$geo_name\E[-\s]/ || $db_name eq $geo_name) {
+                if ($db_name =~ m/^\Q$geo_name\E[-\s\(]/ || $db_name eq $geo_name) {
                     print STDERR " name MATCH db:'$db_name' geo:'$geo_name'";
                 } else {
                     $use = 0;
