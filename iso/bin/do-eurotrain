@@ -7,12 +7,17 @@
 #
 
 # Bigger grid squares, or accept solitary things are OK
+# - recalibrate threshold using 
 # Flatten accents out e.g. for Lodz, Rīga before feeding into bahn.de (maybe only in Poland?)
 
 # Substring of all responses breaks on this one (Alhama is alternate name):
 # +2521994        PPL     Alhama de Almería       3374            36.95   -2.5666667      82620   Alhama de Aragon
 # +2523460        PPL     San Giovanni la Punta   20850   en.wikipedia.org/wiki/San_Giovanni_la_Punta     37.576054       15.098088       75720   San Giovanni di Casarsa
 
+# Reduce % from mean threshold to 24 for Les Essarts / Les Essarts le Roi
+# Change scraper to not use duration
+
+# Strip geonames aliases of extra whitespace
 
 # Old TODO (check these were done OK):
 # Work out how to change mindist to use correct great circle distances
@@ -32,7 +37,7 @@ DIR=$HOME/toobig/isodata/neweurotrainmaps/
 
 WALKSPEED=5 # 15 # 4 m/s == 8.9 mph, 25 m/s = 55 mph # tom thinks use 15 m/s
 MAXWALKTIME=1800 # 900 seconds  = 15 minutes default in old system
-BANDSIZE=720; BANDCOUNT=200; BANDCOLSEP=1
+BANDSIZE=1080; BANDCOUNT=200; BANDCOLSEP=1 # use 720 for simple; use 1080 band size for Bulgaria
 
 set -x # print each line
 set -e # exit on error

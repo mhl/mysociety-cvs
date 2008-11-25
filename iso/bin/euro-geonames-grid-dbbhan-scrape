@@ -15,8 +15,8 @@ use DBBahn;
 $|=1;
 
 my $spacing = 0.5;
-my $maxgeonames = 10;
-my $geonames_cities_url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=' . $maxgeonames;
+my $maxgeonames = 12;
+my $geonames_cities_url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=%d';
 my $geonames_get_url = 'http://ws.geonames.org/getJSON?geonameId=';
 
 my ($sqlite_db) = @ARGV;
@@ -111,7 +111,9 @@ sub consider_one_city($$) {
     
 }
 
-# Moscow west: 37.598889
+# Original west: 27.0
+# Moscow west: 37.598889 (37.6)
+# Hopeful west: 45.0
 for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
     for (my $w = -9.7; $w <= 27.0; $w += $spacing) {
 
@@ -119,8 +121,19 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
         my $n = $s + $spacing;
         my $e = $w + $spacing;
         print STDERR "W:$w E:$e S:$s N:$n...\n";
-        my $urlF = sprintf($geonames_cities_url, $n, $s, $e, $w);
+        my $urlF = sprintf($geonames_cities_url, $n, $s, $e, $w, $maxgeonames);
         print STDERR "geonames: $urlF\n";
+
+        # Hack to stop too much rescraping so much
+        my $urlF10 = sprintf($geonames_cities_url, $n, $s, $e, $w, 10);
+        my $old_cities = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlF10);
+        if ($old_cities) {
+            $old_cities = from_json($old_cities, { utf8 => 1 });
+            $old_cities = $old_cities->{geonames};
+            if (scalar(@$old_cities) == 0) {
+                next;
+            }
+        }
 
         # Get list of cities from geonames in that grid cell
         my $cities = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlF);
