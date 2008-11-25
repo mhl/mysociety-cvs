@@ -79,18 +79,30 @@ sub consider_one_city($$) {
         $db_name = unac_string("utf-8", $db_name);
         $db_name = lc($db_name);
 
-        my $geo_name = $city->{name};
-        $geo_name = unac_string("utf-8", $geo_name);
-        $geo_name = lc($geo_name);
+        # Find all alternative names
+        my $alternateNames = $city->{names}->{alternateNames};
+        my $geo_names = {};
+        $geo_names->{$city->{name}} = 1;
+        foreach my $nameref (@$alternateNames) {
+            $geo_names->{$nameref->{name}} = 1 if length($nameref->{name}) > 2;
+        }
 
-        # Match exact ones, or ones where bahn.de returns with - after geonames name
-        # (those are usually named stations within large cities, the city name
-        # coming before the hyphen). Or ones with space why not.
-        if ($db_name =~ m/^\Q$geo_name\E[-\s\(]/ || $db_name eq $geo_name) {
-            print STDERR " name MATCH db:'$db_name' geo:'$geo_name'";
-        } else {
-            $use = 0;
-            print STDERR " name mismatch db:'$db_name' geo:'$geo_name'";
+        # See if we match any of them
+        $use = 0; # reset it and look for new match afresh
+        foreach my $geo_name (keys %$geo_names) {
+            $geo_name = unac_string("utf-8", $geo_name);
+            $geo_name = lc($geo_name);
+
+            # Match exact ones, or ones where bahn.de returns with - after geonames name
+            # (those are usually named stations within large cities, the city name
+            # coming before the hyphen). Or ones with space why not.
+            if ($db_name =~ m/^\Q$geo_name\E[-\s\(]/ || $db_name eq $geo_name) {
+                print STDERR " name MATCH db:'$db_name' geo:'$geo_name'";
+                $use = 1;
+                last;
+            } else {
+                print STDERR " name mismatch db:'$db_name' geo:'$geo_name'";
+            }
         }
     }
     $use = 0 if ($city->{population} <= 0); # Population not known by geonames
@@ -99,6 +111,7 @@ sub consider_one_city($$) {
     
 }
 
+# Moscow west: 37.598889
 for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
     for (my $w = -9.7; $w <= 27.0; $w += $spacing) {
 
@@ -133,22 +146,22 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
         
             # Get list of alternative names
             my $urlG = $geonames_get_url . $city->{geonameId};
-            my $names = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlG);
-            if (!$names) {
-                $names = get($urlG);
-                $dbh->do('insert into cache (url, content) values (?, ?)', {}, $urlG, $names);
+            $city->{names} = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlG);
+            if (!$city->{names}) {
+                $city->{names} = get($urlG);
+                $dbh->do('insert into cache (url, content) values (?, ?)', {}, $urlG, $city->{names});
                 $dbh->commit();
             }
-            $names = from_json($names, { utf8 => 1 });
+            $city->{names} = from_json($city->{names}, { utf8 => 1 });
 
             # See whether to use city
             consider_one_city($city, $raw_name);
 
             if (!$city->{use}) {
                 # Look for alternative name that is same language as spoken in country
-                my $country = lc($names->{countryCode});
-                my $alternateNames = $names->{alternateNames};
-                #print Dumper($names);
+                my $country = lc($city->{names}->{countryCode});
+                my $alternateNames = $city->{names}->{alternateNames};
+                #print Dumper($city->{names});
                 foreach my $nameref (@$alternateNames) {
                     # XXX Hackily look for ones with same language code as country code (covers most cases for now)
                     if ($nameref->{lang} && $nameref->{lang} eq $country) {
