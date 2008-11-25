@@ -204,7 +204,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                 $sum_time += $city->{db_seconds};
                 $count++;
             }
-            if ($count > 2) {
+            if ($count > 1) {
                 my $avg_time = $sum_time / $count;
                 my $percent_from_mean_1 = ($max_time - $avg_time) / $avg_time * 100;
                 my $percent_from_mean_2 = ($avg_time - $min_time) / $avg_time * 100;
@@ -239,8 +239,8 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
             last;
         }
 
-        # For grid cells with at least 3 points in, print any cities left
-        if ($count > 2) {
+        # For grid cells with at least 2 points in (which must be within variance), print any cities left
+        if ($count > 1) {
             foreach (@$cities) {
                 my $city = $_;
                

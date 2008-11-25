@@ -6,15 +6,12 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-# Don't throw away grid cells with only two points in if they are within variance range
 # Bigger grid squares, or accept solitary things are OK
 # Flatten accents out e.g. for Lodz, Rīga before feeding into bahn.de (maybe only in Poland?)
 
 # Substring of all responses breaks on this one (Alhama is alternate name):
 # +2521994        PPL     Alhama de Almería       3374            36.95   -2.5666667      82620   Alhama de Aragon
 # +2523460        PPL     San Giovanni la Punta   20850   en.wikipedia.org/wiki/San_Giovanni_la_Punta     37.576054       15.098088       75720   San Giovanni di Casarsa
-
-
 
 
 # Old TODO (check these were done OK):
@@ -45,7 +42,7 @@ set -e # exit on error
 RECT="0 $SIZE_PX 0 $SIZE_PX" # in pixel coordinates for this
 #RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
 #INPUT=around-cambridge-lat-lon-dur
-INPUT=all-europe-12-lat-lon-dur
+INPUT=all-europe-13-lat-lon-dur
 #INPUT=stations-lat-lon-dur
 RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT-walksp$WALKSPEED # input has east/north/time-in-secs
 
