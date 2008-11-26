@@ -243,7 +243,8 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                 # Threshold of maximum variation in grid cell of times from
                 # mean, remove any data where it is larger than that.
                 # XXX suspect this should be as low as 20% or even 10%
-                if ($max_precent_from_mean > 28.0) {
+                # 24% for Les Essarts / Les Essarts le Roi
+                if ($max_precent_from_mean > 24.0) {
                     print STDERR "removing outlier " . $worst_precent_from_mean_city->{name} . "\n";
                     $worst_precent_from_mean_city->{use} = 0;
                     next;
@@ -262,6 +263,8 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
                     print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{db_seconds}\t$city->{db_actual_to}\n";
                 }
             }
+        } else {
+            print STDERR "Rejected group $count\n";
         }
 
         print STDERR "\n";
