@@ -27,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.8 2008-11-24 17:28:02 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.9 2008-11-27 16:40:33 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -211,7 +211,7 @@ double mintime(const double size, const double E, const double N, const double m
 
     }
 
-    fprintf(stderr, "time %lf for N:%lf E:%lf lat:%lf lon:%lf used_lat:%lf used_lon:%lf\n", min, N, E, lat, lon, used_lat, used_lon);
+    //fprintf(stderr, "time %lf for N:%lf E:%lf lat:%lf lon:%lf used_lat:%lf used_lon:%lf\n", min, N, E, lat, lon, used_lat, used_lon);
 
     return min;
 }

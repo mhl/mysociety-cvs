@@ -14,8 +14,8 @@ use DBBahn;
 
 $|=1;
 
-my $spacing = 0.5;
-my $maxgeonames = 12;
+my $spacing = 1.0;
+my $maxgeonames = 10;
 my $geonames_cities_url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=%d';
 my $geonames_get_url = 'http://ws.geonames.org/getJSON?geonameId=';
 
@@ -123,17 +123,6 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
         print STDERR "W:$w E:$e S:$s N:$n...\n";
         my $urlF = sprintf($geonames_cities_url, $n, $s, $e, $w, $maxgeonames);
         print STDERR "geonames: $urlF\n";
-
-        # Hack to stop too much rescraping so much
-        my $urlF10 = sprintf($geonames_cities_url, $n, $s, $e, $w, 10);
-        my $old_cities = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlF10);
-        if ($old_cities) {
-            $old_cities = from_json($old_cities, { utf8 => 1 });
-            $old_cities = $old_cities->{geonames};
-            if (scalar(@$old_cities) == 0) {
-                next;
-            }
-        }
 
         # Get list of cities from geonames in that grid cell
         my $cities = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlF);

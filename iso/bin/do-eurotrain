@@ -7,16 +7,17 @@
 #
 
 # Bigger grid squares, or accept solitary things are OK
-# - recalibrate threshold using 
-# Flatten accents out e.g. for Lodz, Rīga before feeding into bahn.de (maybe only in Poland?)
+# - recalibrate threshold using Les Essarts
+# Change scraper to grab lots in each cell and only use first n
+# Change scraper to not use duration
+# Change date to far future
 
+# Flatten accents out e.g. for Lodz, Rīga before feeding into bahn.de (maybe only in Poland?)
 # Substring of all responses breaks on this one (Alhama is alternate name):
 # +2521994        PPL     Alhama de Almería       3374            36.95   -2.5666667      82620   Alhama de Aragon
 # +2523460        PPL     San Giovanni la Punta   20850   en.wikipedia.org/wiki/San_Giovanni_la_Punta     37.576054       15.098088       75720   San Giovanni di Casarsa
-
-# Reduce % from mean threshold to 24 for Les Essarts / Les Essarts le Roi
-# Change scraper to not use duration
-
+# baranavichy in Spain missing, as too lonely on grid cell
+# Also probably error at 684 minutes - NW of Zagreb.
 # Strip geonames aliases of extra whitespace
 
 # Old TODO (check these were done OK):
@@ -28,16 +29,12 @@
 # cat /home/francis/toobig/isodata/eurotrainmaps//stations-lat-lon-dur |  ./eurotrain-journeys-to-grid query 1280 1280 15 1800 561 638 2>&1 |less
 
 # Parameters:
-SIZE_PX=500 # 1280
+SIZE_PX=500 # 10240 # 1280
 DIR=$HOME/toobig/isodata/neweurotrainmaps/
-
-#WALKSPEED=25 # 4 m/s == 8.9 mph, 25 m/s = 55 mph
-#MAXWALKTIME=900 # 900 seconds default in old system
-#BANDSIZE=7200; BANDCOUNT=25; BANDCOLSEP=10 # 2 hour bands
 
 WALKSPEED=5 # 15 # 4 m/s == 8.9 mph, 25 m/s = 55 mph # tom thinks use 15 m/s
 MAXWALKTIME=1800 # 900 seconds  = 15 minutes default in old system
-BANDSIZE=1080; BANDCOUNT=200; BANDCOLSEP=1 # use 720 for simple; use 1080 band size for Bulgaria
+BANDSIZE=1200; BANDCOUNT=200; BANDCOLSEP=1 # use 720 for simple; use 1080 band size for Bulgaria
 
 set -x # print each line
 set -e # exit on error
@@ -47,7 +44,7 @@ set -e # exit on error
 RECT="0 $SIZE_PX 0 $SIZE_PX" # in pixel coordinates for this
 #RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
 #INPUT=around-cambridge-lat-lon-dur
-INPUT=all-europe-13-lat-lon-dur
+INPUT=all-europe-cell1-13-lat-lon-dur
 #INPUT=stations-lat-lon-dur
 RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT-walksp$WALKSPEED # input has east/north/time-in-secs
 
