@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.2 2008-11-24 17:28:02 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.3 2008-12-01 17:34:05 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -16,6 +16,7 @@ require 5.8.0;
 use WWW::Mechanize;
 use HTML::Entities;
 use HTML::TreeBuilder;
+use Data::Dumper;
 
 sub get_timings {
     my ($to) = @_; # , $line) = @_;
@@ -27,7 +28,7 @@ sub get_timings {
         REQ0JourneyStopsZA => 1,
         REQ0JourneyStopsZG => $to,
 
-        REQ0JourneyDate    => 'Tu, 25.11.08',
+        REQ0JourneyDate    => 'Tu, 02.12.08',
         wDayExt0 => 'Mo|Tu|We|Th|Fr|Sa|Su',
         REQ0JourneyTime    => '07:00',
         REQ0HafasSearchForw => 1,
@@ -57,6 +58,7 @@ sub get_timings {
 
     my $switched = '';
     my $html = $m->content();
+#print $html; exit;
     if ($html =~ /several possible stops/) {
         if ($html =~ /<option value="([^"]*?)">\Q$to\E<\/option>/) {
             $m->submit_form(

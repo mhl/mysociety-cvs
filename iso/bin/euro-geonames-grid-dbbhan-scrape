@@ -14,9 +14,17 @@ use DBBahn;
 
 $|=1;
 
-my $spacing = 1.0;
-my $maxgeonames = 10;
-my $geonames_cities_url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=%d';
+# Size of grid cells, and number of cities to use in each.
+my $cell_spacing = 10.0; # 1.0 # degrees lat/lon
+my $cities_per_cell = 2;
+
+# Threshold of maximum variation in grid cell of times from
+# mean, remove any data where it is larger than that.
+# XXX suspect this should be as low as 20% or even 10%
+# 24% for Les Essarts / Les Essarts le Roi
+my $threshold_variation_from_mean = 500.0; #24.0;
+ 
+my $geonames_cities_url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=200';
 my $geonames_get_url = 'http://ws.geonames.org/getJSON?geonameId=';
 
 my ($sqlite_db) = @ARGV;
@@ -50,6 +58,7 @@ sub consider_one_city($$) {
     my $dur = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $raw_name);
     if (!$dur) {
         $dur = get_timings($raw_name);
+        print "\n". Dumper($dur); exit;
         $dbh->do('insert into cache (url, content) values (?, ?)', {}, $raw_name, $dur);
         $dbh->commit();
         sleep 1;
@@ -114,14 +123,14 @@ sub consider_one_city($$) {
 # Original west: 27.0
 # Moscow west: 37.598889 (37.6)
 # Hopeful west: 45.0
-for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
-    for (my $w = -9.7; $w <= 27.0; $w += $spacing) {
+for (my $s = 36.1; $s <= 70.7; $s += $cell_spacing) {
+    for (my $w = -9.7; $w <= 27.0; $w += $cell_spacing) {
 
         # Work out bounds of a small grid cell
-        my $n = $s + $spacing;
-        my $e = $w + $spacing;
+        my $n = $s + $cell_spacing;
+        my $e = $w + $cell_spacing;
         print STDERR "W:$w E:$e S:$s N:$n...\n";
-        my $urlF = sprintf($geonames_cities_url, $n, $s, $e, $w, $maxgeonames);
+        my $urlF = sprintf($geonames_cities_url, $n, $s, $e, $w);
         print STDERR "geonames: $urlF\n";
 
         # Get list of cities from geonames in that grid cell
@@ -139,10 +148,12 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
 
         # For each city, look up travel time to get there on bahn.de
         $cities = $cities->{geonames};
+        @$cities = @$cities[0..$cities_per_cell-1];
         foreach (@$cities) {
             my $city = $_;
 
             my $raw_name = $city->{name};
+            #print Dumper($city);
             utf8::encode($city->{name});
             print STDERR "geoid: $city->{geonameId} to bahn.de: $city->{name}";
         
@@ -231,9 +242,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $spacing) {
 
                 # Threshold of maximum variation in grid cell of times from
                 # mean, remove any data where it is larger than that.
-                # XXX suspect this should be as low as 20% or even 10%
-                # 24% for Les Essarts / Les Essarts le Roi
-                if ($max_precent_from_mean > 24.0) {
+                if ($max_precent_from_mean > $threshold_variation_from_mean ) {
                     print STDERR "removing outlier " . $worst_precent_from_mean_city->{name} . "\n";
                     $worst_precent_from_mean_city->{use} = 0;
                     next;
