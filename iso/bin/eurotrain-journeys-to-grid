@@ -27,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.11 2008-12-03 12:06:28 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.12 2008-12-03 12:52:54 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -42,8 +42,8 @@ static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.11 2008-12-03 1
 #define err(...)    do { fprintf(stderr, "eurotrain-journeys-to-grid: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
 #define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
 
-#define debug(...)    do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
-//#define debug(...)    do { } while (0)
+//#define debug(...)    do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+#define debug(...)    do { } while (0)
 
 struct point {
     double E, N, time;
@@ -99,7 +99,7 @@ double degrees(double rad) {
 /*  Convert lat/lon to pixels for:
     OpenStreetMap zoom 5, tiles 15,8 to 19,12 */
 double minx = -11.25; // Degrees
-double maxx = 45;
+double maxx = 45.0;
 double miny = 0.187499652486244; // Translated
 double maxy = 0.499999073296651;
 double wgs84_to_map(double size, double lat, double lon, double* x, double* y) {
