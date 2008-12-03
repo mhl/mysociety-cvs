@@ -27,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.10 2008-12-03 09:49:15 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.11 2008-12-03 12:06:28 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -42,8 +42,8 @@ static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.10 2008-12-03 0
 #define err(...)    do { fprintf(stderr, "eurotrain-journeys-to-grid: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
 #define die(...)    do { err(__VA_ARGS__); exit(1); } while (0)
 
-// #define debug(...)    do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
-#define debug(...)    do { } while (0)
+#define debug(...)    do { fprintf(stderr, __VA_ARGS__); fprintf(stderr, "\n"); } while (0)
+//#define debug(...)    do { } while (0)
 
 struct point {
     double E, N, time;
@@ -116,6 +116,7 @@ double map_to_wgs84(double size, double x, double y, double* lat, double* lon) {
     // Subtracting: 2 * tan(radians(lat)) == exp(y) - exp(-y)
     *lat = degrees(atan((exp(*lat) - exp(-*lat)) / 2));
     debug("map_to_wgs84 size:%lf x:%lf y:%lf lat:%lf lon:%lf", size, x, y, *lat, *lon);
+    debug("map_to_wgs84 minx:%lf maxx:%lf miny:%lf maxy:%lf", minx, maxx, miny, maxy);
 }
 
 /* great_circle_distance lat1(n) lon1(e) lat2(n) lon2(e) 
