@@ -15,8 +15,8 @@ use DBBahn;
 $|=1;
 
 # Size of grid cells, and number of cities to use in each.
-my $cell_spacing = 10.0; # 1.0 # degrees lat/lon
-my $cities_per_cell = 2;
+my $cell_spacing = 2.0; # 1.0 # degrees lat/lon
+my $cities_per_cell = 10; # 20
 
 # Threshold of maximum variation in grid cell of times from
 # mean, remove any data where it is larger than that.
@@ -42,47 +42,29 @@ END
     $dbh->commit();
 }
 
+#my $best = get_timings("Birmingham", $dbh);
+#print Dumper($best);
+#exit;
 
 print "geonameId\tfcode\tname\tpopulation\twikipedia\tlat\tlon\tduration\tactual_to\tswitched\n";
-
-#my $lat = shift;
-#my $lon = shift;
-#for (my $s = $lat - 0.2; $s <= $lat + 0.2; $s += 0.1) {
-#    for (my $w = $lon - 0.2; $w <= $lon + 0.2; $w += 0.1) {
 
 sub consider_one_city($$) {
     my $city = shift;
     my $raw_name = shift;
 
     # Look up timings to travel there by train
-    my $dur = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $raw_name);
-    if (!$dur) {
-        $dur = get_timings($raw_name);
-        print "\n". Dumper($dur); exit;
-        $dbh->do('insert into cache (url, content) values (?, ?)', {}, $raw_name, $dur);
-        $dbh->commit();
-        sleep 1;
-    }
-
-    my ($time, $actual_to, $switched_to) = split(/\t/, $dur);
-    $city->{db_time} = $time;
-    $city->{db_actual_to} = $actual_to;
-    $city->{db_switched_to} = $switched_to;
-
-    if ($time !~ m/^([0-9]+):([0-9]+)$/) {
-        #warn "time $time not parsed";
-        $city->{db_seconds} = undef;
-    } else {
-        $city->{db_seconds} = $1 * 60 * 60 + $2 * 60;
+    my $best = get_timings($raw_name, $dbh);
+    if (UNIVERSAL::isa($best, 'HASH')) {
+        $city->{dbahn} = $best;
     }
 
     my $use = 1;
     # Name doesn't match exactly
-    $use = 0 if (!$city->{db_actual_to});
-    if ($use && $city->{db_actual_to} ne $city->{name}) {
+    $use = 0 if (!$city->{dbahn} || !$city->{dbahn}->{actual_to});
+    if ($use && $city->{dbahn}->{actual_to} ne $city->{name}) {
         # Convert both names to same character set and encoding and
         # flatten accents and case.
-        my $db_name = $city->{db_actual_to};
+        my $db_name = $city->{dbahn}->{actual_to};
         $db_name = decode_entities($db_name);
         utf8::encode($db_name);
         $db_name = unac_string("utf-8", $db_name);
@@ -115,9 +97,8 @@ sub consider_one_city($$) {
         }
     }
     $use = 0 if ($city->{population} <= 0); # Population not known by geonames
-    $use = 0 if (!$city->{db_seconds}); # time didn't parse
+    $use = 0 if (!$city->{dbahn}->{duration_seconds}); # time didn't parse
     $city->{use} = $use;
-    
 }
 
 # Original west: 27.0
@@ -148,12 +129,17 @@ for (my $s = 36.1; $s <= 70.7; $s += $cell_spacing) {
 
         # For each city, look up travel time to get there on bahn.de
         $cities = $cities->{geonames};
-        @$cities = @$cities[0..$cities_per_cell-1];
-        foreach (@$cities) {
-            my $city = $_;
-
+        if (scalar(@$cities) > $cities_per_cell) {
+            @$cities = @$cities[0..$cities_per_cell-1];
+        }
+        foreach my $city (@$cities) {
             my $raw_name = $city->{name};
-            #print Dumper($city);
+            if (!$raw_name) {
+                foreach my $city (@$cities) {
+                    print Dumper($city);
+                }
+                die;
+            }
             utf8::encode($city->{name});
             print STDERR "geoid: $city->{geonameId} to bahn.de: $city->{name}";
         
@@ -194,7 +180,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $cell_spacing) {
             }
 
             if ($city->{use}) {
-                print STDERR " $city->{db_time} $city->{db_seconds}s\n";
+                print STDERR " $city->{dbahn}->{depart_time} $city->{dbahn}->{duration_seconds}s\n";
             } else {
                 print STDERR " skip\n";
             }
@@ -208,13 +194,12 @@ for (my $s = 36.1; $s <= 70.7; $s += $cell_spacing) {
             my $max_time = -1;
             my $sum_time = 0;
             $count = 0;
-            foreach (@$cities) {
-                my $city = $_;
+            foreach my $city (@$cities) {
                 next if !$city->{use};
 
-                $min_time = $city->{db_seconds} if $city->{db_seconds} < $min_time;
-                $max_time = $city->{db_seconds} if $city->{db_seconds} > $max_time;
-                $sum_time += $city->{db_seconds};
+                $min_time = $city->{dbahn}->{duration_seconds} if $city->{dbahn}->{duration_seconds} < $min_time;
+                $max_time = $city->{dbahn}->{duration_seconds} if $city->{dbahn}->{duration_seconds} > $max_time;
+                $sum_time += $city->{dbahn}->{duration_seconds};
                 $count++;
             }
             if ($count > 1) {
@@ -231,7 +216,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $cell_spacing) {
                     my $city = $_;
                     next if !$city->{use};
 
-                    my $percent_from_mean = abs($city->{db_seconds} - $avg_time) / $avg_time * 100;
+                    my $percent_from_mean = abs($city->{dbahn}->{duration_seconds} - $avg_time) / $avg_time * 100;
                     if ($percent_from_mean > $worst_precent_from_mean) {
                         $worst_precent_from_mean = $percent_from_mean;
                         $worst_precent_from_mean_city = $city;
@@ -258,7 +243,7 @@ for (my $s = 36.1; $s <= 70.7; $s += $cell_spacing) {
                
                 if ($city->{use}) {
                     # Print out
-                    print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{db_seconds}\t$city->{db_actual_to}\n";
+                    print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{dbahn}->{duration_seconds}\t$city->{dbahn}->{actual_to}\n";
                 }
             }
         } else {

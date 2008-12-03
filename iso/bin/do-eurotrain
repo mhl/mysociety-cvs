@@ -8,9 +8,6 @@
 
 # Bigger grid squares, or accept solitary things are OK
 # - recalibrate threshold using Les Essarts
-# Change scraper to grab lots in each cell and only use first n
-# Change scraper to not use duration
-# Change date to far future
 
 # Flatten accents out e.g. for Lodz, Rīga before feeding into bahn.de (maybe only in Poland?)
 # Substring of all responses breaks on this one (Alhama is alternate name):
@@ -44,7 +41,7 @@ set -e # exit on error
 RECT="0 $SIZE_PX 0 $SIZE_PX" # in pixel coordinates for this
 #RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
 #INPUT=around-cambridge-lat-lon-dur
-INPUT=all-europe-cell1-13-lat-lon-dur
+INPUT=all-europe-20-lat-lon-dur
 #INPUT=stations-lat-lon-dur
 RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT-walksp$WALKSPEED # input has east/north/time-in-secs
 
