@@ -9,11 +9,14 @@ use DBI;
 use HTML::Entities;
 use Text::Unaccent;
 use Data::Dumper;
-use Devel::Cycle;  
+use Getopt::Long;
 
 use DBBahn;
 
 $|=1;
+
+##########################################################################
+# Parameters
 
 # Size of grid cells, and number of cities to use in each.
 my $cell_spacing = 1.0; # 1.0 # degrees lat/lon
@@ -25,9 +28,43 @@ my $cities_per_cell = 40; # 20
 # 24% for Les Essarts / Les Essarts le Roi with 0.5 degree cell spacing, 10 cities per cell
 my $threshold_variation_from_mean = 500.0; #24.0;
  
+##########################################################################
+# Initialisation
+
+# Original west: 27.0
+# Moscow west: 37.598889 (37.6)
+# Hopeful west: 45.0
+my $s_start = 36.1;
+my $s_end = 70.7;
+my $w_start = -9.7;
+my $w_end = 27.0;
+
+my $resume = undef;
+
+my $result = GetOptions (
+    "south=s" => \$s_start,
+    "west=s" => \$w_start,
+    "north=s" => \$s_end,
+    "east=s" => \$w_end,
+    "resume" => \$resume
+);
+
+if (!$result) {
+    print <<END;
+Takes cities from geonames and looks up journey time to them on bahn.de. 
+Uses heuristics to decide which cities the names have matched correctly
+for, and only outputs those.
+
+--south=SOUTH, --west=WEST, --north=NORTH, --east=EAST - grid to use in lat/lon
+--resume - internal use only, for restarting process to clear memory
+END
+    exit;
+}
+
 my $geonames_cities_url = 'http://ws.geonames.org/citiesJSON?north=%f&south=%f&east=%f&west=%f&maxRows=200';
 my $geonames_get_url = 'http://ws.geonames.org/getJSON?geonameId=';
 
+# Connect to database for caching web request results
 my ($sqlite_db) = @ARGV;
 die "Parameter is sqlite database" if !$sqlite_db;
 my $exists = -e $sqlite_db;
@@ -43,12 +80,42 @@ END
     $dbh->commit();
 }
 
-#my $best = get_timings("Birmingham", $dbh);
-#print Dumper($best);
-#exit;
+##########################################################################
+# Testing / debugging
 
-print "geonameId\tfcode\tname\tpopulation\twikipedia\tlat\tlon\tduration\tactual_to\tswitched\n";
+# use Devel::Cycle;  # find_cycle($var) finds circular references
+# use Devel::Peek;
 
+# Memory profiling (used to have a problem with long runs of this script eating all system memory)
+use GTop ();
+my $gtop = GTop->new;
+my @attrs = qw(size vsize resident share rss);
+
+sub mem_use_begin
+{
+    my $before = $gtop->proc_mem($$);
+    return $before;
+}
+
+sub mem_use_end
+{
+    my $desc = shift;
+    my $before = shift;
+    my $after = $gtop->proc_mem($$);
+
+    my %after = map {$_ => $after->$_()} @attrs;
+    my %before = map { $_ => $before->$_() } @attrs;
+    warn $desc . "\n";
+    warn sprintf "\t%-10s : %-5s delta (%-5s total after)\n", $_,
+            GTop::size_string($after{$_} - $before{$_}),
+            GTop::size_string($after{$_}),
+            for sort @attrs;
+}
+
+##########################################################################
+# Core functions
+
+# Call bahn.de, and decide whether to use results
 sub consider_one_city($$) {
     my $city = shift;
     my $raw_name = shift;
@@ -102,165 +169,196 @@ sub consider_one_city($$) {
     $city->{use} = $use;
 }
 
-# Original west: 27.0
-# Moscow west: 37.598889 (37.6)
-# Hopeful west: 45.0
-for (my $s = 36.1; $s <= 70.7; $s += $cell_spacing) {
-    for (my $w = -9.7; $w <= 27.0; $w += $cell_spacing) {
+# Output any cities and distances to use in one particular grid cell
+sub do_one_cell($$) {
+    my ($s, $w) = @_;
 
-        # Work out bounds of a small grid cell
-        my $n = $s + $cell_spacing;
-        my $e = $w + $cell_spacing;
-        print STDERR "W:$w E:$e S:$s N:$n...\n";
+    # Work out bounds of a small grid cell
+    my $n = $s + $cell_spacing;
+    my $e = $w + $cell_spacing;
+    print STDERR "W:$w E:$e S:$s N:$n...\n";
 
-        # Get list of cities from geonames in that grid cell
-        $urlF = sprintf($geonames_cities_url, $n, $s, $e, $w);
-        print STDERR "geonames: $urlF\n";
-        my $cities = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlF);
-        if (!$cities) {
-            $cities = get($urlF);
-            $dbh->do('insert into cache (url, content) values (?, ?)', {}, $urlF, $cities);
+    # Get list of cities from geonames in that grid cell
+    my $urlF = sprintf($geonames_cities_url, $n, $s, $e, $w);
+    print STDERR "geonames: $urlF\n";
+    my $cities = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlF);
+    if (!$cities) {
+        $cities = get($urlF);
+        $dbh->do('insert into cache (url, content) values (?, ?)', {}, $urlF, $cities);
+        $dbh->commit();
+    }
+    $cities = from_json($cities, { utf8 => 1 });
+    if ($cities->{status}) {
+        print STDERR $cities->{status}{message} . "\n";
+        next;
+    }
+
+    # Take only the first $cities_per_cell cities
+    $cities = $cities->{geonames};
+    if (scalar(@$cities) > $cities_per_cell) {
+        @$cities = @$cities[0..$cities_per_cell-1];
+    }
+
+    # For each city, look up travel time to get there on bahn.de
+    foreach my $city (@$cities) {
+        my $raw_name = $city->{name};
+        if (!$raw_name) {
+            foreach my $city (@$cities) {
+                print Dumper($city);
+            }
+            die "city has no name";
+        }
+        utf8::encode($city->{name});
+        print STDERR "geoid: $city->{geonameId} to bahn.de: $city->{name}";
+    
+        # Get list of alternative names
+        my $urlG = $geonames_get_url . $city->{geonameId};
+        $city->{names} = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlG);
+        if (!$city->{names}) {
+            $city->{names} = get($urlG);
+            if (!$city->{names}) {
+                warn "failed to get city names for $city->{name}";
+                next;
+            }
+            $dbh->do('insert into cache (url, content) values (?, ?)', {}, $urlG, $city->{names});
             $dbh->commit();
         }
-        $cities = from_json($cities, { utf8 => 1 });
-        if ($cities->{status}) {
-            print STDERR $cities->{status}{message} . "\n";
-            next;
-        }
+        $city->{names} = from_json($city->{names}, { utf8 => 1 });
 
-        # Take only the first $cities_per_cell cities
-        $cities = $cities->{geonames};
-        if (scalar(@$cities) > $cities_per_cell) {
-            @$cities = @$cities[0..$cities_per_cell-1];
-        }
+        # Look up journey by feeding in default geonames name (English), 
+        # and see whether to use city (i.e. the name out of bahn.de is like
+        # one known by geonames, and some other heuristics)
+        consider_one_city($city, $raw_name);
 
-        # For each city, look up travel time to get there on bahn.de
-        foreach my $city (@$cities) {
-            my $raw_name = $city->{name};
-            if (!$raw_name) {
-                foreach my $city (@$cities) {
-                    print Dumper($city);
-                }
-                die "city has no name";
-            }
-            utf8::encode($city->{name});
-            print STDERR "geoid: $city->{geonameId} to bahn.de: $city->{name}";
-        
-            # Get list of alternative names
-            my $urlG = $geonames_get_url . $city->{geonameId};
-            $city->{names} = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $urlG);
-            if (!$city->{names}) {
-                $city->{names} = get($urlG);
-                $dbh->do('insert into cache (url, content) values (?, ?)', {}, $urlG, $city->{names});
-                $dbh->commit();
-            }
-            $city->{names} = from_json($city->{names}, { utf8 => 1 });
-
-            # Look up journey by feeding in default geonames name (English), 
-            # and see whether to use city (i.e. the name out of bahn.de is like
-            # one known by geonames, and some other heuristics)
-            consider_one_city($city, $raw_name);
-
-            # If that was no good, we try feeding the name in another language
-            # into bahn.de
-            if (!$city->{use}) {
-                # Look for alternative name that is same language as spoken in country
-                my $country = lc($city->{names}->{countryCode});
-                my $alternateNames = $city->{names}->{alternateNames};
-                #print Dumper($city->{names});
-                foreach my $nameref (@$alternateNames) {
-                    # XXX Hackily look for ones with same language code as country code (covers most cases for now)
-                    if ($nameref->{lang} && $nameref->{lang} eq $country) {
-                        my $name_utf8 = $nameref->{name};
-                        utf8::encode($name_utf8);
-                        if ($name_utf8 ne $city->{name}) {
-                            $city->{name} = $name_utf8;
-                            print STDERR " langname '$name_utf8'";
-                        }
-                        $raw_name = $nameref->{name};
-                        last;
+        # If that was no good, we try feeding the name in another language
+        # into bahn.de
+        if (!$city->{use}) {
+            # Look for alternative name that is same language as spoken in country
+            my $country = lc($city->{names}->{countryCode});
+            my $alternateNames = $city->{names}->{alternateNames};
+            #print Dumper($city->{names});
+            foreach my $nameref (@$alternateNames) {
+                # XXX Hackily look for ones with same language code as country code (covers most cases for now)
+                if ($nameref->{lang} && $nameref->{lang} eq $country) {
+                    my $name_utf8 = $nameref->{name};
+                    utf8::encode($name_utf8);
+                    if ($name_utf8 ne $city->{name}) {
+                        $city->{name} = $name_utf8;
+                        print STDERR " langname '$name_utf8'";
                     }
+                    $raw_name = $nameref->{name};
+                    last;
                 }
-
-                # XXX could speed this up by not running consider_one_city again when
-                # there are no alternate names matching
-
-                # Look up journey, using the name in the other language as input to bahn.de
-                # and see whether to use that journey
-                consider_one_city($city, $raw_name);
             }
 
-            if ($city->{use}) {
-                print STDERR " $city->{dbahn}->{depart_time} $city->{dbahn}->{duration_seconds}s\n";
-            } else {
-                print STDERR " skip\n";
-            }
+            # XXX could speed this up by not running consider_one_city again when
+            # there are no alternate names matching
+
+            # Look up journey, using the name in the other language as input to bahn.de
+            # and see whether to use that journey
+            consider_one_city($city, $raw_name);
         }
 
-        # Decide which ones to use
-        my $count;
-        while (1) {
-            # Find average time taken, and count of number of cities
-            my $min_time = 1000000000;
-            my $max_time = -1;
-            my $sum_time = 0;
-            $count = 0;
+        if ($city->{use}) {
+            print STDERR " $city->{dbahn}->{depart_time} $city->{dbahn}->{duration_seconds}s\n";
+        } else {
+            print STDERR " skip\n";
+        }
+    }
+
+    # Decide which ones to use, removing outliers with extreme times
+    # compared to others in the same cell.
+    my $count;
+    while (1) {
+        # Find average time taken, and count of number of cities
+        my $min_time = 1000000000;
+        my $max_time = -1;
+        my $sum_time = 0;
+        $count = 0;
+        foreach my $city (@$cities) {
+            next if !$city->{use};
+
+            $min_time = $city->{dbahn}->{duration_seconds} if $city->{dbahn}->{duration_seconds} < $min_time;
+            $max_time = $city->{dbahn}->{duration_seconds} if $city->{dbahn}->{duration_seconds} > $max_time;
+            $sum_time += $city->{dbahn}->{duration_seconds};
+            $count++;
+        }
+        if ($count > 1) {
+            my $avg_time = $sum_time / $count;
+            my $percent_from_mean_1 = ($max_time - $avg_time) / $avg_time * 100;
+            my $percent_from_mean_2 = ($avg_time - $min_time) / $avg_time * 100;
+            my $max_precent_from_mean = $percent_from_mean_1 > $percent_from_mean_2 ? $percent_from_mean_1 : $percent_from_mean_2;
+            print STDERR "cell time range min $min_time avg $avg_time max $max_time\n";
+
+            # Find which city is most away from mean time
+            my $worst_precent_from_mean = -1;
+            my $worst_precent_from_mean_city = undef;
             foreach my $city (@$cities) {
                 next if !$city->{use};
 
-                $min_time = $city->{dbahn}->{duration_seconds} if $city->{dbahn}->{duration_seconds} < $min_time;
-                $max_time = $city->{dbahn}->{duration_seconds} if $city->{dbahn}->{duration_seconds} > $max_time;
-                $sum_time += $city->{dbahn}->{duration_seconds};
-                $count++;
-            }
-            if ($count > 1) {
-                my $avg_time = $sum_time / $count;
-                my $percent_from_mean_1 = ($max_time - $avg_time) / $avg_time * 100;
-                my $percent_from_mean_2 = ($avg_time - $min_time) / $avg_time * 100;
-                my $max_precent_from_mean = $percent_from_mean_1 > $percent_from_mean_2 ? $percent_from_mean_1 : $percent_from_mean_2;
-                print STDERR "cell time range min $min_time avg $avg_time max $max_time\n";
-
-                # Find which city is most away from mean time
-                my $worst_precent_from_mean = -1;
-                my $worst_precent_from_mean_city = undef;
-                foreach my $city (@$cities) {
-                    next if !$city->{use};
-
-                    my $percent_from_mean = abs($city->{dbahn}->{duration_seconds} - $avg_time) / $avg_time * 100;
-                    if ($percent_from_mean > $worst_precent_from_mean) {
-                        $worst_precent_from_mean = $percent_from_mean;
-                        $worst_precent_from_mean_city = $city;
-                    }
-                }
-
-                print STDERR "variation " . ($max_time - $min_time) . " max_percent_from_mean $max_precent_from_mean\n";
-
-                # Threshold of maximum variation in grid cell of times from
-                # mean, remove any data where it is larger than that.
-                if ($max_precent_from_mean > $threshold_variation_from_mean ) {
-                    print STDERR "removing outlier " . $worst_precent_from_mean_city->{name} . "\n";
-                    $worst_precent_from_mean_city->{use} = 0;
-                    next;
+                my $percent_from_mean = abs($city->{dbahn}->{duration_seconds} - $avg_time) / $avg_time * 100;
+                if ($percent_from_mean > $worst_precent_from_mean) {
+                    $worst_precent_from_mean = $percent_from_mean;
+                    $worst_precent_from_mean_city = $city;
                 }
             }
-            last;
+
+            print STDERR "variation " . ($max_time - $min_time) . " max_percent_from_mean $max_precent_from_mean\n";
+
+            # Threshold of maximum variation in grid cell of times from
+            # mean, remove any data where it is larger than that.
+            if ($max_precent_from_mean > $threshold_variation_from_mean ) {
+                print STDERR "removing outlier " . $worst_precent_from_mean_city->{name} . "\n";
+                $worst_precent_from_mean_city->{use} = 0;
+                next;
+            }
+        }
+        last;
+    }
+
+    # For grid cells with at least 2 points in (which must be within variance), print any cities left
+    if ($count > 1) {
+        foreach my $city (@$cities) {
+            if ($city->{use}) {
+                # Print out
+                print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{dbahn}->{duration_seconds}\t$city->{dbahn}->{actual_to}\n";
+            }
+        }
+    } else {
+        print STDERR "Rejected group $count\n";
+    }
+
+    print STDERR "\n";
+}
+
+##########################################################################
+# Main loop
+
+#my $best = get_timings("Birmingham", $dbh);
+#print Dumper($best);
+#exit;
+
+if (!$resume) {
+    print "geonameId\tfcode\tname\tpopulation\twikipedia\tlat\tlon\tduration\tactual_to\tswitched\n";
+}
+
+my $iterations = 0;
+for (my $s = $s_start; $s <= $s_end; $s += $cell_spacing) {
+    for (my $w = $w_start; $w <= $w_end; $w += $cell_spacing) {
+        # Every so often, restart the process to clear memory (couldn't
+        # track down leak, suspected in sqlite bindings but who knows)
+        $iterations++;
+        if ($iterations > 20) {
+            print STDERR "$iterations iterations: restarting process with exec from W:$w S:$s\n";
+            exec $0, $sqlite_db, "--resume", "--south=" . $s, "--west=" . $w;
+            die "internal error, exec returned";
         }
 
-        # For grid cells with at least 2 points in (which must be within variance), print any cities left
-        if ($count > 1) {
-            foreach my $city (@$cities) {
-                if ($city->{use}) {
-                    # Print out
-                    print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{dbahn}->{duration_seconds}\t$city->{dbahn}->{actual_to}\n";
-                }
-            }
-        } else {
-            print STDERR "Rejected group $count\n";
-        }
-
-        print STDERR "\n";
-
-        find_cycle($cities);
-        find_cycle($dbh);
+        my $memmark_roundloop = mem_use_begin();
+        do_one_cell($s, $w);
+        mem_use_end("round_loop $iterations", $memmark_roundloop);
     }
 }
+
+
+
