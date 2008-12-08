@@ -9,6 +9,8 @@
 # Bigger grid squares, or accept solitary things are OK
 # - recalibrate threshold using Les Essarts
 
+# Worry about the trains that leave after 8am
+
 # Flatten accents out e.g. for Lodz, Rīga before feeding into bahn.de (maybe only in Poland?)
 # Substring of all responses breaks on this one (Alhama is alternate name):
 # +2521994        PPL     Alhama de Almería       3374            36.95   -2.5666667      82620   Alhama de Aragon
@@ -26,12 +28,12 @@
 # cat /home/francis/toobig/isodata/eurotrainmaps//stations-lat-lon-dur |  ./eurotrain-journeys-to-grid query 1280 1280 15 1800 561 638 2>&1 |less
 
 # Parameters:
-SIZE_PX=500 # 10240 # 1280
-DIR=$HOME/toobig/isodata/neweurotrainmaps/
+SIZE_PX=640 # 10240 # 1280
+DIR=$HOME/guardian-euro
 
 WALKSPEED=5 # 15 # 4 m/s == 8.9 mph, 25 m/s = 55 mph # tom thinks use 15 m/s
 MAXWALKTIME=1800 # 900 seconds  = 15 minutes default in old system
-BANDSIZE=1200; BANDCOUNT=200; BANDCOLSEP=1 # use 720 for simple; use 1080 band size for Bulgaria
+BANDSIZE=1080; BANDCOUNT=200; BANDCOLSEP=1 # use 720 for simple; use 1080 band size for Bulgaria
 
 set -x # print each line
 set -e # exit on error
@@ -41,17 +43,21 @@ set -e # exit on error
 RECT="0 $SIZE_PX 0 $SIZE_PX" # in pixel coordinates for this
 #RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
 #INPUT=around-cambridge-lat-lon-dur
-INPUT=all-europe-20-lat-lon-dur
+INPUT=apple-3
 #INPUT=stations-lat-lon-dur
 RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT-walksp$WALKSPEED # input has east/north/time-in-secs
 
 # walkspeed = 1 m/s maxwalktime = 900 sec
-cat $DIR/$INPUT | ./eurotrain-journeys-to-grid grid $SIZE_PX $SIZE_PX $WALKSPEED $MAXWALKTIME > $DIR/$RESULTS-grid
+cat $DIR/$INPUT-out | ./euro-tsv-to-located-duration > $DIR/$INPUT-lat-lon-dur
+cat $DIR/$INPUT-lat-lon-dur | ./eurotrain-journeys-to-grid grid $SIZE_PX $SIZE_PX $WALKSPEED $MAXWALKTIME > $DIR/$RESULTS-grid
 cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX $BANDSIZE $BANDCOUNT $BANDCOLSEP > $DIR/$RESULTS.ppm
 #cat $DIR/$RESULTS-grid | ./xxx field $RECT $SIZE_PX $SIZE_PX > $DIR/$RESULTS.ppm
 
 convert $DIR/$RESULTS.ppm $DIR/$RESULTS.png
-eog $DIR/$RESULTS.png
+cp $DIR/$RESULTS.png ~/public_html/isotmp
+
+echo "http://pudding.ukcod.org.uk/~francis/isotmp/$RESULTS.png"
+#eog $DIR/$RESULTS.png
 
 
 

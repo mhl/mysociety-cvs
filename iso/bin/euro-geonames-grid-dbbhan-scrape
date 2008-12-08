@@ -23,6 +23,7 @@ use Text::Unaccent;
 use Data::Dumper;
 use Getopt::Long;
 
+
 use DBBahn;
 
 $|=1;
@@ -32,13 +33,14 @@ $|=1;
 
 # Size of grid cells, and number of cities to use in each.
 my $cell_spacing = 1.0; # 1.0 # degrees lat/lon
-my $cities_per_cell = 40; # 20
+my $cities_per_cell = 160; # 20
 
 # Threshold of maximum variation in grid cell of times from
 # mean, remove any data where it is larger than that.
 # XXX suspect this should be as low as 20% or even 10%
 # 24% for Les Essarts / Les Essarts le Roi with 0.5 degree cell spacing, 10 cities per cell
-my $threshold_variation_from_mean = 500.0; #24.0;
+# 52.18% for Les Essarts with 1 degree cell spacing, 40 cities per cell
+my $threshold_variation_from_mean = 50.0;
  
 ##########################################################################
 # Initialisation
@@ -49,7 +51,9 @@ my $threshold_variation_from_mean = 500.0; #24.0;
 my $s_start = 36.1;
 my $s_end = 70.7;
 my $w_start = -9.7;
-my $w_end = 27.0;
+my $w_end = 38.0;
+my $s_resume;
+my $w_resume;
 
 my $resume = undef;
 
@@ -58,6 +62,8 @@ my $result = GetOptions (
     "west=s" => \$w_start,
     "north=s" => \$s_end,
     "east=s" => \$w_end,
+    "resume-south=s" => \$s_resume,
+    "resume-west=s" => \$w_resume,
     "resume" => \$resume
 );
 
@@ -68,7 +74,7 @@ Uses heuristics to decide which cities the names have matched correctly
 for, and only outputs those.
 
 --south=SOUTH, --west=WEST, --north=NORTH, --east=EAST - grid to use in lat/lon
---resume - internal use only, for restarting process to clear memory
+--resume, --resume-south=, --resume-west= - internal use only, for restarting process to clear memory
 END
     exit;
 }
@@ -357,12 +363,18 @@ if (!$resume) {
 my $iterations = 0;
 for (my $s = $s_start; $s <= $s_end; $s += $cell_spacing) {
     for (my $w = $w_start; $w <= $w_end; $w += $cell_spacing) {
+        # If resume midway
+        if ($resume && $iterations == 0) {
+            $s = $s_resume;
+            $w = $w_resume;
+        }
+
         # Every so often, restart the process to clear memory (couldn't
         # track down leak, suspected in sqlite bindings but who knows)
         $iterations++;
         if ($iterations > 20) {
             print STDERR "$iterations iterations: restarting process with exec from W:$w S:$s\n";
-            exec $0, $sqlite_db, "--resume", "--south=" . $s, "--west=" . $w;
+            exec $0, $sqlite_db, "--resume", "--resume-south=" . $s, "--resume-west=" . $w;
             die "internal error, exec returned";
         }
 
