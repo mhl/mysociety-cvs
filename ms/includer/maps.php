@@ -6,12 +6,6 @@
 		A World First - Custom maps that help house hunters and office managers find the best places quick and for easy commutes
 	</p>
 
-	<!-- More info -->
-	<a class="linkbutton" href="/services/request-a-quote/?p=map">
-        <span class="left">&nbsp;</span>
-        <span class="middle">Get a quote for your map now</span>                
-        <span class="right">&nbsp;</span>
-    </a>
 </div>
 
 <div class="contenthalf aligncenter">
@@ -81,3 +75,13 @@
 	</div>
 </div>
 <br class="clear"/>
+<div class="contentfull">
+	<div class="dividertop dividerbottom">
+        <!-- More info -->
+        <a class="linkbutton" href="/services/request-a-quote/?p=map">
+            <span class="left">&nbsp;</span>
+            <span class="middle">Get a quote for your map now</span>                
+            <span class="right">&nbsp;</span>
+        </a>
+    </div>
+</div>

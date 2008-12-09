@@ -18,14 +18,15 @@
 	*/
 	?>
 	
-	<!-- More info -->
+	<!-- More info 
 	<a class="linkbutton" href="/services/request-a-quote/?p=petition">
         <span class="left">&nbsp;</span>
         <span class="middle">Get a quote now</span>                
         <span class="right">&nbsp;</span>
     </a>
+    -->
 	<br/>
-	<a href="http://brighton.matthew.pet.mysociety.org/">or try our demo</a>
+	<a href="http://brighton.matthew.pet.mysociety.org/">Try our demo</a>
 </div>
 
 <div class="contenthalf aligncenter">
