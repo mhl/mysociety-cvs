@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * @version $Id: XMLMapApp.as,v 1.1 2008-01-15 03:01:01 tcarden Exp $
+ * @version $Id: XMLMapApp.as,v 1.2 2008-12-10 18:38:42 francis Exp $
  */
 package org.mysociety.traveltime
 {
@@ -44,16 +44,21 @@ package org.mysociety.traveltime
 	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequest;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
 	import flash.text.AntiAliasType;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+    import flash.utils.ByteArray;
+    import flash.xml.XMLNode;
 	
 	import org.mysociety.BaseApp;
 	import org.mysociety.util.buildDesaturateArray;
@@ -63,10 +68,14 @@ package org.mysociety.traveltime
 
 		public var map:Loader;
 		public var overlayLoaders:Array = [];
+
+		public var pointDetailsLoader:URLLoader;
+		public var pointDetails:XML;
 		
 		// for setting label ranges from query strings
 		public var slidersByOverlay:Object = {};
 
+        public var francisDebug:String = 'initial';
 				
 		override public function configReady(config:XML):void
 		{
@@ -99,16 +108,58 @@ package org.mysociety.traveltime
 				overlayLoaders.push(overlay);
 			}
 			else {
-				// clean up progress/errors
-				if (getChildByName('progress')) {
-					removeChild(getChildByName('progress'));
-				}
-				if (getChildByName('error')) {
-					removeChild(getChildByName('error'));
-				}
-				draw();
+                if (config.pointDetailsURL.length() > 0) {
+                    pointDetailsLoader = new URLLoader(new URLRequest(config.pointDetailsURL.text()));
+                    pointDetailsLoader.dataFormat = URLLoaderDataFormat.BINARY;
+                    pointDetailsLoader.addEventListener(Event.COMPLETE, onPointDetailsLoaded);
+                    pointDetailsLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, function(event:Event):void { trace(event.toString()); });
+                    pointDetailsLoader.addEventListener(IOErrorEvent.IO_ERROR, function(event:IOErrorEvent):void { error(event.text); });
+                    pointDetailsLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function(event:SecurityErrorEvent):void { error(event.text); });
+                    pointDetailsLoader.addEventListener(ProgressEvent.PROGRESS, function(event:ProgressEvent):void { progress('pointDetails', event); });
+                } else {
+                    cleanUpProgressErrors();
+                }
 			}
 		}		
+
+		private function onPointDetailsLoaded(event:Event):void {
+            francisDebug = 'onPointDetailsLoaded';
+
+            var ba:ByteArray = pointDetailsLoader.data;
+
+   /*         for (var i:int = 100000; i < 100100; i++) {
+                //francisDebug = francisDebug + ba[i];
+            }
+
+			pointDetails = XML((event.target as URLLoader).data);
+            var x:XMLNode = pointDetails.elements()[0];
+            for (var j:int = 0; j < 100; j++) {
+                francisDebug = francisDebug + x.toString();
+                x = x.nextSibling;
+            }
+            */
+
+            //for (var i:int = 0; i < pointDetails.point.length(); i++) {
+        //    var pe:ProgressEvent = new ProgressEvent('pointDetails');
+         //   for (var i:int = 0; i < 100; i++) {
+          //      francisDebug = pointDetails.point[i].@name;
+           // }
+            //tipLabel.appendText(pointDetails.point[0].@name);
+
+
+            cleanUpProgressErrors();
+        }
+
+        private function cleanUpProgressErrors():void {
+            // clean up progress/errors
+            if (getChildByName('progress')) {
+                removeChild(getChildByName('progress'));
+            }
+            if (getChildByName('error')) {
+                removeChild(getChildByName('error'));
+            }
+            draw();
+        }
 		
 		private function draw():void
 		{
@@ -210,10 +261,12 @@ package org.mysociety.traveltime
 
 			////////////////////
 			
-			var labels:Loader = new Loader();
-			labels.load(new URLRequest(config.labelURL.text()));
-			labels.transform.colorTransform = new ColorTransform(-1,-1,-1,1,255,255,255,0);
-			all.addChild(labels);
+            if (config.labelURL.length() > 1) {
+                var labels:Loader = new Loader();
+                labels.load(new URLRequest(config.labelURL.text()));
+                labels.transform.colorTransform = new ColorTransform(-1,-1,-1,1,255,255,255,0);
+                all.addChild(labels);
+            }
 
 			////////////////////
 			
@@ -340,7 +393,33 @@ package org.mysociety.traveltime
 				center.addEventListener(MouseEvent.MOUSE_OUT, function(event:MouseEvent):void { centerTimer = setTimeout(function():void { centerTextBack.visible = false }, 750); }); */ 
 			}
 		
-		}
+			/////////////////
+			var tipLabel:TextField = new TextField();
+			tipLabel.embedFonts = true;
+			tipLabel.antiAliasType = AntiAliasType.ADVANCED;
+			tipLabel.defaultTextFormat = new TextFormat("HelveticaBold", 10 + (2*stage.stageWidth/400), 0x000000, true, null, false, null, null, TextFormatAlign.CENTER, 5, 5, null, 4);
+			tipLabel.multiline = false;
+			tipLabel.wordWrap = true;
+			var drawtipLabel:Function = function(event:MouseEvent=null):void {
+                if (event) {
+                    tipLabel.text = "labelURL: " + config.labelURL.length() + "  X: " + event.localX + " Y:" + event.localY + " f:" + francisDebug + " ";
+                    
+                    //for (var i:int = 0; i < pointDetails.point.length(); i++) {
+                    //for (var i:int = 0; i < 10; i++) {
+                    //  tipLabel.appendText(pointDetails.point[i].@name);
+                    //}
+                    //tipLabel.appendText(pointDetails.point[0].@name);
+
+                    tipLabel.width = stage.stageWidth-4;
+                    tipLabel.height = (tipLabel.textHeight + 4) * 2;
+                }
+			};
+			drawtipLabel();			
+			tipLabel.x = 2;
+			tipLabel.y = stage.stageHeight - 25 - 25 - 25;
+			addChild(tipLabel);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, drawtipLabel);			
+        }
 		
 		private function updateHash(event:Event):void
 		{

@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * @version $Id: BaseApp.as,v 1.1 2008-01-15 03:01:01 tcarden Exp $
+ * @version $Id: BaseApp.as,v 1.2 2008-12-10 18:38:41 francis Exp $
  */
 package org.mysociety
 {
@@ -50,10 +50,15 @@ package org.mysociety
 	public class BaseApp extends Sprite
 	{
 
-		[Embed(systemFont="Helvetica Neue", fontName="HelveticaNorm", mimeType='application/x-font')]
+// Tom Carden embedded Helvetica Neue, which I don't have, so I've aliased it to Bitstream - Francis.
+		[Embed(systemFont="Bitstream Vera Sans", fontName="HelveticaNorm", mimeType='application/x-font')]
 		public var helvetica:String;
-		[Embed(systemFont="Helvetica Neue", fontName="HelveticaBold", fontWeight="bold", mimeType='application/x-font')]
-		public var helveticaBold:String;
+		[Embed(systemFont="Bitstream Vera Sans", fontName="HelveticaBold", fontWeight="bold", mimeType='application/x-font')]
+        public var helveticaBold:String;
+//		[Embed(systemFont="Helvetica Neue", fontName="HelveticaNorm", mimeType='application/x-font')]
+//		public var helvetica:String;
+//		[Embed(systemFont="Helvetica Neue", fontName="HelveticaBold", fontWeight="bold", mimeType='application/x-font')]
+//		public var helveticaBold:String;
 
 		public var config:XML;
 
@@ -120,7 +125,8 @@ package org.mysociety
 			tf.width = Math.min(stage.stageWidth, tf.textWidth + 4);
 			tf.height = tf.textHeight + 4;
 		}
-		
+
+
 		public function progress(text:String, event:ProgressEvent):void
 		{
 			var tf:TextField = getChildByName('progress') as TextField; 
