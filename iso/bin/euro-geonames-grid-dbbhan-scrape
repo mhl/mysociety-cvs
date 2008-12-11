@@ -156,6 +156,7 @@ sub consider_one_city($$) {
         my $db_name = $city->{dbahn}->{actual_to};
         $db_name = decode_entities($db_name);
         utf8::encode($db_name);
+        $city->{dbahn}->{actual_to_utf8} = $db_name;
         $db_name = unac_string("utf-8", $db_name);
         $db_name = lc($db_name);
 
@@ -343,7 +344,7 @@ sub do_one_cell($$) {
         foreach my $city (@$cities) {
             if ($city->{use}) {
                 # Print out
-                print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{dbahn}->{duration_seconds}\t$city->{dbahn}->{actual_to}\t$city->{dbahn}->{depart_date}\t$city->{dbahn}->{depart_time}\t$city->{dbahn}->{arrive_date}\t$city->{dbahn}->{arrive_time}\t$city->{dbahn}->{duration}\t$city->{dbahn}->{after_eight_secs}\t$city->{english_name}\n";
+                print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{dbahn}->{duration_seconds}\t$city->{dbahn}->{actual_to_utf8}\t$city->{dbahn}->{depart_date}\t$city->{dbahn}->{depart_time}\t$city->{dbahn}->{arrive_date}\t$city->{dbahn}->{arrive_time}\t$city->{dbahn}->{duration}\t$city->{dbahn}->{after_eight_secs}\t$city->{english_name}\n";
             }
         }
     } else {
