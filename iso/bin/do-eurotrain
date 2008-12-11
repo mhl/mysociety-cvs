@@ -6,10 +6,8 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-# Bigger grid squares, or accept solitary things are OK
-# - recalibrate threshold using Les Essarts
-
-# Worry about the trains that leave after 8am
+# The trains that leave after 8am - add extra hours on between 8am and their leaving time
+# Pass leaving time through system
 
 # Flatten accents out e.g. for Lodz, Rīga before feeding into bahn.de (maybe only in Poland?)
 # Substring of all responses breaks on this one (Alhama is alternate name):
@@ -43,20 +41,23 @@ set -e # exit on error
 RECT="0 $SIZE_PX 0 $SIZE_PX" # in pixel coordinates for this
 #RESULTS=quicktest-1000-random-stations # input has east/north/time-in-secs
 #INPUT=around-cambridge-lat-lon-dur
-INPUT=apple-3
+INPUT=apple-4
 #INPUT=stations-lat-lon-dur
 RESULTS=$INPUT-px$SIZE_PX-bandsize$BANDSIZE-bandcount$BANDCOUNT-walksp$WALKSPEED # input has east/north/time-in-secs
 
 # walkspeed = 1 m/s maxwalktime = 900 sec
 cat $DIR/$INPUT-out | ./euro-tsv-to-located-duration > $DIR/$INPUT-lat-lon-dur
 cat $DIR/$INPUT-lat-lon-dur | ./eurotrain-journeys-to-grid grid $SIZE_PX $SIZE_PX $WALKSPEED $MAXWALKTIME > $DIR/$RESULTS-grid
+cat $DIR/$INPUT-lat-lon-dur | ./eurotrain-journeys-to-grid xmlgrid $SIZE_PX $SIZE_PX $WALKSPEED $MAXWALKTIME > $DIR/$RESULTS.xml
 cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX $BANDSIZE $BANDCOUNT $BANDCOLSEP > $DIR/$RESULTS.ppm
 #cat $DIR/$RESULTS-grid | ./xxx field $RECT $SIZE_PX $SIZE_PX > $DIR/$RESULTS.ppm
 
 convert $DIR/$RESULTS.ppm $DIR/$RESULTS.png
 cp $DIR/$RESULTS.png ~/public_html/isotmp
+cp $DIR/$RESULTS.xml ~/public_html/isotmp
 
 echo "http://pudding.ukcod.org.uk/~francis/isotmp/$RESULTS.png"
+echo "http://pudding.ukcod.org.uk/~francis/isotmp/$RESULTS.xml"
 #eog $DIR/$RESULTS.png
 
 

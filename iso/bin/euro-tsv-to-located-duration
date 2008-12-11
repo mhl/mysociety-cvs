@@ -10,7 +10,8 @@ while (<>) {
     my ($geonameid, $code, $name, $population, $wikipedia, $lat, $lon, $seconds, $rest_of_line) = split /\t/;
 
     if (defined($lat) && defined($lon) && defined($seconds)) {
-        print "$lat $lon $seconds\n";
+        my $mins = $seconds / 60;
+        print "$lat $lon $seconds $name, $mins mins, population $population\n";
     }
 }
 

@@ -27,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.12 2008-12-03 12:52:54 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.13 2008-12-11 12:44:51 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -47,6 +47,7 @@ static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.12 2008-12-03 1
 
 struct point {
     double E, N, time;
+    char *label;
 };
 
 #define TIME_INFINITY       10000000.  /* This is over 24 hours */
@@ -135,13 +136,16 @@ double great_circle_distance(const double lat1, const double lon1, const double 
 
 /* size mintime E N
  * Return the minimum time for a journey from (E, N) (in pixel map coordinates, size is square size)
- to the destination, or * TIME_INFINITY if no journey is possible. */
-double mintime(const double size, const double E, const double N, const double maxwalkdist, const double walkspeed) {
+ to the destination, or TIME_INFINITY if no journey is possible. Returns the text label for the
+ city used via the label pointer. */
+double mintime(const double size, const double E, const double N, const double maxwalkdist, const double walkspeed, char **label) {
     int i0, i1, i;
     static int il, ih;
     static double last_lat;
     double min = TIME_INFINITY;
     double lat, lon;
+
+    *label = NULL;
 
     // LATITUDE IS NORTHLY
     // LONGITUDE IS EASTLY
@@ -207,6 +211,7 @@ double mintime(const double size, const double E, const double N, const double m
             debug("ppN(lat):%lf lat:%lf ppE(lon):%lf lon:%lf maxwalkdist:%lf walkd:%lf traintime:%lf train+walktime:%lf", pp[i].N, lat, pp[i].E, lon, maxwalkdist, d, pp[i].time, t);
             used_lat = pp[i].N;
             used_lon = pp[i].E;
+            *label = pp[i].label;
             min = t;
         }
 
@@ -233,23 +238,49 @@ double fmax(const double a, const double b) {
     return a > b ? a : b;
 }
 
-void do_grid(const bool plain, const int width, const int height, const double maxwalkdist, const double walkspeed) {
+void print_escape_xml(char *l) {
+    while (*l) {
+        // printf("%c\n", *l);
+        if (*l == '\'') {
+            printf("&quot;", *l);
+        } else if (*l == '&')  {
+            printf("&amp;", *l);
+        } else if (*l == '<')  {
+            printf("&lt;", *l);
+        } else if (*l == '>')  {
+            printf("&gt;", *l);
+        } else {
+            printf("%c", *l);
+        }
+        l++;
+    }
+}
+
+void do_grid(const bool xml, const int width, const int height, const double maxwalkdist, const double walkspeed) {
     int x, y;
     if (width != height)
         err("width not equal to height");
 
     for (y = 0; y < height; ++y) {
         for (x = 0; x < width; ++x) {
-            double t = mintime(width, (double)x, (double)y, maxwalkdist, walkspeed);
+            char *label;
+            double t = mintime(width, (double)x, (double)y, maxwalkdist, walkspeed, &label);
 
-            if (plain)
-                printf("%d %d %lf\n", x, y, t);
-            else {
+            if (xml) {
+                // print_escape_xml("hello you , & you too! < ha Sŭedinenie");
+                if (label) {
+                    printf("<point x=\"%d\" y=\"%d\" time=\"%lf\" label=\"", x, y, t);
+                    print_escape_xml(label);
+                    printf("\" />\n");
+                } else {
+                    printf("<point x=\"%d\" y=\"%d\" time=\"%lf\" label=\"No route\" />\n", x, y, t, label);
+                }
+            } else {
                 float singlet = (float)t;
                 fwrite(&singlet, sizeof singlet, 1, stdout);
             }
         }
-        if (plain)
+        if (xml)
             printf("\n");
     }
 }
@@ -257,7 +288,7 @@ void do_grid(const bool plain, const int width, const int height, const double m
 int main(int argc, char *argv[]) {
     double walkspeed, maxwalktime, maxwalkdist;
     int width, height;
-    enum { m_query = 0, m_grid = 1, m_plaingrid = 2 } mode = m_query;
+    enum { m_query = 0, m_grid = 1, m_xmlgrid = 2 } mode = m_query;
     const unsigned numargs[7] = { 6, 4, 4 };
     FILE *fp;
     double query_e, query_n;
@@ -292,8 +323,8 @@ int main(int argc, char *argv[]) {
         mode = m_query;
     else if (0 == strcmp(argv[1], "grid"))
         mode = m_grid;
-    else if (0 == strcmp(argv[1], "plaingrid"))
-        mode = m_plaingrid;
+    else if (0 == strcmp(argv[1], "xmlgrid"))
+        mode = m_xmlgrid;
     else
         die("unknown mode '%s'", argv[1]);
 
@@ -323,13 +354,27 @@ int main(int argc, char *argv[]) {
     pp = malloc((nppalloc = 16) * sizeof *pp);
     
     //fprintf(stderr, "lat\tlon\tdistance-to-pancras-km\ttime-in-hours\tcrow-speed-kmh\n");
-    while (3 == fscanf(fp, "%lf %lf %lf\n",
-                        &pp[npp].N, &pp[npp].E, &pp[npp].time)) {
+    while (1) {
+        // load in line, using fgets for safety
+        char buf[1000];
+        if (!fgets(buf, 1000, fp)) {
+            break;
+        }
+
+        // parse it into the point structure
+        char labelbuf[1000]; 
+        if (sscanf(buf, "%lf %lf %lf %s\n", &pp[npp].N, &pp[npp].E, &pp[npp].time, &labelbuf) != 4) {
+            break;
+        }
+        char *label = malloc((strlen(labelbuf) + 1) * sizeof(char));
+        strcpy(label, labelbuf);
+        pp[npp].label = label;
 
         double distance_to_st_pancras = great_circle_distance(51.53, -0.125, pp[npp].N, pp[npp].E) / 1000;
         double time_in_hours = pp[npp].time / 60 / 60;
         double crow_speed = distance_to_st_pancras / time_in_hours;
-        //fprintf(stderr, "%f\t%f\t%lf\t%lfh\t%lf\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed);
+        // fprintf(stderr, "%f\t%f\t%lf\t%lfh\t%lf\t%s\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed, label);
+
         if (crow_speed >= 160 || crow_speed <= 10) {
             fprintf(stderr, "ignored lat:%f lon:%f pancras:%lfkm time:%lfh crow:%lfkm/h\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed);
         } else {
@@ -347,13 +392,19 @@ int main(int argc, char *argv[]) {
     if (mode == m_query) {
         if (width != height)
             err("width not equal to height");
-        double t = mintime(width, query_e, query_n, maxwalkdist, walkspeed);
+        char *label;
+        double t = mintime(width, query_e, query_n, maxwalkdist, walkspeed, &label);
         if (t == TIME_INFINITY) t = -1;
-        printf("Result: %lf %lf %lf\n", query_e, query_n, t);
-    } else if (mode == m_grid || mode == m_plaingrid)
-        do_grid(mode == m_plaingrid, width, height, maxwalkdist, walkspeed);
-    else
+        printf("Result: %lf %lf %lf %s\n", query_e, query_n, t, label);
+    } else if (mode == m_grid) {
+        do_grid(0, width, height, maxwalkdist, walkspeed);
+    } else if (mode == m_xmlgrid) {
+        printf("<pointdetails>\n");
+        do_grid(1, width, height, maxwalkdist, walkspeed);
+        printf("</pointdetails>\n");
+    } else {
         abort();
+    }
 
     return 0;
 }
