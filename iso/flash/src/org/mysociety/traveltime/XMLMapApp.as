@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * @version $Id: XMLMapApp.as,v 1.2 2008-12-10 18:38:42 francis Exp $
+ * @version $Id: XMLMapApp.as,v 1.3 2008-12-11 11:05:04 francis Exp $
  */
 package org.mysociety.traveltime
 {
@@ -71,6 +71,7 @@ package org.mysociety.traveltime
 
 		public var pointDetailsLoader:URLLoader;
 		public var pointDetails:XML;
+		public var pointDetailsArray:Array;
 		
 		// for setting label ranges from query strings
 		public var slidersByOverlay:Object = {};
@@ -123,29 +124,21 @@ package org.mysociety.traveltime
 		}		
 
 		private function onPointDetailsLoaded(event:Event):void {
-            francisDebug = 'onPointDetailsLoaded';
-
-            var ba:ByteArray = pointDetailsLoader.data;
-
-   /*         for (var i:int = 100000; i < 100100; i++) {
-                //francisDebug = francisDebug + ba[i];
-            }
-
 			pointDetails = XML((event.target as URLLoader).data);
-            var x:XMLNode = pointDetails.elements()[0];
-            for (var j:int = 0; j < 100; j++) {
-                francisDebug = francisDebug + x.toString();
-                x = x.nextSibling;
+
+            // create array
+            pointDetailsArray = new Array(map.width);
+            for (var i:int=0; i < map.width; ++i) {
+                pointDetailsArray[i] = new Array(map.height);
             }
-            */
 
-            //for (var i:int = 0; i < pointDetails.point.length(); i++) {
-        //    var pe:ProgressEvent = new ProgressEvent('pointDetails');
-         //   for (var i:int = 0; i < 100; i++) {
-          //      francisDebug = pointDetails.point[i].@name;
-           // }
-            //tipLabel.appendText(pointDetails.point[0].@name);
-
+            // this is fastest APi for looping over large XML files
+            for each(var node:XML in pointDetails.point) {
+                var lab:String = node.@label;
+                var x:String = node.@x;
+                var y:String = node.@y;
+                pointDetailsArray[x][y] = lab;
+            }
 
             cleanUpProgressErrors();
         }
@@ -402,13 +395,12 @@ package org.mysociety.traveltime
 			tipLabel.wordWrap = true;
 			var drawtipLabel:Function = function(event:MouseEvent=null):void {
                 if (event) {
-                    tipLabel.text = "labelURL: " + config.labelURL.length() + "  X: " + event.localX + " Y:" + event.localY + " f:" + francisDebug + " ";
+                    tipLabel.text = "X: " + event.localX + " Y:" + event.localY 
+                    // tipLabel.appendText(" f:" + francisDebug + " ");
                     
-                    //for (var i:int = 0; i < pointDetails.point.length(); i++) {
-                    //for (var i:int = 0; i < 10; i++) {
-                    //  tipLabel.appendText(pointDetails.point[i].@name);
-                    //}
-                    //tipLabel.appendText(pointDetails.point[0].@name);
+                    if (event.localX >= 0 && event.localX < map.width && event.localY > 0 && event.localY < map.height) {
+                        tipLabel.appendText(" Destination: " + pointDetailsArray[event.localX][event.localY])
+                    }
 
                     tipLabel.width = stage.stageWidth-4;
                     tipLabel.height = (tipLabel.textHeight + 4) * 2;
@@ -416,9 +408,9 @@ package org.mysociety.traveltime
 			};
 			drawtipLabel();			
 			tipLabel.x = 2;
-			tipLabel.y = stage.stageHeight - 25 - 25 - 25;
+			tipLabel.y = stage.stageHeight - 25;
 			addChild(tipLabel);
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, drawtipLabel);			
+			all.addEventListener(MouseEvent.MOUSE_MOVE, drawtipLabel);			
         }
 		
 		private function updateHash(event:Event):void
