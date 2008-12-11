@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.4 2008-12-03 01:15:53 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.5 2008-12-11 14:36:10 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -26,6 +26,10 @@ use mySociety::StringUtils;
 
 sub get_timings {
     my ($to, $dbh) = @_; # , $line) = @_;
+    my $start_hour = 7;
+    my $journey_date = 'Tu, 02.12.08';
+
+    my $end_hour = $start_hour + 1; # must be start plus one
 
     # Get HTML of results page, using cache
     my $html = $dbh->selectrow_array('select content from cache where cache.url = ?', {}, $to);
@@ -37,9 +41,9 @@ sub get_timings {
             REQ0JourneyStopsZA => 1,
             REQ0JourneyStopsZG => $to,
 
-            REQ0JourneyDate    => 'Tu, 02.12.08',
+            REQ0JourneyDate    => $journey_date,
             wDayExt0 => 'Mo|Tu|We|Th|Fr|Sa|Su',
-            REQ0JourneyTime    => '07:00',
+            REQ0JourneyTime    => $start_hour . ':00',
             REQ0HafasSearchForw => 1,
             REQ1JourneyDate    => '',
             wDayExt1 => 'Mo|Tu|We|Th|Fr|Sa|Su',
@@ -150,6 +154,7 @@ sub get_timings {
         my ($arrive_station, $arrive_date, $arrive_sort, $arrive_time) = @cells;
         die if $arrive_sort ne 'arr';
 
+        # convert length of journey into seconds
         my $duration_seconds;
         if ($duration !~ m/^([0-9]+):([0-9]+)$/) {
             die "duration $duration not parsed";
@@ -157,34 +162,54 @@ sub get_timings {
             $duration_seconds = $1 * 60 * 60 + $2 * 60;
         }
 
-        my ($hour, $minute);
+        # parse the departure time
+        my ($hour, $minute, $after_eight_secs);
+        $after_eight_secs = 0;
         if ($depart_time !~ m/^([0-9]+):([0-9]+)$/) {
             die "depart time $depart_time not parse";
         } else {
             $hour = $1;
             $minute = $2;
+
+            # calculate some extra time to add to duration, if the train
+            # leaves after the end hour (because there were none leaving
+            # in the hour)
+            if ($hour > $start_hour) {
+                $after_eight_secs = $hour * 60 * 60 + $minute  * 60 - ($end_hour * 60 * 60);
+            }
         }
 
+        # create data structure for this journey
         my $this_one;
-        $this_one->{duration_seconds} = $duration_seconds;
+        $this_one->{duration_seconds} = $duration_seconds + $after_eight_secs;
+        $this_one->{duration_seconds_on_train} = $duration_seconds;
         $this_one->{duration} = $duration;
         $this_one->{depart_date} = $depart_date;
         $this_one->{depart_time} = $depart_time;
         $this_one->{arrive_date} = $arrive_date;
         $this_one->{arrive_time} = $arrive_time;
+        $this_one->{after_eight_secs} = $after_eight_secs;
 
+        # only keep things on same day
+        next if $depart_date ne $journey_date;
+
+        # debug
+        print "$depart_date $depart_time takes $duration or $duration_seconds secs extra $after_eight_secs\n";
+
+        # record first one we come across (for case of leaving after end hour)
         $first_in_list = $this_one if !$first_in_list;
 
         # only keep things during the hour of 7
-        next if $hour != 7;
+        next if $hour != $start_hour;
 
-        #print "$depart_date $depart_time takes $duration or $duration_seconds secs\n";
         if (!defined($best) || $best->{duration_seconds} > $duration_seconds) {
             $best = $this_one;
         }
 
     }
 
+    # didn't find a train that left in the hour, so we use the next one (this
+    # case will mean we have $after_eight_secs > 0)
     if (!$best) {
         $best = $first_in_list;
     }
