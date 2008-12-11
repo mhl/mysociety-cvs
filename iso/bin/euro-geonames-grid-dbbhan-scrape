@@ -147,10 +147,10 @@ sub consider_one_city($$) {
         $city->{dbahn} = $best;
     }
 
+    # Match up the names
     my $use = 1;
-    # Name doesn't match exactly
     $use = 0 if (!$city->{dbahn} || !$city->{dbahn}->{actual_to});
-    if ($use && $city->{dbahn}->{actual_to} ne $city->{name}) {
+    if ($use) {
         # Convert both names to same character set and encoding and
         # flatten accents and case.
         my $db_name = $city->{dbahn}->{actual_to};
