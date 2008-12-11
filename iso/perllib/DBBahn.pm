@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.5 2008-12-11 14:36:10 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.6 2008-12-11 15:00:43 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -110,7 +110,7 @@ sub get_timings {
     }
 
     $html =~ /Pancras International<br \/>(.*?)<\/span>/;
-    my $actual_to = $1;
+    my $actual_to = mySociety::StringUtils::trim($1);
     
     my $tree = HTML::TreeBuilder->new_from_content($html);
     my @results = $tree->look_down('class', 'result');
@@ -194,7 +194,7 @@ sub get_timings {
         next if $depart_date ne $journey_date;
 
         # debug
-        print "$depart_date $depart_time takes $duration or $duration_seconds secs extra $after_eight_secs\n";
+        # print "$depart_date $depart_time takes $duration or $duration_seconds secs extra $after_eight_secs\n";
 
         # record first one we come across (for case of leaving after end hour)
         $first_in_list = $this_one if !$first_in_list;

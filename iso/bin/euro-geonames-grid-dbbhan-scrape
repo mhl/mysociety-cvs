@@ -342,7 +342,7 @@ sub do_one_cell($$) {
         foreach my $city (@$cities) {
             if ($city->{use}) {
                 # Print out
-                print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{dbahn}->{duration_seconds}\t$city->{dbahn}->{actual_to}\n";
+                print "$city->{geonameId}\t$city->{fcode}\t$city->{name}\t$city->{population}\t$city->{wikipedia}\t$city->{lat}\t$city->{lng}\t$city->{dbahn}->{duration_seconds}\t$city->{dbahn}->{actual_to}\t$city->{dbahn}->{depart_date}\t$city->{dbahn}->{depart_time}\t$city->{dbahn}->{arrive_date}\t$city->{dbahn}->{arrive_time}\t$city->{dbahn}->{duration}\t$city->{dbahn}->{after_eight_secs}\t\n";
             }
         }
     } else {
@@ -360,7 +360,7 @@ sub do_one_cell($$) {
 #exit;
 
 if (!$resume) {
-    print "geonameId\tfcode\tname\tpopulation\twikipedia\tlat\tlon\tduration\tactual_to\tswitched\n";
+    print "geonameId\tfcode\tname\tpopulation\twikipedia\tlat\tlon\tduration\tactual_to\tdepart_date\tdepart_time\tarrive_date\tarrive_time\tduration_on_train\twait_after_hour_in_secs\n";
 }
 
 my $iterations = 0;
