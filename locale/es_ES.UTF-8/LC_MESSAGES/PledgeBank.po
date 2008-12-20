@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-11-03 09:36+0000\n"
+"POT-Creation-Date: 2008-12-20 15:51+0000\n"
 "PO-Revision-Date: 2008-10-20 00:00+0100\n"
 "Last-Translator: Hugo Caballero Figueroa <hc.figueroa@gmail.com>\n"
 "Language-Team: Spanish <LL@pledgebank.com>\n"
@@ -2109,14 +2109,6 @@ msgstr "Llevado a cabo por mySociety"
 msgid "Powered by Easynet"
 msgstr "Sostenido por Easynet"
 
-#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
-msgid "Sorry! Something's gone wrong."
-msgstr "¡Lo sentimos! Ha ocurrido un error."
-
-#: pb/phplib/pb.php:61
-msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
-msgstr "Por favor, inténtelo más tarde o <a href=\"mailto:team&#64;pledgebank.com\">envíenos un correo electrónico</a> para ayudar a resolver el problema."
-
 #: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
 #: pb/web/ref-index.php:408 pb/web/ref-plain.php:40
 msgid "I will"
@@ -2131,7 +2123,7 @@ msgid "on"
 msgstr "en"
 
 #: pb/phplib/pbfacebook.php:191 pb/web/contact.php:107
-#: pb/web/ref-announce.php:336 pb/web/ref-announcearchive.php:67
+#: pb/web/ref-announcearchive.php:67 pb/web/ref-announce.php:336
 msgid "Subject"
 msgstr "Asunto"
 
@@ -2171,6 +2163,14 @@ msgstr "¡Vd. ya se ha suscrito a este compromiso!"
 #: pb/phplib/pbfacebook.php:622 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "¡Lo sentimos! &mdash; no ha sido posible suscribirle a este compromiso."
+
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
+msgid "Sorry! Something's gone wrong."
+msgstr "¡Lo sentimos! Ha ocurrido un error."
+
+#: pb/phplib/pb.php:61
+msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
+msgstr "Por favor, inténtelo más tarde o <a href=\"mailto:team&#64;pledgebank.com\">envíenos un correo electrónico</a> para ayudar a resolver el problema."
 
 #: pb/phplib/pledge.php:47
 msgid "PledgeBank reference not known"
@@ -4839,6 +4839,51 @@ msgstr ""
 msgid "Get the code"
 msgstr "Consiga el código"
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
+#: pb/web/ref-plain.php:31
+msgid "Invalid parameters, please try again"
+msgstr "Parámetros no válidos. Por favor, inténtelo de nuevo"
+
+#: pb/web/ref-announcearchive.php:34
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Para ver los mensajes de anuncio de un compromiso, necesitamos comprobar que Vd. se ha suscrito al mismo."
+
+#: pb/web/ref-announcearchive.php:35
+msgid "Then you will be able to view announcement messages."
+msgstr "Tras ello podrá ver los mensajes de anuncios."
+
+#: pb/web/ref-announcearchive.php:36
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Lea el archivo de anuncios de PledgeBank.com"
+
+#: pb/web/ref-announcearchive.php:51
+msgid "Messages sent by creator to signers: "
+msgstr "Mensajes enviados a los voluntarios por parte del creador:"
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers"
+msgstr "Mensajes enviados a los voluntarios por parte del creador"
+
+#: pb/web/ref-announcearchive.php:65
+msgid "From"
+msgstr "De"
+
+#: pb/web/ref-announcearchive.php:69
+msgid "Date"
+msgstr "Fecha"
+
+#: pb/web/ref-announcearchive.php:79
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "El creador del compromiso no ha enviado todavía ningún anuncio."
+
+#: pb/web/ref-announcearchive.php:82
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr ""
+"Los mensajes sólo pueden ser vistos por personas que se han suscrito al\n"
+"    compromiso."
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 #: pb/web/ref-survey.php:26
 msgid "Missing pledge reference"
@@ -5184,51 +5229,6 @@ msgstr "<h3>Enviar anuncio</h3> "
 #: pb/web/ref-announce.php:381
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(¡Recuerde! Cuando envíe este mensaje, <strong>su dirección de correo electrónico será mostrada a todo el mundo</strong>, tanto si se ha suscrito a su compromiso como si lo hace en un futuro vía correo electrónico)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
-#: pb/web/ref-plain.php:31
-msgid "Invalid parameters, please try again"
-msgstr "Parámetros no válidos. Por favor, inténtelo de nuevo"
-
-#: pb/web/ref-announcearchive.php:34
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Para ver los mensajes de anuncio de un compromiso, necesitamos comprobar que Vd. se ha suscrito al mismo."
-
-#: pb/web/ref-announcearchive.php:35
-msgid "Then you will be able to view announcement messages."
-msgstr "Tras ello podrá ver los mensajes de anuncios."
-
-#: pb/web/ref-announcearchive.php:36
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Lea el archivo de anuncios de PledgeBank.com"
-
-#: pb/web/ref-announcearchive.php:51
-msgid "Messages sent by creator to signers: "
-msgstr "Mensajes enviados a los voluntarios por parte del creador:"
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers"
-msgstr "Mensajes enviados a los voluntarios por parte del creador"
-
-#: pb/web/ref-announcearchive.php:65
-msgid "From"
-msgstr "De"
-
-#: pb/web/ref-announcearchive.php:69
-msgid "Date"
-msgstr "Fecha"
-
-#: pb/web/ref-announcearchive.php:79
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "El creador del compromiso no ha enviado todavía ningún anuncio."
-
-#: pb/web/ref-announcearchive.php:82
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr ""
-"Los mensajes sólo pueden ser vistos por personas que se han suscrito al\n"
-"    compromiso."
 
 #: pb/web/ref-contact.php:21
 msgid "Contact the pledge creator"

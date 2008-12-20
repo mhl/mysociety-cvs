@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2008-11-03 09:36+0000\n"
+"POT-Creation-Date: 2008-12-20 15:51+0000\n"
 "PO-Revision-Date: 2008-10-20 14:09+0100\n"
 "Last-Translator: Jaroslav Ryník <jrynik@yahoo.co.uk>\n"
 "Language-Team: SLOVAK <team@pledgebank.com>\n"
@@ -2123,14 +2123,6 @@ msgstr "Vytvorila mySociety"
 msgid "Powered by Easynet"
 msgstr "Zabezpečuje Easynet"
 
-#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
-msgid "Sorry! Something's gone wrong."
-msgstr "Prepáčte, niečo sa pokazilo."
-
-#: pb/phplib/pb.php:61
-msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
-msgstr "Prosím, skúste neskôr alebo <a href=\"mailto:team&#64;pledgebank.com\">nám napíšte</a> a my problém vyriešime."
-
 #: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
 #: pb/web/ref-index.php:408 pb/web/ref-plain.php:40
 msgid "I will"
@@ -2145,7 +2137,7 @@ msgid "on"
 msgstr "na"
 
 #: pb/phplib/pbfacebook.php:191 pb/web/contact.php:107
-#: pb/web/ref-announce.php:336 pb/web/ref-announcearchive.php:67
+#: pb/web/ref-announcearchive.php:67 pb/web/ref-announce.php:336
 msgid "Subject"
 msgstr "Vec"
 
@@ -2185,6 +2177,14 @@ msgstr "Pod tento sľub ste sa už podpísali."
 #: pb/phplib/pbfacebook.php:622 pb/web/ref-sign.php:257
 msgid "Sorry &mdash; it wasn't possible to sign that pledge."
 msgstr "Prepáčte, pod tento sľub sa už nedá podpísať."
+
+#: pb/phplib/pb.php:48 pb/phplib/pb.php:210 pb/phplib/pb.php:211
+msgid "Sorry! Something's gone wrong."
+msgstr "Prepáčte, niečo sa pokazilo."
+
+#: pb/phplib/pb.php:61
+msgid "Please try again later, or <a href=\"mailto:team&#64;pledgebank.com\">email us</a> for help resolving the problem."
+msgstr "Prosím, skúste neskôr alebo <a href=\"mailto:team&#64;pledgebank.com\">nám napíšte</a> a my problém vyriešime."
 
 #: pb/phplib/pledge.php:47
 msgid "PledgeBank reference not known"
@@ -5188,6 +5188,51 @@ msgstr "Plugin pre Wordpress"
 msgid "Get the code"
 msgstr "Získajte kód"
 
+#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
+#: pb/web/ref-plain.php:31
+msgid "Invalid parameters, please try again"
+msgstr "Neplatné parametre, prosím, skúste znova"
+
+#: pb/web/ref-announcearchive.php:34
+msgid "To view announcement messages for a pledge, we need to check you have signed it."
+msgstr "Aby sa zobrazili správy týkajúce sa sľubu, potrebujeme zistiť, či ste sa pod neho podpísali."
+
+#: pb/web/ref-announcearchive.php:35
+msgid "Then you will be able to view announcement messages."
+msgstr "Potom budete môcť čítať správy týkajúce sa sľubu."
+
+#: pb/web/ref-announcearchive.php:36
+msgid "View pledge announcements archive on PledgeBank.com"
+msgstr "Zobraziť staršie správy k&nbsp;sľubu na&nbsp;stránke www.slubowebka.com"
+
+#: pb/web/ref-announcearchive.php:51
+msgid "Messages sent by creator to signers: "
+msgstr "Správy od autora (-ky) sľubu:"
+
+#: pb/web/ref-announcearchive.php:57
+msgid "Messages sent by creator to signers"
+msgstr "Správy od autora (-ky) sľubu:"
+
+#: pb/web/ref-announcearchive.php:65
+msgid "From"
+msgstr "Odosielateľ(ka)"
+
+#: pb/web/ref-announcearchive.php:69
+msgid "Date"
+msgstr "Dátum"
+
+#: pb/web/ref-announcearchive.php:79
+msgid "The pledge creator has not sent any announcements yet."
+msgstr "Autor(ka) sľubu ešte neposlal(a) žiadne správy."
+
+#: pb/web/ref-announcearchive.php:82
+msgid ""
+"The messages can only be shown to people who have signed the\n"
+"    pledge."
+msgstr ""
+"Správy môžu vidieť len ľudia, ktorí sa podpísali pod tento\n"
+"    sľub."
+
 #: pb/web/ref-announce.php:26 pb/web/ref-picture.php:29
 #: pb/web/ref-survey.php:26
 msgid "Missing pledge reference"
@@ -5537,51 +5582,6 @@ msgstr "<h3>Poslať správu</h3>"
 #: pb/web/ref-announce.php:381
 msgid "(Remember, when you send this message <strong>your email address will be given to everyone</strong> who has already, or who will in the future, sign up to your pledge by email)"
 msgstr "(Pamätajte si, že keď pošlete túto správu, <strong>vašu e-mailovú adresu uvidí každý</strong> aj ten, kto sa podpísal, aj ten, kto sa v&nbsp;budúcnosti podpíše pod váš sľub cez e-mail.)"
-
-#: pb/web/ref-announcearchive.php:26 pb/web/ref-info.php:39
-#: pb/web/ref-plain.php:31
-msgid "Invalid parameters, please try again"
-msgstr "Neplatné parametre, prosím, skúste znova"
-
-#: pb/web/ref-announcearchive.php:34
-msgid "To view announcement messages for a pledge, we need to check you have signed it."
-msgstr "Aby sa zobrazili správy týkajúce sa sľubu, potrebujeme zistiť, či ste sa pod neho podpísali."
-
-#: pb/web/ref-announcearchive.php:35
-msgid "Then you will be able to view announcement messages."
-msgstr "Potom budete môcť čítať správy týkajúce sa sľubu."
-
-#: pb/web/ref-announcearchive.php:36
-msgid "View pledge announcements archive on PledgeBank.com"
-msgstr "Zobraziť staršie správy k&nbsp;sľubu na&nbsp;stránke www.slubowebka.com"
-
-#: pb/web/ref-announcearchive.php:51
-msgid "Messages sent by creator to signers: "
-msgstr "Správy od autora (-ky) sľubu:"
-
-#: pb/web/ref-announcearchive.php:57
-msgid "Messages sent by creator to signers"
-msgstr "Správy od autora (-ky) sľubu:"
-
-#: pb/web/ref-announcearchive.php:65
-msgid "From"
-msgstr "Odosielateľ(ka)"
-
-#: pb/web/ref-announcearchive.php:69
-msgid "Date"
-msgstr "Dátum"
-
-#: pb/web/ref-announcearchive.php:79
-msgid "The pledge creator has not sent any announcements yet."
-msgstr "Autor(ka) sľubu ešte neposlal(a) žiadne správy."
-
-#: pb/web/ref-announcearchive.php:82
-msgid ""
-"The messages can only be shown to people who have signed the\n"
-"    pledge."
-msgstr ""
-"Správy môžu vidieť len ľudia, ktorí sa podpísali pod tento\n"
-"    sľub."
 
 #: pb/web/ref-contact.php:21
 msgid "Contact the pledge creator"
