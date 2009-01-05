@@ -1663,9 +1663,8 @@ msgid "Please enter either a place name or a postcode area, but not both"
 msgstr "Bonvolu entajpi aŭ lokonomon aŭ poŝtkodareon, sed ne ambaŭ"
 
 #: pb/phplib/gaze-controls.php:323
-#, fuzzy
 msgid "You can only enter a postcode area if you have selected the UK"
-msgstr "Vi rajtas entajpi poŝtkodareon se via promeso temas pri Britio"
+msgstr "Vi rajtas entajpi poŝtkodareon nur se via promeso temas pri Britio"
 
 #: pb/phplib/gaze-controls.php:327
 msgid "Please enter a postcode, or just its first part; for example, OX1 3DR or WC1."
@@ -6497,7 +6496,7 @@ msgstr "SMS funkciigata de la bonfara fondaĵo UKCOD. Disponeblas nur en Britio.
 
 #: pb/web/poster.cgi:121
 msgid "<font color=\"#ffffff\">Pledge</font>Bank.com"
-msgstr "<font color=\"#ffffff\">Pledge</font>Bank.com"
+msgstr "<font color=\"#ffffff\">Promeso</font>Banko.com"
 
 # Some characters seem corrupted in the original .po file. I think they're meant to be em-dashes, but is it OK to put the HTML code &mdash; in their place? A Google search for '"you only have to act" site:pledgebank.com' suggests that this code is used to create pdf's, not webpages, so maybe HTML codes are no use. Oh yeah, the fact that this is all in a file called "poster.cgi" suggests it might be used for generating, er, posters. What to do then? (Tim Morley, 2005-11-23)
 # Hmm, yes. The poster.cgi file is indeed for creating PDF and RTF posters in Python, and the RTF generation library we use (or RTF standard itself) requires the characters to be in, I believe, Win-1252. As the .po file says it's in UTF-8, it's encoded e.g. \x96 as \xc2 \x96. If you just copy that identically (\x96 and \x97 are dashes, \x92 is apostrophe), it should be okay. I know that's not perfect, sorry. (Matthew Somerville, http://www.mysociety.org/pipermail/mysociety-i18n/2005-November/000104.html)
@@ -7797,7 +7796,6 @@ msgstr ""
 "<?=$values['local_alert_url']?>\n"
 
 #: pb/templates/emails/survey
-#, fuzzy
 msgid ""
 "Subject: Pledge survey - '<?=$values['title']?>' at PledgeBank.com\n"
 "\n"
@@ -7842,7 +7840,8 @@ msgstr ""
 "konservi tiun ĉi mesaĝon ĝis kiam vi finfaris vian devon. Alternative, vi povas\n"
 "indiki tion iam ajn ĉe la paĝo Miaj Promesoj ĉe PromesoBanko.com\n"
 "\n"
-"Informe, la promeso (kreita de <?=$values['creator_name']?>) tekstas jene:\n"
+"Informe, la promeso (kreita de <?=$values['creator_name']?>), videlba ĉe\n"
+"<?=$values['pledge_url']?>,  tekstas jene:\n"
 "'<?=$values['sentence_first']?>'\n"
 "\n"
 "<?=$values['signature']?>\n"
