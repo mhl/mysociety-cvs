@@ -1,8 +1,42 @@
-<greathtml>
-<head><title>mySociety Secure Server</title></head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
 
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>mySociety Secure Server</title>
+<link rel="stylesheet" href="http://www.mysociety.org/wp/wp-content/themes/default/memespring.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://www.mysociety.org/wp/wp-content/themes/default/style.css" type="text/css" media="screen" />
+</head>
 <body>
-<h1>mySociety Secure Server</h1>
+
+<div id="divPage">
+
+    <a href="#divContent" class="hide">Skip navigation</a>
+
+    <!--Header-->
+    <div id="divHeader">
+        <div id="imgLogo">
+            <a href="/" title="mySociety.org homepage">
+
+                <img src="http://www.mysociety.org/contimg/logo.png" alt="mySociety.org" width="297" height="62" />
+            </a>
+        </div>
+
+        <p id="pHeaderDonate" >
+            <a id="aPiggy" href="http://www.mysociety.org/donate/" title="Donate to mySociety" >
+                &nbsp;
+            </a>
+            Help us to make more<br/> useful things.
+            <br/>
+
+            <a href="http://www.mysociety.org/donate/">Donate to mySociety</a>
+        </p>
+    </div>
+
+    <div id="divContent">
+
+<h1 class="pagetitle">mySociety Secure Server</h1>
 
 <p>Go to the <a href="http://www.mysociety.org">mySociety homepage</a> to find out more about mySociety.
 This page is for developers and administrators.</p>
@@ -10,119 +44,87 @@ This page is for developers and administrators.</p>
 <table>
 <tr>
 
-<td valign="top">
-<h1>Internal</h1>
-
-<h2>Development</h2>
-<ul>
-<li><a href="cvstrac">cvstrac</a> - bug tracker, cvs browsing</a>
-<li><a href="/admin/cvswww/">cvswww admin</a> - signed up volunteers
-</ul>
-
-<h2>System admin</h2>
-<ul>
-<li><a href="https://secure.mysociety.org/intranet">Intranet</a> - private wiki
-<li><a href="https://secure.mysociety.org/monitor">Monitor</a> - nagios
-<li><a href="/admin/lists/mailman/admin">Mailman lists</a> (modify URLs for private lists)
-</ul>
-
-<h2>Surveys and analysis</h2>
-
-<ul>
-<li><a href="https://secure.mysociety.org/admin/conversion-tracking.cgi">Conversion tracking</a>
-<li><a href="/admin/survey/">Demographic survey</a>
-<li><a href="http://piwik.mysociety.org">Web analytics</a> - piwik (<a href="https://secure.mysociety.org/intranet/view/MySociety/SysAdmin/PassWords#piwik_mysociety_org">login info</a>)
-</ul>
-
-<h2>mySociety sites</h2>
-<ul>
-<li><a href="/admin/awstats.pl?config=www.mysociety.org">Web stats</a> - mysociety.org
-<li><a href="/admin/awstats.pl?config=www.mysociety.co.uk">Web stats</a> - mysociety.co.uk
-<li><a href="/admin/awstats.pl?config=www.ukcod.org.uk">Web stats</a> - ukcod.org.uk
-</ul>
-
-</td>
-
-<td valign="top">
+<td valign="top" width="30%">
 
 <h1>Democracy</h1>
 
-<h2>WriteToThem</h2>
 <ul>
-<li><a href="/admin/fyr/index.php">Admin pages</a>
-<li><a href="rt/">RT - request tracker</a> (customer support)</a>
-<li><a href="/admin/awstats.pl?config=www.writetothem.com">Web stats</a>
+<li><a href="/admin/fyr/index.php">WriteToThem admin</a> (<a href="rt/">old RT</a>)</li>
+<li><a href="http://www.theyworkforyou.com/admin/">TheyWorkForYou admin</a></li>
+<li><a href="/admin/ycml/">HearFromYourMP admin</a> </li>
+<li><a href="/admin/hfyc/">HearFromYourCouncillor admin</a></li>
+<li><a href="/admin/foi/">WhatDoTheyKnow admin</a></li>
+<li><a href="http://www.downingstreetsays.com/wp-admin/">DowningStreetSays admin</a> (<a href="https://secure.mysociety.org/intranet/view/MySociety/SysAdmin/PassWords#Downing_Street_Says">login info</a>)</li>
 </ul>
 
-<h2>TheyWorkForYou</h2>
+<h1>Commercial</h1>
 <ul>
-<li><a href="http://www.theyworkforyou.com/admin/">Admin pages</a>
-<li><a href="/admin/awstats.pl?config=www.theyworkforyou.com">Web stats</a>
-<li><a href="/admin/awstats.pl?config=parlvid.mysociety.org.81">Video web stats</a>
-</ul>
-
-<h2>HearFromYour...</h2>
-
-<ul>
-<li>...MP : <a href="/admin/ycml/">Admin</a> |
-<a href="/admin/awstats.pl?config=www.hearfromyourmp.com">Web stats</a>
-<li>...Councillor : <a href="/admin/hfyc/">Admin</a> |
-<a href="/admin/awstats.pl?config=www.hearfromyourcouncillor.com">Web stats</a>
-</ul>
-
-<h2>WhatDoTheyKnow</h2>
-<ul>
-<li><a href="/admin/foi/">Admin pages</a>
-<li><a href="/admin/awstats.pl?config=www.whatdotheyknow.com">Web stats</a>
-</ul>
-
-<h2>No. 10 Petitions</h2>
-<ul>
-<li><a href="/admin/pet/index.php">Admin pages</a>
-<li><a href="/admin/awstats.pl?config=petitions.pm.gov.uk">Web stats</a></li>
-</ul>
-
-<h2>DowningStreetSays</h2>
-<ul>
-<li><a href="http://www.downingstreetsays.com/wp-admin/">Admin pages</a> (<a href="https://secure.mysociety.org/intranet/view/MySociety/SysAdmin/PassWords#Downing_Street_Says">login info</a>)</li>
+<li><a href="/admin/pet/index.php">No. 10 Petitions admin</a>
+</li>
+<li><a href="/admin/pb-livesimply/index.php"><em>live</em>simply:promise admin</a> (<a href="/admin/awstats.pl?config=promise.livesimply.org.uk">awstats</a>)</li>
 </ul>
 
 </td>
 
+<td valign="top" width="30%">
 
-<td valign="top">
 <h1>Community</h1>
 
-<h2>PledgeBank</h2>
 <ul>
-<li><a href="/admin/pb/index.php">Admin pages</a>
-<li><a href="/admin/awstats.pl?config=www.pledgebank.com">Web stats</a>
+<li><a href="/admin/pb/index.php">PledgeBank admin</a></li>
+<li><a href="/admin/bci/">FixMyStreet admin</a></li>
+<li><a href="/admin/gny/">GroupsNearYou admin</a></li>
 </ul>
 
-<h2>FixMyStreet</h2>
+<h1>Other</h1>
+
 <ul>
-<li><a href="/admin/bci/">Admin pages</a>
-<li><a href="/admin/awstats.pl?config=www.fixmystreet.com">Web stats</a>
+<li><a href="/admin/news/">NeWs admin pages</a></li>
+</ul>
+
+</td>
+
+<td valign="top" width="30%">
+
+<h1>Development</h1>
+<ul>
+<li><a href="cvstrac">cvstrac</a> - bug tracker, cvs browsing</li>
+<li><a href="/admin/cvswww/">cvswww</a> - old volunteer system</li>
+</ul>
+
+<h1>System admin</h1>
+<ul>
+<li><a href="https://secure.mysociety.org/intranet">Intranet</a> - private wiki</li>
+<li><a href="https://secure.mysociety.org/monitor">Monitor</a> - nagios</li>
+<li><a href="/admin/lists/mailman/admin">Mailman lists</a> (modify URLs for private lists)</li>
+</ul>
+
+<h1>Surveys and analysis</h1>
+
+<ul>
+<li><a href="https://secure.mysociety.org/admin/conversion-tracking.cgi">Conversion tracking</a></li>
+<li><a href="/admin/survey/">Demographic survey</a></li>
+<li><a href="http://piwik.mysociety.org">Web analytics</a> - piwik (<a href="https://secure.mysociety.org/intranet/view/MySociety/SysAdmin/PassWords#piwik_mysociety_org">login info</a>)</li>
+<li><a href="/admin/awstats.pl?config=petitions.number10.gov.uk">No. 10 Petitions awstats</a> (<a href="/admin/awstats.pl?config=petitions.pm.gov.uk">old</a>)</li>
+<li><a href="/admin/awstats.pl?config=parlvid.mysociety.org.81">TheyWorkForYou video awstats</a></li>
+</ul>
+
+<h1>Old web statistics</h1>
+
+<ul>
+<li><a href="/admin/awstats.pl?config=www.writetothem.com">WriteToThem awstats</a></li>
+<li><a href="/admin/awstats.pl?config=www.theyworkforyou.com">TheyWorkForYou awstats</a></li>
+<li><a href="/admin/awstats.pl?config=www.hearfromyourmp.com">HearFromYourMP awstats</a></li>
+<li><a href="/admin/awstats.pl?config=www.hearfromyourcouncillor.com">HearFromYourCouncillor awtats</a></li>
+<li><a href="/admin/awstats.pl?config=www.whatdotheyknow.com">WhatDoTheyKnow awstats</a></li>
+<li><a href="/admin/awstats.pl?config=www.pledgebank.com">PledgeBank awstats</a></li>
+<li><a href="/admin/awstats.pl?config=www.fixmystreet.com">FixMyStreet awstats</a>
 (<a href="/admin/awstats.pl?config=www.neighbourhoodfixit.com">old</a>)
+</li>
+<li><a href="/admin/awstats.pl?config=www.groupsnearyou.com">GroupsNearYou awstats</a></li>
+<li><a href="/admin/awstats.pl?config=www.mysociety.org">mysociety.org awstats</a></li>
+<li><a href="/admin/awstats.pl?config=www.ukcod.org.uk">ukcod.org.uk awstats</a></li>
 </ul>
-
-<h2>GroupsNearYou</h2>
-<ul>
-<li><a href="/admin/gny/">Admin pages</a>
-<li><a href="/admin/awstats.pl?config=www.groupsnearyou.com">Web stats</a>
-</ul>
-
-<h2>NeWs</h2>
-<ul>
-<li><a href="/admin/news/">Admin pages</a></li>
-</ul>
-
-<h2><em>live</em>simply:promise</h2>
-<ul>
-<li><a href="/admin/pb-livesimply/index.php">Admin pages</a>
-<li><a href="/admin/awstats.pl?config=promise.livesimply.org.uk">Web stats</a>
-</ul>
-
 
 </td>
 
@@ -130,7 +132,8 @@ This page is for developers and administrators.</p>
 
 </table>
 
-<p><a href="http://www.mysociety.org"><img border="0" src="mysociety_sm.gif" alt="mySociety.org"></a></p>
+</div>
+</div>
 
 </body>
 </html>
