@@ -27,7 +27,7 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.13 2008-12-11 12:44:51 francis Exp $";
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.14 2009-01-15 15:21:43 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -288,8 +288,8 @@ void do_grid(const bool xml, const int width, const int height, const double max
 int main(int argc, char *argv[]) {
     double walkspeed, maxwalktime, maxwalkdist;
     int width, height;
-    enum { m_query = 0, m_grid = 1, m_xmlgrid = 2 } mode = m_query;
-    const unsigned numargs[7] = { 6, 4, 4 };
+    enum { m_query = 0, m_grid = 1, m_xmlgrid = 2, m_xmlnodes = 3 } mode = m_query;
+    const unsigned numargs[7] = { 6, 4, 4, 4 };
     FILE *fp;
     double query_e, query_n;
 
@@ -325,6 +325,8 @@ int main(int argc, char *argv[]) {
         mode = m_grid;
     else if (0 == strcmp(argv[1], "xmlgrid"))
         mode = m_xmlgrid;
+    else if (0 == strcmp(argv[1], "xmlnodes"))
+        mode = m_xmlnodes;
     else
         die("unknown mode '%s'", argv[1]);
 
@@ -362,18 +364,34 @@ int main(int argc, char *argv[]) {
         }
 
         // parse it into the point structure
-        char labelbuf[1000]; 
-        if (sscanf(buf, "%lf %lf %lf %s\n", &pp[npp].N, &pp[npp].E, &pp[npp].time, &labelbuf) != 4) {
+        if (sscanf(buf, "%lf %lf %lf ", &pp[npp].N, &pp[npp].E, &pp[npp].time) != 3) {
             break;
         }
-        char *label = malloc((strlen(labelbuf) + 1) * sizeof(char));
-        strcpy(label, labelbuf);
+        // find where the label begins after the first three spaces
+        char *labelstart = buf;
+        int spacec = 0;
+        while (*labelstart) {
+            labelstart++;
+            if (spacec == 3) {
+                break;
+            }
+            if (*labelstart == ' ') {
+                spacec++;
+            }
+        }
+        // strip newline
+        if (*(labelstart + strlen(labelstart) - 1) == '\n') {
+            *(labelstart + strlen(labelstart) - 1) = 0; 
+        }
+        // copy it
+        char *label = malloc((strlen(labelstart) + 1) * sizeof(char));
+        strcpy(label, labelstart);
         pp[npp].label = label;
 
         double distance_to_st_pancras = great_circle_distance(51.53, -0.125, pp[npp].N, pp[npp].E) / 1000;
         double time_in_hours = pp[npp].time / 60 / 60;
         double crow_speed = distance_to_st_pancras / time_in_hours;
-        // fprintf(stderr, "%f\t%f\t%lf\t%lfh\t%lf\t%s\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed, label);
+        //fprintf(stderr, "%f\t%f\t%lf\t%lfh\t%lf\t%s\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed, label);
 
         if (crow_speed >= 160 || crow_speed <= 10) {
             fprintf(stderr, "ignored lat:%f lon:%f pancras:%lfkm time:%lfh crow:%lfkm/h\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed);
@@ -402,6 +420,17 @@ int main(int argc, char *argv[]) {
         printf("<pointdetails>\n");
         do_grid(1, width, height, maxwalkdist, walkspeed);
         printf("</pointdetails>\n");
+    } else if (mode == m_xmlnodes) {
+        printf("<nodedetails>\n");
+        int i;
+        for (i = 0; i < npp; i++) {
+            double mapx, mapy;
+            wgs84_to_map(width, pp[i].N, pp[i].E, &mapx, &mapy); 
+            printf("<node x=\"%lf\" y=\"%lf\" lat=\"%lf\" lon=\"%lf\" time=\"%lf\" label=\"", mapx, mapy, pp[i].N, pp[i].E, pp[i].time);
+            print_escape_xml(pp[i].label);
+            printf("\" />\n");
+        }
+        printf("</nodedetails>\n");
     } else {
         abort();
     }
