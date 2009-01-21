@@ -1,12 +1,5 @@
 
 <!--Hero-->
-<div class="infoboxgreen contentfull" style="margin-bottom: 3em">
-    <h3>We've got until Thursday to stop MPs concealing their expenses</h3>
-
-    <p><a href="http://www.mysociety.org/2009/01/17/6-days-to-stop-mps-concealing-their-expenses/">Find out
-    how <strong>you</strong> can help stop them</a></p>
-
-</div>
 
 <div id="divHero" class="infoboxpurple contentfull">
 	<a href="/projects/">
