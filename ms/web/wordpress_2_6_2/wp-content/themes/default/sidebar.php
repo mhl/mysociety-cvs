@@ -2,7 +2,11 @@
 
 	<!-- Main sidebar -->
 	<div class="contentnarrow right">
+
+
 		<div class="sidebar">
+
+
 
 		<?php 	/* Widgetized sidebar, if you have the plugin installed. */
 				if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar() ) : ?>
@@ -21,30 +25,6 @@ if (is_category()) {
 	echo '<p id="sidebar_rss"><a href="', bloginfo('rss2_url'), '"><img align="top" src="/feed.png" alt=""> RSS feed</a></p>';
 }
 ?>
-
-			<!-- Categories -->
-			<h4>Categories</h4>
-			<ul class="nobullets">
-				<?php wp_list_categories('title_li=&show_count=0'); ?>
-			</ul>
-		
-			<?php if ( is_404() || is_category() || is_day() || is_month() ||
-						is_year() || is_search() || is_paged() ) {
-			?>
-
-			<!-- Archives -->
-			<h4>Browse archives</h4>
-			<ul class="nobullets">
-				<?php wp_get_archives('type=yearly'); ?>
-			</ul>
-		
-
-		<?php }?>
-
-		<?php endif; ?>
-	</ul>
-	</div>
-</div>
 
 <!-- News list -->
 <div class="infoboxpurple contentnarrow right dividerright">
@@ -81,6 +61,34 @@ if (is_category()) {
 			</ul>
 		</p>
 </div>
+			<!-- Categories -->
+    
+<br/>
+			<h4>Categories</h4>
+			<ul class="nobullets">
+				<?php wp_list_categories('title_li=&show_count=0'); ?>
+			</ul>
+		
+			<?php if ( is_404() || is_category() || is_day() || is_month() ||
+						is_year() || is_search() || is_paged() ) {
+			?>
+
+			<!-- Archives -->
+			<h4>Browse archives</h4>
+			<ul class="nobullets">
+				<?php wp_get_archives('type=yearly'); ?>
+			</ul>
+		
+
+		<?php }?>
+
+		<?php endif; ?>
+	</ul>
+
+	</div>
+</div>
+
+
 
 <!-- Navigation -->
 <div class="sidebar contentnarrow right">
