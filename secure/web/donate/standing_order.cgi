@@ -8,7 +8,7 @@
 # Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: standing_order.cgi,v 1.3 2008-08-07 09:40:33 matthew Exp $
+# $Id: standing_order.cgi,v 1.4 2009-01-23 16:31:08 root Exp $
 #
 
 
@@ -195,7 +195,7 @@ def generate_pdf(c, ref):
    
     f.addFromList(text, c)
     y = payment_frame_bottom
-    y = one_field_line(c, textobject, 'the sum of \243' , y, page_settings)
+    y = one_field_line(c, textobject, "the sum of" , y, page_settings)
     y = one_field_line(c, textobject, "and in words", y, page_settings)
     y = two_field_line(c, textobject, "monthly on the" , "of each month, beginning", 0.4, y, page_settings)
 
