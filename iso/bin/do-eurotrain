@@ -26,12 +26,12 @@
 # cat /home/francis/toobig/isodata/eurotrainmaps//stations-lat-lon-dur |  ./eurotrain-journeys-to-grid query 1280 1280 15 1800 561 638 2>&1 |less
 
 # Parameters:
-SIZE_PX=10240 # 10240 # 1280 # 640
+SIZE_PX=20480 # 40960 # 20480 # 10240 # 1280 # 640
 DIR=$HOME/guardian-euro
 
 WALKSPEED=5 # 15 # 4 m/s == 8.9 mph, 25 m/s = 55 mph # tom thinks use 15 m/s
 MAXWALKTIME=1800 # 900 seconds  = 15 minutes default in old system
-BANDSIZE=1080; BANDCOUNT=200; BANDCOLSEP=1 # use 720 for simple; use 1080 band size for Bulgaria
+BANDSIZE=900; BANDCOUNT=240; BANDCOLSEP=1 # use 720 (count 200) for simple; use 1080 (count 200) band size for Bulgaria; 900 (count 240) for clean 15 mins
 
 set -x # print each line
 set -e # exit on error
