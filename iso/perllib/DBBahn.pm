@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.7 2009-01-27 11:58:44 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.8 2009-01-27 14:57:17 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -73,17 +73,22 @@ sub get_timings {
 
         $html = $m->content();
         if ($html =~ /several possible stops/) {
+            # make <button> tags into <input> ones, as WWW::Mechanize doesn't support <button>
+            $html =~ s/<button/<input/g;
+            $html =~ s#/button>#/input>#g;
+            $m->update_html($html);
+
             if ($html =~ /<option value="([^"]*?)">\Q$to\E<\/option>/) {
                 $m->submit_form(
                     form_name => 'formular',
-                    fields => { 'REQ0JourneyStopsZK' => $1 },
+                    fields => { 'REQ0JourneyStopsZ0K' => $1 },
                     button => 'start'
                 );
                 $html = $m->content();
             } elsif ($html =~ /<option value="([^"]*?)">(.*?)<\/option>/) {
                 $m->submit_form(
                     form_name => 'formular',
-                    fields => { 'REQ0JourneyStopsZK' => $1 },
+                    fields => { 'REQ0JourneyStopsZ0K' => $1 },
                     button => 'start'
                 );
                 $html = $m->content();
@@ -97,11 +102,9 @@ sub get_timings {
         sleep 1;
     }
 
-    #print $html;exit;
-
     # Parse response
 
-    if ($html =~ /Details for all/) {
+    if ($html =~ /details for all/) {
         # Okay, pass through
     } elsif ($html =~ /several possible stops/) {
         return 'Multiple, no exact match'; # Shouldn't get here because of above
@@ -111,12 +114,12 @@ sub get_timings {
         return 'Unknown error';
     }
 
-    $html =~ /$station_name<br \/>(.*?)<\/span>/;
+    $html =~ m#<td class="station stationDest">\s+([^<]+)\s+</td>#;
     my $actual_to = mySociety::StringUtils::trim($1);
     
     my $tree = HTML::TreeBuilder->new_from_content($html);
     my @results = $tree->look_down('class', 'result');
-    my $results = $results[1];
+    my $results = $results[0];
     
     my @rows = $results->find('tr');
 
@@ -129,9 +132,7 @@ sub get_timings {
     $_ = shift @cells; die "unexpected header " . $_->as_text if $_->as_text ne "Duration";
     $_ = shift @cells; die "unexpected header " . $_->as_text if $_->as_text ne "Chg.";
     $_ = shift @cells; die "unexpected header " . $_->as_text if $_->as_text ne "Products";
-    $_ = shift @cells; die "unexpected header " . $_->as_text if $_->as_text ne " Fare ";
-    $_ = shift @cells; die "unexpected header " . $_->as_text if $_->as_text ne " Return journey ";
-    $_ = shift @cells; die "unexpected header " . $_->as_text if $_->as_text ne " Remember ";
+    $_ = shift @cells; die "unexpected header " . $_->as_text if $_->as_text ne "Standard fare";
 
     # check second row is earlier thing
     $row = shift @rows;
@@ -146,15 +147,17 @@ sub get_timings {
         my $row = shift @rows;
         my @cells = $row->find('td');
         @cells = map { mySociety::StringUtils::trim($_->as_text) } @cells;
-        my ($depart_station, $depart_date, $depart_sort, $depart_time, $duration, $changes, $products, $fare, $return_journey, $remember) = @cells;
-        last if $depart_sort eq 'Later';
-        die if $depart_sort ne 'dep';
+        my ($depart_station, $depart_date, $depart_sort, $depart_time, $duration, $changes, $products, $fare, $return_journey) = @cells;
+        last if $depart_date eq 'Later';
+        die "got $depart_sort when expected 'dep'" if $depart_sort ne 'dep';
 
         $row = shift @rows;
         @cells = $row->find('td');
         @cells = map { mySociety::StringUtils::trim($_->as_text) } @cells;
         my ($arrive_station, $arrive_date, $arrive_sort, $arrive_time) = @cells;
-        die if $arrive_sort ne 'arr';
+        die "got $arrive_sort when expected 'arr'" if $arrive_sort ne 'arr';
+
+        $row = shift @rows; # more detail container, empty
 
         # convert length of journey into seconds
         my $duration_seconds;

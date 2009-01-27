@@ -40,7 +40,7 @@ my $station_name = 'Edinburgh';
 
 # Size of grid cells, and number of cities to use in each.
 my $cell_spacing = 1.0; # 1.0 # degrees lat/lon
-my $cities_per_cell = 160; # 20
+my $cities_per_cell = 160; # 160
 
 # Threshold of maximum variation in grid cell of times from
 # mean, remove any data where it is larger than that.
@@ -151,7 +151,7 @@ sub consider_one_city($$) {
     my $raw_name = shift;
 
     # Look up timings to travel there by train
-    my $best = get_timings($raw_name, $dbh);
+    my $best = get_timings($raw_name, $dbh, $start_hour, $journey_date, $station_name);
     if (UNIVERSAL::isa($best, 'HASH')) {
         $city->{dbahn} = $best;
     }
