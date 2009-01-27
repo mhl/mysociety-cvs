@@ -8,7 +8,7 @@
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.6 2008-12-11 15:00:43 francis Exp $';
+my $rcsid = ''; $rcsid .= '$Id: DBBahn.pm,v 1.7 2009-01-27 11:58:44 francis Exp $';
 
 use strict;
 require 5.8.0;
@@ -25,9 +25,11 @@ use Data::Dumper;
 use mySociety::StringUtils;
 
 sub get_timings {
-    my ($to, $dbh) = @_; # , $line) = @_;
-    my $start_hour = 7;
-    my $journey_date = 'Tu, 02.12.08';
+    my ($to, $dbh, $start_hour, $journey_date, $station_name) = @_; # , $line) = @_;
+
+    $start_hour = 7 if !$start_hour;
+    $journey_date = 'Tu, 03.02.09' if !$journey_date;
+    $station_name = 'Pancras International' if !$station_name; # use the end part of station name as spelt by output page; check it is parsing it right
 
     my $end_hour = $start_hour + 1; # must be start plus one
 
@@ -37,7 +39,7 @@ sub get_timings {
         my @params = (
             queryPageDisplayed => 'yes',
             REQ0JourneyStopsSA => 1,
-            REQ0JourneyStopsSG => 'London St Pancras International',
+            REQ0JourneyStopsSG => $station_name,
             REQ0JourneyStopsZA => 1,
             REQ0JourneyStopsZG => $to,
 
@@ -109,7 +111,7 @@ sub get_timings {
         return 'Unknown error';
     }
 
-    $html =~ /Pancras International<br \/>(.*?)<\/span>/;
+    $html =~ /$station_name<br \/>(.*?)<\/span>/;
     my $actual_to = mySociety::StringUtils::trim($1);
     
     my $tree = HTML::TreeBuilder->new_from_content($html);
@@ -194,7 +196,7 @@ sub get_timings {
         next if $depart_date ne $journey_date;
 
         # debug
-        # print "$depart_date $depart_time takes $duration or $duration_seconds secs extra $after_eight_secs\n";
+        print "$depart_date $depart_time takes $duration or $duration_seconds secs extra $after_eight_secs\n";
 
         # record first one we come across (for case of leaving after end hour)
         $first_in_list = $this_one if !$first_in_list;

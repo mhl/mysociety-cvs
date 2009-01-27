@@ -31,6 +31,13 @@ $|=1;
 ##########################################################################
 # Parameters
 
+# Destination, routing time
+my $start_hour = 7;
+my $journey_date = 'Tu, 03.02.09';
+# use end of name as spelt by bahn.de, and check HTML parser is working with it
+#my $station_name = 'Pancras International'; 
+my $station_name = 'Edinburgh'; 
+
 # Size of grid cells, and number of cities to use in each.
 my $cell_spacing = 1.0; # 1.0 # degrees lat/lon
 my $cities_per_cell = 160; # 20
