@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * @version $Id: XMLMapApp.as,v 1.3 2008-12-11 11:05:04 francis Exp $
+ * @version $Id: XMLMapApp.as,v 1.4 2009-02-02 16:01:30 francis Exp $
  */
 package org.mysociety.traveltime
 {
@@ -408,7 +408,7 @@ package org.mysociety.traveltime
 			};
 			drawtipLabel();			
 			tipLabel.x = 2;
-			tipLabel.y = stage.stageHeight - 25;
+			tipLabel.y = stage.stageHeight - 25 - 25;
 			addChild(tipLabel);
 			all.addEventListener(MouseEvent.MOUSE_MOVE, drawtipLabel);			
         }
