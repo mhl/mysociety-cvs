@@ -18,8 +18,6 @@ import logging
 import datetime
 
 sys.path.append("../../pylib")
-import mysociety.atcocif
-
 sys.path.append("../pylib")
 import makeplan
 
@@ -43,7 +41,7 @@ logging.basicConfig(level=logging.WARN)
 #print atco.adjacent_location_times('9100AMERSHM', datetime.datetime(2007, 10, 9, 9, 0))
 
 # Load in journey tables
-atco = mysociety.atcocif.ATCO()
+atco = makeplan.PlanningATCO()
 for nptdr_file in nptdr_files:
     atco.read(nptdr_file)
 atco.index_by_short_codes()
@@ -51,7 +49,7 @@ atco.index_by_short_codes()
 #atco.find_journeys_crossing_midnight()
 
 # Calculate shortest route from everywhere on network
-(results, routes) = makeplan.do_dijkstra(atco, target_location, target_when)
+(results, routes) = atco.do_dijkstra(target_location, target_when)
 
 # Output the results
 if output_format == 'human':
