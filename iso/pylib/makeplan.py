@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.4 2009-02-09 15:56:03 francis Exp $
+# $Id: makeplan.py,v 1.5 2009-02-09 19:05:32 francis Exp $
 #
 
 # TODO:
@@ -78,16 +78,6 @@ dictionary.
 >>> routes
 {'9100MDNHEAD': [('9100FURZEP', datetime.datetime(2007, 10, 16, 6, 0)), ('9100MDNHEAD', datetime.datetime(2007, 10, 16, 5, 49))], '9100FURZEP': [('9100FURZEP', datetime.datetime(2007, 10, 16, 6, 0))]}
 
-
-Make up a few examples in files:
-Ivor the engine?
-Trumpton
-Noddy 
-Spirited away
-My neighbour totoro
-
-
-
 If you try to arrive within interchange time after the only train gets there,
 then you won't make it in time. For example, the 5:49 from Maidenhead arrives
 at Furzep at 5:53, which isn't in time to make it by 5:54. This is a bug, it
@@ -104,6 +94,7 @@ import logging
 import pqueue
 import datetime
 import sys
+import os
 
 sys.path.append("../../pylib") # XXX this is for running doctests and is nasty, there's got to be a better way
 import mysociety.atcocif
