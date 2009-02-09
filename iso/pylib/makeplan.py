@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.2 2009-02-07 01:11:57 francis Exp $
+# $Id: makeplan.py,v 1.3 2009-02-09 11:51:26 francis Exp $
 #
 
 import logging
@@ -133,7 +133,6 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         Run Dijkstra's algorithm to find latest departure time from all locations to
         arrive at the target location by the given time.
 
-        atco - data structure containing ATCO file, loaded by mysociety.atcocif.ATCO()
         target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
         target_datetime - when we want to arrive by
         '''
