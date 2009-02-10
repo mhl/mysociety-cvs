@@ -5,12 +5,14 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.5 2009-02-09 19:05:32 francis Exp $
+# $Id: makeplan.py,v 1.6 2009-02-10 17:30:46 francis Exp $
 #
 
 # TODO:
 # Allow for the interchange time at the end :) - currently we'll always arrive early by that time
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
+#
+# The time of the last place in routes is a bit pants as it includes the wait!
 #
 # Journeys over midnight will be knackered, no idea how ATCO-CIF even stores them
 #  - in particular, which day are journeys starting just after midnight stored for?
@@ -32,62 +34,87 @@ all in one go.
 Notes: Does not allow for train routing guides or easements - the journeys
 generated are possible, but you have to buy the right ticket(s).
 
-PlanningATCO is a class derived from mysociety.atcocif.ATCO - you use it by
-first loading in all the relevant ATCO-CIF files that you want to route find
-over. 
 
-Here we use a simple example file, containing just two train journeys, which
-both pass along the same line from Maidenhead to Bourne End / Marlow early in
-the morning.
+A Railway Story
+===============
 
->>> atco = PlanningATCO()
->>> atco.read_string("""ATCO-CIF0510                       70 - RAIL        ATCORAIL20080124115909
-... QSNGW    6B1820070521200712071111100  2B02P10452TRAIN           I
-... QO9100MDNHEAD 0549URLT1  
-... QI9100FURZEP  05530553T   T1  
-... QI9100COOKHAM 05560556T   T1  
-... QI9100BORNEND 06010605T   T1  
-... QT9100MARLOW  0612   T1  
-... QSNGW    6B1A20070521200712071111100  2B04P10456TRAIN           I
-... QO9100MDNHEAD 0608URLT1  
-... QI9100FURZEP  06120612T   T1  
-... QI9100COOKHAM 00000000O   T1  
-... QT9100BORNEND 0620   T1  
-... QLN9100COOKHAM Cookham Rail Station                             RE0057284
-... QBN9100COOKHAM 488690  185060                                                  
-... """)
+Thomas was a cheeky tank engine who worked on the island of Sodor. He had a
+branch line all to himself. 
 
-It's important to create the indices that mysociety.atcocif.ATCO provide.
+The fat director made sure that passengers would always know when Thomas would
+be at each station. He published the North Western Railway timetable for free
+in the ATCO-CIF file format.
+
+>>> atco = PlanningATCO() # PlanningATCO is derived from mysociety.atcocif.ATCO
+>>> atco.read("fixtures/thomas-branch-line.cif")
+
+Thomas proudly puffs up and down through six stations. 
+>>> [ location.long_description() for location in atco.locations ]
+['Knapford Rail Station', 'Dryaw Rail Station', 'Toryreck Rail Station', 'Elsbridge Rail Station', 'Hackenbeck Rail Station', 'Ffarquhar Rail Station']
+
+On weekdays he makes four journeys a day, two there, and two back.
+>>> monday = datetime.date(2007,1,8)
+>>> [ journey.route_direction for journey in atco.journeys 
+...   if journey.is_valid_on_date(monday) ]
+['O', 'I', 'O', 'I']
+
+On Sundays he makes only one trip there and back.
+>>> sunday = datetime.date(2007,1,14)
+>>> [ journey.route_direction for journey in atco.journeys 
+...   if journey.is_valid_on_date(sunday) ]
+['O', 'I']
+
+There was a passenger who had a new job at the Lead and Uranium mines near
+Toryreck. She wanted to know where she could live, and arrive in time for work
+at 8am by train.
+
+First she made indices of all the journeys and stations.
 >>> atco.index_by_short_codes()
 
-Then the do_dijkstra call will find the best routes to arrive from every place
-in the network to a given target place/time. It returns a results and a routes
-data structure.
->>> (results, routes) = atco.do_dijkstra("9100FURZEP", datetime.datetime(2007,10,16, 6,0))
+Then she called do_dijkstra to find out all the best routes that arrive from
+every place in the network at Toryreck by 8am on a Monday. She was given a
+results and a routes data structure in return.
+>>> (results, routes) = atco.do_dijkstra("TORYRECK", datetime.datetime(2007,1,8, 8,0))
 
-results contains a dictionary with each station on the network from which you
-can arrive on time, and the latest time at which you need to leave that
+results contained a dictionary with each station on the network from which she
+can arrive at work on time, and the latest time at which you need to leave that
 station.
 >>> results
-{'9100MDNHEAD': datetime.datetime(2007, 10, 16, 5, 49), '9100FURZEP': datetime.datetime(2007, 10, 16, 6, 0)}
+{'DRYAW': datetime.datetime(2007, 1, 8, 7, 20), 'TORYRECK': datetime.datetime(2007, 1, 8, 8, 0), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
 
-routes gives details of the route you take to do that for each station. A route
-consists of a list of place/times, in reverse order starting with the target
-destination, and ending with the place/time that appeared in the results
+routes gave her details of the best route she could take from each station. A
+route consisted of a list of place/times, in reverse order starting with the
+target destination, and ending with the place/time that appeared in the results
 dictionary.
 >>> routes
-{'9100MDNHEAD': [('9100FURZEP', datetime.datetime(2007, 10, 16, 6, 0)), ('9100MDNHEAD', datetime.datetime(2007, 10, 16, 5, 49))], '9100FURZEP': [('9100FURZEP', datetime.datetime(2007, 10, 16, 6, 0))]}
+{'DRYAW': [('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ('DRYAW', datetime.datetime(2007, 1, 8, 7, 20))], 'TORYRECK': [('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0))], 'KNAPFORD': [('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]}
+
+
+
 
 If you try to arrive within interchange time after the only train gets there,
-then you won't make it in time. For example, the 5:49 from Maidenhead arrives
-at Furzep at 5:53, which isn't in time to make it by 5:54. This is a bug, it
+then you won't make it in time. For example, the 7:00 from Knapford arrives
+at Dryaw at 7:20, which isn't in time to make it by 7:22. This is a bug, it
 shouldn't count the interchange time at the end. However, we need a test that
 checks interchange times in the middle of journeys.
 
->>> (results, routes) = atco.do_dijkstra("9100FURZEP", datetime.datetime(2007,10,16, 5,54))
->>> results
-{'9100FURZEP': datetime.datetime(2007, 10, 16, 5, 54)}
+#>>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,19))
+#>>> results
+#{'9100FURZEP': datetime.datetime(2007, 10, 16, 5, 54)}
+#{'DRYAW': datetime.datetime(2007, 1, 8, 7, 22)}
 
+
+#>>> journeys_visiting_elsbridge = atco.journeys_visiting_location['ELSBRIDGE']
+#>>> [(x.operator, x.unique_journey_identifier) for x in journeys_visiting_elsbridge]
+#[('NWR', 'TT01')]
+
+Todo cif file:
+Check that all the ids and train operation numbers and stuff in journey parts are ok
+Add direct services to Tidmouth
+Add some services run by Daisy on Thomas's line
+Reduced Sunday service
+Link to map of full network http://en.wikipedia.org/wiki/Sodor_(fictional_island)
+http://en.wikipedia.org/wiki/North_Western_Railway_(fictional)#Thomas.27_Branch_Line
 '''
 
 import logging
@@ -118,10 +145,12 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     previous_departure_time = hop.published_departure_time
  
     def adjacent_location_times(self, target_location, target_arrival_datetime):
-        '''Adjacency function for use with Dijkstra's algorithm on earliest time to arrive somewhere.
-        Given a location (string short code) and a date/time, it finds every
-        other station you can get there on time by one direct train/bus. Each station only
-        appears once.
+        '''Adjacency function for use with Dijkstra's algorithm on earliest
+        time to arrive somewhere.  Given a location (string short code) and a
+        date/time, it finds every other station from which you can get there on
+        time by one *direct* train/bus. The return value is a dictionary from
+        the station short code to the date/time - so each station only appears
+        once. 
         '''
 
         # Check that there are journeys visiting this location
@@ -148,9 +177,9 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
         # Check whether the journey runs on the relevant date
         # XXX assumes we don't do journeys over midnight
-        (valid_on_date, reason) = journey.is_valid_on_date(target_arrival_datetime.date()) 
+        valid_on_date = journey.is_valid_on_date(target_arrival_datetime.date()) 
         if not valid_on_date:
-            logging.debug("\t\tnot valid on date: " + reason)
+            logging.debug("\t\tnot valid on date: " + valid_on_date.reason)
             return
 
         # Find out when it arrives at this stop
@@ -237,7 +266,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     return -1
                 assert False
             def __repr__(self):
-                return "Priority '" + str(self.when) + "'"
+                return "Priority(" + repr(self.when) + ")"
         
         # Set up initial state
         settled = {} # dictionary from location to datetime
