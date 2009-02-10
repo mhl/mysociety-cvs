@@ -5,11 +5,12 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.6 2009-02-10 17:30:46 francis Exp $
+# $Id: makeplan.py,v 1.7 2009-02-10 18:00:51 francis Exp $
 #
 
 # TODO:
 # Allow for the interchange time at the end :) - currently we'll always arrive early by that time
+#
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
 #
 # The time of the last place in routes is a bit pants as it includes the wait!
@@ -98,15 +99,14 @@ at Dryaw at 7:20, which isn't in time to make it by 7:22. This is a bug, it
 shouldn't count the interchange time at the end. However, we need a test that
 checks interchange times in the middle of journeys.
 
-#>>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,19))
-#>>> results
-#{'9100FURZEP': datetime.datetime(2007, 10, 16, 5, 54)}
-#{'DRYAW': datetime.datetime(2007, 1, 8, 7, 22)}
+>>> ch = logging.StreamHandler()
+>>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,22))
+>>> results
+{'DRYAW': datetime.datetime(2007, 1, 8, 7, 22)}
+>>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,25))
+>>> results
+{'DRYAW': datetime.datetime(2007, 1, 8, 7, 25), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
 
-
-#>>> journeys_visiting_elsbridge = atco.journeys_visiting_location['ELSBRIDGE']
-#>>> [(x.operator, x.unique_journey_identifier) for x in journeys_visiting_elsbridge]
-#[('NWR', 'TT01')]
 
 Todo cif file:
 Check that all the ids and train operation numbers and stuff in journey parts are ok
@@ -141,7 +141,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             for hop in journey.hops:
                 if hop.is_pick_up():
                     if previous_departure_time > hop.published_departure_time:
-                        print "journey " + journey.unique_journey_identifier + " spans midnight"
+                        print "journey " + journey.id + " spans midnight"
                     previous_departure_time = hop.published_departure_time
  
     def adjacent_location_times(self, target_location, target_arrival_datetime):
@@ -163,7 +163,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         adjacents = {}
         # Go through every journey visiting the location
         for journey in self.journeys_visiting_location[target_location]:
-            logging.debug("\tconsidering journey: " + journey.unique_journey_identifier)
+            logging.debug("\tconsidering journey: " + journey.id)
             self._adjacent_location_times_for_journey(target_location, target_arrival_datetime, adjacents, journey)
 
         return adjacents
