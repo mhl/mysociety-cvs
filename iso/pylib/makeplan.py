@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.7 2009-02-10 18:00:51 francis Exp $
+# $Id: makeplan.py,v 1.8 2009-02-10 18:17:16 francis Exp $
 #
 
 # TODO:
@@ -27,6 +27,9 @@
 # - there are other ones as well, e.g. 09 etc. probably right to default to bus, but check
 #
 # Add interchange at geographically proximous places.
+#
+# Get rid of index_by_short_codes somehow
+#
 
 '''Finds shortest route from all points on a public transport network to arrive
 at a given destination at a given time. Uses Dijkstra's algorithm to do this
