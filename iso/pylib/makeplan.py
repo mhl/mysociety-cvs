@@ -5,10 +5,12 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.10 2009-02-11 11:46:43 francis Exp $
+# $Id: makeplan.py,v 1.11 2009-02-11 17:12:48 francis Exp $
 #
 
 # TODO:
+# Rename this planningatco.py
+#
 # Allow for the interchange time at the end :) - currently we'll always arrive early by that time
 #
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
@@ -235,7 +237,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         # Now go through every earlier stop, and add it to the list of returnable nodes
         for hop in journey.hops:
             # We've arrived at the target location (also check is_set_down
-            # here, so looped journeys, where we end on stop we started, work)
+            # here, so looped/circular journeys, where we end on stop we
+            # started, work)
             if hop.is_set_down() and hop.location == target_location:
                 break
 
