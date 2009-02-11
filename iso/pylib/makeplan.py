@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.8 2009-02-10 18:17:16 francis Exp $
+# $Id: makeplan.py,v 1.9 2009-02-11 00:05:50 francis Exp $
 #
 
 # TODO:
@@ -91,9 +91,7 @@ route consisted of a list of place/times, in reverse order starting with the
 target destination, and ending with the place/time that appeared in the results
 dictionary.
 >>> routes
-{'DRYAW': [('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ('DRYAW', datetime.datetime(2007, 1, 8, 7, 20))], 'TORYRECK': [('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0))], 'KNAPFORD': [('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]}
-
-
+{'DRYAW': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True), ArrivePlaceTime('DRYAW', datetime.datetime(2007, 1, 8, 7, 20), interchange_wait=True)], 'TORYRECK': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True)], 'KNAPFORD': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True), ArrivePlaceTime('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0), interchange_wait=True)]}
 
 
 If you try to arrive within interchange time after the only train gets there,
@@ -129,6 +127,21 @@ import os
 sys.path.append("../../pylib") # XXX this is for running doctests and is nasty, there's got to be a better way
 import mysociety.atcocif
 
+# Stores a location and date/time of arrival at that location.
+# If interchange_wait is True, then the time must be after a wait
+# for changing to the next transport. If it is False, then there is no
+# interchange wait (e.g. at the end of a journey).
+class ArrivePlaceTime:
+    def __init__(self, location, when, interchange_wait = True):
+        self.location = location
+        self.when = when
+        self.interchange_wait = interchange_wait
+
+    def __repr__(self):
+        return "ArrivePlaceTime(" + repr(self.location) + ", " + repr(self.when) + ", interchange_wait=" + repr(self.interchange_wait) + ")"
+      
+# Loads and represents a set of ATCO-CIF files, and can generate large sets of
+# quickest routes from them
 class PlanningATCO(mysociety.atcocif.ATCO):
     # train_interchange_default - time in minutes to allow by default to change trains at same station
     # bus_interchange_default - likewise for buses, at exact same stop
@@ -146,7 +159,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     if previous_departure_time > hop.published_departure_time:
                         print "journey " + journey.id + " spans midnight"
                     previous_departure_time = hop.published_departure_time
- 
+
     def adjacent_location_times(self, target_location, target_arrival_datetime):
         '''Adjacency function for use with Dijkstra's algorithm on earliest
         time to arrive somewhere.  Given a location (string short code) and a
@@ -239,10 +252,10 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
             if hop.location in adjacents:
                 curr_latest = adjacents[hop.location]
-                if departure_datetime > curr_latest:
-                    adjacents[hop.location] = departure_datetime
+                if departure_datetime > curr_latest.when:
+                    adjacents[hop.location] = ArrivePlaceTime(hop.location, departure_datetime)
             else:
-                adjacents[hop.location] = departure_datetime
+                adjacents[hop.location] = ArrivePlaceTime(hop.location, departure_datetime)
         
     def do_dijkstra(self, target_location, target_datetime):
         '''
@@ -276,7 +289,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         queue = pqueue.PQueue()
         queue.insert(Priority(target_datetime), target_location)
         routes = {}
-        routes[target_location] = [ (target_location, target_datetime) ] # how to get there
+        routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime) ] # how to get there
 
         while len(queue) > 0:
             # Find the item at top of queue
@@ -289,7 +302,9 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             
             # Add all of its neighbours to the queue
             foundtimes = self.adjacent_location_times(nearest_location, nearest_datetime)
-            for location, when in foundtimes.iteritems():
+            for location, arrive_place_time in foundtimes.iteritems():
+                when = arrive_place_time.when
+
                 new_priority = Priority(when)
                 try:
                     # See if this location is already in queue 
@@ -298,13 +313,13 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     assert location not in settled
                     if new_priority < current_priority:
                         queue[location] = new_priority
-                        routes[location] = routes[nearest_location] + [ (location, when) ]
+                        routes[location] = routes[nearest_location] + [ arrive_place_time ]
                         logging.info("updated " + location + " from priority " + str(current_priority) + " to " + str(new_priority) + " in queue")
                 except KeyError, e:
                     if location not in settled:
                         # No existing entry for location in queue
                         queue.insert(new_priority, location)
-                        routes[location] = routes[nearest_location] + [ (location, when) ]
+                        routes[location] = routes[nearest_location] + [ arrive_place_time ]
                         logging.info("added " + location + " " + str(new_priority) + " to queue")
 
         return (settled, routes)
