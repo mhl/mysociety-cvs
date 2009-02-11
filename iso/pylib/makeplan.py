@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.9 2009-02-11 00:05:50 francis Exp $
+# $Id: makeplan.py,v 1.10 2009-02-11 11:46:43 francis Exp $
 #
 
 # TODO:
@@ -25,6 +25,7 @@
 # - find proper ones to use for TRAIN and BUS
 # - what is an LFBUS? use QV vehicle type records to find out
 # - there are other ones as well, e.g. 09 etc. probably right to default to bus, but check
+# - measures according to type of journey before, not pair of before/after
 #
 # Add interchange at geographically proximous places.
 #
