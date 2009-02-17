@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.11 2009-02-11 17:12:48 francis Exp $
+# $Id: makeplan.py,v 1.12 2009-02-17 17:29:30 matthew Exp $
 #
 
 # TODO:
@@ -53,7 +53,7 @@ be at each station. He published the North Western Railway timetable for free
 in the ATCO-CIF file format.
 
 >>> atco = PlanningATCO() # PlanningATCO is derived from mysociety.atcocif.ATCO
->>> atco.read("fixtures/thomas-branch-line.cif")
+>>> atco.read(sys.path[0] + "/fixtures/thomas-branch-line.cif")
 
 Thomas proudly puffs up and down through six stations. 
 >>> [ location.long_description() for location in atco.locations ]
@@ -96,17 +96,14 @@ dictionary.
 >>> routes
 {'DRYAW': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True), ArrivePlaceTime('DRYAW', datetime.datetime(2007, 1, 8, 7, 20), interchange_wait=True)], 'TORYRECK': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True)], 'KNAPFORD': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True), ArrivePlaceTime('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0), interchange_wait=True)]}
 
-
-If you try to arrive within interchange time after the only train gets there,
-then you won't make it in time. For example, the 7:00 from Knapford arrives
-at Dryaw at 7:20, which isn't in time to make it by 7:22. This is a bug, it
-shouldn't count the interchange time at the end. However, we need a test that
-checks interchange times in the middle of journeys.
+The 7:00 from Knapford arrives at Dryaw at 7:20, so test that asking for arrival
+time of 7:22 (within the interchange time) works. Also a test that checks
+interchange times in the middle of journeys.
 
 >>> ch = logging.StreamHandler()
 >>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,22))
 >>> results
-{'DRYAW': datetime.datetime(2007, 1, 8, 7, 22)}
+{'DRYAW': datetime.datetime(2007, 1, 8, 7, 22), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
 >>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,25))
 >>> results
 {'DRYAW': datetime.datetime(2007, 1, 8, 7, 25), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
@@ -127,7 +124,7 @@ import datetime
 import sys
 import os
 
-sys.path.append("../../pylib") # XXX this is for running doctests and is nasty, there's got to be a better way
+sys.path.append(sys.path[0] + "/../../pylib") # XXX this is for running doctests and is nasty, there's got to be a better way
 import mysociety.atcocif
 
 # Stores a location and date/time of arrival at that location.
@@ -163,7 +160,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                         print "journey " + journey.id + " spans midnight"
                     previous_departure_time = hop.published_departure_time
 
-    def adjacent_location_times(self, target_location, target_arrival_datetime):
+    def adjacent_location_times(self, final_destination, target_location, target_arrival_datetime):
         '''Adjacency function for use with Dijkstra's algorithm on earliest
         time to arrive somewhere.  Given a location (string short code) and a
         date/time, it finds every other station from which you can get there on
@@ -183,11 +180,11 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         # Go through every journey visiting the location
         for journey in self.journeys_visiting_location[target_location]:
             logging.debug("\tconsidering journey: " + journey.id)
-            self._adjacent_location_times_for_journey(target_location, target_arrival_datetime, adjacents, journey)
+            self._adjacent_location_times_for_journey(final_destination, target_location, target_arrival_datetime, adjacents, journey)
 
         return adjacents
 
-    def _adjacent_location_times_for_journey(self, target_location, target_arrival_datetime, adjacents, journey):
+    def _adjacent_location_times_for_journey(self, final_destination, target_location, target_arrival_datetime, adjacents, journey):
         '''Private function, called by adjacent_location_times. Finds every
         other station you can get to the destination on time, using
         the specific given bus/train in journey. Results are stored in the
@@ -212,8 +209,9 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         arrival_datetime_at_target_location = datetime.datetime.combine(target_arrival_datetime.date(), arrival_time_at_target_location)
 
         # Work out how long we need to allow to change at the stop
-        # XXX here need to know if the stop is the last destination stop, as you don't need interchange time
-        if journey.vehicle_type == 'TRAIN':
+        if target_location == final_destination:
+            interchange_time_in_minutes = 0
+        elif journey.vehicle_type == 'TRAIN':
             interchange_time_in_minutes = self.train_interchange_default
         else:
             interchange_time_in_minutes = self.bus_interchange_default
@@ -305,7 +303,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             settled[nearest_location] = nearest_datetime
             
             # Add all of its neighbours to the queue
-            foundtimes = self.adjacent_location_times(nearest_location, nearest_datetime)
+            foundtimes = self.adjacent_location_times(target_location, nearest_location, nearest_datetime)
             for location, arrive_place_time in foundtimes.iteritems():
                 when = arrive_place_time.when
 
@@ -328,4 +326,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
         return (settled, routes)
 
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
 
