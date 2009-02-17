@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w -I../perllib -I../../perllib
+#!/usr/bin/perl
 #
 # do-nptdr.pl:
 # Generate diagram of time travel to arrive by a certain time by public
@@ -8,11 +8,14 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
+use warnings;
 use strict;
+use FindBin;
+use lib "$FindBin::Bin/../../perllib";
 use mySociety::Config;
 use mySociety::MaPit;
 BEGIN {
-	mySociety::Config::set_file('general');
+	mySociety::Config::set_file("$FindBin::Bin/../conf/general");
 }
 
 # Parameters
@@ -42,10 +45,10 @@ my $rect = "$WW $EE $SS $NN";
 my $results = "nptdr-$postcode-$size_m";
 
 #./nptdr-plan 210021422650 /library/transport/nptdr/sample-bucks/ATCO_040_*.CIF >$dir/$results
-`./nptdr-plan $destination /home/matthew/ATCO_010_*.CIF >$dir/$results`;
+`$FindBin::Bin/nptdr-plan $destination /home/matthew/ATCO_010_*.CIF >$dir/$results`;
 
-`cat $dir/$results | ./transportdirect-journeys-to-grid grid $rect $size_px $size_px $walkspeed $walktime > $dir/$results-grid`;
-`cat $dir/$results-grid | ./grid-to-ppm field $rect $size_px $size_px $bandsize $bandcount $bandcolsep > $dir/$results.ppm`;
+`cat $dir/$results | $FindBin::Bin/transportdirect-journeys-to-grid grid $rect $size_px $size_px $walkspeed $walktime > $dir/$results-grid`;
+`cat $dir/$results-grid | $FindBin::Bin/grid-to-ppm field $rect $size_px $size_px $bandsize $bandcount $bandcolsep > $dir/$results.ppm`;
 
 `convert $dir/$results.ppm $dir/$results.png`;
 #eog $dir/$results.png
