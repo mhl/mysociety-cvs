@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.5
+#!/usr/bin/env python2.4
 #
 # nptdr-plan
 # Calculate journey times across a network to a destination at a specific time,
@@ -16,15 +16,10 @@ sys.path.append("../../pylib")
 sys.path.append("../pylib")
 import makeplan
 
-# Parameters (should be input on the command line or via a config file)
-nptdr_files = [
-    "/home/francis/toobig/nptdr/sample/ATCO_040_COACH.CIF",
-    "/home/francis/toobig/nptdr/sample/ATCO_040_METRO.CIF",
-    "/home/francis/toobig/nptdr/sample/ATCO_040_TRAIN.CIF",
-    "/home/francis/toobig/nptdr/sample/ATCO_040_BUS.CIF",
-]
 #target_location = '9100AYLSBRY'
-target_location = '210021422650'
+target_location = sys.argv[1]
+nptdr_files = sys.argv[2:]
+
 target_when = datetime.datetime(2007,10,16, 12,0) # 15th-21st October 2007 is valid week range for 2007
 #output_format = 'human'
 output_format = 'for_map'
@@ -38,8 +33,13 @@ logging.basicConfig(level=logging.WARN)
 # Load in journey tables
 atco = makeplan.PlanningATCO()
 for nptdr_file in nptdr_files:
+    print "Loading %s..." % nptdr_file
     atco.read(nptdr_file)
+print "Indexing by short code"
 atco.index_by_short_codes()
+
+print "All loaded"
+sys.exit()
 
 #atco.find_journeys_crossing_midnight()
 

@@ -21,14 +21,15 @@ WALKSPEED=1; WALKTIME=3600 # m/s (1), sec (900)
 set -x # print each line
 set -e # exit on error
 
+#RECT='444769 524769 180117 260117'
 RECT="`./calc-bounding-rectangle $POSTCODE_DB $POSTCODE $SIZE_M`"
 RESULTS=nptdr-$POSTCODE-$SIZE_M
 
-./nptdr-plan >$DIR/$RESULTS
+./nptdr-plan 210021422650 /library/transport/nptdr/sample-bucks/ATCO_040_*.CIF >$DIR/$RESULTS
 
 cat $DIR/$RESULTS | ./transportdirect-journeys-to-grid grid $RECT $SIZE_PX $SIZE_PX $WALKSPEED $WALKTIME > $DIR/$RESULTS-grid
 cat $DIR/$RESULTS-grid | ./grid-to-ppm field $RECT $SIZE_PX $SIZE_PX $BANDSIZE $BANDCOUNT $BANDCOLSEP > $DIR/$RESULTS.ppm
 
 convert $DIR/$RESULTS.ppm $DIR/$RESULTS.png
-eog $DIR/$RESULTS.png
+#eog $DIR/$RESULTS.png
 
