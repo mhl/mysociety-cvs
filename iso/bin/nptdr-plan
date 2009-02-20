@@ -17,10 +17,12 @@ sys.path.append(sys.path[0] + "/../pylib")
 import makeplan
 
 #target_location = '9100AYLSBRY'
-target_location = sys.argv[1]
-nptdr_files = sys.argv[2:]
+walk_speed = float(sys.argv[1])
+walk_time = int(sys.argv[2])
+target_location = sys.argv[3]
+nptdr_files = sys.argv[4:]
 
-target_when = datetime.datetime(2008,10,16, 12,0) # 15th-21st October 2007 is valid week range for 2007
+target_when = datetime.datetime(2008,10,16, 12,0) # Some week in October 2008, need to check exactly when
 #output_format = 'human'
 output_format = 'for_map'
 #logging.basicConfig(level=logging.DEBUG)
@@ -39,7 +41,7 @@ atco.index_by_short_codes()
 #atco.find_journeys_crossing_midnight()
 
 # Calculate shortest route from everywhere on network
-(results, routes) = atco.do_dijkstra(target_location, target_when)
+(results, routes) = atco.do_dijkstra(target_location, target_when, walk_speed, walk_time)
 
 # Output the results
 if output_format == 'human':

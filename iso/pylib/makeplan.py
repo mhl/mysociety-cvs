@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.14 2009-02-20 14:53:28 matthew Exp $
+# $Id: makeplan.py,v 1.15 2009-02-20 20:05:20 matthew Exp $
 #
 
 # TODO:
@@ -198,9 +198,10 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             easting = data.additional.grid_reference_easting
             northing = data.additional.grid_reference_northing
             dist = math.sqrt(((easting-target_easting)**2) + ((northing-target_northing)**2))
-            if dist < 1609: # 1 mile
+            if dist < self.walk_speed * self.walk_time: # 3600
                 logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, easting, northing, dist, target_location, target_easting, target_northing))
-                walk_time = datetime.timedelta(minutes = dist/1609*20)
+                walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
+                #walk_time = datetime.timedelta(minutes = dist/3200*30)
                 departure_datetime = target_arrival_datetime - walk_time
                 if location in adjacents:
                     curr_latest = adjacents[location]
@@ -285,7 +286,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             else:
                 adjacents[hop.location] = ArrivePlaceTime(hop.location, departure_datetime)
         
-    def do_dijkstra(self, target_location, target_datetime):
+    def do_dijkstra(self, target_location, target_datetime, walk_speed=1, walk_time=3600):
         '''
         Run Dijkstra's algorithm to find latest departure time from all locations to
         arrive at the target location by the given time.
@@ -319,6 +320,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         routes = {}
         routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime) ] # how to get there
         self.final_destination = target_location
+	self.walk_speed = walk_speed
+	self.walk_time = walk_time
 
         while len(queue) > 0:
             # Find the item at top of queue

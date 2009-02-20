@@ -74,10 +74,11 @@ my $NN = $N + $size / 2;
 my $rect = "$WW $EE $SS $NN";
 my $results = "nptdr-$postcode-$size";
 
-`$FindBin::Bin/nptdr-plan $destination $data >$output/$results.txt`;
+`$FindBin::Bin/nptdr-plan $walkspeed $walktime $destination $data >$output/$results.txt`;
 `cat $output/$results.txt | $FindBin::Bin/transportdirect-journeys-to-grid grid $rect $px $px $walkspeed $walktime > $output/$results-grid`;
 `cat $output/$results-grid | $FindBin::Bin/grid-to-ppm field $rect $px $px $bandsize $bandcount $bandcolsep > $output/$results.ppm`;
 
-`convert $output/$results.ppm $output/$results.png`;
+my $time = time();
+`convert $output/$results.ppm $output/$results.$time.png`;
 #eog $output/$results.png
 
