@@ -5,17 +5,16 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.12 2009-02-17 17:29:30 matthew Exp $
+# $Id: makeplan.py,v 1.13 2009-02-20 13:49:56 matthew Exp $
 #
 
 # TODO:
 # Rename this planningatco.py
 #
-# Allow for the interchange time at the end :) - currently we'll always arrive early by that time
-#
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
 #
 # The time of the last place in routes is a bit pants as it includes the wait!
+#   MPS: Guess it needs to store arrival times too, and then use that for final leg
 #
 # Journeys over midnight will be knackered, no idea how ATCO-CIF even stores them
 #  - in particular, which day are journeys starting just after midnight stored for?
@@ -123,6 +122,7 @@ import pqueue
 import datetime
 import sys
 import os
+import math
 
 sys.path.append(sys.path[0] + "/../../pylib") # XXX this is for running doctests and is nasty, there's got to be a better way
 import mysociety.atcocif
@@ -160,7 +160,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                         print "journey " + journey.id + " spans midnight"
                     previous_departure_time = hop.published_departure_time
 
-    def adjacent_location_times(self, final_destination, target_location, target_arrival_datetime):
+    def adjacent_location_times(self, target_location, target_arrival_datetime):
         '''Adjacency function for use with Dijkstra's algorithm on earliest
         time to arrive somewhere.  Given a location (string short code) and a
         date/time, it finds every other station from which you can get there on
@@ -179,12 +179,40 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         adjacents = {}
         # Go through every journey visiting the location
         for journey in self.journeys_visiting_location[target_location]:
+            if journey.ignored: continue
             logging.debug("\tconsidering journey: " + journey.id)
-            self._adjacent_location_times_for_journey(final_destination, target_location, target_arrival_datetime, adjacents, journey)
-
+            self._adjacent_location_times_for_journey(target_location, target_arrival_datetime, adjacents, journey)
+        self._nearby_locations(target_location, target_arrival_datetime, adjacents)
+#        for journey, distance in self.nearby_locations[target_location].items():
+#            walk_time = datetime.timedelta(minutes = dist/3200*30)
+#            departure_datetime = target_arrival_datetime - walk_time
+#            if location in adjacents:
+#                curr_latest = adjacents[location]
+#                if departure_datetime > curr_latest.when:
+#                    adjacents[location] = ArrivePlaceTime(location, departure_datetime)
+#            else:
+#                adjacents[location] = ArrivePlaceTime(location, departure_datetime)
         return adjacents
 
-    def _adjacent_location_times_for_journey(self, final_destination, target_location, target_arrival_datetime, adjacents, journey):
+    def _nearby_locations(self, target_location, target_arrival_datetime, adjacents):
+        target_easting = self.location_details[target_location].additional.grid_reference_easting
+        target_northing = self.location_details[target_location].additional.grid_reference_northing
+        for location, data in self.location_details.items():
+            easting = data.additional.grid_reference_easting
+            northing = data.additional.grid_reference_northing
+            dist = math.sqrt(((easting-target_easting)**2) + ((northing-target_northing)**2))
+            if dist < 1609: # 1 mile
+                logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, easting, northing, dist, target_location, target_easting, target_northing))
+                walk_time = datetime.timedelta(minutes = dist/1609*20)
+                departure_datetime = target_arrival_datetime - walk_time
+                if location in adjacents:
+                    curr_latest = adjacents[location]
+                    if departure_datetime > curr_latest.when:
+                        adjacents[location] = ArrivePlaceTime(location, departure_datetime)
+                else:
+                    adjacents[location] = ArrivePlaceTime(location, departure_datetime)
+
+    def _adjacent_location_times_for_journey(self, target_location, target_arrival_datetime, adjacents, journey):
         '''Private function, called by adjacent_location_times. Finds every
         other station you can get to the destination on time, using
         the specific given bus/train in journey. Results are stored in the
@@ -196,6 +224,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         valid_on_date = journey.is_valid_on_date(target_arrival_datetime.date()) 
         if not valid_on_date:
             logging.debug("\t\tnot valid on date: " + valid_on_date.reason)
+            journey.ignore()
             return
 
         # Find out when it arrives at this stop
@@ -209,7 +238,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         arrival_datetime_at_target_location = datetime.datetime.combine(target_arrival_datetime.date(), arrival_time_at_target_location)
 
         # Work out how long we need to allow to change at the stop
-        if target_location == final_destination:
+        if target_location == self.final_destination:
             interchange_time_in_minutes = 0
         elif journey.vehicle_type == 'TRAIN':
             interchange_time_in_minutes = self.train_interchange_default
@@ -292,6 +321,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         queue.insert(Priority(target_datetime), target_location)
         routes = {}
         routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime) ] # how to get there
+        self.final_destination = target_location
 
         while len(queue) > 0:
             # Find the item at top of queue
@@ -303,7 +333,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             settled[nearest_location] = nearest_datetime
             
             # Add all of its neighbours to the queue
-            foundtimes = self.adjacent_location_times(target_location, nearest_location, nearest_datetime)
+            foundtimes = self.adjacent_location_times(nearest_location, nearest_datetime)
             for location, arrive_place_time in foundtimes.iteritems():
                 when = arrive_place_time.when
 

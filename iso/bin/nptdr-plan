@@ -20,7 +20,7 @@ import makeplan
 target_location = sys.argv[1]
 nptdr_files = sys.argv[2:]
 
-target_when = datetime.datetime(2007,10,16, 12,0) # 15th-21st October 2007 is valid week range for 2007
+target_when = datetime.datetime(2008,10,16, 12,0) # 15th-21st October 2007 is valid week range for 2007
 #output_format = 'human'
 output_format = 'for_map'
 #logging.basicConfig(level=logging.DEBUG)
@@ -33,13 +33,8 @@ logging.basicConfig(level=logging.WARN)
 # Load in journey tables
 atco = makeplan.PlanningATCO()
 for nptdr_file in nptdr_files:
-    print "Loading %s..." % nptdr_file
     atco.read(nptdr_file)
-print "Indexing by short code"
 atco.index_by_short_codes()
-
-print "All loaded"
-sys.exit()
 
 #atco.find_journeys_crossing_midnight()
 
@@ -70,7 +65,7 @@ elif output_format == 'for_map':
         delta = target_when - when
         secs = delta.seconds + delta.days * 24 * 60 * 60
         loc = atco.location_details[location]
-        print loc.additional.grid_reference_easting + " " + loc.additional.grid_reference_northing + " " + str(secs)
+        print str(loc.additional.grid_reference_easting) + " " + str(loc.additional.grid_reference_northing) + " " + str(secs)
     
 else:
     raise Exception("Unknown output format " + output_format)
