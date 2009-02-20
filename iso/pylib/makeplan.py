@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.13 2009-02-20 13:49:56 matthew Exp $
+# $Id: makeplan.py,v 1.14 2009-02-20 14:53:28 matthew Exp $
 #
 
 # TODO:
@@ -24,11 +24,8 @@
 #
 # Interchange times
 # - find proper ones to use for TRAIN and BUS
-# - what is an LFBUS? use QV vehicle type records to find out
-# - there are other ones as well, e.g. 09 etc. probably right to default to bus, but check
+# - need another longer time for QVNAIR/12?
 # - measures according to type of journey before, not pair of before/after
-#
-# Add interchange at geographically proximous places.
 #
 # Get rid of index_by_short_codes somehow
 #
@@ -242,7 +239,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             interchange_time_in_minutes = 0
         elif journey.vehicle_type == 'TRAIN':
             interchange_time_in_minutes = self.train_interchange_default
-        else:
+        else: # Bus, Air, Metro/Tram, Ferry/River Bus XXX
             interchange_time_in_minutes = self.bus_interchange_default
         interchange_time = datetime.timedelta(minutes = interchange_time_in_minutes)
         
