@@ -31,7 +31,7 @@ BEGIN {
 # --postcode BS16QF --destination 9100BRSTPWY --data "/library/transport/nptdr/October\ 2008/Timetable\ Data/CIF/Admin_Area_010/*.CIF" --size 200000 --px 800 --bandsize 2400 --bandcount 5 --bandcolsep 40 --walkspeed 1 --walktime 3600 --output /home/matthew/public_html/iso
 # --postcode OX26DR --destination 340002054WES --data "/library/transport/nptdr/October\ 2008/Timetable\ Data/CIF/Admin_Area_340/*.CIF" --size 10000 --px 800 --bandsize 14 --bandcount 255 --bandcolsep 1 --walkspeed 1 --walktime 3600 --output /home/matthew/public_html/iso
 
-my ($postcode, $destination, $size, $px, $data, $bandsize, $bandcount, $bandcolsep, $walkspeed, $walktime, $config, $output);
+my ($postcode, $destination, $size, $px, $data, $bandsize, $bandcount, $bandcolsep, $walkspeed, $walktime, $config, $output, $endwalkspeed, $endwalktime);
 GetOptions(
     'postcode=s' => \$postcode,
     'destination=s' => \$destination,
@@ -41,8 +41,10 @@ GetOptions(
     'bandsize=i' => \$bandsize,
     'bandcount=i' => \$bandcount,
     'bandcolsep=i' => \$bandcolsep,
-    'walkspeed=i' => \$walkspeed,
+    'walkspeed=f' => \$walkspeed,
     'walktime=i' => \$walktime,
+    'endwalkspeed=f' => \$endwalkspeed,
+    'endwalktime=i' => \$endwalktime,
     'config=s' => \$config,
     'output=s' => \$output,
 );
@@ -57,7 +59,7 @@ if ($config) {
     close FP;
 }
 
-unless ($postcode && $destination && $data && $size && $px && $bandsize && $bandcount && $bandcolsep && $walkspeed && $walktime && $output) {
+unless ($postcode && $destination && $data && $size && $px && $bandsize && $bandcount && $bandcolsep && $walkspeed && $walktime && $output && $endwalkspeed && $endwalktime) {
     print "All options need to be given (so I realise they're not really options, sorry!)\n";
     exit 1;
 }
@@ -75,7 +77,7 @@ my $rect = "$WW $EE $SS $NN";
 my $results = "nptdr-$postcode-$size";
 
 `$FindBin::Bin/nptdr-plan $walkspeed $walktime $destination $data >$output/$results.txt`;
-`cat $output/$results.txt | $FindBin::Bin/transportdirect-journeys-to-grid grid $rect $px $px $walkspeed $walktime > $output/$results-grid`;
+`cat $output/$results.txt | $FindBin::Bin/transportdirect-journeys-to-grid grid $rect $px $px $endwalkspeed $endwalktime > $output/$results-grid`;
 `cat $output/$results-grid | $FindBin::Bin/grid-to-ppm field $rect $px $px $bandsize $bandcount $bandcolsep > $output/$results.ppm`;
 
 my $time = time();
