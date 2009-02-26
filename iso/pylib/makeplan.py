@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.15 2009-02-20 20:05:20 matthew Exp $
+# $Id: makeplan.py,v 1.16 2009-02-26 11:06:20 francis Exp $
 #
 
 # TODO:
@@ -320,17 +320,17 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         routes = {}
         routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime) ] # how to get there
         self.final_destination = target_location
-	self.walk_speed = walk_speed
-	self.walk_time = walk_time
+        self.walk_speed = walk_speed
+        self.walk_time = walk_time
 
         while len(queue) > 0:
             # Find the item at top of queue
             (nearest_datetime, nearest_location) = queue.pop()
             nearest_datetime = nearest_datetime.when
-            logging.info("taken " + nearest_location + " " + str(nearest_datetime) + " off queue")
 
             # That item is now settled
             settled[nearest_location] = nearest_datetime
+            logging.info("settled " + nearest_location + " " + str(nearest_datetime))
             
             # Add all of its neighbours to the queue
             foundtimes = self.adjacent_location_times(nearest_location, nearest_datetime)
@@ -346,13 +346,13 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     if new_priority < current_priority:
                         queue[location] = new_priority
                         routes[location] = routes[nearest_location] + [ arrive_place_time ]
-                        logging.info("updated " + location + " from priority " + str(current_priority) + " to " + str(new_priority) + " in queue")
-                except KeyError, e:
+                        logging.debug("updated " + location + " from priority " + str(current_priority) + " to " + str(new_priority) + " in queue")
+                except KeyError, e: # only way of testing presence in queue is to catch an exception
                     if location not in settled:
                         # No existing entry for location in queue
                         queue.insert(new_priority, location)
                         routes[location] = routes[nearest_location] + [ arrive_place_time ]
-                        logging.info("added " + location + " " + str(new_priority) + " to queue")
+                        logging.debug("added " + location + " " + str(new_priority) + " to queue")
 
         return (settled, routes)
 
