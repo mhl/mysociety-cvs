@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.16 2009-02-26 11:06:20 francis Exp $
+# $Id: makeplan.py,v 1.17 2009-02-26 11:28:24 francis Exp $
 #
 
 # TODO:
@@ -315,6 +315,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         
         # Set up initial state
         settled = {} # dictionary from location to datetime
+        settled_routes = {} # routes of settled journeys
         queue = pqueue.PQueue()
         queue.insert(Priority(target_datetime), target_location)
         routes = {}
@@ -330,6 +331,10 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
             # That item is now settled
             settled[nearest_location] = nearest_datetime
+            # ... copy the route into settled_routes, so we only return routes
+            # we know we finished (rather than the partial, best-so-far that is
+            # in routes)
+            settled_routes[nearest_location] = routes[nearest_location]
             logging.info("settled " + nearest_location + " " + str(nearest_datetime))
             
             # Add all of its neighbours to the queue
@@ -354,7 +359,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                         routes[location] = routes[nearest_location] + [ arrive_place_time ]
                         logging.debug("added " + location + " " + str(new_priority) + " to queue")
 
-        return (settled, routes)
+        return (settled, settled_routes)
 
 
 if __name__ == "__main__":
