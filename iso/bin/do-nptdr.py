@@ -28,11 +28,12 @@ mysociety.config.set_file("../conf/general")
 parser = optparse.OptionParser()
 
 parser.set_usage('''
-Parameters
+Generate a contour map showing how long it takes to get somewhere in the UK by
+public transport. Reads ATCO-CIF timetable files. Outputs a PNG file.
+
+Parameters:
 Can be specified on command line, or in a file passed with --config with each
 row of the form "variable: <data>"
-
-Data needs to be in quotes as we don't want shell escaping at that stage.
 
 Examples
 --config ../conf/oxford-example
@@ -41,20 +42,20 @@ Examples
 --postcode OX26DR --destination 340002054WES --data "/library/transport/nptdr/October\ 2008/Timetable\ Data/CIF/Admin_Area_340/*.CIF" --size 10000 --px 800 --bandsize 14 --bandcount 255 --bandcolsep 1 --walkspeed 1 --walktime 3600 --output /home/matthew/public_html/iso
 ''')
 
-parser.add_option('--postcode', type='string', dest="postcode")
-parser.add_option('--destination', type='string', dest="destination")
-parser.add_option('--data', type='string', dest="data")
-parser.add_option('--size', type='int', dest="size")
-parser.add_option('--px', type='int', dest="px")
-parser.add_option('--bandsize', type='int', dest="bandsize")
-parser.add_option('--bandcount', type='int', dest="bandcount")
-parser.add_option('--bandcolsep', type='int', dest="bandcolsep")
-parser.add_option('--walkspeed', type='float', dest="walkspeed")
-parser.add_option('--walktime', type='int', dest="walktime")
-parser.add_option('--endwalkspeed', type='float', dest="endwalkspeed")
-parser.add_option('--endwalktime', type='int', dest="endwalktime")
-parser.add_option('--config', type='string', dest="config")
-parser.add_option('--output', type='string', dest="output")
+parser.add_option('--destination', type='string', dest="destination", help='Target location for route finding, as in ATCO-CIF file e.g. 9100MARYLBN')
+parser.add_option('--data', type='string', dest="data", help='ATCO-CIF files containing timetables to use. At the command line, put the value in quotes, file globs such as * will be expanded later.')
+parser.add_option('--postcode', type='string', dest="postcode", help='Location of centre of map')
+parser.add_option('--size', type='int', dest="size", help='Sides of map rectangle in metres, try 10000')
+parser.add_option('--px', type='int', dest="px", help='Sides of output contour image file in pixels', default=800)
+parser.add_option('--bandsize', type='int', dest="bandsize", help='Journey time in seconds that each contour band of image file represents', default=600)
+parser.add_option('--bandcount', type='int', dest="bandcount", help='Number of contour bands to have in total', default=200)
+parser.add_option('--bandcolsep', type='int', dest="bandcolsep", help='Number of shades between each contour band (starts at RGB 255/255/255, goes down through shades of grey with this step)', default=1)
+parser.add_option('--walkspeed', type='float', dest="walkspeed", help='Speed to walk between nearby stations at interchanges mid-journey in m/s', default=1)
+parser.add_option('--walktime', type='int', dest="walktime", help='Maximum time in seconds to walk for interchanges', default=300)
+parser.add_option('--endwalkspeed', type='float', dest="endwalkspeed", help='Speed to walk to first stop at beginning of journey in m/s', default=1)
+parser.add_option('--endwalktime', type='int', dest="endwalktime", help='Maximum time in seconds to walk to first stop of journey', default=900)
+parser.add_option('--config', type='string', dest="config", help='Specify a text file containing parameters to load. Format is a parameter per line, value coming after a colon, e.g. "bandsize: 14". Command line parameters override the config file.' )
+parser.add_option('--output', type='string', dest="output", help='Output directory.')
 parser.add_option('--loglevel', type='string', dest="loglevel", default='WARN', help='Try ERROR/WARN/INFO/DEBUG for increasingly more logging, default is WARN.')
 
 (options, args) = parser.parse_args()
