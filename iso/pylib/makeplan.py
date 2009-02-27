@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.17 2009-02-26 11:28:24 francis Exp $
+# $Id: makeplan.py,v 1.18 2009-02-27 17:49:53 francis Exp $
 #
 
 # TODO:
@@ -286,7 +286,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             else:
                 adjacents[hop.location] = ArrivePlaceTime(hop.location, departure_datetime)
         
-    def do_dijkstra(self, target_location, target_datetime, walk_speed=1, walk_time=3600):
+    def do_dijkstra(self, target_location, target_datetime, walk_speed=1, walk_time=3600, earliest_departure=None):
         '''
         Run Dijkstra's algorithm to find latest departure time from all locations to
         arrive at the target location by the given time.
@@ -328,6 +328,10 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             # Find the item at top of queue
             (nearest_datetime, nearest_location) = queue.pop()
             nearest_datetime = nearest_datetime.when
+
+            # If it is earlier than earliest departure we are going back to, then finish
+            if earliest_departure and nearest_datetime < earliest_departure:
+                break
 
             # That item is now settled
             settled[nearest_location] = nearest_datetime

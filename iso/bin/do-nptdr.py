@@ -13,8 +13,10 @@ import sys
 import re
 import os
 import logging
-import datetime
 import glob
+import datetime
+import time
+import mx.DateTime
 
 sys.path.append("../../pylib")
 import mysociety.config
@@ -43,7 +45,9 @@ Examples
 ''')
 
 parser.add_option('--destination', type='string', dest="destination", help='Target location for route finding, as in ATCO-CIF file e.g. 9100MARYLBN')
+parser.add_option('--whenarrive', type='string', dest="whenarrive", help='Time and date to arrive at destination by. Must be a day for which the ATCO-CIF timetables loaded are valid. Fairly freeform format, e.g. "15 Oct 2008, 9:00"', default="15 Oct 2008, 9:00") # Some week in October 2008, need to check exactly when
 parser.add_option('--data', type='string', dest="data", help='ATCO-CIF files containing timetables to use. At the command line, put the value in quotes, file globs such as * will be expanded later.')
+parser.add_option('--hours', type='float', dest="hours", help='Longest journey length, in hours. Route finding algorithm will stop here.', default=1)
 parser.add_option('--postcode', type='string', dest="postcode", help='Location of centre of map')
 parser.add_option('--size', type='int', dest="size", help='Sides of map rectangle in metres, try 10000')
 parser.add_option('--px', type='int', dest="px", help='Sides of output contour image file in pixels', default=800)
@@ -53,7 +57,7 @@ parser.add_option('--bandcolsep', type='int', dest="bandcolsep", help='Number of
 parser.add_option('--walkspeed', type='float', dest="walkspeed", help='Speed to walk between nearby stations at interchanges mid-journey in m/s', default=1)
 parser.add_option('--walktime', type='int', dest="walktime", help='Maximum time in seconds to walk for interchanges', default=300)
 parser.add_option('--endwalkspeed', type='float', dest="endwalkspeed", help='Speed to walk to first stop at beginning of journey in m/s', default=1)
-parser.add_option('--endwalktime', type='int', dest="endwalktime", help='Maximum time in seconds to walk to first stop of journey', default=900)
+parser.add_option('--endwalktime', type='float', dest="endwalktime", help='Maximum time in seconds to walk to first stop of journey', default=900)
 parser.add_option('--config', type='string', dest="config", help='Specify a text file containing parameters to load. Format is a parameter per line, value coming after a colon, e.g. "bandsize: 14". Command line parameters override the config file.' )
 parser.add_option('--output', type='string', dest="output", help='Output directory.')
 parser.add_option('--loglevel', type='string', dest="loglevel", default='WARN', help='Try ERROR/WARN/INFO/DEBUG for increasingly more logging, default is WARN.')
@@ -64,14 +68,12 @@ if options.config:
     optarr = []
     fp = open(options.config)
     for line in fp:
-        (var, val) = re.split("\s*:\s*", line)
+        (var, val) = re.split("\s*:\s*", line, maxsplit=1)
         optarr.append("--" + var)
         optarr.append(val.strip())
     fp.close()
     optarr = optarr + sys.argv[1:] # command line args override config
     (options, args) = parser.parse_args(optarr)
-
-#print options; sys.exit()
 
 f = mysociety.mapit.get_location(options.postcode)
 N = int(f['northing'])
@@ -85,8 +87,9 @@ NN = N + options.size / 2;
 rect = "%f %f %f %f" % (WW, EE, SS, NN)
 outfile = "nptdr-%s-%d" % (options.postcode, options.size)
 
-target_when = datetime.datetime(2008,10,16, 12,0) # Some week in October 2008, need to check exactly when
-print logging.getLevelName(options.loglevel)
+target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whenarrive))
+scan_back_when = target_when - datetime.timedelta(hours=options.hours)
+
 logging.basicConfig(level=logging.getLevelName(options.loglevel))
 
 # Load in journey tables
@@ -101,15 +104,25 @@ atco.index_by_short_codes()
 #atco.find_journeys_crossing_midnight()
 
 # Calculate shortest route from everywhere on network
-(results, routes) = atco.do_dijkstra(options.destination, target_when, options.walkspeed, options.walktime)
+(results, routes) = atco.do_dijkstra(options.destination, target_when, walk_speed=options.walkspeed, walk_time=options.walktime, earliest_departure=scan_back_when)
 
-# Output the results for debugging
+# Output the results for by C grid to contour code
 grid_time_file = "%s/%s.txt" % (options.output, outfile)
 f = open(grid_time_file, "w")
+for location, when in results.iteritems():
+    delta = target_when - when
+    secs = delta.seconds + delta.days * 24 * 60 * 60
+    loc = atco.location_details[location]
+    f.write(str(loc.additional.grid_reference_easting) + " " + str(loc.additional.grid_reference_northing) + " " + str(secs) + "\n")
+f.close()
+
+# Output the results for debugging
+human_file = "%s/%s-human.txt" % (options.output, outfile)
+f = open(human_file, "w")
 s = "Journey times to " + options.destination + " by " + str(target_when)
 f.write("\n")
 f.write(s + "\n")
-f.write(len(s) * '=\n')
+f.write(len(s) * '=' + '\n')
 f.write("\n")
 for location in sorted(results.keys()):
     when = results[location]
@@ -123,21 +136,14 @@ for location in sorted(results.keys()):
         f.write("\tleave %s (%s) at %s" % (waypoint.location, atco.location_details[waypoint.location].long_description(), str(waypoint.when)) + "\n")
 f.close()
 
-# Output the results for by C grid to contour code
-human_file = "%s/%s-human.txt" % (options.output, outfile)
-f = open(human_file, "w")
-for location, when in results.iteritems():
-    delta = target_when - when
-    secs = delta.seconds + delta.days * 24 * 60 * 60
-    loc = atco.location_details[location]
-    f.write(str(loc.additional.grid_reference_easting) + " " + str(loc.additional.grid_reference_northing) + " " + str(secs) + "\n")
-f.close()
-
-os.system("cat %s/%s.txt | ./transportdirect-journeys-to-grid grid %s %d %d %f %d > %s/%s-grid" % (options.output, outfile, rect, options.px, options.px, options.endwalktime, options.endwalktime, options.output, outfile))
-os.system("cat %s/%s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s/%s.ppm" % (options.output, outfile, rect, options.px, options.px, options.bandsize, options.bandcount, options.bandcolsep, options.output, outfile))
+def run_cmd(cmd):
+    logging.info("external command: " + cmd)
+    os.system(cmd)
+run_cmd("cat %s/%s.txt | ./transportdirect-journeys-to-grid grid %s %d %f %f %d > %s/%s-grid" % (options.output, outfile, rect, options.px, options.px, options.endwalkspeed, options.endwalktime, options.output, outfile))
+run_cmd("cat %s/%s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s/%s.ppm" % (options.output, outfile, rect, options.px, options.px, options.bandsize, options.bandcount, options.bandcolsep, options.output, outfile))
 
 timestring = time.strftime("%Y-%m-%d-%H:%M:%S")
-os.system("convert %s/%s.ppm %s/%s.%s.png" % (options.output, outfile, options.output, outfile, timestring))
+run_cmd("convert %s/%s.ppm %s/%s.%s.png" % (options.output, outfile, options.output, outfile, timestring))
 print "finished: %s/%s.%s.png" % (options.output, outfile, timestring)
 #eog $output/$outfile.png
 
