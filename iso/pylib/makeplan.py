@@ -5,14 +5,12 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.20 2009-03-02 13:30:43 matthew Exp $
+# $Id: makeplan.py,v 1.21 2009-03-02 13:34:07 matthew Exp $
 #
 
 # TODO:
 # Get tests running again
 # Rename this planningatco.py
-# Rename departure_datetime in _nearby_location to walk_departure_datetime
-# Factor out function there that adds to adjacents structure
 #
 # Make adjacents a member variable?
 # Instead of inheriting from atcocif, have it as a member?
@@ -209,6 +207,14 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 #                adjacents[location] = ArrivePlaceTime(location, departure_datetime)
         return adjacents
 
+    def add_to_adjacents(location, departure_datetime, adjacents):
+        if location in adjacents:
+            curr_latest = adjacents[location]
+            if departure_datetime > curr_latest.when:
+                adjacents[location] = ArrivePlaceTime(location, departure_datetime)
+        else:
+            adjacents[location] = ArrivePlaceTime(location, departure_datetime)
+
     def _nearby_locations(self, target_location, target_arrival_datetime, adjacents):
         target_easting = self.location_details[target_location].additional.grid_reference_easting
         target_northing = self.location_details[target_location].additional.grid_reference_northing
@@ -220,13 +226,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                 logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, easting, northing, dist, target_location, target_easting, target_northing))
                 walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
                 #walk_time = datetime.timedelta(minutes = dist/3200*30)
-                departure_datetime = target_arrival_datetime - walk_time
-                if location in adjacents:
-                    curr_latest = adjacents[location]
-                    if departure_datetime > curr_latest.when:
-                        adjacents[location] = ArrivePlaceTime(location, departure_datetime)
-                else:
-                    adjacents[location] = ArrivePlaceTime(location, departure_datetime)
+                walk_departure_datetime = target_arrival_datetime - walk_time
+                add_to_adjacents(location, walk_departure_datetime, adjacents)
 
     def _adjacent_location_times_for_journey(self, target_location, target_arrival_datetime, adjacents, journey):
         '''Private function, called by adjacent_location_times. Finds every
@@ -297,12 +298,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             if departure_datetime > arrival_datetime_at_target_location:
                 departure_datetime = datetime.datetime.combine(target_arrival_datetime.date() - datetime.timedelta(1), hop.published_departure_time)
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
-            if hop.location in adjacents:
-                curr_latest = adjacents[hop.location]
-                if departure_datetime > curr_latest.when:
-                    adjacents[hop.location] = ArrivePlaceTime(hop.location, departure_datetime)
-            else:
-                adjacents[hop.location] = ArrivePlaceTime(hop.location, departure_datetime)
+            add_to_adjacents(hop,location, departure_datetime, adjacents)
         
     def do_dijkstra(self, target_location, target_datetime, walk_speed=1, walk_time=3600, earliest_departure=None):
         '''
