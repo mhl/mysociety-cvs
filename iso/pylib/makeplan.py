@@ -5,13 +5,12 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.19 2009-03-02 12:55:56 francis Exp $
+# $Id: makeplan.py,v 1.20 2009-03-02 13:30:43 matthew Exp $
 #
 
 # TODO:
 # Get tests running again
 # Rename this planningatco.py
-# Remove interchange_wait variable, not used
 # Rename departure_datetime in _nearby_location to walk_departure_datetime
 # Factor out function there that adds to adjacents structure
 #
@@ -113,7 +112,7 @@ route consisted of a list of place/times, in reverse order starting with the
 target destination, and ending with the place/time that appeared in the results
 dictionary.
 >>> routes
-{'DRYAW': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True), ArrivePlaceTime('DRYAW', datetime.datetime(2007, 1, 8, 7, 20), interchange_wait=True)], 'TORYRECK': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True)], 'KNAPFORD': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0), interchange_wait=True), ArrivePlaceTime('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0), interchange_wait=True)]}
+{'DRYAW': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ArrivePlaceTime('DRYAW', datetime.datetime(2007, 1, 8, 7, 20))], 'TORYRECK': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0))], 'KNAPFORD': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ArrivePlaceTime('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]}
 
 The 7:00 from Knapford arrives at Dryaw at 7:20, so test that asking for arrival
 time of 7:22 (within the interchange time) works. Also a test that checks
@@ -148,17 +147,13 @@ sys.path.append(sys.path[0] + "/../../pylib") # XXX this is for running doctests
 import mysociety.atcocif
 
 # Stores a location and date/time of arrival at that location.
-# If interchange_wait is True, then the time must be after a wait
-# for changing to the next transport. If it is False, then there is no
-# interchange wait (e.g. at the end of a journey).
 class ArrivePlaceTime:
-    def __init__(self, location, when, interchange_wait = True):
+    def __init__(self, location, when):
         self.location = location
         self.when = when
-        self.interchange_wait = interchange_wait
 
     def __repr__(self):
-        return "ArrivePlaceTime(" + repr(self.location) + ", " + repr(self.when) + ", interchange_wait=" + repr(self.interchange_wait) + ")"
+        return "ArrivePlaceTime(" + repr(self.location) + ", " + repr(self.when) + ")"
       
 # Loads and represents a set of ATCO-CIF files, and can generate large sets of
 # quickest routes from them
