@@ -5,11 +5,10 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.22 2009-03-02 13:36:23 matthew Exp $
+# $Id: makeplan.py,v 1.23 2009-03-02 13:38:06 matthew Exp $
 #
 
 # TODO:
-# Get tests running again
 # Rename this planningatco.py
 #
 # Make adjacents a member variable?
@@ -216,8 +215,11 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             adjacents[location] = ArrivePlaceTime(location, departure_datetime)
 
     def _nearby_locations(self, target_location, target_arrival_datetime, adjacents):
-        target_easting = self.location_details[target_location].additional.grid_reference_easting
-        target_northing = self.location_details[target_location].additional.grid_reference_northing
+        try:
+            target_easting = self.location_details[target_location].additional.grid_reference_easting
+            target_northing = self.location_details[target_location].additional.grid_reference_northing
+        except AttributeError, e:
+            return
         for location, data in self.location_details.items():
             easting = data.additional.grid_reference_easting
             northing = data.additional.grid_reference_northing
