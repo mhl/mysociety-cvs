@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.25 2009-03-02 14:34:49 francis Exp $
+# $Id: makeplan.py,v 1.26 2009-03-02 14:36:41 francis Exp $
 #
 
 # TODO:
@@ -196,15 +196,6 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             logging.debug("\tconsidering journey: " + journey.id)
             self._adjacent_location_times_for_journey(target_location, target_arrival_datetime, adjacents, journey)
         self._nearby_locations(target_location, target_arrival_datetime, adjacents)
-#        for journey, distance in self.nearby_locations[target_location].items():
-#            walk_time = datetime.timedelta(minutes = dist/3200*30)
-#            departure_datetime = target_arrival_datetime - walk_time
-#            if location in adjacents:
-#                curr_latest = adjacents[location]
-#                if departure_datetime > curr_latest.when:
-#                    adjacents[location] = ArrivePlaceTime(location, departure_datetime)
-#            else:
-#                adjacents[location] = ArrivePlaceTime(location, departure_datetime)
         return adjacents
 
     def _add_to_adjacents(self, location, departure_datetime, adjacents):
