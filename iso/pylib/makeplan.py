@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.24 2009-03-02 14:30:20 francis Exp $
+# $Id: makeplan.py,v 1.25 2009-03-02 14:34:49 francis Exp $
 #
 
 # TODO:
@@ -30,6 +30,7 @@
 #
 # Interchange times
 # - find proper ones to use for TRAIN and BUS
+# - possibly load QV records if needed to discriminate times
 # - need another longer time for QVNAIR/12?
 # - measures according to type of journey before, not pair of before/after
 #
