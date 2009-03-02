@@ -5,13 +5,12 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.26 2009-03-02 14:36:41 francis Exp $
+# $Id: makeplan.py,v 1.27 2009-03-02 16:27:16 matthew Exp $
 #
 
 # TODO:
 # Rename this planningatco.py
 #
-# Make adjacents a member variable?
 # Instead of inheriting from atcocif, have it as a member?
 # Think about idempotency if atcocif.ignored variable
 #
