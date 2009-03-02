@@ -17,6 +17,8 @@ import glob
 import datetime
 import time
 import mx.DateTime
+import cProfile
+import pstats
 
 sys.path.append("../../pylib")
 import mysociety.config
@@ -61,6 +63,7 @@ parser.add_option('--endwalktime', type='float', dest="endwalktime", help='Maxim
 parser.add_option('--config', type='string', dest="config", help='Specify a text file containing parameters to load. Format is a parameter per line, value coming after a colon, e.g. "bandsize: 14". Command line parameters override the config file.' )
 parser.add_option('--output', type='string', dest="output", help='Output directory.')
 parser.add_option('--loglevel', type='string', dest="loglevel", default='WARN', help='Try ERROR/WARN/INFO/DEBUG for increasingly more logging, default is WARN.')
+parser.add_option('--profile', action='store_true', dest='profile', default=False, help="Runs Python profiler on Dijkstra's algorithm part of calculation. Outputs a .profile file in output directory for later processing by Python pstats module, and prints basic details from it.")
 
 (options, args) = parser.parse_args()
 
@@ -104,7 +107,15 @@ atco.index_by_short_codes()
 #atco.find_journeys_crossing_midnight()
 
 # Calculate shortest route from everywhere on network
-(results, routes) = atco.do_dijkstra(options.destination, target_when, walk_speed=options.walkspeed, walk_time=options.walktime, earliest_departure=scan_back_when)
+def profile_me():
+    return atco.do_dijkstra(options.destination, target_when, walk_speed=options.walkspeed, walk_time=options.walktime, earliest_departure=scan_back_when)
+if options.profile:
+    profile_file = "%s/%s.profile" % (options.output, outfile)
+    cProfile.run("(results, routes) = profile_me()", profile_file)
+    p = pstats.Stats(profile_file)
+    p.strip_dirs().sort_stats(-1).print_stats()
+else:
+    (results, routes) = profile_me()
 
 # Output the results for by C grid to contour code
 grid_time_file = "%s/%s.txt" % (options.output, outfile)
