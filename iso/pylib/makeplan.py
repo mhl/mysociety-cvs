@@ -5,16 +5,26 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.18 2009-02-27 17:49:53 francis Exp $
+# $Id: makeplan.py,v 1.19 2009-03-02 12:55:56 francis Exp $
 #
 
 # TODO:
+# Get tests running again
 # Rename this planningatco.py
+# Remove interchange_wait variable, not used
+# Rename departure_datetime in _nearby_location to walk_departure_datetime
+# Factor out function there that adds to adjacents structure
+#
+# Make adjacents a member variable?
+# Instead of inheriting from atcocif, have it as a member?
+# Think about idempotency if atcocif.ignored variable
 #
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
 #
 # The time of the last place in routes is a bit pants as it includes the wait!
 #   MPS: Guess it needs to store arrival times too, and then use that for final leg
+#
+# Make sure there is a test for proximity interchanging
 #
 # Journeys over midnight will be knackered, no idea how ATCO-CIF even stores them
 #  - in particular, which day are journeys starting just after midnight stored for?
@@ -29,6 +39,19 @@
 #
 # Get rid of index_by_short_codes somehow
 #
+# Optimisation
+# ============
+# Remove squareroot in distance calculation
+# Have a sorted grid to find nearby stations more quickly
+# Perhaps just precalculate nearby stations for each station
+#
+# For each station, have every station that you can get there from directly,
+# and all their times, indexed by time so can instantly get list of best times
+# to leave to arrive by particular time
+#
+# Find out how to profile memory use in Python
+# Work out minimum structure could export to run C++ algorithm on
+# 
 
 '''Finds shortest route from all points on a public transport network to arrive
 at a given destination at a given time. Uses Dijkstra's algorithm to do this
