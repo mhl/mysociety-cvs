@@ -5,13 +5,13 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.27 2009-03-02 16:27:16 matthew Exp $
+# $Id: makeplan.py,v 1.28 2009-03-03 00:03:34 francis Exp $
 #
 
 # TODO:
 # Rename this planningatco.py
 #
-# Instead of inheriting from atcocif, have it as a member?
+# Instead of inheriting from atcocif, have it as a member? so can keep caches more than one run
 # Think about idempotency if atcocif.ignored variable
 #
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
@@ -27,6 +27,8 @@
 #
 # Check circular journeys work fine
 #
+# Check the date of week data is valid for, to be sure
+#
 # Interchange times
 # - find proper ones to use for TRAIN and BUS
 # - possibly load QV records if needed to discriminate times
@@ -40,6 +42,8 @@
 # Remove squareroot in distance calculation
 # Have a sorted grid to find nearby stations more quickly
 # Perhaps just precalculate nearby stations for each station
+#
+# Use objects for locations wherever possible, so less dictionary lookups by string
 #
 # For each station, have every station that you can get there from directly,
 # and all their times, indexed by time so can instantly get list of best times
@@ -206,21 +210,22 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             adjacents[location] = ArrivePlaceTime(location, departure_datetime)
 
     def _nearby_locations(self, target_location, target_arrival_datetime, adjacents):
+        '''Looks for stations you can walk from to get to the target station.
+        This is constrained by self.walk_speed and self.walk_time. Adds any such
+        stations to the adjacents structure.
+        '''
+
         try:
             target_easting = self.location_details[target_location].additional.grid_reference_easting
             target_northing = self.location_details[target_location].additional.grid_reference_northing
         except AttributeError, e:
             return
-        for location, data in self.location_details.items():
-            easting = data.additional.grid_reference_easting
-            northing = data.additional.grid_reference_northing
-            dist = math.sqrt(((easting-target_easting)**2) + ((northing-target_northing)**2))
-            if dist < self.walk_speed * self.walk_time: # 3600
-                logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, easting, northing, dist, target_location, target_easting, target_northing))
-                walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
-                #walk_time = datetime.timedelta(minutes = dist/3200*30)
-                walk_departure_datetime = target_arrival_datetime - walk_time
-                self._add_to_adjacents(location, walk_departure_datetime, adjacents)
+
+        for location, dist in self.nearby_locations[self.location_details[target_location]].iteritems():
+            logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
+            walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
+            walk_departure_datetime = target_arrival_datetime - walk_time
+            self._add_to_adjacents(location.location, walk_departure_datetime, adjacents)
 
     def _adjacent_location_times_for_journey(self, target_location, target_arrival_datetime, adjacents, journey):
         '''Private function, called by adjacent_location_times. Finds every
@@ -319,7 +324,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                 assert False
             def __repr__(self):
                 return "Priority(" + repr(self.when) + ")"
-        
+
+       
         # Set up initial state
         settled = {} # dictionary from location to datetime
         settled_routes = {} # routes of settled journeys
@@ -330,6 +336,9 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         self.final_destination = target_location
         self.walk_speed = walk_speed
         self.walk_time = walk_time
+
+        # Create indices
+        self.index_nearby_locations(self.walk_speed * self.walk_time)
 
         while len(queue) > 0:
             # Find the item at top of queue
