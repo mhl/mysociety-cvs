@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.30 2009-03-03 12:17:32 francis Exp $
+# $Id: makeplan.py,v 1.31 2009-03-03 12:18:49 francis Exp $
 #
 
 # TODO:
@@ -101,7 +101,8 @@ There was a passenger who had a new job at the Lead and Uranium mines near
 Toryreck. She wanted to know where she could live, and arrive in time for work
 at 8am by train.
 
-First she made indices of all the journeys and stations.
+First she made indices of all the journeys and stations, and worked out which
+she could walk between.
 >>> atco.precompute_for_dijkstra()
 
 Then she called do_dijkstra to find out all the best routes that arrive from
@@ -321,7 +322,9 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
     def precompute_for_dijkstra(self, walk_speed=1, walk_time=3600):
         '''
-        Call this before running Dijkstra's algorithm, to intialise everything.
+        Call this before running Dijkstra's algorithm, to intialise everything. It only needs
+        to be called once, if you're running the algorithm multiple times with the same
+        parameters that this function takes.
         '''
 
         self.index_by_short_codes()
