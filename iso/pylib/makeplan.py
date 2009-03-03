@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.35 2009-03-03 16:11:28 francis Exp $
+# $Id: makeplan.py,v 1.36 2009-03-03 16:11:41 francis Exp $
 #
 
 # TODO:
@@ -15,8 +15,6 @@
 # Think about idempotency if atcocif.ignored variable
 #
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
-#
-# Make sure there is a test for proximity interchanging
 #
 # Journeys over midnight are knackered
 #  - journeys crossing midnight count for the earlier day 
