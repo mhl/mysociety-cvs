@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.33 2009-03-03 13:50:55 matthew Exp $
+# $Id: makeplan.py,v 1.34 2009-03-03 16:11:10 francis Exp $
 #
 
 # TODO:
@@ -120,9 +120,15 @@ routes gave her details of the best route she could take from each station. A
 route consisted of a list of place/times, in reverse order starting with the
 target destination, and ending with the place/time that appeared in the results
 dictionary.
->>> routes
-{'DRYAW': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ArrivePlaceTime('DRYAW', datetime.datetime(2007, 1, 8, 7, 20))], 'TORYRECK': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0))], 'KNAPFORD': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ArrivePlaceTime('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]}
-
+>>> atco.pretty_print_routes(routes)
+From DRYAW:
+    Leave DRYAW by TRAIN on the 07:20:00, arriving TORYRECK at 07:45:00
+    You've arrived at TORYRECK
+From TORYRECK:
+    You've arrived at TORYRECK
+From KNAPFORD:
+    Leave KNAPFORD by TRAIN on the 07:00:00, arriving TORYRECK at 07:45:00
+    You've arrived at TORYRECK
 
 A second passenger wanted to be in Dryaw at 7:22 for breakfast with a friend.
 The 7:00 from Knapford arrives at Dryaw at 7:20, so that train should be
@@ -138,12 +144,47 @@ of journeys, plus you can walk from Toryreck in 50 minutes!
 {'DRYAW': datetime.datetime(2007, 1, 8, 7, 25), 'TORYRECK': datetime.datetime(2007, 1, 8, 6, 35), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
 
 
-A third passenger worked in the Anopha Quarry, for which you had to get a bus
+The Anopha Quarry manager wanted to get to work by 9:15am. He had to get a bus
 from the end of the railway line.
 
 >>> (results, routes) = atco.do_dijkstra('ANOPHAB', datetime.datetime(2007, 1, 8, 9, 15))
 >>> results
 {'FFARQUHARB': datetime.datetime(2007, 1, 8, 8, 50), 'HACKENBECK': datetime.datetime(2007, 1, 8, 8, 32), 'TORYRECK': datetime.datetime(2007, 1, 8, 7, 45), 'DRYAW': datetime.datetime(2007, 1, 8, 7, 20), 'FFARQUHAR': datetime.datetime(2007, 1, 8, 8, 49, 6, 148352), 'ELSBRIDGE': datetime.datetime(2007, 1, 8, 8, 11), 'ANOPHAB': datetime.datetime(2007, 1, 8, 9, 15), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
+>>> atco.pretty_print_routes(routes)
+From FFARQUHARB:
+    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+    You've arrived at ANOPHAB
+From HACKENBECK:
+    Leave HACKENBECK by TRAIN on the 08:32:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+    You've arrived at ANOPHAB
+From TORYRECK:
+    Leave TORYRECK by TRAIN on the 07:45:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+    You've arrived at ANOPHAB
+From DRYAW:
+    Leave DRYAW by TRAIN on the 07:20:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+    You've arrived at ANOPHAB
+From FFARQUHAR:
+    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+    You've arrived at ANOPHAB
+From ELSBRIDGE:
+    Leave ELSBRIDGE by TRAIN on the 08:11:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+    You've arrived at ANOPHAB
+From ANOPHAB:
+    You've arrived at ANOPHAB
+From KNAPFORD:
+    Leave KNAPFORD by TRAIN on the 07:00:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+    You've arrived at ANOPHAB
 
 
 Todo cif file:
@@ -168,15 +209,27 @@ import math
 sys.path.append(sys.path[0] + "/../../pylib") # XXX this is for running doctests and is nasty, there's got to be a better way
 import mysociety.atcocif
 
-# Stores a location and date/time of arrival (including interchange wait) at
-# that location.
 class ArrivePlaceTime:
-    def __init__(self, location, when):
+    '''Stores a location and date/time of arrival (including interchange wait)
+    at that location.'''
+
+    def __init__(self, location, when, onwards_leg_type=None, onwards_journey=None, onwards_walk_time = None):
         self.location = location
         self.when = when
+        self.onwards_leg_type = onwards_leg_type
+        self.onwards_journey = onwards_journey
+        self.onwards_walk_time = onwards_walk_time
 
     def __repr__(self):
-        return "ArrivePlaceTime(" + repr(self.location) + ", " + repr(self.when) + ")"
+        s = "ArrivePlaceTime(" + repr(self.location) + ", " + repr(self.when)
+        if self.onwards_leg_type != None:
+            s = s + ", " + repr(self.onwards_leg_type)
+        if self.onwards_journey != None:
+            s = s + ", onwards_journey=JourneyHeader(" + repr(self.onwards_journey.id) + ")"
+        if self.onwards_walk_time != None:
+            s = s + ", onwards_walk_time=" + repr(self.onwards_walk_time)
+        s = s + ")"
+        return s
       
 class PlanningATCO(mysociety.atcocif.ATCO):
     '''Loads and represents a set of ATCO-CIF files, and can generate large
@@ -258,7 +311,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
             walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
             walk_departure_datetime = target_arrival_datetime - walk_time
-            arrive_time_place = ArrivePlaceTime(location.location, walk_departure_datetime, )
+            arrive_time_place = ArrivePlaceTime(location.location, walk_departure_datetime, onwards_leg_type = 'walk', onwards_walk_time = walk_time)
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
             self._add_to_adjacents(arrive_time_place, adjacents)
 
@@ -331,7 +384,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             if departure_datetime > arrival_datetime_at_target_location:
                 departure_datetime = datetime.datetime.combine(target_arrival_datetime.date() - datetime.timedelta(1), hop.published_departure_time)
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
-            self._add_to_adjacents(ArrivePlaceTime(hop.location, departure_datetime), adjacents)
+            arrive_place_time = ArrivePlaceTime(hop.location, departure_datetime, onwards_leg_type = 'journey', onwards_journey = journey)
+            self._add_to_adjacents(arrive_place_time, adjacents)
 
     def precompute_for_dijkstra(self, walk_speed=1, walk_time=3600):
         '''
@@ -381,7 +435,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         queue = pqueue.PQueue()
         queue.insert(Priority(target_datetime), target_location)
         routes = {}
-        routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime) ] # how to get there
+        routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime, onwards_leg_type = 'already_there') ] # how to get there
         self.final_destination = target_location
         self.walk_speed = walk_speed
         self.walk_time = walk_time
@@ -414,17 +468,36 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     assert location not in settled
                     if new_priority < current_priority:
                         queue[location] = new_priority
-                        routes[location] = routes[nearest_location] + [ arrive_place_time ]
+                        routes[location] = [ arrive_place_time ] + routes[nearest_location] 
                         logging.debug("updated " + location + " from priority " + str(current_priority) + " to " + str(new_priority) + " in queue")
                 except KeyError, e: # only way of testing presence in queue is to catch an exception
                     if location not in settled:
                         # No existing entry for location in queue
                         queue.insert(new_priority, location)
-                        routes[location] = routes[nearest_location] + [ arrive_place_time ]
+                        routes[location] = [ arrive_place_time ] + routes[nearest_location] 
                         logging.debug("added " + location + " " + str(new_priority) + " to queue")
 
         return (settled, settled_routes)
 
+    def pretty_print_routes(self, routes):
+        '''do_dijkstra returns a journey routes array, this prints it in a human readable format.'''
+        for place, route in routes.iteritems():
+            print "From " + place + ":"
+            for ix in range(len(route)):
+                stop = route[ix]
+                if stop.onwards_leg_type == 'already_there':
+                    print "    You've arrived at " + stop.location
+                    continue
+                next_stop = route[ix + 1]
+                
+                if stop.onwards_leg_type == 'walk':
+                    print "    Leave by walking to " + next_stop.location + ", will take " + str(stop.onwards_walk_time.seconds / 60) + " mins"
+                elif stop.onwards_leg_type == 'journey':
+                    departure_time = stop.onwards_journey.find_departure_time_at_location(stop.location)
+                    arrival_time = stop.onwards_journey.find_arrival_time_at_location(next_stop.location)
+                    print "    Leave " + stop.location + " by " + stop.onwards_journey.vehicle_type + " on the " + departure_time.strftime("%H:%M:%S") + ", arriving " + next_stop.location + " at " + arrival_time.strftime("%H:%M:%S")
+                else:
+                    raise "Unknown leg type '" + stop.onwards_leg_type + "'"
 
 if __name__ == "__main__":
     import doctest
