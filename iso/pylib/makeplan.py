@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.32 2009-03-03 13:09:45 matthew Exp $
+# $Id: makeplan.py,v 1.33 2009-03-03 13:50:55 matthew Exp $
 #
 
 # TODO:
@@ -147,12 +147,15 @@ from the end of the railway line.
 
 
 Todo cif file:
-Check that all the ids and train operation numbers and stuff in journey parts are ok
+Check that all the ids and train operation numbers and stuff in journey parts are ok - I think that they are MPS
 Add direct services to Tidmouth
 Add some services run by Daisy on Thomas's line
 Reduced Sunday service
+
+Notes:
 Link to map of full network http://en.wikipedia.org/wiki/Sodor_(fictional_island)
 http://en.wikipedia.org/wiki/North_Western_Railway_(fictional)#Thomas.27_Branch_Line
+Station locations based on Wikipedia map using a ruler, Barrow being at 320k,470k, Douglas at 238k,476k.
 '''
 
 import logging
