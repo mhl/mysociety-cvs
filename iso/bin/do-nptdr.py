@@ -100,12 +100,15 @@ nptdr_files = glob.glob(options.data)
 atco = makeplan.PlanningATCO()
 for nptdr_file in nptdr_files:
     atco.read(nptdr_file)
-atco.index_by_short_codes()
-atco.index_nearby_locations(options.walkspeed * options.walktime)
 
 #print atco.adjacent_location_times('9100AYLSBRY', datetime.datetime(2007, 10, 9, 9, 0))
 #print atco.adjacent_location_times('9100AMERSHM', datetime.datetime(2007, 10, 9, 9, 0))
 #atco.find_journeys_crossing_midnight()
+
+# Stuff that we only run once for multiple maps. Note that we don't want to
+# profile it - we are optimising for map making once we've got going, not
+# precomputing indices.
+atco.precompute_for_dijkstra(walk_speed=options.walkspeed, walk_time=options.walktime)
 
 # Calculate shortest route from everywhere on network
 def profile_me():

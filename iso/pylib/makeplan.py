@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.29 2009-03-03 12:10:47 francis Exp $
+# $Id: makeplan.py,v 1.30 2009-03-03 12:17:32 francis Exp $
 #
 
 # TODO:
@@ -102,7 +102,7 @@ Toryreck. She wanted to know where she could live, and arrive in time for work
 at 8am by train.
 
 First she made indices of all the journeys and stations.
->>> atco.index_by_short_codes()
+>>> atco.precompute_for_dijkstra()
 
 Then she called do_dijkstra to find out all the best routes that arrive from
 every place in the network at Toryreck by 8am on a Monday. She was given a
@@ -318,7 +318,21 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                 departure_datetime = datetime.datetime.combine(target_arrival_datetime.date() - datetime.timedelta(1), hop.published_departure_time)
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
             self._add_to_adjacents(ArrivePlaceTime(hop.location, departure_datetime), adjacents)
-        
+
+    def precompute_for_dijkstra(self, walk_speed=1, walk_time=3600):
+        '''
+        Call this before running Dijkstra's algorithm, to intialise everything.
+        '''
+
+        self.index_by_short_codes()
+
+        # XXX get rid of this exception block when all the tests have grid coordinates
+        try:
+            self.index_nearby_locations(self.walk_speed * self.walk_time)
+        except AttributeError, e: 
+            self.nearby_max_distance = walk_speed * walk_time # XXX temporary hack, remove when this block goes
+            pass
+ 
     def do_dijkstra(self, target_location, target_datetime, walk_speed=1, walk_time=3600, earliest_departure=None):
         '''
         Run Dijkstra's algorithm to find latest departure time from all locations to
@@ -327,6 +341,10 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
         target_datetime - when we want to arrive by
         '''
+
+        # Check precompute_for_dijkstra was called with same parameters for
+        # those that matter
+        assert self.nearby_max_distance == walk_speed * walk_time
 
         # The thing we're going to use for priority in the pqueue
         class Priority:
@@ -357,13 +375,6 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         self.final_destination = target_location
         self.walk_speed = walk_speed
         self.walk_time = walk_time
-
-        # Create indices
-        try:
-            self.index_nearby_locations(self.walk_speed * self.walk_time)
-        except AttributeError, e: 
-            # XXX get rid of this exception block when all the tests have grid coordinates
-            pass
 
         while len(queue) > 0:
             # Find the item at top of queue
