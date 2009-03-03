@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.28 2009-03-03 00:03:34 francis Exp $
+# $Id: makeplan.py,v 1.29 2009-03-03 12:10:47 francis Exp $
 #
 
 # TODO:
@@ -21,7 +21,11 @@
 #
 # Make sure there is a test for proximity interchanging
 #
-# Journeys over midnight will be knackered, no idea how ATCO-CIF even stores them
+# Journeys over midnight are knackered
+#  - journeys crossing midnight count for the earlier day 
+#  - we have to load them twice, once for each? is there more general problem that
+#    we have to load all journeys on today and yesterday? all once with a later
+#    hour anyway :)
 #  - in particular, which day are journeys starting just after midnight stored for?
 #  - see "XXX bah" below for hack that will do for now but NEEDS CHANGING
 #
@@ -44,6 +48,9 @@
 # Perhaps just precalculate nearby stations for each station
 #
 # Use objects for locations wherever possible, so less dictionary lookups by string
+#
+# Can use bisect to calculate find_arrival_time_at_location (or that will be
+# subsumed by some other cache)
 #
 # For each station, have every station that you can get there from directly,
 # and all their times, indexed by time so can instantly get list of best times
@@ -147,7 +154,8 @@ import math
 sys.path.append(sys.path[0] + "/../../pylib") # XXX this is for running doctests and is nasty, there's got to be a better way
 import mysociety.atcocif
 
-# Stores a location and date/time of arrival at that location.
+# Stores a location and date/time of arrival (including interchange wait) at
+# that location.
 class ArrivePlaceTime:
     def __init__(self, location, when):
         self.location = location
@@ -156,18 +164,25 @@ class ArrivePlaceTime:
     def __repr__(self):
         return "ArrivePlaceTime(" + repr(self.location) + ", " + repr(self.when) + ")"
       
-# Loads and represents a set of ATCO-CIF files, and can generate large sets of
-# quickest routes from them
 class PlanningATCO(mysociety.atcocif.ATCO):
-    # train_interchange_default - time in minutes to allow by default to change trains at same station
-    # bus_interchange_default - likewise for buses, at exact same stop
+    '''Loads and represents a set of ATCO-CIF files, and can generate large
+    sets of quickest routes from them.'''
+
     def __init__(self, train_interchange_default = 5, bus_interchange_default = 1):
+        '''Create object that generates shortest journey times for all stations
+        in a public transport network defined by an ATCO-CIF timetable file.
+
+        train_interchange_default - time in minutes to allow by default to change trains at same station
+        bus_interchange_default - likewise for buses, at exact same stop
+        '''
+
         self.train_interchange_default = train_interchange_default
         self.bus_interchange_default = bus_interchange_default
         mysociety.atcocif.ATCO.__init__(self)
 
-    # Look for journeys that cross midnight
     def find_journeys_crossing_midnight(self):
+        '''Look for journeys that cross midnight, and print out a list.'''
+
         for journey in self.journeys:
             previous_departure_time = datetime.time(0, 0, 0)
             for hop in journey.hops:
@@ -201,17 +216,21 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         self._nearby_locations(target_location, target_arrival_datetime, adjacents)
         return adjacents
 
-    def _add_to_adjacents(self, location, departure_datetime, adjacents):
-        if location in adjacents:
-            curr_latest = adjacents[location]
-            if departure_datetime > curr_latest.when:
-                adjacents[location] = ArrivePlaceTime(location, departure_datetime)
+    def _add_to_adjacents(self, arrive_place_time, adjacents):
+        '''Private helper function. Store a time we can leave a station, if it
+        is later than previous direct routes we have for leaving from that
+        station and arriving at target.'''
+        if arrive_place_time.location in adjacents:
+            curr_latest = adjacents[arrive_place_time.location]
+            if arrive_place_time.when > curr_latest.when:
+                adjacents[arrive_place_time.location] = arrive_place_time
         else:
-            adjacents[location] = ArrivePlaceTime(location, departure_datetime)
+            adjacents[arrive_place_time.location] = arrive_place_time
 
     def _nearby_locations(self, target_location, target_arrival_datetime, adjacents):
-        '''Looks for stations you can walk from to get to the target station.
-        This is constrained by self.walk_speed and self.walk_time. Adds any such
+        '''Private function, called by adjacent_location_times. Looks for
+        stations you can walk from to get to the target station.  This is
+        constrained by self.walk_speed and self.walk_time. Adds any such
         stations to the adjacents structure.
         '''
 
@@ -225,7 +244,9 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
             walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
             walk_departure_datetime = target_arrival_datetime - walk_time
-            self._add_to_adjacents(location.location, walk_departure_datetime, adjacents)
+            arrive_time_place = ArrivePlaceTime(location.location, walk_departure_datetime, )
+            # Use this location if new, or if it is later departure time than any previous one the same we've found.
+            self._add_to_adjacents(arrive_time_place, adjacents)
 
     def _adjacent_location_times_for_journey(self, target_location, target_arrival_datetime, adjacents, journey):
         '''Private function, called by adjacent_location_times. Finds every
@@ -296,7 +317,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             if departure_datetime > arrival_datetime_at_target_location:
                 departure_datetime = datetime.datetime.combine(target_arrival_datetime.date() - datetime.timedelta(1), hop.published_departure_time)
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
-            self._add_to_adjacents(hop.location, departure_datetime, adjacents)
+            self._add_to_adjacents(ArrivePlaceTime(hop.location, departure_datetime), adjacents)
         
     def do_dijkstra(self, target_location, target_datetime, walk_speed=1, walk_time=3600, earliest_departure=None):
         '''
@@ -338,7 +359,11 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         self.walk_time = walk_time
 
         # Create indices
-        self.index_nearby_locations(self.walk_speed * self.walk_time)
+        try:
+            self.index_nearby_locations(self.walk_speed * self.walk_time)
+        except AttributeError, e: 
+            # XXX get rid of this exception block when all the tests have grid coordinates
+            pass
 
         while len(queue) > 0:
             # Find the item at top of queue
@@ -360,9 +385,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             # Add all of its neighbours to the queue
             foundtimes = self.adjacent_location_times(nearest_location, nearest_datetime)
             for location, arrive_place_time in foundtimes.iteritems():
-                when = arrive_place_time.when
-
-                new_priority = Priority(when)
+                new_priority = Priority(arrive_place_time.when)
                 try:
                     # See if this location is already in queue 
                     current_priority = queue[location]
