@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.31 2009-03-03 12:18:49 francis Exp $
+# $Id: makeplan.py,v 1.32 2009-03-03 13:09:45 matthew Exp $
 #
 
 # TODO:
@@ -82,13 +82,13 @@ in the ATCO-CIF file format.
 >>> atco.read(sys.path[0] + "/fixtures/thomas-branch-line.cif")
 
 Thomas proudly puffs up and down through six stations. 
->>> [ location.long_description() for location in atco.locations ]
-['Knapford Rail Station', 'Dryaw Rail Station', 'Toryreck Rail Station', 'Elsbridge Rail Station', 'Hackenbeck Rail Station', 'Ffarquhar Rail Station']
+>>> [ location.long_description() for location in atco.locations if location.point_type == 'R' ]
+['Knapford Rail Station, Knapford, Sodor', 'Dryaw Rail Station, Dryaw, Sodor', 'Toryreck Rail Station, Toryreck, Sodor', 'Elsbridge Rail Station, Elsbridge, Sodor', 'Hackenbeck Rail Station, Hackenbeck, Sodor', 'Ffarquhar Rail Station, Ffarquhar, Sodor']
 
 On weekdays he makes four journeys a day, two there, and two back.
 >>> monday = datetime.date(2007,1,8)
 >>> [ journey.route_direction for journey in atco.journeys 
-...   if journey.is_valid_on_date(monday) ]
+...   if journey.is_valid_on_date(monday) and journey.operator == 'NWR' ]
 ['O', 'I', 'O', 'I']
 
 On Sundays he makes only one trip there and back.
@@ -123,17 +123,27 @@ dictionary.
 >>> routes
 {'DRYAW': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ArrivePlaceTime('DRYAW', datetime.datetime(2007, 1, 8, 7, 20))], 'TORYRECK': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0))], 'KNAPFORD': [ArrivePlaceTime('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ArrivePlaceTime('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]}
 
-The 7:00 from Knapford arrives at Dryaw at 7:20, so test that asking for arrival
-time of 7:22 (within the interchange time) works. Also a test that checks
-interchange times in the middle of journeys.
+
+A second passenger wanted to be in Dryaw at 7:22 for breakfast with a friend.
+The 7:00 from Knapford arrives at Dryaw at 7:20, so that train should be
+returned as a result. Also a test that checks interchange times in the middle
+of journeys, plus you can walk from Toryreck in 50 minutes!
 
 >>> ch = logging.StreamHandler()
 >>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,22))
 >>> results
-{'DRYAW': datetime.datetime(2007, 1, 8, 7, 22), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
+{'DRYAW': datetime.datetime(2007, 1, 8, 7, 22), 'TORYRECK': datetime.datetime(2007, 1, 8, 6, 32), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
 >>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,25))
 >>> results
-{'DRYAW': datetime.datetime(2007, 1, 8, 7, 25), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
+{'DRYAW': datetime.datetime(2007, 1, 8, 7, 25), 'TORYRECK': datetime.datetime(2007, 1, 8, 6, 35), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
+
+
+A third passenger worked in the Anopha Quarry, for which you had to get a bus
+from the end of the railway line.
+
+>>> (results, routes) = atco.do_dijkstra('ANOPHAB', datetime.datetime(2007, 1, 8, 9, 15))
+>>> results
+{'FFARQUHARB': datetime.datetime(2007, 1, 8, 8, 50), 'HACKENBECK': datetime.datetime(2007, 1, 8, 8, 32), 'TORYRECK': datetime.datetime(2007, 1, 8, 7, 45), 'DRYAW': datetime.datetime(2007, 1, 8, 7, 20), 'FFARQUHAR': datetime.datetime(2007, 1, 8, 8, 49, 6, 148352), 'ELSBRIDGE': datetime.datetime(2007, 1, 8, 8, 11), 'ANOPHAB': datetime.datetime(2007, 1, 8, 9, 15), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
 
 
 Todo cif file:
@@ -328,13 +338,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         '''
 
         self.index_by_short_codes()
-
-        # XXX get rid of this exception block when all the tests have grid coordinates
-        try:
-            self.index_nearby_locations(self.walk_speed * self.walk_time)
-        except AttributeError, e: 
-            self.nearby_max_distance = walk_speed * walk_time # XXX temporary hack, remove when this block goes
-            pass
+        self.index_nearby_locations(walk_speed * walk_time)
  
     def do_dijkstra(self, target_location, target_datetime, walk_speed=1, walk_time=3600, earliest_departure=None):
         '''
