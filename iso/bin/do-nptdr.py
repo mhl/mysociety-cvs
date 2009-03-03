@@ -17,7 +17,10 @@ import glob
 import datetime
 import time
 import mx.DateTime
-import cProfile
+try: 
+    import cProfile
+except:
+    pass
 import pstats
 
 sys.path.append("../../pylib")
@@ -77,6 +80,9 @@ if options.config:
     fp.close()
     optarr = optarr + sys.argv[1:] # command line args override config
     (options, args) = parser.parse_args(optarr)
+
+if not options.postcode:
+    raise Exception, 'Must supply some data!'
 
 f = mysociety.mapit.get_location(options.postcode)
 N = int(f['northing'])
