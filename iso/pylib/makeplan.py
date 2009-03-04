@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.39 2009-03-04 02:30:35 francis Exp $
+# $Id: makeplan.py,v 1.40 2009-03-04 12:03:28 matthew Exp $
 #
 
 # TODO:
@@ -147,33 +147,33 @@ From FFARQUHARB:
     You've arrived at ANOPHAB
 From HACKENBECK:
     Leave HACKENBECK by TRAIN on the 08:32:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave by walking to FFARQUHARB, will take 0.88 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From TORYRECK:
     Leave TORYRECK by TRAIN on the 07:45:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave by walking to FFARQUHARB, will take 0.88 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From DRYAW:
     Leave DRYAW by TRAIN on the 07:20:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave by walking to FFARQUHARB, will take 0.88 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From FFARQUHAR:
-    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave by walking to FFARQUHARB, will take 0.88 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From ELSBRIDGE:
     Leave ELSBRIDGE by TRAIN on the 08:11:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave by walking to FFARQUHARB, will take 0.88 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From ANOPHAB:
     You've arrived at ANOPHAB
 From KNAPFORD:
     Leave KNAPFORD by TRAIN on the 07:00:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0 mins
+    Leave by walking to FFARQUHARB, will take 0.88 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 
@@ -481,7 +481,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                 next_stop = route[ix + 1]
                 
                 if stop.onwards_leg_type == 'walk':
-                    print "    Leave by walking to " + next_stop.location + ", will take " + str(stop.onwards_walk_time.seconds / 60) + " mins"
+                    print "    Leave by walking to %s, will take %.02f mins" % (next_stop.location, stop.onwards_walk_time.seconds / 60.0)
                 elif stop.onwards_leg_type == 'journey':
                     departure_time = stop.onwards_journey.find_departure_time_at_location(stop.location)
                     arrival_time = stop.onwards_journey.find_arrival_time_at_location(next_stop.location)
