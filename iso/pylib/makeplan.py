@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.38 2009-03-04 01:41:26 francis Exp $
+# $Id: makeplan.py,v 1.39 2009-03-04 02:30:35 francis Exp $
 #
 
 # TODO:
@@ -28,9 +28,7 @@
 #
 # Optimisation
 # ============
-# Remove squareroot in distance calculation
 # Have a sorted grid to find nearby stations more quickly
-# Perhaps just precalculate nearby stations for each station
 #
 # Use objects for locations wherever possible, so less dictionary lookups by string
 #
