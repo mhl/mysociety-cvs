@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.2 2009-03-04 18:07:37 matthew Exp $
+# $Id: index.cgi,v 1.3 2009-03-04 18:20:04 matthew Exp $
 #
 
 import sys
@@ -26,7 +26,7 @@ def front_page():
 
 def main(fs):
     if 'pc' in fs:
-        return lookup(fs['pc'])
+        return lookup(fs.getfirst('pc'))
     return front_page()
 
 def slurp_file(filename):
