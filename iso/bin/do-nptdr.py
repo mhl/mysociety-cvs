@@ -107,9 +107,7 @@ atco = makeplan.PlanningATCO()
 for nptdr_file in nptdr_files:
     atco.read(nptdr_file)
 
-#print atco.adjacent_location_times('9100AYLSBRY', datetime.datetime(2007, 10, 9, 9, 0))
-#print atco.adjacent_location_times('9100AMERSHM', datetime.datetime(2007, 10, 9, 9, 0))
-#atco.find_journeys_crossing_midnight()
+#atco.print_journeys_crossing_midnight()
 
 # Stuff that we only run once for multiple maps. Note that we don't want to
 # profile it - we are optimising for map making once we've got going, not

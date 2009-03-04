@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.36 2009-03-03 16:11:41 francis Exp $
+# $Id: makeplan.py,v 1.37 2009-03-04 01:27:11 francis Exp $
 #
 
 # TODO:
@@ -21,7 +21,6 @@
 #  - we have to load them twice, once for each? is there more general problem that
 #    we have to load all journeys on today and yesterday? all once with a later
 #    hour anyway :)
-#  - in particular, which day are journeys starting just after midnight stored for?
 #  - see "XXX bah" below for hack that will do for now but NEEDS CHANGING
 #
 # Check circular journeys work fine
@@ -242,16 +241,12 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         self.bus_interchange_default = bus_interchange_default
         mysociety.atcocif.ATCO.__init__(self)
 
-    def find_journeys_crossing_midnight(self):
+    def print_journeys_crossing_midnight(self):
         '''Look for journeys that cross midnight, and print out a list.'''
 
         for journey in self.journeys:
-            previous_departure_time = datetime.time(0, 0, 0)
-            for hop in journey.hops:
-                if hop.is_pick_up():
-                    if previous_departure_time > hop.published_departure_time:
-                        print "journey " + journey.id + " spans midnight"
-                    previous_departure_time = hop.published_departure_time
+            if journey.crosses_midnight():
+                print "journey " + journey.id + " spans midnight"
 
     def adjacent_location_times(self, target_location, target_arrival_datetime):
         '''Adjacency function for use with Dijkstra's algorithm on earliest
