@@ -6,24 +6,28 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.1 2009-03-04 17:54:40 matthew Exp $
+# $Id: index.cgi,v 1.2 2009-03-04 18:07:37 matthew Exp $
 #
 
 import sys
 sys.path.append("../../pylib")
-
-import os
-import fcgi
-import string
-import re
+import fcgi, cgi
 
 import mysociety.config
 mysociety.config.set_file("../conf/general")
 
+def lookup(pc):
+    out = '<p>You entered %s.</p>' % cgi.escape(pc, True)
+    return out
+    
+def front_page():
+    front = slurp_file('../templates/index.html')
+    return front
+
 def main(fs):
     if 'pc' in fs:
-        return "A pc!"
-    return "A form!"
+        return lookup(fs['pc'])
+    return front_page()
 
 def slurp_file(filename):
     f = file(filename, 'rb')
@@ -44,8 +48,8 @@ while fcgi.isFCGI():
 
         header = slurp_file('../templates/header.html')
         footer = slurp_file('../templates/footer.html')
-	content = main(fs)
-	req.out.write(header + content + footer)
+        content = main(fs)
+        req.out.write(header + content + footer)
 
     except Exception, e:
         req.out.write("Content-Type: text/plain\r\n\r\n")
