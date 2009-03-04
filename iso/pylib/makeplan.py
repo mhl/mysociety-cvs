@@ -5,23 +5,14 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.37 2009-03-04 01:27:11 francis Exp $
+# $Id: makeplan.py,v 1.38 2009-03-04 01:41:26 francis Exp $
 #
 
 # TODO:
-# Rename this planningatco.py
-#
 # Instead of inheriting from atcocif, have it as a member? so can keep caches more than one run
 # Think about idempotency if atcocif.ignored variable
 #
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
-#
-# Journeys over midnight are knackered
-#  - journeys crossing midnight count for the earlier day 
-#  - we have to load them twice, once for each? is there more general problem that
-#    we have to load all journeys on today and yesterday? all once with a later
-#    hour anyway :)
-#  - see "XXX bah" below for hack that will do for now but NEEDS CHANGING
 #
 # Check circular journeys work fine
 #
@@ -53,6 +44,14 @@
 # Find out how to profile memory use in Python
 # Work out minimum structure could export to run C++ algorithm on
 # 
+# Later
+# =====
+#
+# Handle journeys after midnight - currently it just cuts them short at midnight.
+#    Instead probably needs to make two copies of them one for each day. Indeed,
+#    to do all this really well, need to make a copy of every journey for yesterday.
+# Reverse - allow finding earliest time arrive elsewhere leaving an origin location
+#
 
 '''Finds shortest route from all points on a public transport network to arrive
 at a given destination at a given time. Uses Dijkstra's algorithm to do this
@@ -292,12 +291,12 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         '''
 
         try:
-            target_easting = self.location_details[target_location].additional.grid_reference_easting
-            target_northing = self.location_details[target_location].additional.grid_reference_northing
+            target_easting = self.location_from_id[target_location].additional.grid_reference_easting
+            target_northing = self.location_from_id[target_location].additional.grid_reference_northing
         except AttributeError, e:
             return
 
-        for location, dist in self.nearby_locations[self.location_details[target_location]].iteritems():
+        for location, dist in self.nearby_locations[self.location_from_id[target_location]].iteritems():
             logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
             walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
             walk_departure_datetime = target_arrival_datetime - walk_time
@@ -368,11 +367,14 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
             departure_datetime = datetime.datetime.combine(target_arrival_datetime.date(), hop.published_departure_time)
 
-            # if the time at this hop is later than at target, must be a midnight rollover, and really
-            # this hop is on the the day before, so change to that
-            # XXX bah this is rubbish as it won't have done the is right day check right in _adjacent_location_times_for_journey that called this
+            # If the time at this hop is later than at target, must be a midnight rollover, in which case we give
+            # up on using the hop. XXX this needs fixing by duplicating the journey at an earlier stage in processing,
+            # as well as by working out the right date/time at this stage.
             if departure_datetime > arrival_datetime_at_target_location:
-                departure_datetime = datetime.datetime.combine(target_arrival_datetime.date() - datetime.timedelta(1), hop.published_departure_time)
+                # useful snippet of code when sorting this out:
+                # departure_datetime = datetime.datetime.combine(target_arrival_datetime.date() - datetime.timedelta(1), hop.published_departure_time)
+                break
+
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
             arrive_place_time = ArrivePlaceTime(hop.location, departure_datetime, onwards_leg_type = 'journey', onwards_journey = journey)
             self._add_to_adjacents(arrive_place_time, adjacents)

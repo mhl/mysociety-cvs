@@ -131,7 +131,7 @@ f = open(grid_time_file, "w")
 for location, when in results.iteritems():
     delta = target_when - when
     secs = delta.seconds + delta.days * 24 * 60 * 60
-    loc = atco.location_details[location]
+    loc = atco.location_from_id[location]
     f.write(str(loc.additional.grid_reference_easting) + " " + str(loc.additional.grid_reference_northing) + " " + str(secs) + "\n")
 f.close()
 
@@ -152,7 +152,7 @@ for location in sorted(results.keys()):
     route = routes[location]
     route.reverse()
     for waypoint in route:
-        f.write("\tleave %s (%s) at %s" % (waypoint.location, atco.location_details[waypoint.location].long_description(), str(waypoint.when)) + "\n")
+        f.write("\tleave %s (%s) at %s" % (waypoint.location, atco.location_from_id[waypoint.location].long_description(), str(waypoint.when)) + "\n")
 f.close()
 
 def run_cmd(cmd):
