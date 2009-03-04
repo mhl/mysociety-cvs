@@ -161,7 +161,7 @@ def run_cmd(cmd):
 run_cmd("cat %s/%s.txt | ./transportdirect-journeys-to-grid grid %s %d %f %f %d > %s/%s-grid" % (options.output, outfile, rect, options.px, options.px, options.endwalkspeed, options.endwalktime, options.output, outfile))
 run_cmd("cat %s/%s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s/%s.ppm" % (options.output, outfile, rect, options.px, options.px, options.bandsize, options.bandcount, options.bandcolsep, options.output, outfile))
 
-timestring = time.strftime("%Y-%m-%d-%H:%M:%S")
+timestring = time.strftime("%Y-%m-%d-%H.%M.%S")
 run_cmd("convert %s/%s.ppm %s/%s.%s.png" % (options.output, outfile, options.output, outfile, timestring))
 print "finished: %s/%s.%s.png" % (options.output, outfile, timestring)
 #eog $output/$outfile.png
