@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.40 2009-03-04 12:03:28 matthew Exp $
+# $Id: makeplan.py,v 1.41 2009-03-04 16:34:00 matthew Exp $
 #
 
 # TODO:
@@ -69,18 +69,20 @@ The fat director made sure that passengers would always know when Thomas would
 be at each station. He published the North Western Railway timetable for free
 in the ATCO-CIF file format.
 
+#>>> logging.basicConfig(level=logging.getLevelName('DEBUG'))
+
 >>> atco = PlanningATCO() # PlanningATCO is derived from mysociety.atcocif.ATCO
 >>> atco.read(sys.path[0] + "/fixtures/thomas-branch-line.cif")
 
 Thomas proudly puffs up and down through six stations. 
 >>> [ location.long_description() for location in atco.locations if location.point_type == 'R' ]
-['Knapford Rail Station, Knapford, Sodor', 'Dryaw Rail Station, Dryaw, Sodor', 'Toryreck Rail Station, Toryreck, Sodor', 'Elsbridge Rail Station, Elsbridge, Sodor', 'Hackenbeck Rail Station, Hackenbeck, Sodor', 'Ffarquhar Rail Station, Ffarquhar, Sodor']
+['Knapford Rail Station, Knapford, Sodor', 'Dryaw Rail Station, Dryaw, Sodor', 'Toryreck Rail Station, Toryreck, Sodor', 'Elsbridge Rail Station, Elsbridge, Sodor', 'Hackenbeck Rail Station, Hackenbeck, Sodor', 'Ffarquhar Rail Station, Ffarquhar, Sodor', 'Vicarstown Rail Station, Vicarstown, Sodor', 'Ballahoo Rail Station, Ballahoo, Sodor', 'Norramby Rail Station, Norramby, Sodor', "Crovan's Gate Rail Station, Crovan's Gate, Sodor"]
 
 On weekdays he makes four journeys a day, two there, and two back.
 >>> monday = datetime.date(2007,1,8)
 >>> [ journey.route_direction for journey in atco.journeys 
 ...   if journey.is_valid_on_date(monday) and journey.operator == 'NWR' ]
-['O', 'I', 'O', 'I']
+['O', 'I', 'O', 'I', 'O', 'I', 'O']
 
 On Sundays he makes only one trip there and back.
 >>> sunday = datetime.date(2007,1,14)
@@ -177,6 +179,25 @@ From KNAPFORD:
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 
+
+Holiday makers from The Other Railway want to lie on the beach at Norramby.
+James the Red Engine is currently on duty.
+
+>>> (results, routes) = atco.do_dijkstra('NORRAMBY', datetime.datetime(2007, 1, 8, 12, 0))
+>>> results
+{'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 50), 'NORRAMBY': datetime.datetime(2007, 1, 8, 12, 0), 'CROVANSGATE': datetime.datetime(2007, 1, 8, 11, 15), 'BALLAHOO': datetime.datetime(2007, 1, 8, 11, 30)}
+
+>>> (results, routes) = atco.do_dijkstra('NORRAMBY', datetime.datetime(2007, 1, 8, 11, 0))
+>>> results
+{'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 0), 'NORRAMBY': datetime.datetime(2007, 1, 8, 11, 0), 'BALLAHOO': datetime.datetime(2007, 1, 8, 10, 35)}
+
+>>> (results, routes) = atco.do_dijkstra('VICARSTOWN', datetime.datetime(2007, 1, 8, 13, 0))
+>>> results
+{'NORRAMBY': datetime.datetime(2007, 1, 8, 11, 45), 'VICARSTOWN': datetime.datetime(2007, 1, 8, 13, 0), 'CROVANSGATE': datetime.datetime(2007, 1, 8, 11, 40), 'BALLAHOO': datetime.datetime(2007, 1, 8, 12, 0)}
+
+>>> (results, routes) = atco.do_dijkstra('BALLAHOO', datetime.datetime(2007, 1, 8, 10, 40))
+>>> results
+{'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 0), 'BALLAHOO': datetime.datetime(2007, 1, 8, 10, 40)}
 
 Todo cif file:
 Check that all the ids and train operation numbers and stuff in journey parts are ok - I think that they are MPS
@@ -318,14 +339,13 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             return
 
         # Find out when it arrives at this stop
-        arrival_time_at_target_location = journey.find_arrival_time_at_location(target_location)
-        if arrival_time_at_target_location == None:
+        arrival_times_at_target_location = journey.find_arrival_times_at_location(target_location)
+        if not arrival_times_at_target_location:
             # could never arrive at this stop (even though was in journeys_visiting_location),
             # e.g. for pick up only stops
             return
 
-        logging.debug("\t\tarrival time at target location: " + str(arrival_time_at_target_location))
-        arrival_datetime_at_target_location = datetime.datetime.combine(target_arrival_datetime.date(), arrival_time_at_target_location)
+        logging.debug("\t\tarrival times at target location: " + str(arrival_times_at_target_location))
 
         # Work out how long we need to allow to change at the stop
         if target_location == self.final_destination:
@@ -336,10 +356,16 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             interchange_time_in_minutes = self.bus_interchange_default
         interchange_time = datetime.timedelta(minutes = interchange_time_in_minutes)
         
+        arrival_datetime_at_target_location = None
+        for arrival_time_at_target_location in arrival_times_at_target_location:
+            possible_arrival_datetime_at_target_location = datetime.datetime.combine(target_arrival_datetime.date(), arrival_time_at_target_location)
+            if possible_arrival_datetime_at_target_location + interchange_time <= target_arrival_datetime and (arrival_datetime_at_target_location is None or arrival_datetime_at_target_location < possible_arrival_datetime_at_target_location):
+                arrival_datetime_at_target_location = possible_arrival_datetime_at_target_location
+
         # See whether if we want to use this journey to get to this
         # stop, we get there on time to change to the next journey.
-        if arrival_datetime_at_target_location + interchange_time > target_arrival_datetime:
-            logging.debug("\t\twhich is too late with interchange time %s, so not using journey" % str(interchange_time))
+        if not arrival_datetime_at_target_location:
+            logging.debug("\t\twhich are all too late with interchange time %s, so not using journey" % str(interchange_time))
             return
 
         logging.debug("\t\tadding stops")
@@ -483,9 +509,15 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                 if stop.onwards_leg_type == 'walk':
                     print "    Leave by walking to %s, will take %.02f mins" % (next_stop.location, stop.onwards_walk_time.seconds / 60.0)
                 elif stop.onwards_leg_type == 'journey':
-                    departure_time = stop.onwards_journey.find_departure_time_at_location(stop.location)
-                    arrival_time = stop.onwards_journey.find_arrival_time_at_location(next_stop.location)
-                    print "    Leave " + stop.location + " by " + stop.onwards_journey.vehicle_type + " on the " + departure_time.strftime("%H:%M:%S") + ", arriving " + next_stop.location + " at " + arrival_time.strftime("%H:%M:%S")
+                    departure_times = stop.onwards_journey.find_departure_times_at_location(stop.location)
+                    departure_time = []
+                    for a in departure_times:
+                        departure_time.append(a.strftime("%H:%M:%S"))
+                    arrival_times = stop.onwards_journey.find_arrival_times_at_location(next_stop.location)
+                    arrival_time = []
+                    for a in arrival_times:
+                        arrival_time.append(a.strftime("%H:%M:%S"))
+                    print "    Leave " + stop.location + " by " + stop.onwards_journey.vehicle_type + " on the " + ','.join(departure_time) + ", arriving " + next_stop.location + " at " + ','.join(arrival_time)
                 else:
                     raise "Unknown leg type '" + stop.onwards_leg_type + "'"
 
