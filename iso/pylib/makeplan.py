@@ -5,26 +5,18 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.43 2009-03-05 15:17:53 francis Exp $
+# $Id: makeplan.py,v 1.44 2009-03-05 15:24:52 francis Exp $
 #
 
 # TODO:
-# timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
-#
-# Check circular journeys work fine
-#
-# Check the date of week data is valid for, to be sure
-#
 # Interchange times
 # - find proper ones to use for TRAIN and BUS
 # - possibly load QV records if needed to discriminate times
 # - need another longer time for QVNAIR/12?
 # - measures according to type of journey before, not pair of before/after
 #
-# Get rid of index_by_short_codes somehow
-#
 # Optimisation
-# ============
+# ------------
 # Have a sorted grid to find nearby stations more quickly
 #
 # Use objects for locations wherever possible, so less dictionary lookups by string
@@ -39,9 +31,15 @@
 # Find out how to profile memory use in Python
 # Work out minimum structure could export to run C++ algorithm on
 # 
-# Later
-# =====
+# Thomas CIF file
+# ---------------
+# Check that all the ids and train operation numbers and stuff in journey parts are ok - I think that they are MPS
+# Add direct services to Tidmouth
+# Add some services run by Daisy on Thomas's line
+# Reduced Sunday service
 #
+# Later
+# -----
 # Handle journeys after midnight - currently it just cuts them short at midnight.
 #    Instead probably needs to make two copies of them one for each day. Indeed,
 #    to do all this really well, need to make a copy of every journey for yesterday.
@@ -51,9 +49,6 @@
 '''Finds shortest route from all points on a public transport network to arrive
 at a given destination at a given time. Uses Dijkstra's algorithm to do this
 all in one go.
-
-Notes: Does not allow for train routing guides or easements - the journeys
-generated are possible, but you have to buy the right ticket(s).
 
 
 A Railway Story
@@ -200,16 +195,22 @@ James the Red Engine is currently on duty.
 >>> results
 {'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 50), 'NORRAMBY': datetime.datetime(2007, 1, 8, 11, 45), 'CROVANSGATE': datetime.datetime(2007, 1, 8, 11, 15), 'BALLAHOO': datetime.datetime(2007, 1, 8, 12, 10)}
 
-Todo cif file:
-Check that all the ids and train operation numbers and stuff in journey parts are ok - I think that they are MPS
-Add direct services to Tidmouth
-Add some services run by Daisy on Thomas's line
-Reduced Sunday service
 
-Notes:
+References regarding the North Western Railway:
+
 Link to map of full network http://en.wikipedia.org/wiki/Sodor_(fictional_island)
 http://en.wikipedia.org/wiki/North_Western_Railway_(fictional)#Thomas.27_Branch_Line
 Station locations based on Wikipedia map using a ruler, Barrow being at 320k,470k, Douglas at 238k,476k.
+
+
+Notes on using with NPTDR data
+==============================
+
+2008 data is valid in week 6-12 October 2008 only.
+
+Routing does not allow for train routing guides or easements - the journeys
+generated are possible, but you have to buy the right ticket(s).
+
 '''
 
 import logging
