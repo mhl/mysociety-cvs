@@ -35,8 +35,17 @@ mysociety.config.set_file("../conf/general")
 parser = optparse.OptionParser()
 
 parser.set_usage('''
+./do-nptdr.py [PARAMETERS] [COMMAND]
+
 Generate a contour map showing how long it takes to get somewhere in the UK by
 public transport. Reads ATCO-CIF timetable files. Outputs a PNG file.
+
+Commands:
+plan - create map 
+stats - dump statistics about files
+fast - output fast data structure
+midnight - output journeys that cross midnight
+Default is to run "plan".
 
 Parameters:
 Can be specified on command line, or in a file passed with --config with each
@@ -83,6 +92,13 @@ if options.config:
 
 if not options.postcode:
     raise Exception, 'Must supply some data!'
+if len(args) > 1:
+    raise Exception, 'Give at most one command'
+if len(args) == 0:
+    args = ['plan']
+command = args[0]
+if command not in ['plan', 'stats', 'midnight', 'fast']:
+    raise Exception, 'Unknown command'
 
 f = mysociety.mapit.get_location(options.postcode)
 N = int(f['northing'])
@@ -112,10 +128,13 @@ for nptdr_file in nptdr_files:
 # precomputing indices.
 atco.precompute_for_dijkstra(walk_speed=options.walkspeed, walk_time=options.walktime)
 
-# Temporary testing
-#atco.print_journeys_crossing_midnight()
-#print atco.statistics()
-#sys.exit()
+# Other commands
+if command == 'midnight':
+    atco.print_journeys_crossing_midnight()
+    sys.exit()
+if command == 'stats':
+    print atco.statistics()
+    sys.exit()
 
 # Calculate shortest route from everywhere on network
 def profile_me():
