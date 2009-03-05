@@ -5,13 +5,10 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.42 2009-03-05 14:46:06 francis Exp $
+# $Id: makeplan.py,v 1.43 2009-03-05 15:17:53 francis Exp $
 #
 
 # TODO:
-# Instead of inheriting from atcocif, have it as a member? so can keep caches more than one run
-# Think about idempotency if atcocif.ignored variable
-#
 # timetz - what about time zones!  http://docs.python.org/lib/datetime-datetime.html
 #
 # Check circular journeys work fine
@@ -289,7 +286,6 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         adjacents = {}
         # Go through every journey visiting the location
         for journey in self.journeys_visiting_location[target_location]:
-            if journey.ignored: continue
             logging.debug("\tconsidering journey: " + journey.id)
             self._adjacent_location_times_for_journey(target_location, target_arrival_datetime, adjacents, journey)
         self._nearby_locations(target_location, target_arrival_datetime, adjacents)
@@ -327,6 +323,14 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
             self._add_to_adjacents(arrive_time_place, adjacents)
 
+    # How long after a journey it takes to interchange to catch another form of
+    # transport at the destination stop.
+    def _interchange_time_after_journey(self, journey):
+        if journey.vehicle_type == 'TRAIN':
+            return self.train_interchange_default
+        else: # Bus, Air, Metro/Tram, Ferry/River Bus XXX
+            return self.bus_interchange_default
+
     def _adjacent_location_times_for_journey(self, target_location, target_arrival_datetime, adjacents, journey):
         '''Private function, called by adjacent_location_times. Finds every
         other station you can get to the destination on time, using
@@ -339,7 +343,6 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         valid_on_date = journey.is_valid_on_date(target_arrival_datetime.date()) 
         if not valid_on_date:
             logging.debug("\t\tnot valid on date: " + valid_on_date.reason)
-            journey.ignore()
             return
 
         # Find out when it arrives at this stop (can be multiple times for looped journeys)
@@ -354,10 +357,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         # Work out how long we need to allow to change at the stop
         if target_location == self.final_destination:
             interchange_time_in_minutes = 0
-        elif journey.vehicle_type == 'TRAIN':
-            interchange_time_in_minutes = self.train_interchange_default
-        else: # Bus, Air, Metro/Tram, Ferry/River Bus XXX
-            interchange_time_in_minutes = self.bus_interchange_default
+        else:
+            interchange_time_in_minutes = self._interchange_time_after_journey(journey)
         interchange_time = datetime.timedelta(minutes = interchange_time_in_minutes)
         
         # Pick the latest of the arrival times that's before the time we're
