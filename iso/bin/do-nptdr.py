@@ -107,12 +107,15 @@ atco = makeplan.PlanningATCO()
 for nptdr_file in nptdr_files:
     atco.read(nptdr_file)
 
-#atco.print_journeys_crossing_midnight()
-
 # Stuff that we only run once for multiple maps. Note that we don't want to
 # profile it - we are optimising for map making once we've got going, not
 # precomputing indices.
 atco.precompute_for_dijkstra(walk_speed=options.walkspeed, walk_time=options.walktime)
+
+# Temporary testing
+#atco.print_journeys_crossing_midnight()
+#print atco.statistics()
+#sys.exit()
 
 # Calculate shortest route from everywhere on network
 def profile_me():
