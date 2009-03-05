@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.41 2009-03-04 16:34:00 matthew Exp $
+# $Id: makeplan.py,v 1.42 2009-03-05 14:46:06 francis Exp $
 #
 
 # TODO:
@@ -199,6 +199,10 @@ James the Red Engine is currently on duty.
 >>> results
 {'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 0), 'BALLAHOO': datetime.datetime(2007, 1, 8, 10, 40)}
 
+>>> (results, routes) = atco.do_dijkstra('BALLAHOO', datetime.datetime(2007, 1, 8, 12, 10))
+>>> results
+{'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 50), 'NORRAMBY': datetime.datetime(2007, 1, 8, 11, 45), 'CROVANSGATE': datetime.datetime(2007, 1, 8, 11, 15), 'BALLAHOO': datetime.datetime(2007, 1, 8, 12, 10)}
+
 Todo cif file:
 Check that all the ids and train operation numbers and stuff in journey parts are ok - I think that they are MPS
 Add direct services to Tidmouth
@@ -338,7 +342,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             journey.ignore()
             return
 
-        # Find out when it arrives at this stop
+        # Find out when it arrives at this stop (can be multiple times for looped journeys)
         arrival_times_at_target_location = journey.find_arrival_times_at_location(target_location)
         if not arrival_times_at_target_location:
             # could never arrive at this stop (even though was in journeys_visiting_location),
@@ -356,6 +360,9 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             interchange_time_in_minutes = self.bus_interchange_default
         interchange_time = datetime.timedelta(minutes = interchange_time_in_minutes)
         
+        # Pick the latest of the arrival times that's before the time we're
+        # currently at (plus interchange time of course). Usually there'll only
+        # be one of these, but there can be more for looped journeys.
         arrival_datetime_at_target_location = None
         for arrival_time_at_target_location in arrival_times_at_target_location:
             possible_arrival_datetime_at_target_location = datetime.datetime.combine(target_arrival_datetime.date(), arrival_time_at_target_location)
@@ -379,11 +386,9 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
         # Now go through every earlier stop, and add it to the list of returnable nodes
         for hop in journey.hops:
-            # We've arrived at the target location (also check is_set_down
-            # here, so looped/circular journeys, where we end on stop we
-            # started, work)
-            if hop.is_set_down() and hop.location == target_location:
-                break
+            # Ignore the target location
+            if hop.location == target_location:
+                continue
 
             # If the stop doesn't pick up passengers, don't use it
             if not hop.is_pick_up():
@@ -391,12 +396,16 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
             departure_datetime = datetime.datetime.combine(target_arrival_datetime.date(), hop.published_departure_time)
 
-            # If the time at this hop is later than at target, must be a midnight rollover, in which case we give
-            # up on using the hop. XXX this needs fixing by duplicating the journey at an earlier stage in processing,
-            # as well as by working out the right date/time at this stage.
+            # If the time at this hop is later than at target, we stop.
+            # We use time for this, rather than stopping at the target location,
+            # so we cope with looped journeys.
+            # XXX This will also stop midnight rollover journeys at midnight.
+            # If we care about maps near midnight, then this needs fixing by
+            # duplicating the journey at an earlier stage in processing, as
+            # well as by working out the right date/time in
+            # _adjacent_location_times_for_journey to get is_valid_on_date
+            # right.
             if departure_datetime > arrival_datetime_at_target_location:
-                # useful snippet of code when sorting this out:
-                # departure_datetime = datetime.datetime.combine(target_arrival_datetime.date() - datetime.timedelta(1), hop.published_departure_time)
                 break
 
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
