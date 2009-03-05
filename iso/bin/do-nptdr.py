@@ -29,6 +29,7 @@ import mysociety.mapit
 
 sys.path.append(sys.path[0] + "/../pylib")
 import makeplan
+import fastplan
 
 mysociety.config.set_file("../conf/general")
 
@@ -41,10 +42,10 @@ Generate a contour map showing how long it takes to get somewhere in the UK by
 public transport. Reads ATCO-CIF timetable files. Outputs a PNG file.
 
 Commands:
-plan - create map 
-stats - dump statistics about files
-fast - output fast data structure
-midnight - output journeys that cross midnight
+    plan - create map 
+    stats - dump statistics about files
+    midnight - output journeys that cross midnight
+    fast - output fast data structure for quick planning from C++
 Default is to run "plan".
 
 Parameters:
@@ -76,6 +77,7 @@ parser.add_option('--config', type='string', dest="config", help='Specify a text
 parser.add_option('--output', type='string', dest="output", help='Output directory.')
 parser.add_option('--loglevel', type='string', dest="loglevel", default='WARN', help='Try ERROR/WARN/INFO/DEBUG for increasingly more logging, default is WARN.')
 parser.add_option('--profile', action='store_true', dest='profile', default=False, help="Runs Python profiler on Dijkstra's algorithm part of calculation. Outputs a .profile file in output directory for later processing by Python pstats module, and prints basic details from it.")
+parser.add_option('--viewer', type='string', dest="viewer", help='If present, calls application to display PNG file at end.')
 
 (options, args) = parser.parse_args()
 
@@ -119,22 +121,33 @@ logging.basicConfig(level=logging.getLevelName(options.loglevel))
 
 # Load in journey tables
 nptdr_files = glob.glob(options.data)
-atco = makeplan.PlanningATCO()
+if command == 'fast':
+    atco = fastplan.FastPregenATCO()
+else:
+    atco = makeplan.PlanningATCO()
 for nptdr_file in nptdr_files:
     atco.read(nptdr_file)
+
+# Handle midnight command
+if command == 'midnight':
+    atco.print_journeys_crossing_midnight()
+    sys.exit()
 
 # Stuff that we only run once for multiple maps. Note that we don't want to
 # profile it - we are optimising for map making once we've got going, not
 # precomputing indices.
 atco.precompute_for_dijkstra(walk_speed=options.walkspeed, walk_time=options.walktime)
 
-# Other commands
-if command == 'midnight':
-    atco.print_journeys_crossing_midnight()
-    sys.exit()
+# Handle statistics command
 if command == 'stats':
     print atco.statistics()
     sys.exit()
+
+# Handle fast command
+if command == 'fast':
+    sys.exit()
+
+# Otherwise we're at the planning command
 
 # Calculate shortest route from everywhere on network
 def profile_me():
@@ -185,7 +198,11 @@ run_cmd("cat %s/%s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s/%s.ppm" % (
 
 timestring = time.strftime("%Y-%m-%d-%H.%M.%S")
 run_cmd("convert %s/%s.ppm %s/%s.%s.png" % (options.output, outfile, options.output, outfile, timestring))
+
 print "finished: %s/%s.%s.png" % (options.output, outfile, timestring)
+
+if options.viewer:
+    run_cmd(options.viewer + " %s/%s.%s.png" % (options.output, outfile, timestring))
 #eog $output/$outfile.png
 
 
