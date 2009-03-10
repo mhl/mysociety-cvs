@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.2 2009-03-10 22:28:28 francis Exp $
+// $Id: makeplan.cpp,v 1.3 2009-03-10 22:46:21 francis Exp $
 //
 
 #include <set>
@@ -44,6 +44,13 @@ class Hop {
 
     std::string toString() const {
         return (boost::format("Hop(loc:%s arr:%d dep:%d)") % this->location_id % this->mins_arr % this->mins_dep).str();
+    }
+
+    bool is_pick_up() {
+        return mins_dep != -1;
+    }
+    bool is_set_down() {
+        return mins_arr != -1;
     }
 };
 
@@ -293,8 +300,9 @@ class PlanningATCO {
     adjacents structure.
     */
     void _adjacent_location_times_for_journey(const LocationID target_location_id, const Minutes target_arrival_time, Adjacents& adjacents, const JourneyID journey_id) {
-        // All journeys run on the valid date; the check is done in the Python binary exporter.
         Journey& journey = this->journeys[journey_id];
+
+        // All journeys run on the valid date; the check is done in the Python binary exporter.
 
         // Work out how long we need to allow to change at the stop
         Minutes interchange_time;
@@ -312,10 +320,10 @@ class PlanningATCO {
         BOOST_FOREACH(Hop hop, journey.hops) {
             // Find hops that arrive at the target
             if (hop.location_id == target_location_id) {
-                Minutes possible_arrival_time_at_target_location = hop.mins_arr;
-                if (hop.mins_arr == -1) {
+                if (!hop.is_set_down()) {
                     continue;
                 }
+                Minutes possible_arrival_time_at_target_location = hop.mins_arr;
                 // See if that is a closer arrival time than what we got so far
                 assert(hop.mins_arr >= 0);
                 if (possible_arrival_time_at_target_location + interchange_time <= target_arrival_time 
@@ -333,27 +341,29 @@ class PlanningATCO {
         }
 
         log("\t\tadding stops");
-        // self._adjacent_location_times_add_stops(target_location, target_arrival_datetime, adjacents, journey, arrival_datetime_at_target_location)
+        this->_adjacent_location_times_add_stops(target_location_id, target_arrival_time, adjacents, journey_id, arrival_time_at_target_location);
     }
-}; /*
 
-    '''Private function, called by _adjacent_location_times_for_journey.
+    /* Private function, called by _adjacent_location_times_for_journey.
     For a given journey, adds individual stops which are valid to the
     adjacents structure.
-    '''
-    void _adjacent_location_times_add_stops(self, target_location, target_arrival_datetime, adjacents, journey, arrival_datetime_at_target_location) {
+    */
+    void _adjacent_location_times_add_stops(const LocationID target_location_id, const Minutes target_arrival_time, Adjacents &adjacents, const JourneyID journey_id, const Minutes arrival_time_at_target_location) {
+        Journey& journey = this->journeys[journey_id];
 
         // Now go through every earlier stop, and add it to the list of returnable nodes
-        for hop in journey.hops:
+        BOOST_FOREACH(Hop hop, journey.hops) {
             // Ignore the target location
-            if hop.location == target_location:
-                continue
+            if (hop.location_id == target_location_id) {
+                continue;
+            }
 
             // If the stop doesn't pick up passengers, don't use it
-            if not hop.is_pick_up():
-                continue
+            if (!hop.is_pick_up()) {
+                continue;
+            }
 
-            departure_datetime = datetime.datetime.combine(target_arrival_datetime.date(), hop.published_departure_time)
+            Minutes departure_time = hop.mins_dep;
 
             // If the time at this hop is later than at target, we stop.
             // We use time for this, rather than stopping at the target location,
@@ -364,14 +374,17 @@ class PlanningATCO {
             // well as by working out the right date/time in
             // _adjacent_location_times_for_journey to get is_valid_on_date
             // right.
-            if departure_datetime > arrival_datetime_at_target_location:
-                break
+            if (departure_time > arrival_time_at_target_location) {
+                break;
+            }
 
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
-            arrive_place_time = ArrivePlaceTime(hop.location, departure_datetime, onwards_leg_type = 'journey', onwards_journey = journey)
-            self._add_to_adjacents(arrive_place_time, adjacents)
+            ArrivePlaceTime arrive_place_time(hop.location_id, departure_time /*, onwards_leg_type = 'journey', onwards_journey = journey*/);
+            this->_add_to_adjacents(arrive_place_time, adjacents);
+        }
     }
 
+}; /*
     '''
     Run Dijkstra's algorithm to find latest departure time from all locations to
     arrive at the target location by the given time.
