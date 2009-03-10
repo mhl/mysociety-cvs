@@ -119,12 +119,16 @@ scan_back_when = target_when - datetime.timedelta(hours=options.hours)
 
 logging.basicConfig(level=logging.getLevelName(options.loglevel))
 
-# Load in journey tables
 nptdr_files = glob.glob(options.data)
+
+# Handle generating indices for C++ version
 if command == 'fast':
-    atco = fastplan.FastPregenATCO()
-else:
-    atco = makeplan.PlanningATCO()
+    fastindex = "%s/%s.fastindex" % (options.output, outfile)
+    atco = fastplan.FastPregenATCO(fastindex, nptdr_files, target_when.date())
+    sys.exit()
+
+# Load in journey tables
+atco = makeplan.PlanningATCO()
 for nptdr_file in nptdr_files:
     atco.read(nptdr_file)
 
@@ -141,10 +145,6 @@ atco.precompute_for_dijkstra(walk_speed=options.walkspeed, walk_time=options.wal
 # Handle statistics command
 if command == 'stats':
     print atco.statistics()
-    sys.exit()
-
-# Handle fast command
-if command == 'fast':
     sys.exit()
 
 # Otherwise we're at the planning command
