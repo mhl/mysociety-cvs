@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.3 2009-03-10 20:57:51 francis Exp $
+# $Id: fastplan.py,v 1.4 2009-03-10 22:28:28 francis Exp $
 #
 
 import logging
@@ -86,7 +86,10 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
             if item.id not in self.journey_to_fastix:
                 self.journey_c += 1
                 self.journey_to_fastix[item.id] = self.journey_c
-                self._pack(self.file_journeys, "=ih%dsh" % len(item.id), self.journey_c, len(item.id), item.id, len(item.hops))
+                vehicle_type = 'B'
+                if item.vehicle_type == 'TRAIN':
+                    vehicle_type = 'T'
+                self._pack(self.file_journeys, "=ih%dsch" % len(item.id), self.journey_c, len(item.id), item.id, vehicle_type, len(item.hops))
                 for hop in item.hops:
                     mins_arr,mins_dep = -1,-1
                     if hop.is_set_down():
