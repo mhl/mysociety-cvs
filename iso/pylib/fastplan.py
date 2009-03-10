@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.2 2009-03-10 17:27:40 francis Exp $
+# $Id: fastplan.py,v 1.3 2009-03-10 20:57:51 francis Exp $
 #
 
 import logging
@@ -26,20 +26,22 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self.target_date = target_date
 
         # count stuff
-        self.number_of_locations = 0
-        self.number_of_journeys = 0
+        self.location_c = 0
+        self.location_to_fastix = {}
+        self.journey_c = 0
+        self.journey_to_fastix = {}
         self.read_all(self.count_stuff)
 
         # output location ids
         self.file_locations = open(self.out_prefix+".locations", 'w')
-        self._pack(self.file_locations, "i", self.number_of_locations)
+        self._pack(self.file_locations, "=i", len(self.location_to_fastix))
         self.location_c = 0
         self.location_to_fastix = {}
         self.read_all(self.load_location_ids)
 
         # output journey ids
         self.file_journeys = open(self.out_prefix+".journeys", 'w')
-        self._pack(self.file_journeys, "i", self.number_of_journeys)
+        self._pack(self.file_journeys, "=i", len(self.journey_to_fastix))
         self.journey_c = 0
         self.journey_to_fastix = {}
         self.read_all(self.load_journey_ids)
@@ -55,9 +57,16 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
     # Pass to count things
     def count_stuff(self, item):
         if isinstance(item, mysociety.atcocif.Location):
-            self.number_of_locations += 1
-        if isinstance(item, mysociety.atcocif.JourneyHeader):
-            self.number_of_journeys += 1
+            if item.location not in self.location_to_fastix:
+                self.location_c += 1
+                self.location_to_fastix[item.location] = self.location_c
+        elif isinstance(item, mysociety.atcocif.JourneyHeader):
+            # ditch journeys which aren't valid on the date
+            if not item.is_valid_on_date(self.target_date):
+                return
+            if item.id not in self.journey_to_fastix:
+                self.journey_c += 1
+                self.journey_to_fastix[item.id] = self.journey_c
     
     # Pass to give numeric identifier to all locations.
     def load_location_ids(self, item):
@@ -65,7 +74,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
             if item.location not in self.location_to_fastix:
                 self.location_c += 1
                 self.location_to_fastix[item.location] = self.location_c
-                self._pack(self.file_locations, "ipii", self.location_c, item.location, item.additional.grid_reference_easting, item.additional.grid_reference_northing)
+                self._pack(self.file_locations, "=ih%dsii" % len(item.location), self.location_c, len(item.location), item.location, item.additional.grid_reference_easting, item.additional.grid_reference_northing)
 
     # Pass to give numeric identifier to all journeys
     def load_journey_ids(self, item):
@@ -77,21 +86,21 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
             if item.id not in self.journey_to_fastix:
                 self.journey_c += 1
                 self.journey_to_fastix[item.id] = self.journey_c
-                self._pack(self.file_journeys, "ip", self.journey_c, item.id)
+                self._pack(self.file_journeys, "=ih%dsh" % len(item.id), self.journey_c, len(item.id), item.id, len(item.hops))
                 for hop in item.hops:
                     mins_arr,mins_dep = -1,-1
                     if hop.is_set_down():
                         mins_arr = hop.published_arrival_time.hour * 60 + hop.published_arrival_time.second
                     if hop.is_pick_up():
                         mins_dep = hop.published_departure_time.hour * 60 + hop.published_departure_time.second
-                    self._pack(self.file_locations, "ihh", self.location_to_fastix[hop.location], mins_arr, mins_dep)
+                    self._pack(self.file_journeys, "=ihh", self.location_to_fastix[hop.location], mins_arr, mins_dep)
 
 
 
     # Internal binary packing function, with logging for debugging
     def _pack(self, handle, *args):
-        logging.debug("packing: " + repr(args))
         binout = struct.pack(*args)
+        logging.debug("packing: " + repr(args) + " => " + repr(binout))
         handle.write(binout)
 
 
