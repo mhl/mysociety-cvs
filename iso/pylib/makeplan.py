@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.44 2009-03-05 15:24:52 francis Exp $
+# $Id: makeplan.py,v 1.45 2009-03-11 10:37:13 francis Exp $
 #
 
 # TODO:
@@ -310,11 +310,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         stations to the adjacents structure.
         '''
 
-        try:
-            target_easting = self.location_from_id[target_location].additional.grid_reference_easting
-            target_northing = self.location_from_id[target_location].additional.grid_reference_northing
-        except AttributeError, e:
-            return
+        target_easting = self.location_from_id[target_location].additional.grid_reference_easting
+        target_northing = self.location_from_id[target_location].additional.grid_reference_northing
 
         for location, dist in self.nearby_locations[self.location_from_id[target_location]].iteritems():
             logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
