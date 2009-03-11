@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.3 2009-03-10 22:46:21 francis Exp $
+// $Id: makeplan.cpp,v 1.4 2009-03-11 01:24:34 francis Exp $
 //
 
 #include <set>
@@ -17,12 +17,28 @@
 
 #include <boost/format.hpp>
 #include <boost/foreach.hpp>
+#include <boost/pending/relaxed_heap.hpp>
 
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
 
 typedef short Minutes; // after midnight
+
+// Stuff for relaxed_heap for Dijkstra's algorithm
+// XXX must be global, is there a way to use relaxed_heap and this not be?
+// Otherwise this whole thing can't be called from two threads using same data,
+// which is a pain.
+typedef std::vector<boost::optional<Minutes> > QueueValuesType;
+QueueValuesType queue_values;
+struct LessValues
+{
+    bool operator()(unsigned x, unsigned y) const
+    {
+        assert(queue_values[x] && queue_values[y]);
+        return queue_values[x] > queue_values[y];
+    }
+};
 
 typedef int LocationID;
 class Location {
@@ -95,6 +111,7 @@ class ArrivePlaceTime {
 
 /* Map from a location, to the best time/location to leave that place */
 typedef std::map<LocationID, ArrivePlaceTime> Adjacents;
+typedef std::pair<LocationID, ArrivePlaceTime> AdjacentsPair;
 
 /* Logging */
 int log(const char* fmt, ...) {
@@ -319,17 +336,19 @@ class PlanningATCO {
         Minutes arrival_time_at_target_location = -1;
         BOOST_FOREACH(Hop hop, journey.hops) {
             // Find hops that arrive at the target
-            if (hop.location_id == target_location_id) {
-                if (!hop.is_set_down()) {
-                    continue;
-                }
-                Minutes possible_arrival_time_at_target_location = hop.mins_arr;
-                // See if that is a closer arrival time than what we got so far
-                assert(hop.mins_arr >= 0);
-                if (possible_arrival_time_at_target_location + interchange_time <= target_arrival_time 
-                    && (arrival_time_at_target_location == -1 || arrival_time_at_target_location < possible_arrival_time_at_target_location)) {
-                    arrival_time_at_target_location = possible_arrival_time_at_target_location;
-                }
+            if (hop.location_id != target_location_id) {
+                continue
+            }
+            if (!hop.is_set_down()) {
+                continue;
+            }
+            Minutes possible_arrival_time_at_target_location = hop.mins_arr;
+            log("\t\tarrival time at target location: %d", possible_arrival_time_at_target_location);
+            // See if that is a closer arrival time than what we got so far
+            assert(hop.mins_arr >= 0);
+            if (possible_arrival_time_at_target_location + interchange_time <= target_arrival_time 
+                && (arrival_time_at_target_location == -1 || arrival_time_at_target_location < possible_arrival_time_at_target_location)) {
+                arrival_time_at_target_location = possible_arrival_time_at_target_location;
             }
         }
 
@@ -384,85 +403,107 @@ class PlanningATCO {
         }
     }
 
-}; /*
-    '''
+    /*
     Run Dijkstra's algorithm to find latest departure time from all locations to
     arrive at the target location by the given time.
 
     target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
     target_datetime - when we want to arrive by
-    '''
-    void do_dijkstra(self, target_location, target_datetime, walk_speed=1, walk_time=3600, earliest_departure=None) {
-        // The thing we're going to use for priority in the pqueue
-        class Priority:
-            def __init__(self, when):
-                self.when = when
-            // operator just for use on priority queue
-            def __cmp__(self, other):
-                // The priority queue pops smallest first, whereas we want
-                // largest, so these are reversed from expected direction
-                if self.when < other.when:
-                    return 1
-                if self.when == other.when:
-                    return 0 
-                if self.when > other.when:
-                    return -1
-                assert False
-            def __repr__(self):
-                return "Priority(" + repr(self.when) + ")"
+    */
+    void do_dijkstra(const LocationID target_location_id, const Minutes target_time /*, walk_speed=1, walk_time=3600, earliest_departure=None*/) {
+        /*int max_values = 100;
+        queue_values.resize(max_values);
+        boost::relaxed_heap<unsigned, LessValues> heap(max_values);
 
-       
-        // Set up initial state
-        settled = {} // dictionary from location to datetime
-        settled_routes = {} // routes of settled journeys
-        queue = pqueue.PQueue()
-        queue.insert(Priority(target_datetime), target_location)
-        routes = {}
-        routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime, onwards_leg_type = 'already_there') ] // how to get there
-        self.final_destination = target_location
-        self.walk_speed = walk_speed
-        self.walk_time = walk_time
+        queue_values[9] = 1000;
+        heap.push(9);
+        queue_values[8] = 2000;
+        heap.push(8);
+        queue_values[7] = 1500;
+        heap.push(7);
+        queue_values[6] = 1300;
+        heap.push(6);
+        queue_values[5] = 1900;
+        heap.push(5);
 
-        while len(queue) > 0:
+        int victim;
+        Minutes m;
+
+        victim = heap.top();
+        m = *queue_values[victim];
+        log("minutes: %d location: %d", m, victim);
+
+        queue_values[7] = 5000;
+        heap.update(7);
+
+        victim = heap.top();
+        m = *queue_values[victim];
+        log("minutes: %d location: %d", m, victim);
+        */
+        
+        // Variables for results
+        std::map<LocationID, Minutes> settled; // dictionary from location to datetime
+        // settled_routes = {} // routes of settled journeys
+        // routes = {}
+        // routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime, onwards_leg_type = 'already_there') ] // how to get there
+        
+        // Other variables
+        this->final_destination_id = target_location_id;
+        // self.walk_speed = walk_speed
+        // self.walk_time = walk_time
+        
+        // Create the heap, for use as priority queue
+        int max_values = this->locations.size();
+        queue_values.resize(max_values + 1); // queue values is array with index location -> time of day (in minutes since midnight)
+        boost::relaxed_heap<unsigned, LessValues> heap(max_values);
+
+        // Put in initial value
+        queue_values[target_location_id] = target_time; 
+        heap.update(target_location_id);
+
+        while(!heap.empty()) {
             // Find the item at top of queue
-            (nearest_datetime, nearest_location) = queue.pop()
-            nearest_datetime = nearest_datetime.when
+            LocationID nearest_location = heap.top();
+            Minutes nearest_time= *queue_values[nearest_location];
+            heap.pop();
 
             // If it is earlier than earliest departure we are going back to, then finish
-            if earliest_departure and nearest_datetime < earliest_departure:
-                break
+            // if earliest_departure and nearest_datetime < earliest_departure:
+            //    break
 
             // That item is now settled
-            settled[nearest_location] = nearest_datetime
+            settled[nearest_location] = nearest_time;
             // ... copy the route into settled_routes, so we only return routes
             // we know we finished (rather than the partial, best-so-far that is
             // in routes)
-            settled_routes[nearest_location] = routes[nearest_location]
-            logging.info("settled " + nearest_location + " " + str(nearest_datetime))
+            //settled_routes[nearest_location] = routes[nearest_location]
+            log("settled location %d time %d", nearest_location, nearest_time);
             
             // Add all of its neighbours to the queue
-            foundtimes = self.adjacent_location_times(nearest_location, nearest_datetime)
-            for location, arrive_place_time in foundtimes.iteritems():
-                new_priority = Priority(arrive_place_time.when)
-                try:
-                    // See if this location is already in queue 
-                    current_priority = queue[location]
-                    // If we get here then it is, see if what we found is nearer and update priority
-                    assert location not in settled
-                    if new_priority < current_priority:
-                        queue[location] = new_priority
-                        routes[location] = [ arrive_place_time ] + routes[nearest_location] 
-                        logging.debug("updated " + location + " from priority " + str(current_priority) + " to " + str(new_priority) + " in queue")
-                except KeyError, e: // only way of testing presence in queue is to catch an exception
-                    if location not in settled:
-                        // No existing entry for location in queue
-                        queue.insert(new_priority, location)
-                        routes[location] = [ arrive_place_time ] + routes[nearest_location] 
-                        logging.debug("added " + location + " " + str(new_priority) + " to queue")
+            Adjacents adjacents;
+            this->adjacent_location_times(adjacents, nearest_location, nearest_time);
 
-        return (settled, settled_routes)
+            BOOST_FOREACH(AdjacentsPair p, adjacents) {
+                LocationID location_id = p.first;
+                ArrivePlaceTime arrive_place_time = p.second;
+                if (queue_values[location_id]) {
+                    // already in heap
+                    log("updated location %d from priority %d to priority %d", location_id, *queue_values[location_id], arrive_place_time.when);
+                    queue_values[location_id] = arrive_place_time.when;
+                    heap.update(location_id);
+                } else {
+                    // new priority to heap
+                    log("added location %d with priority %d", location_id, arrive_place_time.when);
+                    queue_values[location_id] = arrive_place_time.when;
+                    heap.push(location_id);
+                }
+            }
+        }
+
+        // return (settled, settled_routes);
     }
 
+}; /*
     def pretty_print_routes(self, routes):
         '''do_dijkstra returns a journey routes array, this prints it in a human readable format.'''
         for place, route in routes.iteritems():
@@ -495,6 +536,7 @@ int main() {
     printf("running makeplan.cpp\n");
     PlanningATCO atco;
     atco.load_binary_timetable("/home/francis/toobig/nptdr/gen/nptdr-B32QD-40000.fastindex");
+    atco.do_dijkstra(26 /* 9100BHAMSNH */, 9 * 60 /* 9 am */);
     return 0;
 };
 
