@@ -6,12 +6,13 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.5 2009-03-11 02:19:28 francis Exp $
+// $Id: makeplan.cpp,v 1.6 2009-03-11 02:57:39 francis Exp $
 //
 
 #include <set>
 #include <map>
 #include <vector>
+#include <list>
 #include <string>
 #include <cstdio>
 #include <fstream>
@@ -117,17 +118,10 @@ typedef std::pair<LocationID, ArrivePlaceTime> AdjacentsPair;
 /* Result types from Dijkstra's algorithm */
 typedef std::map<LocationID, Minutes> Settled;
 typedef std::pair<LocationID, Minutes> SettledPair;
+typedef std::map<LocationID, std::list<ArrivePlaceTime> > Routes;
+typedef std::pair<LocationID, std::list<ArrivePlaceTime> > RoutesPair;
 
 /* Logging */
-/*void log(const char* fmt, ...) {
-    va_list ap;
-    va_start(ap, fmt);
-    char str[10000];
-    vsnprintf(str, 9999, fmt, ap);
-    do_log(str);
-    va_end(ap);
-    do_log("\n");
-}*/
 void do_log(boost::basic_format<char, std::char_traits<char>, std::allocator<char> > &bf) {
     puts(bf.str().c_str());
 }
@@ -164,6 +158,8 @@ class PlanningATCO {
     std::vector<Location> locations;
     std::vector<Journey> journeys;
 
+    std::map<std::string, LocationID> locations_by_text_id;
+
     typedef std::map<LocationID, std::set<JourneyID> > JourneysVisitingLocation;
     JourneysVisitingLocation journeys_visiting_location;
 
@@ -196,7 +192,7 @@ class PlanningATCO {
         std::string location_filename = l_in_prefix + ".locations";
         FILE *fp = fopen(location_filename.c_str(), "rb");
         fread(&this->number_of_locations, 1, sizeof(int), fp);
-        log(boost::format("number of locations%d") % this->number_of_locations);
+        log(boost::format("number of locations: %d") % this->number_of_locations);
 
         locations.resize(this->number_of_locations + 1);
         for (int i = 1; i <= this->number_of_locations; ++i) {
@@ -210,6 +206,8 @@ class PlanningATCO {
             fread(&l->easting, 1, sizeof(l->easting), fp);
             fread(&l->northing, 1, sizeof(l->northing), fp);
 
+            locations_by_text_id[l->text_id] = id;
+
             log(boost::format("loaded location: %s") % l->toString().c_str());
         }
 
@@ -219,7 +217,7 @@ class PlanningATCO {
         std::string journey_filename = l_in_prefix + ".journeys";
         fp = fopen(journey_filename.c_str(), "rb");
         fread(&this->number_of_journeys, 1, sizeof(int), fp);
-        log(boost::format("number of journeys %d") % this->number_of_journeys);
+        log(boost::format("number of journeys: %d") % this->number_of_journeys);
 
         journeys.resize(this->number_of_journeys + 1);
         for (int i = 1; i <= this->number_of_journeys; ++i) {
@@ -248,7 +246,6 @@ class PlanningATCO {
                 // update index
                 journeys_visiting_location[hop.location_id].insert(id);
             }
-
         }
 
     }
@@ -263,7 +260,7 @@ class PlanningATCO {
     */
     void adjacent_location_times(Adjacents &adjacents, LocationID target_location_id, Minutes target_arrival_time) {
         // Check that there are journeys visiting this location
-        log(boost::format("adjacent_location_times target_location: %d target_arrival_time: %d") % target_location_id % target_arrival_time);
+        log(boost::format("adjacent_location_times target_location: %s target_arrival_time: %d") % this->locations[target_location_id].text_id % target_arrival_time);
         JourneysVisitingLocation::iterator it = this->journeys_visiting_location.find(target_location_id);
         if (it == journeys_visiting_location.end()) {
             throw Exception((boost::format("No journeys known visiting target_location id %d") % target_location_id).str());
@@ -272,6 +269,7 @@ class PlanningATCO {
         // Go through every journey visiting the location
         std::set<JourneyID> journey_list = it->second;
         BOOST_FOREACH(JourneyID journey_id, journey_list) {
+            log(boost::format("\tconsidering journey: %s") % this->journeys[journey_id].text_id)
             this->_adjacent_location_times_for_journey(target_location_id, target_arrival_time, adjacents, journey_id);
         }
         /*
@@ -427,7 +425,7 @@ class PlanningATCO {
     target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
     target_datetime - when we want to arrive by
     */
-    void do_dijkstra(Settled& settled, const LocationID target_location_id, const Minutes target_time /*, walk_speed=1, walk_time=3600, earliest_departure=None*/) {
+    void do_dijkstra(Settled& settled, Routes& settled_routes, const LocationID target_location_id, const Minutes target_time /*, walk_speed=1, walk_time=3600, earliest_departure=None*/) {
         /*int max_values = 100;
         queue_values.resize(max_values);
         boost::relaxed_heap<unsigned, LessValues> heap(max_values);
@@ -458,9 +456,8 @@ class PlanningATCO {
         log("minutes: %d location: %d", m, victim);
         */
         
-        // settled_routes = {} // routes of settled journeys
-        // routes = {}
-        // routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime, onwards_leg_type = 'already_there') ] // how to get there
+        Routes routes; // how to get there
+        routes[target_location_id].push_front(ArrivePlaceTime(target_location_id, target_time /*, onwards_leg_type = 'already_there') */));
         
         // Other variables
         this->final_destination_id = target_location_id;
@@ -478,8 +475,8 @@ class PlanningATCO {
 
         while(!heap.empty()) {
             // Find the item at top of queue
-            LocationID nearest_location = heap.top();
-            Minutes nearest_time= *queue_values[nearest_location];
+            LocationID nearest_location_id = heap.top();
+            Minutes nearest_time= *queue_values[nearest_location_id];
             heap.pop();
 
             // If it is earlier than earliest departure we are going back to, then finish
@@ -487,35 +484,40 @@ class PlanningATCO {
             //    break
 
             // That item is now settled
-            settled[nearest_location] = nearest_time;
+            settled[nearest_location_id] = nearest_time;
             // ... copy the route into settled_routes, so we only return routes
             // we know we finished (rather than the partial, best-so-far that is
             // in routes)
-            //settled_routes[nearest_location] = routes[nearest_location]
-            log(boost::format("settled location %d time %d") % nearest_location % nearest_time);
+            settled_routes[nearest_location_id] = routes[nearest_location_id];
+            log(boost::format("settled location %s time %d") % this->locations[nearest_location_id].text_id % nearest_time);
             
             // Add all of its neighbours to the queue
             Adjacents adjacents;
-            this->adjacent_location_times(adjacents, nearest_location, nearest_time);
+            this->adjacent_location_times(adjacents, nearest_location_id, nearest_time);
 
             BOOST_FOREACH(AdjacentsPair p, adjacents) {
                 LocationID location_id = p.first;
                 ArrivePlaceTime arrive_place_time = p.second;
                 if (queue_values[location_id]) {
                     // already in heap
-                    log(boost::format("updated location %d from priority %d to priority %d") % location_id % *queue_values[location_id] % arrive_place_time.when);
-                    queue_values[location_id] = arrive_place_time.when;
-                    heap.update(location_id);
+                    Minutes current_priority = *queue_values[location_id];
+                    if (arrive_place_time.when > current_priority) {
+                        log(boost::format("updated location %s from priority %d to priority %d") % this->locations[location_id].text_id % current_priority % arrive_place_time.when);
+                        queue_values[location_id] = arrive_place_time.when;
+                        heap.update(location_id);
+                    }
                 } else {
                     // new priority to heap
-                    log(boost::format("added location %d with priority %d") % location_id % arrive_place_time.when);
+                    log(boost::format("added location %s with priority %d") % this->locations[location_id].text_id % arrive_place_time.when);
                     queue_values[location_id] = arrive_place_time.when;
                     heap.push(location_id);
                 }
+                routes[location_id] = routes[nearest_location_id];
+                routes[location_id].push_front(arrive_place_time);
             }
         }
-
-        // return (settled, settled_routes);
+    
+        // return values are settled and settled_routes in parameters
     }
 
 }; /*
@@ -552,12 +554,17 @@ int main() {
 
     std::string prefix = "/home/francis/toobig/nptdr/gen/nptdr-B32QD-40000";
     Minutes target_minutes_after_midnight = 9 * 60; // 9am
-    LocationID target_location_id = 26; // 9100BHAMSNH
+    std::string target_location_text_id = "9100BHAMSNH";
 
+    // Load timetables
     PlanningATCO atco;
     atco.load_binary_timetable(prefix + ".fastindex");
+
+    // Do route finding
     Settled settled;
-    atco.do_dijkstra(settled, target_location_id, target_minutes_after_midnight);
+    Routes routes;
+    LocationID target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
+    atco.do_dijkstra(settled, routes, target_location_id, target_minutes_after_midnight);
 
     // Output for grid
     std::string grid_time_file = prefix + ".fast.txt";
@@ -575,13 +582,21 @@ int main() {
     // Output for human
     std::string human_file = prefix + ".fast-human.txt";
     std::ofstream g;
-    g.open(grid_time_file.c_str());
+    g.open(human_file.c_str());
+    g << "Journey times to " << target_location_text_id << " by " << target_minutes_after_midnight / 60 << ":" << target_minutes_after_midnight % 60 << "\n";
     BOOST_FOREACH(SettledPair p, settled) {
         LocationID l_id = p.first;
-        Minutes min = target_minutes_after_midnight - p.second;
-        int secs = min * 60;
+        Minutes when = target_minutes_after_midnight - p.second;
         Location *l = &atco.locations[l_id];
-        g << l->text_id << " " << min << "minutes" << std::endl;
+        g << l->text_id << " " << when << " mins\n";
+        
+        BOOST_FOREACH(ArrivePlaceTime arrive_place_time, routes[l_id]) {
+            
+            int hours = arrive_place_time.when / 60;
+            int mins = arrive_place_time.when % 60;
+            Location *rl = &atco.locations[arrive_place_time.location_id];
+            g << "\tleave " << rl->text_id << " at " << hours << ":" << mins << std::endl;
+        }
     }
     g.close();
 
