@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.45 2009-03-11 10:37:13 francis Exp $
+# $Id: makeplan.py,v 1.46 2009-03-11 12:23:39 francis Exp $
 #
 
 # TODO:
@@ -105,7 +105,7 @@ routes gave her details of the best route she could take from each station. A
 route consisted of a list of place/times, in reverse order starting with the
 target destination, and ending with the place/time that appeared in the results
 dictionary.
->>> atco.pretty_print_routes(routes)
+>>> print atco.pretty_print_routes(routes),
 From DRYAW:
     Leave DRYAW by TRAIN on the 07:20:00, arriving TORYRECK at 07:45:00
     You've arrived at TORYRECK
@@ -134,40 +134,40 @@ from the end of the railway line.
 
 >>> (results, routes) = atco.do_dijkstra('ANOPHAB', datetime.datetime(2007, 1, 8, 9, 15))
 >>> results
-{'FFARQUHARB': datetime.datetime(2007, 1, 8, 8, 50), 'HACKENBECK': datetime.datetime(2007, 1, 8, 8, 32), 'TORYRECK': datetime.datetime(2007, 1, 8, 7, 45), 'DRYAW': datetime.datetime(2007, 1, 8, 7, 20), 'FFARQUHAR': datetime.datetime(2007, 1, 8, 8, 49, 6, 148352), 'ELSBRIDGE': datetime.datetime(2007, 1, 8, 8, 11), 'ANOPHAB': datetime.datetime(2007, 1, 8, 9, 15), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
->>> atco.pretty_print_routes(routes)
+{'FFARQUHARB': datetime.datetime(2007, 1, 8, 8, 50), 'HACKENBECK': datetime.datetime(2007, 1, 8, 8, 32), 'TORYRECK': datetime.datetime(2007, 1, 8, 7, 45), 'DRYAW': datetime.datetime(2007, 1, 8, 7, 20), 'FFARQUHAR': datetime.datetime(2007, 1, 8, 8, 49), 'ELSBRIDGE': datetime.datetime(2007, 1, 8, 8, 11), 'ANOPHAB': datetime.datetime(2007, 1, 8, 9, 15), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
+>>> print atco.pretty_print_routes(routes),
 From FFARQUHARB:
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From HACKENBECK:
     Leave HACKENBECK by TRAIN on the 08:32:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0.88 mins
+    Leave by walking to FFARQUHARB, will take 1.00 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From TORYRECK:
     Leave TORYRECK by TRAIN on the 07:45:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0.88 mins
+    Leave by walking to FFARQUHARB, will take 1.00 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From DRYAW:
     Leave DRYAW by TRAIN on the 07:20:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0.88 mins
+    Leave by walking to FFARQUHARB, will take 1.00 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From FFARQUHAR:
-    Leave by walking to FFARQUHARB, will take 0.88 mins
+    Leave by walking to FFARQUHARB, will take 1.00 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From ELSBRIDGE:
     Leave ELSBRIDGE by TRAIN on the 08:11:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0.88 mins
+    Leave by walking to FFARQUHARB, will take 1.00 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From ANOPHAB:
     You've arrived at ANOPHAB
 From KNAPFORD:
     Leave KNAPFORD by TRAIN on the 07:00:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 0.88 mins
+    Leave by walking to FFARQUHARB, will take 1.00 mins
     Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 
@@ -303,19 +303,27 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         else:
             adjacents[arrive_place_time.location] = arrive_place_time
 
+    def _walk_time_apart(self, dist):
+        '''How long it takes to walk between two stations dist distance apart.
+        '''
+        sec = float(dist) / float(self.walk_speed)
+        # round up to nearest minute
+        mins = int((sec + 59) / 60)
+        walk_time = datetime.timedelta(seconds = mins * 60)
+        return walk_time 
+
     def _nearby_locations(self, target_location, target_arrival_datetime, adjacents):
         '''Private function, called by adjacent_location_times. Looks for
         stations you can walk from to get to the target station.  This is
         constrained by self.walk_speed and self.walk_time. Adds any such
         stations to the adjacents structure.
         '''
-
         target_easting = self.location_from_id[target_location].additional.grid_reference_easting
         target_northing = self.location_from_id[target_location].additional.grid_reference_northing
 
         for location, dist in self.nearby_locations[self.location_from_id[target_location]].iteritems():
             logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
-            walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
+            walk_time = self._walk_time_apart(dist)
             walk_departure_datetime = target_arrival_datetime - walk_time
             arrive_time_place = ArrivePlaceTime(location.location, walk_departure_datetime, onwards_leg_type = 'walk', onwards_walk_time = walk_time)
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
@@ -505,17 +513,18 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
     def pretty_print_routes(self, routes):
         '''do_dijkstra returns a journey routes array, this prints it in a human readable format.'''
+        ret = ""
         for place, route in routes.iteritems():
-            print "From " + place + ":"
+            ret += "From " + place + ":\n"
             for ix in range(len(route)):
                 stop = route[ix]
                 if stop.onwards_leg_type == 'already_there':
-                    print "    You've arrived at " + stop.location
+                    ret += "    You've arrived at " + stop.location + "\n"
                     continue
                 next_stop = route[ix + 1]
                 
                 if stop.onwards_leg_type == 'walk':
-                    print "    Leave by walking to %s, will take %.02f mins" % (next_stop.location, stop.onwards_walk_time.seconds / 60.0)
+                    ret += "    Leave by walking to %s, will take %.02f mins\n" % (next_stop.location, stop.onwards_walk_time.seconds / 60.0)
                 elif stop.onwards_leg_type == 'journey':
                     departure_times = stop.onwards_journey.find_departure_times_at_location(stop.location)
                     departure_time = []
@@ -525,9 +534,11 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     arrival_time = []
                     for a in arrival_times:
                         arrival_time.append(a.strftime("%H:%M:%S"))
-                    print "    Leave " + stop.location + " by " + stop.onwards_journey.vehicle_type + " on the " + ','.join(departure_time) + ", arriving " + next_stop.location + " at " + ','.join(arrival_time)
+                    ret += "    Leave " + stop.location + " by " + stop.onwards_journey.vehicle_type + " on the " + ','.join(departure_time) + ", arriving " + next_stop.location + " at " + ','.join(arrival_time) + "\n"
                 else:
                     raise "Unknown leg type '" + stop.onwards_leg_type + "'"
+
+        return ret
 
 if __name__ == "__main__":
     import doctest

@@ -45,7 +45,8 @@ Commands:
     plan - create map 
     stats - dump statistics about files
     midnight - output journeys that cross midnight
-    fast - output fast data structure and call quick planning in C++
+    fast - output fast data structure for C++ code
+    fastplan - as fast, but also calls out to the quick planning C++ code
 Default is to run "plan".
 
 Parameters:
@@ -142,12 +143,13 @@ def do_external_contours():
 
 
 # Handle generating indices for C++ version
-if command == 'fast':
+if command == 'fast' or command == 'fastplan':
     fastindex = "%s/%s.fastindex" % (options.output, outfile)
     atco = fastplan.FastPregenATCO(fastindex, nptdr_files, target_when.date())
-    run_cmd("../pylib/makeplan %s/%s %d %s" % (options.output, outfile, target_when.hour * 60 + target_when.minute, options.destination))
-    outfile = outfile + ".fast"
-    do_external_contours()
+    if command == 'fastplan':
+        run_cmd("../pylib/makeplan %s/%s %d %s" % (options.output, outfile, target_when.hour * 60 + target_when.minute, options.destination))
+        outfile = outfile + ".fast"
+        do_external_contours()
     sys.exit()
 
 # Load in journey tables
@@ -201,18 +203,7 @@ f.write("\n")
 f.write(s + "\n")
 f.write(len(s) * '=' + '\n')
 f.write("\n")
-for location in sorted(results.keys()):
-    when = results[location]
-
-    delta = target_when - when
-    mins = delta.seconds / 60 + delta.days * 24 * 60
-    f.write(location.ljust(12) + " " + str(mins) + " mins\n")
-    route = routes[location]
-    for waypoint in route:
-        f.write("\tleave %s (%s) at %s" % (waypoint.location, atco.location_from_id[waypoint.location].long_description(), str(waypoint.when)))
-        if waypoint.onwards_journey:
-            f.write(" " + waypoint.onwards_journey.id)
-        f.write("\n")
+f.write(atco.pretty_print_routes(routes))
 f.close()
 
 do_external_contours()
