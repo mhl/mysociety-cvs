@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.4 2009-03-10 22:28:28 francis Exp $
+# $Id: fastplan.py,v 1.5 2009-03-11 04:07:47 francis Exp $
 #
 
 import logging
@@ -93,9 +93,9 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
                 for hop in item.hops:
                     mins_arr,mins_dep = -1,-1
                     if hop.is_set_down():
-                        mins_arr = hop.published_arrival_time.hour * 60 + hop.published_arrival_time.second
+                        mins_arr = hop.published_arrival_time.hour * 60 + hop.published_arrival_time.minute
                     if hop.is_pick_up():
-                        mins_dep = hop.published_departure_time.hour * 60 + hop.published_departure_time.second
+                        mins_dep = hop.published_departure_time.hour * 60 + hop.published_departure_time.minute
                     self._pack(self.file_journeys, "=ihh", self.location_to_fastix[hop.location], mins_arr, mins_dep)
 
 

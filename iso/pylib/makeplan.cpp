@@ -6,8 +6,14 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.6 2009-03-11 02:57:39 francis Exp $
+// $Id: makeplan.cpp,v 1.7 2009-03-11 04:07:47 francis Exp $
 //
+
+// Usage:
+// g++ -g makeplan.cpp -DDEBUG
+// ./a.out /home/francis/toobig/nptdr/gen/nptdr-B32QD-40000 540 9100BHAMSNH
+//
+// Is quicker without logging that DEBUG causes.
 
 #include <set>
 #include <map>
@@ -358,7 +364,7 @@ class PlanningATCO {
                 continue;
             }
             Minutes possible_arrival_time_at_target_location = hop.mins_arr;
-            log(boost::format("\t\tarrival time at target location: %d") % possible_arrival_time_at_target_location);
+            log(boost::format("\t\tarrival time %d at target location %s") % possible_arrival_time_at_target_location % this->locations[target_location_id].text_id);
             // See if that is a closer arrival time than what we got so far
             assert(hop.mins_arr >= 0);
             if (possible_arrival_time_at_target_location + interchange_time <= target_arrival_time 
@@ -370,7 +376,7 @@ class PlanningATCO {
         // See whether if we want to use this journey to get to this
         // stop, we get there on time to change to the next journey.
         if (arrival_time_at_target_location == -1) {
-            log(boost::format("\t\twhich are all too late with interchange time %d so not using journey") % interchange_time);
+            log(boost::format("\t\twhich are all too late for %s by %d with interchange time %d so not using journey") % this->locations[target_location_id].text_id % target_arrival_time % interchange_time);
             return;
         }
 
@@ -505,15 +511,17 @@ class PlanningATCO {
                         log(boost::format("updated location %s from priority %d to priority %d") % this->locations[location_id].text_id % current_priority % arrive_place_time.when);
                         queue_values[location_id] = arrive_place_time.when;
                         heap.update(location_id);
+                        routes[location_id] = routes[nearest_location_id];
+                        routes[location_id].push_front(arrive_place_time);
                     }
                 } else {
                     // new priority to heap
                     log(boost::format("added location %s with priority %d") % this->locations[location_id].text_id % arrive_place_time.when);
                     queue_values[location_id] = arrive_place_time.when;
                     heap.push(location_id);
+                    routes[location_id] = routes[nearest_location_id];
+                    routes[location_id].push_front(arrive_place_time);
                 }
-                routes[location_id] = routes[nearest_location_id];
-                routes[location_id].push_front(arrive_place_time);
             }
         }
     
@@ -549,12 +557,15 @@ class PlanningATCO {
 
 */
 
-int main() {
-    printf("running makeplan.cpp\n");
+int main(int argc, char * argv[]) {
+    if (argc < 3) {
+        printf("makeplan.cpp: needs prefix path as first argument, target arrival time in mins after midnight as second, target location at third");
+        return 1;
+    }
 
-    std::string prefix = "/home/francis/toobig/nptdr/gen/nptdr-B32QD-40000";
-    Minutes target_minutes_after_midnight = 9 * 60; // 9am
-    std::string target_location_text_id = "9100BHAMSNH";
+    std::string prefix = argv[1];
+    Minutes target_minutes_after_midnight = atoi(argv[2]);
+    std::string target_location_text_id = argv[3]; // e.g. "9100BHAMSNH";
 
     // Load timetables
     PlanningATCO atco;

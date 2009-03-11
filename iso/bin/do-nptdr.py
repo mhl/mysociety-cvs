@@ -45,7 +45,7 @@ Commands:
     plan - create map 
     stats - dump statistics about files
     midnight - output journeys that cross midnight
-    fast - output fast data structure for quick planning from C++
+    fast - output fast data structure and call quick planning in C++
 Default is to run "plan".
 
 Parameters:
@@ -121,10 +121,33 @@ logging.basicConfig(level=logging.getLevelName(options.loglevel))
 
 nptdr_files = glob.glob(options.data)
 
+# Run external command, and log what did
+def run_cmd(cmd):
+    logging.info("external command: " + cmd)
+    os.system(cmd)
+
+# Calls Chris Lightfoot's old C code to make contour files
+def do_external_contours():
+    run_cmd("cat %s/%s.txt | ./transportdirect-journeys-to-grid grid %s %d %f %f %d > %s/%s-grid" % (options.output, outfile, rect, options.px, options.px, options.endwalkspeed, options.endwalktime, options.output, outfile))
+    run_cmd("cat %s/%s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s/%s.ppm" % (options.output, outfile, rect, options.px, options.px, options.bandsize, options.bandcount, options.bandcolsep, options.output, outfile))
+
+    timestring = time.strftime("%Y-%m-%d-%H.%M.%S")
+    run_cmd("convert %s/%s.ppm %s/%s.%s.png" % (options.output, outfile, options.output, outfile, timestring))
+
+    print "finished: %s/%s.%s.png" % (options.output, outfile, timestring)
+
+    if options.viewer:
+        run_cmd(options.viewer + " %s/%s.%s.png" % (options.output, outfile, timestring))
+#eog $output/$outfile.png
+
+
 # Handle generating indices for C++ version
 if command == 'fast':
     fastindex = "%s/%s.fastindex" % (options.output, outfile)
     atco = fastplan.FastPregenATCO(fastindex, nptdr_files, target_when.date())
+    run_cmd("../pylib/makeplan %s/%s %d %s" % (options.output, outfile, target_when.hour * 60 + target_when.minute, options.destination))
+    outfile = outfile + ".fast"
+    do_external_contours()
     sys.exit()
 
 # Load in journey tables
@@ -185,24 +208,13 @@ for location in sorted(results.keys()):
     mins = delta.seconds / 60 + delta.days * 24 * 60
     f.write(location.ljust(12) + " " + str(mins) + " mins\n")
     route = routes[location]
-    route.reverse()
     for waypoint in route:
-        f.write("\tleave %s (%s) at %s" % (waypoint.location, atco.location_from_id[waypoint.location].long_description(), str(waypoint.when)) + "\n")
+        f.write("\tleave %s (%s) at %s" % (waypoint.location, atco.location_from_id[waypoint.location].long_description(), str(waypoint.when)))
+        if waypoint.onwards_journey:
+            f.write(" " + waypoint.onwards_journey.id)
+        f.write("\n")
 f.close()
 
-def run_cmd(cmd):
-    logging.info("external command: " + cmd)
-    os.system(cmd)
-run_cmd("cat %s/%s.txt | ./transportdirect-journeys-to-grid grid %s %d %f %f %d > %s/%s-grid" % (options.output, outfile, rect, options.px, options.px, options.endwalkspeed, options.endwalktime, options.output, outfile))
-run_cmd("cat %s/%s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s/%s.ppm" % (options.output, outfile, rect, options.px, options.px, options.bandsize, options.bandcount, options.bandcolsep, options.output, outfile))
-
-timestring = time.strftime("%Y-%m-%d-%H.%M.%S")
-run_cmd("convert %s/%s.ppm %s/%s.%s.png" % (options.output, outfile, options.output, outfile, timestring))
-
-print "finished: %s/%s.%s.png" % (options.output, outfile, timestring)
-
-if options.viewer:
-    run_cmd(options.viewer + " %s/%s.%s.png" % (options.output, outfile, timestring))
-#eog $output/$outfile.png
+do_external_contours()
 
 
