@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.46 2009-03-11 12:23:39 francis Exp $
+# $Id: makeplan.py,v 1.47 2009-03-11 16:12:09 francis Exp $
 #
 
 # TODO:
@@ -322,7 +322,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         target_northing = self.location_from_id[target_location].additional.grid_reference_northing
 
         for location, dist in self.nearby_locations[self.location_from_id[target_location]].iteritems():
-            logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
+            logging.debug("_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
             walk_time = self._walk_time_apart(dist)
             walk_departure_datetime = target_arrival_datetime - walk_time
             arrive_time_place = ArrivePlaceTime(location.location, walk_departure_datetime, onwards_leg_type = 'walk', onwards_walk_time = walk_time)

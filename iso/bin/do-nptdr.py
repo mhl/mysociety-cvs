@@ -100,7 +100,7 @@ if len(args) > 1:
 if len(args) == 0:
     args = ['plan']
 command = args[0]
-if command not in ['plan', 'stats', 'midnight', 'fast']:
+if command not in ['plan', 'stats', 'midnight', 'fast', 'fastplan']:
     raise Exception, 'Unknown command'
 
 f = mysociety.mapit.get_location(options.postcode)

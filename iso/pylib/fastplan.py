@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.5 2009-03-11 04:07:47 francis Exp $
+# $Id: fastplan.py,v 1.6 2009-03-11 16:12:09 francis Exp $
 #
 
 import logging
@@ -26,6 +26,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self.target_date = target_date
 
         # count stuff
+        logging.info("FastPregenATCO: counting things")
         self.location_c = 0
         self.location_to_fastix = {}
         self.journey_c = 0
@@ -33,18 +34,22 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self.read_all(self.count_stuff)
 
         # output location ids
+        logging.info("FastPregenATCO: making locations file")
         self.file_locations = open(self.out_prefix+".locations", 'w')
         self._pack(self.file_locations, "=i", len(self.location_to_fastix))
         self.location_c = 0
         self.location_to_fastix = {}
         self.read_all(self.load_location_ids)
+        self.file_locations.close()
 
         # output journey ids
+        logging.info("FastPregenATCO: making journey file")
         self.file_journeys = open(self.out_prefix+".journeys", 'w')
         self._pack(self.file_journeys, "=i", len(self.journey_to_fastix))
         self.journey_c = 0
         self.journey_to_fastix = {}
         self.read_all(self.load_journey_ids)
+        self.file_journeys.close()
 
     # reload all ATCO files, setting load function to given one
     def read_all(self, func):
