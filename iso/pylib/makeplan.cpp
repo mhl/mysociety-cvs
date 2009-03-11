@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.7 2009-03-11 04:07:47 francis Exp $
+// $Id: makeplan.cpp,v 1.8 2009-03-11 16:07:45 francis Exp $
 //
 
 // Usage:
@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <math.h>
 
 typedef short Minutes; // after midnight
 
@@ -161,6 +162,9 @@ class PlanningATCO {
     int number_of_locations;
     int number_of_journeys;
 
+    float walk_speed; // metres /s ec
+    float walk_time; // secs
+
     std::vector<Location> locations;
     std::vector<Journey> journeys;
 
@@ -168,6 +172,11 @@ class PlanningATCO {
 
     typedef std::map<LocationID, std::set<JourneyID> > JourneysVisitingLocation;
     JourneysVisitingLocation journeys_visiting_location;
+
+    typedef std::map<LocationID, float> NearbyLocationsInner;
+    typedef std::map<LocationID, NearbyLocationsInner> NearbyLocations;
+    typedef std::pair<LocationID, double> NearbyLocationsInnerPair;
+    NearbyLocations nearby_locations;
 
     LocationID final_destination_id;
 
@@ -177,15 +186,19 @@ class PlanningATCO {
     train_interchange_default - time in minutes to allow by default to change trains at same station
     bus_interchange_default - likewise for buses, at exact same stop
     */
-    PlanningATCO(int l_train_interchange_default = 5, int l_bus_interchange_default = 1) {
+    PlanningATCO(int l_train_interchange_default = 5, int l_bus_interchange_default = 1, float l_walk_speed=1.0, float l_walk_time=300.0 
+    ) {
         this->train_interchange_default = l_train_interchange_default;
         this->bus_interchange_default = l_bus_interchange_default;
+        this->walk_speed = l_walk_speed;
+        this->walk_time = l_walk_time;
     }
 
     /* Loads a string which has a byte lenth prefix */
     std::string _read_pascal_string(FILE *fp) {
         short len;
         fread(&len, 1, sizeof(short), fp);
+        // log(boost::format("_read_pascal_string len: %d") % len);
         std::string ret;
         ret.resize(len);
         fread(&ret[0], 1, len, fp);
@@ -254,6 +267,31 @@ class PlanningATCO {
             }
         }
 
+        // Proximity index
+        double nearby_max_distance = double(this->walk_speed) * double(this->walk_time);
+        double nearby_max_distance_sq = nearby_max_distance * nearby_max_distance;
+
+        this->nearby_locations.clear();
+        for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
+            Location *location = &this->locations[location_id];
+            double easting = location->easting;
+            double northing = location->northing;
+            for (LocationID other_location_id = location_id + 1; other_location_id <= this->number_of_locations; other_location_id++) {
+                Location *other_location = &this->locations[other_location_id];
+                double other_easting = other_location->easting;
+                double other_northing = other_location->northing;
+                double sqdist = (easting - other_easting)*(easting - other_easting)
+                              + (northing - other_northing)*(northing - other_northing);
+
+                if (sqdist < nearby_max_distance_sq) {
+                    double dist = sqrt(sqdist);
+                    log(boost::format("load_binary_timetable: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location->text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location->text_id % other_easting % other_northing);
+                    nearby_locations[location_id][other_location_id] = dist;
+                    nearby_locations[other_location_id][location_id] = dist;
+                }
+            }
+        }
+
     }
 
     /* Adjacency function for use with Dijkstra's algorithm on earliest
@@ -269,7 +307,10 @@ class PlanningATCO {
         log(boost::format("adjacent_location_times target_location: %s target_arrival_time: %d") % this->locations[target_location_id].text_id % target_arrival_time);
         JourneysVisitingLocation::iterator it = this->journeys_visiting_location.find(target_location_id);
         if (it == journeys_visiting_location.end()) {
-            throw Exception((boost::format("No journeys known visiting target_location id %d") % target_location_id).str());
+            // This can happen, for example, with locations that are only
+            // stopped at at the weekend, when it is a weekday. The fastplan.py
+            // code doesn't strip such cases.
+            return;
         }
 
         // Go through every journey visiting the location
@@ -278,9 +319,7 @@ class PlanningATCO {
             log(boost::format("\tconsidering journey: %s") % this->journeys[journey_id].text_id)
             this->_adjacent_location_times_for_journey(target_location_id, target_arrival_time, adjacents, journey_id);
         }
-        /*
-        // self._nearby_locations(target_location, target_arrival_datetime, adjacents)
-        // */
+        this->_nearby_locations(target_location_id, target_arrival_time, adjacents);
     }
 
     /* Private helper function. Store a time we can leave a station, if it
@@ -297,28 +336,43 @@ class PlanningATCO {
         }
     }
 
-/*
-    def _nearby_locations(Location target_location_id, const Minutes& target_arrival_time, Adjacents& adjacents):
-        '''Private function, called by adjacent_location_times. Looks for
+    /* How long it takes to walk between two stations dist distance apart.
+    */
+    Minutes _walk_time_apart(float dist) {
+        float sec = float(dist) / float(this->walk_speed);
+        // round up to nearest minute
+        Minutes walk_time = int((sec + 59) / 60);
+        return walk_time;
+    }
+
+
+    void _nearby_locations(LocationID target_location_id, const Minutes& target_arrival_time, Adjacents& adjacents) {
+        /* Private function, called by adjacent_location_times. Looks for
         stations you can walk from to get to the target station.  This is
         constrained by self.walk_speed and self.walk_time. Adds any such
         stations to the adjacents structure.
-        '''
+        */
+        Location *target_location = &this->locations[target_location_id];
 
-        try:
-            target_easting = self.location_from_id[target_location].additional.grid_reference_easting
-            target_northing = self.location_from_id[target_location].additional.grid_reference_northing
-        except AttributeError, e:
-            return
+        int target_easting = this->locations[target_location_id].easting;
+        int target_northing = this->locations[target_location_id].northing;
 
-        for location, dist in self.nearby_locations[self.location_from_id[target_location]].iteritems():
-            logging.debug("%s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
-            walk_time = datetime.timedelta(seconds = dist / self.walk_speed)
-            walk_departure_datetime = target_arrival_datetime - walk_time
-            arrive_time_place = ArrivePlaceTime(location.location, walk_departure_datetime, onwards_leg_type = 'walk', onwards_walk_time = walk_time)
+        NearbyLocationsInner &nearby_locations_inner = this->nearby_locations[target_location_id];
+        BOOST_FOREACH(NearbyLocationsInnerPair p, nearby_locations_inner) {
+            LocationID location_id = p.first;
+            double dist = p.second;
+
+            Location *location = &this->locations[location_id];
+
+            log(boost::format("_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)") % location->text_id % location->easting % location->northing % dist % target_location->text_id % target_easting % target_northing)
+
+            Minutes walk_time = this->_walk_time_apart(dist);
+            Minutes walk_departure_time = target_arrival_time - walk_time;
+            ArrivePlaceTime arrive_time_place(location_id, walk_departure_time /*, onwards_leg_type = 'walk', onwards_walk_time = walk_time */);
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
-            self._add_to_adjacents(arrive_time_place, adjacents)
-*/
+            this->_add_to_adjacents(arrive_time_place, adjacents);
+        }
+    }
 
     // How long after a journey it takes to interchange to catch another form of
     // transport at the destination stop.
@@ -431,8 +485,9 @@ class PlanningATCO {
     target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
     target_datetime - when we want to arrive by
     */
-    void do_dijkstra(Settled& settled, Routes& settled_routes, const LocationID target_location_id, const Minutes target_time /*, walk_speed=1, walk_time=3600, earliest_departure=None*/) {
-        /*int max_values = 100;
+    void do_dijkstra(Settled& settled, Routes& settled_routes, const LocationID target_location_id, const Minutes target_time /*, earliest_departure=None*/) {
+        /* Try out heaps
+        int max_values = 100;
         queue_values.resize(max_values);
         boost::relaxed_heap<unsigned, LessValues> heap(max_values);
 
@@ -467,8 +522,6 @@ class PlanningATCO {
         
         // Other variables
         this->final_destination_id = target_location_id;
-        // self.walk_speed = walk_speed
-        // self.walk_time = walk_time
         
         // Create the heap, for use as priority queue
         int max_values = this->locations.size();
