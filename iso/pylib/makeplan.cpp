@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.8 2009-03-11 16:07:45 francis Exp $
+// $Id: makeplan.cpp,v 1.9 2009-03-12 02:03:56 francis Exp $
 //
 
 // Usage:
@@ -210,6 +210,10 @@ class PlanningATCO {
         // Load in locations
         std::string location_filename = l_in_prefix + ".locations";
         FILE *fp = fopen(location_filename.c_str(), "rb");
+        if (!fp) {
+            printf("Failed to open index file: %s\n", location_filename.c_str());
+            exit(1);
+        }
         fread(&this->number_of_locations, 1, sizeof(int), fp);
         log(boost::format("number of locations: %d") % this->number_of_locations);
 
@@ -235,6 +239,10 @@ class PlanningATCO {
         // Load in journeys
         std::string journey_filename = l_in_prefix + ".journeys";
         fp = fopen(journey_filename.c_str(), "rb");
+        if (!fp) {
+            printf("Failed to open index file: %s\n", journey_filename.c_str());
+            exit(1);
+        }
         fread(&this->number_of_journeys, 1, sizeof(int), fp);
         log(boost::format("number of journeys: %d") % this->number_of_journeys);
 
@@ -612,17 +620,18 @@ class PlanningATCO {
 
 int main(int argc, char * argv[]) {
     if (argc < 3) {
-        printf("makeplan.cpp: needs prefix path as first argument, target arrival time in mins after midnight as second, target location at third");
+        printf("makeplan.cpp: fast index file prefix as first argument, output prefix as second argument, target arrival time in mins after midnight as second, target location at third");
         return 1;
     }
 
-    std::string prefix = argv[1];
-    Minutes target_minutes_after_midnight = atoi(argv[2]);
-    std::string target_location_text_id = argv[3]; // e.g. "9100BHAMSNH";
+    std::string fastindexprefix = argv[1];
+    std::string outputprefix = argv[2];
+    Minutes target_minutes_after_midnight = atoi(argv[3]);
+    std::string target_location_text_id = argv[4]; // e.g. "9100BHAMSNH";
 
     // Load timetables
     PlanningATCO atco;
-    atco.load_binary_timetable(prefix + ".fastindex");
+    atco.load_binary_timetable(fastindexprefix);
 
     // Do route finding
     Settled settled;
@@ -631,7 +640,7 @@ int main(int argc, char * argv[]) {
     atco.do_dijkstra(settled, routes, target_location_id, target_minutes_after_midnight);
 
     // Output for grid
-    std::string grid_time_file = prefix + ".fast.txt";
+    std::string grid_time_file = outputprefix + ".txt";
     std::ofstream f;
     f.open(grid_time_file.c_str());
     BOOST_FOREACH(SettledPair p, settled) {
@@ -644,7 +653,7 @@ int main(int argc, char * argv[]) {
     f.close();
 
     // Output for human
-    std::string human_file = prefix + ".fast-human.txt";
+    std::string human_file = outputprefix + ".human.txt";
     std::ofstream g;
     g.open(human_file.c_str());
     g << "Journey times to " << target_location_text_id << " by " << target_minutes_after_midnight / 60 << ":" << target_minutes_after_midnight % 60 << "\n";

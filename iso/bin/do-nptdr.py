@@ -17,11 +17,7 @@ import glob
 import datetime
 import time
 import mx.DateTime
-try: 
-    import cProfile
-except:
-    pass
-import pstats
+import md5
 
 sys.path.append("../../pylib")
 import mysociety.config
@@ -32,6 +28,9 @@ import makeplan
 import fastplan
 
 mysociety.config.set_file("../conf/general")
+
+###############################################################################
+# Read parameters
 
 parser = optparse.OptionParser()
 
@@ -55,9 +54,9 @@ row of the form "variable: <data>"
 
 Examples
 --config ../conf/oxford-example
---postcode HP224LY --destination 210021422650 --data "/library/transport/nptdr/sample-bucks/ATCO_040_*.CIF" --size 80000 --px 400 --bandsize 2400 --bandcount 5 --bandcolsep 40 --walkspeed 1 --walktime 3600 --output /home/matthew/public_html/iso
---postcode BS16QF --destination 9100BRSTPWY --data "/library/transport/nptdr/October\ 2008/Timetable\ Data/CIF/Admin_Area_010/*.CIF" --size 200000 --px 800 --bandsize 2400 --bandcount 5 --bandcolsep 40 --walkspeed 1 --walktime 3600 --output /home/matthew/public_html/iso
---postcode OX26DR --destination 340002054WES --data "/library/transport/nptdr/October\ 2008/Timetable\ Data/CIF/Admin_Area_340/*.CIF" --size 10000 --px 800 --bandsize 14 --bandcount 255 --bandcolsep 1 --walkspeed 1 --walktime 3600 --output /home/matthew/public_html/iso
+--postcode HP224LY --destination 210021422650 --data "/library/transport/nptdr/sample-bucks/ATCO_040_*.CIF" --size 80000 --px 400 --bandsize 2400 --bandcount 5 --bandcolsep 40 --walk_speed 1 --walk_time 3600 --output /home/matthew/public_html/iso
+--postcode BS16QF --destination 9100BRSTPWY --data "/library/transport/nptdr/October\ 2008/Timetable\ Data/CIF/Admin_Area_010/*.CIF" --size 200000 --px 800 --bandsize 2400 --bandcount 5 --bandcolsep 40 --walk_speed 1 --walk_time 3600 --output /home/matthew/public_html/iso
+--postcode OX26DR --destination 340002054WES --data "/library/transport/nptdr/October\ 2008/Timetable\ Data/CIF/Admin_Area_340/*.CIF" --size 10000 --px 800 --bandsize 14 --bandcount 255 --bandcolsep 1 --walk_speed 1 --walk_time 3600 --output /home/matthew/public_html/iso
 ''')
 
 parser.add_option('--destination', type='string', dest="destination", help='Target location for route finding, as in ATCO-CIF file e.g. 9100MARYLBN')
@@ -70,10 +69,10 @@ parser.add_option('--px', type='int', dest="px", help='Sides of output contour i
 parser.add_option('--bandsize', type='int', dest="bandsize", help='Journey time in seconds that each contour band of image file represents', default=600)
 parser.add_option('--bandcount', type='int', dest="bandcount", help='Number of contour bands to have in total', default=200)
 parser.add_option('--bandcolsep', type='int', dest="bandcolsep", help='Number of shades between each contour band (starts at RGB 255/255/255, goes down through shades of grey with this step)', default=1)
-parser.add_option('--walkspeed', type='float', dest="walkspeed", help='Speed to walk between nearby stations at interchanges mid-journey in m/s', default=1)
-parser.add_option('--walktime', type='int', dest="walktime", help='Maximum time in seconds to walk for interchanges', default=300)
-parser.add_option('--endwalkspeed', type='float', dest="endwalkspeed", help='Speed to walk to first stop at beginning of journey in m/s', default=1)
-parser.add_option('--endwalktime', type='float', dest="endwalktime", help='Maximum time in seconds to walk to first stop of journey', default=900)
+parser.add_option('--walkspeed', type='float', dest="walk_speed", help='Speed to walk between nearby stations at interchanges mid-journey in m/s', default=1)
+parser.add_option('--walktime', type='int', dest="walk_time", help='Maximum time in seconds to walk for interchanges', default=300)
+parser.add_option('--endwalkspeed', type='float', dest="endwalk_speed", help='Speed to walk to first stop at beginning of journey in m/s', default=1)
+parser.add_option('--endwalktime', type='float', dest="endwalk_time", help='Maximum time in seconds to walk to first stop of journey', default=900)
 parser.add_option('--config', type='string', dest="config", help='Specify a text file containing parameters to load. Format is a parameter per line, value coming after a colon, e.g. "bandsize: 14". Command line parameters override the config file.' )
 parser.add_option('--output', type='string', dest="output", help='Output directory.')
 parser.add_option('--loglevel', type='string', dest="loglevel", default='WARN', help='Try ERROR/WARN/INFO/DEBUG for increasingly more logging, default is WARN.')
@@ -82,6 +81,7 @@ parser.add_option('--viewer', type='string', dest="viewer", help='If present, ca
 
 (options, args) = parser.parse_args()
 
+# Merge in options from file
 if options.config:
     optarr = []
     fp = open(options.config)
@@ -93,119 +93,157 @@ if options.config:
     optarr = optarr + sys.argv[1:] # command line args override config
     (options, args) = parser.parse_args(optarr)
 
-if not options.postcode:
-    raise Exception, 'Must supply some data!'
+# Work out command
 if len(args) > 1:
     raise Exception, 'Give at most one command'
 if len(args) == 0:
     args = ['plan']
 command = args[0]
-if command not in ['plan', 'stats', 'midnight', 'fast', 'fastplan']:
+if command not in ['plan', 'stats', 'midnight', 'fastcalc', 'fastplan']:
     raise Exception, 'Unknown command'
 
-f = mysociety.mapit.get_location(options.postcode)
-N = int(f['northing'])
-E = int(f['easting'])
+# Required parameters
+nptdr_files = glob.glob(options.data)
 
-WW = E - options.size / 2;
-EE = E + options.size / 2;
-SS = N - options.size / 2;
-NN = N + options.size / 2;
+# Parameters used by do_external_contours
+if command in ['plan', 'fastplan']:
+    f = mysociety.mapit.get_location(options.postcode)
+    N = int(f['northing'])
+    E = int(f['easting'])
 
-rect = "%f %f %f %f" % (WW, EE, SS, NN)
-outfile = "nptdr-%s-%d" % (options.postcode, options.size)
+    WW = E - options.size / 2;
+    EE = E + options.size / 2;
+    SS = N - options.size / 2;
+    NN = N + options.size / 2;
 
-target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whenarrive))
-scan_back_when = target_when - datetime.timedelta(hours=options.hours)
+    rect = "%f %f %f %f" % (WW, EE, SS, NN)
+
+if command in ['plan', 'fastcalc', 'fastplan']:
+    target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whenarrive))
+    scan_back_when = target_when - datetime.timedelta(hours=options.hours)
+
+# Output files
+if command in ['plan']:
+    outfile = options.output + "/nptdr-slow-%s-%d" % (options.postcode, options.size)
+if command in ['fastcalc', 'fastplan']:
+    outfile = options.output + "/nptdr-fast-%s-%d" % (options.postcode, options.size)
+    nptdr_files_hash = md5.new(",".join(nptdr_files)).hexdigest()[0:12]
+    fastindexfile = options.output + "/fastindex-%s-%s-%dms-%dsec" % (nptdr_files_hash, target_when.date().strftime("%Y-%m-%d"), options.walk_speed, options.walk_time)
+
+if options.profile:
+    import cProfile
+    import pstats
 
 logging.basicConfig(level=logging.getLevelName(options.loglevel))
 
-nptdr_files = glob.glob(options.data)
+###############################################################################
+# Helper functions
 
 # Run external command, and log what did
 def run_cmd(cmd):
     logging.info("external command: " + cmd)
-    os.system(cmd)
+    ret = os.system(cmd)
+    if ret != 0:
+        raise Exception("Error code from command: " + cmd)
 
 # Calls Chris Lightfoot's old C code to make contour files
 def do_external_contours():
-    run_cmd("cat %s/%s.txt | ./transportdirect-journeys-to-grid grid %s %d %f %f %d > %s/%s-grid" % (options.output, outfile, rect, options.px, options.px, options.endwalkspeed, options.endwalktime, options.output, outfile))
-    run_cmd("cat %s/%s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s/%s.ppm" % (options.output, outfile, rect, options.px, options.px, options.bandsize, options.bandcount, options.bandcolsep, options.output, outfile))
+    run_cmd("cat %s.txt | ./transportdirect-journeys-to-grid grid %s %d %f %f %d > %s-grid" % (outfile, rect, options.px, options.px, options.endwalk_speed, options.endwalk_time, outfile))
+    run_cmd("cat %s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s.ppm" % (outfile, rect, options.px, options.px, options.bandsize, options.bandcount, options.bandcolsep, outfile))
 
     timestring = time.strftime("%Y-%m-%d-%H.%M.%S")
-    run_cmd("convert %s/%s.ppm %s/%s.%s.png" % (options.output, outfile, options.output, outfile, timestring))
+    run_cmd("convert %s.ppm %s.%s.png" % (outfile, outfile, timestring))
 
-    print "finished: %s/%s.%s.png" % (options.output, outfile, timestring)
+    print "finished: %s.%s.png" % (outfile, timestring)
 
     if options.viewer:
-        run_cmd(options.viewer + " %s/%s.%s.png" % (options.output, outfile, timestring))
-#eog $output/$outfile.png
+        run_cmd(options.viewer + " %s.%s.png" % (outfile, timestring))
 
+###############################################################################
+# Commands
 
-# Handle generating indices for C++ version
-if command == 'fast' or command == 'fastplan':
-    fastindex = "%s/%s.fastindex" % (options.output, outfile)
-    atco = fastplan.FastPregenATCO(fastindex, nptdr_files, target_when.date())
-    if command == 'fastplan':
-        run_cmd("../pylib/makeplan %s/%s %d %s" % (options.output, outfile, target_when.hour * 60 + target_when.minute, options.destination))
-        outfile = outfile + ".fast"
-        do_external_contours()
-    sys.exit()
-
-# Load in journey tables
-atco = makeplan.PlanningATCO()
-for nptdr_file in nptdr_files:
-    atco.read(nptdr_file)
-
-# Handle midnight command
-if command == 'midnight':
+# Show journeys crossing midnight
+def midnight():
+    atco = makeplan.PlanningATCO()
+    atco.read_files(nptdr_files)
     atco.print_journeys_crossing_midnight()
-    sys.exit()
 
-# Stuff that we only run once for multiple maps. Note that we don't want to
-# profile it - we are optimising for map making once we've got going, not
-# precomputing indices.
-atco.precompute_for_dijkstra(walk_speed=options.walkspeed, walk_time=options.walktime)
-
-# Handle statistics command
-if command == 'stats':
+# Show information about the files
+def statistics():
+    atco = makeplan.PlanningATCO()
+    atco.read_files(nptdr_files)
+    atco.precompute_for_dijkstra(walk_speed=options.walk_speed, walk_time=options.walk_time)
     print atco.statistics()
-    sys.exit()
 
-# Otherwise we're at the planning command
+# Run Dijkstra's algorithm in Python
+def python_plan():
+    # Load in journey tables
+    atco = makeplan.PlanningATCO()
+    atco.read_files(nptdr_files)
 
-# Calculate shortest route from everywhere on network
-def profile_me():
-    return atco.do_dijkstra(options.destination, target_when, walk_speed=options.walkspeed, walk_time=options.walktime, earliest_departure=scan_back_when)
-if options.profile:
-    profile_file = "%s/%s.profile" % (options.output, outfile)
-    cProfile.run("(results, routes) = profile_me()", profile_file)
-    p = pstats.Stats(profile_file)
-    p.strip_dirs().sort_stats(-1).print_stats()
-else:
-    (results, routes) = profile_me()
+    # Stuff that we only run once for multiple maps. Note that we don't want to
+    # profile it - we are optimising for map making once we've got going, not
+    # precomputing indices.
+    atco.precompute_for_dijkstra(walk_speed=options.walk_speed, walk_time=options.walk_time)
 
-# Output the results for by C grid to contour code
-grid_time_file = "%s/%s.txt" % (options.output, outfile)
-f = open(grid_time_file, "w")
-for location, when in results.iteritems():
-    delta = target_when - when
-    secs = delta.seconds + delta.days * 24 * 60 * 60
-    loc = atco.location_from_id[location]
-    f.write(str(loc.additional.grid_reference_easting) + " " + str(loc.additional.grid_reference_northing) + " " + str(secs) + "\n")
-f.close()
+    # Calculate shortest route from everywhere on network
+    def profile_me():
+        return atco.do_dijkstra(options.destination, target_when, walk_speed=options.walk_speed, walk_time=options.walk_time, earliest_departure=scan_back_when)
+    if options.profile:
+        profile_file = "%s.profile" % outfile
+        cProfile.run("(results, routes) = profile_me()", profile_file)
+        p = pstats.Stats(profile_file)
+        p.strip_dirs().sort_stats(-1).print_stats()
+    else:
+        (results, routes) = profile_me()
 
-# Output the results for debugging
-human_file = "%s/%s-human.txt" % (options.output, outfile)
-f = open(human_file, "w")
-s = "Journey times to " + options.destination + " by " + str(target_when)
-f.write("\n")
-f.write(s + "\n")
-f.write(len(s) * '=' + '\n')
-f.write("\n")
-f.write(atco.pretty_print_routes(routes))
-f.close()
+    # Output the results for by C grid to contour code
+    grid_time_file = "%s.txt" % outfile
+    f = open(grid_time_file, "w")
+    for location, when in results.iteritems():
+        delta = target_when - when
+        secs = delta.seconds + delta.days * 24 * 60 * 60
+        loc = atco.location_from_id[location]
+        f.write(str(loc.additional.grid_reference_easting) + " " + str(loc.additional.grid_reference_northing) + " " + str(secs) + "\n")
+    f.close()
 
-do_external_contours()
+    # Output the results for debugging
+    human_file = "%s-human.txt" % outfile
+    f = open(human_file, "w")
+    s = "Journey times to " + options.destination + " by " + str(target_when)
+    f.write("\n")
+    f.write(s + "\n")
+    f.write(len(s) * '=' + '\n')
+    f.write("\n")
+    f.write(atco.pretty_print_routes(routes))
+    f.close()
 
+    do_external_contours()
+
+# Precalculate binary data files, for later use by faster C++ Dijkstra's algorithm
+def fast_calc():
+    atco = makeplan.PlanningATCO()
+    atco.read_files(nptdr_files)
+    atco.precompute_for_dijkstra(walk_speed=options.walk_speed, walk_time=options.walk_time)
+    atco = fastplan.FastPregenATCO(fastindexfile, nptdr_files, target_when.date())
+
+# Call out to C++ version of Dijkstra's algorithm
+def fast_plan():
+    run_cmd("../pylib/makeplan %s %s %d %s" % (fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination))
+    do_external_contours()
+
+###############################################################################
+# Main code
+
+if command == 'fastcalc':
+    fast_calc()
+elif command == 'fastplan':
+    fast_plan()
+elif command == 'midnight':
+    midnight()
+elif command == 'stats':
+    statistics()
+elif command == 'plan':
+    python_plan()
+   
 

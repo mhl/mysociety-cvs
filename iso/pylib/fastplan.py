@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.6 2009-03-11 16:12:09 francis Exp $
+# $Id: fastplan.py,v 1.7 2009-03-12 02:03:56 francis Exp $
 #
 
 import logging
@@ -56,8 +56,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         # change the loading function to the one asked for
         self.item_loaded = func
         # do the loading
-        for nptdr_file in self.nptdr_files:
-            self.read(nptdr_file)
+        self.read_files(self.nptdr_files)
 
     # Pass to count things
     def count_stuff(self, item):
