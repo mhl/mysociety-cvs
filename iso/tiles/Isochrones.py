@@ -75,11 +75,11 @@ def draw_station(array, station, x, y):
     if aymin < 0:
         aymin, symin = 0, -aymin
 
-    if axmax >= array.shape[0]:
-        axmax, sxmax = array.shape[0] - 1, sxmax - (axmax - array.shape[0] + 1)
+    if axmax > array.shape[0]:
+        axmax, sxmax = array.shape[0], sxmax - (axmax - array.shape[0])
 
-    if aymax >= array.shape[0]:
-        aymax, symax = array.shape[0] - 1, symax - (aymax - array.shape[1] + 1)
+    if aymax > array.shape[0]:
+        aymax, symax = array.shape[0], symax - (aymax - array.shape[1])
 
     array[axmin:axmax, aymin:aymax] = numpy.minimum(array[axmin:axmax, aymin:aymax], station[sxmin:sxmax, symin:symax])
 
