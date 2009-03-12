@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.9 2009-03-12 02:03:56 francis Exp $
+// $Id: makeplan.cpp,v 1.10 2009-03-12 03:41:38 francis Exp $
 //
 
 // Usage:
@@ -31,6 +31,7 @@
 #include <stdarg.h>
 #include <assert.h>
 #include <math.h>
+#include <time.h>
 
 typedef short Minutes; // after midnight
 
@@ -630,14 +631,20 @@ int main(int argc, char * argv[]) {
     std::string target_location_text_id = argv[4]; // e.g. "9100BHAMSNH";
 
     // Load timetables
+    clock_t before_timetables = clock();
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
+    clock_t after_timetables = clock();
+    printf("loading timetables took: %f secs\n", double(after_timetables - before_timetables) / double(CLOCKS_PER_SEC));
 
     // Do route finding
+    clock_t before_route = clock();
     Settled settled;
     Routes routes;
     LocationID target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
     atco.do_dijkstra(settled, routes, target_location_id, target_minutes_after_midnight);
+    clock_t after_route = clock();
+    printf("route finding took: %f secs\n", double(after_route - before_route) / double(CLOCKS_PER_SEC));
 
     // Output for grid
     std::string grid_time_file = outputprefix + ".txt";
