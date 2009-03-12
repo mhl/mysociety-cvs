@@ -2,19 +2,26 @@ import os
 import sys
 import os.path
 import StringIO
+
+import numpy
 import pyproj
 import TileCache
 import PIL.Image
 
 class TextLayer(TileCache.Layer.MetaLayer):
 
-    def __init__(self, *args, **kwargs):
+    config_properties = [
+      {'name': 'timestep', 'description': 'Time step, in seconds, per level of gray.'},
+    ] + TileCache.Layer.MetaLayer.config_properties 
+    
+    def __init__(self, name, timestep=60, **kwargs):
         """ call super.__init__, but also store the results_id from PATH_INFO
         """
-        TileCache.Layer.MetaLayer.__init__(self, *args, **kwargs)
+        TileCache.Layer.MetaLayer.__init__(self, name, **kwargs)
 
         # the result set ID is the first part of the path
         self.results_id = os.environ["PATH_INFO"].lstrip('/').split('/')[0]
+        self.timestep = float(timestep)
     
     def renderTile(self, tile, force=None):
         """
@@ -28,37 +35,77 @@ class TextLayer(TileCache.Layer.MetaLayer):
         xscale, yscale = width / float(xmax - xmin), height / float(ymax - ymin)
         transform = lambda x, y: (xscale * (x + xoffset), yscale * (y + yoffset))
         
-        image = PIL.Image.new('L', tile.size(), 0x00)
+        # create an array to hold travel times
+        # note that here 0x00 = zero time, 0xFF = inaccessible; inversion happens later
+        array = numpy.ones(tile.size(), numpy.int32) * self.timestep * 255
+        station = numpy.ones((16, 16), numpy.float32)
         
+        # add each found data point in turn
         for (x, y, t) in get_data(self.results_id, tile):
             x, y = transform(*bng2gym(x, y))
+            draw_station(array, station * t, int(x), int(y))
             
-            if 0 <= x and x <= width and 0 <= y and y <= height:
-                # TODO: why is this upside-down?
-                image.putpixel((x, height - y), 0xFF)
+        # convert array to an image
+        image = arr2img(-array / self.timestep + 256)
+        
+        # we rotate the image to deal with row/col vs. x/y transposition in numpy and some other geometry oddness
+        image = image.transpose(PIL.Image.ROTATE_90)
 
         tile.data = img2str(image, self.extension)
 
         return tile.data 
 
+def draw_station(array, station, x, y):
+    """ Given a base map array and a timescaled station array, drop the station
+        onto the base map using a minimum filter to correctly overwrite longer times.
+    """
+    axmin = x - station.shape[0] / 2
+    axmax = axmin + station.shape[0]
+
+    aymin = y - station.shape[1] / 2
+    aymax = aymin + station.shape[1]
+    
+    sxmin, symin, sxmax, symax = 0, 0, station.shape[0], station.shape[1]
+    
+    # find bounds where necessary
+    
+    if axmin < 0:
+        axmin, sxmin = 0, -axmin
+    
+    if aymin < 0:
+        aymin, symin = 0, -aymin
+
+    if axmax >= array.shape[0]:
+        axmax, sxmax = array.shape[0] - 1, sxmax - (axmax - array.shape[0] + 1)
+
+    if aymax >= array.shape[0]:
+        aymax, symax = array.shape[0] - 1, symax - (aymax - array.shape[1] + 1)
+
+    array[axmin:axmax, aymin:aymax] = numpy.minimum(array[axmin:axmax, aymin:aymax], station[sxmin:sxmax, symin:symax])
+
 BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
 GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=0.0, y_0=0, k=1.0, units='m', nadgrids=None, no_defs=True)
 
 def img2str(image, format):
-    """
+    """ Convert image to a data buffer in a given format, e.g. PNG or JPEG
     """
     buffer = StringIO.StringIO()
     image.save(buffer, format)
     buffer.seek(0)
     return buffer.read()
 
-def bng2gym(x, y):
+def arr2img(ar):
+    """ Convert numpy.array to PIL.Image.
     """
+    return PIL.Image.fromstring('L', (ar.shape[1], ar.shape[0]), ar.clip(0x00, 0xFF).astype(numpy.ubyte).tostring())
+
+def bng2gym(x, y):
+    """ Project from British National Grid to spherical mercator
     """
     return GYM(*BNG(x, y, inverse=True))
 
 def gym2bng(x, y):
-    """
+    """ Project from spherical mercator to British National Grid
     """
     return BNG(*GYM(x, y, inverse=True))
 
