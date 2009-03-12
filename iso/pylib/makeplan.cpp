@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.10 2009-03-12 03:41:38 francis Exp $
+// $Id: makeplan.cpp,v 1.11 2009-03-12 19:21:32 francis Exp $
 //
 
 // Usage:
@@ -14,6 +14,11 @@
 // ./a.out /home/francis/toobig/nptdr/gen/nptdr-B32QD-40000 540 9100BHAMSNH
 //
 // Is quicker without logging that DEBUG causes.
+//
+
+
+// Optimisation ideas:
+// Use some kind of btree when finding proximate stations at start during loading
 
 #include <set>
 #include <map>

@@ -62,6 +62,8 @@ Examples
 parser.add_option('--destination', type='string', dest="destination", help='Target location for route finding, as in ATCO-CIF file e.g. 9100MARYLBN')
 parser.add_option('--whenarrive', type='string', dest="whenarrive", help='Time and date to arrive at destination by. Must be a day for which the ATCO-CIF timetables loaded are valid. Fairly freeform format, e.g. "15 Oct 2008, 9:00"', default="15 Oct 2008, 9:00") # Some week in October 2008, need to check exactly when
 parser.add_option('--data', type='string', dest="data", help='ATCO-CIF files containing timetables to use. At the command line, put the value in quotes, file globs such as * will be expanded later.')
+parser.add_option('--datavalidfrom', type='string', dest="data_valid_from", help='Date range we know the data is good for')
+parser.add_option('--datavalidto', type='string', dest="data_valid_to", help='Date range we know the data is good for')
 parser.add_option('--hours', type='float', dest="hours", help='Longest journey length, in hours. Route finding algorithm will stop here.', default=1)
 parser.add_option('--postcode', type='string', dest="postcode", help='Location of centre of map')
 parser.add_option('--size', type='int', dest="size", help='Sides of map rectangle in metres, try 10000')
@@ -104,6 +106,8 @@ if command not in ['plan', 'stats', 'midnight', 'fastcalc', 'fastplan']:
 
 # Required parameters
 nptdr_files = glob.glob(options.data)
+data_valid_from = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_from)).date()
+data_valid_to = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_to)).date()
 
 # Parameters used by do_external_contours
 if command in ['plan', 'fastplan']:
@@ -120,6 +124,7 @@ if command in ['plan', 'fastplan']:
 
 if command in ['plan', 'fastcalc', 'fastplan']:
     target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whenarrive))
+    assert data_valid_from <= target_when.date() <= data_valid_to
     scan_back_when = target_when - datetime.timedelta(hours=options.hours)
 
 # Output files
@@ -160,18 +165,31 @@ def do_external_contours():
     if options.viewer:
         run_cmd(options.viewer + " %s.%s.png" % (outfile, timestring))
 
+def ready_atco(atco):
+    atco.restrict_to_date_range(data_valid_from, data_valid_to)
+
+    atco.register_line_patches({
+        # ATCO_NATIONAL_BUS.CIF doesn't have the grid reference for Victoria Coach Station
+        "QBN000000002541                London Victoria Co                              " :
+        "QBN000000002541528536  178768  London Victoria Co                              "
+
+    })
+     
+
 ###############################################################################
 # Commands
 
 # Show journeys crossing midnight
 def midnight():
     atco = makeplan.PlanningATCO()
+    ready_atco(atco)
     atco.read_files(nptdr_files)
     atco.print_journeys_crossing_midnight()
 
 # Show information about the files
 def statistics():
     atco = makeplan.PlanningATCO()
+    ready_atco(atco)
     atco.read_files(nptdr_files)
     atco.precompute_for_dijkstra(walk_speed=options.walk_speed, walk_time=options.walk_time)
     print atco.statistics()
@@ -180,6 +198,7 @@ def statistics():
 def python_plan():
     # Load in journey tables
     atco = makeplan.PlanningATCO()
+    ready_atco(atco)
     atco.read_files(nptdr_files)
 
     # Stuff that we only run once for multiple maps. Note that we don't want to
@@ -223,7 +242,9 @@ def python_plan():
 
 # Precalculate binary data files, for later use by faster C++ Dijkstra's algorithm
 def fast_calc():
-    atco = fastplan.FastPregenATCO(fastindexfile, nptdr_files, target_when.date())
+    atco = fastplan.FastPregenATCO(fastindexfile, nptdr_files, target_when.date(), show_progress = True)
+    ready_atco(atco)
+    atco.run_pregen()
 
 # Call out to C++ version of Dijkstra's algorithm
 def fast_plan():

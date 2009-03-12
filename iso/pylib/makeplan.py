@@ -5,45 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.47 2009-03-11 16:12:09 francis Exp $
-#
-
-# TODO:
-# Interchange times
-# - find proper ones to use for TRAIN and BUS
-# - possibly load QV records if needed to discriminate times
-# - need another longer time for QVNAIR/12?
-# - measures according to type of journey before, not pair of before/after
-#
-# Optimisation
-# ------------
-# Have a sorted grid to find nearby stations more quickly
-#
-# Use objects for locations wherever possible, so less dictionary lookups by string
-#
-# Can use bisect to calculate find_arrival_time_at_location (or that will be
-# subsumed by some other cache)
-#
-# For each station, have every station that you can get there from directly,
-# and all their times, indexed by time so can instantly get list of best times
-# to leave to arrive by particular time
-#
-# Find out how to profile memory use in Python
-# Work out minimum structure could export to run C++ algorithm on
-# 
-# Thomas CIF file
-# ---------------
-# Check that all the ids and train operation numbers and stuff in journey parts are ok - I think that they are MPS
-# Add direct services to Tidmouth
-# Add some services run by Daisy on Thomas's line
-# Reduced Sunday service
-#
-# Later
-# -----
-# Handle journeys after midnight - currently it just cuts them short at midnight.
-#    Instead probably needs to make two copies of them one for each day. Indeed,
-#    to do all this really well, need to make a copy of every journey for yesterday.
-# Reverse - allow finding earliest time arrive elsewhere leaving an origin location
+# $Id: makeplan.py,v 1.48 2009-03-12 19:21:32 francis Exp $
 #
 
 '''Finds shortest route from all points on a public transport network to arrive

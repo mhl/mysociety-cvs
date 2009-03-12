@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.8 2009-03-12 17:01:06 francis Exp $
+# $Id: fastplan.py,v 1.9 2009-03-12 19:21:32 francis Exp $
 #
 
 import logging
@@ -26,6 +26,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self.target_date = target_date
         self.show_progress = show_progress
 
+    def run_pregen(self):
         # count stuff
         logging.info("FastPregenATCO: counting things")
         self.location_c = 0

@@ -1,9 +1,43 @@
-Contours of life ideas
-======================
+Contours of life TODO
+=====================
+
+Interchange times
+- find proper ones to use for TRAIN and BUS
+- possibly load QV records if needed to discriminate times
+- need another longer time for QVNAIR/12?
+- measures according to type of journey before, not pair of before/after
+
+Thomas CIF file
+---------------
+Check that all the ids and train operation numbers and stuff in journey parts are ok - I think that they are MPS
+Add direct services to Tidmouth
+Add some services run by Daisy on Thomas's line
+Reduced Sunday service
+
+Later
+-----
+
+Handle journeys after midnight - currently it just cuts them short at midnight.
+   Instead probably needs to make two copies of them one for each day. Indeed,
+   to do all this really well, need to make a copy of every journey for yesterday.
+Reverse - allow finding earliest time arrive elsewhere leaving an origin location
+
+
+Larger ideas
+============
 
 Make sure is automatically updated with mid-year new batches of data
 
-Journey home, as well as journey to work
+Currently we have:
+    "how long does it take to get from everywhere, to arrive by 9am at target"
+Could have:
+    "how long does it take to get to everywhere, leaving target at 5pm"
+And then fancier (or at least, fancier seeming, not mathematically so)
+    "how long does it take to get from target, to arrive anywhere by 9am"
+    "how long does it take to get to target, leaving anywhere at 5pm"
+
+Instead of just "how quickly from each place can I arrive by 9am at target", do
+"where leaving 
 
 Flakiness metric 
 - e.g. some measure of mean and variance of waiting time to go home between
