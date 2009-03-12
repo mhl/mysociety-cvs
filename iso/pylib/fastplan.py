@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.7 2009-03-12 02:03:56 francis Exp $
+# $Id: fastplan.py,v 1.8 2009-03-12 17:01:06 francis Exp $
 #
 
 import logging
@@ -20,10 +20,11 @@ sys.path.append(sys.path[0] + "/../../pylib") # XXX this is for running doctests
 import mysociety.atcocif
       
 class FastPregenATCO(mysociety.atcocif.ATCO):
-    def __init__(self, out_prefix, nptdr_files, target_date):
+    def __init__(self, out_prefix, nptdr_files, target_date, show_progress = False):
         self.out_prefix = out_prefix
         self.nptdr_files = nptdr_files
         self.target_date = target_date
+        self.show_progress = show_progress
 
         # count stuff
         logging.info("FastPregenATCO: counting things")
