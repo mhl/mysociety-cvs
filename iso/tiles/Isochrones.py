@@ -69,6 +69,9 @@ def draw_station(array, station, x, y):
     
     # find bounds where necessary
     
+    assert axmax - axmin == sxmax - sxmin
+    assert aymax - aymin == symax - symin
+    
     if axmin < 0:
         axmin, sxmin = 0, -axmin
     
@@ -78,9 +81,18 @@ def draw_station(array, station, x, y):
     if axmax > array.shape[0]:
         axmax, sxmax = array.shape[0], sxmax - (axmax - array.shape[0])
 
-    if aymax > array.shape[0]:
-        aymax, symax = array.shape[0], symax - (aymax - array.shape[1])
+    if aymax > array.shape[1]:
+        aymax, symax = array.shape[1], symax - (aymax - array.shape[1])
 
+    assert axmax - axmin == sxmax - sxmin
+    assert aymax - aymin == symax - symin
+    
+    if axmax <= 0 or aymax <= 0:
+        return
+    
+    if axmin > array.shape[0] or aymin > array.shape[1]:
+        return
+    
     array[axmin:axmax, aymin:aymax] = numpy.minimum(array[axmin:axmax, aymin:aymax], station[sxmin:sxmax, symin:symax])
 
 BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
