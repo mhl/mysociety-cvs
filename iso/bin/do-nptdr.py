@@ -124,11 +124,12 @@ if command in ['plan', 'fastcalc', 'fastplan']:
 
 # Output files
 if command in ['plan']:
-    outfile = options.output + "/nptdr-slow-%s-%d" % (options.postcode, options.size)
+    outfile = options.output + "/nptdr-slow-%s-%d" % (options.destination, options.size)
 if command in ['fastcalc', 'fastplan']:
-    outfile = options.output + "/nptdr-fast-%s-%d" % (options.postcode, options.size)
+    outfile = options.output + "/nptdr-fast-%s-%d" % (options.destination, options.size)
+    # make a name for index files that depends on their values
     nptdr_files_hash = md5.new(",".join(nptdr_files)).hexdigest()[0:12]
-    fastindexfile = options.output + "/fastindex-%s-%s-%dms-%dsec" % (nptdr_files_hash, target_when.date().strftime("%Y-%m-%d"), options.walk_speed, options.walk_time)
+    fastindexfile = options.output + "/fastindex-%s-%s" % (nptdr_files_hash, target_when.date().strftime("%Y-%m-%d"))
 
 if options.profile:
     import cProfile
@@ -222,9 +223,6 @@ def python_plan():
 
 # Precalculate binary data files, for later use by faster C++ Dijkstra's algorithm
 def fast_calc():
-    atco = makeplan.PlanningATCO()
-    atco.read_files(nptdr_files)
-    atco.precompute_for_dijkstra(walk_speed=options.walk_speed, walk_time=options.walk_time)
     atco = fastplan.FastPregenATCO(fastindexfile, nptdr_files, target_when.date())
 
 # Call out to C++ version of Dijkstra's algorithm
