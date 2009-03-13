@@ -162,7 +162,7 @@ def run_cmd(cmd):
 
 # Calls Chris Lightfoot's old C code to make contour files
 def do_external_contours():
-    run_cmd("cat %s.txt | ./transportdirect-journeys-to-grid grid %s %d %f %f %d > %s-grid" % (outfile, rect, options.px, options.px, options.endwalk_speed, options.endwalk_time, outfile))
+    run_cmd("cat %s.txt | ./transportdirect-journeys-to-grid grid %s %d %d %f %d > %s-grid" % (outfile, rect, options.px, options.px, options.endwalk_speed, options.endwalk_time, outfile))
     run_cmd("cat %s-grid | ./grid-to-ppm field %s %d %d %d %d %d > %s.ppm" % (outfile, rect, options.px, options.px, options.bandsize, options.bandcount, options.bandcolsep, outfile))
 
     timestring = time.strftime("%Y-%m-%d-%H.%M.%S")
