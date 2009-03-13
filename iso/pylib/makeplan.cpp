@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.12 2009-03-13 09:14:04 francis Exp $
+// $Id: makeplan.cpp,v 1.13 2009-03-13 09:36:25 francis Exp $
 //
 
 // Usage:
@@ -29,6 +29,8 @@
 // Check using const in enough places
 // Work out best structure packing to use.  #pragma pack ?
 // shorts vs. ints? will larger be quicker sometimes?
+// With and without -g make a difference?
+// Check asserts are compiled out by DEBUG
 // 
 // Use binary search to find latest time in a journey before a time
 // Sort the journeys at a location by time and binary slice them 
@@ -172,6 +174,12 @@ public:
     const char* what() const throw() { return s.c_str(); }
 };
 
+/* Error handling my_fread */
+void my_fread ( void * ptr, size_t size, size_t count, FILE * stream ) {
+    size_t ret = fread(ptr, size, count, stream);
+    assert(ret == count);
+}
+
 /* Loads and represents a set of ATCO-CIF files, and can generate large
 sets of quickest routes from them.
 */
@@ -218,11 +226,11 @@ class PlanningATCO {
     /* Loads a string which has a byte lenth prefix */
     std::string _read_pascal_string(FILE *fp) {
         short len;
-        fread(&len, 1, sizeof(short), fp);
+        my_fread(&len, 1, sizeof(short), fp);
         // log(boost::format("_read_pascal_string len: %d") % len);
         std::string ret;
         ret.resize(len);
-        fread(&ret[0], 1, len, fp);
+        my_fread(&ret[0], 1, len, fp);
         return ret;
     }
 
@@ -235,20 +243,20 @@ class PlanningATCO {
             printf("Failed to open index file: %s\n", location_filename.c_str());
             exit(1);
         }
-        fread(&this->number_of_locations, 1, sizeof(int), fp);
+        my_fread(&this->number_of_locations, 1, sizeof(int), fp);
         log(boost::format("number of locations: %d") % this->number_of_locations);
 
         locations.resize(this->number_of_locations + 1);
         for (int i = 1; i <= this->number_of_locations; ++i) {
             LocationID id;
-            fread(&id, 1, sizeof(LocationID), fp);
+            my_fread(&id, 1, sizeof(LocationID), fp);
             assert(int(id) == i);
 
             Location *l = &this->locations[i];
             l->text_id = this->_read_pascal_string(fp);
 
-            fread(&l->easting, 1, sizeof(l->easting), fp);
-            fread(&l->northing, 1, sizeof(l->northing), fp);
+            my_fread(&l->easting, 1, sizeof(l->easting), fp);
+            my_fread(&l->northing, 1, sizeof(l->northing), fp);
 
             locations_by_text_id[l->text_id] = id;
 
@@ -264,30 +272,30 @@ class PlanningATCO {
             printf("Failed to open index file: %s\n", journey_filename.c_str());
             exit(1);
         }
-        fread(&this->number_of_journeys, 1, sizeof(int), fp);
+        my_fread(&this->number_of_journeys, 1, sizeof(int), fp);
         log(boost::format("number of journeys: %d") % this->number_of_journeys);
 
         journeys.resize(this->number_of_journeys + 1);
         for (int i = 1; i <= this->number_of_journeys; ++i) {
             JourneyID id;
-            fread(&id, 1, sizeof(JourneyID), fp);
+            my_fread(&id, 1, sizeof(JourneyID), fp);
             assert(int(id) == i);
 
             Journey *j = &this->journeys[i];
             j->text_id = this->_read_pascal_string(fp);
 
-            fread(&j->vehicle_type, 1, sizeof(char), fp);
+            my_fread(&j->vehicle_type, 1, sizeof(char), fp);
 
             short number_of_hops;
-            fread(&number_of_hops, 1, sizeof(number_of_hops), fp);
+            my_fread(&number_of_hops, 1, sizeof(number_of_hops), fp);
             log(boost::format("loaded journey: %s hops:%d") % j->toString().c_str() % number_of_hops);
 
             j->hops.resize(number_of_hops);
             for (int ii = 0; ii < number_of_hops; ++ii) {
                 Hop hop;
-                fread(&hop.location_id, 1, sizeof(hop.location_id), fp);
-                fread(&hop.mins_arr, 1, sizeof(hop.mins_arr), fp);
-                fread(&hop.mins_dep, 1, sizeof(hop.mins_dep), fp);
+                my_fread(&hop.location_id, 1, sizeof(hop.location_id), fp);
+                my_fread(&hop.mins_arr, 1, sizeof(hop.mins_arr), fp);
+                my_fread(&hop.mins_dep, 1, sizeof(hop.mins_dep), fp);
                 j->hops[ii] = hop;
                 log(boost::format("loaded hop: %s") % hop.toString().c_str());
 
@@ -381,19 +389,21 @@ class PlanningATCO {
         constrained by self.walk_speed and self.walk_time. Adds any such
         stations to the adjacents structure.
         */
+        #ifdef DEBUG
         Location *target_location = &this->locations[target_location_id];
-
         int target_easting = this->locations[target_location_id].easting;
         int target_northing = this->locations[target_location_id].northing;
+        #endif
 
         NearbyLocationsInner &nearby_locations_inner = this->nearby_locations[target_location_id];
         BOOST_FOREACH(NearbyLocationsInnerPair p, nearby_locations_inner) {
             LocationID location_id = p.first;
             double dist = p.second;
 
+            #ifdef DEBUG
             Location *location = &this->locations[location_id];
-
             log(boost::format("_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)") % location->text_id % location->easting % location->northing % dist % target_location->text_id % target_easting % target_northing)
+            #endif
 
             Minutes walk_time = this->_walk_time_apart(dist);
             Minutes walk_departure_time = target_arrival_time - walk_time;
