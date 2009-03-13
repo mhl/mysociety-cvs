@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.9 2009-03-12 19:21:32 francis Exp $
+# $Id: fastplan.py,v 1.10 2009-03-13 11:23:45 francis Exp $
 #
 
 import logging
@@ -34,14 +34,14 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self.journey_c = 0
         self.journey_to_fastix = {}
         self.read_all(self.count_stuff)
-
+        
         # output location ids
         logging.info("FastPregenATCO: making locations file")
         self.file_locations = open(self.out_prefix+".locations", 'w')
         self._pack(self.file_locations, "=i", len(self.location_to_fastix))
         self.location_c = 0
         self.location_to_fastix = {}
-        self.read_all(self.load_location_ids)
+        self.read_all(self.load_locations)
         self.file_locations.close()
 
         # output journey ids
@@ -50,7 +50,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self._pack(self.file_journeys, "=i", len(self.journey_to_fastix))
         self.journey_c = 0
         self.journey_to_fastix = {}
-        self.read_all(self.load_journey_ids)
+        self.read_all(self.load_journeys)
         self.file_journeys.close()
 
     # reload all ATCO files, setting load function to given one
@@ -74,16 +74,18 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
                 self.journey_c += 1
                 self.journey_to_fastix[item.id] = self.journey_c
     
-    # Pass to give numeric identifier to all locations.
-    def load_location_ids(self, item):
+    # Pass output all locations
+    def load_locations(self, item):
         if isinstance(item, mysociety.atcocif.Location):
             if item.location not in self.location_to_fastix:
                 self.location_c += 1
                 self.location_to_fastix[item.location] = self.location_c
+                assert item.additional.grid_reference_easting > 0, "missing coordinate, easting is: " + str(item.additional.grid_reference_easting)
+                assert item.additional.grid_reference_northing > 0, "missing coordinate, northing is: " + str(item.additional.grid_reference_northing)
                 self._pack(self.file_locations, "=ih%dsii" % len(item.location), self.location_c, len(item.location), item.location, item.additional.grid_reference_easting, item.additional.grid_reference_northing)
 
-    # Pass to give numeric identifier to all journeys
-    def load_journey_ids(self, item):
+    # Pass to output all journeys
+    def load_journeys(self, item):
         if isinstance(item, mysociety.atcocif.JourneyHeader):
             # ditch journeys which aren't valid on the date
             if not item.is_valid_on_date(self.target_date):

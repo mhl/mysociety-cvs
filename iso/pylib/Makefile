@@ -1,16 +1,14 @@
 #
 # Makefile:
-# Build 
+# Build Contours of Life C++ journey planner.
 #
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.1 2009-03-13 09:36:25 francis Exp $
+# $Id: Makefile,v 1.2 2009-03-13 11:23:45 francis Exp $
 #
 
 CFLAGS = -Wall -g -O2
-LDFLAGS =
-LDLIBS = 
 CPP = /usr/bin/g++
 
 all: makeplan

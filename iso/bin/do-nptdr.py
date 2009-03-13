@@ -106,6 +106,8 @@ if command not in ['plan', 'stats', 'midnight', 'fastcalc', 'fastplan']:
 
 # Required parameters
 nptdr_files = glob.glob(options.data)
+if len(nptdr_files) == 0:
+    raise Exception, 'No files found matching: ' + options.data
 data_valid_from = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_from)).date()
 data_valid_to = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_to)).date()
 
@@ -171,9 +173,34 @@ def ready_atco(atco):
     atco.register_line_patches({
         # ATCO_NATIONAL_BUS.CIF doesn't have the grid reference for Victoria Coach Station
         "QBN000000002541                London Victoria Co                              " :
-        "QBN000000002541528536  178768  London Victoria Co                              "
+        "QBN000000002541528536  178768  London Victoria Co                              ",
 
+        # Caythorpe in Lincolnshire doesn't have coordinate
+        "QBN000000023750                Caythorpe                                       " :
+        "QBN000000023750493907  347547  Caythorpe                                       "
     })
+
+    atco.register_locations_to_ignore( [
+        # stops which just indicate "Destinations vary depending on bookings" in Lincolnshire, area 270
+        '000000016575',
+        '000000016581',
+        '000000016577',
+        '000000016574',
+        '000000016580',
+        '000000016579',
+        '000000016578',
+        '000000016582',
+        '000000016583',
+        '000000016584',
+        '000000023685',
+        '000000023708',
+        '000000023748',
+        '000000023749',
+        # appears in Lincolnshire files, area 270, for long distance bus from
+        # Victoria, but has no coordinates. Is near Victoria anyway.
+        '000000004387',
+        '000000003300'
+    ])
      
 
 ###############################################################################
