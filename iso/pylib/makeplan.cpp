@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.11 2009-03-12 19:21:32 francis Exp $
+// $Id: makeplan.cpp,v 1.12 2009-03-13 09:14:04 francis Exp $
 //
 
 // Usage:
@@ -16,9 +16,24 @@
 // Is quicker without logging that DEBUG causes.
 //
 
-
+// Add route storing and printing same as in Python
+//
 // Optimisation ideas:
 // Use some kind of btree when finding proximate stations at start during loading
+//
+// Remove the route storing stuff on a #define
+// Remove the station text string identifiers on a #define (where is it used?)
+//
+// Is there any C++ RTTI bumf that can be removed? -fno-rtti ?
+// Disable exceptions in compiler if they're not. -fno-exceptions ?
+// Check using const in enough places
+// Work out best structure packing to use.  #pragma pack ?
+// shorts vs. ints? will larger be quicker sometimes?
+// 
+// Use binary search to find latest time in a journey before a time
+// Sort the journeys at a location by time and binary slice them 
+//
+// Find something better than relaxed_heap
 
 #include <set>
 #include <map>
