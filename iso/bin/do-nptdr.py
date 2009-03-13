@@ -65,7 +65,9 @@ parser.add_option('--data', type='string', dest="data", help='ATCO-CIF files con
 parser.add_option('--datavalidfrom', type='string', dest="data_valid_from", help='Date range we know the data is good for')
 parser.add_option('--datavalidto', type='string', dest="data_valid_to", help='Date range we know the data is good for')
 parser.add_option('--hours', type='float', dest="hours", help='Longest journey length, in hours. Route finding algorithm will stop here.', default=1)
-parser.add_option('--postcode', type='string', dest="postcode", help='Location of centre of map')
+parser.add_option('--postcode', type='string', dest="postcode", help='Location of centre of map, specify this or --centere / --centern')
+parser.add_option('--centere', type='int', dest="center_e", help='Location of centre of map, specify this / --centern or --postcode')
+parser.add_option('--centern', type='int', dest="center_n", help='Location of centre of map, specify this / --centere or --postcode')
 parser.add_option('--size', type='int', dest="size", help='Sides of map rectangle in metres, try 10000')
 parser.add_option('--px', type='int', dest="px", help='Sides of output contour image file in pixels', default=800)
 parser.add_option('--bandsize', type='int', dest="bandsize", help='Journey time in seconds that each contour band of image file represents', default=600)
@@ -113,9 +115,13 @@ data_valid_to = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options
 
 # Parameters used by do_external_contours
 if command in ['plan', 'fastplan']:
-    f = mysociety.mapit.get_location(options.postcode)
-    N = int(f['northing'])
-    E = int(f['easting'])
+    if options.postcode: 
+        f = mysociety.mapit.get_location(options.postcode)
+        E = int(f['easting'])
+        N = int(f['northing'])
+    else:
+        E = options.center_e
+        N = options.center_n
 
     WW = E - options.size / 2;
     EE = E + options.size / 2;
@@ -199,7 +205,9 @@ def ready_atco(atco):
         # appears in Lincolnshire files, area 270, for long distance bus from
         # Victoria, but has no coordinates. Is near Victoria anyway.
         '000000004387',
-        '000000003300'
+        '000000003300',
+        '000000002403',
+        '000000002805',
     ])
      
 

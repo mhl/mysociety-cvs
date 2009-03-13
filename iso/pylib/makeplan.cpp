@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.13 2009-03-13 09:36:25 francis Exp $
+// $Id: makeplan.cpp,v 1.14 2009-03-13 16:28:49 francis Exp $
 //
 
 // Usage:
@@ -26,11 +26,11 @@
 //
 // Is there any C++ RTTI bumf that can be removed? -fno-rtti ?
 // Disable exceptions in compiler if they're not. -fno-exceptions ?
+// With and without -g make a difference?
 // Check using const in enough places
 // Work out best structure packing to use.  #pragma pack ?
 // shorts vs. ints? will larger be quicker sometimes?
-// With and without -g make a difference?
-// Check asserts are compiled out by DEBUG
+// try larger values of -O
 // 
 // Use binary search to find latest time in a journey before a time
 // Sort the journeys at a location by time and binary slice them 
@@ -45,7 +45,9 @@
 #include <cstdio>
 #include <fstream>
 
-#include <boost/format.hpp>
+#ifdef DEBUG
+    #include <boost/format.hpp>
+#endif
 #include <boost/foreach.hpp>
 #include <boost/pending/relaxed_heap.hpp>
 
@@ -54,6 +56,22 @@
 #include <assert.h>
 #include <math.h>
 #include <time.h>
+
+/* Logging and debug assertions. Use assert for assertion that matter in release mode,
+ * debug_assert for ones that can be stripped. */
+#ifdef DEBUG
+    void do_log(boost::basic_format<char, std::char_traits<char>, std::allocator<char> > &bf) {
+        puts(bf.str().c_str());
+    }
+    void do_log(const std::string& str) {
+        puts(str.c_str());
+    }
+    #define log(message) do_log(message);
+    #define debug_assert(thing) assert(thing);
+#else
+    #define log(message) while(0) { };
+    #define debug_assert(thing) while(0) { };
+#endif
 
 typedef short Minutes; // after midnight
 
@@ -67,7 +85,7 @@ struct LessValues
 {
     bool operator()(unsigned x, unsigned y) const
     {
-        assert(queue_values[x] && queue_values[y]);
+        debug_assert(queue_values[x] && queue_values[y]);
         return queue_values[x] > queue_values[y];
     }
 };
@@ -79,9 +97,11 @@ class Location {
     int easting; // OS grid coordinate
     int northing; // OS grid coordinate
 
+#ifdef DEBUG
     std::string toString() const {
         return (boost::format("Location(%s E:%d N:%d)") % this->text_id % this->easting % this->northing).str();
     }
+#endif
 };
 
 class Hop {
@@ -90,9 +110,11 @@ class Hop {
     Minutes mins_arr; // minutes after midnight of arrival, or -1 if not set down stop
     Minutes mins_dep; // minutes after midnight of departure, or -1 if not pick up stop
 
+#ifdef DEBUG
     std::string toString() const {
         return (boost::format("Hop(loc:%s arr:%d dep:%d)") % this->location_id % this->mins_arr % this->mins_dep).str();
     }
+#endif
 
     bool is_pick_up() {
         return mins_dep != -1;
@@ -109,9 +131,11 @@ class Journey {
     std::vector<Hop> hops;
     char vehicle_type; // T = train, B = bus
 
+#ifdef DEBUG
     std::string toString() const {
         return (boost::format("Journey(%s)") % this->text_id).str();
     }
+#endif
 };
 
 class ArrivePlaceTime {
@@ -150,19 +174,6 @@ typedef std::map<LocationID, Minutes> Settled;
 typedef std::pair<LocationID, Minutes> SettledPair;
 typedef std::map<LocationID, std::list<ArrivePlaceTime> > Routes;
 typedef std::pair<LocationID, std::list<ArrivePlaceTime> > RoutesPair;
-
-/* Logging */
-void do_log(boost::basic_format<char, std::char_traits<char>, std::allocator<char> > &bf) {
-    puts(bf.str().c_str());
-}
-void do_log(const std::string& str) {
-    puts(str.c_str());
-}
-#ifdef DEBUG
-    #define log(message) do_log(message);
-#else
-    #define log(message) while(0) { };
-#endif
 
 /* Most similar to Python's Exception */
 class Exception : public std::exception
@@ -651,7 +662,7 @@ class PlanningATCO {
 
 int main(int argc, char * argv[]) {
     if (argc < 3) {
-        printf("makeplan.cpp: fast index file prefix as first argument, output prefix as second argument, target arrival time in mins after midnight as second, target location at third");
+        printf("makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth\n");
         return 1;
     }
 
