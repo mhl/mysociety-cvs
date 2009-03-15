@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.14 2009-03-13 16:28:49 francis Exp $
+// $Id: makeplan.cpp,v 1.15 2009-03-15 20:47:09 francis Exp $
 //
 
 // Usage:
@@ -314,7 +314,9 @@ class PlanningATCO {
                 journeys_visiting_location[hop.location_id].insert(id);
             }
         }
+    }
 
+    void generate_proximity_index() {
         // Proximity index
         double nearby_max_distance = double(this->walk_speed) * double(this->walk_time);
         double nearby_max_distance_sq = nearby_max_distance * nearby_max_distance;
@@ -339,7 +341,6 @@ class PlanningATCO {
                 }
             }
         }
-
     }
 
     /* Adjacency function for use with Dijkstra's algorithm on earliest
@@ -660,6 +661,28 @@ class PlanningATCO {
 
 */
 
+class PerformanceMonitor {
+    std::string name;
+    clock_t before;
+
+    public:
+
+    PerformanceMonitor() {
+        reset();
+    }
+    
+    void reset() {
+        this->before = clock();
+    }
+
+    void display(const std::string& desc) {
+        clock_t after = clock();
+        printf("%s: %f secs\n", desc.c_str(), double(after - this->before) / double(CLOCKS_PER_SEC));
+        this->reset();
+    }
+
+};
+
 int main(int argc, char * argv[]) {
     if (argc < 3) {
         printf("makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth\n");
@@ -672,20 +695,19 @@ int main(int argc, char * argv[]) {
     std::string target_location_text_id = argv[4]; // e.g. "9100BHAMSNH";
 
     // Load timetables
-    clock_t before_timetables = clock();
+    PerformanceMonitor pm;
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
-    clock_t after_timetables = clock();
-    printf("loading timetables took: %f secs\n", double(after_timetables - before_timetables) / double(CLOCKS_PER_SEC));
+    pm.display("loading timetables took");
+    atco.generate_proximity_index();
+    pm.display("generating proximity index took");
 
     // Do route finding
-    clock_t before_route = clock();
     Settled settled;
     Routes routes;
     LocationID target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
     atco.do_dijkstra(settled, routes, target_location_id, target_minutes_after_midnight);
-    clock_t after_route = clock();
-    printf("route finding took: %f secs\n", double(after_route - before_route) / double(CLOCKS_PER_SEC));
+    pm.display("route finding took");
 
     // Output for grid
     std::string grid_time_file = outputprefix + ".txt";
