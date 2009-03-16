@@ -6,16 +6,22 @@
 '12.312128'
 
 >>> cone = make_cone(4)
->>> cone[0,0], cone[3,3], cone[4,4], cone[7,7]
-(1.0, 0.0, 0.0, 1.0)
+>>> cone[3,3], cone[4,4]
+(0.0, 0.0)
+>>> cone[0,0] >= 1800, cone[7,7] >= 1800
+(True, True)
 
 >>> cone = make_cone(8)
->>> cone[0,0], cone[7,7], cone[8,8], cone[15,15]
-(1.0, 0.0, 0.0, 1.0)
+>>> cone[7,7], cone[8,8]
+(0.0, 0.0)
+>>> cone[0,0] >= 1800, cone[15,15] >= 1800
+(True, True)
 
 >>> cone = make_cone(16)
->>> cone[0,0], cone[15,15], cone[16,16], cone[31,31]
-(1.0, 0.0, 0.0, 1.0)
+>>> cone[15,15], cone[16,16]
+(0.0, 0.0)
+>>> cone[0,0] >= 1800, cone[31,31] >= 1800
+(True, True)
 """
 import math
 import numpy
@@ -100,7 +106,7 @@ def make_cone(radius):
     # do bottom-right quadrant of cone
     for x in range(r):
         for y in range(r):
-            corner[x, y] = min(1, math.hypot(x, y) / r)
+            corner[x, y] = 1800 * math.hypot(x, y) / r
 
     # flip and copy to other three quadrants
     cone[:r,:r] = numpy.flipud(numpy.fliplr(cone[r:,r:]))
@@ -113,8 +119,8 @@ if __name__ == '__main__':
     import doctest
     doctest.testmod()
     
-    # make some cones
-    for e in range(10):
-        radius = math.pow(2, e)
-        diameter, cone = radius * 2, make_cone(radius)
-        open('cone-%d.bin' % diameter, 'w').write(cone.tostring())
+    ## make some cones
+    #for e in range(10):
+    #    radius = math.pow(2, e)
+    #    diameter, cone = radius * 2, make_cone(radius)
+    #    open('cone-%d.bin' % diameter, 'w').write(cone.tostring())
