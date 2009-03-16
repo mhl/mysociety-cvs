@@ -7,6 +7,7 @@ import numpy
 import pyproj
 import TileCache
 import PIL.Image
+import Cone
 
 class TextLayer(TileCache.Layer.MetaLayer):
 
@@ -38,12 +39,18 @@ class TextLayer(TileCache.Layer.MetaLayer):
         # create an array to hold travel times
         # note that here 0x00 = zero time, 0xFF = inaccessible; inversion happens later
         array = numpy.ones(tile.size(), numpy.int32) * self.timestep * 255
-        station = numpy.ones((16, 16), numpy.float32)
         
-        # add each found data point in turn
+        # 1800 meters is a half hour of walking at 1m/s
+        pixels_per_1800_meters = 1.8 * Cone.pixels_per_kilometer(tile)
+        
+        # create a station cone and mask where value is walking seconds
+        station_cone = Cone.make_cone(int(pixels_per_1800_meters))
+        station_mask = station_cone <= 1800
+
+        # add each found data point in turn, offseting station cones by base station time
         for (x, y, t) in get_data(self.results_id, tile):
             x, y = transform(*bng2gym(x, y))
-            draw_station(array, station * t, int(x), int(y))
+            draw_station(array, station_cone + t, station_mask, int(x), int(y))
             
         # convert array to an image
         image = arr2img(-array / self.timestep + 256)
@@ -55,7 +62,7 @@ class TextLayer(TileCache.Layer.MetaLayer):
 
         return tile.data 
 
-def draw_station(array, station, x, y):
+def draw_station(array, station, mask, x, y):
     """ Given a base map array and a timescaled station array, drop the station
         onto the base map using a minimum filter to correctly overwrite longer times.
     """
@@ -92,8 +99,13 @@ def draw_station(array, station, x, y):
     
     if axmin > array.shape[0] or aymin > array.shape[1]:
         return
+
+    target = array[axmin:axmax, aymin:aymax]
+    value = station[sxmin:sxmax, symin:symax]
+    mask = mask[sxmin:sxmax, symin:symax]
     
-    array[axmin:axmax, aymin:aymax] = numpy.minimum(array[axmin:axmax, aymin:aymax], station[sxmin:sxmax, symin:symax])
+    # set just the masked parts
+    target[mask] = numpy.minimum(target[mask], value[mask])
 
 BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
 GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=0.0, y_0=0, k=1.0, units='m', nadgrids=None, no_defs=True)
