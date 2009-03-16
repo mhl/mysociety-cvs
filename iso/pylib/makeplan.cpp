@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.19 2009-03-16 02:23:12 francis Exp $
+// $Id: makeplan.cpp,v 1.20 2009-03-16 03:48:13 francis Exp $
 //
 
 // Usage:
@@ -215,8 +215,8 @@ class PlanningATCO {
     typedef std::map<LocationID, std::set<JourneyID> > JourneysVisitingLocation;
     JourneysVisitingLocation journeys_visiting_location;
 
-    typedef std::map<LocationID, float> NearbyLocationsInner;
-    typedef std::map<LocationID, NearbyLocationsInner> NearbyLocations;
+    typedef std::map<LocationID, double> NearbyLocationsInner;
+    typedef std::vector<NearbyLocationsInner> NearbyLocations;
     typedef std::pair<LocationID, double> NearbyLocationsInnerPair;
     NearbyLocations nearby_locations;
 
@@ -318,32 +318,128 @@ class PlanningATCO {
         }
     }
 
+    // find out which stations are near to which others - naive agorithm
     void generate_proximity_index() {
         // Proximity index
         double nearby_max_distance = double(this->walk_speed) * double(this->walk_time);
         double nearby_max_distance_sq = nearby_max_distance * nearby_max_distance;
 
         this->nearby_locations.clear();
+        this->nearby_locations.resize(this->number_of_locations + 1);
         for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
-            Location *location = &this->locations[location_id];
-            double easting = location->easting;
-            double northing = location->northing;
+            const Location &location = this->locations[location_id];
+            double easting = location.easting;
+            double northing = location.northing;
             for (LocationID other_location_id = location_id + 1; other_location_id <= this->number_of_locations; other_location_id++) {
-                Location *other_location = &this->locations[other_location_id];
-                double other_easting = other_location->easting;
-                double other_northing = other_location->northing;
+                const Location &other_location = this->locations[other_location_id];
+                double other_easting = other_location.easting;
+                double other_northing = other_location.northing;
                 double sqdist = (easting - other_easting)*(easting - other_easting)
                               + (northing - other_northing)*(northing - other_northing);
 
                 if (sqdist < nearby_max_distance_sq) {
                     double dist = sqrt(sqdist);
-                    log(boost::format("load_binary_timetable: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location->text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location->text_id % other_easting % other_northing);
+                    log(boost::format("generate_proximity_index: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location.text_id % other_easting % other_northing);
                     nearby_locations[location_id][other_location_id] = dist;
                     nearby_locations[other_location_id][location_id] = dist;
                 }
             }
         }
     }
+
+    // find out which stations are near to which others - with some spacial partitioning
+    // to speed it up
+    void generate_proximity_index_fast() {
+        double nearby_max_distance = double(this->walk_speed) * double(this->walk_time);
+        double nearby_max_distance_sq = nearby_max_distance * nearby_max_distance;
+
+        // we put a grid of boxes over the plane
+        int boxsize = 1000;
+        int boxscanrange = int(nearby_max_distance / double(boxsize)) + 1;
+
+        // store the loctions in each box cell, for later speed
+        typedef std::map<int, std::set<LocationID> > SpaceFindInner;
+        typedef std::map<int, SpaceFindInner > SpaceFind;
+        SpaceFind sf;
+        for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
+            const Location &location = this->locations[location_id];
+            double easting = location.easting;
+            double northing = location.northing;
+
+            int box_e = int(easting) / boxsize;
+            int box_n = int(northing) / boxsize;
+
+            sf[box_e][box_n].insert(location_id);
+        }
+
+        // do actual calculation
+        this->nearby_locations.clear();
+        this->nearby_locations.resize(this->number_of_locations + 1);
+        for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
+            const Location &location = this->locations[location_id];
+            double easting = location.easting;
+            double northing = location.northing;
+
+            // loop over boxes that we have to cover in order to definitely reach everything in range 
+            int box_e_center = int(easting) / boxsize;
+            int box_n_center = int(northing) / boxsize;
+            for (int box_e = box_e_center - boxscanrange; box_e <= box_e_center + boxscanrange; ++box_e) {
+                for (int box_n = box_n_center - boxscanrange; box_n <= box_n_center + boxscanrange; ++box_n) {
+                    SpaceFind::iterator it = sf.find(box_e);
+                    if (it == sf.end()) {
+                        continue;
+                    }
+                    SpaceFindInner& sfi = it->second;
+                    SpaceFindInner::iterator it2 = sfi.find(box_n);
+                    if (it2 == sfi.end()) {
+                        continue;
+                    }
+
+                    // see which of the locations we have to check *are* actually near enough
+                    const std::set<LocationID>& other_location_list = it2->second;
+                    BOOST_FOREACH(const LocationID& other_location_id, other_location_list) {
+                        if (location_id == other_location_id) {
+                            continue;
+                        }
+                        const Location &other_location = this->locations[other_location_id];
+
+                        // more precise accuracy check
+                        double other_easting = other_location.easting;
+                        double other_northing = other_location.northing;
+                        double sqdist = (easting - other_easting)*(easting - other_easting)
+                                      + (northing - other_northing)*(northing - other_northing);
+
+                        if (sqdist < nearby_max_distance_sq) {
+                            double dist = sqrt(sqdist);
+                            log(boost::format("generate_proximity_index_fast: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location.text_id % other_easting % other_northing);
+                            nearby_locations[location_id][other_location_id] = dist;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+    }
+
+#ifdef DEBUG
+    void dump_nearby_locations() {
+        log("---------------------------------------\n");
+        for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
+            Location &location = this->locations[location_id];
+            const NearbyLocationsInner& nearby_locations_inner = this->nearby_locations[location_id];
+            BOOST_FOREACH(const NearbyLocationsInnerPair& p, nearby_locations_inner) {
+                const LocationID& other_location_id = p.first;
+                Location &other_location = this->locations[other_location_id];
+                double dist = p.second;
+
+                log(boost::format("dump_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)") % location.text_id % location.easting % location.northing % dist % other_location.text_id % other_location.easting % other_location.northing)
+            }
+        }
+        log("---------------------------------------\n");
+    }
+#endif
 
     /* Adjacency function for use with Dijkstra's algorithm on earliest
     time to arrive somewhere.  Given a location and a date/time, it finds every
@@ -410,7 +506,7 @@ class PlanningATCO {
         int target_northing = this->locations[target_location_id].northing;
         #endif
 
-        NearbyLocationsInner &nearby_locations_inner = this->nearby_locations[target_location_id];
+        const NearbyLocationsInner &nearby_locations_inner = this->nearby_locations[target_location_id];
         BOOST_FOREACH(const NearbyLocationsInnerPair& p, nearby_locations_inner) {
             const LocationID& location_id = p.first;
             double dist = p.second;
@@ -709,7 +805,10 @@ int main(int argc, char * argv[]) {
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
     pm.display("loading timetables took");
-    atco.generate_proximity_index();
+//    atco.generate_proximity_index();
+// atco.dump_nearby_locations();
+    atco.generate_proximity_index_fast();
+// atco.dump_nearby_locations();
     pm.display("generating proximity index took");
 
     // Do route finding
