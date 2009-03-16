@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.17 2009-03-16 01:18:38 francis Exp $
+// $Id: makeplan.cpp,v 1.18 2009-03-16 01:47:03 francis Exp $
 //
 
 // Usage:
@@ -377,13 +377,12 @@ class PlanningATCO {
     is later than previous direct routes we have for leaving from that
     station and arriving at target. */
     void _add_to_adjacents(const ArrivePlaceTime &arrive_place_time, Adjacents &adjacents) {
-        if (adjacents.find(arrive_place_time.location_id) != adjacents.end()) {
-            ArrivePlaceTime curr_latest = adjacents[arrive_place_time.location_id];
-            if (arrive_place_time.when > curr_latest.when) {
-                adjacents[arrive_place_time.location_id] = arrive_place_time;
-            }
-        } else {
-            adjacents[arrive_place_time.location_id] = arrive_place_time;
+        AdjacentsPair ap(arrive_place_time.location_id, arrive_place_time);
+        const std::pair<Adjacents::iterator, bool>& p = adjacents.insert(ap);
+        if (!p.second) {
+            // element already exists
+            const Adjacents::iterator& it = p.first;
+            it->second = arrive_place_time;
         }
     }
 

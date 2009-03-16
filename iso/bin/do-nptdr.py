@@ -225,6 +225,7 @@ def midnight():
 def statistics():
     atco = makeplan.PlanningATCO()
     ready_atco(atco)
+    atco.show_progress = True
     atco.read_files(nptdr_files)
     atco.precompute_for_dijkstra(walk_speed=options.walk_speed, walk_time=options.walk_time)
     print atco.statistics()
