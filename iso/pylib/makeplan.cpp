@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.15 2009-03-15 20:47:09 francis Exp $
+// $Id: makeplan.cpp,v 1.16 2009-03-16 00:43:40 francis Exp $
 //
 
 // Usage:
@@ -31,6 +31,7 @@
 // Work out best structure packing to use.  #pragma pack ?
 // shorts vs. ints? will larger be quicker sometimes?
 // try larger values of -O
+// Try likely/unlikely macros http://kerneltrap.org/node/4705
 // 
 // Use binary search to find latest time in a journey before a time
 // Sort the journeys at a location by time and binary slice them 
@@ -44,6 +45,9 @@
 #include <string>
 #include <cstdio>
 #include <fstream>
+
+#include <sys/time.h>
+#include <sys/resource.h>
 
 #ifdef DEBUG
     #include <boost/format.hpp>
@@ -661,9 +665,11 @@ class PlanningATCO {
 
 */
 
+/* Measures wall clock use 
+ * XXX wanted crude memory measure here, but couldn't find an easy one to use */
 class PerformanceMonitor {
     std::string name;
-    clock_t before;
+    clock_t clock_before;
 
     public:
 
@@ -672,12 +678,17 @@ class PerformanceMonitor {
     }
     
     void reset() {
-        this->before = clock();
+        this->clock_before = clock();
     }
 
     void display(const std::string& desc) {
-        clock_t after = clock();
-        printf("%s: %f secs\n", desc.c_str(), double(after - this->before) / double(CLOCKS_PER_SEC));
+        printf("%s: ", desc.c_str());
+
+        clock_t clock_after = clock();
+        printf("%f secs ", double(clock_after - this->clock_before) / double(CLOCKS_PER_SEC));
+        
+        printf("\n");
+
         this->reset();
     }
 
