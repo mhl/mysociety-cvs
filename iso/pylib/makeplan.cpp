@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.18 2009-03-16 01:47:03 francis Exp $
+// $Id: makeplan.cpp,v 1.19 2009-03-16 02:23:12 francis Exp $
 //
 
 // Usage:
@@ -377,10 +377,12 @@ class PlanningATCO {
     is later than previous direct routes we have for leaving from that
     station and arriving at target. */
     void _add_to_adjacents(const ArrivePlaceTime &arrive_place_time, Adjacents &adjacents) {
+        // This is written to minimise the number of searches of the map, as it
+        // is performance critical. So, uses "insert" rather than "[]".
         AdjacentsPair ap(arrive_place_time.location_id, arrive_place_time);
         const std::pair<Adjacents::iterator, bool>& p = adjacents.insert(ap);
         if (!p.second) {
-            // element already exists
+            // Element already exists, update it in place
             const Adjacents::iterator& it = p.first;
             it->second = arrive_place_time;
         }
@@ -444,7 +446,7 @@ class PlanningATCO {
     adjacents structure.
     */
     void _adjacent_location_times_for_journey(const LocationID target_location_id, const Minutes target_arrival_time, Adjacents& adjacents, const JourneyID journey_id) {
-        Journey& journey = this->journeys[journey_id];
+        const Journey& journey = this->journeys[journey_id];
 
         // All journeys run on the valid date; the check is done in the Python binary exporter.
 
