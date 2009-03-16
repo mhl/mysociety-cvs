@@ -5,11 +5,11 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.5 2009-03-16 01:18:38 francis Exp $
+# $Id: Makefile,v 1.6 2009-03-16 21:55:31 francis Exp $
 #
 #
 
-CFLAGS = -Wall -O2 -fno-rtti -fno-exceptions
+CFLAGS = -Wall -O2 # -fno-exceptions -fno-rtti
 CFLAGS_DEBUG = -Wall -g -DDEBUG
 CFLAGS_PROFILE = -Wall -pg
 

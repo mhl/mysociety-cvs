@@ -6,33 +6,36 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.20 2009-03-16 03:48:13 francis Exp $
+// $Id: makeplan.cpp,v 1.21 2009-03-16 21:55:31 francis Exp $
 //
 
 // Usage:
 // g++ -g makeplan.cpp -DDEBUG
 // ./a.out /home/francis/toobig/nptdr/gen/nptdr-B32QD-40000 540 9100BHAMSNH
 //
-// Is quicker without logging that DEBUG causes.
-//
 
-// Add route storing and printing same as in Python
-//
 // Optimisation ideas:
+// CALL THIS:   if location not in settled_set:
 // Use some kind of btree when finding proximate stations at start during loading
 //
 // Remove the route storing stuff on a #define
 // Remove the station text string identifiers on a #define (where is it used?)
 //
-// With and without -g make a difference?
 // Check using const in enough places
 // Work out best structure packing to use.  #pragma pack ?
 // shorts vs. ints? will larger be quicker sometimes?
-// Try larger values of -O
+// Try with -Os
 // Try likely/unlikely macros http://kerneltrap.org/node/4705
 // 
 // Use binary search to find latest time in a journey before a time
 // Sort the journeys at a location by time and binary slice them 
+//
+// Try change list to vector and see what happened
+//
+// Instead of returning all the direct connections, instead keep the connecting
+//   journeys in a sorted list, and find just the nearest one with a binary
+//   search. Then let the relaxed_heap do the work, rather than inserting
+//   into the adjacents structure.
 //
 // Find something better than relaxed_heap
 
@@ -47,9 +50,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
-#ifdef DEBUG
-    #include <boost/format.hpp>
-#endif
+#include <boost/format.hpp>
 #include <boost/foreach.hpp>
 #include <boost/pending/relaxed_heap.hpp>
 
@@ -76,6 +77,11 @@
 #endif
 
 typedef short Minutes; // after midnight
+std::string format_time(const Minutes& mins_after_midnight) {
+    int hours = mins_after_midnight / 60;
+    int mins = mins_after_midnight % 60;
+    return (boost::format("%02d:%02d:00") % hours % mins).str();
+}
 
 // Stuff for relaxed_heap for Dijkstra's algorithm
 // XXX must be global, is there a way to use relaxed_heap and this not be?
@@ -133,6 +139,16 @@ class Journey {
     std::vector<Hop> hops;
     char vehicle_type; // T = train, B = bus
 
+    const char* pretty_vehicle_type() const {
+        if (vehicle_type == 'T') {
+            return "train";
+        } else if (vehicle_type == 'B') {
+            return "bus";
+        } else {
+            assert(0);
+        }
+    }
+
 #ifdef DEBUG
     std::string toString() const {
         return (boost::format("Journey(%s)") % this->text_id).str();
@@ -149,9 +165,17 @@ class ArrivePlaceTime {
     LocationID location_id;
     Minutes when; // minutes after midnight
 
-    ArrivePlaceTime(LocationID l_location_id, Minutes l_when) {
+    char onwards_leg_type; // W = walk or J = journey or A = already there
+    JourneyID onwards_journey_id;
+    Minutes onwards_walk_time;
+
+    ArrivePlaceTime(LocationID l_location_id, Minutes l_when, char l_onwards_leg_type, JourneyID l_onwards_journey_id, Minutes l_onwards_walk_time) {
         this->location_id = l_location_id;
         this->when = l_when;
+
+        this->onwards_leg_type = l_onwards_leg_type;
+        this->onwards_journey_id = l_onwards_journey_id;
+        this->onwards_walk_time = l_onwards_walk_time;
     }
 
     ArrivePlaceTime() {
@@ -172,9 +196,10 @@ typedef std::map<LocationID, ArrivePlaceTime> Adjacents;
 typedef std::pair<LocationID, ArrivePlaceTime> AdjacentsPair;
 
 /* Result types from Dijkstra's algorithm */
-typedef std::map<LocationID, Minutes> Settled;
 typedef std::pair<LocationID, Minutes> SettledPair;
-typedef std::map<LocationID, std::list<ArrivePlaceTime> > Routes;
+typedef std::vector<SettledPair> Settled;
+typedef std::list<ArrivePlaceTime> Route;
+typedef std::map<LocationID, Route> Routes;
 typedef std::pair<LocationID, std::list<ArrivePlaceTime> > RoutesPair;
 
 /* Most similar to Python's Exception */
@@ -221,6 +246,7 @@ class PlanningATCO {
     NearbyLocations nearby_locations;
 
     LocationID final_destination_id;
+    Minutes final_destination_time;
 
     /* Create object that generates shortest journey times for all stations
     in a public transport network defined by an ATCO-CIF timetable file.
@@ -398,6 +424,7 @@ class PlanningATCO {
                     // see which of the locations we have to check *are* actually near enough
                     const std::set<LocationID>& other_location_list = it2->second;
                     BOOST_FOREACH(const LocationID& other_location_id, other_location_list) {
+                        // ignore own location
                         if (location_id == other_location_id) {
                             continue;
                         }
@@ -472,11 +499,11 @@ class PlanningATCO {
     /* Private helper function. Store a time we can leave a station, if it
     is later than previous direct routes we have for leaving from that
     station and arriving at target. */
-    void _add_to_adjacents(const ArrivePlaceTime &arrive_place_time, Adjacents &adjacents) {
+    void _add_to_adjacents(ArrivePlaceTime &arrive_place_time, Adjacents &adjacents) {
         // This is written to minimise the number of searches of the map, as it
         // is performance critical. So, uses "insert" rather than "[]".
         AdjacentsPair ap(arrive_place_time.location_id, arrive_place_time);
-        const std::pair<Adjacents::iterator, bool>& p = adjacents.insert(ap);
+        std::pair<Adjacents::iterator, bool> p = adjacents.insert(ap);
         if (!p.second) {
             // Element already exists, update it in place
             const Adjacents::iterator& it = p.first;
@@ -518,7 +545,7 @@ class PlanningATCO {
 
             Minutes walk_time = this->_walk_time_apart(dist);
             Minutes walk_departure_time = target_arrival_time - walk_time;
-            ArrivePlaceTime arrive_time_place(location_id, walk_departure_time /*, onwards_leg_type = 'walk', onwards_walk_time = walk_time */);
+            ArrivePlaceTime arrive_time_place(location_id, walk_departure_time, 'W', -1, walk_time);
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
             this->_add_to_adjacents(arrive_time_place, adjacents);
         }
@@ -623,7 +650,7 @@ class PlanningATCO {
             }
 
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
-            ArrivePlaceTime arrive_place_time(hop.location_id, departure_time /*, onwards_leg_type = 'journey', onwards_journey = journey*/);
+            ArrivePlaceTime arrive_place_time(hop.location_id, departure_time, 'J', journey_id, -1);
             this->_add_to_adjacents(arrive_place_time, adjacents);
         }
     }
@@ -636,47 +663,18 @@ class PlanningATCO {
     target_datetime - when we want to arrive by
     */
     void do_dijkstra(Settled& settled, Routes& settled_routes, const LocationID target_location_id, const Minutes target_time /*, earliest_departure=None*/) {
-        /* Try out heaps
-        int max_values = 100;
-        queue_values.resize(max_values);
-        boost::relaxed_heap<unsigned, LessValues> heap(max_values);
-
-        queue_values[9] = 1000;
-        heap.push(9);
-        queue_values[8] = 2000;
-        heap.push(8);
-        queue_values[7] = 1500;
-        heap.push(7);
-        queue_values[6] = 1300;
-        heap.push(6);
-        queue_values[5] = 1900;
-        heap.push(5);
-
-        int victim;
-        Minutes m;
-
-        victim = heap.top();
-        m = *queue_values[victim];
-        log("minutes: %d location: %d", m, victim);
-
-        queue_values[7] = 5000;
-        heap.update(7);
-
-        victim = heap.top();
-        m = *queue_values[victim];
-        log("minutes: %d location: %d", m, victim);
-        */
-        
         Routes routes; // how to get there
-        routes[target_location_id].push_front(ArrivePlaceTime(target_location_id, target_time /*, onwards_leg_type = 'already_there') */));
+        routes[target_location_id].push_front(ArrivePlaceTime(target_location_id, target_time, 'A', -1, -1));
         
         // Other variables
         this->final_destination_id = target_location_id;
+        this->final_destination_time = target_time;
         
         // Create the heap, for use as priority queue
         int max_values = this->locations.size();
         queue_values.resize(max_values + 1); // queue values is array with index location -> time of day (in minutes since midnight)
         boost::relaxed_heap<unsigned, LessValues> heap(max_values);
+        std::set<LocationID> settled_in_set;
 
         // Put in initial value
         queue_values[target_location_id] = target_time; 
@@ -693,7 +691,8 @@ class PlanningATCO {
             //    break
 
             // That item is now settled
-            settled[nearest_location_id] = nearest_time;
+            settled_in_set.insert(nearest_location_id);
+            settled.push_back(std::make_pair(nearest_location_id, nearest_time));
             // ... copy the route into settled_routes, so we only return routes
             // we know we finished (rather than the partial, best-so-far that is
             // in routes)
@@ -731,34 +730,56 @@ class PlanningATCO {
         // return values are settled and settled_routes in parameters
     }
 
-}; /*
-    def pretty_print_routes(self, routes):
-        '''do_dijkstra returns a journey routes array, this prints it in a human readable format.'''
-        for place, route in routes.iteritems():
-            print "From " + place + ":"
-            for ix in range(len(route)):
-                stop = route[ix]
-                if stop.onwards_leg_type == 'already_there':
-                    print "    You've arrived at " + stop.location
-                    continue
-                next_stop = route[ix + 1]
-                
-                if stop.onwards_leg_type == 'walk':
-                    print "    Leave by walking to %s, will take %.02f mins" % (next_stop.location, stop.onwards_walk_time.seconds / 60.0)
-                elif stop.onwards_leg_type == 'journey':
-                    departure_times = stop.onwards_journey.find_departure_times_at_location(stop.location)
-                    departure_time = []
-                    for a in departure_times:
-                        departure_time.append(a.strftime("%H:%M:%S"))
-                    arrival_times = stop.onwards_journey.find_arrival_times_at_location(next_stop.location)
-                    arrival_time = []
-                    for a in arrival_times:
-                        arrival_time.append(a.strftime("%H:%M:%S"))
-                    print "    Leave " + stop.location + " by " + stop.onwards_journey.vehicle_type + " on the " + ','.join(departure_time) + ", arriving " + next_stop.location + " at " + ','.join(arrival_time)
-                else:
-                    raise "Unknown leg type '" + stop.onwards_leg_type + "'"
+    /* do_dijkstra returns a journey routes array, this prints it in a human readable format. */
+    std::string pretty_print_routes(const Settled& settled, const Routes& routes) {
+        const Location& final_destination = this->locations[this->final_destination_id];
+        std::string ret = (boost::format("Journey times to %s by %s\n") % final_destination.text_id % format_time(this->final_destination_time)).str();
+        BOOST_FOREACH(const SettledPair& p, settled) {
+            const LocationID& l_id = p.first;
+            const Location& from_location = this->locations[l_id];
+            int mins = this->final_destination_time - p.second;
+            const Route& route = routes.find(l_id)->second;
 
-*/
+            ret += (boost::format("From %s in %d mins:\n") % from_location.text_id % mins).str();
+
+            for (Route::const_iterator it = route.begin(); it != route.end(); it++) {
+                const ArrivePlaceTime& stop = *it;
+                const Location& location = this->locations[stop.location_id];
+                if (stop.onwards_leg_type == 'A') {
+                    ret += (boost::format("    You've arrived at %s\n") % location.text_id).str();
+                    continue;
+                }
+                it++; const ArrivePlaceTime& next_stop = *it; it--;
+                const Location& next_location = this->locations[next_stop.location_id];
+                
+                if (stop.onwards_leg_type == 'W') {
+                    ret += (boost::format("    Leave by walking to %s, will take %d mins\n") % next_location.text_id % stop.onwards_walk_time).str();
+                } else if (stop.onwards_leg_type == 'J') {
+                    const Journey& journey = this->journeys[stop.onwards_journey_id];
+                    ret += (boost::format("    Leave %s by %s on the ") % location.text_id.c_str() % journey.pretty_vehicle_type()).str();
+                    BOOST_FOREACH(const Hop& hop, journey.hops) {
+                        if (hop.is_pick_up() && hop.location_id == stop.location_id) {
+                            ret += (format_time(hop.mins_dep).c_str());
+                        }
+                    }
+
+                    ret += (boost::format(", arriving %s ") % next_location.text_id).str();
+                    BOOST_FOREACH(const Hop& hop, journey.hops) {
+                        if (hop.is_set_down() && hop.location_id == next_stop.location_id) {
+                            ret += (format_time(hop.mins_arr).c_str());
+                        }
+                    }
+
+                    ret += ("\n");
+                } else {
+                    assert(0);
+                }
+            }
+        }
+        return ret;
+    }
+
+}; 
 
 /* Measures wall clock use 
  * XXX wanted crude memory measure here, but couldn't find an easy one to use */
@@ -805,7 +826,7 @@ int main(int argc, char * argv[]) {
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
     pm.display("loading timetables took");
-//    atco.generate_proximity_index();
+// atco.generate_proximity_index();
 // atco.dump_nearby_locations();
     atco.generate_proximity_index_fast();
 // atco.dump_nearby_locations();
@@ -835,21 +856,7 @@ int main(int argc, char * argv[]) {
     std::string human_file = outputprefix + ".human.txt";
     std::ofstream g;
     g.open(human_file.c_str());
-    g << "Journey times to " << target_location_text_id << " by " << target_minutes_after_midnight / 60 << ":" << target_minutes_after_midnight % 60 << "\n";
-    BOOST_FOREACH(const SettledPair& p, settled) {
-        const LocationID& l_id = p.first;
-        const Minutes& when = target_minutes_after_midnight - p.second;
-        Location *l = &atco.locations[l_id];
-        g << l->text_id << " " << when << " mins\n";
-        
-        BOOST_FOREACH(const ArrivePlaceTime& arrive_place_time, routes[l_id]) {
-            
-            int hours = arrive_place_time.when / 60;
-            int mins = arrive_place_time.when % 60;
-            Location *rl = &atco.locations[arrive_place_time.location_id];
-            g << "\tleave " << rl->text_id << " at " << hours << ":" << mins << std::endl;
-        }
-    }
+    g << atco.pretty_print_routes(settled, routes);
     g.close();
 
     return 0;

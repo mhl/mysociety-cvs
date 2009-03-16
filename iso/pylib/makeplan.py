@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.49 2009-03-13 16:28:49 francis Exp $
+# $Id: makeplan.py,v 1.50 2009-03-16 21:55:31 francis Exp $
 #
 
 '''Finds shortest route from all points on a public transport network to arrive
@@ -61,20 +61,21 @@ results contained a dictionary with each station on the network from which she
 can arrive at work on time, and the latest time at which you need to leave that
 station.
 >>> results
-{'DRYAW': datetime.datetime(2007, 1, 8, 7, 20), 'TORYRECK': datetime.datetime(2007, 1, 8, 8, 0), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
+[('TORYRECK', datetime.datetime(2007, 1, 8, 8, 0)), ('DRYAW', datetime.datetime(2007, 1, 8, 7, 20)), ('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]
 
 routes gave her details of the best route she could take from each station. A
 route consisted of a list of place/times, in reverse order starting with the
 target destination, and ending with the place/time that appeared in the results
 dictionary.
->>> print atco.pretty_print_routes(routes),
-From DRYAW:
-    Leave DRYAW by TRAIN on the 07:20:00, arriving TORYRECK at 07:45:00
+>>> print atco.pretty_print_routes(results, routes),
+Journey times to TORYRECK by 2007-01-08 08:00:00
+From TORYRECK in 0 mins:
     You've arrived at TORYRECK
-From TORYRECK:
+From DRYAW in 40 mins:
+    Leave DRYAW by train on the 07:20:00, arriving TORYRECK at 07:45:00
     You've arrived at TORYRECK
-From KNAPFORD:
-    Leave KNAPFORD by TRAIN on the 07:00:00, arriving TORYRECK at 07:45:00
+From KNAPFORD in 60 mins:
+    Leave KNAPFORD by train on the 07:00:00, arriving TORYRECK at 07:45:00
     You've arrived at TORYRECK
 
 A second passenger wanted to be in Dryaw at 7:22 for breakfast with a friend.
@@ -85,52 +86,52 @@ of journeys, plus you can walk from Toryreck in 50 minutes!
 >>> ch = logging.StreamHandler()
 >>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,22))
 >>> results
-{'DRYAW': datetime.datetime(2007, 1, 8, 7, 22), 'TORYRECK': datetime.datetime(2007, 1, 8, 6, 32), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
+[('DRYAW', datetime.datetime(2007, 1, 8, 7, 22)), ('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0)), ('TORYRECK', datetime.datetime(2007, 1, 8, 6, 32))]
 >>> (results, routes) = atco.do_dijkstra("DRYAW", datetime.datetime(2007,1,8, 7,25))
 >>> results
-{'DRYAW': datetime.datetime(2007, 1, 8, 7, 25), 'TORYRECK': datetime.datetime(2007, 1, 8, 6, 35), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
-
+[('DRYAW', datetime.datetime(2007, 1, 8, 7, 25)), ('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0)), ('TORYRECK', datetime.datetime(2007, 1, 8, 6, 35))]
 
 The Anopha Quarry manager wanted to get to work by 9:15am. He had to get a bus
 from the end of the railway line.
 
 >>> (results, routes) = atco.do_dijkstra('ANOPHAB', datetime.datetime(2007, 1, 8, 9, 15))
 >>> results
-{'FFARQUHARB': datetime.datetime(2007, 1, 8, 8, 50), 'HACKENBECK': datetime.datetime(2007, 1, 8, 8, 32), 'TORYRECK': datetime.datetime(2007, 1, 8, 7, 45), 'DRYAW': datetime.datetime(2007, 1, 8, 7, 20), 'FFARQUHAR': datetime.datetime(2007, 1, 8, 8, 49), 'ELSBRIDGE': datetime.datetime(2007, 1, 8, 8, 11), 'ANOPHAB': datetime.datetime(2007, 1, 8, 9, 15), 'KNAPFORD': datetime.datetime(2007, 1, 8, 7, 0)}
->>> print atco.pretty_print_routes(routes),
-From FFARQUHARB:
-    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+[('ANOPHAB', datetime.datetime(2007, 1, 8, 9, 15)), ('FFARQUHARB', datetime.datetime(2007, 1, 8, 8, 50)), ('FFARQUHAR', datetime.datetime(2007, 1, 8, 8, 49)), ('HACKENBECK', datetime.datetime(2007, 1, 8, 8, 32)), ('ELSBRIDGE', datetime.datetime(2007, 1, 8, 8, 11)), ('TORYRECK', datetime.datetime(2007, 1, 8, 7, 45)), ('DRYAW', datetime.datetime(2007, 1, 8, 7, 20)), ('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]
+>>> print atco.pretty_print_routes(results, routes),
+Journey times to ANOPHAB by 2007-01-08 09:15:00
+From ANOPHAB in 0 mins:
     You've arrived at ANOPHAB
-From HACKENBECK:
-    Leave HACKENBECK by TRAIN on the 08:32:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 1.00 mins
-    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+From FFARQUHARB in 25 mins:
+    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From TORYRECK:
-    Leave TORYRECK by TRAIN on the 07:45:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 1.00 mins
-    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+From FFARQUHAR in 26 mins:
+    Leave by walking to FFARQUHARB, will take 1 mins
+    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From DRYAW:
-    Leave DRYAW by TRAIN on the 07:20:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 1.00 mins
-    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+From HACKENBECK in 43 mins:
+    Leave HACKENBECK by train on the 08:32:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 1 mins
+    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From FFARQUHAR:
-    Leave by walking to FFARQUHARB, will take 1.00 mins
-    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+From ELSBRIDGE in 64 mins:
+    Leave ELSBRIDGE by train on the 08:11:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 1 mins
+    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From ELSBRIDGE:
-    Leave ELSBRIDGE by TRAIN on the 08:11:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 1.00 mins
-    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+From TORYRECK in 90 mins:
+    Leave TORYRECK by train on the 07:45:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 1 mins
+    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From ANOPHAB:
+From DRYAW in 115 mins:
+    Leave DRYAW by train on the 07:20:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 1 mins
+    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From KNAPFORD:
-    Leave KNAPFORD by TRAIN on the 07:00:00, arriving FFARQUHAR at 08:41:00
-    Leave by walking to FFARQUHARB, will take 1.00 mins
-    Leave FFARQUHARB by BUS on the 08:50:00, arriving ANOPHAB at 09:05:00
+From KNAPFORD in 135 mins:
+    Leave KNAPFORD by train on the 07:00:00, arriving FFARQUHAR at 08:41:00
+    Leave by walking to FFARQUHARB, will take 1 mins
+    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 
 
@@ -139,23 +140,23 @@ James the Red Engine is currently on duty.
 
 >>> (results, routes) = atco.do_dijkstra('NORRAMBY', datetime.datetime(2007, 1, 8, 12, 0))
 >>> results
-{'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 50), 'NORRAMBY': datetime.datetime(2007, 1, 8, 12, 0), 'CROVANSGATE': datetime.datetime(2007, 1, 8, 11, 15), 'BALLAHOO': datetime.datetime(2007, 1, 8, 11, 30)}
+[('NORRAMBY', datetime.datetime(2007, 1, 8, 12, 0)), ('BALLAHOO', datetime.datetime(2007, 1, 8, 11, 30)), ('CROVANSGATE', datetime.datetime(2007, 1, 8, 11, 15)), ('VICARSTOWN', datetime.datetime(2007, 1, 8, 10, 50))]
 
 >>> (results, routes) = atco.do_dijkstra('NORRAMBY', datetime.datetime(2007, 1, 8, 11, 0))
 >>> results
-{'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 0), 'NORRAMBY': datetime.datetime(2007, 1, 8, 11, 0), 'BALLAHOO': datetime.datetime(2007, 1, 8, 10, 35)}
+[('NORRAMBY', datetime.datetime(2007, 1, 8, 11, 0)), ('BALLAHOO', datetime.datetime(2007, 1, 8, 10, 35)), ('VICARSTOWN', datetime.datetime(2007, 1, 8, 10, 0))]
 
 >>> (results, routes) = atco.do_dijkstra('VICARSTOWN', datetime.datetime(2007, 1, 8, 13, 0))
 >>> results
-{'NORRAMBY': datetime.datetime(2007, 1, 8, 11, 45), 'VICARSTOWN': datetime.datetime(2007, 1, 8, 13, 0), 'CROVANSGATE': datetime.datetime(2007, 1, 8, 11, 40), 'BALLAHOO': datetime.datetime(2007, 1, 8, 12, 0)}
+[('VICARSTOWN', datetime.datetime(2007, 1, 8, 13, 0)), ('BALLAHOO', datetime.datetime(2007, 1, 8, 12, 0)), ('NORRAMBY', datetime.datetime(2007, 1, 8, 11, 45)), ('CROVANSGATE', datetime.datetime(2007, 1, 8, 11, 40))]
 
 >>> (results, routes) = atco.do_dijkstra('BALLAHOO', datetime.datetime(2007, 1, 8, 10, 40))
 >>> results
-{'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 0), 'BALLAHOO': datetime.datetime(2007, 1, 8, 10, 40)}
+[('BALLAHOO', datetime.datetime(2007, 1, 8, 10, 40)), ('VICARSTOWN', datetime.datetime(2007, 1, 8, 10, 0))]
 
 >>> (results, routes) = atco.do_dijkstra('BALLAHOO', datetime.datetime(2007, 1, 8, 12, 10))
 >>> results
-{'VICARSTOWN': datetime.datetime(2007, 1, 8, 10, 50), 'NORRAMBY': datetime.datetime(2007, 1, 8, 11, 45), 'CROVANSGATE': datetime.datetime(2007, 1, 8, 11, 15), 'BALLAHOO': datetime.datetime(2007, 1, 8, 12, 10)}
+[('BALLAHOO', datetime.datetime(2007, 1, 8, 12, 10)), ('NORRAMBY', datetime.datetime(2007, 1, 8, 11, 45)), ('CROVANSGATE', datetime.datetime(2007, 1, 8, 11, 15)), ('VICARSTOWN', datetime.datetime(2007, 1, 8, 10, 50))]
 
 
 References regarding the North Western Railway:
@@ -298,6 +299,11 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             return self.train_interchange_default
         else: # Bus, Air, Metro/Tram, Ferry/River Bus XXX
             return self.bus_interchange_default
+    def _vehicle_type_name_for_journey(self, journey):
+        if journey.vehicle_type == 'TRAIN':
+            return 'train';
+        else: # Bus, Air, Metro/Tram, Ferry/River Bus XXX
+            return 'bus';
 
     def _adjacent_location_times_for_journey(self, target_location, target_arrival_datetime, adjacents, journey):
         '''Private function, called by adjacent_location_times. Finds every
@@ -398,6 +404,14 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
         target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
         target_datetime - when we want to arrive by
+
+        Returns (results, routes) where:
+
+        results - is an array of pairs of station identifier, date/time at that
+            station, in order starting with the station that is quickest to get
+            to the destination.
+        routes - a dictionary from a station identifier, to the more detailed
+            route to take to get to it.
         '''
 
         # Check precompute_for_dijkstra was called with same parameters for
@@ -424,13 +438,15 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
        
         # Set up initial state
-        settled = {} # dictionary from location to datetime
+        settled_in_order = []
+        settled_set = set() # dictionary from location to datetime
         settled_routes = {} # routes of settled journeys
         queue = pqueue.PQueue()
         queue.insert(Priority(target_datetime), target_location)
         routes = {}
         routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime, onwards_leg_type = 'already_there') ] # how to get there
         self.final_destination = target_location
+        self.final_datetime = target_datetime
         self.walk_speed = walk_speed
         self.walk_time = walk_time
 
@@ -444,7 +460,8 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                 break
 
             # That item is now settled
-            settled[nearest_location] = nearest_datetime
+            settled_set.add(nearest_location)
+            settled_in_order.append((nearest_location, nearest_datetime))
             # ... copy the route into settled_routes, so we only return routes
             # we know we finished (rather than the partial, best-so-far that is
             # in routes)
@@ -459,25 +476,29 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     # See if this location is already in queue 
                     current_priority = queue[location]
                     # If we get here then it is, see if what we found is nearer and update priority
-                    assert location not in settled
+                    assert location not in settled_set
                     if new_priority < current_priority:
                         queue[location] = new_priority
                         routes[location] = [ arrive_place_time ] + routes[nearest_location] 
                         logging.debug("updated " + location + " from priority " + str(current_priority) + " to " + str(new_priority) + " in queue")
                 except KeyError, e: # only way of testing presence in queue is to catch an exception
-                    if location not in settled:
+                    if location not in settled_set:
                         # No existing entry for location in queue
                         queue.insert(new_priority, location)
                         routes[location] = [ arrive_place_time ] + routes[nearest_location] 
                         logging.debug("added " + location + " " + str(new_priority) + " to queue")
 
-        return (settled, settled_routes)
+        return (settled_in_order, settled_routes)
 
-    def pretty_print_routes(self, routes):
+    def pretty_print_routes(self, results, routes):
         '''do_dijkstra returns a journey routes array, this prints it in a human readable format.'''
-        ret = ""
-        for place, route in routes.iteritems():
-            ret += "From " + place + ":\n"
+
+        ret = "Journey times to " + self.final_destination + " by " + str(self.final_datetime) + "\n"
+
+        for place, when in results:
+            route = routes[place]
+            mins = int((self.final_datetime - when).seconds / 60.0);
+            ret += "From " + place + " in " + str(mins) + " mins:\n"
             for ix in range(len(route)):
                 stop = route[ix]
                 if stop.onwards_leg_type == 'already_there':
@@ -486,7 +507,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                 next_stop = route[ix + 1]
                 
                 if stop.onwards_leg_type == 'walk':
-                    ret += "    Leave by walking to %s, will take %.02f mins\n" % (next_stop.location, stop.onwards_walk_time.seconds / 60.0)
+                    ret += "    Leave by walking to %s, will take %d mins\n" % (next_stop.location, int(stop.onwards_walk_time.seconds / 60.0))
                 elif stop.onwards_leg_type == 'journey':
                     departure_times = stop.onwards_journey.find_departure_times_at_location(stop.location)
                     departure_time = []
@@ -496,7 +517,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     arrival_time = []
                     for a in arrival_times:
                         arrival_time.append(a.strftime("%H:%M:%S"))
-                    ret += "    Leave " + stop.location + " by " + stop.onwards_journey.vehicle_type + " on the " + ','.join(departure_time) + ", arriving " + next_stop.location + " at " + ','.join(arrival_time) + "\n"
+                    ret += "    Leave " + stop.location + " by " + self._vehicle_type_name_for_journey(stop.onwards_journey) + " on the " + ','.join(departure_time) + ", arriving " + next_stop.location + " at " + ','.join(arrival_time) + "\n"
                 else:
                     raise Exception, "Unknown leg type '" + stop.onwards_leg_type + "'"
 

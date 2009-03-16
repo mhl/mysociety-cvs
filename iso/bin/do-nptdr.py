@@ -79,6 +79,7 @@ parser.add_option('--endwalkspeed', type='float', dest="endwalk_speed", help='Sp
 parser.add_option('--endwalktime', type='float', dest="endwalk_time", help='Maximum time in seconds to walk to first stop of journey', default=900)
 parser.add_option('--config', type='string', dest="config", help='Specify a text file containing parameters to load. Format is a parameter per line, value coming after a colon, e.g. "bandsize: 14". Command line parameters override the config file.' )
 parser.add_option('--output', type='string', dest="output", help='Output directory.')
+parser.add_option('--fastindexdir', type='string', dest="fastindexdir", help='Directory fast index files are in, defaults to value of --output.')
 parser.add_option('--loglevel', type='string', dest="loglevel", default='WARN', help='Try ERROR/WARN/INFO/DEBUG for increasingly more logging, default is WARN.')
 parser.add_option('--profile', action='store_true', dest='profile', default=False, help="Runs Python profiler on Dijkstra's algorithm part of calculation. Outputs a .profile file in output directory for later processing by Python pstats module, and prints basic details from it.")
 parser.add_option('--viewer', type='string', dest="viewer", help='If present, calls application to display PNG file at end.')
@@ -142,7 +143,9 @@ if command in ['fastcalc', 'fastplan']:
     outfile = options.output + "/nptdr-fast-%s-%d" % (options.destination, options.size)
     # make a name for index files that depends on their values
     nptdr_files_hash = md5.new(",".join(nptdr_files)).hexdigest()[0:12]
-    fastindexfile = options.output + "/fastindex-%s-%s" % (nptdr_files_hash, target_when.date().strftime("%Y-%m-%d"))
+    if not options.fastindexdir:
+        options.fastindexdir = options.output
+    fastindexfile = options.fastindexdir + "/fastindex-%s-%s" % (nptdr_files_hash, target_when.date().strftime("%Y-%m-%d"))
 
 if options.profile:
     import cProfile
@@ -256,7 +259,7 @@ def python_plan():
     # Output the results for by C grid to contour code
     grid_time_file = "%s.txt" % outfile
     f = open(grid_time_file, "w")
-    for location, when in results.iteritems():
+    for location, when in results:
         delta = target_when - when
         secs = delta.seconds + delta.days * 24 * 60 * 60
         loc = atco.location_from_id[location]
@@ -266,12 +269,7 @@ def python_plan():
     # Output the results for debugging
     human_file = "%s-human.txt" % outfile
     f = open(human_file, "w")
-    s = "Journey times to " + options.destination + " by " + str(target_when)
-    f.write("\n")
-    f.write(s + "\n")
-    f.write(len(s) * '=' + '\n')
-    f.write("\n")
-    f.write(atco.pretty_print_routes(routes))
+    f.write(atco.pretty_print_routes(results, routes))
     f.close()
 
     do_external_contours()
