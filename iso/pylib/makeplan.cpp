@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.16 2009-03-16 00:43:40 francis Exp $
+// $Id: makeplan.cpp,v 1.17 2009-03-16 01:18:38 francis Exp $
 //
 
 // Usage:
@@ -24,13 +24,11 @@
 // Remove the route storing stuff on a #define
 // Remove the station text string identifiers on a #define (where is it used?)
 //
-// Is there any C++ RTTI bumf that can be removed? -fno-rtti ?
-// Disable exceptions in compiler if they're not. -fno-exceptions ?
 // With and without -g make a difference?
 // Check using const in enough places
 // Work out best structure packing to use.  #pragma pack ?
 // shorts vs. ints? will larger be quicker sometimes?
-// try larger values of -O
+// Try larger values of -O
 // Try likely/unlikely macros http://kerneltrap.org/node/4705
 // 
 // Use binary search to find latest time in a journey before a time
@@ -120,10 +118,10 @@ class Hop {
     }
 #endif
 
-    bool is_pick_up() {
+    bool is_pick_up() const {
         return mins_dep != -1;
     }
-    bool is_set_down() {
+    bool is_set_down() const {
         return mins_arr != -1;
     }
 };
@@ -367,8 +365,8 @@ class PlanningATCO {
         }
 
         // Go through every journey visiting the location
-        std::set<JourneyID> journey_list = it->second;
-        BOOST_FOREACH(JourneyID journey_id, journey_list) {
+        const std::set<JourneyID>& journey_list = it->second;
+        BOOST_FOREACH(const JourneyID& journey_id, journey_list) {
             log(boost::format("\tconsidering journey: %s") % this->journeys[journey_id].text_id)
             this->_adjacent_location_times_for_journey(target_location_id, target_arrival_time, adjacents, journey_id);
         }
@@ -412,8 +410,8 @@ class PlanningATCO {
         #endif
 
         NearbyLocationsInner &nearby_locations_inner = this->nearby_locations[target_location_id];
-        BOOST_FOREACH(NearbyLocationsInnerPair p, nearby_locations_inner) {
-            LocationID location_id = p.first;
+        BOOST_FOREACH(const NearbyLocationsInnerPair& p, nearby_locations_inner) {
+            const LocationID& location_id = p.first;
             double dist = p.second;
 
             #ifdef DEBUG
@@ -464,7 +462,7 @@ class PlanningATCO {
         // only be one of arrival time to check, but there can be more for
         // looped journeys.
         Minutes arrival_time_at_target_location = -1;
-        BOOST_FOREACH(Hop hop, journey.hops) {
+        BOOST_FOREACH(const Hop& hop, journey.hops) {
             // Find hops that arrive at the target
             if (hop.location_id != target_location_id) {
                 continue;
@@ -501,7 +499,7 @@ class PlanningATCO {
         Journey& journey = this->journeys[journey_id];
 
         // Now go through every earlier stop, and add it to the list of returnable nodes
-        BOOST_FOREACH(Hop hop, journey.hops) {
+        BOOST_FOREACH(const Hop& hop, journey.hops) {
             // Ignore the target location
             if (hop.location_id == target_location_id) {
                 continue;
@@ -609,9 +607,9 @@ class PlanningATCO {
             Adjacents adjacents;
             this->adjacent_location_times(adjacents, nearest_location_id, nearest_time);
 
-            BOOST_FOREACH(AdjacentsPair p, adjacents) {
-                LocationID location_id = p.first;
-                ArrivePlaceTime arrive_place_time = p.second;
+            BOOST_FOREACH(const AdjacentsPair& p, adjacents) {
+                const LocationID& location_id = p.first;
+                const ArrivePlaceTime& arrive_place_time = p.second;
                 if (queue_values[location_id]) {
                     // already in heap
                     Minutes current_priority = *queue_values[location_id];
@@ -724,9 +722,9 @@ int main(int argc, char * argv[]) {
     std::string grid_time_file = outputprefix + ".txt";
     std::ofstream f;
     f.open(grid_time_file.c_str());
-    BOOST_FOREACH(SettledPair p, settled) {
-        LocationID l_id = p.first;
-        Minutes min = target_minutes_after_midnight - p.second;
+    BOOST_FOREACH(const SettledPair& p, settled) {
+        const LocationID& l_id = p.first;
+        const Minutes& min = target_minutes_after_midnight - p.second;
         int secs = min * 60;
         Location *l = &atco.locations[l_id];
         f << l->easting << " " << l->northing << " " << secs << "\n";
@@ -738,13 +736,13 @@ int main(int argc, char * argv[]) {
     std::ofstream g;
     g.open(human_file.c_str());
     g << "Journey times to " << target_location_text_id << " by " << target_minutes_after_midnight / 60 << ":" << target_minutes_after_midnight % 60 << "\n";
-    BOOST_FOREACH(SettledPair p, settled) {
-        LocationID l_id = p.first;
-        Minutes when = target_minutes_after_midnight - p.second;
+    BOOST_FOREACH(const SettledPair& p, settled) {
+        const LocationID& l_id = p.first;
+        const Minutes& when = target_minutes_after_midnight - p.second;
         Location *l = &atco.locations[l_id];
         g << l->text_id << " " << when << " mins\n";
         
-        BOOST_FOREACH(ArrivePlaceTime arrive_place_time, routes[l_id]) {
+        BOOST_FOREACH(const ArrivePlaceTime& arrive_place_time, routes[l_id]) {
             
             int hours = arrive_place_time.when / 60;
             int mins = arrive_place_time.when % 60;
