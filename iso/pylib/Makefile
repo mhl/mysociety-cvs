@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.6 2009-03-16 21:55:31 francis Exp $
+# $Id: Makefile,v 1.7 2009-03-17 01:02:43 francis Exp $
 #
 #
 
@@ -15,7 +15,7 @@ CFLAGS_PROFILE = -Wall -pg
 
 CPP = /usr/bin/g++
 
-all: makeplan
+all: makeplan makeplan-debug makeplan-profile
 
 makeplan: makeplan.cpp Makefile
 	$(CPP) $(CFLAGS) makeplan.cpp -o makeplan

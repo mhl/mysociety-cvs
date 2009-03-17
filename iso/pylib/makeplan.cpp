@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.22 2009-03-17 00:16:57 francis Exp $
+// $Id: makeplan.cpp,v 1.23 2009-03-17 01:02:43 francis Exp $
 //
 
 // Usage:
@@ -15,22 +15,14 @@
 //
 
 // Optimisation ideas:
-// CALL THIS:   if location not in settled_set:
-// Use some kind of btree when finding proximate stations at start during loading
 //
 // Remove the route storing stuff on a #define
 // Remove the station text string identifiers on a #define (where is it used?)
 //
 // Check using const in enough places
-// Work out best structure packing to use.  #pragma pack ?
-// shorts vs. ints? will larger be quicker sometimes?
-// Try with -Os
-// Try likely/unlikely macros http://kerneltrap.org/node/4705
 // 
 // Use binary search to find latest time in a journey before a time
 // Sort the journeys at a location by time and binary slice them 
-//
-// Try change list to vector and see what happened
 //
 // Instead of returning all the direct connections, instead keep the connecting
 //   journeys in a sorted list, and find just the nearest one with a binary
@@ -76,7 +68,7 @@
     #define debug_assert(thing) while(0) { };
 #endif
 
-typedef short Minutes; // after midnight
+typedef int Minutes; // after midnight (only needs to be a short, but it seems to make little performance difference which it is)
 std::string format_time(const Minutes& mins_after_midnight) {
     int hours = mins_after_midnight / 60;
     int mins = mins_after_midnight % 60;
@@ -333,8 +325,11 @@ class PlanningATCO {
             for (int ii = 0; ii < number_of_hops; ++ii) {
                 Hop hop;
                 my_fread(&hop.location_id, 1, sizeof(hop.location_id), fp);
-                my_fread(&hop.mins_arr, 1, sizeof(hop.mins_arr), fp);
-                my_fread(&hop.mins_dep, 1, sizeof(hop.mins_dep), fp);
+                short mins_arr, mins_dep; // file format uses shorts, whereas data structure is ints now
+                my_fread(&mins_arr, 1, sizeof(mins_arr), fp);
+                my_fread(&mins_dep, 1, sizeof(mins_dep), fp);
+                hop.mins_arr = mins_arr;
+                hop.mins_dep = mins_dep;
                 j->hops[ii] = hop;
                 log(boost::format("loaded hop: %s") % hop.toString().c_str());
 
@@ -707,7 +702,9 @@ class PlanningATCO {
 
             BOOST_FOREACH(const AdjacentsPair& p, adjacents) {
                 const LocationID& location_id = p.first;
-                // const Location& location = this->locations[location_id];
+                #ifdef DEBUG
+                const Location& location = this->locations[location_id];
+                #endif 
                 const ArrivePlaceTime& arrive_place_time = p.second;
                 log(boost::format("considering direct connecting station: %s\n") % location.text_id.c_str());
                 if (queue_values[location_id]) {
