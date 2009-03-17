@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.24 2009-03-17 01:31:24 francis Exp $
+// $Id: makeplan.cpp,v 1.25 2009-03-17 02:21:15 francis Exp $
 //
 
 // Usage:
@@ -484,7 +484,7 @@ class PlanningATCO {
     */
     void adjacent_location_times(Adjacents &adjacents, LocationID target_location_id, Minutes target_arrival_time) {
         // Check that there are journeys visiting this location
-        log(boost::format("adjacent_location_times target_location: %s target_arrival_time: %d") % this->locations[target_location_id].text_id % target_arrival_time);
+        log(boost::format("adjacent_location_times target_location: %s target_arrival_time: %s") % this->locations[target_location_id].text_id % format_time(target_arrival_time));
         JourneysVisitingLocation::iterator it = this->journeys_visiting_location.find(target_location_id);
         if (it == journeys_visiting_location.end()) {
             // This can happen, for example, with locations that are only
@@ -511,9 +511,11 @@ class PlanningATCO {
         AdjacentsPair ap(arrive_place_time.location_id, arrive_place_time);
         std::pair<Adjacents::iterator, bool> p = adjacents.insert(ap);
         if (!p.second) {
-            // Element already exists, update it in place
+            // Element already exists, update it in place if new one is better
             const Adjacents::iterator& it = p.first;
-            it->second = arrive_place_time;
+            if (arrive_place_time.when > it->second.when) {
+                it->second = arrive_place_time;
+            }
         }
     }
 
@@ -605,7 +607,7 @@ class PlanningATCO {
                 continue;
             }
             Minutes possible_arrival_time_at_target_location = hop.mins_arr;
-            log(boost::format("\t\tarrival time %d at target location %s") % possible_arrival_time_at_target_location % this->locations[target_location_id].text_id);
+            log(boost::format("\t\tarrival time %s at target location %s") % format_time(possible_arrival_time_at_target_location) % this->locations[target_location_id].text_id);
             // See if that is a closer arrival time than what we got so far
             assert(hop.mins_arr >= 0);
             if (possible_arrival_time_at_target_location + interchange_time <= target_arrival_time 
@@ -617,7 +619,7 @@ class PlanningATCO {
         // See whether if we want to use this journey to get to this
         // stop, we get there on time to change to the next journey.
         if (arrival_time_at_target_location == -1) {
-            log(boost::format("\t\twhich are all too late for %s by %d with interchange time %d so not using journey") % this->locations[target_location_id].text_id % target_arrival_time % interchange_time);
+            log(boost::format("\t\twhich are all too late for %s by %s with interchange time %d so not using journey") % this->locations[target_location_id].text_id % format_time(target_arrival_time) % interchange_time);
             return;
         }
 
@@ -665,6 +667,9 @@ class PlanningATCO {
                 , 'J', journey_id, -1
 #endif
             );
+#ifdef DEBUG
+            log(boost::format("\t\t\tadding stop: %s %s") % this->locations[hop.location_id].text_id % format_time(departure_time));
+#endif
             this->_add_to_adjacents(arrive_place_time, adjacents);
         }
     }
@@ -722,7 +727,7 @@ class PlanningATCO {
             // in routes)
             settled_routes[nearest_location_id] = routes[nearest_location_id];
 #endif
-            log(boost::format("settled location %s time %d") % this->locations[nearest_location_id].text_id % nearest_time);
+            log(boost::format("settled location %s time %s") % this->locations[nearest_location_id].text_id % format_time(nearest_time));
             
             // Add all of its neighbours to the queue
             Adjacents adjacents;
@@ -734,30 +739,34 @@ class PlanningATCO {
                 const Location& location = this->locations[location_id];
                 #endif 
                 const ArrivePlaceTime& arrive_place_time = p.second;
-                log(boost::format("considering direct connecting station: %s\n") % location.text_id.c_str());
+                log(boost::format("considering direct connecting station: %s priority %s") % location.text_id.c_str() % format_time(arrive_place_time.when));
                 if (queue_values[location_id]) {
                     // already in heap
                     Minutes current_priority = *queue_values[location_id];
                     debug_assert(settled_set.find(location_id) == settled_set.end());
                     if (arrive_place_time.when > current_priority) {
-                        log(boost::format("updated location %s from priority %d to priority %d") % this->locations[location_id].text_id % current_priority % arrive_place_time.when);
+                        log(boost::format("\tupdated location %s from priority %s to priority %s") % this->locations[location_id].text_id % format_time(current_priority) % format_time(arrive_place_time.when));
                         queue_values[location_id] = arrive_place_time.when;
                         heap.update(location_id);
 #ifdef OUTPUT_ROUTE_DETAILS
                         routes[location_id] = routes[nearest_location_id];
                         routes[location_id].push_front(arrive_place_time);
 #endif
+                    } else {
+                        log(boost::format("\tlocation %s already in heap priority %s") % this->locations[location_id].text_id % format_time(current_priority));
                     }
                 } else {
                     if (settled_set.find(location_id) == settled_set.end()) {
                         // new priority to heap
-                        log(boost::format("added location %s with priority %d") % this->locations[location_id].text_id % arrive_place_time.when);
+                        log(boost::format("\tadded location %s with priority %s") % this->locations[location_id].text_id % format_time(arrive_place_time.when));
                         queue_values[location_id] = arrive_place_time.when;
                         heap.push(location_id);
 #ifdef OUTPUT_ROUTE_DETAILS
                         routes[location_id] = routes[nearest_location_id];
                         routes[location_id].push_front(arrive_place_time);
 #endif
+                    } else {
+                        log("\tlocation %s already settled");
                     }
                 }
             }
@@ -793,7 +802,7 @@ class PlanningATCO {
                     ret += (boost::format("    Leave by walking to %s, will take %d mins\n") % next_location.text_id % stop.onwards_walk_time).str();
                 } else if (stop.onwards_leg_type == 'J') {
                     const Journey& journey = this->journeys[stop.onwards_journey_id];
-                    ret += (boost::format("    Leave %s by %s on the ") % location.text_id.c_str() % journey.pretty_vehicle_type()).str();
+                    ret += (boost::format("    Leave %s by %s on %s at ") % location.text_id.c_str() % journey.pretty_vehicle_type() % journey.text_id.c_str()).str();
                     BOOST_FOREACH(const Hop& hop, journey.hops) {
                         if (hop.is_pick_up() && hop.location_id == stop.location_id) {
                             ret += (format_time(hop.mins_dep).c_str());
@@ -900,7 +909,7 @@ int main(int argc, char * argv[]) {
 
 #ifdef OUTPUT_ROUTE_DETAILS
     // Output for human
-    std::string human_file = outputprefix + ".human.txt";
+    std::string human_file = outputprefix + "-human.txt";
     std::ofstream g;
     g.open(human_file.c_str());
     g << atco.pretty_print_routes(settled, routes);
