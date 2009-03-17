@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.50 2009-03-16 21:55:31 francis Exp $
+# $Id: makeplan.py,v 1.51 2009-03-17 02:43:59 francis Exp $
 #
 
 '''Finds shortest route from all points on a public transport network to arrive
@@ -517,7 +517,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                     arrival_time = []
                     for a in arrival_times:
                         arrival_time.append(a.strftime("%H:%M:%S"))
-                    ret += "    Leave " + stop.location + " by " + self._vehicle_type_name_for_journey(stop.onwards_journey) + " on the " + ','.join(departure_time) + ", arriving " + next_stop.location + " at " + ','.join(arrival_time) + "\n"
+                    ret += "    Leave " + stop.location + " by " + self._vehicle_type_name_for_journey(stop.onwards_journey) + " on " + stop.onwards_journey.id + " at " + ','.join(departure_time) + ", arriving " + next_stop.location + " at " + ','.join(arrival_time) + "\n"
                 else:
                     raise Exception, "Unknown leg type '" + stop.onwards_leg_type + "'"
 
