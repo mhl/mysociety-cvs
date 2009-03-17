@@ -1,0 +1,42 @@
+#!/bin/bash
+# test-run:
+# Test code for Contours of Life etc.
+#
+# Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+# Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+set -e
+. ../../shlib/deployfns
+read_conf ../conf/general
+cd ../
+
+OXFORD_CIFS="$OPTION_NPTDR_DATA/Timetable Data/CIF/Admin_Area_340/*.zip"
+TMP_OUTPUT=/tmp/iso-test-run-$RANDOM$RANDOM$RANDOM
+
+# test atcocif.py
+cd ../pylib/mysociety
+nosetests
+cd -
+
+# test makeplan.py etc.
+cd pylib
+nosetests
+cd -
+
+# compare C++ and Python planner
+cd pylib
+make makeplan
+cd ../bin
+mkdir $TMP_OUTPUT
+./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT fastcalc
+./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT fastplan
+./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT slowplan
+if ! diff -u $TMP_OUTPUT/nptdr-slow-9100OXFD-40000-human.txt $TMP_OUTPUT/nptdr-fast-9100OXFD-40000-human.txt
+then
+    echo "Failed test - C++ and Python planners differ in output, see in $TMP_OUTPUT"
+    exit 1
+fi
+rm -fr $TMP_OUTPUT
+
+
