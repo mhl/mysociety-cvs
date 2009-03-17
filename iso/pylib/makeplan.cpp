@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.21 2009-03-16 21:55:31 francis Exp $
+// $Id: makeplan.cpp,v 1.22 2009-03-17 00:16:57 francis Exp $
 //
 
 // Usage:
@@ -673,8 +673,9 @@ class PlanningATCO {
         // Create the heap, for use as priority queue
         int max_values = this->locations.size();
         queue_values.resize(max_values + 1); // queue values is array with index location -> time of day (in minutes since midnight)
+        typedef std::pair<unsigned, LessValues> HeapPair;
         boost::relaxed_heap<unsigned, LessValues> heap(max_values);
-        std::set<LocationID> settled_in_set;
+        std::set<LocationID> settled_set;
 
         // Put in initial value
         queue_values[target_location_id] = target_time; 
@@ -685,13 +686,14 @@ class PlanningATCO {
             LocationID nearest_location_id = heap.top();
             Minutes nearest_time= *queue_values[nearest_location_id];
             heap.pop();
+            queue_values[nearest_location_id] = boost::optional<Minutes>();
 
             // If it is earlier than earliest departure we are going back to, then finish
             // if earliest_departure and nearest_datetime < earliest_departure:
             //    break
 
             // That item is now settled
-            settled_in_set.insert(nearest_location_id);
+            settled_set.insert(nearest_location_id);
             settled.push_back(std::make_pair(nearest_location_id, nearest_time));
             // ... copy the route into settled_routes, so we only return routes
             // we know we finished (rather than the partial, best-so-far that is
@@ -705,10 +707,13 @@ class PlanningATCO {
 
             BOOST_FOREACH(const AdjacentsPair& p, adjacents) {
                 const LocationID& location_id = p.first;
+                // const Location& location = this->locations[location_id];
                 const ArrivePlaceTime& arrive_place_time = p.second;
+                log(boost::format("considering direct connecting station: %s\n") % location.text_id.c_str());
                 if (queue_values[location_id]) {
                     // already in heap
                     Minutes current_priority = *queue_values[location_id];
+                    debug_assert(settled_set.find(location_id) == settled_set.end());
                     if (arrive_place_time.when > current_priority) {
                         log(boost::format("updated location %s from priority %d to priority %d") % this->locations[location_id].text_id % current_priority % arrive_place_time.when);
                         queue_values[location_id] = arrive_place_time.when;
@@ -717,12 +722,14 @@ class PlanningATCO {
                         routes[location_id].push_front(arrive_place_time);
                     }
                 } else {
-                    // new priority to heap
-                    log(boost::format("added location %s with priority %d") % this->locations[location_id].text_id % arrive_place_time.when);
-                    queue_values[location_id] = arrive_place_time.when;
-                    heap.push(location_id);
-                    routes[location_id] = routes[nearest_location_id];
-                    routes[location_id].push_front(arrive_place_time);
+                    if (settled_set.find(location_id) == settled_set.end()) {
+                        // new priority to heap
+                        log(boost::format("added location %s with priority %d") % this->locations[location_id].text_id % arrive_place_time.when);
+                        queue_values[location_id] = arrive_place_time.when;
+                        heap.push(location_id);
+                        routes[location_id] = routes[nearest_location_id];
+                        routes[location_id].push_front(arrive_place_time);
+                    }
                 }
             }
         }
