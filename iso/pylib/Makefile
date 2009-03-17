@@ -5,13 +5,17 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.7 2009-03-17 01:02:43 francis Exp $
+# $Id: Makefile,v 1.8 2009-03-17 01:31:24 francis Exp $
 #
 #
 
-CFLAGS = -Wall -O2 # -fno-exceptions -fno-rtti
-CFLAGS_DEBUG = -Wall -g -DDEBUG
-CFLAGS_PROFILE = -Wall -pg
+# OUTPUT_ROUTE_DETAILS shaves a few seconds off full country map generation,
+# including that it allows no-exceptions no-rtti as it removes boost format
+# dependency. For now though, don't worry about it too much.
+
+CFLAGS = -Wall -O2 -DOUTPUT_ROUTE_DETAILS # -fno-exceptions -fno-rtti
+CFLAGS_DEBUG = -Wall -g -DDEBUG -DOUTPUT_ROUTE_DETAILS
+CFLAGS_PROFILE = ${CFLAGS} -pg
 
 CPP = /usr/bin/g++
 

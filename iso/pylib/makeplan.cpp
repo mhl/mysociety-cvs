@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.23 2009-03-17 01:02:43 francis Exp $
+// $Id: makeplan.cpp,v 1.24 2009-03-17 01:31:24 francis Exp $
 //
 
 // Usage:
@@ -15,9 +15,6 @@
 //
 
 // Optimisation ideas:
-//
-// Remove the route storing stuff on a #define
-// Remove the station text string identifiers on a #define (where is it used?)
 //
 // Check using const in enough places
 // 
@@ -42,7 +39,9 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
+#if defined(OUTPUT_ROUTE_DETAILS) or defined(DEBUG)
 #include <boost/format.hpp>
+#endif
 #include <boost/foreach.hpp>
 #include <boost/pending/relaxed_heap.hpp>
 
@@ -69,11 +68,13 @@
 #endif
 
 typedef int Minutes; // after midnight (only needs to be a short, but it seems to make little performance difference which it is)
+#ifdef OUTPUT_ROUTE_DETAILS
 std::string format_time(const Minutes& mins_after_midnight) {
     int hours = mins_after_midnight / 60;
     int mins = mins_after_midnight % 60;
     return (boost::format("%02d:%02d:00") % hours % mins).str();
 }
+#endif
 
 // Stuff for relaxed_heap for Dijkstra's algorithm
 // XXX must be global, is there a way to use relaxed_heap and this not be?
@@ -157,17 +158,25 @@ class ArrivePlaceTime {
     LocationID location_id;
     Minutes when; // minutes after midnight
 
+#ifdef OUTPUT_ROUTE_DETAILS
     char onwards_leg_type; // W = walk or J = journey or A = already there
     JourneyID onwards_journey_id;
     Minutes onwards_walk_time;
+#endif
 
-    ArrivePlaceTime(LocationID l_location_id, Minutes l_when, char l_onwards_leg_type, JourneyID l_onwards_journey_id, Minutes l_onwards_walk_time) {
+    ArrivePlaceTime(LocationID l_location_id, Minutes l_when
+#ifdef OUTPUT_ROUTE_DETAILS
+        , char l_onwards_leg_type, JourneyID l_onwards_journey_id, Minutes l_onwards_walk_time
+#endif
+    ) {
         this->location_id = l_location_id;
         this->when = l_when;
 
+#ifdef OUTPUT_ROUTE_DETAILS
         this->onwards_leg_type = l_onwards_leg_type;
         this->onwards_journey_id = l_onwards_journey_id;
         this->onwards_walk_time = l_onwards_walk_time;
+#endif
     }
 
     ArrivePlaceTime() {
@@ -190,9 +199,11 @@ typedef std::pair<LocationID, ArrivePlaceTime> AdjacentsPair;
 /* Result types from Dijkstra's algorithm */
 typedef std::pair<LocationID, Minutes> SettledPair;
 typedef std::vector<SettledPair> Settled;
+#ifdef OUTPUT_ROUTE_DETAILS
 typedef std::list<ArrivePlaceTime> Route;
 typedef std::map<LocationID, Route> Routes;
 typedef std::pair<LocationID, std::list<ArrivePlaceTime> > RoutesPair;
+#endif
 
 /* Most similar to Python's Exception */
 class Exception : public std::exception
@@ -540,7 +551,11 @@ class PlanningATCO {
 
             Minutes walk_time = this->_walk_time_apart(dist);
             Minutes walk_departure_time = target_arrival_time - walk_time;
-            ArrivePlaceTime arrive_time_place(location_id, walk_departure_time, 'W', -1, walk_time);
+            ArrivePlaceTime arrive_time_place(location_id, walk_departure_time
+#ifdef OUTPUT_ROUTE_DETAILS
+                , 'W', -1, walk_time
+#endif
+            );
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
             this->_add_to_adjacents(arrive_time_place, adjacents);
         }
@@ -645,7 +660,11 @@ class PlanningATCO {
             }
 
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
-            ArrivePlaceTime arrive_place_time(hop.location_id, departure_time, 'J', journey_id, -1);
+            ArrivePlaceTime arrive_place_time(hop.location_id, departure_time
+#ifdef OUTPUT_ROUTE_DETAILS
+                , 'J', journey_id, -1
+#endif
+            );
             this->_add_to_adjacents(arrive_place_time, adjacents);
         }
     }
@@ -657,9 +676,16 @@ class PlanningATCO {
     target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
     target_datetime - when we want to arrive by
     */
-    void do_dijkstra(Settled& settled, Routes& settled_routes, const LocationID target_location_id, const Minutes target_time /*, earliest_departure=None*/) {
+    void do_dijkstra(Settled& settled, 
+#ifdef OUTPUT_ROUTE_DETAILS
+        Routes& settled_routes, 
+#endif
+        const LocationID target_location_id, const Minutes target_time /*, earliest_departure=None*/
+    ) {
+#ifdef OUTPUT_ROUTE_DETAILS
         Routes routes; // how to get there
         routes[target_location_id].push_front(ArrivePlaceTime(target_location_id, target_time, 'A', -1, -1));
+#endif
         
         // Other variables
         this->final_destination_id = target_location_id;
@@ -690,10 +716,12 @@ class PlanningATCO {
             // That item is now settled
             settled_set.insert(nearest_location_id);
             settled.push_back(std::make_pair(nearest_location_id, nearest_time));
+#ifdef OUTPUT_ROUTE_DETAILS
             // ... copy the route into settled_routes, so we only return routes
             // we know we finished (rather than the partial, best-so-far that is
             // in routes)
             settled_routes[nearest_location_id] = routes[nearest_location_id];
+#endif
             log(boost::format("settled location %s time %d") % this->locations[nearest_location_id].text_id % nearest_time);
             
             // Add all of its neighbours to the queue
@@ -715,8 +743,10 @@ class PlanningATCO {
                         log(boost::format("updated location %s from priority %d to priority %d") % this->locations[location_id].text_id % current_priority % arrive_place_time.when);
                         queue_values[location_id] = arrive_place_time.when;
                         heap.update(location_id);
+#ifdef OUTPUT_ROUTE_DETAILS
                         routes[location_id] = routes[nearest_location_id];
                         routes[location_id].push_front(arrive_place_time);
+#endif
                     }
                 } else {
                     if (settled_set.find(location_id) == settled_set.end()) {
@@ -724,8 +754,10 @@ class PlanningATCO {
                         log(boost::format("added location %s with priority %d") % this->locations[location_id].text_id % arrive_place_time.when);
                         queue_values[location_id] = arrive_place_time.when;
                         heap.push(location_id);
+#ifdef OUTPUT_ROUTE_DETAILS
                         routes[location_id] = routes[nearest_location_id];
                         routes[location_id].push_front(arrive_place_time);
+#endif
                     }
                 }
             }
@@ -734,6 +766,7 @@ class PlanningATCO {
         // return values are settled and settled_routes in parameters
     }
 
+#ifdef OUTPUT_ROUTE_DETAILS
     /* do_dijkstra returns a journey routes array, this prints it in a human readable format. */
     std::string pretty_print_routes(const Settled& settled, const Routes& routes) {
         const Location& final_destination = this->locations[this->final_destination_id];
@@ -782,6 +815,7 @@ class PlanningATCO {
         }
         return ret;
     }
+#endif
 
 }; 
 
@@ -838,9 +872,16 @@ int main(int argc, char * argv[]) {
 
     // Do route finding
     Settled settled;
+#ifdef OUTPUT_ROUTE_DETAILS
     Routes routes;
+#endif
     LocationID target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
-    atco.do_dijkstra(settled, routes, target_location_id, target_minutes_after_midnight);
+    atco.do_dijkstra(settled, 
+#ifdef OUTPUT_ROUTE_DETAILS
+        routes, 
+#endif
+        target_location_id, target_minutes_after_midnight
+    );
     pm.display("route finding took");
 
     // Output for grid
@@ -855,13 +896,17 @@ int main(int argc, char * argv[]) {
         f << l->easting << " " << l->northing << " " << secs << "\n";
     }
     f.close();
+    pm.display("grid output took");
 
+#ifdef OUTPUT_ROUTE_DETAILS
     // Output for human
     std::string human_file = outputprefix + ".human.txt";
     std::ofstream g;
     g.open(human_file.c_str());
     g << atco.pretty_print_routes(settled, routes);
     g.close();
+    pm.display("human output took");
+#endif
 
     return 0;
 };
