@@ -41,16 +41,17 @@ Generate a contour map showing how long it takes to get somewhere in the UK by
 public transport. Reads ATCO-CIF timetable files. Outputs a PNG file.
 
 Commands:
-    plan - create map 
+    slowplan - create map using pure Python code
     stats - dump statistics about files
     midnight - output journeys that cross midnight
-    fast - output fast data structure for C++ code
+    fastcalc - output fast data structure for C++ code
     fastplan - as fast, but also calls out to the quick planning C++ code
-Default is to run "plan".
+Default is to run "slowplan".
 
 Parameters:
 Can be specified on command line, or in a file passed with --config with each
-row of the form "variable: <data>"
+row of the form "variable: <data>". Run with "--help" to see available
+parameters.
 
 Examples
 --config ../conf/oxford-example
@@ -102,9 +103,9 @@ if options.config:
 if len(args) > 1:
     raise Exception, 'Give at most one command'
 if len(args) == 0:
-    args = ['plan']
+    args = ['slowplan']
 command = args[0]
-if command not in ['plan', 'stats', 'midnight', 'fastcalc', 'fastplan']:
+if command not in ['slowplan', 'stats', 'midnight', 'fastcalc', 'fastplan']:
     raise Exception, 'Unknown command'
 
 # Required parameters
@@ -115,7 +116,7 @@ data_valid_from = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(optio
 data_valid_to = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_to)).date()
 
 # Parameters used by do_external_contours
-if command in ['plan', 'fastplan']:
+if command in ['slowplan', 'fastplan']:
     if options.postcode: 
         f = mysociety.mapit.get_location(options.postcode)
         E = int(f['easting'])
@@ -131,13 +132,13 @@ if command in ['plan', 'fastplan']:
 
     rect = "%f %f %f %f" % (WW, EE, SS, NN)
 
-if command in ['plan', 'fastcalc', 'fastplan']:
+if command in ['slowplan', 'fastcalc', 'fastplan']:
     target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whenarrive))
     assert data_valid_from <= target_when.date() <= data_valid_to
     scan_back_when = target_when - datetime.timedelta(hours=options.hours)
 
 # Output files
-if command in ['plan']:
+if command in ['slowplan']:
     outfile = options.output + "/nptdr-slow-%s-%d" % (options.destination, options.size)
 if command in ['fastcalc', 'fastplan']:
     outfile = options.output + "/nptdr-fast-%s-%d" % (options.destination, options.size)
@@ -282,7 +283,8 @@ def fast_calc():
 
 # Call out to C++ version of Dijkstra's algorithm
 def fast_plan():
-    run_cmd("../pylib/makeplan %s %s %d %s" % (fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination))
+    run_cmd("../pylib/makeplan %s %s %d %s %d" % (fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination,
+    scan_back_when.hour * 60 + scan_back_when.minute))
     do_external_contours()
 
 ###############################################################################
@@ -296,7 +298,7 @@ elif command == 'midnight':
     midnight()
 elif command == 'stats':
     statistics()
-elif command == 'plan':
+elif command == 'slowplan':
     python_plan()
    
 

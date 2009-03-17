@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.51 2009-03-17 02:43:59 francis Exp $
+# $Id: makeplan.py,v 1.52 2009-03-17 16:43:19 francis Exp $
 #
 
 '''Finds shortest route from all points on a public transport network to arrive
@@ -68,14 +68,14 @@ route consisted of a list of place/times, in reverse order starting with the
 target destination, and ending with the place/time that appeared in the results
 dictionary.
 >>> print atco.pretty_print_routes(results, routes),
-Journey times to TORYRECK by 2007-01-08 08:00:00
+Journey times to TORYRECK by 08:00:00
 From TORYRECK in 0 mins:
     You've arrived at TORYRECK
 From DRYAW in 40 mins:
-    Leave DRYAW by train on the 07:20:00, arriving TORYRECK at 07:45:00
+    Leave DRYAW by train on NWR-TT01 at 07:20:00, arriving TORYRECK at 07:45:00
     You've arrived at TORYRECK
 From KNAPFORD in 60 mins:
-    Leave KNAPFORD by train on the 07:00:00, arriving TORYRECK at 07:45:00
+    Leave KNAPFORD by train on NWR-TT01 at 07:00:00, arriving TORYRECK at 07:45:00
     You've arrived at TORYRECK
 
 A second passenger wanted to be in Dryaw at 7:22 for breakfast with a friend.
@@ -98,40 +98,40 @@ from the end of the railway line.
 >>> results
 [('ANOPHAB', datetime.datetime(2007, 1, 8, 9, 15)), ('FFARQUHARB', datetime.datetime(2007, 1, 8, 8, 50)), ('FFARQUHAR', datetime.datetime(2007, 1, 8, 8, 49)), ('HACKENBECK', datetime.datetime(2007, 1, 8, 8, 32)), ('ELSBRIDGE', datetime.datetime(2007, 1, 8, 8, 11)), ('TORYRECK', datetime.datetime(2007, 1, 8, 7, 45)), ('DRYAW', datetime.datetime(2007, 1, 8, 7, 20)), ('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]
 >>> print atco.pretty_print_routes(results, routes),
-Journey times to ANOPHAB by 2007-01-08 09:15:00
+Journey times to ANOPHAB by 09:15:00
 From ANOPHAB in 0 mins:
     You've arrived at ANOPHAB
 From FFARQUHARB in 25 mins:
-    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
+    Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From FFARQUHAR in 26 mins:
     Leave by walking to FFARQUHARB, will take 1 mins
-    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
+    Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From HACKENBECK in 43 mins:
-    Leave HACKENBECK by train on the 08:32:00, arriving FFARQUHAR at 08:41:00
+    Leave HACKENBECK by train on NWR-TT01 at 08:32:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
-    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
+    Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From ELSBRIDGE in 64 mins:
-    Leave ELSBRIDGE by train on the 08:11:00, arriving FFARQUHAR at 08:41:00
+    Leave ELSBRIDGE by train on NWR-TT01 at 08:11:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
-    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
+    Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From TORYRECK in 90 mins:
-    Leave TORYRECK by train on the 07:45:00, arriving FFARQUHAR at 08:41:00
+    Leave TORYRECK by train on NWR-TT01 at 07:45:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
-    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
+    Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From DRYAW in 115 mins:
-    Leave DRYAW by train on the 07:20:00, arriving FFARQUHAR at 08:41:00
+    Leave DRYAW by train on NWR-TT01 at 07:20:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
-    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
+    Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 From KNAPFORD in 135 mins:
-    Leave KNAPFORD by train on the 07:00:00, arriving FFARQUHAR at 08:41:00
+    Leave KNAPFORD by train on NWR-TT01 at 07:00:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
-    Leave FFARQUHARB by bus on the 08:50:00, arriving ANOPHAB at 09:05:00
+    Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
 
 
@@ -420,21 +420,30 @@ class PlanningATCO(mysociety.atcocif.ATCO):
 
         # The thing we're going to use for priority in the pqueue
         class Priority:
-            def __init__(self, when):
+            def __init__(self, when, name):
                 self.when = when
+                self.name = name
             # operator just for use on priority queue
             def __cmp__(self, other):
                 # The priority queue pops smallest first, whereas we want
                 # largest, so these are reversed from expected direction
                 if self.when < other.when:
                     return 1
-                if self.when == other.when:
-                    return 0 
-                if self.when > other.when:
+                elif self.when > other.when:
                     return -1
+                elif self.when == other.when:
+                    # if the two are the same priority time, we sort by 
+                    # alphabetical order of station name for stability
+                    if self.name > other.name:
+                        return 1
+                    elif self.name < other.name:
+                        return -1
+                    elif self.name == other.name:
+                        return 0 
+                    assert False
                 assert False
             def __repr__(self):
-                return "Priority(" + repr(self.when) + ")"
+                return "Priority(" + repr(self.when) + ", " + repr(self.name) + ")"
 
        
         # Set up initial state
@@ -442,7 +451,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         settled_set = set() # dictionary from location to datetime
         settled_routes = {} # routes of settled journeys
         queue = pqueue.PQueue()
-        queue.insert(Priority(target_datetime), target_location)
+        queue.insert(Priority(target_datetime, target_location), target_location)
         routes = {}
         routes[target_location] = [ ArrivePlaceTime(target_location, target_datetime, onwards_leg_type = 'already_there') ] # how to get there
         self.final_destination = target_location
@@ -471,7 +480,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             # Add all of its neighbours to the queue
             foundtimes = self.adjacent_location_times(nearest_location, nearest_datetime)
             for location, arrive_place_time in foundtimes.iteritems():
-                new_priority = Priority(arrive_place_time.when)
+                new_priority = Priority(arrive_place_time.when, arrive_place_time.location)
                 try:
                     # See if this location is already in queue 
                     current_priority = queue[location]
@@ -493,7 +502,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
     def pretty_print_routes(self, results, routes):
         '''do_dijkstra returns a journey routes array, this prints it in a human readable format.'''
 
-        ret = "Journey times to " + self.final_destination + " by " + str(self.final_datetime) + "\n"
+        ret = "Journey times to " + self.final_destination + " by " + str(self.final_datetime.time()) + "\n"
 
         for place, when in results:
             route = routes[place]

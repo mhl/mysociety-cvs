@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.26 2009-03-17 02:43:59 francis Exp $
+// $Id: makeplan.cpp,v 1.27 2009-03-17 16:43:19 francis Exp $
 //
 
 // Usage:
@@ -75,21 +75,6 @@ std::string format_time(const Minutes& mins_after_midnight) {
     return (boost::format("%02d:%02d:00") % hours % mins).str();
 }
 #endif
-
-// Stuff for relaxed_heap for Dijkstra's algorithm
-// XXX must be global, is there a way to use relaxed_heap and this not be?
-// Otherwise this whole thing can't be called from two threads using same data,
-// which is a pain.
-typedef std::vector<boost::optional<Minutes> > QueueValuesType;
-QueueValuesType queue_values;
-struct LessValues
-{
-    bool operator()(unsigned x, unsigned y) const
-    {
-        debug_assert(queue_values[x] && queue_values[y]);
-        return queue_values[x] > queue_values[y];
-    }
-};
 
 typedef int LocationID;
 class Location {
@@ -204,6 +189,31 @@ typedef std::list<ArrivePlaceTime> Route;
 typedef std::map<LocationID, Route> Routes;
 typedef std::pair<LocationID, std::list<ArrivePlaceTime> > RoutesPair;
 #endif
+
+// Stuff for relaxed_heap for Dijkstra's algorithm
+// XXX must be global, is there a way to use relaxed_heap and this not be?
+// Otherwise this whole thing can't be called from two threads using same data,
+// which is a pain.
+typedef std::vector<boost::optional<Minutes> > QueueValuesType;
+QueueValuesType queue_values;
+Location *queue_first_location = NULL;
+struct LessValues
+{
+    bool operator()(unsigned x, unsigned y) const
+    {
+        debug_assert(queue_values[x] && queue_values[y]);
+        if (queue_values[x] == queue_values[y]) {
+            // This makes things the same distance in minutes come out of queue
+            // in alphabetical order. That creates stability for comparing
+            // output files.
+            Location *l_x = &queue_first_location[x];
+            Location *l_y = &queue_first_location[y];
+            return l_x->text_id < l_y->text_id;
+        }
+        // reverse order - nearer to end time is better
+        return queue_values[x] > queue_values[y];
+    }
+};
 
 /* Most similar to Python's Exception */
 class Exception : public std::exception
@@ -685,7 +695,7 @@ class PlanningATCO {
 #ifdef OUTPUT_ROUTE_DETAILS
         Routes& settled_routes, 
 #endif
-        const LocationID target_location_id, const Minutes target_time /*, earliest_departure=None*/
+        const LocationID target_location_id, const Minutes target_time, const Minutes earliest_departure
     ) {
 #ifdef OUTPUT_ROUTE_DETAILS
         Routes routes; // how to get there
@@ -699,6 +709,7 @@ class PlanningATCO {
         // Create the heap, for use as priority queue
         int max_values = this->locations.size();
         queue_values.resize(max_values + 1); // queue values is array with index location -> time of day (in minutes since midnight)
+        queue_first_location = &this->locations[0];
         typedef std::pair<unsigned, LessValues> HeapPair;
         boost::relaxed_heap<unsigned, LessValues> heap(max_values);
         std::set<LocationID> settled_set;
@@ -715,8 +726,9 @@ class PlanningATCO {
             queue_values[nearest_location_id] = boost::optional<Minutes>();
 
             // If it is earlier than earliest departure we are going back to, then finish
-            // if earliest_departure and nearest_datetime < earliest_departure:
-            //    break
+            if (nearest_time < earliest_departure) {
+                break;
+            }
 
             // That item is now settled
             settled_set.insert(nearest_location_id);
@@ -809,7 +821,7 @@ class PlanningATCO {
                         }
                     }
 
-                    ret += (boost::format(", arriving %s ") % next_location.text_id).str();
+                    ret += (boost::format(", arriving %s at ") % next_location.text_id).str();
                     BOOST_FOREACH(const Hop& hop, journey.hops) {
                         if (hop.is_set_down() && hop.location_id == next_stop.location_id) {
                             ret += (format_time(hop.mins_arr).c_str());
@@ -858,8 +870,8 @@ class PerformanceMonitor {
 };
 
 int main(int argc, char * argv[]) {
-    if (argc < 3) {
-        printf("makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth\n");
+    if (argc < 4) {
+        printf("makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth  earliest departure in mins after midnight to go back to\n");
         return 1;
     }
 
@@ -867,6 +879,7 @@ int main(int argc, char * argv[]) {
     std::string outputprefix = argv[2];
     Minutes target_minutes_after_midnight = atoi(argv[3]);
     std::string target_location_text_id = argv[4]; // e.g. "9100BHAMSNH";
+    Minutes earliest_departure = atoi(argv[5]);
 
     // Load timetables
     PerformanceMonitor pm;
@@ -889,7 +902,8 @@ int main(int argc, char * argv[]) {
 #ifdef OUTPUT_ROUTE_DETAILS
         routes, 
 #endif
-        target_location_id, target_minutes_after_midnight
+        target_location_id, target_minutes_after_midnight,
+        earliest_departure
     );
     pm.display("route finding took");
 
