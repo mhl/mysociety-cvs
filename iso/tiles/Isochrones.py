@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.8 2009-03-18 17:14:57 migurski Exp $
+$Id: Isochrones.py,v 1.9 2009-03-18 20:31:12 migurski Exp $
 """
 import os
 import sys
@@ -168,7 +168,7 @@ def draw_station(array, station, station_mask, x, y):
     mask = station_mask[sxmin:sxmax, symin:symax]
     
     # set just the masked parts
-    target[mask] = numpy.minimum(target[mask], value[mask])
+    target[mask] = numpy.minimum(target, value)[mask]
 
 BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
 GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=0.0, y_0=0, k=1.0, units='m', nadgrids=None, no_defs=True)
