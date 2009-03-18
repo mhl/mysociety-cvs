@@ -1,48 +1,40 @@
 """
+Create appropriately-sized isochrones for single points, modeled as
+numpy array cones where value = travel time from center, in seconds.
+
+Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+Email: mike@stamen.com; WWW: http://www.mysociety.org/
+
+$Id: Cone.py,v 1.4 2009-03-18 17:14:57 migurski Exp $
+
+>>> import Isochrones
 >>> xmin, ymin = GYM(-123, 37)
 >>> xmax, ymax = GYM(-122, 38)
->>> tile = TileStub(1000, 1000, xmin, ymin, xmax, ymax)
+>>> tile = Isochrones.TileStub(1000, 1000, xmin, ymin, xmax, ymax)
 >>> '%.6f' % pixels_per_kilometer(tile)
 '12.312128'
 
 >>> cone = make_cone(4)
 >>> cone[3,3], cone[4,4]
-(0.0, 0.0)
+(0, 0)
 >>> cone[0,0] >= 1800, cone[7,7] >= 1800
 (True, True)
 
 >>> cone = make_cone(8)
 >>> cone[7,7], cone[8,8]
-(0.0, 0.0)
+(0, 0)
 >>> cone[0,0] >= 1800, cone[15,15] >= 1800
 (True, True)
 
 >>> cone = make_cone(16)
 >>> cone[15,15], cone[16,16]
-(0.0, 0.0)
+(0, 0)
 >>> cone[0,0] >= 1800, cone[31,31] >= 1800
 (True, True)
 """
 import math
 import numpy
 import pyproj
-
-class TileStub:
-    """ Imitation  of TileCache.Tile for test purposes
-    """
-    def __init__(self, width, height, xmin, ymin, xmax, ymax):
-        self.width = width
-        self.height = height
-        self.xmin = xmin
-        self.ymin = ymin
-        self.xmax = xmax
-        self.ymax = ymax
-
-    def size(self):
-        return self.width, self.height
-
-    def bounds(self):
-        return self.xmin, self.ymin, self.xmax, self.ymax
 
 GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=0.0, y_0=0, k=1.0, units='m', nadgrids=None, no_defs=True)
 
@@ -98,9 +90,10 @@ def make_cone(radius):
     """ Floating point cone array of height = 1.0 with a given radius.
     """
     # shorter vars
-    r, d = int(radius), int(radius * 2)
+    r, d = int(radius), int(radius) * 2
 
-    cone = numpy.empty((d, d), dtype=numpy.float32)
+    # make an array, then isolate the bottom right corner
+    cone = numpy.empty((d, d), dtype=numpy.int32)
     corner = cone[r:,r:]
     
     # do bottom-right quadrant of cone
@@ -109,18 +102,12 @@ def make_cone(radius):
             corner[x, y] = 1800 * math.hypot(x, y) / r
 
     # flip and copy to other three quadrants
-    cone[:r,:r] = numpy.flipud(numpy.fliplr(cone[r:,r:]))
-    cone[:r,r:] = numpy.flipud(cone[r:,r:])
-    cone[r:,:r] = numpy.fliplr(cone[r:,r:])
+    cone[:r,:r] = numpy.flipud(numpy.fliplr(corner)) # top left
+    cone[:r,r:] = numpy.flipud(corner) # top right
+    cone[r:,:r] = numpy.fliplr(corner) # bottom left
     
     return cone
 
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-    
-    ## make some cones
-    #for e in range(10):
-    #    radius = math.pow(2, e)
-    #    diameter, cone = radius * 2, make_cone(radius)
-    #    open('cone-%d.bin' % diameter, 'w').write(cone.tostring())
