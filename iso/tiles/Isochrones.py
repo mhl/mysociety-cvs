@@ -141,7 +141,11 @@ def get_data(results_id, tile):
 
     # convert bounds to british national grid
     xmin, ymin = gym2bng(xmin, ymin)
+    xmin -= 1800
+    ymin -= 1800
     xmax, ymax = gym2bng(xmax, ymax)
+    xmax += 1800
+    ymax += 1800
 
     # open the file
     datapoints = open(os.path.dirname(__file__) + '/nptdr-OX26DR-10000.txt', 'r')
