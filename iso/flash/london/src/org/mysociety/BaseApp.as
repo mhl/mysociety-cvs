@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * @version $Id: BaseApp.as,v 1.2 2008-12-10 18:38:41 francis Exp $
+ * @version $Id: BaseApp.as,v 1.1 2009-03-19 20:05:07 allens Exp $
  */
 package org.mysociety
 {
@@ -51,9 +51,9 @@ package org.mysociety
 	{
 
 // Tom Carden embedded Helvetica Neue, which I don't have, so I've aliased it to Bitstream - Francis.
-		[Embed(systemFont="Bitstream Vera Sans", fontName="HelveticaNorm", mimeType='application/x-font')]
+		[Embed(systemFont="Helvetica Neue", fontName="HelveticaNorm", mimeType='application/x-font')]
 		public var helvetica:String;
-		[Embed(systemFont="Bitstream Vera Sans", fontName="HelveticaBold", fontWeight="bold", mimeType='application/x-font')]
+		[Embed(systemFont="Helvetica Neue", fontName="HelveticaBold", fontWeight="bold", mimeType='application/x-font')]
         public var helveticaBold:String;
 //		[Embed(systemFont="Helvetica Neue", fontName="HelveticaNorm", mimeType='application/x-font')]
 //		public var helvetica:String;

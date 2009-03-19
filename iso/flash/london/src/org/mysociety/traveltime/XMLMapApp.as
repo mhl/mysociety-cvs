@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * @version $Id: XMLMapApp.as,v 1.4 2009-02-02 16:01:30 francis Exp $
+ * @version $Id: XMLMapApp.as,v 1.1 2009-03-19 20:05:07 allens Exp $
  */
 package org.mysociety.traveltime
 {
