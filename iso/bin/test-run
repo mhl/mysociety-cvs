@@ -6,6 +6,8 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
+#set -x
+
 set -e
 . ../../shlib/deployfns
 read_conf ../conf/general
@@ -17,26 +19,33 @@ TMP_OUTPUT=/tmp/iso-test-run-$RANDOM$RANDOM$RANDOM
 # test atcocif.py
 cd ../pylib/mysociety
 nosetests
-cd -
-
-# test makeplan.py etc.
-cd pylib
+cd ../../iso/pylib
 nosetests
-cd -
+cd ../tiles
+#nosetests # reenable when pyproj packages ready
+cd ..
 
-# compare C++ and Python planner
+# compare C++ and Python planner on Oxford NPTDR data set
 cd pylib
-make makeplan
+make all
 cd ../bin
 mkdir $TMP_OUTPUT
+# ... run C++ planner
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT fastcalc
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT fastplan
+# ... run Python planner
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT slowplan
-if ! diff -u $TMP_OUTPUT/nptdr-slow-9100OXFD-40000-human.txt $TMP_OUTPUT/nptdr-fast-9100OXFD-40000-human.txt
+# don't compare the full routes (they can contain differences when two journeys
+# between the same two places take the same amount of time), just the times in
+# minutes.
+egrep "^From " $TMP_OUTPUT/nptdr-slow-9100OXFD-40000-human.txt >$TMP_OUTPUT/slow-routes.txt
+egrep "^From " $TMP_OUTPUT/nptdr-fast-9100OXFD-40000-human.txt >$TMP_OUTPUT/fast-routes.txt
+if ! diff -u $TMP_OUTPUT/slow-routes.txt $TMP_OUTPUT/fast-routes.txt
 then
-    echo "Failed test - C++ and Python planners differ in output, see in $TMP_OUTPUT"
+    echo "Failed test - C++ and Python planners differ in output, see in $TMP_OUTPUT/{slow,fast}-routes.txt"
     exit 1
 fi
-rm -fr $TMP_OUTPUT
+#rm -fr $TMP_OUTPUT
+
 
 
