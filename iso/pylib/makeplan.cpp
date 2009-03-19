@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.27 2009-03-17 16:43:19 francis Exp $
+// $Id: makeplan.cpp,v 1.28 2009-03-19 14:38:53 francis Exp $
 //
 
 // Usage:
@@ -500,15 +500,16 @@ class PlanningATCO {
             // This can happen, for example, with locations that are only
             // stopped at at the weekend, when it is a weekday. The fastplan.py
             // code doesn't strip such cases.
-            return;
+        } else {
+            // Go through every journey visiting the location
+            const std::set<JourneyID>& journey_list = it->second;
+            BOOST_FOREACH(const JourneyID& journey_id, journey_list) {
+                log(boost::format("\tconsidering journey: %s") % this->journeys[journey_id].text_id)
+                this->_adjacent_location_times_for_journey(target_location_id, target_arrival_time, adjacents, journey_id);
+            }
         }
 
-        // Go through every journey visiting the location
-        const std::set<JourneyID>& journey_list = it->second;
-        BOOST_FOREACH(const JourneyID& journey_id, journey_list) {
-            log(boost::format("\tconsidering journey: %s") % this->journeys[journey_id].text_id)
-            this->_adjacent_location_times_for_journey(target_location_id, target_arrival_time, adjacents, journey_id);
-        }
+        // Add nearby locations
         this->_nearby_locations(target_location_id, target_arrival_time, adjacents);
     }
 
@@ -778,7 +779,7 @@ class PlanningATCO {
                         routes[location_id].push_front(arrive_place_time);
 #endif
                     } else {
-                        log("\tlocation %s already settled");
+                        log(boost::format("\tlocation %s already settled") %  this->locations[location_id].text_id);
                     }
                 }
             }
