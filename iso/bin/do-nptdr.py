@@ -84,6 +84,7 @@ parser.add_option('--fastindexdir', type='string', dest="fastindexdir", help='Di
 parser.add_option('--loglevel', type='string', dest="loglevel", default='WARN', help='Try ERROR/WARN/INFO/DEBUG for increasingly more logging, default is WARN.')
 parser.add_option('--profile', action='store_true', dest='profile', default=False, help="Runs Python profiler on Dijkstra's algorithm part of calculation. Outputs a .profile file in output directory for later processing by Python pstats module, and prints basic details from it.")
 parser.add_option('--viewer', type='string', dest="viewer", help='If present, calls application to display PNG file at end.')
+parser.add_option('--makeplanbin', type='string', dest="makeplan_bin", default='../pylib/makeplan', help='C++ binary file to use for fastplan')
 
 (options, args) = parser.parse_args()
 
@@ -288,7 +289,7 @@ def fast_plan():
     if scan_back_when.date() < target_when.date():
         scan_back_when = target_when.replace(hour=0, minute=0, second=0)
 
-    run_cmd("../pylib/makeplan %s %s %d %s %d" % (fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute))
+    run_cmd("%s %s %s %d %s %d" % (options.makeplan_bin, fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute))
     do_external_contours()
 
 ###############################################################################
