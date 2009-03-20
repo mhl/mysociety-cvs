@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.7 2009-03-20 17:03:58 matthew Exp $
+# $Id: index.cgi,v 1.8 2009-03-20 17:05:09 matthew Exp $
 #
 
 import re
@@ -59,7 +59,7 @@ def main(fs):
 
 def template(name, vars):
     template = slurp_file('../templates/%s.html' % name)
-    template = re.sub('{{ ([a-z_]*) }}', lambda x: vars.get(x.group(1)), template)
+    template = re.sub('{{ ([a-z_]*) }}', lambda x: str(vars.get(x.group(1))), template)
     return template
 
 def slurp_file(filename):
