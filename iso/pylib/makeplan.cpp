@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.31 2009-03-20 04:30:26 francis Exp $
+// $Id: makeplan.cpp,v 1.32 2009-03-20 18:19:11 francis Exp $
 //
 
 // Usage:
@@ -476,6 +476,24 @@ class PlanningATCO {
         }
 
     }
+    
+    // Given a grid coordinate, find the nearest station.
+    LocationID find_nearest_station_to_point(double easting, double northing) {
+        double best_dist_so_far_sq = -1;
+        LocationID best_location_id = -1;
+        for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
+            const Location &location = this->locations[location_id];
+            double dist_sq = (easting - location.easting)*(easting - location.easting)
+                          + (northing - location.northing)*(northing - location.northing);
+
+            if (dist_sq < best_dist_so_far_sq || best_dist_so_far_sq < 0) {
+                best_dist_so_far_sq = dist_sq;
+                best_location_id = location_id;
+            }
+        }
+        assert(best_location_id != -1);
+        return best_location_id;
+    }
 
 #ifdef DEBUG
     /* Use this for testing the two proximity index functions above */
@@ -908,7 +926,7 @@ class PerformanceMonitor {
 
 int main(int argc, char * argv[]) {
     if (argc < 4) {
-        fprintf(stderr, "makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth  earliest departure in mins after midnight to go back to\n");
+        fprintf(stderr, "makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth earliest departure in mins after midnight to go back to\n  easting, northing to use to find destination if destination is 'coordinate'");
         return 1;
     }
 
@@ -917,6 +935,8 @@ int main(int argc, char * argv[]) {
     Minutes target_minutes_after_midnight = atoi(argv[3]);
     std::string target_location_text_id = argv[4]; // e.g. "9100BHAMSNH";
     Minutes earliest_departure = atoi(argv[5]);
+    double easting = atoi(argv[6]);
+    double northing = atoi(argv[7]);
 
     // Load timetables
     PerformanceMonitor pm;
@@ -925,6 +945,14 @@ int main(int argc, char * argv[]) {
     pm.display("loading timetables took");
     atco.generate_proximity_index_fast();
     pm.display("generating proximity index took");
+
+    // Find nearest place from grid reference
+    LocationID target_location_id;
+    if (target_location_text_id == "coordinate") {
+        target_location_id = atco.find_nearest_station_to_point(easting, northing);
+    } else {
+        target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
+    }
 
     // Work out what to do with output
     PlanningATCO::ResultFunctionPointer result_function_pointer;
@@ -939,7 +967,6 @@ int main(int argc, char * argv[]) {
     }
 
     // Do route finding
-    LocationID target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
     atco.do_dijkstra(
         result_function_pointer,
         target_location_id, target_minutes_after_midnight,

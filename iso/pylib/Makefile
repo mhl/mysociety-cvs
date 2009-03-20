@@ -5,8 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.12 2009-03-20 14:09:26 francis Exp $
-#
+# $Id: Makefile,v 1.13 2009-03-20 18:19:11 francis Exp $
 #
 
 CFLAGS = -Wall -O2 -fno-exceptions -fno-rtti

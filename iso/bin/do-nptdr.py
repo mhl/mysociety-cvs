@@ -60,15 +60,15 @@ Examples
 --postcode OX26DR --destination 340002054WES --data "/library/transport/nptdr/October\ 2008/Timetable\ Data/CIF/Admin_Area_340/*.CIF" --size 10000 --px 800 --bandsize 14 --bandcount 255 --bandcolsep 1 --walk_speed 1 --walk_time 3600 --output /home/matthew/public_html/iso
 ''')
 
-parser.add_option('--destination', type='string', dest="destination", help='Target location for route finding, as in ATCO-CIF file e.g. 9100MARYLBN')
+parser.add_option('--destination', type='string', dest="destination", help='Target location for route finding, as in ATCO-CIF file e.g. 9100MARYLBN, or if set to "coordinate" uses --postcode or --centre/centern')
 parser.add_option('--whenarrive', type='string', dest="whenarrive", help='Time and date to arrive at destination by. Must be a day for which the ATCO-CIF timetables loaded are valid. Fairly freeform format, e.g. "15 Oct 2008, 9:00"', default="15 Oct 2008, 9:00") # Some week in October 2008, need to check exactly when
 parser.add_option('--data', type='string', dest="data", help='ATCO-CIF files containing timetables to use. At the command line, put the value in quotes, file globs such as * will be expanded later.')
 parser.add_option('--datavalidfrom', type='string', dest="data_valid_from", help='Date range we know the data is good for')
 parser.add_option('--datavalidto', type='string', dest="data_valid_to", help='Date range we know the data is good for')
 parser.add_option('--hours', type='float', dest="hours", help='Longest journey length, in hours. Route finding algorithm will stop here.', default=1)
-parser.add_option('--postcode', type='string', dest="postcode", help='Location of centre of map, specify this or --centere / --centern')
-parser.add_option('--centere', type='int', dest="center_e", help='Location of centre of map, specify this / --centern or --postcode')
-parser.add_option('--centern', type='int', dest="center_n", help='Location of centre of map, specify this / --centere or --postcode')
+parser.add_option('--postcode', type='string', dest="postcode", help='Location of centre of map, specify this or --centere / --centern. If --destination is "coordinate", uses this postcode.')
+parser.add_option('--centere', type='int', dest="center_e", help='Location of centre of map, specify this / --centern or --postcode. If --destination is "coordinate", uses this.')
+parser.add_option('--centern', type='int', dest="center_n", help='Location of centre of map, specify this / --centere or --postcode. If --destination is "coordinate", uses this.')
 parser.add_option('--size', type='int', dest="size", help='Sides of map rectangle in metres, try 10000')
 parser.add_option('--px', type='int', dest="px", help='Sides of output contour image file in pixels', default=800)
 parser.add_option('--bandsize', type='int', dest="bandsize", help='Journey time in seconds that each contour band of image file represents', default=600)
@@ -116,16 +116,17 @@ if len(nptdr_files) == 0:
 data_valid_from = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_from)).date()
 data_valid_to = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_to)).date()
 
-# Parameters used by do_external_contours
-if command in ['slowplan', 'fastplan']:
-    if options.postcode: 
-        f = mysociety.mapit.get_location(options.postcode)
-        E = int(f['easting'])
-        N = int(f['northing'])
-    else:
-        E = options.center_e
-        N = options.center_n
+# Look up postcode
+if options.postcode: 
+    f = mysociety.mapit.get_location(options.postcode)
+    E = int(f['easting'])
+    N = int(f['northing'])
+else:
+    E = options.center_e
+    N = options.center_n
 
+# Rectangle used by do_external_contours
+if command in ['slowplan', 'fastplan']:
     WW = E - options.size / 2;
     EE = E + options.size / 2;
     SS = N - options.size / 2;
@@ -289,7 +290,7 @@ def fast_plan():
     if scan_back_when.date() < target_when.date():
         scan_back_when = target_when.replace(hour=0, minute=0, second=0)
 
-    run_cmd("%s %s %s %d %s %d" % (options.makeplan_bin, fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute))
+    run_cmd("%s %s %s %d %s %d %d %d" % (options.makeplan_bin, fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute, E, N))
     do_external_contours()
 
 ###############################################################################
