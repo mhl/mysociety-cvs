@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.5 2009-03-20 15:28:32 matthew Exp $
+# $Id: index.cgi,v 1.6 2009-03-20 16:34:37 matthew Exp $
 #
 
 import re
@@ -30,7 +30,7 @@ def lookup(pc):
 def test():
     lat = '51.759865102943905'
     lon = '-1.2658309936523438'
-    tile_id = 'foo'
+    tile_id = 'nptdr-OX26DR-10000.txt'
     return template('map', {
         'centre_lat': lat,
         'centre_lon': lon,

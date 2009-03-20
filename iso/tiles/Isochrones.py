@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.9 2009-03-18 20:31:12 migurski Exp $
+$Id: Isochrones.py,v 1.10 2009-03-20 16:34:37 matthew Exp $
 """
 import os
 import sys
@@ -214,7 +214,7 @@ def get_data(results_id, tile):
     xmin, ymin, xmax, ymax = xmin - 1800, ymin - 1800, xmax + 1800, ymax + 1800
 
     # open the file
-    datapoints = open(os.path.dirname(__file__) + '/nptdr-OX26DR-10000.txt', 'r')
+    datapoints = open('/data/vhost/col.mysociety.org/cache/%s' % results_id, 'r')
 
     # split the easting, northing, and seconds on each line
     datapoints = (line.split() for line in datapoints)
