@@ -6,10 +6,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.10 2009-03-20 18:07:47 matthew Exp $
+# $Id: index.cgi,v 1.11 2009-03-20 18:10:12 matthew Exp $
 #
 
-import hashlib
+import sha
 import re
 import sys
 sys.path.append("../../pylib")
@@ -26,7 +26,7 @@ def lookup(pc):
     lat = f['wgs84_lat']
     lon = f['wgs84_lon']
 
-    id = hashlib.sha1('%d-%d' % (E,N)).hexdigest()
+    id = sha.new('%d-%d' % (E,N)).hexdigest()
     # Call out to tile generation
     # calloutsomehow(E, N, id)
     id = 'nptdr-OX26DR-10000.txt'
