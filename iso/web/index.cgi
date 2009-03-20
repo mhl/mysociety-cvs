@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.12 2009-03-20 18:24:02 matthew Exp $
+# $Id: index.cgi,v 1.13 2009-03-20 18:31:36 matthew Exp $
 #
 
 import sha
@@ -19,6 +19,8 @@ import fcgi, cgi
 import mysociety.config
 import mysociety.mapit
 mysociety.config.set_file("../conf/general")
+
+refresh = False
 
 def lookup(pc):
     f = mysociety.mapit.get_location(pc)
@@ -41,6 +43,8 @@ def lookup(pc):
 
     # Call out to tile generation
     # calloutsomehow(E, N, id)
+    global refresh
+    refresh = True
     return template('map-pleasewait', {
         'postcode': pc
     })
@@ -90,9 +94,12 @@ while fcgi.isFCGI():
             req.Finish()
             continue
 
-        header = template('header', { 'postcode': fs.getfirst('pc', '') })
         footer = slurp_file('../templates/footer.html')
         content = main(fs)
+        header = template('header', {
+            'postcode': fs.getfirst('pc', ''),
+            'refresh': refresh and '<meta http-equiv="refresh" content="5">' or '',
+        })
         req.out.write(header + content + footer)
 
     except Exception, e:
