@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.1 2009-03-20 00:35:28 francis Exp $
+-- $Id: schema.sql,v 1.2 2009-03-20 04:32:30 francis Exp $
 --
 
 -- A random secret.
@@ -37,10 +37,11 @@ create table map (
     target_mins_after_midnight integer not null,
     target_date date not null, 
 
-    -- Where the map is going to
     target_postcode text not null,
     target_easting double precision not null,
     target_northing double precision not null
+
+    nptdr_files not null,
 );
 
 -- For each map
