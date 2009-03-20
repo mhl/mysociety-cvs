@@ -2,7 +2,6 @@ package org.mysociety.display
 {
     import com.modestmaps.Map;
     import com.modestmaps.events.MapEvent;
-    import com.modestmaps.extras.MapControls;
     import com.modestmaps.mapproviders.IMapProvider;
     import com.modestmaps.overlays.MarkerClip;
     import com.stamen.ui.BlockSprite;
@@ -21,7 +20,6 @@ package org.mysociety.display
     import flash.geom.Point;
     import flash.geom.Rectangle;
     
-    import org.mysociety.map.MySocietyMapButton;
     import org.mysociety.map.providers.ThresholdMaskProvider;
 
     public class ThresholdMaskMap extends BlockSprite
@@ -192,10 +190,12 @@ package org.mysociety.display
                 white.threshold(_maskMap.cache, bmp.rect, p, '>=', minThreshold, whiteFill, thresholdMask, false);
             }
 
+            var boundColor:uint = whiteFill & whiteMask;
             var rect:Rectangle = resizing
                                  ? null
-                                 : white.getColorBoundsRect(whiteMask, whiteFill & whiteMask, true);
-            if (rect && rect.width > 0 && rect.height > 0)
+                                 : white.getColorBoundsRect(whiteMask, boundColor, true);
+            if ((rect && rect.width > 0 && rect.height > 0)
+                || white.getPixel(0, 0) == (whiteFill & BitmapCacheMap.MASK_RGB))
             {
                 // then, apply the blue channel of the white bitmap as the alpha channel of the result
                 result.copyChannel(white, white.rect, p, BitmapDataChannel.BLUE, BitmapDataChannel.ALPHA);
