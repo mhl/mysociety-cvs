@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <title>${title}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="swfobject.js"></script>
+    <style type="text/css">
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="swf">
+      <script type="text/javascript" defer="defer"><!--
+        var getParam = swfobject.getQueryParamValue;
+        var flashvars = {
+          // Cloudmade API key. This is required!
+          'cloudmade_api_key': 'f42ed2bf2ce15484a17cef7fe5e6df0f',
+
+          // Map center ('lat,lon') and zoom (int).
+          // [this is Oxford]
+          'map_center':     '51.759865102943905,-1.2658309936523438',
+          'map_zoom':       11,
+
+          // Geographical bounds of the map in 'N,S,E,W' format.
+          // NOTE: center and zoom are ignored if an extent is provided.
+          // 'map_extent': '',
+
+          /*
+           * These parameters control the mapping between RGB values in the iso tiles
+           * and minutes of travel time. The minimums and maximums of each map to
+           * each other directly.
+           */
+          // White is 0 minutes.
+          'min_threshold':  255,
+          'min_minutes':    0,
+          // Pure black is inaccessible; just above that (RGB: 0x000001) is 254 minutes.
+          'max_threshold':  1,
+          'max_minutes':    254,
+          // The initial value of the time slider.
+          'initial_minutes': 15,
+
+          // Minimum and Maximum map zoom levels.
+          'min_zoom':       8,
+          'max_zoom':       12,
+
+          // Iso tile URL and format template.
+          //'iso_tile_url_base':    'http://studio.stamen.com/mysociety/show/20090316/tiles/tilecache.cgi/foo/iso',
+          'iso_tile_url_base':    'http://col.mysociety.org/tilecache.cgi/foo/iso',
+          // {Z}, {X}, and {Y} here are replaced by the tile coordinate zoom, column and row, respectively.
+          'iso_tile_url_format':  '{Z}/{X}/{Y}.png'
+        };
+
+        // Flash Player parameters
+        var params = {
+        };
+
+        // HTML attributes
+        var attributes = {
+        };
+
+        swfobject.embedSWF('Stamen.swf', 'swf', '100%', '100%', '9.0.0', null,
+                           flashvars, params, attributes);
+
+      //--></script>
+    </div>
+  </body>
+</html>
+
