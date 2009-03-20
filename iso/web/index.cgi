@@ -6,9 +6,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.9 2009-03-20 17:11:07 matthew Exp $
+# $Id: index.cgi,v 1.10 2009-03-20 18:07:47 matthew Exp $
 #
 
+import hashlib
 import re
 import sys
 sys.path.append("../../pylib")
@@ -25,13 +26,15 @@ def lookup(pc):
     lat = f['wgs84_lat']
     lon = f['wgs84_lon']
 
-    # Call out to tile generation, but for now use this one statically
-    tile_id = 'nptdr-OX26DR-10000.txt'
+    id = hashlib.sha1('%d-%d' % (E,N)).hexdigest()
+    # Call out to tile generation
+    # calloutsomehow(E, N, id)
+    id = 'nptdr-OX26DR-10000.txt'
 
     return template('map', {
         'centre_lat': lat,
         'centre_lon': lon,
-        'tile_id': tile_id
+        'tile_id': id
     })
     
 def test():
