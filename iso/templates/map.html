@@ -1,0 +1,52 @@
+<div id="swf">
+    <script type="text/javascript" defer="defer"><!--
+        var getParam = swfobject.getQueryParamValue;
+        var flashvars = {
+          // Cloudmade API key. This is required!
+          'cloudmade_api_key': 'f42ed2bf2ce15484a17cef7fe5e6df0f',
+
+          // Map center ('lat,lon') and zoom (int).
+          'map_center':     '{{ centre_lat }},{{ centre_lon }}',
+          'map_zoom':       11,
+
+          // Geographical bounds of the map in 'N,S,E,W' format.
+          // NOTE: center and zoom are ignored if an extent is provided.
+          // 'map_extent': '',
+
+          /*
+           * These parameters control the mapping between RGB values in the iso tiles
+           * and minutes of travel time. The minimums and maximums of each map to
+           * each other directly.
+           */
+          // White is 0 minutes.
+          'min_threshold':  255,
+          'min_minutes':    0,
+          // Pure black is inaccessible; just above that (RGB: 0x000001) is 254 minutes.
+          'max_threshold':  1,
+          'max_minutes':    254,
+          // The initial value of the time slider.
+          'initial_minutes': 30,
+
+          // Minimum and Maximum map zoom levels.
+          'min_zoom':       8,
+          'max_zoom':       12,
+
+          // Iso tile URL and format template.
+          'iso_tile_url_base':    'http://col.mysociety.org/tilecache.cgi/{{ tile_id }}/iso',
+          // {Z}, {X}, and {Y} here are replaced by the tile coordinate zoom, column and row, respectively.
+          'iso_tile_url_format':  '{Z}/{X}/{Y}.png'
+        };
+
+        // Flash Player parameters
+        var params = {
+        };
+
+        // HTML attributes
+        var attributes = {
+        };
+
+        swfobject.embedSWF('20090320-1400.swf', 'swf', '100%', '100%', '9.0.0', null,
+                           flashvars, params, attributes);
+
+      //--></script>
+    </div>

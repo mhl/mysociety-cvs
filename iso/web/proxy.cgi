@@ -4,6 +4,7 @@ use strict;
 use LWP::Simple;
 use CGI;
 
+my $q = new CGI;
 my $url = $q->param('u');
 my $file = get($url);
 print "Content-Type: image/png\r\n\r\n$file";
