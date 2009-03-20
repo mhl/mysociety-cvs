@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.29 2009-03-20 00:35:29 francis Exp $
+// $Id: makeplan.cpp,v 1.30 2009-03-20 04:13:07 francis Exp $
 //
 
 // Usage:
@@ -237,6 +237,7 @@ sets of quickest routes from them.
 class PlanningATCO {
     public: 
 
+    // input parameters
     int train_interchange_default;
     int bus_interchange_default;
     int number_of_locations;
@@ -245,9 +246,11 @@ class PlanningATCO {
     float walk_speed; // metres /s ec
     float walk_time; // secs
 
+    // input data structures
     std::vector<Location> locations;
     std::vector<Journey> journeys;
 
+    // indices of various sorts
     std::map<std::string, LocationID> locations_by_text_id;
 
     typedef std::map<LocationID, std::set<JourneyID> > JourneysVisitingLocation;
@@ -258,8 +261,14 @@ class PlanningATCO {
     typedef std::pair<LocationID, double> NearbyLocationsInnerPair;
     NearbyLocations nearby_locations;
 
+    // working parameters
     LocationID final_destination_id;
     Minutes final_destination_time;
+    // working outputs
+    Settled settled;
+#ifdef OUTPUT_ROUTE_DETAILS
+    Routes routes;
+#endif
 
     /* Create object that generates shortest journey times for all stations
     in a public transport network defined by an ATCO-CIF timetable file.
@@ -469,6 +478,7 @@ class PlanningATCO {
     }
 
 #ifdef DEBUG
+    /* Use this for testing the two proximity index functions above */
     void dump_nearby_locations() {
         log("---------------------------------------\n");
         for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
@@ -694,10 +704,13 @@ class PlanningATCO {
     target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
     target_datetime - when we want to arrive by
     */
-    void do_dijkstra(Settled& settled, 
+    typedef void (PlanningATCO::*ResultFunctionPointer)(const LocationID&, const Minutes&
 #ifdef OUTPUT_ROUTE_DETAILS
-        Routes& settled_routes, 
+        , const Route&
 #endif
+    );
+    void do_dijkstra(
+        ResultFunctionPointer result_function_pointer,
         const LocationID target_location_id, const Minutes target_time, const Minutes earliest_departure
     ) {
 #ifdef OUTPUT_ROUTE_DETAILS
@@ -735,13 +748,12 @@ class PlanningATCO {
 
             // That item is now settled
             settled_set.insert(nearest_location_id);
-            settled.push_back(std::make_pair(nearest_location_id, nearest_time));
+            // ... do whatever is required with it
+            (*this.*result_function_pointer)(nearest_location_id, nearest_time
 #ifdef OUTPUT_ROUTE_DETAILS
-            // ... copy the route into settled_routes, so we only return routes
-            // we know we finished (rather than the partial, best-so-far that is
-            // in routes)
-            settled_routes[nearest_location_id] = routes[nearest_location_id];
+                , routes[nearest_location_id]
 #endif
+            );
             log(boost::format("settled location %s time %s") % this->locations[nearest_location_id].text_id % format_time(nearest_time));
             
             // Add all of its neighbours to the queue
@@ -787,7 +799,18 @@ class PlanningATCO {
             }
         }
     
-        // return values are settled and settled_routes in parameters
+        // return values are sent via the result_function_pointer parameter
+    }
+
+    void dijkstra_output_store(const LocationID& location_id, const Minutes& when
+#ifdef OUTPUT_ROUTE_DETAILS
+        , const Route& route
+#endif
+    ) {
+        this->settled.push_back(std::make_pair(location_id, when));
+#ifdef OUTPUT_ROUTE_DETAILS
+        this->routes[location_id] = route;
+#endif
     }
 
 #ifdef OUTPUT_ROUTE_DETAILS
@@ -889,22 +912,17 @@ int main(int argc, char * argv[]) {
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
     pm.display("loading timetables took");
-// atco.generate_proximity_index_slow(); // use this to check generate_proximity_index_fast if suspect
-// atco.dump_nearby_locations();
     atco.generate_proximity_index_fast();
-// atco.dump_nearby_locations();
     pm.display("generating proximity index took");
 
     // Do route finding
-    Settled settled;
+    atco.settled.clear();
 #ifdef OUTPUT_ROUTE_DETAILS
-    Routes routes;
+    atco.routes.clear();
 #endif
     LocationID target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
-    atco.do_dijkstra(settled, 
-#ifdef OUTPUT_ROUTE_DETAILS
-        routes, 
-#endif
+    atco.do_dijkstra(
+        &PlanningATCO::dijkstra_output_store,
         target_location_id, target_minutes_after_midnight,
         earliest_departure
     );
@@ -914,7 +932,7 @@ int main(int argc, char * argv[]) {
     std::string grid_time_file = outputprefix + ".txt";
     std::ofstream f;
     f.open(grid_time_file.c_str());
-    BOOST_FOREACH(const SettledPair& p, settled) {
+    BOOST_FOREACH(const SettledPair& p, atco.settled) {
         const LocationID& l_id = p.first;
         const Minutes& min = target_minutes_after_midnight - p.second;
         int secs = min * 60;
@@ -929,7 +947,7 @@ int main(int argc, char * argv[]) {
     std::string human_file = outputprefix + "-human.txt";
     std::ofstream g;
     g.open(human_file.c_str());
-    g << atco.pretty_print_routes(settled, routes);
+    g << atco.pretty_print_routes(atco.settled, atco.routes);
     g.close();
     pm.display("human output took");
 #endif
