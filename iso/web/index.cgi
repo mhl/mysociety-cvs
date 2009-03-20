@@ -6,9 +6,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.4 2009-03-20 14:31:54 francis Exp $
+# $Id: index.cgi,v 1.5 2009-03-20 15:28:32 matthew Exp $
 #
 
+import re
 import sys
 sys.path.append("../../pylib")
 import fcgi, cgi
@@ -26,6 +27,16 @@ def lookup(pc):
 
     return out
     
+def test():
+    lat = '51.759865102943905'
+    lon = '-1.2658309936523438'
+    tile_id = 'foo'
+    return template('map', {
+        'centre_lat': lat,
+        'centre_lon': lon,
+        'tile_id': tile_id
+    })
+
 def front_page():
     front = slurp_file('../templates/index.html')
     return front
@@ -33,7 +44,16 @@ def front_page():
 def main(fs):
     if 'pc' in fs:
         return lookup(fs.getfirst('pc'))
+    if 'map' in fs:
+        return test()
     return front_page()
+
+# Functions
+
+def template(name, vars):
+    template = slurp_file('../templates/%s.html' % name)
+    template = re.sub('{{ ([a-z_]*) }}', lambda x: vars.get(x.group(1)), template)
+    return template
 
 def slurp_file(filename):
     f = file(filename, 'rb')
