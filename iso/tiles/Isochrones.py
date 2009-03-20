@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.11 2009-03-20 18:07:47 matthew Exp $
+$Id: Isochrones.py,v 1.12 2009-03-20 20:03:01 francis Exp $
 """
 import os
 import sys
@@ -19,7 +19,7 @@ import PIL.Image
 import Cone
 
 import mysociety.config
-mysociety.config.set_file("../conf/general")
+mysociety.config.set_file("../../conf/general")
 
 class TileLayer(TileCache.Layer.MetaLayer):
 
@@ -30,11 +30,14 @@ class TileLayer(TileCache.Layer.MetaLayer):
     def __init__(self, name, timestep=60, **kwargs):
         """ call super.__init__, but also store the results_id from PATH_INFO
         """
-        TileCache.Layer.MetaLayer.__init__(self, name, **kwargs)
 
         # the result set ID is the first part of the path
         self.results_id = os.environ["PATH_INFO"].lstrip('/').split('/')[0]
         self.timestep = float(timestep)
+
+        # add id to name
+        name = name + self.results_id
+        TileCache.Layer.MetaLayer.__init__(self, name, **kwargs)
     
     def renderTile(self, tile, force=None):
         """
