@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.6 2009-03-20 16:34:37 matthew Exp $
+# $Id: index.cgi,v 1.7 2009-03-20 17:03:58 matthew Exp $
 #
 
 import re
@@ -22,10 +22,17 @@ def lookup(pc):
     f = mysociety.mapit.get_location(pc)
     E = int(f['easting'])
     N = int(f['northing'])
+    lat = f['wgs84_lat']
+    lon = f['wgs84_lon']
 
-    out = '<p>You entered %s, %dE %dN.</p>' % (cgi.escape(pc, True), E, N)
+    # Call out to tile generation, but for now use this one statically
+    tile_id = 'nptdr-OX26DR-10000.txt'
 
-    return out
+    return template('map', {
+        'centre_lat': lat,
+        'centre_lon': lon,
+        'tile_id': tile_id
+    })
     
 def test():
     lat = '51.759865102943905'
