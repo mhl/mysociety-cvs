@@ -14,7 +14,7 @@
  * Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: general-example,v 1.5 2009-03-20 13:16:50 francis Exp $
+ * $Id: general-example,v 1.6 2009-03-20 17:01:06 francis Exp $
  * 
  */
 
@@ -25,10 +25,16 @@ define('OPTION_COL_DB_NAME', 'col');
 define('OPTION_COL_DB_USER', 'col');
 define('OPTION_COL_DB_PASS', '');
 
-
+// Not really used for Contours of Life
 define('OPTION_GOOGLE_MAPS_API_KEY', '');
+
+// Postcode lookup
 define('OPTION_MAPIT_URL', '');
 
+// ATCO-CIF timetable data to use
 define('OPTION_NPTDR_DATA', '/library/transport/nptdr/October 2008');
+
+// Directory for any temporary files while route planning etc.
+define('OPTION_TMPWORK', '/data/vhost/foo/tmpwork');
 
 ?>
