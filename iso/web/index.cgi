@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.8 2009-03-20 17:05:09 matthew Exp $
+# $Id: index.cgi,v 1.9 2009-03-20 17:11:07 matthew Exp $
 #
 
 import re
@@ -59,7 +59,7 @@ def main(fs):
 
 def template(name, vars):
     template = slurp_file('../templates/%s.html' % name)
-    template = re.sub('{{ ([a-z_]*) }}', lambda x: str(vars.get(x.group(1))), template)
+    template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1))), True), template)
     return template
 
 def slurp_file(filename):
@@ -79,7 +79,7 @@ while fcgi.isFCGI():
             req.Finish()
             continue
 
-        header = slurp_file('../templates/header.html')
+        header = template('header', { 'postcode': fs.getfirst('pc', '') })
         footer = slurp_file('../templates/footer.html')
         content = main(fs)
         req.out.write(header + content + footer)
