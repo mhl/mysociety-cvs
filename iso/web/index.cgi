@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.13 2009-03-20 18:31:36 matthew Exp $
+# $Id: index.cgi,v 1.14 2009-03-20 18:33:04 matthew Exp $
 #
 
 import sha
@@ -75,6 +75,7 @@ def main(fs):
 def template(name, vars):
     template = slurp_file('../templates/%s.html' % name)
     template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1))), True), template)
+    template = re.sub('{{ ([a-z_]*)\|safe }}', lambda x: str(vars.get(x.group(1))), template)
     return template
 
 def slurp_file(filename):
