@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.30 2009-03-20 04:13:07 francis Exp $
+// $Id: makeplan.cpp,v 1.31 2009-03-20 04:30:26 francis Exp $
 //
 
 // Usage:
@@ -301,7 +301,7 @@ class PlanningATCO {
         std::string location_filename = l_in_prefix + ".locations";
         FILE *fp = fopen(location_filename.c_str(), "rb");
         if (!fp) {
-            printf("Failed to open index file: %s\n", location_filename.c_str());
+            fprintf(stderr, "Failed to open index file: %s\n", location_filename.c_str());
             exit(1);
         }
         my_fread(&this->number_of_locations, 1, sizeof(int), fp);
@@ -330,7 +330,7 @@ class PlanningATCO {
         std::string journey_filename = l_in_prefix + ".journeys";
         fp = fopen(journey_filename.c_str(), "rb");
         if (!fp) {
-            printf("Failed to open index file: %s\n", journey_filename.c_str());
+            fprintf(stderr, "Failed to open index file: %s\n", journey_filename.c_str());
             exit(1);
         }
         my_fread(&this->number_of_journeys, 1, sizeof(int), fp);
@@ -813,6 +813,17 @@ class PlanningATCO {
 #endif
     }
 
+    void dijkstra_output_stream_stdout(const LocationID& location_id, const Minutes& when
+#ifdef OUTPUT_ROUTE_DETAILS
+        , const Route& route
+#endif
+    ) {
+        const Minutes& mins = this->final_destination_time - when;
+        int secs = mins * 60;
+        Location *l = &this->locations[location_id];
+        printf("%d %d %d\n", l->easting, l->northing, secs);
+    }
+
 #ifdef OUTPUT_ROUTE_DETAILS
     /* do_dijkstra returns a journey routes array, this prints it in a human readable format. */
     std::string pretty_print_routes(const Settled& settled, const Routes& routes) {
@@ -883,12 +894,12 @@ class PerformanceMonitor {
     }
 
     void display(const std::string& desc) {
-        printf("%s: ", desc.c_str());
+        fprintf(stderr, "%s: ", desc.c_str());
 
         clock_t clock_after = clock();
-        printf("%f secs ", double(clock_after - this->clock_before) / double(CLOCKS_PER_SEC));
+        fprintf(stderr, "%f secs ", double(clock_after - this->clock_before) / double(CLOCKS_PER_SEC));
         
-        printf("\n");
+        fprintf(stderr, "\n");
 
         this->reset();
     }
@@ -897,7 +908,7 @@ class PerformanceMonitor {
 
 int main(int argc, char * argv[]) {
     if (argc < 4) {
-        printf("makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth  earliest departure in mins after midnight to go back to\n");
+        fprintf(stderr, "makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth  earliest departure in mins after midnight to go back to\n");
         return 1;
     }
 
@@ -915,42 +926,52 @@ int main(int argc, char * argv[]) {
     atco.generate_proximity_index_fast();
     pm.display("generating proximity index took");
 
-    // Do route finding
-    atco.settled.clear();
+    // Work out what to do with output
+    PlanningATCO::ResultFunctionPointer result_function_pointer;
+    if (outputprefix == "stream") {
+        result_function_pointer = &PlanningATCO::dijkstra_output_stream_stdout;
+    } else {
+        atco.settled.clear();
 #ifdef OUTPUT_ROUTE_DETAILS
-    atco.routes.clear();
+        atco.routes.clear();
 #endif
+        result_function_pointer = &PlanningATCO::dijkstra_output_store;
+    }
+
+    // Do route finding
     LocationID target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
     atco.do_dijkstra(
-        &PlanningATCO::dijkstra_output_store,
+        result_function_pointer,
         target_location_id, target_minutes_after_midnight,
         earliest_departure
     );
     pm.display("route finding took");
 
-    // Output for grid
-    std::string grid_time_file = outputprefix + ".txt";
-    std::ofstream f;
-    f.open(grid_time_file.c_str());
-    BOOST_FOREACH(const SettledPair& p, atco.settled) {
-        const LocationID& l_id = p.first;
-        const Minutes& min = target_minutes_after_midnight - p.second;
-        int secs = min * 60;
-        Location *l = &atco.locations[l_id];
-        f << l->easting << " " << l->northing << " " << secs << "\n";
-    }
-    f.close();
-    pm.display("grid output took");
+    if (outputprefix != "stream") {
+        // Output for grid
+        std::string grid_time_file = outputprefix + ".txt";
+        std::ofstream f;
+        f.open(grid_time_file.c_str());
+        BOOST_FOREACH(const SettledPair& p, atco.settled) {
+            const LocationID& l_id = p.first;
+            const Minutes& min = target_minutes_after_midnight - p.second;
+            int secs = min * 60;
+            Location *l = &atco.locations[l_id];
+            f << l->easting << " " << l->northing << " " << secs << "\n";
+        }
+        f.close();
+        pm.display("grid output took");
 
 #ifdef OUTPUT_ROUTE_DETAILS
-    // Output for human
-    std::string human_file = outputprefix + "-human.txt";
-    std::ofstream g;
-    g.open(human_file.c_str());
-    g << atco.pretty_print_routes(atco.settled, atco.routes);
-    g.close();
-    pm.display("human output took");
+        // Output for human
+        std::string human_file = outputprefix + "-human.txt";
+        std::ofstream g;
+        g.open(human_file.c_str());
+        g << atco.pretty_print_routes(atco.settled, atco.routes);
+        g.close();
+        pm.display("human output took");
 #endif
+    }
 
     return 0;
 };
