@@ -157,17 +157,17 @@ package org.mysociety
         
         protected function createChildren():void
         {
-            map = new ThresholdMaskMap(100, 100, true, new CloudMadeProvider(cloudmadeAPIKey, CloudMadeProvider.MIDNIGHT_COMMANDER));
+            map = new ThresholdMaskMap(100, 100, true, new CloudMadeProvider(cloudmadeAPIKey, CloudMadeProvider.FRESH));
             map.minThreshold = minThreshold;
 
             var m:ColorMatrix = new ColorMatrix();
             // m.invert();
             m.adjustSaturation(0);
-            m.adjustBrightness(-16);
+            m.adjustBrightness(-32);
             map.maskedFilter = m.filter;
-            map.outlineColorTransform = new ColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
-            map.outlineFilter = new GlowFilter(0xfaffea, 1, 3, 3, 2, BitmapFilterQuality.LOW);
-            map.outlineBlendMode = BlendMode.SCREEN;
+            map.outlineColorTransform = null; // new ColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
+            map.outlineFilter = new GlowFilter(0x000000, 1, 3, 3, 2, BitmapFilterQuality.LOW);
+            map.outlineBlendMode = BlendMode.DARKEN;
             addChild(map);
             
             if (initialMapExtent && false)
