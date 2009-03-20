@@ -27,7 +27,11 @@
  *
  */
 
-static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.14 2009-01-15 15:21:43 francis Exp $";
+// Latitude/longitude of where to apply crow test to/from
+static const double crowtest1 = 51.52, crowtest2 = -0.118; // St Pancras
+// static const double crowtest1 = 55.95, crowtest2 = -3.19; // Edinburgh Waverley
+
+static const char rcsid[] = "$Id: eurotrain-journeys-to-grid,v 1.15 2009-03-20 13:18:47 francis Exp $";
 
 #include <assert.h>
 #include <gd.h>
@@ -388,13 +392,13 @@ int main(int argc, char *argv[]) {
         strcpy(label, labelstart);
         pp[npp].label = label;
 
-        double distance_to_st_pancras = great_circle_distance(51.53, -0.125, pp[npp].N, pp[npp].E) / 1000;
+        double distance_to_crowpoint = great_circle_distance(crowtest1, crowtest2, pp[npp].N, pp[npp].E) / 1000;
         double time_in_hours = pp[npp].time / 60 / 60;
-        double crow_speed = distance_to_st_pancras / time_in_hours;
+        double crow_speed = distance_to_crowpoint / time_in_hours;
         //fprintf(stderr, "%f\t%f\t%lf\t%lfh\t%lf\t%s\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed, label);
 
         if (crow_speed >= 160 || crow_speed <= 10) {
-            fprintf(stderr, "ignored lat:%f lon:%f pancras:%lfkm time:%lfh crow:%lfkm/h\n", pp[npp].N, pp[npp].E, distance_to_st_pancras, time_in_hours, crow_speed);
+            fprintf(stderr, "ignored lat:%f lon:%f crowpoint:%lfkm time:%lfh crow:%lfkm/h\n", pp[npp].N, pp[npp].E, distance_to_crowpoint, time_in_hours, crow_speed);
         } else {
             ++npp;
             if (npp == nppalloc)
