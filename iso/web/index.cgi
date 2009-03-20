@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.14 2009-03-20 18:33:04 matthew Exp $
+# $Id: index.cgi,v 1.15 2009-03-20 20:03:26 francis Exp $
 #
 
 import sha
@@ -30,19 +30,24 @@ def lookup(pc):
     lon = f['wgs84_lon']
 
     id = sha.new('%d-%d' % (E,N)).hexdigest()
-    id = 'nptdr-OX26DR-10000.txt' # XXX
 
-    file = os.path.join(mysociety.config.get('TMPWORK'), id)
-    if os.path.exists(file):
+    tmpwork = mysociety.config.get('TMPWORK')
+    file = os.path.join(tmpwork, id)
+    if os.path.exists(file + ".txt"):
         # We've got a generated file, let's show the map!
         return template('map', {
             'centre_lat': lat,
             'centre_lon': lon,
-            'tile_id': id
+            'tile_id': id + ".txt"
         })
 
     # Call out to tile generation
-    # calloutsomehow(E, N, id)
+    binarycache = os.path.join(tmpwork, "fastindex-oxford-2008-10-07")
+    cmd = "../pylib/makeplan %s %s 540 coordinate 0 %d %d" % (binarycache, file, E, N)
+    ret = os.system(cmd)
+    if ret != 0:
+        raise Exception("index.cgi: Error code from command: " + cmd)
+
     global refresh
     refresh = True
     return template('map-pleasewait', {
