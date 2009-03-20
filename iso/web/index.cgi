@@ -6,12 +6,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.11 2009-03-20 18:10:12 matthew Exp $
+# $Id: index.cgi,v 1.12 2009-03-20 18:24:02 matthew Exp $
 #
 
 import sha
 import re
 import sys
+import os.path
 sys.path.append("../../pylib")
 import fcgi, cgi
 
@@ -27,14 +28,21 @@ def lookup(pc):
     lon = f['wgs84_lon']
 
     id = sha.new('%d-%d' % (E,N)).hexdigest()
+    id = 'nptdr-OX26DR-10000.txt' # XXX
+
+    file = os.path.join(mysociety.config.get('TMPWORK'), id)
+    if os.path.exists(file):
+        # We've got a generated file, let's show the map!
+        return template('map', {
+            'centre_lat': lat,
+            'centre_lon': lon,
+            'tile_id': id
+        })
+
     # Call out to tile generation
     # calloutsomehow(E, N, id)
-    id = 'nptdr-OX26DR-10000.txt'
-
-    return template('map', {
-        'centre_lat': lat,
-        'centre_lon': lon,
-        'tile_id': id
+    return template('map-pleasewait', {
+        'postcode': pc
     })
     
 def test():
