@@ -5,16 +5,12 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.9 2009-03-17 16:43:19 francis Exp $
+# $Id: Makefile,v 1.10 2009-03-20 00:35:29 francis Exp $
 #
 #
 
-# OUTPUT_ROUTE_DETAILS shaves a few seconds off full country map generation,
-# including that it allows no-exceptions no-rtti as it removes boost format
-# dependency. For now though, don't worry about it too much.
-
-CFLAGS = -Wall -O2 -DOUTPUT_ROUTE_DETAILS 
-#CFLAGS = -Wall -O2 -fno-exceptions -fno-rtti
+CFLAGS = -Wall -O2 -fno-exceptions -fno-rtti
+#CFLAGS = -Wall -O2 -DOUTPUT_ROUTE_DETAILS  # sometimes useful to output route details in release mode
 CFLAGS_DEBUG = -Wall -g -DDEBUG -DOUTPUT_ROUTE_DETAILS
 CFLAGS_PROFILE = ${CFLAGS} -pg
 

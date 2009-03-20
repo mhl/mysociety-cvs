@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.28 2009-03-19 14:38:53 francis Exp $
+// $Id: makeplan.cpp,v 1.29 2009-03-20 00:35:29 francis Exp $
 //
 
 // Usage:
@@ -360,8 +360,10 @@ class PlanningATCO {
         }
     }
 
-    // find out which stations are near to which others - naive agorithm
-    void generate_proximity_index() {
+    // Find out which stations are near to which others - naive agorithm.
+    // This is never called, is just left here in case there are bugs in 
+    // generate_proximity_index_fast, so the two can be compared.
+    void generate_proximity_index_slow() {
         // Proximity index
         double nearby_max_distance = double(this->walk_speed) * double(this->walk_time);
         double nearby_max_distance_sq = nearby_max_distance * nearby_max_distance;
@@ -381,7 +383,7 @@ class PlanningATCO {
 
                 if (sqdist < nearby_max_distance_sq) {
                     double dist = sqrt(sqdist);
-                    log(boost::format("generate_proximity_index: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location.text_id % other_easting % other_northing);
+                    log(boost::format("generate_proximity_index_slow: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location.text_id % other_easting % other_northing);
                     nearby_locations[location_id][other_location_id] = dist;
                     nearby_locations[other_location_id][location_id] = dist;
                 }
@@ -389,8 +391,8 @@ class PlanningATCO {
         }
     }
 
-    // find out which stations are near to which others - with some spacial partitioning
-    // to speed it up
+    // Find out which stations are near to which others - with some spacial
+    // partitioning to speed it up
     void generate_proximity_index_fast() {
         double nearby_max_distance = double(this->walk_speed) * double(this->walk_time);
         double nearby_max_distance_sq = nearby_max_distance * nearby_max_distance;
@@ -887,7 +889,7 @@ int main(int argc, char * argv[]) {
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
     pm.display("loading timetables took");
-// atco.generate_proximity_index();
+// atco.generate_proximity_index_slow(); // use this to check generate_proximity_index_fast if suspect
 // atco.dump_nearby_locations();
     atco.generate_proximity_index_fast();
 // atco.dump_nearby_locations();

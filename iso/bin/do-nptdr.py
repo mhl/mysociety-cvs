@@ -283,8 +283,12 @@ def fast_calc():
 
 # Call out to C++ version of Dijkstra's algorithm
 def fast_plan():
-    run_cmd("../pylib/makeplan %s %s %d %s %d" % (fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination,
-    scan_back_when.hour * 60 + scan_back_when.minute))
+    # we only support scanning back to the same day from C++ for now
+    global scan_back_when
+    if scan_back_when.date() < target_when.date():
+        scan_back_when = target_when.replace(hour=0, minute=0, second=0)
+
+    run_cmd("../pylib/makeplan %s %s %d %s %d" % (fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute))
     do_external_contours()
 
 ###############################################################################

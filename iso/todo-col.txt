@@ -1,15 +1,6 @@
 Contours of life TODO
 =====================
 
-Test Python routing automatically against C++
-    - change it to use whole data set, not just trains
-
-Test proximity finder against brute proximity finder with all data set
-    - or give up and let the Python code do :)
-
-Make close up Skye map for FD
-    6700712370 - Ardvasar, Isle of Skye
-    670086397 - Portree, isle of Skye
 Find out why Ardvasar doesn't have any buses arriving at it
 
 Move code into separate cpplib place
@@ -23,20 +14,13 @@ Interchange times
 - need another longer time for QVNAIR/12? (should we be including air at all?)
 - measures according to type of journey before, not pair of before/after
 
+
 Thomas CIF file
 ---------------
 Check that all the ids and train operation numbers and stuff in journey parts are ok - I think that they are MPS
 Add direct services to Tidmouth
 Add some services run by Daisy on Thomas's line
 Reduced Sunday service
-
-Later
------
-
-Handle journeys after midnight - currently it just cuts them short at midnight.
-   Instead probably needs to make two copies of them one for each day. Indeed,
-   to do all this really well, need to make a copy of every journey for yesterday.
-Reverse - allow finding earliest time arrive elsewhere leaving an origin location
 
 
 Larger ideas
@@ -63,5 +47,9 @@ Flakiness metric
 
 Journeys changing at school holiday can really matter - get
 data for this (not in NPTDR) and offer flakiness across time metric.
+
+Handle journeys after midnight - currently it just cuts them short at midnight.
+   Instead probably needs to make two copies of them one for each day. Indeed,
+   to do all this really well, need to make a copy of every journey for yesterday.
 
 
