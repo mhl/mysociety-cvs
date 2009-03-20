@@ -14,8 +14,6 @@ package org.mysociety.display.ui
     import flash.events.MouseEvent;
     import flash.geom.Rectangle;
     
-    import gs.TweenLite;
-    
     import org.mysociety.style.StyleGuide;
 
     public class Slider extends BlockSprite
@@ -71,27 +69,14 @@ package org.mysociety.display.ui
             super(w, h, color);
         }
         
-        protected var trackTween:TweenLite;
         protected function onTrackClick(event:MouseEvent):void
         {
-            if (trackTween) TweenLite.removeTween(trackTween);
-            
-            if (trackTweenDuration > 0)
-            {
-                var clickValue:Number = MathUtils.map(mouseX, dragRect.left, dragRect.right, min, max);
-                trackTween = TweenLite.to(this, trackTweenDuration, {value: clickValue});
-            }
-            else
-            {
-                thumb.x = MathUtils.bound(mouseX, dragRect.left, dragRect.right);
-                update(event);
-            }
+            thumb.x = MathUtils.bound(mouseX, dragRect.left, dragRect.right);
+            update(event);
         }
         
         protected function onThumbDown(event:MouseEvent):void
         {
-            if (trackTween) TweenLite.removeTween(trackTween);
-            
             thumb.startDrag(true, dragRect);
             stage.addEventListener(MouseEvent.MOUSE_MOVE, update);
             stage.addEventListener(MouseEvent.MOUSE_UP, stopDragging);
