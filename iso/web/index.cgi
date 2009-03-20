@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.3 2009-03-04 18:20:04 matthew Exp $
+# $Id: index.cgi,v 1.4 2009-03-20 14:31:54 francis Exp $
 #
 
 import sys
@@ -14,10 +14,16 @@ sys.path.append("../../pylib")
 import fcgi, cgi
 
 import mysociety.config
+import mysociety.mapit
 mysociety.config.set_file("../conf/general")
 
 def lookup(pc):
-    out = '<p>You entered %s.</p>' % cgi.escape(pc, True)
+    f = mysociety.mapit.get_location(pc)
+    E = int(f['easting'])
+    N = int(f['northing'])
+
+    out = '<p>You entered %s, %dE %dN.</p>' % (cgi.escape(pc, True), E, N)
+
     return out
     
 def front_page():
