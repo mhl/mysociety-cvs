@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.2 2009-03-20 04:32:30 francis Exp $
+-- $Id: schema.sql,v 1.3 2009-03-20 23:40:50 migurski Exp $
 --
 
 -- A random secret.
@@ -41,19 +41,25 @@ create table map (
     target_easting double precision not null,
     target_northing double precision not null
 
-    nptdr_files not null,
+ -- nptdr_files not null,
 );
 
 -- For each map
+drop table place_time;
+
 create table place_time (
     map_id integer not null references map(id),
 
-    minutes_to_target integer not null
+    minutes_to_target integer not null,
+    minimum_zoom integer default 0
 );
 -- SRID 27700 = OSGB 1936 / British National Grid
-select AddGeometryColumn('', 'place_time','position',27700,'POINT',2);
+select AddGeometryColumn('', 'place_time', 'position_osgb', 27700, 'POINT', 2);
+-- SRID 900913 = Spherical mercator
+select AddGeometryColumn('', 'place_time', 'position_merc', 900913, 'POINT', 2);
 -- create index problem_state_easting_northing_idx on problem(state, easting, northing);
--- CREATE INDEX [indexname] ON [tablename] USING GIST ( [geometrycolumn] );
+CREATE INDEX place_time_position_osgb ON place_time USING GIST (position_osgb);
+CREATE INDEX place_time_position_merc ON place_time USING GIST (position_merc);
 
 
 -- SELECT * FROM geotable WHERE ST_DWithin(geocolumn, 'POINT(1000 1000)', 100.0);
@@ -63,8 +69,3 @@ select AddGeometryColumn('', 'place_time','position',27700,'POINT',2);
 -- col=# select *, AsText(position), AsText(ST_Transform(position, 4326)) from place_time;
 -- col=# select AsText(ST_Transform(ST_SetSRID(GeomFromText('POINT(-1.78103 51.09168)'), 4326) , 27700));
 -- http://www.nabble.com/SRID-tranformations-(OSGB-1936)-td20096957.html
-
-
-
-
-
