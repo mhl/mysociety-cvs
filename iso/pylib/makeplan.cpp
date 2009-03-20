@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.32 2009-03-20 18:19:11 francis Exp $
+// $Id: makeplan.cpp,v 1.33 2009-03-20 19:08:41 francis Exp $
 //
 
 // Usage:
@@ -487,6 +487,7 @@ class PlanningATCO {
                           + (northing - location.northing)*(northing - location.northing);
 
             if (dist_sq < best_dist_so_far_sq || best_dist_so_far_sq < 0) {
+                log(boost::format("find_nearest_station_to_point: %s (%d,%d) is sqdist %f away from grid %d,%d") % location.text_id % easting % northing % dist_sq % easting % northing);
                 best_dist_so_far_sq = dist_sq;
                 best_location_id = location_id;
             }
@@ -953,6 +954,8 @@ int main(int argc, char * argv[]) {
     } else {
         target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
     }
+    Location *target_location = &atco.locations[target_location_id];
+    fprintf(stderr, "target location: %s\n", target_location->text_id.c_str());
 
     // Work out what to do with output
     PlanningATCO::ResultFunctionPointer result_function_pointer;
