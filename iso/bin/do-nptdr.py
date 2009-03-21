@@ -42,10 +42,10 @@ public transport. Reads ATCO-CIF timetable files. Outputs a PNG file.
 
 Commands:
     slowplan - create map using pure Python code
-    stats - dump statistics about files
-    midnight - output journeys that cross midnight
     fastcalc - output fast data structure for C++ code
     fastplan - as fast, but also calls out to the quick planning C++ code
+    stats - dump statistics about files
+    midnight - output journeys that cross midnight
 Default is to run "slowplan".
 
 Parameters:
@@ -106,7 +106,7 @@ if len(args) > 1:
 if len(args) == 0:
     args = ['slowplan']
 command = args[0]
-if command not in ['slowplan', 'stats', 'midnight', 'fastcalc', 'fastplan']:
+if command not in ['slowplan', 'fastcalc', 'fastplan', 'stats', 'midnight']:
     raise Exception, 'Unknown command'
 
 # Required parameters
@@ -220,22 +220,6 @@ def ready_atco(atco):
 ###############################################################################
 # Commands
 
-# Show journeys crossing midnight
-def midnight():
-    atco = makeplan.PlanningATCO()
-    ready_atco(atco)
-    atco.read_files(nptdr_files)
-    atco.print_journeys_crossing_midnight()
-
-# Show information about the files
-def statistics():
-    atco = makeplan.PlanningATCO()
-    ready_atco(atco)
-    atco.show_progress = True
-    atco.read_files(nptdr_files)
-    atco.precompute_for_dijkstra(walk_speed=options.walk_speed, walk_time=options.walk_time)
-    print atco.statistics()
-
 # Run Dijkstra's algorithm in Python
 def python_plan():
     # Load in journey tables
@@ -293,10 +277,29 @@ def fast_plan():
     run_cmd("%s %s %s %d %s %d %d %d" % (options.makeplan_bin, fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute, E, N))
     do_external_contours()
 
+# Show journeys crossing midnight
+def midnight():
+    atco = makeplan.PlanningATCO()
+    ready_atco(atco)
+    atco.read_files(nptdr_files)
+    atco.print_journeys_crossing_midnight()
+
+# Show information about the files
+def statistics():
+    atco = makeplan.PlanningATCO()
+    ready_atco(atco)
+    atco.show_progress = True
+    atco.read_files(nptdr_files)
+    atco.precompute_for_dijkstra(walk_speed=options.walk_speed, walk_time=options.walk_time)
+    print atco.statistics()
+
+
 ###############################################################################
 # Main code
 
-if command == 'fastcalc':
+if command == 'slowplan':
+    python_plan()
+elif command == 'fastcalc':
     fast_calc()
 elif command == 'fastplan':
     fast_plan()
@@ -304,7 +307,5 @@ elif command == 'midnight':
     midnight()
 elif command == 'stats':
     statistics()
-elif command == 'slowplan':
-    python_plan()
    
 
