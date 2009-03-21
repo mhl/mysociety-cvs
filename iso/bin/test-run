@@ -16,12 +16,6 @@ cd ../
 OXFORD_CIFS="$OPTION_NPTDR_DATA/Timetable Data/CIF/Admin_Area_340/*.zip"
 TMP_OUTPUT=/tmp/iso-test-run-$RANDOM$RANDOM$RANDOM
 
-# check PostGIS does OSGB transform correctly
-
-#echo "select AsText(ST_Transform(ST_SetSRID(GeomFromText('POINT(-1.78103 51.09168)'), 4326) , 27700));" | psql --host $OPTION_COL_DB_HOST --port $OPTION_COL_DB_PORT -A -F " " $OPTION_COL_DB_NAME $OPTION_COL_DB_USER
-
-# http://www.nabble.com/SRID-tranformations-(OSGB-1936)-td20096957.html
-
 # test atcocif.py
 cd ../pylib/mysociety
 nosetests
