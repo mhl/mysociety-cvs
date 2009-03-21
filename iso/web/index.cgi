@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.16 2009-03-21 13:22:31 matthew Exp $
+# $Id: index.cgi,v 1.17 2009-03-21 13:23:33 matthew Exp $
 #
 
 import sha
@@ -19,6 +19,7 @@ import fcgi, cgi
 import mysociety.config
 import mysociety.mapit
 mysociety.config.set_file("../conf/general")
+from mysociety.rabx import RABXException
 
 refresh = False
 
