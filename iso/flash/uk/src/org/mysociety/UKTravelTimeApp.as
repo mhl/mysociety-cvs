@@ -1,5 +1,6 @@
 package org.mysociety
 {
+    import com.bitstream.fonts.*;
     import com.modestmaps.core.MapExtent;
     import com.modestmaps.extras.MapControls;
     import com.modestmaps.geo.Location;
@@ -22,8 +23,9 @@ package org.mysociety
     import flash.filters.BitmapFilterQuality;
     import flash.filters.DropShadowFilter;
     import flash.filters.GlowFilter;
-    import flash.geom.ColorTransform;
     import flash.geom.Rectangle;
+    import flash.text.Font;
+    import flash.text.FontType;
     import flash.text.TextField;
     import flash.text.TextFieldAutoSize;
     import flash.text.TextFormat;
@@ -36,11 +38,7 @@ package org.mysociety
 
     public class UKTravelTimeApp extends BlockSprite
     {
-        [Embed(systemFont="Helvetica Neue", mimeType="application/x-font",
-            fontName="Helvetica", fontWeight="bold",
-            unicodeRange='U+00A0,U+0020-U+007E,U+00C0-U+017E'
-        )]
-        public static const Helvetica:Class;
+        public static var font:Font = new VeraSansBold();
         
         public var map:ThresholdMaskMap;
         
@@ -208,13 +206,15 @@ package org.mysociety
             timePanel.addChild(timeSlider);
             
             timeField = new TextField();
-            timeField.defaultTextFormat = new TextFormat('Helvetica', 15, 0x000000, true);
-            timeField.embedFonts = true;
+            timeField.defaultTextFormat = new TextFormat(font ? font.fontName : '_sans', 14, 0x000000, true);
+            timeField.embedFonts = font && font.fontType == FontType.EMBEDDED;
             timeField.width = 200;
             timeField.x = -timeField.width / 2;
             timeField.autoSize = TextFieldAutoSize.CENTER;
             timeField.y = 13;
             timeField.selectable = false;
+            
+            // comment this line out and all should be good
             timeSlider.thumb.addChild(timeField);
             
             var invisible:Object = {left: -1000, top: -1000};
@@ -293,10 +293,15 @@ package org.mysociety
                 
                 var controlRect:Rectangle = rect.clone();
                 controlRect.left += 100;
-                
-                timeSlider.width = controlRect.width - 100;
-                timeSlider.x = controlRect.x + 50;
-                timeSlider.y = controlRect.y + 20;
+                controlRect.inflate(-20, -20);
+                // squeeze the rect in to provide room on the sides for the label
+                if (timeField && timeSlider.thumb.contains(timeField))
+                {
+                    controlRect.inflate(-30, 0);
+                }
+                timeSlider.width = controlRect.width;
+                timeSlider.x = controlRect.x;
+                timeSlider.y = controlRect.y;
                 
                 timeTicks.x = timeSlider.dragRect.x;
                 timeTicks.width = timeSlider.dragRect.width;
