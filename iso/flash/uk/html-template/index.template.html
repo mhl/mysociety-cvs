@@ -38,7 +38,9 @@
           // Pure black is inaccessible; just above that (RGB: 0x000001) is 254 minutes.
           'max_threshold':  1,
           'max_minutes':    254,
-          // The initial value of the time slider.
+          // The number of minutes to make available in the time slider.
+          'show_minutes':   90,
+          // The initial value of the time slider. (<= show_minutes)
           'initial_minutes': 15,
 
           // Minimum and Maximum map zoom levels.

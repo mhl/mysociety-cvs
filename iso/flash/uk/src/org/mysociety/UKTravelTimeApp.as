@@ -1,6 +1,6 @@
 package org.mysociety
 {
-    import com.bitstream.fonts.*;
+    import com.bitstream.fonts.VeraSansBold;
     import com.modestmaps.core.MapExtent;
     import com.modestmaps.extras.MapControls;
     import com.modestmaps.geo.Location;
