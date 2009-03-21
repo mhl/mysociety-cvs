@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.15 2009-03-20 20:03:26 francis Exp $
+# $Id: index.cgi,v 1.16 2009-03-21 13:22:31 matthew Exp $
 #
 
 import sha
@@ -23,7 +23,13 @@ mysociety.config.set_file("../conf/general")
 refresh = False
 
 def lookup(pc):
-    f = mysociety.mapit.get_location(pc)
+    try:
+        f = mysociety.mapit.get_location(pc)
+    except RABXException, e:
+        return template('index', {
+            'error': e
+        })
+
     E = int(f['easting'])
     N = int(f['northing'])
     lat = f['wgs84_lat']
@@ -64,20 +70,16 @@ def test():
         'tile_id': tile_id
     })
 
-def front_page():
-    front = slurp_file('../templates/index.html')
-    return front
-
 def main(fs):
     if 'pc' in fs:
         return lookup(fs.getfirst('pc'))
     if 'map' in fs:
         return test()
-    return front_page()
+    return template('index')
 
 # Functions
 
-def template(name, vars):
+def template(name, vars={}):
     template = slurp_file('../templates/%s.html' % name)
     template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1))), True), template)
     template = re.sub('{{ ([a-z_]*)\|safe }}', lambda x: str(vars.get(x.group(1))), template)
