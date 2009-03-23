@@ -1,71 +1,34 @@
 //
-// makeplan.cpp:
-// Make maps of journey times from NPTDR public transport route data.
-// Reads input files from makefast.py.
+// makeplan.h:
+// Make timings for maps of journey times from NPTDR public transport route
+// data. Reads input files made by iso/pylib/makefast.py.
 //
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.cpp,v 1.33 2009-03-20 19:08:41 francis Exp $
+// $Id: makeplan.h,v 1.1 2009-03-23 09:30:08 francis Exp $
 //
 
-// Usage:
-// g++ -g makeplan.cpp -DDEBUG
-// ./a.out /home/francis/toobig/nptdr/gen/nptdr-B32QD-40000 540 9100BHAMSNH
-//
-
-// Optimisation ideas:
-//
-// Check using const in enough places
-// 
-// Use binary search to find latest time in a journey before a time
-// Sort the journeys at a location by time and binary slice them 
-//
-// Instead of returning all the direct connections, instead keep the connecting
-//   journeys in a sorted list, and find just the nearest one with a binary
-//   search. Then let the relaxed_heap do the work, rather than inserting
-//   into the adjacents structure.
-//
-// Find something better than relaxed_heap
+// XXX all code is inline in this header file because a) I've got too
+// used to scripting languages and b) we shouldn't be making a huge C++
+// program where anyone minds anyway.
 
 #include <set>
 #include <map>
 #include <vector>
 #include <list>
-#include <string>
 #include <cstdio>
 #include <fstream>
 
 #include <sys/time.h>
 #include <sys/resource.h>
 
-#if defined(OUTPUT_ROUTE_DETAILS) or defined(DEBUG)
-#include <boost/format.hpp>
-#endif
 #include <boost/foreach.hpp>
 #include <boost/pending/relaxed_heap.hpp>
 
-#include <stdio.h>
 #include <stdarg.h>
-#include <assert.h>
-#include <math.h>
 #include <time.h>
-
-/* Logging and debug assertions. Use assert for assertion that matter in release mode,
- * debug_assert for ones that can be stripped. */
-#ifdef DEBUG
-    void do_log(boost::basic_format<char, std::char_traits<char>, std::allocator<char> > &bf) {
-        puts(bf.str().c_str());
-    }
-    void do_log(const std::string& str) {
-        puts(str.c_str());
-    }
-    #define log(message) do_log(message);
-    #define debug_assert(thing) assert(thing);
-#else
-    #define log(message) while(0) { };
-    #define debug_assert(thing) while(0) { };
-#endif
+#include <math.h>
 
 typedef int Minutes; // after midnight (only needs to be a short, but it seems to make little performance difference which it is)
 #ifdef OUTPUT_ROUTE_DETAILS
@@ -214,22 +177,6 @@ struct LessValues
         return queue_values[x] > queue_values[y];
     }
 };
-
-/* Most similar to Python's Exception */
-class Exception : public std::exception
-{
-    std::string s;
-public:
-    Exception(std::string s_) : s("Exception: " + s_) { }
-    ~Exception() throw() { }
-    const char* what() const throw() { return s.c_str(); }
-};
-
-/* Error handling my_fread */
-void my_fread ( void * ptr, size_t size, size_t count, FILE * stream ) {
-    size_t ret = fread(ptr, size, count, stream);
-    assert(ret == count);
-}
 
 /* Loads and represents a set of ATCO-CIF files, and can generate large
 sets of quickest routes from them.
@@ -895,115 +842,5 @@ class PlanningATCO {
 #endif
 
 }; 
-
-/* Measures wall clock use 
- * XXX wanted crude memory measure here, but couldn't find an easy one to use */
-class PerformanceMonitor {
-    std::string name;
-    clock_t clock_before;
-
-    public:
-
-    PerformanceMonitor() {
-        reset();
-    }
-    
-    void reset() {
-        this->clock_before = clock();
-    }
-
-    void display(const std::string& desc) {
-        fprintf(stderr, "%s: ", desc.c_str());
-
-        clock_t clock_after = clock();
-        fprintf(stderr, "%f secs ", double(clock_after - this->clock_before) / double(CLOCKS_PER_SEC));
-        
-        fprintf(stderr, "\n");
-
-        this->reset();
-    }
-
-};
-
-int main(int argc, char * argv[]) {
-    if (argc < 4) {
-        fprintf(stderr, "makeplan.cpp:\n  fast index file prefix as first argument\n  output prefix as second\n  target arrival time in mins after midnight as third\n  target location as fourth earliest departure in mins after midnight to go back to\n  easting, northing to use to find destination if destination is 'coordinate'");
-        return 1;
-    }
-
-    std::string fastindexprefix = argv[1];
-    std::string outputprefix = argv[2];
-    Minutes target_minutes_after_midnight = atoi(argv[3]);
-    std::string target_location_text_id = argv[4]; // e.g. "9100BHAMSNH";
-    Minutes earliest_departure = atoi(argv[5]);
-    double easting = atoi(argv[6]);
-    double northing = atoi(argv[7]);
-
-    // Load timetables
-    PerformanceMonitor pm;
-    PlanningATCO atco;
-    atco.load_binary_timetable(fastindexprefix);
-    pm.display("loading timetables took");
-    atco.generate_proximity_index_fast();
-    pm.display("generating proximity index took");
-
-    // Find nearest place from grid reference
-    LocationID target_location_id;
-    if (target_location_text_id == "coordinate") {
-        target_location_id = atco.find_nearest_station_to_point(easting, northing);
-    } else {
-        target_location_id = atco.locations_by_text_id[target_location_text_id]; // 9100BHAMSNH
-    }
-    Location *target_location = &atco.locations[target_location_id];
-    fprintf(stderr, "target location: %s\n", target_location->text_id.c_str());
-
-    // Work out what to do with output
-    PlanningATCO::ResultFunctionPointer result_function_pointer;
-    if (outputprefix == "stream") {
-        result_function_pointer = &PlanningATCO::dijkstra_output_stream_stdout;
-    } else {
-        atco.settled.clear();
-#ifdef OUTPUT_ROUTE_DETAILS
-        atco.routes.clear();
-#endif
-        result_function_pointer = &PlanningATCO::dijkstra_output_store;
-    }
-
-    // Do route finding
-    atco.do_dijkstra(
-        result_function_pointer,
-        target_location_id, target_minutes_after_midnight,
-        earliest_departure
-    );
-    pm.display("route finding took");
-
-    if (outputprefix != "stream") {
-        // Output for grid
-        std::string grid_time_file = outputprefix + ".txt";
-        std::ofstream f;
-        f.open(grid_time_file.c_str());
-        BOOST_FOREACH(const SettledPair& p, atco.settled) {
-            const LocationID& l_id = p.first;
-            const Minutes& min = target_minutes_after_midnight - p.second;
-            int secs = min * 60;
-            Location *l = &atco.locations[l_id];
-            f << l->easting << " " << l->northing << " " << secs << "\n";
-        }
-        f.close();
-        pm.display("grid output took");
-
-#ifdef OUTPUT_ROUTE_DETAILS
-        // Output for human
-        std::string human_file = outputprefix + "-human.txt";
-        std::ofstream g;
-        g.open(human_file.c_str());
-        g << atco.pretty_print_routes(atco.settled, atco.routes);
-        g.close();
-        pm.display("human output took");
-#endif
-    }
-
-    return 0;
-};
 
 

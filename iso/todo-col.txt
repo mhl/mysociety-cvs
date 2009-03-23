@@ -7,8 +7,6 @@ Cope with some places having silly long coordinates:
 ATCO_NATIONAL_BUS.CIF:QBN13001528    4166200055150600ANNFIELD PLAIN          Annfield Plain          
 ATCO_NATIONAL_BUS.CIF:QBN13001517    4166200054746400LANCHESTER              Lanchester  
 
-Move code into separate cpplib place
-
 Worry about the places we've stripped because they don't have a location
 field in ATCO-CIF. Should we be loading their coordinates from NaPTAN?
 
@@ -17,6 +15,21 @@ Interchange times
 - possibly load QV records if needed to discriminate times
 - need another longer time for QVNAIR/12? (should we be including air at all?)
 - measures according to type of journey before, not pair of before/after
+
+Optimisation ideas
+------------------
+
+Check using const in enough places
+
+Use binary search to find latest time in a journey before a time
+Sort the journeys at a location by time and binary slice them 
+
+Instead of returning all the direct connections, instead keep the connecting
+journeys in a sorted list, and find just the nearest one with a binary
+search. Then let the relaxed_heap do the work, rather than inserting
+into the adjacents structure.
+
+Find something better than relaxed_heap
 
 
 Thomas CIF file

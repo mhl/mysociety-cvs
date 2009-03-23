@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.18 2009-03-21 15:58:53 matthew Exp $
+# $Id: index.cgi,v 1.19 2009-03-23 09:30:08 francis Exp $
 #
 
 import sha
@@ -50,7 +50,7 @@ def lookup(pc):
 
     # Call out to tile generation
     binarycache = os.path.join(tmpwork, "fastindex-oxford-2008-10-07")
-    cmd = "../pylib/makeplan %s %s 540 coordinate 0 %d %d" % (binarycache, file, E, N)
+    cmd = "../bin/fastplan %s %s 540 coordinate 0 %d %d" % (binarycache, file, E, N)
     ret = os.system(cmd)
     if ret != 0:
         raise Exception("index.cgi: Error code from command: " + cmd)
