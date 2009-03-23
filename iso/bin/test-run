@@ -26,13 +26,12 @@ cd ../tiles
 cd ..
 
 # compare C++ and Python planner on Oxford NPTDR data set
-cd pylib
+cd bin
 make all
-cd ../bin
 mkdir $TMP_OUTPUT
 # ... run C++ planner
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT fastcalc
-./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT --fastplanbin="../pylib/fastplan-with-route" fastplan
+./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT --fastplanbin="../bin/fastplan-with-route" fastplan
 # ... run Python planner
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT slowplan
 # don't compare the full routes (they can contain differences when two journeys
