@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.13 2009-03-20 18:19:11 francis Exp $
+# $Id: Makefile,v 1.14 2009-03-23 08:44:46 francis Exp $
 #
 
 CFLAGS = -Wall -O2 -fno-exceptions -fno-rtti
@@ -30,5 +30,5 @@ makeplan-profile: makeplan.cpp Makefile
 	$(CPP) $(CFLAGS_PROFILE) makeplan.cpp -o makeplan-profile
 
 clean:
-	rm -f makeplan core
+	rm -f makeplan makeplan-with-route makeplan-debug makeplan-profile core
 
