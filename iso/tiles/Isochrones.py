@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.18 2009-03-24 16:09:11 migurski Exp $
+$Id: Isochrones.py,v 1.19 2009-03-24 22:16:54 migurski Exp $
 """
 import os
 import sys
@@ -22,7 +22,6 @@ import Data
 class TileLayer(TileCache.Layer.MetaLayer):
 
     config_properties = [
-      {'name': 'timestep', 'description': 'Time step, in seconds, per level of gray.'},
       {'name': 'pgsql_hostname', 'description': 'PostGIS host name or IP.'},
       {'name': 'pgsql_port', 'description': 'PostGIS port.'},
       {'name': 'pgsql_database', 'description': 'PostGIS database name.'},
@@ -30,13 +29,12 @@ class TileLayer(TileCache.Layer.MetaLayer):
       {'name': 'pgsql_password', 'description': 'PostGIS password.'},
     ] + TileCache.Layer.MetaLayer.config_properties 
     
-    def __init__(self, name, timestep=60, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, **kwargs):
+    def __init__(self, name, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, **kwargs):
         """ call super.__init__, but also store the map_id from PATH_INFO
         """
         # the result set ID is the part of the path just before the layer name
         self.map_id = int(os.environ["PATH_INFO"].lstrip('/').split('/')[-5])
 
-        self.timestep = float(timestep)
         self.hostname = pgsql_hostname
         self.port = pgsql_port
         self.database = pgsql_database
@@ -58,7 +56,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
         points = Data.get_place_times(self.map_id, tile, db, log)
         
         # render a PIL image
-        image = draw_tile(points, tile, self.timestep, log)
+        image = draw_tile(points, tile, log)
 
         tile.data = img2str(image, self.extension)
 
@@ -81,7 +79,7 @@ class TileStub:
     def bounds(self):
         return self.xmin, self.ymin, self.xmax, self.ymax
 
-def draw_tile(points, tile, timestep, log):
+def draw_tile(points, tile, log):
     """ Render points to a single tile image
     """
     prep_start = time.time()
@@ -97,7 +95,7 @@ def draw_tile(points, tile, timestep, log):
     
     # create an array to hold travel times
     # note that here 0x00 = zero time; inversion for output image happens later
-    array = numpy.ones(tile.size(), numpy.int32) * timestep * 0xFF
+    array = numpy.ones(tile.size(), numpy.int32) * 0xFFFFFF
     
     # 1800 meters is a half hour of walking at 1m/s
     pixels_per_1800_meters = 1800 * Cone.pixels_per_kilometer(tile) / 1000
@@ -126,9 +124,6 @@ def draw_tile(points, tile, timestep, log):
         print >> log, '%.1fm point-pixels/sec,' % ((len(points) * station_cone.shape[0] * station_cone.shape[1]) / (points_time * 1000000)),
         print >> log, 'total: %.2fs' % (prep_time + cone_time + points_time)
         
-    # invert array and scale for timestep, so that 0xFF = zero time
-    array = 256 - (array / timestep)
-    
     # convert array to an image
     # we rotate the image to deal with row/col vs. x/y transposition in numpy and some other geometry oddness
     image = arr2img(array).transpose(PIL.Image.ROTATE_90)
@@ -188,7 +183,17 @@ def img2str(image, format):
     buffer.seek(0)
     return buffer.read()
 
-def arr2img(ar):
+def arr2img(arr):
     """ Convert numpy.array to PIL.Image.
     """
-    return PIL.Image.fromstring('L', (ar.shape[1], ar.shape[0]), ar.clip(0x00, 0xFF).astype(numpy.ubyte).tostring())
+    # convert to 32bit unsigned int
+    arr = arr.astype(numpy.uint32)
+    
+    # shift unsigned int from RGB to RGBA
+    arr = (arr << 8) | 0x000000FF
+
+    # account for byte order, this may be an issue
+    if arr.dtype.byteorder == '<' or (arr.dtype.byteorder == '=' and numpy.little_endian):
+        arr = arr.byteswap()
+
+    return PIL.Image.fromstring('RGBA', (arr.shape[1], arr.shape[0]), arr.tostring())
