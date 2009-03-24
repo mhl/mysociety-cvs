@@ -7,14 +7,14 @@ import pyproj
 import Cone
 
 try:
-    import psycopg as psycopgN
+    import psycopg2 as postgres
 except ImportError:
-    import psycopg2 as psycopgN
+    import pgdb as postgres
 
 def get_db_cursor(*args, **kwargs):
     """
     """
-    return psycopgN.connect(*args, **kwargs).cursor()
+    return postgres.connect(*args, **kwargs).cursor()
 
 def get_place_times(map_id, tile, db, log):
     """ Given a result ID, a tile, and a DB cursor, return data points for all the bits that intersect
