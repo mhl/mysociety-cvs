@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.21 2009-03-24 10:18:42 matthew Exp $
+# $Id: index.cgi,v 1.22 2009-03-24 10:47:33 matthew Exp $
 #
 
 import sha
@@ -21,7 +21,10 @@ import mysociety.mapit
 mysociety.config.set_file("../conf/general")
 from mysociety.rabx import RABXException
 
-refresh = False
+page_vars = {
+    'refresh': False,
+    'body_id': '',
+}
 
 def lookup(pc):
     try:
@@ -42,6 +45,8 @@ def lookup(pc):
     file = os.path.join(tmpwork, id)
     if os.path.exists(file + ".txt"):
         # We've got a generated file, let's show the map!
+        global page_vars
+        page_vars['body_id'] = 'map'
         return template('map', {
             'centre_lat': lat,
             'centre_lon': lon,
@@ -55,8 +60,8 @@ def lookup(pc):
     if ret != 0:
         raise Exception("index.cgi: Error code from command: " + cmd)
 
-    global refresh
-    refresh = True
+    global page_vars
+    page_vars['refresh'] = True
     return template('map-pleasewait', {
         'postcode': pc
     })
@@ -107,7 +112,8 @@ while fcgi.isFCGI():
         content = main(fs)
         header = template('header', {
             'postcode': fs.getfirst('pc', ''),
-            'refresh': refresh and '<meta http-equiv="refresh" content="5">' or '',
+            'refresh': page_vars['refresh'] and '<meta http-equiv="refresh" content="5">' or '',
+            'body_id': page_vars['body_id'] and ' id="%s"' % body_id or '',
         })
         req.out.write(header + content + footer)
 
