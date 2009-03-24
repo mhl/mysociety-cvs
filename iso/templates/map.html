@@ -24,6 +24,8 @@
           // Pure black is inaccessible; just above that (RGB: 0x000001) is 254 minutes.
           'max_threshold':  1,
           'max_minutes':    254,
+	  // The number of minutes to make available in the time slider.
+	  'show_minutes':   90,
           // The initial value of the time slider.
           'initial_minutes': 30,
 
@@ -45,8 +47,8 @@
         var attributes = {
         };
 
-        swfobject.embedSWF('20090320-1400.swf', 'swf', '500px', '400px', '9.0.0', null,
+        swfobject.embedSWF('20090320-1400.swf', 'swf', '100%', '80%', '9.0.0', null,
                            flashvars, params, attributes);
 
       //--></script>
-    </div>
+</div>

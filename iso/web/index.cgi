@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.19 2009-03-23 09:30:08 francis Exp $
+# $Id: index.cgi,v 1.20 2009-03-24 10:17:12 matthew Exp $
 #
 
 import sha
@@ -103,7 +103,7 @@ while fcgi.isFCGI():
             req.Finish()
             continue
 
-        footer = slurp_file('../templates/footer.html')
+        footer = tempate('footer')
         content = main(fs)
         header = template('header', {
             'postcode': fs.getfirst('pc', ''),
