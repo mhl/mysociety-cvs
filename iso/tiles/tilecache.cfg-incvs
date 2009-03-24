@@ -1,0 +1,30 @@
+# TileCache configuration for travel time isochrone tiles.
+# 
+# Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+# Email: mike@stamen.com; WWW: http://www.mysociety.org/
+# 
+# $Id: tilecache.cfg-incvs,v 1.1 2009-03-24 12:46:47 francis Exp $
+
+[cache]
+type=Disk
+base=/tmp/tilecache
+
+# Memcached:
+# [cache]
+# type=Memcached  (you'll need memcache.py and memcached running!)
+# servers=192.168.1.1:11211
+
+[iso]
+module=Isochrones
+type=TileLayer
+spherical_mercator=true
+tms_type=google
+metaTile=false
+metaBuffer=256
+metaSize=2,2
+
+timestep=60
+pgsql_hostname=geo.stamen
+pgsql_database=mysociety_iso
+pgsql_username=mysociety
+pgsql_password=
