@@ -3,11 +3,12 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: mike@stamen.com; WWW: http://www.mysociety.org/
 # 
-# $Id: tilecache.cfg-incvs,v 1.1 2009-03-24 12:46:47 francis Exp $
+# $Id: tilecache.cfg-incvs,v 1.2 2009-03-24 13:06:57 francis Exp $
 
 [cache]
 type=Disk
-base=/tmp/tilecache
+# leave this example alone in -incvs file, bin/generate-config replaces it
+base=/tmp/tilecache 
 
 # Memcached:
 # [cache]
@@ -24,7 +25,10 @@ metaBuffer=256
 metaSize=2,2
 
 timestep=60
-pgsql_hostname=geo.stamen
-pgsql_database=mysociety_iso
-pgsql_username=mysociety
-pgsql_password=
+# leave these examples with values like that in the -incvs, as
+# bin/generate-config replace them
+pgsql_hostname=HOSTNAME
+pgsql_port=PORT
+pgsql_database=DATABASE
+pgsql_username=USERNAME
+pgsql_password=PASSWORD

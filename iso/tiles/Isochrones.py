@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.16 2009-03-24 12:38:06 francis Exp $
+$Id: Isochrones.py,v 1.17 2009-03-24 13:06:57 francis Exp $
 """
 import os
 import sys
@@ -24,12 +24,13 @@ class TileLayer(TileCache.Layer.MetaLayer):
     config_properties = [
       {'name': 'timestep', 'description': 'Time step, in seconds, per level of gray.'},
       {'name': 'pgsql_hostname', 'description': 'PostGIS host name or IP.'},
+      {'name': 'pgsql_port', 'description': 'PostGIS port.'},
       {'name': 'pgsql_database', 'description': 'PostGIS database name.'},
       {'name': 'pgsql_username', 'description': 'PostGIS username.'},
       {'name': 'pgsql_password', 'description': 'PostGIS password.'},
     ] + TileCache.Layer.MetaLayer.config_properties 
     
-    def __init__(self, name, timestep=60, pgsql_hostname=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, **kwargs):
+    def __init__(self, name, timestep=60, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, **kwargs):
         """ call super.__init__, but also store the map_id from PATH_INFO
         """
         # the result set ID is the part of the path just before the layer name
@@ -37,6 +38,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
 
         self.timestep = float(timestep)
         self.hostname = pgsql_hostname
+        self.port = pgsql_port
         self.database = pgsql_database
         self.username = pgsql_username
         self.password = pgsql_password
@@ -52,7 +54,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
         log = False #open(os.path.dirname(__file__)+'/log.txt', 'a')
         
         # grab points data
-        db = Data.get_db_cursor(database=self.database, host=self.hostname, user=self.username, password=self.password)
+        db = Data.get_db_cursor(database=self.database, port=self.port, host=self.hostname, user=self.username, password=self.password)
         points = Data.get_place_times(self.map_id, tile, db, log)
         
         # render a PIL image
