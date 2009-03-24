@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.15 2009-03-24 00:39:03 migurski Exp $
+$Id: Isochrones.py,v 1.16 2009-03-24 12:38:06 francis Exp $
 """
 import os
 import sys
@@ -33,7 +33,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
         """ call super.__init__, but also store the map_id from PATH_INFO
         """
         # the result set ID is the part of the path just before the layer name
-        self.map_id = int(os.environ["REQUEST_URI"].lstrip('/').split('/')[-5])
+        self.map_id = os.environ["PATH_INFO"].lstrip('/').split('/')[-5]
 
         self.timestep = float(timestep)
         self.hostname = pgsql_hostname

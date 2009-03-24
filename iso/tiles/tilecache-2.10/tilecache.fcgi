@@ -1,4 +1,11 @@
 #!/usr/bin/python
+
+# Changes to work on pudding. Isochrones.py/Cones.py are level up,
+# and pyproj is currently manually compiled. XXX
+import sys
+
+sys.path.extend(('../../../pylib', '..', '/home/matthew/lib/python'))
+
 from TileCache.Service import wsgiApp
 
 if __name__ == '__main__':

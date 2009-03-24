@@ -277,7 +277,6 @@ def wsgiHandler (environ, start_response, service):
     try:
         path_info = host = ""
 
-
         if "PATH_INFO" in environ: 
             path_info = environ["PATH_INFO"]
 
