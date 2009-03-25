@@ -4,13 +4,30 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.3 2009-03-20 23:40:50 migurski Exp $
+-- $Id: schema.sql,v 1.4 2009-03-25 00:29:41 migurski Exp $
 --
 
 -- A random secret.
 create table secret (
     secret text not null
 );
+
+-- Every station
+DROP TABLE stations;
+
+CREATE TABLE stations (
+    easting_osgb    REAL NOT NULL,
+    northing_osgb   REAL NOT NULL,
+    
+    connectedness   INTEGER NOT NULL,
+    minimum_zoom    INTEGER DEFAULT 0,
+    
+    PRIMARY KEY (easting_osgb, northing_osgb)
+);
+
+-- SRID 900913 = Spherical mercator
+SELECT AddGeometryColumn('', 'stations', 'position_merc', 900913, 'POINT', 2);
+CREATE INDEX stations_position_merc ON stations USING GIST (position_merc);
 
 -- Represents a map made by the user
 create table map (

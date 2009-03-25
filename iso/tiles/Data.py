@@ -39,13 +39,14 @@ def get_place_times(map_id, tile, db, log):
     db.execute("""SELECT X(position_merc), Y(position_merc), minutes_to_target
                   FROM place_time
                   WHERE map_id = %d
+                    AND minimum_zoom <= %d
                     AND Within(position_merc, SetSRID(MakeBox2D(MakePoint(%d, %d), MakePoint(%d, %d)), 900913))""" \
-                % (map_id, xmin, ymin, xmax, ymax))
+                % (map_id, tile.z, xmin, ymin, xmax, ymax))
 
     place_times = db.fetchall()
 
     if log:
-        print >> log, len(place_times), 'place-times within (%d, %d ... %d, %d)' % (xmin, ymin, xmax, ymax)
+        print >> log, len(place_times), 'place-times within (%d, %d ... %d, %d) at zoom %d' % (xmin, ymin, xmax, ymax, tile.z)
     
     return place_times
 
