@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.3 2009-03-24 17:43:32 francis Exp $
+// $Id: fastplan.cpp,v 1.4 2009-03-25 12:05:24 francis Exp $
 //
 
 // Usage:

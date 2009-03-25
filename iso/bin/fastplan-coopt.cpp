@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.1 2009-03-24 17:20:00 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.2 2009-03-25 12:05:24 francis Exp $
 //
 
 #include <math.h> // something weird in /usr/include/bits/mathcalls.h means this must be included from top level file
@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
     std::string fastindexprefix = argv[1];
 
     // Load timetables
-    PerformanceMonitor pm;
+    PerformanceMonitor pm(stdout); // output everything to stdout except errors, so easier for Python script
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
     atco.generate_proximity_index_fast();
@@ -55,7 +55,7 @@ int main(int argc, char * argv[]) {
             LocationID target_location_id;
             target_location_id = atco.find_nearest_station_to_point(easting, northing);
             Location *target_location = &atco.locations[target_location_id];
-            fprintf(stderr, "target location: %s\n", target_location->text_id.c_str());
+            fprintf(stdout, "target location: %s\n", target_location->text_id.c_str());
 
             // Do route finding
             atco.do_dijkstra(
