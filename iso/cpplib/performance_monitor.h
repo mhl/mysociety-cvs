@@ -5,7 +5,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: performance_monitor.h,v 1.1 2009-03-23 09:30:08 francis Exp $
+// $Id: performance_monitor.h,v 1.2 2009-03-25 12:06:29 francis Exp $
 //
 
 /* Measures wall clock use 
@@ -13,10 +13,11 @@
 class PerformanceMonitor {
     std::string name;
     clock_t clock_before;
+    FILE *out;
 
     public:
 
-    PerformanceMonitor() {
+    PerformanceMonitor(FILE *l_out = stderr) : out(l_out) {
         reset();
     }
     
@@ -25,12 +26,12 @@ class PerformanceMonitor {
     }
 
     void display(const std::string& desc) {
-        fprintf(stderr, "%s: ", desc.c_str());
+        fprintf(this->out, "%s: ", desc.c_str());
 
         clock_t clock_after = clock();
-        fprintf(stderr, "%f secs ", double(clock_after - this->clock_before) / double(CLOCKS_PER_SEC));
+        fprintf(this->out, "%f secs ", double(clock_after - this->clock_before) / double(CLOCKS_PER_SEC));
         
-        fprintf(stderr, "\n");
+        fprintf(this->out, "\n");
 
         this->reset();
     }
