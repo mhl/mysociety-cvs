@@ -4,25 +4,37 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.3 2009-03-25 12:09:59 francis Exp $
+-- $Id: schema.sql,v 1.4 2009-03-25 12:25:20 francis Exp $
 --
 
--- A random secret.
-create table secret (
-    secret text not null
-);
+-- Separately from this Schema, you need to set up PostGIS in 
+-- the database. You must do the following, as the postgres database
+-- user for the permission needed.
+
+-- Enable scripting:
+-- CREATE FUNCTION plpgsql_call_handler()
+--         RETURNS OPAQUE AS '$libdir/plpgsql' LANGUAGE 'C';
+-- CREATE TRUSTED PROCEDURAL LANGUAGE 'plpgsql' HANDLER plpgsql_call_handler
+--     LANCOMPILER 'PL/pgSQL';
+
+-- Creating geometry_columns and spatial_ref_sys tables and populating them:
+-- /usr/share/postgresql-8.3-postgis/lwpostgis.sql
+-- /usr/share/postgresql-8.3-postgis/spatial_ref_sys.sql
+
+-- The following must all be done also as the postgres database user,
+-- because the geometry_columns can't be modified otherwise.
 
 -- Every station
 create table station (
-    easting_osgb    real not null,
-    northing_osgb   real not null,
-    
+    id serial not null primary key,
+    text_id text not null, -- identifier from NPTDR
+
     connectedness   integer not null,
-    minimum_zoom    integer default 0,
-    
-    primary key (easting_osgb, northing_osgb)
+    minimum_zoom    integer default 0
 );
 
+-- SRID 27700 = OSGB 1936 / British National Grid
+select AddGeometryColumn('', 'station', 'position_osgb', 27700, 'POINT', 2);
 -- SRID 900913 = Spherical mercator
 select AddGeometryColumn('', 'station', 'position_merc', 900913, 'POINT', 2);
 create index station_position_merc on station using GIST (position_merc);
@@ -31,9 +43,6 @@ create index station_position_merc on station using GIST (position_merc);
 create table map (
     id serial not null primary key,
     created timestamp not null default now(),
-
-    -- unique identifier used in URLs - hash of input vars
-    url_name text not null, 
 
     -- workflow 
     state text not null check (
@@ -56,7 +65,7 @@ create table map (
     target_easting double precision not null,
     target_northing double precision not null
 
- -- nptdr_files not null,
+--  target_station integer not null references station(id)
 );
 
 -- For each map
