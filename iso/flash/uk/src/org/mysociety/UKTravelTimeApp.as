@@ -8,7 +8,6 @@ package org.mysociety
     import com.quasimondo.geom.ColorMatrix;
     import com.stamen.graphics.color.RGB;
     import com.stamen.ui.BlockSprite;
-    import com.stamen.utils.MathUtils;
     import com.stamen.utils.StringUtils;
     
     import flash.display.BlendMode;
@@ -20,9 +19,11 @@ package org.mysociety
     import flash.display.StageAlign;
     import flash.display.StageScaleMode;
     import flash.events.Event;
+    import flash.events.KeyboardEvent;
     import flash.filters.BitmapFilterQuality;
     import flash.filters.DropShadowFilter;
     import flash.filters.GlowFilter;
+    import flash.geom.ColorTransform;
     import flash.geom.Rectangle;
     import flash.text.Font;
     import flash.text.FontType;
@@ -42,11 +43,11 @@ package org.mysociety
         
         public var map:ThresholdMaskMap;
         
-        protected var minThreshold:uint = 255;
-        protected var maxThreshold:uint = 1;
-        protected var minMinutes:uint = 1;
-        protected var maxMinutes:uint = 255;
-        protected var showMinutes:uint = 90;
+        protected var minThreshold:uint = 0;
+        protected var maxThreshold:uint = 0xFFFFFF;
+        protected var minMinutes:uint = 0;
+        protected var maxMinutes:uint = 0xFFFFFF;
+        protected var showMinutes:uint = 360;
         protected var initialMinutes:uint = 0;
         
         protected var isoTileBase:String;
@@ -66,6 +67,8 @@ package org.mysociety
         protected var minMapZoom:int = 6;
         protected var maxMapZoom:int = 12;
 
+        protected var toggleGlowFilter:GlowFilter = new GlowFilter(0x000000, .2, 3, 3, 2, BitmapFilterQuality.LOW);
+        
         protected var timePanel:BlockSprite;
         protected var timeSlider:Slider;
         protected var timeField:TextField;
@@ -91,7 +94,18 @@ package org.mysociety
                 stage.scaleMode = StageScaleMode.NO_SCALE;
                 
                 stage.addEventListener(Event.RESIZE, onStageResize);
+                stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
                 onStageResize(null);
+            }
+        }
+        
+        protected function onKeyUp(event:KeyboardEvent):void
+        {
+            switch (String.fromCharCode(event.charCode))
+            {
+                case 'O':
+                    map.outlineFilter = map.outlineFilter ? null : toggleGlowFilter;
+                    break;
             }
         }
         
@@ -155,16 +169,16 @@ package org.mysociety
         
         protected function createChildren():void
         {
-            map = new ThresholdMaskMap(100, 100, true, new CloudMadeProvider(cloudmadeAPIKey, CloudMadeProvider.FRESH));
-            map.minThreshold = minThreshold;
+            map = new ThresholdMaskMap(100, 100, true, new CloudMadeProvider(cloudmadeAPIKey, CloudMadeProvider.PALE_DAWN));
 
             var m:ColorMatrix = new ColorMatrix();
             // m.invert();
             m.adjustSaturation(0);
-            m.adjustBrightness(-32);
+            m.adjustBrightness(-64);
             map.maskedFilter = m.filter;
-            map.outlineColorTransform = null; // new ColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
-            map.outlineFilter = new GlowFilter(0x000000, 1, 3, 3, 2, BitmapFilterQuality.LOW);
+
+            map.outlineColorTransform = null; new ColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
+            map.outlineFilter = null; // toggleGlowFilter;
             map.outlineBlendMode = BlendMode.DARKEN;
             addChild(map);
             
@@ -270,8 +284,21 @@ package org.mysociety
         protected function onSliderChange(event:Event):void
         {
             var minutes:uint = timeSlider.value;
-            map.minThreshold = MathUtils.map(minutes, minMinutes, maxMinutes, minThreshold, maxThreshold);
-            timeField.text = minutes + StringUtils.pluralize(minutes, ' minute');
+            map.minThreshold = minutes * 60;
+            if (minutes < 60)
+            {
+                timeField.text = minutes + StringUtils.pluralize(minutes, ' minute');
+            }
+            else
+            {
+                var hours:int = minutes / 60;
+                minutes %= 60;
+                timeField.text = hours + StringUtils.pluralize(hours, ' hour');
+                if (minutes > 0)
+                {
+                    timeField.appendText(', ' + minutes + StringUtils.pluralize(minutes, ' minute'));
+                }
+            }
             // trace('threshold:', map.minThreshold);
         }
         
@@ -297,7 +324,9 @@ package org.mysociety
                 // squeeze the rect in to provide room on the sides for the label
                 if (timeField && timeSlider.thumb.contains(timeField))
                 {
-                    controlRect.inflate(-30, 0);
+                    controlRect.left += 30;
+                    controlRect.right -= 80;
+                    // controlRect.inflate(-80, 0);
                 }
                 timeSlider.width = controlRect.width;
                 timeSlider.x = controlRect.x;

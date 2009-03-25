@@ -19,18 +19,16 @@ package org.mysociety.display
     import flash.geom.Matrix;
     import flash.geom.Point;
     import flash.geom.Rectangle;
+    import flash.utils.getTimer;
     
     import org.mysociety.map.providers.ThresholdMaskProvider;
 
     public class ThresholdMaskMap extends BlockSprite
     {
-        // only pay attention to the blue channel of the mask map
-        public var thresholdMask:uint = 0x000000FF;
+        // pay attention to the whole RGB gamut
+        public var thresholdMask:uint = 0x00FFFFFF;
         public var maskedFilter:ColorMatrixFilter;
         public var markerClip:MarkerClip;
-        
-        // blur the masked map with this
-        public var maskedBlur:BitmapFilter; // = new BlurFilter(2, 2, BitmapFilterQuality.MEDIUM);
         
         // blur the threshold edge with this
         public var thresholdBlur:BitmapFilter; // = new BlurFilter(7, 7, BitmapFilterQuality.MEDIUM);
@@ -51,7 +49,7 @@ package org.mysociety.display
         protected var rasterized:Bitmap;
         
         protected var absMinThreshold:uint = 0;
-        protected var absMaxThreshold:uint = 255;
+        protected var absMaxThreshold:uint = 0xFFFFFF;
         
         protected var _minThreshold:uint = absMinThreshold;
         
@@ -69,8 +67,8 @@ package org.mysociety.display
 
             _maskMap = new BitmapCacheMap(width, height, false, new ThresholdMaskProvider(thresholdBaseURL));
             _maskMap.name = 'mask';
-            _maskMap.backgroundColor = 0x000000;
-            _maskMap.grid.setTileClass(NullTile);
+            //_maskMap.backgroundColor = 0x000000;
+            //_maskMap.grid.setTileClass(NullTile);
             _maskMap.grid.addEventListener(ProgressEvent.PROGRESS, onMapRendered);
             _maskMap.mouseEnabled = _maskMap.mouseChildren = false;
             addChild(_maskMap);
@@ -166,7 +164,7 @@ package org.mysociety.display
         protected var numRasters:int = 0;
         protected var p:Point = new Point();
         protected var whiteFill:uint = BitmapCacheMap.WHITE;
-        protected var whiteMask:uint = BitmapCacheMap.MASK_RGB;
+        protected var whiteMask:uint = BitmapCacheMap.MASK_ARGB;
         
         protected function rasterize(event:Event=null, resizing:Boolean=false):void
         {
@@ -174,12 +172,13 @@ package org.mysociety.display
             // first, grab the bitmap of the display map
             var bmp:BitmapData = rasterized.bitmapData = _displayMap.cache.clone();
             
+            bmp.copyChannel(_maskMap.cache, bmp.rect, p, BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
+            
             // then clone it; this is what we're going to mask with the threshold operation 
             var result:BitmapData = bmp.clone();
 
             // apply the maskedFilter to the display map, turning it into the darker version 
             if (maskedFilter) bmp.applyFilter(bmp, bmp.rect, p, maskedFilter);
-            if (maskedBlur) bmp.applyFilter(bmp, bmp.rect, p, maskedBlur);
             
             // then create a pure white bitmap. this is used to create a new alpha channel
             var white:BitmapData = new BitmapData(bmp.width, bmp.height, true, BitmapCacheMap.BLACK);
@@ -187,9 +186,11 @@ package org.mysociety.display
             // then threshold the result bitmap using the mask as the source
             if (minThreshold > 0)
             {
-                white.threshold(_maskMap.cache, bmp.rect, p, '>=', minThreshold, whiteFill, thresholdMask, false);
+                // trace('minThreshold:', minThreshold);
+                white.threshold(_maskMap.cache, bmp.rect, p, '<=', minThreshold, whiteFill, BitmapCacheMap.MASK_RGB, false);
             }
 
+            var t:int = getTimer();
             var boundColor:uint = whiteFill & whiteMask;
             var rect:Rectangle = resizing
                                  ? null
@@ -203,26 +204,21 @@ package org.mysociety.display
                 // finally, draw the result (the masked display map) onto the darker version
                 bmp.draw(result);
 
-                /*    
-                var wm:Matrix = new Matrix();
-                wm.scale(.1, .1);
-                wm.translate(white.width * .9, 0);
-                bmp.draw(white, wm, new ColorTransform(1, 1, 1, .5));
-                */
-                            
                 if (outlineFilter)
                 {
-                    rect.inflate(1, 1);
+                    if (rect) rect.inflate(1, 1);
 
                     white.copyChannel(white, white.rect, p, BitmapDataChannel.BLUE, BitmapDataChannel.ALPHA);
 
                     var m:Matrix = new Matrix();
-                    m.translate(rect.x, rect.y);
+                    if (rect) m.translate(rect.x, rect.y);
                     if (outlineColorTransform) white.colorTransform(white.rect, outlineColorTransform);
-                    white.applyFilter(white, rect, p, outlineFilter);
+                    white.applyFilter(white, rect || white.rect, p, outlineFilter);
                     bmp.draw(white, m, null, outlineBlendMode);
                 }
             }
+            trace('[took', getTimer() - t, 'ms]');
+
             white.dispose();
             result.dispose();
             

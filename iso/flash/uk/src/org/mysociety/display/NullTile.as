@@ -9,7 +9,7 @@ package org.mysociety.display
             super(column, row, zoom);
 
             graphics.clear();
-            graphics.beginFill(0x000000);
+            graphics.beginFill(0xFFFFFF);
             graphics.drawRect(0, 0, 256, 256);
             graphics.endFill();
         }

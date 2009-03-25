@@ -7,6 +7,7 @@ package org.mysociety.display
     
     import flash.display.BitmapData;
     import flash.events.Event;
+    import flash.geom.ColorTransform;
 
     public class BitmapCacheMap extends Map
     {
@@ -17,6 +18,8 @@ package org.mysociety.display
         public static const MASK_RGB:uint = 0x00FFFFFF;
         public static const MASK_ARGB:uint = 0xFFFFFFFF;
         public static const MASK_ALPHA:uint = 0xFF000000;
+        
+        public static const INVERT:ColorTransform = new ColorTransform(-1, -1, -1, 1, 255, 255, 255, 0);
 
         public var backgroundColor:uint = CLEAR;
         protected var _cache:BitmapData;

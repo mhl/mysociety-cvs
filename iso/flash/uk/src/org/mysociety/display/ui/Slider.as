@@ -39,6 +39,7 @@ package org.mysociety.display.ui
 
             track = new Sprite();
             track.buttonMode = true;
+            track.addEventListener(MouseEvent.MOUSE_DOWN, onThumbDown);
             track.addEventListener(MouseEvent.CLICK, onTrackClick);
             addChild(track);
             
@@ -80,7 +81,7 @@ package org.mysociety.display.ui
             thumb.startDrag(true, dragRect);
             stage.addEventListener(MouseEvent.MOUSE_MOVE, update);
             stage.addEventListener(MouseEvent.MOUSE_UP, stopDragging);
-            // stage.addEventListener(Event.MOUSE_LEAVE, stopDragging);
+            stage.addEventListener(Event.MOUSE_LEAVE, stopDragging);
         }
         
         protected function update(event:Event=null):void
@@ -100,7 +101,7 @@ package org.mysociety.display.ui
             thumb.stopDrag();
             stage.removeEventListener(MouseEvent.MOUSE_MOVE, update);
             stage.removeEventListener(MouseEvent.MOUSE_UP, stopDragging);
-            // stage.removeEventListener(Event.MOUSE_LEAVE, stopDragging);
+            stage.removeEventListener(Event.MOUSE_LEAVE, stopDragging);
         }
         
         public function get min():Number

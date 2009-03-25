@@ -20,8 +20,10 @@
 
           // Map center ('lat,lon') and zoom (int).
           // [this is Oxford]
-          'map_center':     '51.759865102943905,-1.2658309936523438',
-          'map_zoom':       11,
+          // 'map_center':     '51.759865102943905,-1.2658309936523438',
+          // [this is Bangor, Wales]
+          'map_center':     '53.2278085, -4.1340488',
+          'map_zoom':       8,
 
           // Geographical bounds of the map in 'N,S,E,W' format.
           // NOTE: center and zoom are ignored if an extent is provided.
@@ -31,24 +33,26 @@
            * These parameters control the mapping between RGB values in the iso tiles
            * and minutes of travel time. The minimums and maximums of each map to
            * each other directly.
+           *
+           * NOTE: This has changed slightly. RGB values now directly encode the number
+           * of minutes travel time.
            */
-          // White is 0 minutes.
-          'min_threshold':  255,
-          'min_minutes':    0,
-          // Pure black is inaccessible; just above that (RGB: 0x000001) is 254 minutes.
-          'max_threshold':  1,
-          'max_minutes':    254,
+          // Black is 0 minutes.
+          // 'min_threshold':  0,
+          // 'min_minutes':    0,
+          // 'max_threshold':  0xFFFFFF,
+          // 'max_minutes':    0xFFFFFF,
           // The number of minutes to make available in the time slider.
-          'show_minutes':   90,
+          'show_minutes':   60 * 12,
           // The initial value of the time slider. (<= show_minutes)
-          'initial_minutes': 15,
+          'initial_minutes': 60,
 
           // Minimum and Maximum map zoom levels.
           'min_zoom':       8,
           'max_zoom':       12,
 
           // Iso tile URL and format template.
-          'iso_tile_url_base':    'http://studio.stamen.com/mysociety/show/20090316/tiles/tilecache.cgi/foo/iso',
+          'iso_tile_url_base':    'http://studio.stamen.com/mysociety/show/20090324/tiles/tilecache.cgi/1/iso',
           // {Z}, {X}, and {Y} here are replaced by the tile coordinate zoom, column and row, respectively.
           'iso_tile_url_format':  '{Z}/{X}/{Y}.png'
         };
