@@ -1,4 +1,6 @@
 """
+Set the minimum_zoom for each station in the stations table based on proximity and connectedness.
+
 This script accepts a filename as an argument, which is assumed to be formatted:
     <easting OSGB> <northing OSGB> <connectedness>
     <easting OSGB> <northing OSGB> <connectedness>
@@ -9,6 +11,11 @@ This script accepts a filename as an argument, which is assumed to be formatted:
 
 Connectedness is a measure of how "major" a station is, and is meaningful only
 to the extent that a more-connected station should beat out a less-connected station.
+
+Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+Email: mike@stamen.com; WWW: http://www.mysociety.org/
+
+$Id: cull_stations.py,v 1.2 2009-03-25 00:44:59 migurski Exp $
 """
 import os
 import sys
