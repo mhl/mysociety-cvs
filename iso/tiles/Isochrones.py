@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.19 2009-03-24 22:16:54 migurski Exp $
+$Id: Isochrones.py,v 1.20 2009-03-25 18:34:36 migurski Exp $
 """
 import os
 import sys
@@ -30,10 +30,10 @@ class TileLayer(TileCache.Layer.MetaLayer):
     ] + TileCache.Layer.MetaLayer.config_properties 
     
     def __init__(self, name, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, **kwargs):
-        """ call super.__init__, but also store the map_id from PATH_INFO
+        """ call super.__init__, and store some other details
         """
-        # the result set ID is the part of the path just before the layer name
-        self.map_id = int(os.environ["PATH_INFO"].lstrip('/').split('/')[-5])
+        self.basename = name
+        self.map_id = None
 
         self.hostname = pgsql_hostname
         self.port = pgsql_port
@@ -41,15 +41,27 @@ class TileLayer(TileCache.Layer.MetaLayer):
         self.username = pgsql_username
         self.password = pgsql_password
 
-        # add id to name
-        name = name + str(self.map_id)
         TileCache.Layer.MetaLayer.__init__(self, name, **kwargs)
+        self.init_kwargs = kwargs
+    
+    def updatePathInfo(self, path_info):
+        """
+        """
+        # the map ID overloads the first part of the TMS path: /1.0.0/iso/0/0/0.jpg
+        self.map_id = int(path_info.lstrip('/').split('/')[-5])
+
+        # add id to name
+        name = self.basename + str(self.map_id)
+        TileCache.Layer.MetaLayer.__init__(self, name, **self.init_kwargs)
     
     def renderTile(self, tile, force=None):
         """
         """
         # open a log file, or not, either way is cool
-        log = False #open(os.path.dirname(__file__)+'/log.txt', 'a')
+        log = open(os.path.dirname(__file__)+'/log.txt', 'a')
+        
+        if self.map_id is None:
+            raise Exception('self.map_id is missing, did you forget to call updatePathInfo()?')
         
         # grab points data
         db = Data.get_db_cursor(database=self.database, port=self.port, host=self.hostname, user=self.username, password=self.password)

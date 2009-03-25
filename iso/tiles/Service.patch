@@ -1,0 +1,69 @@
+*** /Users/migurski/Sites/tmp/tilecache-2.10/TileCache/Service.py	2009-03-03 16:04:57.000000000 -0800
+--- ./TileCache/Service.py	2009-03-25 11:21:36.000000000 -0700
+***************
+*** 125,137 ****
+          xml.append("</cross-domain-policy>")        
+          return ('text/xml', "\n".join(xml))       
+  
+!     def renderTile (self, tile, force = False):
+          from warnings import warn
+          start = time.time()
+  
+          # do more cache checking here: SRS, width, height, layers 
+  
+          layer = tile.layer
+          image = None
+          if not force: image = self.cache.get(tile)
+          if not image:
+--- 125,141 ----
+          xml.append("</cross-domain-policy>")        
+          return ('text/xml', "\n".join(xml))       
+  
+!     def renderTile (self, tile, path_info, force = False):
+          from warnings import warn
+          start = time.time()
+  
+          # do more cache checking here: SRS, width, height, layers 
+  
++         if hasattr(tile.layer, 'updatePathInfo'):
++             tile.layer.updatePathInfo(path_info)
++         
+          layer = tile.layer
++         
+          image = None
+          if not force: image = self.cache.get(tile)
+          if not image:
+***************
+*** 205,211 ****
+                  self.expireTile(tile)
+                  return ('text/plain', 'OK')
+              else:
+!                 return self.renderTile(tile, params.has_key('FORCE'))
+          elif isinstance(tile, list):
+              if req_method == 'DELETE':
+                  [self.expireTile(t) for t in tile]
+--- 209,215 ----
+                  self.expireTile(tile)
+                  return ('text/plain', 'OK')
+              else:
+!                 return self.renderTile(tile, path_info, params.has_key('FORCE'))
+          elif isinstance(tile, list):
+              if req_method == 'DELETE':
+                  [self.expireTile(t) for t in tile]
+***************
+*** 223,229 ****
+                  result = None
+                  
+                  for t in tile:
+!                     (format, data) = self.renderTile(t, params.has_key('FORCE'))
+                      image = Image.open(StringIO.StringIO(data))
+                      if not result:
+                          result = image
+--- 227,233 ----
+                  result = None
+                  
+                  for t in tile:
+!                     (format, data) = self.renderTile(t, path_info, params.has_key('FORCE'))
+                      image = Image.open(StringIO.StringIO(data))
+                      if not result:
+                          result = image
