@@ -15,7 +15,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.1 2009-03-25 00:44:59 migurski Exp $
+$Id: populate_stations.py,v 1.1 2009-03-25 12:08:07 francis Exp $
 """
 import os
 import sys
@@ -79,3 +79,4 @@ if __name__ == '__main__':
 
         if i % 1000 == 0:
             print >> sys.stderr, i
+
