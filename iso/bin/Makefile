@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.4 2009-03-24 17:20:00 francis Exp $
+# $Id: Makefile,v 1.5 2009-03-25 15:49:51 francis Exp $
 #
 
 CFLAGS = -Wall -O2 -fno-exceptions -fno-rtti
@@ -13,15 +13,14 @@ CFLAGS_WITH_ROUTE = -Wall -O2 -DOUTPUT_ROUTE_DETAILS
 CFLAGS_DEBUG = -Wall -g -DDEBUG -DOUTPUT_ROUTE_DETAILS
 CFLAGS_PROFILE = ${CFLAGS} -pg
 
-FASTPLAN_BINARIES=fastplan fastplan-with-route fastplan-debug fastplan-profile
-FASTPLAN_COOPT_BINARIES=fastplan-coopt
+BINARIES=fastplan fastplan-with-route fastplan-debug fastplan-profile fastplan-coopt stationlist
 
 CPP = /usr/bin/g++
 
-all: ${FASTPLAN_BINARIES} ${FASTPLAN_COOPT_BINARIES}
+all: ${BINARIES}
 
 clean:
-	rm -f ${FASTPLAN_BINARIES} ${FASTPLAN_COOPT_BINARIES}
+	rm -f ${BINARIES}
 
 #########################################################################
 # Command line planner, called by do-nptdr.py
@@ -43,5 +42,11 @@ fastplan-profile: fastplan.cpp Makefile
 
 fastplan-coopt: fastplan-coopt.cpp Makefile
 	$(CPP) $(CFLAGS) fastplan-coopt.cpp -o fastplan-coopt
+
+#########################################################################
+# Just outputs list of stations and connectivity measure
+
+stationlist: stationlist.cpp Makefile
+	$(CPP) $(CFLAGS) stationlist.cpp -o stationlist
 
 

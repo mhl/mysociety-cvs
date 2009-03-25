@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Populates the database with all stations. Must have made the fastindex first.
+
+set -e
+. ../../shlib/deployfns
+read_conf ../conf/general
+cd ../bin
+
+$STATIONLIST_FILE=/tmp/stationlist-$RANDOM
+
+make stationlist
+./stationlist $OPTION_ISODAEMON_FASTINDEX > $STATIONLIST_FILE
+./populate_stations.py $STATIONLIST_FILE
+

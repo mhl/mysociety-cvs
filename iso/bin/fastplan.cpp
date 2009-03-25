@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.4 2009-03-25 12:05:24 francis Exp $
+// $Id: fastplan.cpp,v 1.5 2009-03-25 15:49:51 francis Exp $
 //
 
 // Usage:
@@ -82,8 +82,7 @@ int main(int argc, char * argv[]) {
             const Minutes& min = target_minutes_after_midnight - p.second;
             int secs = min * 60;
             Location *l = &atco.locations[l_id];
-            int journey_count = atco.journeys_visiting_location[l_id].size();
-            f << l->easting << " " << l->northing << " " << secs << " " << journey_count << "\n";
+            f << l->easting << " " << l->northing << " " << secs << " " << "\n";
         }
         f.close();
         pm.display("grid output took");

@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.4 2009-03-25 12:25:20 francis Exp $
+-- $Id: schema.sql,v 1.5 2009-03-25 15:49:52 francis Exp $
 --
 
 -- Separately from this Schema, you need to set up PostGIS in 
@@ -32,6 +32,8 @@ create table station (
     connectedness   integer not null,
     minimum_zoom    integer default 0
 );
+create unique index station_text_id_idx on station(text);
+create index station_minimum_zoom_idx on station(minimum_zoom);
 
 -- SRID 27700 = OSGB 1936 / British National Grid
 select AddGeometryColumn('', 'station', 'position_osgb', 27700, 'POINT', 2);

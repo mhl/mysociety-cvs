@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 """
 Populate the stations table.
 
@@ -15,13 +17,16 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.2 2009-03-25 12:09:37 francis Exp $
+$Id: populate_stations.py,v 1.3 2009-03-25 15:49:51 francis Exp $
 """
 import os
 import sys
 
 import pyproj
-import Cone
+
+sys.path.append("../../pylib")
+import mysociety.config
+mysociety.config.set_file("../conf/general")
 
 try:
     import psycopg2 as postgres
@@ -49,30 +54,38 @@ def gym2bng(x, y):
 if __name__ == '__main__':
     # if you run this on the command line, you get to put stuff in the database
     stations = open(sys.argv[1], 'r')
-    db = get_db_cursor(database='mysociety_iso', host='geo.stamen', user='mysociety')
+    db = get_db_cursor(
+            host=mysociety.config.get('COL_DB_HOST'),
+            port=mysociety.config.get('COL_DB_PORT'),
+            database=mysociety.config.get('COL_DB_NAME'),
+            user=mysociety.config.get('COL_DB_USER'),
+            password=mysociety.config.get('COL_DB_PASS')
+    )
     
     # split the easting, northing, and seconds on each line
     stations = (line.split() for line in stations)
 
-    # convert them all to numbers
-    stations = ((float(x), float(y), int(c)) for (x, y, c) in stations)
-    
-    for (i, (osgbx, osgby, c)) in enumerate(stations):
+    for (i, (text_id, osgbx, osgby, c)) in enumerate(stations):
+        (osgbx, osgby, c) = (int(osgbx), int(osgby), int(c))
         mercx, mercy = bng2gym(osgbx, osgby)
         
         try:
-            db.execute("""INSERT INTO station
-                          (easting_osgb, northing_osgb, connectedness, position_merc)
-                          VALUES(%d, %d, %d, SetSRID(MakePoint(%.9f, %.9f), 900913))""" \
-                        % (osgbx, osgby, c, mercx, mercy))
+            sql_command = """INSERT INTO station
+                          (text_id, position_osgb, position_merc, connectedness)
+                          VALUES(%s,
+                            SetSRID(MakePoint(%s, %s), 27700),
+                            SetSRID(MakePoint(%s, %s), 900913),
+                            %s
+                          )"""
+            db.execute(sql_command, (text_id, osgbx, osgby, mercx, mercy, c))
 
         except postgres.IntegrityError, e:
             print (i, (osgbx, osgby, c))
             continue
 
-        except postgres.ProgrammingError, e:
-            db = get_db_cursor(database='mysociety_iso', host='geo.stamen', user='mysociety')
-            continue
+#        except postgres.ProgrammingError, e:
+#            db = get_db_cursor(database='mysociety_iso', host='geo.stamen', user='mysociety')
+#            continue
 
         else:
             db.execute('COMMIT')
