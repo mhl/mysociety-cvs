@@ -17,7 +17,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.3 2009-03-25 15:49:51 francis Exp $
+$Id: populate_stations.py,v 1.4 2009-03-25 15:51:42 francis Exp $
 """
 import os
 import sys
@@ -61,6 +61,8 @@ if __name__ == '__main__':
             user=mysociety.config.get('COL_DB_USER'),
             password=mysociety.config.get('COL_DB_PASS')
     )
+    db.execute("begin")
+    db.execute("delete from station")
     
     # split the easting, northing, and seconds on each line
     stations = (line.split() for line in stations)
