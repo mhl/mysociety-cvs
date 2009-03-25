@@ -15,7 +15,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.1 2009-03-25 12:08:07 francis Exp $
+$Id: populate_stations.py,v 1.2 2009-03-25 12:09:37 francis Exp $
 """
 import os
 import sys
@@ -61,7 +61,7 @@ if __name__ == '__main__':
         mercx, mercy = bng2gym(osgbx, osgby)
         
         try:
-            db.execute("""INSERT INTO stations
+            db.execute("""INSERT INTO station
                           (easting_osgb, northing_osgb, connectedness, position_merc)
                           VALUES(%d, %d, %d, SetSRID(MakePoint(%.9f, %.9f), 900913))""" \
                         % (osgbx, osgby, c, mercx, mercy))

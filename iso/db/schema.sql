@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.1 2009-03-25 12:06:11 francis Exp $
+-- $Id: schema.sql,v 1.2 2009-03-25 12:09:37 francis Exp $
 --
 
 -- A random secret.
@@ -13,7 +13,7 @@ create table secret (
 );
 
 -- Every station
-create table stations (
+create table station (
     easting_osgb    real not null,
     northing_osgb   real not null,
     

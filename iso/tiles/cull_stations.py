@@ -1,5 +1,5 @@
 """
-Set the minimum_zoom for each station in the stations table based on proximity and connectedness.
+Set the minimum_zoom for each station in the station table based on proximity and connectedness.
 
 This script accepts a filename as an argument, which is assumed to be formatted:
     <easting OSGB> <northing OSGB> <connectedness>
@@ -15,7 +15,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: cull_stations.py,v 1.2 2009-03-25 00:44:59 migurski Exp $
+$Id: cull_stations.py,v 1.3 2009-03-25 12:09:37 francis Exp $
 """
 import os
 import sys
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     
     # select all stations still at min. zoom = 0
     db.execute("""SELECT easting_osgb, northing_osgb, connectedness, X(position_merc), Y(position_merc)
-                  FROM stations
+                  FROM station
                   WHERE minimum_zoom = 0
                   ORDER BY connectedness ASC""")
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
             box_ur = easting_merc + tile_width/256, northing_merc + tile_width/256
         
             db.execute("""SELECT easting_osgb, northing_osgb, connectedness
-                          FROM stations
+                          FROM station
                           WHERE connectedness > %d
                             AND easting_osgb != %d
                             AND northing_osgb != %d
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
         print minimum_zoom
         
-        db.execute("""UPDATE stations SET minimum_zoom = %d + 1
+        db.execute("""UPDATE station SET minimum_zoom = %d + 1
                       WHERE easting_osgb = %d
                         AND northing_osgb = %d""" \
                     % (minimum_zoom, easting_osgb, northing_osgb))
