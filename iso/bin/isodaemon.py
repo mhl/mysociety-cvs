@@ -18,6 +18,9 @@ import subprocess
 import re
 import os
 import optparse
+import psycopg2 as postgres
+import time
+import datetime
 
 sys.path.append("../../pylib")
 
@@ -29,27 +32,30 @@ mysociety.config.set_file("../conf/general")
 pidfile = mysociety.config.get('ISODAEMON_PIDFILE')
 fastindex = mysociety.config.get('ISODAEMON_FASTINDEX')
 logfile = mysociety.config.get('ISODAEMON_LOGFILE')
+tmpwork = mysociety.config.get('TMPWORK')
 
 parser = optparse.OptionParser()
 
 parser.set_usage('''
 isodaemon.py is a Daemon for generating travel times by public transport
 to places in the UK. It requires ../conf/general file for configuration.
-
---d
 ''')
 parser.add_option('--nodetach', action='store_true', dest="nodetach", help='Stops it detaching from the terminal')
 parser.add_option('--nolog', action='store_true', dest="nolog", help='Log to stdout instead of the logfile')
 
+def stamp():
+    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 def my_readline(p):
     line = p.stdout.readline().strip()
     if line != '':
-        print "\t" + line
+        print stamp() + "     " + line
     return line
 
 (options, args) = parser.parse_args()
 def do_binplan(p, outfile, end_min, start_min, station_text_id):
-    print "making route", outfile, end_min, start_min, station_text_id
+    print stamp(), "making route", outfile, end_min, start_min, station_text_id
+    time.sleep(10)
     outfile_new = outfile + ".new"
 
     # cause C++ program to do route finding
@@ -81,19 +87,66 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
     os.rename(outfile_new, outfile)
 
     # return times
-    print "made route", outfile
+    print stamp(), "made route", outfile
     return (float(route_finding_time_taken), float(output_time_taken))
 
 def do_main_program():
-    print "isodaemon.py started"
+    print stamp(), "isodaemon.py started"
+    db = postgres.connect(
+            host=mysociety.config.get('COL_DB_HOST'),
+            port=mysociety.config.get('COL_DB_PORT'),
+            database=mysociety.config.get('COL_DB_NAME'),
+            user=mysociety.config.get('COL_DB_USER'),
+            password=mysociety.config.get('COL_DB_PASS')
+    ).cursor()
 
-    print "loading timetable data into fastplan-coopt"
+    print stamp(), "loading timetable data into fastplan-coopt"
     p = subprocess.Popen(['./fastplan-coopt', fastindex], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     line = my_readline(p)
     assert re.match('loading took', line)
 
     while True:
-        (route_finding_time_taken, output_time_taken) = do_binplan(p, "/tmp/moo.iso", 540, 0, 5157)
+        db.execute("begin")
+
+        # find something to do - we start with the map that was queued longest ago.
+        offset = 0
+        while True:
+            try:
+                db.execute("""select id, state, target_station_id, target_latest, target_earliest, target_date from map where 
+                              state = 'new' order by created limit 1 offset %s for update nowait""", str(offset))
+                row = db.fetchone()
+            except postgres.OperationalError:
+                # if someone else has the item locked, i.e. they are working on it, then we
+                # try and find a different one to work on
+                db.execute("rollback")
+                offset = offset + 1
+                print stamp(), "somebody else had the item, trying offset " + str(offset)
+                continue
+
+            break
+
+        # if there's nothing more to do, give up
+        if row == None:
+            db.execute("rollback")
+            # wait a bit, so don't thrash the database
+            print stamp(), "nothing to do, sleeping 5 seconds"
+            time.sleep(5)
+            continue
+
+        (id, state, target_station_id, target_latest, target_earliest, target_date) = row
+
+        # see if another instance of daemon got it
+        if state != 'new':
+            print stamp(), "somebody else is already working on map ", id
+            db.execute("rollback")
+            continue
+
+        # XXX check target_date here is same as whatever fastindex timetable file we're using
+
+        (route_finding_time_taken, output_time_taken) = do_binplan(p, tmpwork + "/%d.iso" % int(id), target_latest, target_earliest, target_station_id)
+
+        db.execute("update map set state = 'complete' where id = %s", str(id))
+        db.execute("commit")
 
 if options.nolog:
     logout = sys.stdout
