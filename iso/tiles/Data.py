@@ -58,8 +58,8 @@ def get_place_times(map_id, tile, db, log, tmpwork):
         tim_bytes = isof.read(2)
         tim = struct.unpack("h", tim_bytes)[0]
         if tim != -1:
-            mins = tim * 60 
-            place_times.append((x, y, mins ))
+            secs = tim * 60 
+            place_times.append((x, y, secs ))
     isof.close()
 
 #    raise Exception(repr(place_times))
