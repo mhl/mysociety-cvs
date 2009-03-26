@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.36 2009-03-26 16:04:16 matthew Exp $
+# $Id: index.cgi,v 1.37 2009-03-26 16:05:50 matthew Exp $
 #
 
 import sha
@@ -150,7 +150,8 @@ WGS = pyproj.Proj(proj='latlong', towsg84="0,0,0", ellps="WGS84", no_defs=True)
 
 def national_grid_to_wgs84(x, y):
     """Project from British National Grid to WGS-84 lat/lon"""
-    return pyproj.transform(BNG, WGS, x, y)
+    lon, lat = pyproj.transform(BNG, WGS, x, y)
+    return lat, lon
 
 # Main FastCGI loop
 while fcgi.isFCGI():
