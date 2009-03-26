@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.31 2009-03-26 15:42:55 matthew Exp $
+# $Id: index.cgi,v 1.32 2009-03-26 15:44:05 matthew Exp $
 #
 
 import sha
@@ -81,8 +81,8 @@ def lookup(pc):
 
 def map(text_id):
     db.execute('BEGIN')
-    db.execute('SELECT id, X(position_osgb), Y(position_osgb) FROM station
-        WHERE text_id = %s FOR UPDATE', (text_id,))
+    db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station
+        WHERE text_id = %s FOR UPDATE''', (text_id,))
     row = db.fetchone()
     target_station_id, lat, lon = row
 
