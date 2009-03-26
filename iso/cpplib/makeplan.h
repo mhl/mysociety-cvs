@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.2 2009-03-26 09:40:45 francis Exp $
+// $Id: makeplan.h,v 1.3 2009-03-26 10:52:39 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -802,7 +802,11 @@ class PlanningATCO {
     // For do_dijkstra output. Store in array, so can find time for a
     // particular location quickly. Array is cleared in do_dijkstra is this is
     // passed in.
-    void dijkstra_output_store_by_id(const LocationID& location_id, const Minutes& when) {
+    void dijkstra_output_store_by_id(const LocationID& location_id, const Minutes& when
+#ifdef OUTPUT_ROUTE_DETAILS
+        , const Route& route
+#endif
+    ) {
         const Minutes& mins = this->final_destination_time - when;
         time_taken_by_location_id[location_id] = mins;
     }
