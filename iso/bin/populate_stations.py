@@ -17,7 +17,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.8 2009-03-26 17:54:15 francis Exp $
+$Id: populate_stations.py,v 1.9 2009-03-26 17:58:49 francis Exp $
 """
 import os
 import sys
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         try:
             sql_command = """INSERT INTO station
                           (id, text_id, position_osgb, position_merc, connectedness)
-                          VALUES(%s,
+                          VALUES(%s, %s,
                             SetSRID(MakePoint(%s, %s), 27700),
                             SetSRID(MakePoint(%s, %s), 900913),
                             %s
