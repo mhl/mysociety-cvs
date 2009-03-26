@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.29 2009-03-26 14:24:15 matthew Exp $
+# $Id: index.cgi,v 1.30 2009-03-26 14:24:58 matthew Exp $
 #
 
 import sha
@@ -70,7 +70,7 @@ def lookup(pc):
         position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
 	AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
 	ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
-	LIMIT 1''' % (E, N, E, N))
+	LIMIT 1''' % (E, N, E, N, E, N))
     row = db.fetchone()
     if not row:
         return Response('index', {
