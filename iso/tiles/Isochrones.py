@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.20 2009-03-25 18:34:36 migurski Exp $
+$Id: Isochrones.py,v 1.21 2009-03-26 15:17:34 francis Exp $
 """
 import os
 import sys
@@ -27,9 +27,10 @@ class TileLayer(TileCache.Layer.MetaLayer):
       {'name': 'pgsql_database', 'description': 'PostGIS database name.'},
       {'name': 'pgsql_username', 'description': 'PostGIS username.'},
       {'name': 'pgsql_password', 'description': 'PostGIS password.'},
+      {'name': 'tmpwork', 'description': 'Directory where iso files are put.'},
     ] + TileCache.Layer.MetaLayer.config_properties 
     
-    def __init__(self, name, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, **kwargs):
+    def __init__(self, name, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, tmpwork=None, **kwargs):
         """ call super.__init__, and store some other details
         """
         self.basename = name
@@ -40,6 +41,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
         self.database = pgsql_database
         self.username = pgsql_username
         self.password = pgsql_password
+        self.tmpwork = tmpwork
 
         TileCache.Layer.MetaLayer.__init__(self, name, **kwargs)
         self.init_kwargs = kwargs
@@ -65,7 +67,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
         
         # grab points data
         db = Data.get_db_cursor(database=self.database, port=self.port, host=self.hostname, user=self.username, password=self.password)
-        points = Data.get_place_times(self.map_id, tile, db, log)
+        points = Data.get_place_times(self.map_id, tile, db, log, self.tmpwork)
         
         # render a PIL image
         image = draw_tile(points, tile, log)
@@ -124,7 +126,6 @@ def draw_tile(points, tile, log):
     
     # add each found data point in turn, offseting station cones by base station time
     for (x, y, t) in points:
-        x, y = transform(x, y)
         draw_station(array, station_cone + t, station_mask, int(x), int(y))
 
     points_time = time.time() - points_start

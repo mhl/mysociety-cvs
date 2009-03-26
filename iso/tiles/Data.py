@@ -2,6 +2,7 @@
 """
 import os
 import sys
+import struct
 
 import pyproj
 import Cone
@@ -16,7 +17,7 @@ def get_db_cursor(*args, **kwargs):
     """
     return postgres.connect(*args, **kwargs).cursor()
 
-def get_place_times(map_id, tile, db, log):
+def get_place_times(map_id, tile, db, log, tmpwork):
     """ Given a result ID, a tile, and a DB cursor, return data points for all the bits that intersect
     """
     # tile bounds in spherical mercator
@@ -36,14 +37,29 @@ def get_place_times(map_id, tile, db, log):
     # adjust by 1800 meters
     xmin, ymin, xmax, ymax = xmin - 1800, ymin - 1800, xmax + 1800, ymax + 1800
 
-    db.execute("""SELECT X(position_merc), Y(position_merc), minutes_to_target
-                  FROM place_time
-                  WHERE map_id = %d
-                    AND minimum_zoom <= %d
+    # look at stations in database to find out which are on this tile
+    db.execute("""SELECT X(position_merc), Y(position_merc), id
+                  FROM station
+                  WHERE 
+                    minimum_zoom <= %d
                     AND Within(position_merc, SetSRID(MakeBox2D(MakePoint(%d, %d), MakePoint(%d, %d)), 900913))""" \
-                % (map_id, tile.z, xmin, ymin, xmax, ymax))
+                % (tile.z, xmin, ymin, xmax, ymax))
+    db_results = db.fetchall()
+#    raise Exception(repr(db_results))
 
-    place_times = db.fetchall()
+    # look up each of those statinos in the binary distances .iso file made by isodaemon.py
+    iso_file = tmpwork + "/" + repr(map_id) + ".iso"
+    isof = open(iso_file, 'rb')
+    place_times = []
+    for (x, y, id) in db_results:
+        # the .iso file is just a list of shorts, containing times in minutes, 
+        # in order of location id, so we can just seek by location id
+        isof.seek(id * 2)
+        tim_bytes = isof.read(2)
+        tim = struct.unpack("h", tim_bytes)[0]
+        place_times.append((x, y, tim))
+
+    raise Exception(repr(place_times))
 
     if log:
         print >> log, len(place_times), 'place-times within (%d, %d ... %d, %d) at zoom %d' % (xmin, ymin, xmax, ymax, tile.z)

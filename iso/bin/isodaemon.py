@@ -11,7 +11,7 @@
 # Pipe read timeouts
 # Trapping all exceptions / errors and logging to syslog and resuming 
 
-from __future__ import with_statement # for use with daemon below
+# from __future__ import with_statement # for use with daemon below in Python 2.5
 
 import sys
 import subprocess
@@ -25,7 +25,7 @@ import datetime
 sys.path.append("../../pylib")
 
 import daemon # see PEP 3143 for documentation
-import daemon.pidlockfile
+#import daemon.pidlockfile
 import mysociety.config
 
 mysociety.config.set_file("../conf/general")
@@ -42,6 +42,13 @@ to places in the UK. It requires ../conf/general file for configuration.
 ''')
 parser.add_option('--nodetach', action='store_true', dest="nodetach", help='Stops it detaching from the terminal')
 parser.add_option('--nolog', action='store_true', dest="nolog", help='Log to stdout instead of the logfile')
+parser.add_option('--cooptdebug', action='store_true', dest="cooptdebug", help='Use debug version of fastplan-coopt library')
+
+(options, args) = parser.parse_args()
+
+fastplan_bin = "./fastplan-coopt"
+if options.cooptdebug:
+    fastplan_bin = "./fastplan-coopt-debug"
 
 def stamp():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -52,10 +59,8 @@ def my_readline(p):
         print stamp() + "     " + line
     return line
 
-(options, args) = parser.parse_args()
 def do_binplan(p, outfile, end_min, start_min, station_text_id):
     print stamp(), "making route", outfile, end_min, start_min, station_text_id
-    time.sleep(10)
     outfile_new = outfile + ".new"
 
     # cause C++ program to do route finding
@@ -101,7 +106,7 @@ def do_main_program():
     ).cursor()
 
     print stamp(), "loading timetable data into fastplan-coopt"
-    p = subprocess.Popen(['./fastplan-coopt', fastindex], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen([fastplan_bin, fastindex], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     line = my_readline(p)
     assert re.match('loading took', line)
 
@@ -112,8 +117,9 @@ def do_main_program():
         offset = 0
         while True:
             try:
-                db.execute("""select id, state, target_station_id, target_latest, target_earliest, target_date from map where 
-                              state = 'new' order by created limit 1 offset %s for update nowait""", str(offset))
+                db.execute("""select id, state, (select text_id from station where id = target_station_id), 
+                                target_latest, target_earliest, target_date from map where 
+                                state = 'new' order by created limit 1 offset %s for update nowait""", str(offset))
                 row = db.fetchone()
             except postgres.OperationalError:
                 # if someone else has the item locked, i.e. they are working on it, then we
@@ -133,7 +139,7 @@ def do_main_program():
             time.sleep(5)
             continue
 
-        (id, state, target_station_id, target_latest, target_earliest, target_date) = row
+        (id, state, target_station_text_id, target_latest, target_earliest, target_date) = row
 
         # see if another instance of daemon got it
         if state != 'new':
@@ -143,7 +149,7 @@ def do_main_program():
 
         # XXX check target_date here is same as whatever fastindex timetable file we're using
 
-        (route_finding_time_taken, output_time_taken) = do_binplan(p, tmpwork + "/%d.iso" % int(id), target_latest, target_earliest, target_station_id)
+        (route_finding_time_taken, output_time_taken) = do_binplan(p, tmpwork + "/%d.iso" % int(id), target_latest, target_earliest, target_station_text_id)
 
         db.execute("update map set state = 'complete' where id = %s", str(id))
         db.execute("commit")
@@ -164,8 +170,13 @@ context = daemon.DaemonContext(
     working_directory=os.path.abspath(os.path.dirname(sys.argv[0]))
 )
 
-with context:
-    do_main_program()
+# Could use with here, but don't have it in Python 2.4
+#context.__enter__()
+#try:
+do_main_program()
+#finally:
+#    context.__exit__()
+
 #    i = 1
 #    while True:
 #        i = i + 1
