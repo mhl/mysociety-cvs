@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.30 2009-03-26 14:24:58 matthew Exp $
+# $Id: index.cgi,v 1.31 2009-03-26 15:42:55 matthew Exp $
 #
 
 import sha
@@ -15,8 +15,10 @@ import sys
 import os.path
 import traceback
 sys.path.append("../../pylib")
+sys.path.append("/home/matthew/lib/python")
 import fcgi, cgi
 import psycopg2 as postgres
+import pyproj
 
 import mysociety.config
 import mysociety.mapit
@@ -63,8 +65,6 @@ def lookup(pc):
 
     E = int(f['easting'])
     N = int(f['northing'])
-    lat = f['wgs84_lat']
-    lon = f['wgs84_lon']
 
     db.execute('''SELECT text_id FROM station WHERE
         position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
@@ -81,8 +81,10 @@ def lookup(pc):
 
 def map(text_id):
     db.execute('BEGIN')
-    db.execute('SELECT id FROM station WHERE text_id = %s FOR UPDATE', (text_id,))
-    target_station_id = db.fetchone()[0]
+    db.execute('SELECT id, X(position_osgb), Y(position_osgb) FROM station
+        WHERE text_id = %s FOR UPDATE', (text_id,))
+    row = db.fetchone()
+    target_station_id, lat, lon = row
 
     # XXX These data are all fixed for now
     target_latest = 540
@@ -140,6 +142,13 @@ def slurp_file(filename):
 def redirect(url):
     print "Location: %s\r\n\r\n" % url
     print "Please visit <a href='%s'>%s</a>." % (url, url)
+
+BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
+WGS = pyproj.Proj(proj='latlong', towsg84="0,0,0", ellps="WGS84", no_defs=True)
+
+def national_grid_to_wgs84(x, y):
+    """Project from British National Grid to WGS-84 lat/lon"""
+    return pyproj.transform(BNG, WGS, x, y)
 
 # Main FastCGI loop
 while fcgi.isFCGI():
