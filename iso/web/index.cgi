@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.32 2009-03-26 15:44:05 matthew Exp $
+# $Id: index.cgi,v 1.33 2009-03-26 15:49:00 matthew Exp $
 #
 
 import sha
@@ -37,20 +37,20 @@ class Response(object):
     def __init__(self, template='', vars={}, status=200, url='', refresh=False, id=''):
         self.template = template
         self.vars = vars
-	self.status = status
-	self.url = url
-	self.refresh = refresh
-	self.id = id
+        self.status = status
+        self.url = url
+        self.refresh = refresh
+        self.id = id
 
     def __str__(self):
         if self.status == 302:
             return "Please visit <a href='%s'>%s</a>." % (self.url, self.url)
-	return template(self.template, self.vars)
+        return template(self.template, self.vars)
 
     def headers(self):
         if self.status == 302:
-	    return "Location: %s\r\n" % self.url
-	return ''
+            return "Status: 302 Found\r\nLocation: %s\r\n" % self.url
+        return ''
 
 def lookup(pc):
     """Given a postcode, look up the nearest station ID
@@ -68,9 +68,9 @@ def lookup(pc):
 
     db.execute('''SELECT text_id FROM station WHERE
         position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
-	AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
-	ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
-	LIMIT 1''' % (E, N, E, N, E, N))
+        AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
+        ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
+        LIMIT 1''' % (E, N, E, N, E, N))
     row = db.fetchone()
     if not row:
         return Response('index', {
@@ -96,9 +96,9 @@ def map(text_id):
     map = db.fetchone()
     if map is None:
         # Start off generation of map!
-	db.execute("SELECT nextval('map_id_seq')")
-	map_id = db.fetchone()[0]
-	db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
+        db.execute("SELECT nextval('map_id_seq')")
+        map_id = db.fetchone()[0]
+        db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
         db.execute('COMMIT')
     else:
         map_id = map[0]
@@ -157,7 +157,8 @@ while fcgi.isFCGI():
 
     try:
         response = main(fs)
-	req.out.write(response.headers())
+        if response.headers():
+            req.out.write(response.headers())
 
         req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
         if req.env.get('REQUEST_METHOD') == 'HEAD':
@@ -176,7 +177,7 @@ while fcgi.isFCGI():
         req.out.write("Content-Type: text/plain\r\n\r\n")
         req.out.write("Sorry, we've had some sort of problem.\n\n")
         req.out.write(str(e) + "\n")
-	traceback.print_exc()
+        traceback.print_exc()
 
     db.execute('ROLLBACK')
     req.Finish()
