@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.3 2009-03-26 10:52:39 francis Exp $
+// $Id: makeplan.h,v 1.4 2009-03-26 16:48:06 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -809,6 +809,7 @@ class PlanningATCO {
     ) {
         const Minutes& mins = this->final_destination_time - when;
         time_taken_by_location_id[location_id] = mins;
+        //printf("settled loc_id %d mins %d\n", location_id, mins);
     }
 
     // For do_dijkstra output. Output results as they come to stdout. Don't store anything.
