@@ -17,7 +17,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.5 2009-03-26 09:37:58 francis Exp $
+$Id: populate_stations.py,v 1.6 2009-03-26 09:52:04 francis Exp $
 """
 import os
 import sys
@@ -64,7 +64,7 @@ if __name__ == '__main__':
     db.execute("delete from station")
     
     for (i, line) in enumerate(stations):
-        print "populate_stations.py:", line.strip()
+        #print "populate_stations.py:", line.strip()
 
         # split the NPTDR id, easting, northing, and seconds on each line
         (text_id, osgbx, osgby, c) = line.split()
@@ -90,5 +90,5 @@ if __name__ == '__main__':
             db.execute('COMMIT')
 
         if i % 1000 == 0:
-            print >> sys.stderr, i
+            print >> sys.stderr, "station number", i
 

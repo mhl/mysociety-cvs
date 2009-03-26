@@ -34,25 +34,16 @@ create table map (
     -- workflow 
     state text not null check (
         state = 'new'
-        or state = 'generating'
+        or state = 'working'
         or state = 'complete'
     ),
-
-    -- Used to show progress while state == 'generating'
-    progress_pos integer,
-    progress_max integer,
-    -- Which server / process is generating it
-    progress_server text, 
+    working_server text, -- which machine/process is making it
 
     -- Parameters used to make the map
-    target_mins_after_midnight integer not null,
-    target_date date not null, 
-
-    target_postcode text not null,
-    target_easting double precision not null,
-    target_northing double precision not null
-
---  target_station integer not null references station(id)
+    target_station integer not null references station(id),
+    target_latest integer not null, -- mins after midnight to arrive by
+    target_earliest integer not null, -- mins after midnight to go back to
+    target_date date not null
 );
 
 grant all on table station to col;

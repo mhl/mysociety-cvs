@@ -7,11 +7,15 @@ set -e
 read_conf ../conf/general
 cd ../bin
 
-$STATIONLIST_FILE=/tmp/stationlist-$RANDOM
+STATIONLIST_FILE=/tmp/stationlist-$RANDOM
 
 make stationlist
 echo "Making station list file $STATIONLIST_FILE"
 ./stationlist $OPTION_ISODAEMON_FASTINDEX > $STATIONLIST_FILE
 echo "Loading file $STATIONLIST_FILE into database"
 ./populate_stations.py $STATIONLIST_FILE
+
+cd ../tiles
+echo "Culling stations"
+./cull_stations.py
 
