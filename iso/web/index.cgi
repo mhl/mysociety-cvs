@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.23 2009-03-24 10:52:35 matthew Exp $
+# $Id: index.cgi,v 1.24 2009-03-26 12:03:46 matthew Exp $
 #
 
 import sha
@@ -15,24 +15,42 @@ import sys
 import os.path
 sys.path.append("../../pylib")
 import fcgi, cgi
+from pyPgSQL import PgSQL
 
 import mysociety.config
 import mysociety.mapit
 mysociety.config.set_file("../conf/general")
 from mysociety.rabx import RABXException
 
-page_vars = {
-    'refresh': False,
-    'body_id': '',
-}
+db = PgSQL.connect(mysociety.config.get('COL_DB_HOST') + ':' + mysociety.config.get('COL_DB_PORT') + ':' + mysociety.config.get('COL_DB_NAME') + ':' + mysociety.config.get('COL_DB_USER') + ':' + mysociety.config.get('COL_DB_PASS'))
+
+class Response(object):
+    def __init__(self, template='', vars={}, status=200, url='', refresh=False, id=''):
+        self.template = template
+        self.vars = vars
+	self.status = status
+	self.url = url
+	self.refresh = refresh
+	self.id = id
+
+    def __str__(self):
+        if self.status == 302:
+            return "Please visit <a href='%s'>%s</a>." % (self.url, self.url)
+	return template(self.template, self.vars)
+
+    def headers(self):
+        if self.status == 302:
+	    return "Location: %s\r\n" % self.url
+	return ''
 
 def lookup(pc):
-    global page_vars
+    """Given a postcode, look up the nearest station ID
+    and redirect to a URL containing that"""
 
     try:
         f = mysociety.mapit.get_location(pc)
     except RABXException, e:
-        return template('index', {
+        return Response('index', {
             'error': e
         })
 
@@ -41,18 +59,30 @@ def lookup(pc):
     lat = f['wgs84_lat']
     lon = f['wgs84_lon']
 
-    id = sha.new('%d-%d' % (E,N)).hexdigest()
+    q = db.cursor()
+    q.execute('''SELECT id FROM station WHERE
+        position_osgb && Expand('POINT(%d %d)'::geometry, 50000)
+	AND Distance(position_osgb, 'POINT(%d %d)') < 50000''' % (E, N, E, N))
+    row = q.fetchone()
+    if not row:
+        return Response('index', {
+            'error': 'Could not find a station or bus stop :('
+        })
+
+    return Response(status=302, url='/station/%d' % row['id'])
+
+def map(id):
+    global page_vars
 
     tmpwork = mysociety.config.get('TMPWORK')
     file = os.path.join(tmpwork, id)
-    if os.path.exists(file + ".txt"):
+    if os.path.exists(file + ".iso"):
         # We've got a generated file, let's show the map!
-        page_vars['body_id'] = 'map'
-        return template('map', {
+        return Response('map', {
             'centre_lat': lat,
             'centre_lon': lon,
             'tile_id': id + ".txt"
-        })
+        }, id='map')
 
     # Call out to tile generation
     binarycache = os.path.join(tmpwork, "fastindex-oxford-2008-10-07")
@@ -61,27 +91,16 @@ def lookup(pc):
     if ret != 0:
         raise Exception("index.cgi: Error code from command: " + cmd)
 
-    page_vars['refresh'] = True
-    return template('map-pleasewait', {
+    return Response('map-pleasewait', {
         'postcode': pc
-    })
+    }, refresh=True)
     
-def test():
-    lat = '51.759865102943905'
-    lon = '-1.2658309936523438'
-    tile_id = 'nptdr-OX26DR-10000.txt'
-    return template('map', {
-        'centre_lat': lat,
-        'centre_lon': lon,
-        'tile_id': tile_id
-    })
-
 def main(fs):
     if 'pc' in fs:
         return lookup(fs.getfirst('pc'))
-    if 'map' in fs:
-        return test()
-    return template('index')
+    elif 'id' in fs:
+        return map(fs.getfirst('id'))
+    return Response('index')
 
 # Functions
 
@@ -97,25 +116,31 @@ def slurp_file(filename):
     f.close()
     return content
 
+def redirect(url):
+    print "Location: %s\r\n\r\n" % url
+    print "Please visit <a href='%s'>%s</a>." % (url, url)
+
 # Main FastCGI loop
 while fcgi.isFCGI():
     req = fcgi.Accept()
     fs = req.getFieldStorage()
 
     try:
+        response = main(fs)
+	req.out.write(response.headers())
+
         req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
         if req.env.get('REQUEST_METHOD') == 'HEAD':
             req.Finish()
             continue
 
         footer = template('footer')
-        content = main(fs)
         header = template('header', {
             'postcode': fs.getfirst('pc', ''),
-            'refresh': page_vars['refresh'] and '<meta http-equiv="refresh" content="5">' or '',
-            'body_id': page_vars['body_id'] and ' id="%s"' % page_vars['body_id'] or '',
+            'refresh': response.refresh and '<meta http-equiv="refresh" content="5">' or '',
+            'body_id': response.id and ' id="%s"' % response.id or '',
         })
-        req.out.write(header + content + footer)
+        req.out.write(header + str(response) + footer)
 
     except Exception, e:
         req.out.write("Content-Type: text/plain\r\n\r\n")
