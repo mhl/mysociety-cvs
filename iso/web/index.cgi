@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.26 2009-03-26 12:10:44 matthew Exp $
+# $Id: index.cgi,v 1.27 2009-03-26 12:14:32 matthew Exp $
 #
 
 import sha
@@ -61,8 +61,8 @@ def lookup(pc):
 
     q = db.cursor()
     q.execute('''SELECT text_id FROM station WHERE
-        position_osgb && Expand('POINT(%d %d)'::geometry, 50000)
-	AND Distance(position_osgb, 'POINT(%d %d)'::geometry) < 50000''' % (E, N, E, N))
+        position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
+	AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000''' % (E, N, E, N))
     row = q.fetchone()
     if not row:
         return Response('index', {
