@@ -8,7 +8,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: cull_stations.py,v 1.5 2009-03-26 09:52:05 francis Exp $
+$Id: cull_stations.py,v 1.6 2009-03-26 17:05:26 francis Exp $
 """
 import os
 import sys
@@ -64,9 +64,9 @@ if __name__ == '__main__':
         
             db.execute("""SELECT id, connectedness
                           FROM station
-                          WHERE connectedness > %d
-                            AND id != %d
-                            AND Within(position_merc, SetSRID(MakeBox2D(MakePoint(%d, %d), MakePoint(%d, %d)), 900913))
+                          WHERE connectedness > %s
+                            AND id != %s
+                            AND Within(position_merc, SetSRID(MakeBox2D(MakePoint(%s, %s), MakePoint(%s, %s)), 900913))
                           LIMIT 1""" \
                         % (connectedness, id, box_ll[0], box_ll[1], box_ur[0], box_ur[1]))
 
@@ -77,8 +77,8 @@ if __name__ == '__main__':
 
         print "minimum_zoom", minimum_zoom
         
-        db.execute("""UPDATE station SET minimum_zoom = %d + 1
-                      WHERE id = %d """ \
+        db.execute("""UPDATE station SET minimum_zoom = %s + 1
+                      WHERE id = %s """ \
                     % (minimum_zoom, id))
 
         db.execute("COMMIT")
