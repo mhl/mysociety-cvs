@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.1 2009-03-23 09:30:08 francis Exp $
+// $Id: makeplan.h,v 1.2 2009-03-26 09:40:45 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -30,7 +30,7 @@
 #include <time.h>
 #include <math.h>
 
-typedef int Minutes; // after midnight (only needs to be a short, but it seems to make little performance difference which it is)
+typedef short Minutes; // after midnight (only needs to be a short, and we assume it is that for binary output)
 #ifdef OUTPUT_ROUTE_DETAILS
 std::string format_time(const Minutes& mins_after_midnight) {
     int hours = mins_after_midnight / 60;
@@ -211,11 +211,13 @@ class PlanningATCO {
     // working parameters
     LocationID final_destination_id;
     Minutes final_destination_time;
-    // working outputs
+    // working outputs ... for dijkstra_output_store
     Settled settled;
 #ifdef OUTPUT_ROUTE_DETAILS
     Routes routes;
 #endif
+    // ... for dijkstra_output_store_by_id
+    std::vector<short> time_taken_by_location_id; // in delta minutes
 
     /* Create object that generates shortest journey times for all stations
     in a public transport network defined by an ATCO-CIF timetable file.
@@ -663,26 +665,41 @@ class PlanningATCO {
         }
     }
 
-    /*
-    Run Dijkstra's algorithm to find latest departure time from all locations to
-    arrive at the target location by the given time.
-
-    target_location - station id to go to, e.g. 9100AYLSBRY or 210021422650
-    target_datetime - when we want to arrive by
-    */
+    /* Method pointer type for what to do with results from do_dijkstra.
+     * Various dijkstra_output_* methods below are suitable. */
     typedef void (PlanningATCO::*ResultFunctionPointer)(const LocationID&, const Minutes&
 #ifdef OUTPUT_ROUTE_DETAILS
         , const Route&
 #endif
     );
-    void do_dijkstra(
-        ResultFunctionPointer result_function_pointer,
+
+    /*
+    Run Dijkstra's algorithm to find latest departure time from all locations to
+    arrive at the target location by the given time.
+
+    result_function_pointer - which of various dijkstra_output_* functions to use for output
+    target_location_id - station id to go to, e.g. 9100AYLSBRY or 210021422650
+    target_time - when we want to arrive by, minutes after midnight
+    earliest_departure - what minute in day to stop when we get back to
+    */
+    void do_dijkstra(ResultFunctionPointer result_function_pointer,
         const LocationID target_location_id, const Minutes target_time, const Minutes earliest_departure
     ) {
 #ifdef OUTPUT_ROUTE_DETAILS
         Routes routes; // how to get there
         routes[target_location_id].push_front(ArrivePlaceTime(target_location_id, target_time, 'A', -1, -1));
 #endif
+
+        // Initialize data structures for output if appropriate
+        if (result_function_pointer == &PlanningATCO::dijkstra_output_store_by_id) {
+            time_taken_by_location_id.resize(this->number_of_locations + 1);
+            std::fill(time_taken_by_location_id.begin(), time_taken_by_location_id.end(), -1);
+        } else if (result_function_pointer == &PlanningATCO::dijkstra_output_store) {
+            this->settled.clear();
+#ifdef OUTPUT_ROUTE_DETAILS
+            this->routes.clear();
+#endif
+        }
         
         // Other variables
         this->final_destination_id = target_location_id;
@@ -768,6 +785,9 @@ class PlanningATCO {
         // return values are sent via the result_function_pointer parameter
     }
 
+    // For do_dijkstra output. Store in order of the journey, and if compiled
+    // to also store the route. pretty_print_routes below can print output from
+    // this. Output arrays are cleared in do_dijkstra if this is passed in.
     void dijkstra_output_store(const LocationID& location_id, const Minutes& when
 #ifdef OUTPUT_ROUTE_DETAILS
         , const Route& route
@@ -779,6 +799,15 @@ class PlanningATCO {
 #endif
     }
 
+    // For do_dijkstra output. Store in array, so can find time for a
+    // particular location quickly. Array is cleared in do_dijkstra is this is
+    // passed in.
+    void dijkstra_output_store_by_id(const LocationID& location_id, const Minutes& when) {
+        const Minutes& mins = this->final_destination_time - when;
+        time_taken_by_location_id[location_id] = mins;
+    }
+
+    // For do_dijkstra output. Output results as they come to stdout. Don't store anything.
     void dijkstra_output_stream_stdout(const LocationID& location_id, const Minutes& when
 #ifdef OUTPUT_ROUTE_DETAILS
         , const Route& route

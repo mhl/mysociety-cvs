@@ -8,8 +8,12 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.2 2009-03-25 12:05:24 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.3 2009-03-26 09:40:45 francis Exp $
 //
+
+// Example one off runs (the EOF from stdin will make the program exit after one command)
+//echo plan 540 0 450445 207017 | ./fastplan-coopt /home/francis/toobig/nptdr/gen/fastindex-713f1c5e34a0-2008-10-07 >out
+//echo binplan /tmp/map1.iso 540 0 340002053CR | ./fastplan-coopt /home/francis/toobig/nptdr/gen/fastindex-713f1c5e34a0-2008-10-07
 
 #include <math.h> // something weird in /usr/include/bits/mathcalls.h means this must be included from top level file
 
@@ -42,7 +46,7 @@ int main(int argc, char * argv[]) {
             break;
         } else if (command == "plan") {
             // Make a plan, and output the time coordinates to get to each grid
-            // reference.
+            // reference as text.
             std::string arg1, arg2, arg3, arg4;
             std::cin >> arg1 >> arg2 >> arg3 >> arg4;
 
@@ -64,6 +68,31 @@ int main(int argc, char * argv[]) {
                 earliest_departure
             );
             pm.display("route finding took");
+        } else if (command == "binplan") {
+            // Make a plan, and output binary file of coordinates to use.
+            std::string arg1, arg2, arg3, arg4;
+            std::cin >> arg1 >> arg2 >> arg3 >> arg4;
+
+            std::string output_binary = arg1.c_str();
+            Minutes target_minutes_after_midnight = atoi(arg2.c_str());
+            Minutes earliest_departure = atoi(arg3.c_str());
+            std::string target_location_text_id = arg4;
+    
+            LocationID target_location_id = atco.locations_by_text_id[target_location_text_id];
+
+            // Do route finding
+            atco.do_dijkstra(
+                &PlanningATCO::dijkstra_output_store_by_id,
+                target_location_id, target_minutes_after_midnight,
+                earliest_departure
+            );
+            pm.display("route finding took");
+
+            // Output
+            FILE *fp = fopen(output_binary.c_str(), "wb");
+            my_fwrite(&atco.time_taken_by_location_id[0], atco.time_taken_by_location_id.size(), sizeof(LocationID), fp);
+            fclose(fp);
+            pm.display("binary output took");
         } else {
             fprintf(stderr, "unknown command %s\n", command.c_str());
         }
