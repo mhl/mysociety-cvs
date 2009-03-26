@@ -125,13 +125,17 @@ class Service (object):
         xml.append("</cross-domain-policy>")        
         return ('text/xml', "\n".join(xml))       
 
-    def renderTile (self, tile, force = False):
+    def renderTile (self, tile, path_info, force = False):
         from warnings import warn
         start = time.time()
 
         # do more cache checking here: SRS, width, height, layers 
 
+        if hasattr(tile.layer, 'updatePathInfo'):
+            tile.layer.updatePathInfo(path_info)
+        
         layer = tile.layer
+        
         image = None
         if not force: image = self.cache.get(tile)
         if not image:
@@ -205,7 +209,7 @@ class Service (object):
                 self.expireTile(tile)
                 return ('text/plain', 'OK')
             else:
-                return self.renderTile(tile, params.has_key('FORCE'))
+                return self.renderTile(tile, path_info, params.has_key('FORCE'))
         elif isinstance(tile, list):
             if req_method == 'DELETE':
                 [self.expireTile(t) for t in tile]
@@ -223,7 +227,7 @@ class Service (object):
                 result = None
                 
                 for t in tile:
-                    (format, data) = self.renderTile(t, params.has_key('FORCE'))
+                    (format, data) = self.renderTile(t, path_info, params.has_key('FORCE'))
                     image = Image.open(StringIO.StringIO(data))
                     if not result:
                         result = image

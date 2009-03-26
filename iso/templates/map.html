@@ -17,17 +17,19 @@
            * These parameters control the mapping between RGB values in the iso tiles
            * and minutes of travel time. The minimums and maximums of each map to
            * each other directly.
+           *
+           * NOTE: This has changed slightly. RGB values now directly encode the number
+           * of minutes travel time.
            */
-          // White is 0 minutes.
-          'min_threshold':  255,
-          'min_minutes':    0,
-          // Pure black is inaccessible; just above that (RGB: 0x000001) is 254 minutes.
-          'max_threshold':  1,
-          'max_minutes':    254,
+          // Black is 0 minutes.
+          // 'min_threshold':  0,
+          // 'min_minutes':    0,
+          // 'max_threshold':  0xFFFFFF,
+          // 'max_minutes':    0xFFFFFF,
 	  // The number of minutes to make available in the time slider.
-	  'show_minutes':   90,
-          // The initial value of the time slider.
-          'initial_minutes': 30,
+          'show_minutes':   60 * 12,
+          // The initial value of the time slider. (<= show_minutes)
+          'initial_minutes': 60,
 
           // Minimum and Maximum map zoom levels.
           'min_zoom':       8,
@@ -52,3 +54,4 @@
 
       //--></script>
 </div>
+
