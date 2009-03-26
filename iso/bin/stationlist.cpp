@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: stationlist.cpp,v 1.3 2009-03-26 17:54:15 francis Exp $
+// $Id: stationlist.cpp,v 1.4 2009-03-26 17:56:06 francis Exp $
 //
 
 #include <math.h> // something weird in /usr/include/bits/mathcalls.h means this must be included from top level file
@@ -29,7 +29,7 @@ int main(int argc, char * argv[]) {
     for (LocationID location_id = 1; location_id <= atco.number_of_locations; location_id++) {
         Location *l = &atco.locations[location_id];
         int journey_count = atco.journeys_visiting_location[location_id].size();
-        std::cout << l->id << " " << l->text_id << " " << l->easting << " " << l->northing << " " << journey_count << "\n";
+        std::cout << location_id << " " << l->text_id << " " << l->easting << " " << l->northing << " " << journey_count << "\n";
     }
 
     return 0;
