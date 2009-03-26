@@ -17,7 +17,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.4 2009-03-25 15:51:42 francis Exp $
+$Id: populate_stations.py,v 1.5 2009-03-26 09:37:58 francis Exp $
 """
 import os
 import sys
@@ -61,13 +61,14 @@ if __name__ == '__main__':
             user=mysociety.config.get('COL_DB_USER'),
             password=mysociety.config.get('COL_DB_PASS')
     )
-    db.execute("begin")
     db.execute("delete from station")
     
-    # split the easting, northing, and seconds on each line
-    stations = (line.split() for line in stations)
+    for (i, line) in enumerate(stations):
+        print "populate_stations.py:", line.strip()
 
-    for (i, (text_id, osgbx, osgby, c)) in enumerate(stations):
+        # split the NPTDR id, easting, northing, and seconds on each line
+        (text_id, osgbx, osgby, c) = line.split()
+
         (osgbx, osgby, c) = (int(osgbx), int(osgby), int(c))
         mercx, mercy = bng2gym(osgbx, osgby)
         
@@ -82,12 +83,8 @@ if __name__ == '__main__':
             db.execute(sql_command, (text_id, osgbx, osgby, mercx, mercy, c))
 
         except postgres.IntegrityError, e:
-            print (i, (osgbx, osgby, c))
+            print "IntegrityError", (i, (osgbx, osgby, c))
             continue
-
-#        except postgres.ProgrammingError, e:
-#            db = get_db_cursor(database='mysociety_iso', host='geo.stamen', user='mysociety')
-#            continue
 
         else:
             db.execute('COMMIT')
