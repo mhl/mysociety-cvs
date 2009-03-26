@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.10 2009-03-26 15:45:32 francis Exp $
+-- $Id: schema.sql,v 1.11 2009-03-26 17:54:16 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user Postgres:
@@ -23,7 +23,7 @@
 
 -- Every station
 create table station (
-    id serial not null primary key,
+    id integer not null primary key,
     text_id text not null, -- identifier from NPTDR
 
     connectedness   integer not null,

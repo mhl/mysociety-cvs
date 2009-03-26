@@ -17,7 +17,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.7 2009-03-26 15:17:34 francis Exp $
+$Id: populate_stations.py,v 1.8 2009-03-26 17:54:15 francis Exp $
 """
 import os
 import sys
@@ -68,20 +68,20 @@ if __name__ == '__main__':
         #print "populate_stations.py:", line.strip()
 
         # split the NPTDR id, easting, northing, and seconds on each line
-        (text_id, osgbx, osgby, c) = line.split()
+        (id, text_id, osgbx, osgby, c) = line.split()
 
         (osgbx, osgby, c) = (int(osgbx), int(osgby), int(c))
         mercx, mercy = bng2gym(osgbx, osgby)
         
         try:
             sql_command = """INSERT INTO station
-                          (text_id, position_osgb, position_merc, connectedness)
+                          (id, text_id, position_osgb, position_merc, connectedness)
                           VALUES(%s,
                             SetSRID(MakePoint(%s, %s), 27700),
                             SetSRID(MakePoint(%s, %s), 900913),
                             %s
                           )"""
-            db.execute(sql_command, (text_id, osgbx, osgby, mercx, mercy, c))
+            db.execute(sql_command, (id, text_id, osgbx, osgby, mercx, mercy, c))
 
         except postgres.IntegrityError, e:
             print "IntegrityError", (i, (osgbx, osgby, c))
