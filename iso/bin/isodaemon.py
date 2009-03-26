@@ -39,37 +39,66 @@ to places in the UK. It requires ../conf/general file for configuration.
 --d
 ''')
 parser.add_option('--nodetach', action='store_true', dest="nodetach", help='Stops it detaching from the terminal')
-parser.add_option('--nolog', action='store_true', dest="nolog", help='Log to stdout/stderr instead of the logfile')
+parser.add_option('--nolog', action='store_true', dest="nolog", help='Log to stdout instead of the logfile')
+
+def my_readline(p):
+    line = p.stdout.readline().strip()
+    if line != '':
+        print "\t" + line
+    return line
 
 (options, args) = parser.parse_args()
-def do_plan(p, end_min, start_min, e, n):
-    p.stdin.write("plan %d %d %d %d\n" % (end_min, start_min, e, n))
-    line = p.stdout.readline()
+def do_binplan(p, outfile, end_min, start_min, station_text_id):
+    print "making route", outfile, end_min, start_min, station_text_id
+    outfile_new = outfile + ".new"
+
+    # cause C++ program to do route finding
+    p.stdin.write("binplan %s %d %d %s\n" % (outfile_new, end_min, start_min, station_text_id))
+    line = my_readline(p)
     assert re.match('target location', line)
+
+    # wait for it to finish
+    route_finding_time_taken = None
     while True:
-        line = p.stdout.readline()
+        line = my_readline(p)
         if line == '': # EOF
             break
+
+        # have finished if we get a time taken
         match = re.match('route finding took: ([0-9.]+) secs', line)
+        route_finding_time_taken = match.groups()[0]
         if match:
             break
-        #print line
-    time_taken = match.groups()[0]
-    return time_taken
+
+    # also shows binary time taken
+    line = my_readline(p)
+    match = re.match('binary output took: ([0-9.]+) secs', line)
+    output_time_taken = match.groups()[0]
+
+    # move file into place
+    if os.path.exists(outfile):
+        os.remove(outfile)
+    os.rename(outfile_new, outfile)
+
+    # return times
+    print "made route", outfile
+    return (float(route_finding_time_taken), float(output_time_taken))
 
 def do_main_program():
-    while True:
-        print "do_main_program"
-        pass
+    print "isodaemon.py started"
+
+    print "loading timetable data into fastplan-coopt"
     p = subprocess.Popen(['./fastplan-coopt', fastindex], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    line = p.stdout.readline()
+    line = my_readline(p)
     assert re.match('loading took', line)
 
     while True:
-        time_taken = do_plan(p, 540, 0, 450445, 207017)
-        print "done route in", time_taken
+        (route_finding_time_taken, output_time_taken) = do_binplan(p, "/tmp/moo.iso", 540, 0, 5157)
 
-logout = open(logfile, 'w')
+if options.nolog:
+    logout = sys.stdout
+else:
+    logout = open(logfile, 'w')
 
 # XXX no locking that I like yet :)
 #ourlockfile = daemon.pidlockfile.PIDLockFile
@@ -78,15 +107,18 @@ logout = open(logfile, 'w')
 
 context = daemon.DaemonContext(
     stdout=logout, stderr=logout,
-    detach_process=(not options.nodetach)
+    detach_process=(not options.nodetach),
+    working_directory=os.path.abspath(os.path.dirname(sys.argv[0]))
 )
+
 with context:
-    i = 1
-    while True:
-        i = i + 1
-        sys.stdout.write("we are there " + repr(i) + "\n")
-        sys.stderr.write("error " + repr(i) + "\n")
-        sys.stdout.flush()
+    do_main_program()
+#    i = 1
+#    while True:
+#        i = i + 1
+#        sys.stdout.write("we are there " + repr(i) + "\n")
+#        sys.stderr.write("error " + repr(i) + "\n")
+#        sys.stdout.flush()
 
 
 

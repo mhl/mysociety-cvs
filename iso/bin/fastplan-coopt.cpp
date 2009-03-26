@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.3 2009-03-26 09:40:45 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.4 2009-03-26 11:08:57 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -79,6 +79,7 @@ int main(int argc, char * argv[]) {
             std::string target_location_text_id = arg4;
     
             LocationID target_location_id = atco.locations_by_text_id[target_location_text_id];
+            fprintf(stdout, "target location: %d %s\n", target_location_id, target_location_text_id.c_str());
 
             // Do route finding
             atco.do_dijkstra(

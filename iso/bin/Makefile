@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.6 2009-03-26 09:40:45 francis Exp $
+# $Id: Makefile,v 1.7 2009-03-26 11:08:57 francis Exp $
 #
 
 CFLAGS = -Wall -O2 -fno-exceptions -fno-rtti
@@ -13,7 +13,7 @@ CFLAGS_WITH_ROUTE = -Wall -O2 -DOUTPUT_ROUTE_DETAILS
 CFLAGS_DEBUG = -Wall -g -DDEBUG -DOUTPUT_ROUTE_DETAILS
 CFLAGS_PROFILE = ${CFLAGS} -pg
 
-BINARIES=fastplan fastplan-with-route fastplan-debug fastplan-profile fastplan-coopt stationlist
+BINARIES=fastplan fastplan-with-route fastplan-debug fastplan-profile fastplan-coopt fastplan-coopt-debug stationlist
 
 CPP = /usr/bin/g++
 
@@ -42,8 +42,13 @@ fastplan-profile: ${FASTPLAN_DEPEND}
 #########################################################################
 # Special version of planner for Python daemon to talk to
 
-fastplan-coopt: fastplan-coopt.cpp Makefile ../cpplib/makeplan.h ../../cpplib/mysociety_error.h
+FASTPLAN_COOPT_DEPEND=fastplan-coopt.cpp Makefile ../cpplib/makeplan.h ../../cpplib/mysociety_error.h
+
+fastplan-coopt: ${FASTPLAN_COOPT_DEPEND}
 	$(CPP) $(CFLAGS) fastplan-coopt.cpp -o fastplan-coopt
+
+fastplan-coopt-debug: ${FASTPLAN_COOPT_DEPEND}
+	$(CPP) $(CFLAGS_DEBUG) fastplan-coopt.cpp -o fastplan-coopt-debug
 
 #########################################################################
 # Just outputs list of stations and connectivity measure
