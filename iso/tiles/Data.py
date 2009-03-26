@@ -47,7 +47,7 @@ def get_place_times(map_id, tile, db, log, tmpwork):
     db_results = db.fetchall()
 #    raise Exception(repr(db_results))
 
-    # look up each of those statinos in the binary distances .iso file made by isodaemon.py
+    # look up each of those stations in the binary distances .iso file made by isodaemon.py
     iso_file = tmpwork + "/" + repr(map_id) + ".iso"
     isof = open(iso_file, 'rb')
     place_times = []
@@ -59,7 +59,7 @@ def get_place_times(map_id, tile, db, log, tmpwork):
         tim = struct.unpack("h", tim_bytes)[0]
         place_times.append((x, y, tim))
 
-    raise Exception(repr(place_times))
+#    raise Exception(repr(place_times))
 
     if log:
         print >> log, len(place_times), 'place-times within (%d, %d ... %d, %d) at zoom %d' % (xmin, ymin, xmax, ymax, tile.z)

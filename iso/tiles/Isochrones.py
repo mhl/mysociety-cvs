@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.21 2009-03-26 15:17:34 francis Exp $
+$Id: Isochrones.py,v 1.22 2009-03-26 15:38:59 francis Exp $
 """
 import os
 import sys
@@ -126,6 +126,7 @@ def draw_tile(points, tile, log):
     
     # add each found data point in turn, offseting station cones by base station time
     for (x, y, t) in points:
+        x, y = transform(x, y)
         draw_station(array, station_cone + t, station_mask, int(x), int(y))
 
     points_time = time.time() - points_start
