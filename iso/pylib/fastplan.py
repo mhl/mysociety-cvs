@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.11 2009-03-13 16:28:49 francis Exp $
+# $Id: fastplan.py,v 1.12 2009-03-26 09:39:28 francis Exp $
 #
 
 import logging
@@ -73,13 +73,17 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         # see if we already got this one
         if item.location in self.location_to_fastix:
             return
+
+        # we count here, so the ids don't change if we do find a grid reference
+        # for stations which miss one later
+        self.location_c += 1
+
         # if it has no grid reference, give up on it
         if item.additional.grid_reference_easting <= 0 or item.additional.grid_reference_northing <= 0:
             logging.warn("location %s doesn't have grid coordinates, dropping it" % (item.location))
             return
 
         # output it
-        self.location_c += 1
         self.location_to_fastix[item.location] = self.location_c
         self._pack(self.file_locations, "=ih%dsii" % len(item.location), self.location_c, len(item.location), item.location, item.additional.grid_reference_easting, item.additional.grid_reference_northing)
 
