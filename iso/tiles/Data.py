@@ -56,6 +56,8 @@ def get_place_times(map_id, tile, db, log, tmpwork):
         # in order of location id, so we can just seek by location id
         isof.seek(id * 2)
         tim_bytes = isof.read(2)
+	if len(tim_bytes) != 2:
+		raise Exception("failed to unpack x:%s y:%s station id:%s map id: %s bytes:%s" % (repr(x), repr(y), repr(id), repr(map_id), repr(tim_bytes)))
         tim = struct.unpack("h", tim_bytes)[0]
         if tim != -1:
             secs = tim * 60 
