@@ -20,7 +20,6 @@ create table station (
 );
 create unique index station_text_id_idx on station(text_id);
 create index station_minimum_zoom_idx on station(minimum_zoom);
-
 -- SRID 27700 = OSGB 1936 / British National Grid
 select AddGeometryColumn('', 'station', 'position_osgb', 27700, 'POINT', 2);
 -- SRID 900913 = Spherical mercator
@@ -55,6 +54,11 @@ create table map (
 
 --  target_station integer not null references station(id)
 );
+
+grant all on table station to col;
+grant all on table station_id_seq to col;
+grant all on table map to col;
+grant all on table map_id_seq to col;
 
 
 -- SELECT * FROM geotable WHERE ST_DWithin(geocolumn, 'POINT(1000 1000)', 100.0);
