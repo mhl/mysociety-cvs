@@ -40,7 +40,7 @@ create table map (
     working_server text, -- which machine/process is making it
 
     -- Parameters used to make the map
-    target_station integer not null references station(id),
+    target_station_id integer not null references station(id),
     target_latest integer not null, -- mins after midnight to arrive by
     target_earliest integer not null, -- mins after midnight to go back to
     target_date date not null
@@ -60,4 +60,6 @@ grant all on table map_id_seq to col;
 -- col=# select AsText(ST_Transform(ST_SetSRID(GeomFromText('POINT(-1.78103 51.09168)'), 4326) , 27700));
 -- http://www.nabble.com/SRID-tranformations-(OSGB-1936)-td20096957.html
 
+-- insert into map values (1, now(), 'new', null, 5157, 540, 0, '2008-10-07');
+--  340002053CR is 5157 
 
