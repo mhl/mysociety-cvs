@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.35 2009-03-26 15:55:36 matthew Exp $
+# $Id: index.cgi,v 1.36 2009-03-26 16:04:16 matthew Exp $
 #
 
 import sha
@@ -84,7 +84,8 @@ def map(text_id):
     db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station
         WHERE text_id = %s FOR UPDATE''', (text_id,))
     row = db.fetchone()
-    target_station_id, lat, lon = row
+    target_station_id, easting, northing = row
+    lat, lon = national_grid_to_wgs84(easting, northing)
 
     # XXX These data are all fixed for now
     target_latest = 540
