@@ -6,12 +6,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.33 2009-03-26 15:49:00 matthew Exp $
+# $Id: index.cgi,v 1.34 2009-03-26 15:53:10 matthew Exp $
 #
 
 import sha
 import re
 import sys
+import os
 import os.path
 import traceback
 sys.path.append("../../pylib")
@@ -166,6 +167,8 @@ while fcgi.isFCGI():
             continue
 
         footer = template('footer')
+	for k, v in os.environ.items():
+	    footer += '%s:%s<br>' % (k,v)
         header = template('header', {
             'postcode': fs.getfirst('pc', ''),
             'refresh': response.refresh and '<meta http-equiv="refresh" content="5">' or '',
