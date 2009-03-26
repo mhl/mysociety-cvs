@@ -33,7 +33,7 @@ mkdir $TMP_OUTPUT
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT fastcalc
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT --fastplanbin="../bin/fastplan-with-route" fastplan
 # ... run Python planner
-./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT slowplan
+./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT slowplan --loglevel=INFO
 # don't compare the full routes (they can contain differences when two journeys
 # between the same two places take the same amount of time), just the times in
 # minutes.
@@ -44,7 +44,7 @@ then
     echo "Failed test - C++ and Python planners differ in output, see in $TMP_OUTPUT/{slow,fast}-routes.txt"
     exit 1
 fi
-#rm -fr $TMP_OUTPUT
+rm -fr $TMP_OUTPUT
 
 
 
