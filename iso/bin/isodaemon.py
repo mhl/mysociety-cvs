@@ -22,7 +22,7 @@ import optparse
 sys.path.append("../../pylib")
 
 import daemon # see PEP 3143 for documentation
-import lockfile
+import daemon.pidlockfile
 import mysociety.config
 
 mysociety.config.set_file("../conf/general")
@@ -69,16 +69,15 @@ def do_main_program():
         time_taken = do_plan(p, 540, 0, 450445, 207017)
         print "done route in", time_taken
 
-login = open('/dev/null', 'r')
 logout = open(logfile, 'w')
 
-context = daemon.DaemonContext(
-# XXX don't use this lockfile (symlink based locking) to lock, we want
-# fcntl/lockf type locking so it automatically unlocks when process dies
+# XXX no locking that I like yet :)
+#ourlockfile = daemon.pidlockfile.PIDLockFile
+#ourlockfile.path = pidfile
 #    pidfile=lockfile.FileLock(pidfile), 
-    stdout=logout,
-    stderr=logout,
-    stdin=login,
+
+context = daemon.DaemonContext(
+    stdout=logout, stderr=logout,
     detach_process=(not options.nodetach)
 )
 with context:
