@@ -135,7 +135,7 @@ def do_main_program():
         if row == None:
             db.execute("rollback")
             # wait a bit, so don't thrash the database
-            print stamp(), "nothing to do, sleeping 5 seconds"
+            #print stamp(), "nothing to do, sleeping 5 seconds"
             time.sleep(5)
             continue
 
