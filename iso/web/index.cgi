@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.24 2009-03-26 12:03:46 matthew Exp $
+# $Id: index.cgi,v 1.25 2009-03-26 12:06:15 matthew Exp $
 #
 
 import sha
@@ -60,7 +60,7 @@ def lookup(pc):
     lon = f['wgs84_lon']
 
     q = db.cursor()
-    q.execute('''SELECT id FROM station WHERE
+    q.execute('''SELECT text_id FROM station WHERE
         position_osgb && Expand('POINT(%d %d)'::geometry, 50000)
 	AND Distance(position_osgb, 'POINT(%d %d)') < 50000''' % (E, N, E, N))
     row = q.fetchone()
@@ -69,7 +69,7 @@ def lookup(pc):
             'error': 'Could not find a station or bus stop :('
         })
 
-    return Response(status=302, url='/station/%d' % row['id'])
+    return Response(status=302, url='/station/%s' % row['text_id'])
 
 def map(id):
     global page_vars
