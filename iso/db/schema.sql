@@ -1,3 +1,14 @@
+-- schema.sql:
+-- Schema for Contours of Life database.
+--
+-- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+-- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
+--
+-- $Id: schema.sql,v 1.10 2009-03-26 15:45:32 francis Exp $
+--
+
+-- The following must be done first to set up PostGIS, as user Postgres:
+
 -- CREATE FUNCTION plpgsql_call_handler()
 --         RETURNS OPAQUE AS '$libdir/plpgsql' LANGUAGE 'C';
 -- CREATE TRUSTED PROCEDURAL LANGUAGE 'plpgsql' HANDLER plpgsql_call_handler
