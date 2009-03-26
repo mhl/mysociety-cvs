@@ -6,13 +6,12 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.34 2009-03-26 15:53:10 matthew Exp $
+# $Id: index.cgi,v 1.35 2009-03-26 15:55:36 matthew Exp $
 #
 
 import sha
 import re
 import sys
-import os
 import os.path
 import traceback
 sys.path.append("../../pylib")
@@ -130,6 +129,7 @@ def main(fs):
 
 def template(name, vars={}):
     template = slurp_file('../templates/%s.html' % name)
+    vars['self'] = os.environ.get('REQUEST_URI', '')
     template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), '')), True), template)
     template = re.sub('{{ ([a-z_]*)\|safe }}', lambda x: str(vars.get(x.group(1), '')), template)
     return template
@@ -167,8 +167,6 @@ while fcgi.isFCGI():
             continue
 
         footer = template('footer')
-	for k, v in os.environ.items():
-	    footer += '%s:%s<br>' % (k,v)
         header = template('header', {
             'postcode': fs.getfirst('pc', ''),
             'refresh': response.refresh and '<meta http-equiv="refresh" content="5">' or '',
