@@ -6,23 +6,30 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.27 2009-03-26 12:14:32 matthew Exp $
+# $Id: index.cgi,v 1.28 2009-03-26 13:07:27 matthew Exp $
 #
 
 import sha
 import re
 import sys
 import os.path
+import traceback
 sys.path.append("../../pylib")
 import fcgi, cgi
-from pyPgSQL import PgSQL
+import psycopg2 as postgres
 
 import mysociety.config
 import mysociety.mapit
 mysociety.config.set_file("../conf/general")
 from mysociety.rabx import RABXException
 
-db = PgSQL.connect(mysociety.config.get('COL_DB_HOST') + ':' + mysociety.config.get('COL_DB_PORT') + ':' + mysociety.config.get('COL_DB_NAME') + ':' + mysociety.config.get('COL_DB_USER') + ':' + mysociety.config.get('COL_DB_PASS'))
+db = postgres.connect(
+            host=mysociety.config.get('COL_DB_HOST'),
+            port=mysociety.config.get('COL_DB_PORT'),
+            database=mysociety.config.get('COL_DB_NAME'),
+            user=mysociety.config.get('COL_DB_USER'),
+            password=mysociety.config.get('COL_DB_PASS')
+).cursor()
 
 class Response(object):
     def __init__(self, template='', vars={}, status=200, url='', refresh=False, id=''):
@@ -59,47 +66,59 @@ def lookup(pc):
     lat = f['wgs84_lat']
     lon = f['wgs84_lon']
 
-    q = db.cursor()
-    q.execute('''SELECT text_id FROM station WHERE
+    db.execute('''SELECT text_id FROM station WHERE
         position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
 	AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000''' % (E, N, E, N))
-    row = q.fetchone()
+    row = db.fetchone()
     if not row:
         return Response('index', {
             'error': 'Could not find a station or bus stop :('
         })
 
-    return Response(status=302, url='/station/%s' % row['text_id'])
+    return Response(status=302, url='/station/%s' % row[0])
 
-def map(id):
-    global page_vars
+def map(text_id):
+    db.execute('BEGIN')
+    db.execute('SELECT id FROM station WHERE text_id = %s FOR UPDATE', (text_id,))
+    target_station_id = db.fetchone()[0]
+
+    # XXX These data are all fixed for now
+    target_latest = 540
+    target_earliest = 0
+    target_date = '2008-10-07'
+
+    db.execute('''SELECT id FROM map WHERE target_station_id = %s
+        AND target_latest = %s AND target_earliest = %s AND target_date = %s''', (target_station_id, target_latest, target_earliest, target_date))
+    map = db.fetchone()
+    if map is None:
+        # Start off generation of map!
+	db.execute("SELECT nextval('map_id_seq')")
+	map_id = db.fetchone()[0]
+	db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
+        db.execute('COMMIT')
+    else:
+        map_id = map[0]
+        db.execute('ROLLBACK')
 
     tmpwork = mysociety.config.get('TMPWORK')
-    file = os.path.join(tmpwork, id)
+    file = os.path.join(tmpwork, str(map_id))
     if os.path.exists(file + ".iso"):
         # We've got a generated file, let's show the map!
         return Response('map', {
             'centre_lat': lat,
             'centre_lon': lon,
-            'tile_id': id + ".txt"
+            'tile_id': map_id,
         }, id='map')
 
-    # Call out to tile generation
-    binarycache = os.path.join(tmpwork, "fastindex-oxford-2008-10-07")
-    cmd = "../bin/fastplan %s %s 540 coordinate 0 %d %d" % (binarycache, file, E, N)
-    ret = os.system(cmd)
-    if ret != 0:
-        raise Exception("index.cgi: Error code from command: " + cmd)
-
+    # Please wait...
     return Response('map-pleasewait', {
-        'postcode': pc
     }, refresh=True)
     
 def main(fs):
     if 'pc' in fs:
         return lookup(fs.getfirst('pc'))
-    elif 'id' in fs:
-        return map(fs.getfirst('id'))
+    elif 'station_id' in fs:
+        return map(fs.getfirst('station_id'))
     return Response('index')
 
 # Functions
@@ -146,6 +165,8 @@ while fcgi.isFCGI():
         req.out.write("Content-Type: text/plain\r\n\r\n")
         req.out.write("Sorry, we've had some sort of problem.\n\n")
         req.out.write(str(e) + "\n")
+	traceback.print_exc()
 
+    db.execute('ROLLBACK')
     req.Finish()
 
