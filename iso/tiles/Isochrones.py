@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.26 2009-03-27 15:30:27 matthew Exp $
+$Id: Isochrones.py,v 1.27 2009-03-27 17:42:23 matthew Exp $
 """
 import os
 import sys
@@ -65,8 +65,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
         """
         """
         # open a log file, or not, either way is cool
-        if self.iso_tile_log:
-            log = open(self.iso_tile_log, 'a')
+        log = self.iso_tile_log and open(self.iso_tile_log, 'a') or None
         
         if self.map_id is None:
             raise Exception('self.map_id is missing, did you forget to call updatePathInfo()?')

@@ -35,7 +35,11 @@ def get_place_times(map_id, tile, db, log, tmpwork):
     ymin, ymax = min(ymin, ymax), max(ymin, ymax)
     
     # adjust by 1800 meters
+    xmin, ymin = gym2bng(xmin, ymin)
+    xmax, ymax = gym2bng(xmax, ymax)
     xmin, ymin, xmax, ymax = xmin - 1800, ymin - 1800, xmax + 1800, ymax + 1800
+    xmin, ymin = bng2gym(xmin, ymin)
+    xmax, ymax = bng2gym(xmax, ymax)
 
     # look at stations in database to find out which are on this tile
     db.execute("""SELECT X(position_merc), Y(position_merc), id
