@@ -81,34 +81,10 @@ GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=
 def bng2gym(x, y):
     """ Project from British National Grid to spherical mercator
     """
-    return GYM(*BNG(x, y, inverse=True))
+    return pyproj.transform(BNG, GYM, x, y)
 
 def gym2bng(x, y):
     """ Project from spherical mercator to British National Grid
     """
-    return BNG(*GYM(x, y, inverse=True))
+    return pyproj.transform(GYM, BNG, x, y)
 
-if __name__ == '__main__':
-    # if you run this on the command line, you get to put stuff in the database
-    map_id = int(sys.argv[1])
-    place_times = open(sys.argv[2], 'r')
-    db = get_db_cursor(database='mysociety_iso', host='geo.stamen', user='mysociety')
-    
-    # split the easting, northing, and seconds on each line
-    place_times = (line.split() for line in place_times)
-
-    # convert them all to numbers
-    place_times = ((float(x), float(y), int(t)) for (x, y, t) in place_times)
-    
-    for (i, (osgbx, osgby, t)) in enumerate(place_times):
-        mercx, mercy = bng2gym(osgbx, osgby)
-        
-        db.execute("""INSERT INTO place_time
-                      (map_id, minutes_to_target, position_osgb, position_merc)
-                      VALUES(%d, %d, SetSRID(MakePoint(%.9f, %.9f), 27700), SetSRID(MakePoint(%.9f, %.9f), 900913))""" \
-                    % (map_id, t, osgbx, osgby, mercx, mercy))
-
-        if i % 1000 == 0:
-            print >> sys.stderr, i
-
-    db.execute('COMMIT')

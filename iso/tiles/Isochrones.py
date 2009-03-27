@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.27 2009-03-27 17:42:23 matthew Exp $
+$Id: Isochrones.py,v 1.28 2009-03-27 23:11:10 matthew Exp $
 """
 import os
 import sys
@@ -13,7 +13,6 @@ import os.path
 import StringIO
 
 import numpy
-import pyproj
 import TileCache
 import PIL.Image
 import Cone
