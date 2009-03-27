@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.38 2009-03-27 10:04:43 matthew Exp $
+# $Id: index.cgi,v 1.39 2009-03-27 10:09:46 matthew Exp $
 #
 
 import sha
@@ -123,7 +123,7 @@ def map(text_id):
     # Please wait...
     return Response('map-pleasewait', {
         'state': state,
-    }, refresh=True)
+    }, refresh=True, id='map-wait')
     
 def main(fs):
     if 'pc' in fs:
