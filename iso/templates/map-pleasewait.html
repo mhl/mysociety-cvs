@@ -1,6 +1,7 @@
-<p>Your map is waiting to be made; there are <strong>{{ state.ahead }} maps
-in front</strong> of yours in a queue of {{ state.new }}. 
-Currently, {{ state.working }} maps are being made.</p>
+<p>Your map is waiting to be made; there {{ state.ahead|pluralize:"is,are" }}
+<strong>{{ state.ahead }} map{{ state.ahead|pluralize }} in front</strong> of
+yours in a queue of {{ state.new }}. 
+Currently, {{ state.working }} map{{ state.working|pluralize:" is,s are" }} being made.</p>
 
 <p>This page will automatically refresh until it is done; if this doesn&rsquo;t
 work in your browser, please wait a few seconds and then
