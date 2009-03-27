@@ -152,7 +152,7 @@ def do_main_program():
 
         (route_finding_time_taken, output_time_taken) = do_binplan(p, tmpwork + "/%d.iso" % int(id), target_latest, target_earliest, target_station_text_id)
 
-        db.execute("update map set state = 'complete' where id = %d", (id,))
+        db.execute("update map set state = 'complete' where id = %(id)s", dict(id=id))
         db.execute("commit")
 
 if options.nolog:
