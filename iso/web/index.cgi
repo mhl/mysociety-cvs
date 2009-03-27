@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.41 2009-03-27 14:02:40 francis Exp $
+# $Id: index.cgi,v 1.42 2009-03-27 16:22:17 matthew Exp $
 #
 
 import sha
@@ -125,14 +125,14 @@ def map(text_id):
     state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
     for row in rows:
         state[row[0]] = row[1]
-    db.execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
+    db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
     state['ahead'] = db.fetchone()[0]
 
     # Please wait...
     if current_state == 'working':
         return Response('map-working', { 'state' : state, 'server' : working_server }, refresh=True, id='map-wait')
     elif current_state == 'error':
-        return Response('map-error', { 'map_id' : map_id }, refresh=False, id='map-wait')
+        return Response('map-error', { 'map_id' : map_id }, id='map-wait')
     elif current_state == 'new':
         return Response('map-pleasewait', { 'state': state }, refresh=True, id='map-wait')
     else:
@@ -147,12 +147,25 @@ def main(fs):
 
 # Functions
 
+def pluralize(m, vars):
+    if m.group('lookup'):
+        n = vars.get(m.group('var'), []).get(m.group('lookup'), 0)
+    else:
+        n = vars.get(m.group('var'), 0)
+    singular = m.group('singular') or ''
+    plural = m.group('plural') or 's'
+    if n==1:
+        return singular
+    return plural
+
 def template(name, vars={}):
     template = slurp_file('../templates/%s.html' % name)
     vars['self'] = os.environ.get('REQUEST_URI', '')
     template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), '')), True), template)
     template = re.sub('{{ ([a-z_]*)\.([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), []).get(x.group(2), '')), True), template)
     template = re.sub('{{ ([a-z_]*)\|safe }}', lambda x: str(vars.get(x.group(1), '')), template)
+    template = re.sub('{{ (?P<var>[a-z_]*)(?:\.(?P<lookup>[a-z_]*))?\|pluralize(?::"(?P<singular>[^,]*),(?P<plural>[^"]*)")? }}',
+        lambda x: pluralize(x, vars), template)
     return template
 
 def slurp_file(filename):
