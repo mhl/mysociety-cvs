@@ -6,7 +6,7 @@ read_conf ../conf/general
 cd ../
 
 # make tilecache.cfg file
-cat tiles/tilecache.cfg-incvs | sed "s/HOSTNAME/$OPTION_COL_DB_HOST/; s/PORT/$OPTION_COL_DB_PORT/; s/DATABASE/$OPTION_COL_DB_NAME/; s/USERNAME/$OPTION_COL_DB_USER/; s/PASSWORD/$OPTION_COL_DB_PASS/; s#TMPWORK#$OPTION_TMPWORK#; s#/tmp/tilecache#$OPTION_TILECACHE_DIR#; " > tiles/tilecache.cfg.new
+cat tiles/tilecache.cfg-incvs | sed "s/HOSTNAME/$OPTION_COL_DB_HOST/; s/PORT/$OPTION_COL_DB_PORT/; s/DATABASE/$OPTION_COL_DB_NAME/; s/USERNAME/$OPTION_COL_DB_USER/; s/PASSWORD/$OPTION_COL_DB_PASS/; s#TMPWORK#$OPTION_TMPWORK#; s#/tmp/tilecache#$OPTION_TILECACHE_DIR#; s#ISOTILELOG#$OPTION_ISO_TILE_LOG#;" > tiles/tilecache.cfg.new
 mv tiles/tilecache.cfg.new tiles/tilecache.cfg
 
 

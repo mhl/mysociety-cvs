@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.23 2009-03-26 16:59:53 francis Exp $
+$Id: Isochrones.py,v 1.24 2009-03-27 13:07:35 francis Exp $
 """
 import os
 import sys
@@ -28,9 +28,10 @@ class TileLayer(TileCache.Layer.MetaLayer):
       {'name': 'pgsql_username', 'description': 'PostGIS username.'},
       {'name': 'pgsql_password', 'description': 'PostGIS password.'},
       {'name': 'tmpwork', 'description': 'Directory where iso files are put.'},
+      {'name': 'iso_tile_log', 'description': 'Log file, or none for none'},
     ] + TileCache.Layer.MetaLayer.config_properties 
     
-    def __init__(self, name, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, tmpwork=None, **kwargs):
+    def __init__(self, name, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, tmpwork=None, iso_tile_log=None, **kwargs):
         """ call super.__init__, and store some other details
         """
         self.basename = name
@@ -42,6 +43,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
         self.username = pgsql_username
         self.password = pgsql_password
         self.tmpwork = tmpwork
+        self.iso_tile_log = iso_tile_log
 
         TileCache.Layer.MetaLayer.__init__(self, name, **kwargs)
         self.init_kwargs = kwargs
@@ -60,7 +62,8 @@ class TileLayer(TileCache.Layer.MetaLayer):
         """
         """
         # open a log file, or not, either way is cool
-        log = open(os.path.dirname(__file__)+'/log.txt', 'a')
+        if self.iso_tile_log:
+            log = open(self.iso_tile_log, 'a')
         
         if self.map_id is None:
             raise Exception('self.map_id is missing, did you forget to call updatePathInfo()?')

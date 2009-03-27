@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.11 2009-03-26 17:54:16 francis Exp $
+-- $Id: schema.sql,v 1.12 2009-03-27 13:07:35 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user Postgres:
@@ -47,8 +47,11 @@ create table map (
         state = 'new'
         or state = 'working'
         or state = 'complete'
+        or state = 'error'
     ),
-    working_server text, -- which machine/process is making it
+    working_server text, -- which isodaemon machine/pid is working / worked on it
+    working_start timestamp, -- when an isodaemon started working on it
+    working_took float, -- wall clock time for route finding part in seconds
 
     -- Parameters used to make the map
     target_station_id integer not null references station(id),
