@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.25 2009-03-27 14:18:57 francis Exp $
+$Id: Isochrones.py,v 1.26 2009-03-27 15:30:27 matthew Exp $
 """
 import os
 import sys
@@ -32,7 +32,8 @@ class TileLayer(TileCache.Layer.MetaLayer):
     ] + TileCache.Layer.MetaLayer.config_properties 
     
     def __init__(self, name, pgsql_hostname=None, pgsql_port=None, pgsql_database=None, pgsql_username=None, pgsql_password=None, tmpwork=None, iso_tile_log=None, **kwargs):
-        """ call super.__init__, and store some other details
+        """ call super.__init__, store some other details,
+            and make a permanent connection to the database
         """
         self.basename = name
         self.map_id = None
@@ -44,6 +45,8 @@ class TileLayer(TileCache.Layer.MetaLayer):
         self.password = pgsql_password
         self.tmpwork = tmpwork
         self.iso_tile_log = iso_tile_log
+
+        self.db = Data.get_db_cursor(database=self.database, port=self.port, host=self.hostname, user=self.username, password=self.password)
 
         TileCache.Layer.MetaLayer.__init__(self, name, **kwargs)
         self.init_kwargs = kwargs
@@ -69,8 +72,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
             raise Exception('self.map_id is missing, did you forget to call updatePathInfo()?')
         
         # grab points data
-        db = Data.get_db_cursor(database=self.database, port=self.port, host=self.hostname, user=self.username, password=self.password)
-        points = Data.get_place_times(self.map_id, tile, db, log, self.tmpwork)
+        points = Data.get_place_times(self.map_id, tile, self.db, log, self.tmpwork)
         
         # render a PIL image
         image = draw_tile(points, tile, log)
