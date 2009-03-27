@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.12 2009-03-27 13:07:35 francis Exp $
+-- $Id: schema.sql,v 1.13 2009-03-27 16:22:52 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user Postgres:
@@ -31,6 +31,7 @@ create table station (
 );
 create unique index station_text_id_idx on station(text_id);
 create index station_minimum_zoom_idx on station(minimum_zoom);
+create index station_connectedness_idx on station(connectedness);
 -- SRID 27700 = OSGB 1936 / British National Grid
 select AddGeometryColumn('', 'station', 'position_osgb', 27700, 'POINT', 2);
 -- SRID 900913 = Spherical mercator
