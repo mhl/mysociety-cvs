@@ -21,6 +21,8 @@ import optparse
 import psycopg2 as postgres
 import time
 import datetime
+import traceback
+import socket
 
 sys.path.append("../../pylib")
 
@@ -50,15 +52,18 @@ fastplan_bin = "./fastplan-coopt"
 if options.cooptdebug:
     fastplan_bin = "./fastplan-coopt-debug"
 
+# Used at the start of each logfile line
 def stamp():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+# Reads data from coopted C++ process, prints and returns it
 def my_readline(p):
     line = p.stdout.readline().strip()
     if line != '':
         print stamp() + "     " + line
     return line
 
+# Runs a route calculation
 def do_binplan(p, outfile, end_min, start_min, station_text_id):
     print stamp(), "making route", outfile, end_min, start_min, station_text_id
     outfile_new = outfile + ".new"
@@ -95,8 +100,10 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
     print stamp(), "made route", outfile
     return (float(route_finding_time_taken), float(output_time_taken))
 
-def do_main_program():
-    print stamp(), "isodaemon.py started"
+# Main loop getting map data
+def do_main_loop():
+    # initialisation
+    print stamp(), "isodaemon.py started main loop"
     db = postgres.connect(
             host=mysociety.config.get('COL_DB_HOST'),
             port=mysociety.config.get('COL_DB_PORT'),
@@ -105,21 +112,25 @@ def do_main_program():
             password=mysociety.config.get('COL_DB_PASS')
     ).cursor()
 
+    # load in timetable data once only
     print stamp(), "loading timetable data into fastplan-coopt"
     p = subprocess.Popen([fastplan_bin, fastindex], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     line = my_readline(p)
     assert re.match('loading took', line)
 
+    # loop, checking database for new maps to make
     while True:
-        db.execute("begin")
-
         # find something to do - we start with the map that was queued longest ago.
         offset = 0
         while True:
             try:
+                db.execute("begin")
+                # we get the row "for update" to lock it, and "nowait" so we
+                # get an exception if someone else already has it, rather than
+                # pointlessly waiting for them
                 db.execute("""select id, state, (select text_id from station where id = target_station_id), 
                                 target_latest, target_earliest, target_date from map where 
-                                state = 'new' order by created limit 1 offset %d for update nowait""" % offset)
+                                state = 'new' order by created limit 1 offset %s for update nowait""" % offset)
                 row = db.fetchone()
             except postgres.OperationalError:
                 # if someone else has the item locked, i.e. they are working on it, then we
@@ -128,31 +139,59 @@ def do_main_program():
                 offset = offset + 1
                 print stamp(), "somebody else had the item, trying offset " + str(offset)
                 continue
-
             break
 
         # if there's nothing more to do, give up
         if row == None:
             db.execute("rollback")
             # wait a bit, so don't thrash the database
-            #print stamp(), "nothing to do, sleeping 5 seconds"
             time.sleep(5)
             continue
 
         (id, state, target_station_text_id, target_latest, target_earliest, target_date) = row
+        # XXX check target_date here is same as whatever fastindex timetable file we're using
 
         # see if another instance of daemon got it
         if state != 'new':
             print stamp(), "somebody else is already working on map ", id
             db.execute("rollback")
             continue
-
-        # XXX check target_date here is same as whatever fastindex timetable file we're using
-
-        (route_finding_time_taken, output_time_taken) = do_binplan(p, tmpwork + "/%d.iso" % int(id), target_latest, target_earliest, target_station_text_id)
-
-        db.execute("update map set state = 'complete' where id = %(id)s", dict(id=id))
+    
+        # recording in the database that we are working on this
+        server = socket.gethostname() + ":" + str(os.getpid())
+        db.execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
+                dict(id=id, server=server))
         db.execute("commit")
+
+        try:
+            # actually perform the route finding
+            db.execute("begin")
+            (route_finding_time_taken, output_time_taken) = do_binplan(p, tmpwork + "/%d.iso" % int(id), target_latest, target_earliest, target_station_text_id)
+
+            # mark that we've done
+            db.execute("update map set state = 'complete', working_took = %(took)s where id = %(id)s", dict(id=id, took=route_finding_time_taken))
+            db.execute("commit")
+        except:
+            # record there was an error, so we can find out easily
+            # if the recording error doesn't work, then presumably it was a database error
+            db.execute("rollback")
+            db.execute("begin")
+            db.execute("update map set state = 'error' where id = %(id)s", dict(id=id))
+            db.execute("commit")
+            raise
+
+# Call main loop, catching any exceptions to prevent exit and restarting loop.
+# Keep this function as simple as possible, so it is unlikely to raise an
+# exception.
+def daemon_main():
+    while True:
+        try:
+            do_main_loop()
+        except: 
+            # display error, then wait for 10 seconds to stop repeated errors
+            # overwhelming things.
+            traceback.print_exc()
+            time.sleep(10)
 
 if options.nolog:
     logout = sys.stdout
@@ -173,16 +212,7 @@ context = daemon.DaemonContext(
 # Could use with here, but don't have it in Python 2.4
 #context.__enter__()
 #try:
-do_main_program()
+daemon_main()
 #finally:
 #    context.__exit__()
-
-#    i = 1
-#    while True:
-#        i = i + 1
-#        sys.stdout.write("we are there " + repr(i) + "\n")
-#        sys.stderr.write("error " + repr(i) + "\n")
-#        sys.stdout.flush()
-
-
 
