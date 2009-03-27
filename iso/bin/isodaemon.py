@@ -140,7 +140,6 @@ def do_main_program():
             continue
 
         (id, state, target_station_text_id, target_latest, target_earliest, target_date) = row
-	print stamp(), type(id)
 
         # see if another instance of daemon got it
         if state != 'new':
