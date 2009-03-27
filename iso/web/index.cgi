@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.39 2009-03-27 10:09:46 matthew Exp $
+# $Id: index.cgi,v 1.40 2009-03-27 11:08:24 matthew Exp $
 #
 
 import sha
@@ -117,7 +117,7 @@ def map(text_id):
 
     db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
     rows = db.fetchall()
-    state = {}
+    state = { 'new': 0, 'working': 0, 'complete': 0 }
     for row in rows:
         state[row[0]] = row[1]
     # Please wait...
