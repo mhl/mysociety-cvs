@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.42 2009-03-27 16:22:17 matthew Exp $
+# $Id: index.cgi,v 1.43 2009-03-27 18:23:01 matthew Exp $
 #
 
 import sha
@@ -179,7 +179,7 @@ def redirect(url):
     print "Please visit <a href='%s'>%s</a>." % (url, url)
 
 BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
-WGS = pyproj.Proj(proj='latlong', towsg84="0,0,0", ellps="WGS84", no_defs=True)
+WGS = pyproj.Proj(proj='latlong', towsg84="0,0,0", ellps="WGS84")
 
 def national_grid_to_wgs84(x, y):
     """Project from British National Grid to WGS-84 lat/lon"""
