@@ -8,7 +8,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: cull_stations.py,v 1.6 2009-03-26 17:05:26 francis Exp $
+$Id: cull_stations.py,v 1.7 2009-03-27 16:22:47 francis Exp $
 """
 import os
 import sys
@@ -66,7 +66,7 @@ if __name__ == '__main__':
                           FROM station
                           WHERE connectedness > %s
                             AND id != %s
-                            AND Within(position_merc, SetSRID(MakeBox2D(MakePoint(%s, %s), MakePoint(%s, %s)), 900913))
+                            AND (position_merc && SetSRID(MakeBox2D(MakePoint(%s, %s), MakePoint(%s, %s)), 900913))
                           LIMIT 1""" \
                         % (connectedness, id, box_ll[0], box_ll[1], box_ur[0], box_ur[1]))
 
