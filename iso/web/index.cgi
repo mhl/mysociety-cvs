@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.37 2009-03-26 16:05:50 matthew Exp $
+# $Id: index.cgi,v 1.38 2009-03-27 10:04:43 matthew Exp $
 #
 
 import sha
@@ -115,8 +115,14 @@ def map(text_id):
             'tile_id': map_id,
         }, id='map')
 
+    db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
+    rows = db.fetchall()
+    state = {}
+    for row in rows:
+        state[row[0]] = row[1]
     # Please wait...
     return Response('map-pleasewait', {
+        'state': state,
     }, refresh=True)
     
 def main(fs):
@@ -132,6 +138,7 @@ def template(name, vars={}):
     template = slurp_file('../templates/%s.html' % name)
     vars['self'] = os.environ.get('REQUEST_URI', '')
     template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), '')), True), template)
+    template = re.sub('{{ ([a-z_]*)\.([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), []).get(x.group(2), '')), True), template)
     template = re.sub('{{ ([a-z_]*)\|safe }}', lambda x: str(vars.get(x.group(1), '')), template)
     return template
 
