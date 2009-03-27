@@ -45,6 +45,7 @@ to places in the UK. It requires ../conf/general file for configuration.
 parser.add_option('--nodetach', action='store_true', dest="nodetach", help='Stops it detaching from the terminal')
 parser.add_option('--nolog', action='store_true', dest="nolog", help='Log to stdout instead of the logfile')
 parser.add_option('--cooptdebug', action='store_true', dest="cooptdebug", help='Use debug version of fastplan-coopt library')
+parser.add_option('--excesssleep', action='store_true', dest="excess_sleep", help='Pointlessly wait extra 15 seconds when making map, to help testing')
 
 (options, args) = parser.parse_args()
 
@@ -66,6 +67,8 @@ def my_readline(p):
 # Runs a route calculation
 def do_binplan(p, outfile, end_min, start_min, station_text_id):
     print stamp(), "making route", outfile, end_min, start_min, station_text_id
+    if options.excess_sleep:
+        time.sleep(15)
     outfile_new = outfile + ".new"
 
     # cause C++ program to do route finding
@@ -166,7 +169,9 @@ def do_main_loop():
         try:
             # actually perform the route finding
             db.execute("begin")
-            (route_finding_time_taken, output_time_taken) = do_binplan(p, tmpwork + "/%d.iso" % int(id), target_latest, target_earliest, target_station_text_id)
+            outfile = os.path.join(tmpwork, "%d.iso" % int(id))
+            (route_finding_time_taken, output_time_taken) = \
+                do_binplan(p, outfile, target_latest, target_earliest, target_station_text_id)
 
             # mark that we've done
             db.execute("update map set state = 'complete', working_took = %(took)s where id = %(id)s", dict(id=id, took=route_finding_time_taken))
