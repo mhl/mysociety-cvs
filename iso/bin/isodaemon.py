@@ -119,7 +119,7 @@ def do_main_program():
             try:
                 db.execute("""select id, state, (select text_id from station where id = target_station_id), 
                                 target_latest, target_earliest, target_date from map where 
-                                state = 'new' order by created limit 1 offset %s for update nowait""", str(offset))
+                                state = 'new' order by created limit 1 offset %d for update nowait""" % offset)
                 row = db.fetchone()
             except postgres.OperationalError:
                 # if someone else has the item locked, i.e. they are working on it, then we
@@ -140,6 +140,7 @@ def do_main_program():
             continue
 
         (id, state, target_station_text_id, target_latest, target_earliest, target_date) = row
+	print stamp(), type(id)
 
         # see if another instance of daemon got it
         if state != 'new':
@@ -151,7 +152,7 @@ def do_main_program():
 
         (route_finding_time_taken, output_time_taken) = do_binplan(p, tmpwork + "/%d.iso" % int(id), target_latest, target_earliest, target_station_text_id)
 
-        db.execute("update map set state = 'complete' where id = %s", str(id))
+        db.execute("update map set state = 'complete' where id = %d", (id,))
         db.execute("commit")
 
 if options.nolog:
