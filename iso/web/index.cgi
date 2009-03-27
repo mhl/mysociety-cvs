@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.40 2009-03-27 11:08:24 matthew Exp $
+# $Id: index.cgi,v 1.41 2009-03-27 14:02:40 francis Exp $
 #
 
 import sha
@@ -92,7 +92,7 @@ def map(text_id):
     target_earliest = 0
     target_date = '2008-10-07'
 
-    db.execute('''SELECT id FROM map WHERE target_station_id = %s
+    db.execute('''SELECT id, state, working_server FROM map WHERE target_station_id = %s
         AND target_latest = %s AND target_earliest = %s AND target_date = %s''', (target_station_id, target_latest, target_earliest, target_date))
     map = db.fetchone()
     if map is None:
@@ -101,8 +101,12 @@ def map(text_id):
         map_id = db.fetchone()[0]
         db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
         db.execute('COMMIT')
+        current_state = 'new'
+        working_server = None
     else:
         map_id = map[0]
+        current_state = map[1]
+        working_server = map[2]
         db.execute('ROLLBACK')
 
     tmpwork = mysociety.config.get('TMPWORK')
@@ -115,15 +119,24 @@ def map(text_id):
             'tile_id': map_id,
         }, id='map')
 
+    # Info for progress
     db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
     rows = db.fetchall()
-    state = { 'new': 0, 'working': 0, 'complete': 0 }
+    state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
     for row in rows:
         state[row[0]] = row[1]
+    db.execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
+    state['ahead'] = db.fetchone()[0]
+
     # Please wait...
-    return Response('map-pleasewait', {
-        'state': state,
-    }, refresh=True, id='map-wait')
+    if current_state == 'working':
+        return Response('map-working', { 'state' : state, 'server' : working_server }, refresh=True, id='map-wait')
+    elif current_state == 'error':
+        return Response('map-error', { 'map_id' : map_id }, refresh=False, id='map-wait')
+    elif current_state == 'new':
+        return Response('map-pleasewait', { 'state': state }, refresh=True, id='map-wait')
+    else:
+        raise Exception("unknown state " + current_state)
     
 def main(fs):
     if 'pc' in fs:
