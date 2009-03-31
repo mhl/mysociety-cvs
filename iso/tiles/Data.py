@@ -46,7 +46,7 @@ def get_place_times(map_id, tile, db, log, tmpwork):
                   FROM station
                   WHERE 
                     minimum_zoom <= %s
-                    AND Within(position_merc, SetSRID(MakeBox2D(MakePoint(%s, %s), MakePoint(%s, %s)), 900913))""" \
+                    AND (position_merc && SetSRID(MakeBox2D(MakePoint(%s, %s), MakePoint(%s, %s)), 900913))""" \
                 % (tile.z, xmin, ymin, xmax, ymax))
     db_results = db.fetchall()
 #    raise Exception(repr(db_results))
