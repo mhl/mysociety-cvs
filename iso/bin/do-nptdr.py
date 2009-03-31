@@ -141,14 +141,14 @@ if command in ['slowplan', 'fastcalc', 'fastplan']:
 
 # Output files
 if command in ['slowplan']:
-    outfile = options.output + "/nptdr-slow-%s-%d" % (options.destination, options.size)
+    outfile = os.path.join(options.output, "nptdr-slow-%s-%d" % (options.destination, options.size))
 if command in ['fastcalc', 'fastplan']:
-    outfile = options.output + "/nptdr-fast-%s-%d" % (options.destination, options.size)
+    outfile = os.path.join(options.output, "nptdr-fast-%s-%d" % (options.destination, options.size))
     # make a name for index files that depends on their values
     nptdr_files_hash = md5.new(",".join(nptdr_files)).hexdigest()[0:12]
     if not options.fastindexdir:
         options.fastindexdir = options.output
-    fastindexfile = options.fastindexdir + "/fastindex-%s-%s" % (nptdr_files_hash, target_when.date().strftime("%Y-%m-%d"))
+    fastindexfile = os.path.join(options.fastindexdir, "fastindex-%s-%s" % (nptdr_files_hash, target_when.date().strftime("%Y-%m-%d")))
 
 if options.profile:
     import cProfile
