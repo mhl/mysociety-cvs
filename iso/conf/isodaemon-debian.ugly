@@ -2,6 +2,17 @@
 #
 # !!(*= $daemon_name *)!! Start the isochrone map daemon
 
+# XXX should really require PostgreSQL in init info, not sure how to do that.
+
+### BEGIN INIT INFO
+# Provides:          !!(*= $daemon_name *)!!
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/stop isochrone map daemon.
+### END INIT INFO
+
 NAME=!!(*= $daemon_name *)!!
 DAEMON=/data/vhost/!!(*= $vhost *)!!/mysociety/iso/bin/isodaemon.py
 PIDFILE=/data/vhost/!!(*= $vhost *)!!/isodaemon.pid
