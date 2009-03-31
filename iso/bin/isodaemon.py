@@ -51,7 +51,6 @@ parser.add_option('--cooptdebug', action='store_true', dest="cooptdebug", help='
 parser.add_option('--excesssleep', action='store_true', dest="excess_sleep", help='Pointlessly wait extra 15 seconds when making map, to help testing')
 
 (options, args) = parser.parse_args()
-options.excess_sleep = True # XXX debugging only
 
 fastplan_bin = "./fastplan-coopt"
 if options.cooptdebug:
