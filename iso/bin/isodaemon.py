@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.4
 #
 # isodaemon.py:
 # Daemon to generate coordinates for isochrone maps in the background
@@ -24,6 +24,7 @@ import datetime
 import traceback
 import socket
 
+os.chdir(sys.path[0])
 sys.path.append("../../pylib")
 
 import daemon # see PEP 3143 for documentation
@@ -41,6 +42,8 @@ parser = optparse.OptionParser()
 parser.set_usage('''
 isodaemon.py is a Daemon for generating travel times by public transport
 to places in the UK. It requires ../conf/general file for configuration.
+
+Run with --help for options.
 ''')
 parser.add_option('--nodetach', action='store_true', dest="nodetach", help='Stops it detaching from the terminal')
 parser.add_option('--nolog', action='store_true', dest="nolog", help='Log to stdout instead of the logfile')
@@ -48,6 +51,7 @@ parser.add_option('--cooptdebug', action='store_true', dest="cooptdebug", help='
 parser.add_option('--excesssleep', action='store_true', dest="excess_sleep", help='Pointlessly wait extra 15 seconds when making map, to help testing')
 
 (options, args) = parser.parse_args()
+options.excess_sleep = True # XXX debugging only
 
 fastplan_bin = "./fastplan-coopt"
 if options.cooptdebug:
@@ -57,17 +61,22 @@ if options.cooptdebug:
 def stamp():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+# Write something to logfile
+def log(str):
+    print stamp(), str
+    sys.stdout.flush()
+
 # Reads data from coopted C++ process, prints and returns it
 def my_readline(p):
     line = p.stdout.readline().strip()
     if line != '':
-        print stamp() + "     " + line
+        log("     " + line)
     return line
 
 # Runs a route calculation
 def do_binplan(p, outfile, end_min, start_min, station_text_id):
-    print stamp(), "making route", outfile, end_min, start_min, station_text_id
-    if options.excess_sleep:
+    log("making route %s %d %d %s" % (outfile, end_min, start_min, station_text_id))
+    if options.excess_sleep: # for debugging daemon code
         time.sleep(15)
     outfile_new = outfile + ".new"
 
@@ -100,13 +109,13 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
     os.rename(outfile_new, outfile)
 
     # return times
-    print stamp(), "made route", outfile
+    log("made route " + outfile)
     return (float(route_finding_time_taken), float(output_time_taken))
 
 # Main loop getting map data
 def do_main_loop():
     # initialisation
-    print stamp(), "isodaemon.py started main loop"
+    log("isodaemon.py started main loop")
     db = postgres.connect(
             host=mysociety.config.get('COL_DB_HOST'),
             port=mysociety.config.get('COL_DB_PORT'),
@@ -116,7 +125,7 @@ def do_main_loop():
     ).cursor()
 
     # load in timetable data once only
-    print stamp(), "loading timetable data into fastplan-coopt"
+    log("loading timetable data into fastplan-coopt")
     p = subprocess.Popen([fastplan_bin, fastindex], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     line = my_readline(p)
     assert re.match('loading took', line)
@@ -140,7 +149,7 @@ def do_main_loop():
                 # try and find a different one to work on
                 db.execute("rollback")
                 offset = offset + 1
-                print stamp(), "somebody else had the item, trying offset " + str(offset)
+                log("somebody else had the item, trying offset " + str(offset))
                 continue
             break
 
@@ -156,7 +165,7 @@ def do_main_loop():
 
         # see if another instance of daemon got it
         if state != 'new':
-            print stamp(), "somebody else is already working on map ", id
+            log("somebody else is already working on map " + str(id))
             db.execute("rollback")
             continue
     
@@ -176,6 +185,13 @@ def do_main_loop():
             # mark that we've done
             db.execute("update map set state = 'complete', working_took = %(took)s where id = %(id)s", dict(id=id, took=route_finding_time_taken))
             db.execute("commit")
+        except SystemExit:
+            # daemon was explicitly stopped, don't mark map as error
+            db.execute("rollback")
+            db.execute("begin")
+            db.execute("update map set state = 'new' where id = %(id)s", dict(id=id))
+            db.execute("commit")
+            raise
         except:
             # record there was an error, so we can find out easily
             # if the recording error doesn't work, then presumably it was a database error
@@ -189,21 +205,39 @@ def do_main_loop():
 # Keep this function as simple as possible, so it is unlikely to raise an
 # exception.
 def daemon_main():
+    # write pidfile
+    pidout = open(pidfile, 'w')
+    pidout.write(str(os.getpid()))
+    pidout.close()
+
+    # loop, catching errors 
     while True:
         try:
             do_main_loop()
+        except SystemExit:
+            traceback.print_exc()
+            log("daemon_main: terminating")
+            break
         except: 
             # display error, then wait for 10 seconds to stop repeated errors
             # overwhelming things.
             traceback.print_exc()
+            log("daemon_main: restarting main loop")
             time.sleep(10)
 
+    # remove pidfile
+    if os.path.exists(pidfile):
+        os.remove(pidfile)
+
+# Open log file
 if options.nolog:
     logout = sys.stdout
 else:
-    logout = open(logfile, 'w')
+    logout = open(logfile, 'a')
 
-# XXX no locking that I like yet :)
+# XXX no locking that I like yet :) we do need something nice using lockf of
+# fcntl to prevent starting the daemon twice.
+# XXX see also pidfile writing part in daemon_main
 #ourlockfile = daemon.pidlockfile.PIDLockFile
 #ourlockfile.path = pidfile
 #    pidfile=lockfile.FileLock(pidfile), 
@@ -214,10 +248,12 @@ context = daemon.DaemonContext(
     working_directory=os.path.abspath(os.path.dirname(sys.argv[0]))
 )
 
-# Could use with here, but don't have it in Python 2.4
-#context.__enter__()
-#try:
-daemon_main()
-#finally:
-#    context.__exit__()
+# Could use "with" here, but we don't have it in Python 2.4 - when all servers
+# are upgraded to etch/lenny can change this.
+context.__enter__()
+try:
+    daemon_main()
+finally:
+    context.__exit__(None, None, None)
+
 
