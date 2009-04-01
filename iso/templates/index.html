@@ -1,10 +1,16 @@
 {{ error }}
 
-<p><img src="/example.png" alt="To arrive at Birmingham Art Gallery by 9am, and leave at 8:15am, you can start from many different locations, from Halesowen to Solihull. " align="right">
+<p><img id="front-example" src="/example.png" alt="To arrive at Birmingham Art Gallery by 9am, and leave at 8:15am, you can start from many different locations, from Halesowen to Solihull. ">
 Have you ever wondered where you should house hunt to get an
 acceptable commute? Or job hunt? Or where you could go for the weekend
 without spending that long on the train? Stick your postcode in this
 box, and we&rsquo;ll help.</p>
+
+<form method="get" action="/" id="pc-front">
+<label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</label>
+<input type="text" name="pc" value="{{ postcode }}" size="8" id="pc_f">
+<input type="submit" value="Go">
+</form>
 
 <!--
 <p>Examples:</p>
