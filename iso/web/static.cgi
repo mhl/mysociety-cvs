@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: static.cgi,v 1.1 2009-04-01 10:38:27 matthew Exp $
+# $Id: static.cgi,v 1.2 2009-04-01 10:46:27 matthew Exp $
 #
 
 import re
@@ -25,8 +25,9 @@ mysociety.config.set_file("../conf/general")
 from mysociety.rabx import RABXException
 
 def main(fs):
-    if 'page' in fs and fs['page'] == 'faq':
-	return Response('faq')
+    page = fs.getfirst('page')
+    if page == 'faq':
+        return Response('faq')
     return Response(status=302, url='/')
 
 # Main FastCGI loop

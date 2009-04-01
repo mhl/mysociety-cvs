@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.2 2009-04-01 10:42:56 matthew Exp $
+# $Id: page.py,v 1.3 2009-04-01 10:46:26 matthew Exp $
 #
 
 import os, re, cgi, fcgi
@@ -23,7 +23,7 @@ def fcgi_loop(main):
         req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
         if req.env.get('REQUEST_METHOD') == 'HEAD':
             req.Finish()
-            continue
+            return
 
         footer = template('footer')
         header = template('header', {
