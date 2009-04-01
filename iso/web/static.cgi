@@ -1,28 +1,17 @@
 #!/usr/bin/env python2.5
 #
-# index.cgi:
-# Main code
+# static.cgi:
+# For FAQ only at present, but other static pages sure to be along
 #
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: static.cgi,v 1.2 2009-04-01 10:46:27 matthew Exp $
+# $Id: static.cgi,v 1.3 2009-04-01 14:12:46 matthew Exp $
 #
 
-import re
-import sys
-import os.path
-import traceback
-sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
-import fcgi
-import psycopg2 as postgres
-import pyproj
-
+import sys, fcgi
+sys.path.extend(("../pylib"))
 from page import *
-import mysociety.config
-import mysociety.mapit
-mysociety.config.set_file("../conf/general")
-from mysociety.rabx import RABXException
 
 def main(fs):
     page = fs.getfirst('page')

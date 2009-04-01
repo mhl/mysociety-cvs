@@ -1,0 +1,23 @@
+{{ errors }}
+
+<h1>Contact the team</h1>
+
+<form method="post">
+
+<p>We'd love to hear what you think about this site. Just fill in the form, or
+send an email to <a href='mailto:{{ contact_email }}'>{{ contact_email }}</a>:
+
+<fieldset>
+<input type="hidden" name="submit_form" value="1">
+<div><label for="form_name">Your name:</label>
+<input type="text" name="name" id="form_name" value="{{ name }}" size="30"></div>
+<div><label for="form_email">Your&nbsp;email:</label>
+<input type="text" name="em" id="form_email" value="{{ email }}" size="30"></div>
+<div><label for="form_subject">Subject:</label>
+<input type="text" name="subject" id="form_subject" value="{{ subject }}" size="30"></div>
+<div><label for="form_message">Message:</label>
+<textarea name="message" id="form_message" rows="7" cols="50">{{ message }}</textarea></div>
+<div class="checkbox"><input type="submit" value="Post"></div>
+</fieldset>
+</form>
+
