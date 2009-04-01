@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.4 2009-04-01 15:25:30 matthew Exp $
+# $Id: page.py,v 1.5 2009-04-01 15:33:05 matthew Exp $
 #
 
 import os, re, cgi, fcgi
@@ -90,6 +90,6 @@ def slurp_file(filename):
 def validate_email(address):
     if re.match('([^()<>@,;:\\".\[\] \000-\037\177\200-\377]+(\s*\.\s*[^()<>@,;:\\".\[\] \000-\037\177\200-\377]+)*|"([^"\\\r\n\200-\377]|\.)*")\s*@\s*[A-Za-z0-9][A-Za-z0-9-]*(\s*\.\s*[A-Za-z0-9][A-Za-z0-9-]*)*$', address):
         return True
-    else
+    else:
         return False
 
