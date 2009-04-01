@@ -6,20 +6,19 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.45 2009-03-31 19:50:17 francis Exp $
+# $Id: index.cgi,v 1.46 2009-04-01 10:38:27 matthew Exp $
 #
 
-import sha
 import re
 import sys
 import os.path
 import traceback
-sys.path.append("../../pylib")
-sys.path.append("/home/matthew/lib/python")
-import fcgi, cgi
+sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
+import fcgi
 import psycopg2 as postgres
 import pyproj
 
+from page import *
 import mysociety.config
 import mysociety.mapit
 mysociety.config.set_file("../conf/general")
@@ -32,25 +31,6 @@ db = postgres.connect(
             user=mysociety.config.get('COL_DB_USER'),
             password=mysociety.config.get('COL_DB_PASS')
 ).cursor()
-
-class Response(object):
-    def __init__(self, template='', vars={}, status=200, url='', refresh=False, id=''):
-        self.template = template
-        self.vars = vars
-        self.status = status
-        self.url = url
-        self.refresh = refresh
-        self.id = id
-
-    def __str__(self):
-        if self.status == 302:
-            return "Please visit <a href='%s'>%s</a>." % (self.url, self.url)
-        return template(self.template, self.vars)
-
-    def headers(self):
-        if self.status == 302:
-            return "Status: 302 Found\r\nLocation: %s\r\n" % self.url
-        return ''
 
 def lookup(pc):
     """Given a postcode, look up the nearest station ID
@@ -145,39 +125,6 @@ def main(fs):
         return map(fs.getfirst('station_id'))
     return Response('index')
 
-# Functions
-
-def pluralize(m, vars):
-    if m.group('lookup'):
-        n = vars.get(m.group('var'), []).get(m.group('lookup'), 0)
-    else:
-        n = vars.get(m.group('var'), 0)
-    singular = m.group('singular') or ''
-    plural = m.group('plural') or 's'
-    if n==1:
-        return singular
-    return plural
-
-def template(name, vars={}):
-    template = slurp_file('../templates/%s.html' % name)
-    vars['self'] = os.environ.get('REQUEST_URI', '')
-    template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), '')), True), template)
-    template = re.sub('{{ ([a-z_]*)\.([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), []).get(x.group(2), '')), True), template)
-    template = re.sub('{{ ([a-z_]*)\|safe }}', lambda x: str(vars.get(x.group(1), '')), template)
-    template = re.sub('{{ (?P<var>[a-z_]*)(?:\.(?P<lookup>[a-z_]*))?\|pluralize(?::"(?P<singular>[^,]*),(?P<plural>[^"]*)")? }}',
-        lambda x: pluralize(x, vars), template)
-    return template
-
-def slurp_file(filename):
-    f = file(filename, 'rb')
-    content = f.read()
-    f.close()
-    return content
-
-def redirect(url):
-    print "Location: %s\r\n\r\n" % url
-    print "Please visit <a href='%s'>%s</a>." % (url, url)
-
 BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
 WGS = pyproj.Proj(proj='latlong', towgs84="0,0,0", ellps="WGS84", no_defs=True)
 
@@ -188,33 +135,6 @@ def national_grid_to_wgs84(x, y):
 
 # Main FastCGI loop
 while fcgi.isFCGI():
-    req = fcgi.Accept()
-    fs = req.getFieldStorage()
-
-    try:
-        response = main(fs)
-        if response.headers():
-            req.out.write(response.headers())
-
-        req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
-        if req.env.get('REQUEST_METHOD') == 'HEAD':
-            req.Finish()
-            continue
-
-        footer = template('footer')
-        header = template('header', {
-            'postcode': fs.getfirst('pc', ''),
-            'refresh': response.refresh and '<meta http-equiv="refresh" content="5">' or '',
-            'body_id': response.id and ' id="%s"' % response.id or '',
-        })
-        req.out.write(header + str(response) + footer)
-
-    except Exception, e:
-        req.out.write("Content-Type: text/plain\r\n\r\n")
-        req.out.write("Sorry, we've had some sort of problem.\n\n")
-        req.out.write(str(e) + "\n")
-        traceback.print_exc()
-
+    fcgi_loop(main)
     db.execute('ROLLBACK')
-    req.Finish()
 
