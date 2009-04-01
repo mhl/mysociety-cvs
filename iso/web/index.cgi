@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.47 2009-04-01 14:30:58 matthew Exp $
+# $Id: index.cgi,v 1.48 2009-04-01 15:25:30 matthew Exp $
 #
 
 import re
@@ -110,11 +110,11 @@ def map(text_id):
 
     # Please wait...
     if current_state == 'working':
-        return Response('map-working', { 'state' : state, 'server' : working_server }, refresh=True, id='map-wait')
+        return Response('map-working', { 'state' : state, 'server' : working_server }, refresh=3, id='map-wait')
     elif current_state == 'error':
         return Response('map-error', { 'map_id' : map_id }, id='map-wait')
     elif current_state == 'new':
-        return Response('map-pleasewait', { 'state': state }, refresh=True, id='map-wait')
+        return Response('map-pleasewait', { 'state': state }, refresh=2, id='map-wait')
     else:
         raise Exception("unknown state " + current_state)
     

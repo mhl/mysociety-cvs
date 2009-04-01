@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.3 2009-04-01 10:46:26 matthew Exp $
+# $Id: page.py,v 1.4 2009-04-01 15:25:30 matthew Exp $
 #
 
 import os, re, cgi, fcgi
@@ -28,7 +28,7 @@ def fcgi_loop(main):
         footer = template('footer')
         header = template('header', {
             'postcode': fs.getfirst('pc', ''),
-            'refresh': response.refresh and '<meta http-equiv="refresh" content="5">' or '',
+            'refresh': response.refresh and '<meta http-equiv="refresh" content="%d">' % response.refresh or '',
             'body_id': response.id and ' id="%s"' % response.id or '',
         })
         req.out.write(header + str(response) + footer)
@@ -86,4 +86,10 @@ def slurp_file(filename):
     content = f.read()
     f.close()
     return content
+
+def validate_email(address):
+    if re.match('([^()<>@,;:\\".\[\] \000-\037\177\200-\377]+(\s*\.\s*[^()<>@,;:\\".\[\] \000-\037\177\200-\377]+)*|"([^"\\\r\n\200-\377]|\.)*")\s*@\s*[A-Za-z0-9][A-Za-z0-9-]*(\s*\.\s*[A-Za-z0-9][A-Za-z0-9-]*)*$', address):
+        return True
+    else
+        return False
 

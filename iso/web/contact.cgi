@@ -6,12 +6,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: contact.cgi,v 1.2 2009-04-01 14:30:58 matthew Exp $
+# $Id: contact.cgi,v 1.3 2009-04-01 15:25:30 matthew Exp $
 #
 
 import re
 import sys
-import os.path
+from email.mime.text import MIMEText
+import smtplib
 sys.path.extend(("../pylib", "../../pylib"))
 import fcgi
 
@@ -35,6 +36,8 @@ def contact_submit(fs):
         errors.append('Please give your name')
     if not re.search('\S', email):
         errors.append('Please give your email')
+    elif not validate_email(email):
+        errors.append('Please give a valid email address')
     if not re.search(r'\S', subject):
         errors.append('Please give a subject')
     if not re.search(r'\S', message):
@@ -45,13 +48,20 @@ def contact_submit(fs):
 
     message = re.sub('\r\n', '\n', message)
     subject = re.sub('\r|\n', ' ', subject)
+    name = re.sub('\r|\n', ' ', name)
     postfix = '[ Sent by contact.cgi on %s. IP address %s%s. ]' % (
         os.environ.get('HTTP_HOST', 'n/a'),
         os.environ.get('REMOTE_ADDR', 'n/a'),
         os.environ.get('HTTP_X_FORWARDED_FOR', '') and ' (forwarded from '+os.environ.get('HTTP_X_FORWARDED_FOR')+')' or ''
     )
 
-    # Send email somewhere, via EvEl?
+    msg = MIMEText("%s\n\n%s" % (message, postfix))
+    msg['From'] = '%s <%s>' % (name, email)
+    msg['To'] = mysociety.config.get('CONTACT_EMAIL')
+    msg['Subject'] = 'COL message: %s' % subject
+    server = smtplib.SMTP('localhost')
+    server.sendmail(email, mysociety.config.get('CONTACT_EMAIL'), msg)
+    server.quit()
     return Response('contact-thanks')
 
 def contact_page(fs, errors = ''):
