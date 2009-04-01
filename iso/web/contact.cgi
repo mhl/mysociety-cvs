@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: contact.cgi,v 1.1 2009-04-01 14:12:46 matthew Exp $
+# $Id: contact.cgi,v 1.2 2009-04-01 14:30:58 matthew Exp $
 #
 
 import re
@@ -35,13 +35,12 @@ def contact_submit(fs):
         errors.append('Please give your name')
     if not re.search('\S', email):
         errors.append('Please give your email')
-    elif not valid_email(email):
-        errors.append('Please give a valid email address')
     if not re.search(r'\S', subject):
         errors.append('Please give a subject')
     if not re.search(r'\S', message):
         errors.append('Please write a message')
     if errors:
+        errors = '<ul id="errors"><li>%s</li></ul>' % '</li><li>'.join(errors)
         return contact_page(fs, errors)
 
     message = re.sub('\r\n', '\n', message)
@@ -59,10 +58,10 @@ def contact_page(fs, errors = ''):
     return Response('contact', {
         'errors': errors,
         'name': fs.getfirst('name', ''),
-	'email': fs.getfirst('em', ''),
-	'subject': fs.getfirst('subject', ''),
-	'message': fs.getfirst('message', ''),
-	'contact_email': mysociety.config.get('CONTACT_EMAIL'),
+        'email': fs.getfirst('em', ''),
+        'subject': fs.getfirst('subject', ''),
+        'message': fs.getfirst('message', ''),
+        'contact_email': mysociety.config.get('CONTACT_EMAIL'),
     })
 
 # Main FastCGI loop

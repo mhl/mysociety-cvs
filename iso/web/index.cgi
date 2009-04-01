@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.46 2009-04-01 10:38:27 matthew Exp $
+# $Id: index.cgi,v 1.47 2009-04-01 14:30:58 matthew Exp $
 #
 
 import re
@@ -40,7 +40,7 @@ def lookup(pc):
         f = mysociety.mapit.get_location(pc)
     except RABXException, e:
         return Response('index', {
-            'error': e
+            'error': '<div id="errors">%s</div>' % e
         })
 
     E = int(f['easting'])
@@ -54,7 +54,7 @@ def lookup(pc):
     row = db.fetchone()
     if not row:
         return Response('index', {
-            'error': 'Could not find a station or bus stop :('
+            'error': '<div id="errors">Could not find a station or bus stop :(</div>'
         })
 
     return Response(status=302, url='/station/%s' % row[0])
