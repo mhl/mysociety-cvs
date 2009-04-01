@@ -6,11 +6,12 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: static.cgi,v 1.3 2009-04-01 14:12:46 matthew Exp $
+# $Id: static.cgi,v 1.4 2009-04-01 14:14:06 matthew Exp $
 #
 
-import sys, fcgi
-sys.path.extend(("../pylib"))
+import sys
+sys.path.extend(("../pylib", "../../pylib"))
+import fcgi
 from page import *
 
 def main(fs):
