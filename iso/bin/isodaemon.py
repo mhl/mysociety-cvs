@@ -156,7 +156,7 @@ def do_main_loop():
         if row == None:
             db.execute("rollback")
             # wait a bit, so don't thrash the database
-            time.sleep(5)
+            time.sleep(2)
             continue
 
         (id, state, target_station_text_id, target_latest, target_earliest, target_date) = row
