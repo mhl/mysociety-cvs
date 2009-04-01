@@ -29,7 +29,15 @@ package org.mysociety.map.providers
         override public function getTileUrls(coord:Coordinate):Array
         {
             var mod:Coordinate = coord.copy();
+
+            // fill in coordinates into URL
             var url:String = baseURL.replace('{Z}', mod.zoom).replace('{X}', mod.column).replace('{Y}', mod.row);
+
+            // work out which subdomain to retrieve it from 
+            var worldSize:int = Math.pow(2, coord.zoom);
+            var server:String = [ 'a.', 'b.', 'c.', '' ][int(worldSize * mod.row + mod.column) % 4];
+            url = StringUtils.replace(url, { 'http://' : 'http://'+server });
+
             return [url];
         }
         

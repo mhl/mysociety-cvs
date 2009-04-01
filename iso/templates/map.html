@@ -40,7 +40,7 @@ postcode by public transport by <strong>9am</strong>.</p>
           'max_zoom':       12,
 
           // Iso tile URL and format template.
-          'iso_tile_url_base':    '/tilecache.fcgi/{{ tile_id }}/iso',
+          'iso_tile_url_base':    'http://{{ tile_web_host }}/tilecache.fcgi/{{ tile_id }}/iso',
           // {Z}, {X}, and {Y} here are replaced by the tile coordinate zoom, column and row, respectively.
           'iso_tile_url_format':  '{Z}/{X}/{Y}.png'
         };

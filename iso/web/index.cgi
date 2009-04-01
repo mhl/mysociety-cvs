@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.48 2009-04-01 15:25:30 matthew Exp $
+# $Id: index.cgi,v 1.49 2009-04-01 15:42:21 francis Exp $
 #
 
 import re
@@ -90,6 +90,7 @@ def map(text_id):
         db.execute('ROLLBACK')
 
     tmpwork = mysociety.config.get('TMPWORK')
+    tile_web_host = mysociety.config.get('TILE_WEB_HOST')
     file = os.path.join(tmpwork, str(map_id))
     if os.path.exists(file + ".iso"):
         # We've got a generated file, let's show the map!
@@ -97,6 +98,7 @@ def map(text_id):
             'centre_lat': lat,
             'centre_lon': lon,
             'tile_id': map_id,
+            'tile_web_host' : tile_web_host,
         }, id='map')
 
     # Info for progress
