@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: contact.cgi,v 1.4 2009-04-01 15:33:05 matthew Exp $
+# $Id: contact.cgi,v 1.5 2009-04-01 15:38:24 matthew Exp $
 #
 
 import re
@@ -62,10 +62,11 @@ def contact_submit(fs):
     server = smtplib.SMTP('localhost')
     try:
         server.sendmail(email, mysociety.config.get('CONTACT_EMAIL'), msg.as_string())
-    except Exception, e:
-        return contact_page(fs, e)
+    except SMTPException, e:
+        return contact_page(fs, str(e))
+    finally:
+        server.quit()
 
-    server.quit()
     return Response('contact-thanks')
 
 def contact_page(fs, errors = ''):
