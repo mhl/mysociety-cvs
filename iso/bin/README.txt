@@ -68,15 +68,21 @@ Map renderer
 eurotrain-journeys-to-grid - mercator projection lat/lon map making C code
 do-eurotrain - script that makes the maps for the European trains
 
-Real time isochrones with NPTDR
-===============================
+Contours of Life
+================
 
-nptdr-plan - generate journey times by doing route finding on the NPTDR accessibility planning data set
-do-nptdr - shell script to make full map from NPTDR data
+do-nptdr.py - script to call Python journey planner and make map
+fastplan.cpp - C++ journey planner
+fastplan-coopt.cpp - coopeted C++ journey planner, for calling by isodaemon
+isodaemon.py - daemon to call C++ planner and make .iso route files
+generate-config - used when deploying the site
+populate_stations / populate_stations.py / stationlist.cpp - put stations in the database
+
+do-westmidlands-anim - on off to make an animation
 
 Not yet used/ready/named properly
 =================================
 
 map-from-cycle.c - XXX
 
-
+est-run
