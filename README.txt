@@ -38,6 +38,7 @@ yhh - YourHistoryHere
 placeopedia - Placeopedia
 panopticon - RSS aggregator
 hm - HassleMe
+ideasbank - Guardian project
 
 Incomplete or dormant projects
 ==============================
@@ -98,6 +99,7 @@ pylib - General purpose Python modules
 shlib - General purpose shell functions
 jslib - General purpose javascript functions
 rblib - General purpose Ruby functions
+cpplib - General purpose C++ functions
 locale - Translations into different human languages
 
 If you need any help, please email me francis@mysociety.org.
