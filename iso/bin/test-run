@@ -27,7 +27,7 @@ cd ..
 
 # compare C++ and Python planner on Oxford NPTDR data set
 cd bin
-make all
+make --quiet all
 mkdir $TMP_OUTPUT
 # ... run C++ planner
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT fastcalc

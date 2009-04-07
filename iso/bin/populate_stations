@@ -9,7 +9,7 @@ cd ../bin
 
 STATIONLIST_FILE=/tmp/stationlist-$RANDOM
 
-make stationlist
+make --quiet stationlist
 echo "Making station list file $STATIONLIST_FILE"
 ./stationlist $OPTION_ISODAEMON_FASTINDEX > $STATIONLIST_FILE
 echo "Loading file $STATIONLIST_FILE into database"
