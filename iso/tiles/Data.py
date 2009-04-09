@@ -24,7 +24,7 @@ def get_place_times(map_id, tile, db, log, tmpwork):
     xmin, ymin, xmax, ymax = tile.bounds()
     
     if log:
-        print >> log, Cone.pixels_per_kilometer(tile)
+        print >> log, 'cone pixels per km', Cone.pixels_per_kilometer(tile)
 
     ## convert bounds to british national grid
     #xmin, ymin = gym2bng(xmin, ymin)
