@@ -127,8 +127,47 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
 
 # Main loop getting map data
 def do_main_loop():
-    # initialisation
     log("isodaemon.py started main loop")
+    # load in timetable data once only
+    log("loading timetable data into fastplan-coopt")
+    
+    # Create pipe to talk to C++ program. This is similar code to
+    # subprocess.Popen, only we do it ourselves so we can get the other end of
+    # the pipe to fork later, and talk separately to each instance.
+    (p2cread, p2cwrite) = os.pipe()
+    (c2pread, c2pwrite) = os.pipe()
+    pid = os.fork()
+    if pid == 0:
+        # child
+
+        # Close parent's pipe ends 
+        os.close(p2cwrite)
+        os.close(c2pread)
+        # Duplicate stream handlers over standard stdout/stdin/sterr file descriptor numbers
+        os.dup2(p2cread, 0)
+        os.dup2(c2pwrite, 1)
+        os.dup2(c2pwrite, 2)
+        # close the originals
+        os.close(p2cread)
+        os.close(c2pwrite)
+
+        # launch the planner
+        args = [fastplan_bin, fastindex]
+        os.execvp(fastplan_bin, args)
+
+    # parent
+    
+    # Close child's pipe ends
+    os.close(p2cread)
+    os.close(c2pwrite)
+    class Pipe:
+        pass
+    p = Pipe()
+    p.stdout = os.fdopen(c2pread, 'rb', 0) # bufsize = 0
+    p.stdin = os.fdopen(p2cwrite, 'wb', 0) # bufsize = 0
+    line = my_readline(p, 'loading took')
+
+    # connect to the database
     db = postgres.connect(
             host=mysociety.config.get('COL_DB_HOST'),
             port=mysociety.config.get('COL_DB_PORT'),
@@ -136,11 +175,6 @@ def do_main_loop():
             user=mysociety.config.get('COL_DB_USER'),
             password=mysociety.config.get('COL_DB_PASS')
     ).cursor()
-
-    # load in timetable data once only
-    log("loading timetable data into fastplan-coopt")
-    p = subprocess.Popen([fastplan_bin, fastindex], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    line = my_readline(p, 'loading took')
 
     # fork as many times as concurrent jobs required
     #for i in range(1, concurr):
