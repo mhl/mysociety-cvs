@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.7 2009-04-14 16:13:37 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.8 2009-04-14 18:03:35 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -41,6 +41,7 @@ int main(int argc, char * argv[]) {
     while (1) {
         std::string command;
         std::cin >> command;
+        pm.reset();
 
         if (std::cin.eof()) {
             break;
@@ -98,6 +99,36 @@ int main(int argc, char * argv[]) {
             my_fwrite(&atco.time_taken_by_location_id[0], atco.time_taken_by_location_id.size(), sizeof(Minutes), fp);
             fclose(fp);
             pm.display("binary output took");
+        } else if (command == "fork") {
+            // fork daemon - note this happens after timetable loading, so RAM of the timetable
+            // data structures is shared between instances. Prameters are file descriptors
+            // to use for stdin/stdout/stderr in the child after the fork. These must have
+            // been set up by the parent process of the original daemon instance, so it can
+            // talk to each child separately.
+            std::string arg1, arg2, arg3;
+            std::cin >> arg1 >> arg2 >> arg3;
+
+            int newfd0, newfd1, newfd2;
+            newfd0 = atoi(arg1.c_str());
+            newfd1 = atoi(arg2.c_str());
+            newfd2 = atoi(arg3.c_str());
+
+            int pid = fork();
+            if (pid == -1) {
+                fprintf(stdout, "failed to fork: fds %d %d %d\n", newfd0, newfd1, newfd2); 
+                return 1;
+            }
+            if (pid == 0) {
+                // Child
+                dup2(newfd0, 0);
+                dup2(newfd1, 1);
+                dup2(newfd2, 2);
+                continue;
+            }
+            // Parent, continue
+            fprintf(stdout, "done fork: child is using fds %d %d %d\n", newfd0, newfd1, newfd2); 
+        } else if (command == "info") {
+            fprintf(stdout, "fastplan-coopt: pid %d\n", getpid());
         } else {
             fprintf(stdout, "unknown command %s\n", command.c_str());
         }

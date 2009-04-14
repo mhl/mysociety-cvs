@@ -37,7 +37,8 @@ pidfile = mysociety.config.get('ISODAEMON_PIDFILE')
 fastindex = mysociety.config.get('ISODAEMON_FASTINDEX')
 logfile = mysociety.config.get('ISODAEMON_LOGFILE')
 tmpwork = mysociety.config.get('TMPWORK')
-concurr = mysociety.config.get('ISODAEMON_CONCURRENT_JOBS')
+concurr = int(mysociety.config.get('ISODAEMON_CONCURRENT_JOBS'))
+sleep_db_poll = 2.0
 
 parser = optparse.OptionParser()
 
@@ -63,7 +64,7 @@ if options.cooptdebug:
 
 # Used at the start of each logfile line
 def stamp():
-    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return str(os.getpid()) + " " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # Write something to logfile
 def log(str):
@@ -102,15 +103,8 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
     line = my_readline(p, 'target location')
 
     # wait for it to finish
-    route_finding_time_taken = None
-    while True:
-        line = my_readline(p)
-
-        # have finished if we get a time taken
-        match = re.match('route finding took: ([0-9.]+) secs', line)
-        route_finding_time_taken = match.groups()[0]
-        if match:
-            break
+    (line, match) = my_readline(p, 'route finding took: ([0-9.]+) secs')
+    route_finding_time_taken = match.groups()[0]
 
     # also shows binary time taken
     (line, match) = my_readline(p, 'binary output took: ([0-9.]+) secs')
@@ -125,47 +119,74 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
     log("made route " + outfile)
     return (float(route_finding_time_taken), float(output_time_taken))
 
+# Talking to multiple C++ processes
+p2cread = [None] * concurr
+p2cwrite = [None] * concurr
+c2pread = [None] * concurr
+c2pwrite = [None] * concurr
+
 # Main loop getting map data
 def do_main_loop():
     log("isodaemon.py started main loop")
     # load in timetable data once only
     log("loading timetable data into fastplan-coopt")
+
+    # Create a pipe for each instance of the C++ child
+    for i in range(concurr):
+        (p2cread[i], p2cwrite[i]) = os.pipe()
+        (c2pread[i], c2pwrite[i]) = os.pipe()
     
     # Create pipe to talk to C++ program. This is similar code to
     # subprocess.Popen, only we do it ourselves so we can get the other end of
     # the pipe to fork later, and talk separately to each instance.
-    (p2cread, p2cwrite) = os.pipe()
-    (c2pread, c2pwrite) = os.pipe()
     pid = os.fork()
     if pid == 0:
-        # child
-
-        # Close parent's pipe ends 
-        os.close(p2cwrite)
-        os.close(c2pread)
-        # Duplicate stream handlers over standard stdout/stdin/sterr file descriptor numbers
-        os.dup2(p2cread, 0)
-        os.dup2(c2pwrite, 1)
-        os.dup2(c2pwrite, 2)
-        # close the originals
-        os.close(p2cread)
-        os.close(c2pwrite)
-
+        # Child... duplicate stream handlers over standard stdout/stdin/sterr
+        # file descriptor numbers. We use the handles for the 0th pipe here.
+        os.dup2(p2cread[0], 0)
+        os.dup2(c2pwrite[0], 1)
+        os.dup2(c2pwrite[0], 2)
         # launch the planner
         args = [fastplan_bin, fastindex]
         os.execvp(fastplan_bin, args)
+        raise Exception("execvp didn't work")
 
-    # parent
-    
-    # Close child's pipe ends
-    os.close(p2cread)
-    os.close(c2pwrite)
+    # Parent, make process for talking to it
     class Pipe:
         pass
     p = Pipe()
-    p.stdout = os.fdopen(c2pread, 'rb', 0) # bufsize = 0
-    p.stdin = os.fdopen(p2cwrite, 'wb', 0) # bufsize = 0
+    p.stdout = os.fdopen(c2pread[0], 'rb', 0) # bufsize = 0
+    p.stdin = os.fdopen(p2cwrite[0], 'wb', 0) # bufsize = 0
+
+    # Wait for timetables to load
     line = my_readline(p, 'loading took')
+
+    # Now fork as many times as concurrent jobs required
+    child_number = 0
+    for i in range(1, concurr):
+        # Tell the C++ planner to fork
+        log("forking fastplan number " + str(i) + " fds %d %d %d" % (p2cread[i], c2pwrite[i], c2pwrite[i]))
+        p.stdin.write("fork %d %d %d\n" % (p2cread[i], c2pwrite[i], c2pwrite[i]))
+        line = my_readline(p, 'done fork')
+        # Fork the parent Python process
+        log("forking isodaemon instance number " + str(i))
+        pid = os.fork()
+        if pid == 0:
+            # Python child number we are now on
+            child_number = i
+            # Make the child talk to appropriate C++ planner instance
+            p = Pipe()
+            p.stdout = os.fdopen(c2pread[i], 'rb', 0) # bufsize = 0
+            p.stdin = os.fdopen(p2cwrite[i], 'wb', 0) # bufsize = 0
+            # Wait a fraction of db poll time
+            time.sleep(sleep_db_poll / float(concurr))
+            break
+        # parent, loop round to make next child
+
+    # check communication with demon is working
+    log("child started number " + str(child_number))
+    p.stdin.write("info\n")
+    my_readline(p, 'fastplan-coopt:')
 
     # connect to the database
     db = postgres.connect(
@@ -175,9 +196,6 @@ def do_main_loop():
             user=mysociety.config.get('COL_DB_USER'),
             password=mysociety.config.get('COL_DB_PASS')
     ).cursor()
-
-    # fork as many times as concurrent jobs required
-    #for i in range(1, concurr):
 
     # loop, checking database for new maps to make
     while True:
@@ -206,7 +224,7 @@ def do_main_loop():
         if row == None:
             db.execute("rollback")
             # wait a bit, so don't thrash the database
-            time.sleep(2)
+            time.sleep(sleep_db_poll)
             continue
 
         (id, state, target_station_text_id, target_latest, target_earliest, target_date) = row
@@ -228,6 +246,9 @@ def do_main_loop():
             # actually perform the route finding
             db.execute("begin")
             outfile = os.path.join(tmpwork, "%d.iso" % int(id))
+        #    if child_number == 1:
+        #            raise Exception("testbroken")
+
             (route_finding_time_taken, output_time_taken) = \
                 do_binplan(p, outfile, target_latest, target_earliest, target_station_text_id)
 
