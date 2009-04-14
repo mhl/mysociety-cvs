@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.6 2009-03-26 15:17:34 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.7 2009-04-14 16:13:37 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -25,7 +25,7 @@
 
 int main(int argc, char * argv[]) {
     if (argc != 2) {
-        fprintf(stderr, "fastplan-coopt.cpp:\n  fast index file prefix as only argument\n(%d args counted)\n", argc);
+        fprintf(stdout, "fastplan-coopt.cpp:\n  fast index file prefix as only argument\n(%d args counted)\n", argc);
         return 1;
     }
     std::string fastindexprefix = argv[1];
@@ -91,11 +91,15 @@ int main(int argc, char * argv[]) {
 
             // Output
             FILE *fp = fopen(output_binary.c_str(), "wb");
+            if (!fp) {
+                fprintf(stdout, "failed to make output file: %s\n", output_binary.c_str());
+                return 1;
+            }
             my_fwrite(&atco.time_taken_by_location_id[0], atco.time_taken_by_location_id.size(), sizeof(Minutes), fp);
             fclose(fp);
             pm.display("binary output took");
         } else {
-            fprintf(stderr, "unknown command %s\n", command.c_str());
+            fprintf(stdout, "unknown command %s\n", command.c_str());
         }
     }
 

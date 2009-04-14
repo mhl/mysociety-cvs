@@ -32,10 +32,12 @@ import daemon # see PEP 3143 for documentation
 import mysociety.config
 
 mysociety.config.set_file("../conf/general")
+mysociety.config.load_default()
 pidfile = mysociety.config.get('ISODAEMON_PIDFILE')
 fastindex = mysociety.config.get('ISODAEMON_FASTINDEX')
 logfile = mysociety.config.get('ISODAEMON_LOGFILE')
 tmpwork = mysociety.config.get('TMPWORK')
+concurr = mysociety.config.get('ISODAEMON_CONCURRENT_JOBS')
 
 parser = optparse.OptionParser()
 
@@ -56,6 +58,9 @@ fastplan_bin = "./fastplan-coopt"
 if options.cooptdebug:
     fastplan_bin = "./fastplan-coopt-debug"
 
+#######################################################################################
+# Helper functions
+
 # Used at the start of each logfile line
 def stamp():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -65,31 +70,41 @@ def log(str):
     print stamp(), str
     sys.stdout.flush()
 
-# Reads data from coopted C++ process, prints and returns it
-def my_readline(p):
-    line = p.stdout.readline().strip()
-    if line != '':
+# Reads data from coopted C++ process, prints and returns it.
+# Checks the line begins with check_regexp, and returns (line, match)
+def my_readline(p, check_regexp = None):
+    line = "DEBUG:"
+    while re.match("DEBUG:", line):
+        line = p.stdout.readline().strip()
+        if line == '':
+            raise Exception("unexpected EOF from C++ process")
         log("     " + line)
-    return line
+
+    if check_regexp:
+        m = re.match(check_regexp, line)
+        if not m:
+            raise Exception("expected: " + check_regexp + " got:" + line)
+        return (line, m)
+    else:
+        return line
+
+#######################################################################################
 
 # Runs a route calculation
 def do_binplan(p, outfile, end_min, start_min, station_text_id):
     log("making route %s %d %d %s" % (outfile, end_min, start_min, station_text_id))
     if options.excess_sleep: # for debugging daemon code
-        time.sleep(15)
+        time.sleep(10)
     outfile_new = outfile + ".new"
 
     # cause C++ program to do route finding
     p.stdin.write("binplan %s %d %d %s\n" % (outfile_new, end_min, start_min, station_text_id))
-    line = my_readline(p)
-    assert re.match('target location', line)
+    line = my_readline(p, 'target location')
 
     # wait for it to finish
     route_finding_time_taken = None
     while True:
         line = my_readline(p)
-        if line == '': # EOF
-            break
 
         # have finished if we get a time taken
         match = re.match('route finding took: ([0-9.]+) secs', line)
@@ -98,8 +113,7 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
             break
 
     # also shows binary time taken
-    line = my_readline(p)
-    match = re.match('binary output took: ([0-9.]+) secs', line)
+    (line, match) = my_readline(p, 'binary output took: ([0-9.]+) secs')
     output_time_taken = match.groups()[0]
 
     # move file into place
@@ -126,8 +140,10 @@ def do_main_loop():
     # load in timetable data once only
     log("loading timetable data into fastplan-coopt")
     p = subprocess.Popen([fastplan_bin, fastindex], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    line = my_readline(p)
-    assert re.match('loading took', line)
+    line = my_readline(p, 'loading took')
+
+    # fork as many times as concurrent jobs required
+    #for i in range(1, concurr):
 
     # loop, checking database for new maps to make
     while True:
@@ -215,7 +231,11 @@ def daemon_main():
             do_main_loop()
         except SystemExit:
             traceback.print_exc()
-            log("daemon_main: terminating")
+            log("daemon_main: terminating on SystemExit")
+            break
+        except KeyboardInterrupt:
+            traceback.print_exc()
+            log("daemon_main: terminating on KeyboardInterrupt")
             break
         except: 
             # display error, then wait for 10 seconds to stop repeated errors
