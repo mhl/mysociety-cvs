@@ -23,6 +23,7 @@ import time
 import datetime
 import traceback
 import socket
+import signal
 
 os.chdir(sys.path[0])
 sys.path.append("../../pylib")
@@ -62,9 +63,12 @@ if options.cooptdebug:
 #######################################################################################
 # Helper functions
 
+def server_and_pid():
+    return socket.gethostname() + ":" + str(os.getpid())
+
 # Used at the start of each logfile line
 def stamp():
-    return str(os.getpid()) + " " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return server_and_pid() + " " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # Write something to logfile
 def log(str):
@@ -120,10 +124,11 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
     return (float(route_finding_time_taken), float(output_time_taken))
 
 # Talking to multiple C++ processes
-p2cread = [None] * concurr
-p2cwrite = [None] * concurr
-c2pread = [None] * concurr
-c2pwrite = [None] * concurr
+p2cread = [None] * (concurr + 1)
+p2cwrite = [None] * (concurr + 1)
+c2pread = [None] * (concurr + 1)
+c2pwrite = [None] * (concurr + 1)
+child_number = 0 # parent process, contains number 1,2,3,4... for daemon children
 
 # Main loop getting map data
 def do_main_loop():
@@ -132,7 +137,7 @@ def do_main_loop():
     log("loading timetable data into fastplan-coopt")
 
     # Create a pipe for each instance of the C++ child
-    for i in range(concurr):
+    for i in range(concurr + 1):
         (p2cread[i], p2cwrite[i]) = os.pipe()
         (c2pread[i], c2pwrite[i]) = os.pipe()
     
@@ -162,10 +167,10 @@ def do_main_loop():
     line = my_readline(p, 'loading took')
 
     # Now fork as many times as concurrent jobs required
-    child_number = 0
-    for i in range(1, concurr):
+    global child_number
+    for i in range(1, concurr + 1):
         # Tell the C++ planner to fork
-        log("forking fastplan number " + str(i) + " fds %d %d %d" % (p2cread[i], c2pwrite[i], c2pwrite[i]))
+        log("forking fastplan instance number " + str(i) + " fds %d %d %d" % (p2cread[i], c2pwrite[i], c2pwrite[i]))
         p.stdin.write("fork %d %d %d\n" % (p2cread[i], c2pwrite[i], c2pwrite[i]))
         line = my_readline(p, 'done fork')
         # Fork the parent Python process
@@ -178,10 +183,17 @@ def do_main_loop():
             p = Pipe()
             p.stdout = os.fdopen(c2pread[i], 'rb', 0) # bufsize = 0
             p.stdin = os.fdopen(p2cwrite[i], 'wb', 0) # bufsize = 0
-            # Wait a fraction of db poll time
-            time.sleep(sleep_db_poll / float(concurr))
+            # Wait a fraction of db poll time (so demons poll at different
+            # times to start with)
+            time.sleep(float(child_number) * sleep_db_poll / float(concurr))
             break
         # parent, loop round to make next child
+
+    # parent, wait for any child to die
+    if child_number == 0:
+        log("parent, waiting for signal")
+        while 1:
+            time.sleep(60)
 
     # check communication with demon is working
     log("child started number " + str(child_number))
@@ -237,17 +249,16 @@ def do_main_loop():
             continue
     
         # recording in the database that we are working on this
-        server = socket.gethostname() + ":" + str(os.getpid())
         db.execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
-                dict(id=id, server=server))
+                dict(id=id, server=server_and_pid()))
         db.execute("commit")
 
         try:
             # actually perform the route finding
             db.execute("begin")
             outfile = os.path.join(tmpwork, "%d.iso" % int(id))
-        #    if child_number == 1:
-        #            raise Exception("testbroken")
+            #if child_number == 1: # for debugging
+            #        raise Exception("testbroken")
 
             (route_finding_time_taken, output_time_taken) = \
                 do_binplan(p, outfile, target_latest, target_earliest, target_station_text_id)
@@ -271,6 +282,15 @@ def do_main_loop():
             db.execute("commit")
             raise
 
+# Convert a SIGUSR1 into a special exception type, for handling in do_main_loop below
+class AbortIsoException(Exception):
+    pass
+def sigusr1_handler(signum, frame):
+    assert signum == signal.SIGUSR1
+    # traceback.print_stack(frame)
+    raise AbortIsoException()
+signal.signal(signal.SIGUSR1, sigusr1_handler)
+
 # Call main loop, catching any exceptions to prevent exit and restarting loop.
 # Keep this function as simple as possible, so it is unlikely to raise an
 # exception.
@@ -284,20 +304,42 @@ def daemon_main():
     while True:
         try:
             do_main_loop()
-        except SystemExit:
+        except (SystemExit, KeyboardInterrupt):
+            # when stopped with SIGINT or with keyboard, stop every process
             traceback.print_exc()
-            log("daemon_main: terminating on SystemExit")
+            log("daemon_main: terminating process group on SystemExit/KeyboardInterrupt")
+            os.killpg(os.getpgrp(), signal.SIGINT)
             break
-        except KeyboardInterrupt:
-            traceback.print_exc()
-            log("daemon_main: terminating on KeyboardInterrupt")
-            break
-        except: 
-            # display error, then wait for 10 seconds to stop repeated errors
-            # overwhelming things.
-            traceback.print_exc()
-            log("daemon_main: restarting main loop")
+        except AbortIsoException: 
+            # if we're a child, then exit
+            if child_number != 0:
+                log("daemon_main: child terminating itself on AbortIsoException")
+                break
+            # wait for 10 seconds to stop repeated errors overwhelming things,
+            # then restart all processes
+            log("daemon_main: parent, sleeping 10 seconds and restarting main loop")
             time.sleep(10)
+            # we're the parent, close any old pipes to preserve fds
+#            for i in range(1, concurr + 1):
+#                try:
+#                    print "closing p2cread", i
+#                    os.close(p2cread[i])
+#                    print "closing p2cwrite", i
+#                    os.close(p2cwrite[i])
+#                    print "closing c2pread", i
+#                    os.close(c2pread[i])
+#                    print "closing c2pwrite", i
+#                    os.close(c2pwrite[i])
+#                except IOError:
+#                    pass
+        except:
+            # normal exception, some unexpected error
+            traceback.print_exc()
+            log("daemon_main: terminating process group and restarting on exception")
+            # tell all the other processes to exit / the main parent process to cause a restart
+            signal.signal(signal.SIGUSR1, signal.SIG_DFL)
+            os.killpg(os.getpgrp(), signal.SIGUSR1)
+            break
 
     # remove pidfile
     if os.path.exists(pidfile):
