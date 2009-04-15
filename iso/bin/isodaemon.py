@@ -123,12 +123,108 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id):
     log("made route " + outfile)
     return (float(route_finding_time_taken), float(output_time_taken))
 
+# Core code of one isodaemon process. Checks database for map making work to do and does it.
+def check_for_new_maps_to_make(p, db):
+    # find something to do - we start with the map that was queued longest ago.
+    offset = 0
+    while True:
+        try:
+            db.execute("begin")
+            # we get the row "for update" to lock it, and "nowait" so we
+            # get an exception if someone else already has it, rather than
+            # pointlessly waiting for them
+            db.execute("""select id, state, (select text_id from station where id = target_station_id), 
+                            target_latest, target_earliest, target_date from map where 
+                            state = 'new' order by created limit 1 offset %s for update nowait""" % offset)
+            row = db.fetchone()
+            break
+        except postgres.OperationalError:
+            # if someone else has the item locked, i.e. they are working on it, then we
+            # try and find a different one to work on
+            db.execute("rollback")
+            offset = offset + 1
+            log("somebody else had the item, trying offset " + str(offset))
+            continue
+
+    # if there's nothing more to do, give up
+    if row == None:
+        db.execute("rollback")
+        # wait a bit, so don't thrash the database
+        time.sleep(sleep_db_poll)
+        return
+
+    (id, state, target_station_text_id, target_latest, target_earliest, target_date) = row
+    # XXX check target_date here is same as whatever fastindex timetable file we're using
+
+    # see if another instance of daemon got it *just* before us
+    if state != 'new':
+        log("somebody else is already working on map " + str(id))
+        db.execute("rollback")
+        return
+
+    # recording in the database that we are working on this
+    db.execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
+            dict(id=id, server=server_and_pid()))
+    db.execute("commit")
+
+    try:
+        # actually perform the route finding
+        db.execute("begin")
+        outfile = os.path.join(tmpwork, "%d.iso" % int(id))
+        #if child_number == 1: # for debugging
+        #        raise Exception("testbroken")
+
+        (route_finding_time_taken, output_time_taken) = \
+            do_binplan(p, outfile, target_latest, target_earliest, target_station_text_id)
+
+        # mark that we've done
+        db.execute("update map set state = 'complete', working_took = %(took)s where id = %(id)s", dict(id=id, took=route_finding_time_taken))
+        db.execute("commit")
+    except (SystemExit, KeyboardInterrupt, AbortIsoException):
+        # daemon was explicitly stopped, don't mark map as error
+        db.execute("rollback")
+        db.execute("begin")
+        db.execute("update map set state = 'new' where id = %(id)s", dict(id=id))
+        db.execute("commit")
+        raise
+    except:
+        # record there was an error, so we can find out easily
+        # if the recording error doesn't work, then presumably it was a database error
+        db.execute("rollback")
+        db.execute("begin")
+        db.execute("update map set state = 'error' where id = %(id)s", dict(id=id))
+        db.execute("commit")
+        raise
+
 # Talking to multiple C++ processes
 p2cread = [None] * (concurr + 1)
 p2cwrite = [None] * (concurr + 1)
 c2pread = [None] * (concurr + 1)
 c2pwrite = [None] * (concurr + 1)
 child_number = 0 # parent process, contains number 1,2,3,4... for daemon children
+# Class for holding file handles to talk to C++ processes
+class FastPlanPipe:
+    def __init__(self, i):
+        self.index = i
+        self.stdout = os.fdopen(c2pread[self.index], 'rb', 0) # bufsize = 0
+        self.stdin = os.fdopen(p2cwrite[self.index], 'wb', 0) # bufsize = 0
+        #log("closing other end for index " + str(self.index))
+        os.close(p2cread[self.index])
+        os.close(c2pwrite[self.index])
+    def _close_one(self, i):
+        #log("closing all for index " + str(i))
+        os.close(p2cread[i])
+        os.close(p2cwrite[i])
+        os.close(c2pread[i])
+        os.close(c2pwrite[i])
+    def close_other_pipes(self):
+        for i in range(1, concurr + 1):
+            if i != self.index:
+                self._close_one(i)
+    def close_pipes(self):
+        #log("closing stdout/stdin for index " + str(self.index))
+        self.stdout.close()
+        self.stdin.close()
 
 # Main loop getting map data
 def do_main_loop():
@@ -136,7 +232,9 @@ def do_main_loop():
     # load in timetable data once only
     log("loading timetable data into fastplan-coopt")
 
-    # Create a pipe for each instance of the C++ child
+    # Create a pipe for each instance of the C++ child. We must make these
+    # before forking off the C++ child, so it has the file handles to swap to
+    # when it forks (after loading initial timetables).
     for i in range(concurr + 1):
         (p2cread[i], p2cwrite[i]) = os.pipe()
         (c2pread[i], c2pwrite[i]) = os.pipe()
@@ -146,8 +244,9 @@ def do_main_loop():
     # the pipe to fork later, and talk separately to each instance.
     pid = os.fork()
     if pid == 0:
-        # Child... duplicate stream handlers over standard stdout/stdin/sterr
-        # file descriptor numbers. We use the handles for the 0th pipe here.
+        # C++ fastplan child... duplicate stream handlers over standard
+        # stdout/stdin/sterr file descriptor numbers. We use the handles for
+        # the 0th pipe here.
         os.dup2(p2cread[0], 0)
         os.dup2(c2pwrite[0], 1)
         os.dup2(c2pwrite[0], 2)
@@ -156,12 +255,8 @@ def do_main_loop():
         os.execvp(fastplan_bin, args)
         raise Exception("execvp didn't work")
 
-    # Parent, make process for talking to it
-    class Pipe:
-        pass
-    p = Pipe()
-    p.stdout = os.fdopen(c2pread[0], 'rb', 0) # bufsize = 0
-    p.stdin = os.fdopen(p2cwrite[0], 'wb', 0) # bufsize = 0
+    # Parent, make object for talking to C++ process
+    p = FastPlanPipe(0)
 
     # Wait for timetables to load
     line = my_readline(p, 'loading took')
@@ -179,108 +274,46 @@ def do_main_loop():
         if pid == 0:
             # Python child number we are now on
             child_number = i
-            # Make the child talk to appropriate C++ planner instance
-            p = Pipe()
-            p.stdout = os.fdopen(c2pread[i], 'rb', 0) # bufsize = 0
-            p.stdin = os.fdopen(p2cwrite[i], 'wb', 0) # bufsize = 0
-            # Wait a fraction of db poll time (so demons poll at different
+            # Make the object talk to appropriate C++ planner instance
+            p.close_pipes()
+            p = FastPlanPipe(i)
+            p.close_other_pipes()
+            # Wait a fraction of db poll time (so daemons poll at different
             # times to start with)
             time.sleep(float(child_number) * sleep_db_poll / float(concurr))
             break
         # parent, loop round to make next child
 
-    # parent, wait for any child to die
-    if child_number == 0:
-        log("parent, waiting for signal")
-        while 1:
-            time.sleep(60)
+    try:
+        # parent?
+        if child_number == 0:
+            # now children are started, we don't need their pipe handles
+            p.close_other_pipes()
+            # sleep until a SIGUSR1 happens, which will throw AbortIsoException
+            # (see below)
+            log("parent, waiting for signal")
+            while 1:
+                time.sleep(60)
 
-    # check communication with demon is working
-    log("child started number " + str(child_number))
-    p.stdin.write("info\n")
-    my_readline(p, 'fastplan-coopt:')
+        # check communication with C++ planner is working
+        log("child started number " + str(child_number))
+        p.stdin.write("info\n")
+        my_readline(p, 'fastplan-coopt:')
 
-    # connect to the database
-    db = postgres.connect(
-            host=mysociety.config.get('COL_DB_HOST'),
-            port=mysociety.config.get('COL_DB_PORT'),
-            database=mysociety.config.get('COL_DB_NAME'),
-            user=mysociety.config.get('COL_DB_USER'),
-            password=mysociety.config.get('COL_DB_PASS')
-    ).cursor()
+        # connect to the database
+        db = postgres.connect(
+                host=mysociety.config.get('COL_DB_HOST'),
+                port=mysociety.config.get('COL_DB_PORT'),
+                database=mysociety.config.get('COL_DB_NAME'),
+                user=mysociety.config.get('COL_DB_USER'),
+                password=mysociety.config.get('COL_DB_PASS')
+        ).cursor()
 
-    # loop, checking database for new maps to make
-    while True:
-        # find something to do - we start with the map that was queued longest ago.
-        offset = 0
+        # loop, checking database for new maps to make
         while True:
-            try:
-                db.execute("begin")
-                # we get the row "for update" to lock it, and "nowait" so we
-                # get an exception if someone else already has it, rather than
-                # pointlessly waiting for them
-                db.execute("""select id, state, (select text_id from station where id = target_station_id), 
-                                target_latest, target_earliest, target_date from map where 
-                                state = 'new' order by created limit 1 offset %s for update nowait""" % offset)
-                row = db.fetchone()
-            except postgres.OperationalError:
-                # if someone else has the item locked, i.e. they are working on it, then we
-                # try and find a different one to work on
-                db.execute("rollback")
-                offset = offset + 1
-                log("somebody else had the item, trying offset " + str(offset))
-                continue
-            break
-
-        # if there's nothing more to do, give up
-        if row == None:
-            db.execute("rollback")
-            # wait a bit, so don't thrash the database
-            time.sleep(sleep_db_poll)
-            continue
-
-        (id, state, target_station_text_id, target_latest, target_earliest, target_date) = row
-        # XXX check target_date here is same as whatever fastindex timetable file we're using
-
-        # see if another instance of daemon got it
-        if state != 'new':
-            log("somebody else is already working on map " + str(id))
-            db.execute("rollback")
-            continue
-    
-        # recording in the database that we are working on this
-        db.execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
-                dict(id=id, server=server_and_pid()))
-        db.execute("commit")
-
-        try:
-            # actually perform the route finding
-            db.execute("begin")
-            outfile = os.path.join(tmpwork, "%d.iso" % int(id))
-            #if child_number == 1: # for debugging
-            #        raise Exception("testbroken")
-
-            (route_finding_time_taken, output_time_taken) = \
-                do_binplan(p, outfile, target_latest, target_earliest, target_station_text_id)
-
-            # mark that we've done
-            db.execute("update map set state = 'complete', working_took = %(took)s where id = %(id)s", dict(id=id, took=route_finding_time_taken))
-            db.execute("commit")
-        except SystemExit:
-            # daemon was explicitly stopped, don't mark map as error
-            db.execute("rollback")
-            db.execute("begin")
-            db.execute("update map set state = 'new' where id = %(id)s", dict(id=id))
-            db.execute("commit")
-            raise
-        except:
-            # record there was an error, so we can find out easily
-            # if the recording error doesn't work, then presumably it was a database error
-            db.execute("rollback")
-            db.execute("begin")
-            db.execute("update map set state = 'error' where id = %(id)s", dict(id=id))
-            db.execute("commit")
-            raise
+            check_for_new_maps_to_make(p, db)
+    finally:
+        p.close_pipes()
 
 # Convert a SIGUSR1 into a special exception type, for handling in do_main_loop below
 class AbortIsoException(Exception):
@@ -319,19 +352,6 @@ def daemon_main():
             # then restart all processes
             log("daemon_main: parent, sleeping 10 seconds and restarting main loop")
             time.sleep(10)
-            # we're the parent, close any old pipes to preserve fds
-#            for i in range(1, concurr + 1):
-#                try:
-#                    print "closing p2cread", i
-#                    os.close(p2cread[i])
-#                    print "closing p2cwrite", i
-#                    os.close(p2cwrite[i])
-#                    print "closing c2pread", i
-#                    os.close(c2pread[i])
-#                    print "closing c2pwrite", i
-#                    os.close(c2pwrite[i])
-#                except IOError:
-#                    pass
         except:
             # normal exception, some unexpected error
             traceback.print_exc()
