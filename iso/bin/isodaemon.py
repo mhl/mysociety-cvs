@@ -98,9 +98,12 @@ def my_readline(p, check_regexp = None):
 # Runs a route calculation
 def do_binplan(p, outfile, end_min, start_min, station_text_id):
     log("making route %s %d %d %s" % (outfile, end_min, start_min, station_text_id))
-    if options.excess_sleep: # for debugging daemon code
-        time.sleep(10)
     outfile_new = outfile + ".new"
+
+    # for debugging daemon code
+    if options.excess_sleep: 
+        log("excess sleeping for 10 seconds for debugging")
+        time.sleep(10)
 
     # cause C++ program to do route finding
     p.stdin.write("binplan %s %d %d %s\n" % (outfile_new, end_min, start_min, station_text_id))
