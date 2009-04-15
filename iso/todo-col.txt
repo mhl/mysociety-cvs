@@ -1,21 +1,32 @@
 Contours of life TODO
 =====================
 
-Make C++ flush pipe when it talks to Python part of daemon
-
 Improve culling algorithm for zoomed out places
 
-Show stations near to postcode, and let you pick which one you want.
-May as well allow search by station name also, if doing that.
-
-OR properly do walking time at end point.
+Properly do walking time at end point
+    - maybe use station number 0 for that
 
 Show that it is only up to 9am, perhaps by marking time on sliders.
 
-Put the current map pan/zoom and slider values in # URL so can give map to
-people as links.
+Permalinks - put the current map pan/zoom and slider values in # URL
 
-Something to embed a map on your own site?
+Code to take email if isodaemon or tile server load to high
+
+CloudMade tiles onto CDN or similar
+
+Choose different times of day
+
+Check data quality
+- Option to see routes easily
+
+Update Flash UI with Stamen updates
+
+Try optimisations
+    - try Flash renderer
+    - refresh rate with AJAX?
+    - do obvious planner improvements
+    - tileserver precache station coordinates 
+    - tileserver rewrite in C
 
 
 Timetable planner questions
@@ -40,8 +51,6 @@ Interchange times
 Optimisation ideas
 ------------------
 
-Check using const in enough places
-
 Use binary search to find latest time in a journey before a time
 Sort the journeys at a location by time and binary slice them 
 
@@ -49,8 +58,6 @@ Instead of returning all the direct connections, instead keep the connecting
 journeys in a sorted list, and find just the nearest one with a binary
 search. Then let the relaxed_heap do the work, rather than inserting
 into the adjacents structure.
-
-Find something better than relaxed_heap
 
 
 Thomas CIF file
@@ -63,6 +70,8 @@ Reduced Sunday service
 
 Larger ideas
 ============
+
+Something to embed a map on your own site
 
 Make modest maps cope better with bad network connections
 
