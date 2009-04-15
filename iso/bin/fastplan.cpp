@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.5 2009-03-25 15:49:51 francis Exp $
+// $Id: fastplan.cpp,v 1.6 2009-04-15 16:09:17 francis Exp $
 //
 
 // Usage:
@@ -22,7 +22,7 @@
 
 int main(int argc, char * argv[]) {
     if (argc < 4) {
-        fprintf(stderr, "fastplan.cpp:\n  fast index file prefix as first argument\n  output prefix (or 'stream' for stdout incremental) as second\n  target arrival time in mins after midnight as third\n  target location as fourth earliest departure in mins after midnight to go back to\n  easting, northing to use to find destination if destination is 'coordinate'");
+        fprintf(stderr, "fastplan.cpp:\n  fast index file prefix as first argument\n  output prefix (or 'stream' for stdout incremental) as second\n  target arrival time in mins after midnight as third\n  target location as fourth\n  earliest departure in mins after midnight to go back to as fifth\n  easting, northing to use to find destination if destination is 'coordinate' as sixth and seventh\n");
         return 1;
     }
 
