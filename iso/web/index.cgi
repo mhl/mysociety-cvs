@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.50 2009-04-16 13:48:42 francis Exp $
+# $Id: index.cgi,v 1.51 2009-04-16 13:54:04 francis Exp $
 #
 
 import re
@@ -92,8 +92,11 @@ def map(text_id):
     tmpwork = mysociety.config.get('TMPWORK')
     tile_web_host = mysociety.config.get('TILE_WEB_HOST')
     file = os.path.join(tmpwork, str(map_id))
-    if os.path.exists(file + ".iso"):
-        # We've got a generated file, let's show the map!
+    if current_state == 'complete':
+        # Check there is a route file
+        if not os.path.exists(file + ".iso"):
+            return Response('map-noiso', { 'map_id' : map_id }, id='map-noiso')
+        # Let's show the map
         return Response('map', {
             'centre_lat': lat,
             'centre_lon': lon,
