@@ -8,7 +8,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: cull_stations.py,v 1.7 2009-03-27 16:22:47 francis Exp $
+$Id: cull_stations.py,v 1.1 2009-04-16 14:02:59 francis Exp $
 """
 import os
 import sys
