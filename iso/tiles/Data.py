@@ -42,7 +42,7 @@ def get_place_times(map_id, tile, db, log, tmpwork):
     xmax, ymax = bng2gym(xmax, ymax)
 
     # look at stations in database to find out which are on this tile
-    capped_cull_zoom = max(tile.z, 8) # zoomed out culling is excessive and loses too much detail
+    capped_cull_zoom = max(tile.z, 9) # zoomed out culling is excessive and loses too much detail
     db.execute("""SELECT X(position_merc), Y(position_merc), id
                   FROM station
                   WHERE 
