@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.14 2009-03-31 15:26:56 francis Exp $
+-- $Id: schema.sql,v 1.15 2009-04-20 14:42:59 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user Postgres:
@@ -25,8 +25,9 @@
 create table station (
     id integer not null primary key,
     text_id text not null, -- identifier from NPTDR
+    long_description text, -- should be NOT NULL later
 
-    connectedness   integer not null,
+    connectedness   integer,
     minimum_zoom    integer default 0
 );
 create unique index station_text_id_idx on station(text_id);

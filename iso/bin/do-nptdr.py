@@ -1,8 +1,8 @@
 #!/usr/bin/python
 #
-# do-nptdr.py:
-# Generate diagram of time travel to arrive by a certain time by public
-# transport using NPTDR.
+# do-nptdr.py: Generate diagram of time travel to arrive by a certain time by
+# public transport using NPTDR - used for testing/debugging. Final live code is
+# in isodaemon and tileserver.
 #
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
@@ -26,6 +26,7 @@ import mysociety.mapit
 sys.path.append(sys.path[0] + "/../pylib")
 import makeplan
 import fastplan
+import coldb
 
 mysociety.config.set_file("../conf/general")
 
@@ -44,6 +45,7 @@ Commands:
     slowplan - create map using pure Python code
     fastcalc - output fast data structure for C++ code
     fastplan - as fast, but also calls out to the quick planning C++ code
+    livecalc - refill journeys in database, output fast data structure for C++
     stats - dump statistics about files
     midnight - output journeys that cross midnight
 Default is to run "slowplan".
@@ -63,6 +65,7 @@ Examples
 parser.add_option('--destination', type='string', dest="destination", help='Target location for route finding, as in ATCO-CIF file e.g. 9100MARYLBN, or if set to "coordinate" uses --postcode or --centre/centern')
 parser.add_option('--whenarrive', type='string', dest="whenarrive", help='Time and date to arrive at destination by. Must be a day for which the ATCO-CIF timetables loaded are valid. Fairly freeform format, e.g. "15 Oct 2008, 9:00"', default="15 Oct 2008, 9:00") # Some week in October 2008, need to check exactly when
 parser.add_option('--data', type='string', dest="data", help='ATCO-CIF files containing timetables to use. At the command line, put the value in quotes, file globs such as * will be expanded later.')
+parser.add_option('--dataname', type='string', dest="data_name", help='Identifier to use in livecalc for output data files, e.g. oxford, all-country etc.')
 parser.add_option('--datavalidfrom', type='string', dest="data_valid_from", help='Date range we know the data is good for')
 parser.add_option('--datavalidto', type='string', dest="data_valid_to", help='Date range we know the data is good for')
 parser.add_option('--hours', type='float', dest="hours", help='Longest journey length, in hours. Route finding algorithm will stop here.', default=1)
@@ -106,13 +109,17 @@ if len(args) > 1:
 if len(args) == 0:
     args = ['slowplan']
 command = args[0]
-if command not in ['slowplan', 'fastcalc', 'fastplan', 'stats', 'midnight']:
+if command not in ['slowplan', 'fastcalc', 'fastplan', 'livecalc', 'stats', 'midnight']:
     raise Exception, 'Unknown command'
 
 # Required parameters
 nptdr_files = glob.glob(options.data)
 if len(nptdr_files) == 0:
-    raise Exception, 'No files found matching: ' + options.data
+    # Look in relative path under mySociety config file path, if nothing absolute found
+    data_full_path = os.path.join(mysociety.config.get('NPTDR_DATA'), options.data)
+    nptdr_files = glob.glob(data_full_path)
+    if len(nptdr_files) == 0:
+        raise Exception, 'No files found matching: ' + options.data + " or: " + data_full_path
 data_valid_from = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_from)).date()
 data_valid_to = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.data_valid_to)).date()
 
@@ -134,9 +141,10 @@ if command in ['slowplan', 'fastplan']:
 
     rect = "%f %f %f %f" % (WW, EE, SS, NN)
 
-if command in ['slowplan', 'fastcalc', 'fastplan']:
+if command in ['slowplan', 'fastcalc', 'fastplan', 'livecalc']:
     target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whenarrive))
     assert data_valid_from <= target_when.date() <= data_valid_to
+if command in ['slowplan', 'fastplan']:
     scan_back_when = target_when - datetime.timedelta(hours=options.hours)
 
 # Output files
@@ -149,6 +157,11 @@ if command in ['fastcalc', 'fastplan']:
     if not options.fastindexdir:
         options.fastindexdir = options.output
     fastindexfile = os.path.join(options.fastindexdir, "fastindex-%s-%s" % (nptdr_files_hash, target_when.date().strftime("%Y-%m-%d")))
+
+# Live calc also fills in the database
+if command in ['livecalc']:
+    fastindexfile = os.path.join(mysociety.config.get("TMPWORK"), "fastindex-%s-%s" % (options.data_name, target_when.date().strftime("%Y-%m-%d")))
+    db = coldb.get_cursor()
 
 if options.profile:
     import cProfile
@@ -277,6 +290,12 @@ def fast_plan():
     run_cmd("%s %s %s %d %s %d %d %d" % (options.fastplan_bin, fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute, E, N))
     do_external_contours()
 
+# Precalculate binary data files, for later use by faster C++ Dijkstra's algorithm
+def live_calc():
+    atco = fastplan.FastPregenATCO(fastindexfile, nptdr_files, target_when.date(), show_progress = True, reload_database = db)
+    ready_atco(atco)
+    atco.run_pregen()
+
 # Show journeys crossing midnight
 def midnight():
     atco = makeplan.PlanningATCO()
@@ -303,6 +322,8 @@ elif command == 'fastcalc':
     fast_calc()
 elif command == 'fastplan':
     fast_plan()
+elif command == 'livecalc':
+    live_calc()
 elif command == 'midnight':
     midnight()
 elif command == 'stats':

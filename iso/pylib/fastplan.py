@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.13 2009-03-26 11:02:41 francis Exp $
+# $Id: fastplan.py,v 1.14 2009-04-20 14:43:00 francis Exp $
 #
 
 import logging
@@ -16,17 +16,29 @@ import os
 import math
 import struct
 
+sys.path.append('/home/matthew/lib/python')
+import pyproj
+
+BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
+GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=0.0, y_0=0, k=1.0, units='m', nadgrids=None, no_defs=True)
+
 sys.path.append(sys.path[0] + "/../../pylib") # XXX this is for running doctests and is nasty, there's got to be a better way
 import mysociety.atcocif
       
 class FastPregenATCO(mysociety.atcocif.ATCO):
-    def __init__(self, out_prefix, nptdr_files, target_date, show_progress = False):
+    def __init__(self, out_prefix, nptdr_files, target_date, show_progress = False, reload_database = None):
         self.out_prefix = out_prefix
         self.nptdr_files = nptdr_files
         self.target_date = target_date
         self.show_progress = show_progress
+        self.reload_database = reload_database # optionally load data into database as well as outputting binary file
 
     def run_pregen(self):
+        # if putting also in database, clear it
+        if self.reload_database:
+            self.reload_database.execute('begin')
+            self.reload_database.execute('delete from station')
+
         # output locations in binary
         logging.info("FastPregenATCO: making locations file")
         self.file_locations = open(self.out_prefix + ".locations", 'w')
@@ -57,6 +69,10 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         # ... close file
         self.file_journeys.close()
 
+        # done with database
+        if self.reload_database:
+            self.reload_database.execute('commit')
+
     # reload all ATCO files, setting load function to given one
     def read_all(self, func):
         # change the loading function to the one asked for
@@ -83,6 +99,19 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self.location_c += 1
         self.location_to_fastix[item.location] = self.location_c
         self._pack(self.file_locations, "=ih%dsii" % len(item.location), self.location_c, len(item.location), item.location, item.additional.grid_reference_easting, item.additional.grid_reference_northing)
+
+        # if we're storing in the database, then do that 
+        if self.reload_database:
+            osgbx = item.additional.grid_reference_easting
+            osgby = item.additional.grid_reference_northing
+            mercx, mercy = pyproj.transform(BNG, GYM, osgbx, osgby)
+            self.reload_database.execute('''insert into station (id, text_id, long_description, position_osgb, position_merc) 
+                    values (%s, %s, %s,
+                        SetSRID(MakePoint(%s, %s), 27700),
+                        SetSRID(MakePoint(%s, %s), 900913)
+                    )''', 
+                    (self.location_c, item.location, item.long_description(),
+                    osgbx, osgby, mercx, mercy))
 
     # Pass to output all journeys
     def load_journeys(self, item):
