@@ -75,8 +75,10 @@ do-nptdr.py - script to call Python journey planner and make map
 fastplan.cpp - C++ journey planner
 fastplan-coopt.cpp - coopeted C++ journey planner, for calling by isodaemon
 isodaemon.py - daemon to call C++ planner and make .iso route files
-generate-config - used when deploying the site
+
 populate_stations / populate_stations.py / stationlist.cpp - put stations in the database
+generate-config - used when deploying the site
+test-run - test script for Contours of Life
 
 do-westmidlands-anim - on off to make an animation
 
