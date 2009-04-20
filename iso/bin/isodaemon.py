@@ -18,7 +18,6 @@ import subprocess
 import re
 import os
 import optparse
-import psycopg2 as postgres
 import time
 import datetime
 import traceback
@@ -27,10 +26,12 @@ import signal
 
 os.chdir(sys.path[0])
 sys.path.append("../../pylib")
-
 import daemon # see PEP 3143 for documentation
 #import daemon.pidlockfile
 import mysociety.config
+
+sys.path.append("../pylib")
+import coldb
 
 mysociety.config.set_file("../conf/general")
 mysociety.config.load_default()
@@ -304,13 +305,7 @@ def do_main_loop():
         my_readline(p, 'fastplan-coopt:')
 
         # connect to the database
-        db = postgres.connect(
-                host=mysociety.config.get('COL_DB_HOST'),
-                port=mysociety.config.get('COL_DB_PORT'),
-                database=mysociety.config.get('COL_DB_NAME'),
-                user=mysociety.config.get('COL_DB_USER'),
-                password=mysociety.config.get('COL_DB_PASS')
-        ).cursor()
+        db = coldb.get_cursor()
 
         # loop, checking database for new maps to make
         while True:

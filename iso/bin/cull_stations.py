@@ -8,7 +8,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: cull_stations.py,v 1.1 2009-04-16 14:02:59 francis Exp $
+$Id: cull_stations.py,v 1.2 2009-04-20 11:41:03 francis Exp $
 """
 import os
 import sys
@@ -18,24 +18,11 @@ sys.path.append("../../pylib")
 import mysociety.config
 mysociety.config.set_file("../conf/general")
 
-try:
-    import psycopg2 as postgres
-except ImportError:
-    import pgdb as postgres
-
-def get_db_cursor(*args, **kwargs):
-    """
-    """
-    return postgres.connect(*args, **kwargs).cursor()
+sys.path.append("../pylib")
+import coldb
 
 if __name__ == '__main__':
-    db = get_db_cursor(
-            host=mysociety.config.get('COL_DB_HOST'),
-            port=mysociety.config.get('COL_DB_PORT'),
-            database=mysociety.config.get('COL_DB_NAME'),
-            user=mysociety.config.get('COL_DB_USER'),
-            password=mysociety.config.get('COL_DB_PASS')
-    )
+    db = coldb.get_cursor()
  
     # width of the world tile in mercator units = 2 * pi * earth radius
     tile_widths = [6378137 * math.pi * 2]

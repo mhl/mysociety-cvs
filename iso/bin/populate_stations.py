@@ -17,8 +17,9 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: populate_stations.py,v 1.10 2009-03-27 23:11:10 matthew Exp $
+$Id: populate_stations.py,v 1.11 2009-04-20 11:41:03 francis Exp $
 """
+
 import os
 import sys
 
@@ -29,13 +30,7 @@ sys.path.append("../../pylib")
 import mysociety.config
 mysociety.config.set_file("../conf/general")
 
-try:
-    import psycopg2 as postgres
-except ImportError:
-    import pgdb as postgres
-
-def get_db_cursor(*args, **kwargs):
-    return postgres.connect(*args, **kwargs).cursor()
+import coldb
 
 BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
 GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=0.0, y_0=0, k=1.0, units='m', nadgrids=None, no_defs=True)
@@ -43,13 +38,7 @@ GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=
 if __name__ == '__main__':
     # if you run this on the command line, you get to put stuff in the database
     stations = open(sys.argv[1], 'r')
-    db = get_db_cursor(
-            host=mysociety.config.get('COL_DB_HOST'),
-            port=mysociety.config.get('COL_DB_PORT'),
-            database=mysociety.config.get('COL_DB_NAME'),
-            user=mysociety.config.get('COL_DB_USER'),
-            password=mysociety.config.get('COL_DB_PASS')
-    )
+    db = coldb.get_cursor()
     db.execute("delete from station")
     
     for (i, line) in enumerate(stations):

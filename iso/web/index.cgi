@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.51 2009-04-16 13:54:04 francis Exp $
+# $Id: index.cgi,v 1.52 2009-04-20 11:41:04 francis Exp $
 #
 
 import re
@@ -24,13 +24,9 @@ import mysociety.mapit
 mysociety.config.set_file("../conf/general")
 from mysociety.rabx import RABXException
 
-db = postgres.connect(
-            host=mysociety.config.get('COL_DB_HOST'),
-            port=mysociety.config.get('COL_DB_PORT'),
-            database=mysociety.config.get('COL_DB_NAME'),
-            user=mysociety.config.get('COL_DB_USER'),
-            password=mysociety.config.get('COL_DB_PASS')
-).cursor()
+import coldb
+
+db = coldb.get_cursor()
 
 def lookup(pc):
     """Given a postcode, look up the nearest station ID
