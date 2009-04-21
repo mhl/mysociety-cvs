@@ -353,7 +353,7 @@ def daemon_main():
         except:
             # normal exception, some unexpected error
             traceback.print_exc()
-            log("daemon_main: terminating process group and restarting on exception")
+            log("daemon_main: terminating process group")
             # tell all the other processes to exit / the main parent process to cause a restart
             signal.signal(signal.SIGUSR1, signal.SIG_DFL)
             os.killpg(os.getpgrp(), signal.SIGUSR1)
