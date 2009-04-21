@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.14 2009-04-20 14:43:00 francis Exp $
+# $Id: fastplan.py,v 1.15 2009-04-21 09:42:43 francis Exp $
 #
 
 import logging
@@ -62,12 +62,16 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         # ... output journeys, counting and giving them ids as we go 
         self.journey_c = 0
         self.journey_to_fastix = {}
+        self.journeys_visiting_location_c = {}
         self.read_all(self.load_journeys)
         # ... fill in count now we know it
         self.file_journeys.seek(0)
         self._pack(self.file_journeys, "=i", len(self.journey_to_fastix))
         # ... close file
         self.file_journeys.close()
+        # update database entries for stations with connectedness
+        for fastix, c in self.journeys_visiting_location_c.iteritems():
+            self.reload_database.execute('update station set connectedness = %s where id = %s', (c, fastix))
 
         # done with database
         if self.reload_database:
@@ -105,10 +109,11 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
             osgbx = item.additional.grid_reference_easting
             osgby = item.additional.grid_reference_northing
             mercx, mercy = pyproj.transform(BNG, GYM, osgbx, osgby)
-            self.reload_database.execute('''insert into station (id, text_id, long_description, position_osgb, position_merc) 
+            self.reload_database.execute('''insert into station (id, text_id, long_description, position_osgb, position_merc, connectedness) 
                     values (%s, %s, %s,
                         SetSRID(MakePoint(%s, %s), 27700),
-                        SetSRID(MakePoint(%s, %s), 900913)
+                        SetSRID(MakePoint(%s, %s), 900913),
+                        0
                     )''', 
                     (self.location_c, item.location, item.long_description(),
                     osgbx, osgby, mercx, mercy))
@@ -147,7 +152,11 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
                 mins_arr = hop.published_arrival_time.hour * 60 + hop.published_arrival_time.minute
             if hop.is_pick_up():
                 mins_dep = hop.published_departure_time.hour * 60 + hop.published_departure_time.minute
-            self._pack(self.file_journeys, "=ihh", self.location_to_fastix[hop.location], mins_arr, mins_dep)
+            fastix = self.location_to_fastix[hop.location]
+            self._pack(self.file_journeys, "=ihh", fastix, mins_arr, mins_dep)
+
+            # count for storing connectedness in database
+            self.journeys_visiting_location_c[fastix] = self.journeys_visiting_location_c.get(fastix, 0) + 1
 
 
     # Internal binary packing function, with logging for debugging
