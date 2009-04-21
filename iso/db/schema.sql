@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.16 2009-04-21 09:42:43 francis Exp $
+-- $Id: schema.sql,v 1.17 2009-04-21 09:44:48 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user Postgres:
@@ -38,25 +38,6 @@ select AddGeometryColumn('', 'station', 'position_osgb', 27700, 'POINT', 2);
 -- SRID 900913 = Spherical mercator
 select AddGeometryColumn('', 'station', 'position_merc', 900913, 'POINT', 2);
 create index station_position_merc on station using GIST (position_merc);
-
--- Every journey (used for showing routes etc.)
-create table journey (
-    id integer not null primary key,
-    text_id text not null, -- identifier from NPTDR
-    long_description text, -- should be NOT NULL later
-
-    connectedness   integer,
-    minimum_zoom    integer default 0
-);
-create unique index station_text_id_idx on station(text_id);
-create index station_minimum_zoom_idx on station(minimum_zoom);
-create index station_connectedness_idx on station(connectedness);
--- SRID 27700 = OSGB 1936 / British National Grid
-select AddGeometryColumn('', 'station', 'position_osgb', 27700, 'POINT', 2);
--- SRID 900913 = Spherical mercator
-select AddGeometryColumn('', 'station', 'position_merc', 900913, 'POINT', 2);
-create index station_position_merc on station using GIST (position_merc);
-
 
 -- Represents a map made by the user
 create table map (
