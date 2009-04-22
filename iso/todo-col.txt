@@ -1,7 +1,9 @@
 
-0. Create index files command
+-1. Use new schema compare on live sites
+0. Create index files command - call populate-all on live server, remove stationlist etc. from CVS
+
+
 1. Load vehicle type in, properly distinguish flights
-2. Make loading script load station names and journey info
 3. Change route dumping to store in succinct way
 4. Make route dumping go through to output
 
@@ -30,6 +32,8 @@ Check data quality
 - Option to see routes easily
 
 Update Flash UI with Stamen updates
+
+Call PostgreSQL LISTEN/NOTIFY to trigger when there is a new map (if psycopg2 supports it)
 
 Try optimisations
     - try Flash renderer
