@@ -5,11 +5,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: coldb.py,v 1.1 2009-04-20 11:41:03 francis Exp $
+# $Id: coldb.py,v 1.2 2009-04-22 13:16:01 francis Exp $
 #
 
+import sys
 import psycopg2 as postgres
 
+sys.path.append("../../pylib")
 import mysociety.config
 
 def get_cursor():
