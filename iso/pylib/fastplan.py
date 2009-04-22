@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.16 2009-04-22 13:15:47 francis Exp $
+# $Id: fastplan.py,v 1.17 2009-04-22 15:46:47 francis Exp $
 #
 
 import logging
@@ -32,6 +32,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self.target_date = target_date
         self.show_progress = show_progress
         self.reload_database = reload_database # optionally load data into database as well as outputting binary file
+        self.vehicle_type_to_code = {}
 
     def run_pregen(self):
         # if putting also in database, clear it
@@ -144,7 +145,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         self.journey_c += 1
         self.journey_to_fastix[item.id] = self.journey_c
         vehicle_code = self.vehicle_type_to_code[item.vehicle_type]
-        self._pack(self.file_journeys, "=ih%dsch" % len(item.id), self.journey_c, len(item.id), item.id, vehicle_type, len(item.hops))
+        self._pack(self.file_journeys, "=ih%dsch" % len(item.id), self.journey_c, len(item.id), item.id, vehicle_code, len(item.hops))
         for hop in item.hops:
             mins_arr,mins_dep = -1,-1
             if hop.is_set_down():
