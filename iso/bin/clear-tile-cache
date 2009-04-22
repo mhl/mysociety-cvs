@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+. ../../shlib/deployfns
+read_conf ../conf/general
+cd ../
+
+if [ ! -d "$OPTION_TILECACHE_DIR" ]
+then
+    echo "Tile cache directory $OPTION_TILECACHE_DIR not found / configured right"
+    exit
+fi
+
+# Clear tile cache
+rm -fr $OPTION_TILECACHE_DIR/iso?*
+
