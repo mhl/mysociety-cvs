@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.4 2009-03-26 16:48:06 francis Exp $
+// $Id: makeplan.h,v 1.5 2009-04-22 13:14:00 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -85,6 +85,14 @@ class Journey {
             return "train";
         } else if (vehicle_type == 'B') {
             return "bus";
+        } else if (vehicle_type == 'C') {
+            return "coach";
+        } else if (vehicle_type == 'M') {
+            return "metro";
+        } else if (vehicle_type == 'A') {
+            return "air";
+        } else if (vehicle_type == 'F') {
+            return "ferry";
         } else {
             assert(0);
         }
@@ -559,10 +567,12 @@ class PlanningATCO {
     Minutes _interchange_time_after_journey(JourneyID journey_id) {
         Journey& journey = this->journeys[journey_id];
 
-        if (journey.vehicle_type == 'T') {
+        if (journey.vehicle_type == 'T' || journey.vehicle_type == 'F' || journey.vehicle_type == 'A') {
             return this->train_interchange_default;
-        } else {  // Bus, Air, Metro/Tram, Ferry/River Bus XXX
+        } else if (journey.vehicle_type == 'B' || journey.vehicle_type == 'C' || journey.vehicle_type == 'M') {
             return this->bus_interchange_default;
+        } else {
+            assert(0);
         }
     }
 
