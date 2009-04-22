@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+. ../../shlib/deployfns
+read_conf ../conf/general
+cd ../
+
+if [ ! -d "$OPTION_TMPWORK" ]
+then
+    echo "Temporary work directory $OPTION_TMPWORK not found / configured right"
+    exit
+fi
+
+# Remove all maps from database
+echo "delete from map;" | psql --host $OPTION_COL_DB_HOST --port $OPTION_COL_DB_PORT -A -F " " $OPTION_COL_DB_NAME $OPTION_COL_DB_USER 
+
+# Clear .iso files
+rm -fr $OPTION_TMPWORK/*.iso
+
+
