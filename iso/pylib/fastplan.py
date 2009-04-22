@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.15 2009-04-21 09:42:43 francis Exp $
+# $Id: fastplan.py,v 1.16 2009-04-22 13:15:47 francis Exp $
 #
 
 import logging
@@ -70,8 +70,9 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         # ... close file
         self.file_journeys.close()
         # update database entries for stations with connectedness
-        for fastix, c in self.journeys_visiting_location_c.iteritems():
-            self.reload_database.execute('update station set connectedness = %s where id = %s', (c, fastix))
+        if self.reload_database:
+            for fastix, c in self.journeys_visiting_location_c.iteritems():
+                self.reload_database.execute('update station set connectedness = %s where id = %s', (c, fastix))
 
         # done with database
         if self.reload_database:
@@ -142,9 +143,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         # output it
         self.journey_c += 1
         self.journey_to_fastix[item.id] = self.journey_c
-        vehicle_type = 'B'
-        if item.vehicle_type == 'TRAIN':
-            vehicle_type = 'T'
+        vehicle_code = self.vehicle_type_to_code[item.vehicle_type]
         self._pack(self.file_journeys, "=ih%dsch" % len(item.id), self.journey_c, len(item.id), item.id, vehicle_type, len(item.hops))
         for hop in item.hops:
             mins_arr,mins_dep = -1,-1
