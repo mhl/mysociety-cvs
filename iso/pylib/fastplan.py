@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.17 2009-04-22 15:46:47 francis Exp $
+# $Id: fastplan.py,v 1.18 2009-04-23 15:50:47 francis Exp $
 #
 
 import logging
@@ -81,6 +81,8 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
 
     # reload all ATCO files, setting load function to given one
     def read_all(self, func):
+        # reset file number counter
+        self.file_loading_number = 0
         # change the loading function to the one asked for
         self.item_loaded = func
         # do the loading
@@ -144,7 +146,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         # output it
         self.journey_c += 1
         self.journey_to_fastix[item.id] = self.journey_c
-        vehicle_code = self.vehicle_type_to_code[item.vehicle_type]
+        vehicle_code = item.vehicle_code(self)
         self._pack(self.file_journeys, "=ih%dsch" % len(item.id), self.journey_c, len(item.id), item.id, vehicle_code, len(item.hops))
         for hop in item.hops:
             mins_arr,mins_dep = -1,-1
