@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.6 2009-04-15 16:09:17 francis Exp $
+// $Id: fastplan.cpp,v 1.7 2009-04-24 10:13:06 francis Exp $
 //
 
 // Usage:
@@ -21,7 +21,7 @@
 #include "../cpplib/performance_monitor.h"
 
 int main(int argc, char * argv[]) {
-    if (argc < 4) {
+    if (argc < 7) {
         fprintf(stderr, "fastplan.cpp:\n  fast index file prefix as first argument\n  output prefix (or 'stream' for stdout incremental) as second\n  target arrival time in mins after midnight as third\n  target location as fourth\n  earliest departure in mins after midnight to go back to as fifth\n  easting, northing to use to find destination if destination is 'coordinate' as sixth and seventh\n");
         return 1;
     }
@@ -57,10 +57,6 @@ int main(int argc, char * argv[]) {
     if (outputprefix == "stream") {
         result_function_pointer = &PlanningATCO::dijkstra_output_stream_stdout;
     } else {
-        atco.settled.clear();
-#ifdef OUTPUT_ROUTE_DETAILS
-        atco.routes.clear();
-#endif
         result_function_pointer = &PlanningATCO::dijkstra_output_store;
     }
 
