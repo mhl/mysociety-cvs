@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.6 2009-04-24 14:16:45 francis Exp $
+// $Id: makeplan.h,v 1.7 2009-04-24 16:45:49 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -153,6 +153,9 @@ class ArrivePlaceTime {
 };
 
 class RouteNode {
+    /* Stores the journey and location to go to next to get to the destination.
+     * Used for reconstructing the exact route. */
+
     public:
 
     LocationID location_id;

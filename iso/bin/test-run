@@ -31,7 +31,7 @@ make --quiet all
 mkdir $TMP_OUTPUT
 # ... run C++ planner
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT fastcalc
-./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT --fastplanbin="../bin/fastplan-with-route" fastplan
+./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT --fastplanbin="../bin/fastplan" fastplan
 # ... run Python planner
 ./do-nptdr.py --config=../conf/oxford-test --data="$OXFORD_CIFS" --output=$TMP_OUTPUT slowplan --loglevel=INFO
 # don't compare the full routes (they can contain differences when two journeys

@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.9 2009-04-15 18:51:32 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.10 2009-04-24 16:45:49 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -75,13 +75,14 @@ int main(int argc, char * argv[]) {
             pm.display("route finding took");
         } else if (command == "binplan") {
             // Make a plan, and output binary file of coordinates to use.
-            std::string arg1, arg2, arg3, arg4;
-            std::cin >> arg1 >> arg2 >> arg3 >> arg4;
+            std::string arg1, arg2, arg3, arg4, arg5;
+            std::cin >> arg1 >> arg2 >> arg3 >> arg4 >> arg5;
 
             std::string output_binary = arg1.c_str();
-            Minutes target_minutes_after_midnight = atoi(arg2.c_str());
-            Minutes earliest_departure = atoi(arg3.c_str());
-            std::string target_location_text_id = arg4;
+            std::string output_routes = arg2.c_str();
+            Minutes target_minutes_after_midnight = atoi(arg3.c_str());
+            Minutes earliest_departure = atoi(arg4.c_str());
+            std::string target_location_text_id = arg5;
     
             LocationID target_location_id = atco.locations_by_text_id[target_location_text_id];
             fprintf(stdout, "target location: %d %s\n", target_location_id, target_location_text_id.c_str());
@@ -94,7 +95,7 @@ int main(int argc, char * argv[]) {
             );
             pm.display("route finding took");
 
-            // Output
+            // Output times
             FILE *fp = fopen(output_binary.c_str(), "wb");
             if (!fp) {
                 fprintf(stdout, "failed to make output file: %s\n", output_binary.c_str());
@@ -102,6 +103,16 @@ int main(int argc, char * argv[]) {
             }
             my_fwrite(&atco.time_taken_by_location_id[0], atco.time_taken_by_location_id.size(), sizeof(Minutes), fp);
             fclose(fp);
+#ifdef OUTPUT_ROUTE_DETAILS
+            // Output routes
+            FILE *fp2 = fopen(output_routes.c_str(), "wb");
+            if (!fp2) {
+                fprintf(stdout, "failed to make routes output file: %s\n", output_routes.c_str());
+                return 1;
+            }
+            my_fwrite(&atco.routes[0], atco.routes.size(), sizeof(RouteNode), fp2);
+            fclose(fp2);
+#endif
             pm.display("binary output took");
         } else if (command == "fork") {
             // fork daemon - note this happens after timetable loading, so RAM of the timetable
