@@ -76,9 +76,14 @@ fastplan.cpp - C++ journey planner
 fastplan-coopt.cpp - coopeted C++ journey planner, for calling by isodaemon
 isodaemon.py - daemon to call C++ planner and make .iso route files
 
-populate_stations / populate_stations.py / stationlist.cpp - put stations in the database
 generate-config - used when deploying the site
 test-run - test script for Contours of Life
+
+clear-generated-maps - erase maps entries in database and .iso route files
+clear-tile-cache - clear tile server's cache of tiles
+
+populate-all - generate binary files for C++ journey planner, and put stations in database
+cull_stations.py - calculate render threshold for stations at different zoom levels
 
 do-westmidlands-anim - on off to make an animation
 

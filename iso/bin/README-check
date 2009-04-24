@@ -4,7 +4,7 @@
 
 for X in `
     ls -1 | 
-        egrep -v "(CVS|_Inline|.cvsignore|.swp|README-check|README.txt|.pyc|Makefile)" | 
+        egrep -v "(CVS|_Inline|.cvsignore|.swp|README-check|README.txt|.pyc|Makefile|^fastplan$|^fastplan-coopt$|^fastplan-coopt-debug$|^fastplan-debug$|^fastplan-profile$)" | 
         sed "s#./##"
     `
 do 
