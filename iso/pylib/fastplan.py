@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.18 2009-04-23 15:50:47 francis Exp $
+# $Id: fastplan.py,v 1.19 2009-04-24 09:54:44 francis Exp $
 #
 
 import logging
@@ -128,17 +128,24 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         if not isinstance(item, mysociety.atcocif.JourneyHeader):
             return
 
-        # ditch journeys which aren't valid on the date
+        # don't use journeys which aren't valid on the date
         if not item.is_valid_on_date(self.target_date):
             return
+
         # ditch journeys which don't have location information
         bad = False
         for hop in item.hops:
             if hop.location not in self.location_to_fastix:
-                logging.warn("location %s appears in journey %s but isn't in locations list" % (hop.location, item.id))
+                logging.warn("location %s appears in journey %s but isn't in locations list, ditching journey" % (hop.location, item.id))
                 bad = True
         if bad:
             return
+
+	# ditch journeys which don't have vehicle type
+	if item.vehicle_type == '':
+            logging.warn("journey %s does not have vehicle type, ditching it" % (item.id))
+            return
+
         # see if we already got this one
         if item.id in self.journey_to_fastix:
             return
