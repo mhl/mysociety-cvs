@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.54 2009-04-24 21:02:46 francis Exp $
+# $Id: index.cgi,v 1.55 2009-04-24 22:20:33 francis Exp $
 #
 
 import re
@@ -45,7 +45,6 @@ def nearest_station(E, N):
     return row
 
 def get_map(text_id):
-    db.execute('BEGIN')
     db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station
         WHERE text_id = %s FOR UPDATE''', (text_id,))
     row = db.fetchone()
@@ -87,6 +86,7 @@ def lookup(pc):
     return Response(status=302, url='/station/%s' % station)
 
 def map(text_id):
+    db.execute('BEGIN')
     (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id)
 
     if map is None:

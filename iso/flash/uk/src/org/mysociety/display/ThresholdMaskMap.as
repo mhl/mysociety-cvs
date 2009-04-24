@@ -50,7 +50,7 @@ package org.mysociety.display
         public var outlineBlendMode:String;
 
         // debug info
-        public var debugDisplayString:String;
+        public var debugDisplayString:String = "";
         
         protected var _displayMap:BitmapCacheMap;
         protected var _maskMap:BitmapCacheMap;
@@ -69,7 +69,6 @@ package org.mysociety.display
             _displayMap = new BitmapCacheMap(width, height, draggable, provider);
             _displayMap.name = 'display';
             _displayMap.addEventListener(MouseEvent.DOUBLE_CLICK, _displayMap.onDoubleClick);
-            //_displayMap.grid.setTileClass(NullTile);
             _displayMap.addEventListener(MouseEvent.CLICK, onDisplayMapClick);
             _displayMap.addEventListener(MapEvent.RENDERED, onDisplayMapRendered);
             _displayMap.grid.addEventListener(ProgressEvent.PROGRESS, onMapRendered);
@@ -248,17 +247,18 @@ package org.mysociety.display
         
         protected function onDisplayMapRendered(event:Event):void
         {
-            var w:int = _displayMap.getSize()[0];
-            var h:int = 20;
-            // draw the debug line
-            var tf:TextField = new TextField();
-            tf.width = w;
-            tf.height = h;
-            tf.wordWrap = true;
-            tf.text = debugDisplayString;
-            _displayMap.cache.fillRect(new Rectangle(0, 0, w, h), 0xFFFFFFFF);
-            _displayMap.cache.draw(tf);
-
+            if (debugDisplayString != "") {
+                var w:int = _displayMap.getSize()[0];
+                var h:int = 20;
+                // draw the debug line
+                var tf:TextField = new TextField();
+                tf.width = w;
+                tf.height = h;
+                tf.wordWrap = true;
+                tf.text = debugDisplayString;
+                _displayMap.cache.fillRect(new Rectangle(0, 0, w, h), 0xFFFFFFFF);
+                _displayMap.cache.draw(tf);
+            }
 
             _maskMap.grid.setMatrix(_displayMap.grid.getMatrix());
             dirty = true;
@@ -295,7 +295,6 @@ package org.mysociety.display
             debugDisplayString += b.formatPrecision(event.result.station.lat, 2);
             debugDisplayString += " lon:";
             debugDisplayString += b.formatPrecision(event.result.station.lon, 2);
-            //_displayMap.refresh()
 
             // force refresh somehow
             _displayMap.dispatchEvent(new MapEvent(MapEvent.RESIZED, _displayMap.getSize()));
