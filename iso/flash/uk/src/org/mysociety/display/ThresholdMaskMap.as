@@ -266,16 +266,18 @@ package org.mysociety.display
 
         protected function onDisplayMapClick(event:MouseEvent):void
         {
-            var p:Point = new Point(event.localX, event.localY);
-            var l:Location = _displayMap.pointLocation(p);
+            if (event.shiftKey) {
+                var p:Point = new Point(event.localX, event.localY);
+                var l:Location = _displayMap.pointLocation(p);
 
-            var h:HTTPService = new HTTPService();
-            h.method = "GET";
-            h.url = "?lat=" + l.lat + "&lon=" + l.lon;
-            // HTTP.resultFormat="e4x";
-            //This is to return the php results
-            h.addEventListener(ResultEvent.RESULT, mapClickResults);
-            h.send();
+                var h:HTTPService = new HTTPService();
+                h.method = "GET";
+                h.url = "?lat=" + l.lat + "&lon=" + l.lon;
+                // HTTP.resultFormat="e4x";
+                //This is to return the php results
+                h.addEventListener(ResultEvent.RESULT, mapClickResults);
+                h.send();
+            }
         }
 
         public function mapClickResults(event:ResultEvent):void
