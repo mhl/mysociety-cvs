@@ -37,8 +37,8 @@ mkdir $TMP_OUTPUT
 # don't compare the full routes (they can contain differences when two journeys
 # between the same two places take the same amount of time), just the times in
 # minutes.
-egrep "^From " $TMP_OUTPUT/nptdr-slow-9100OXFD-40000-human.txt >$TMP_OUTPUT/slow-routes.txt
-egrep "^From " $TMP_OUTPUT/nptdr-fast-9100OXFD-40000-human.txt >$TMP_OUTPUT/fast-routes.txt
+egrep "^From " $TMP_OUTPUT/nptdr-slow-9100OXFD-40000-human.txt | sort >$TMP_OUTPUT/slow-routes.txt
+egrep "^From " $TMP_OUTPUT/nptdr-fast-9100OXFD-40000-human.txt | sort >$TMP_OUTPUT/fast-routes.txt
 if ! diff -u $TMP_OUTPUT/slow-routes.txt $TMP_OUTPUT/fast-routes.txt
 then
     echo "Failed test - C++ and Python planners differ in output, see in $TMP_OUTPUT/{slow,fast}-routes.txt"
