@@ -8,6 +8,7 @@ package org.mysociety.display
     import flash.display.BitmapData;
     import flash.events.Event;
     import flash.geom.ColorTransform;
+    import flash.geom.Rectangle;
 
     public class BitmapCacheMap extends Map
     {
@@ -49,7 +50,7 @@ package org.mysociety.display
                 _cache.draw(this, null, null, null, scrollRect, false);
             }
         }
-        
+
         public function get cache():BitmapData
         {
             return _cache;

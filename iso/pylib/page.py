@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.5 2009-04-01 15:33:05 matthew Exp $
+# $Id: page.py,v 1.6 2009-04-24 20:00:46 francis Exp $
 #
 
 import os, re, cgi, fcgi
@@ -20,18 +20,26 @@ def fcgi_loop(main):
         if response.headers():
             req.out.write(response.headers())
 
-        req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
+        if response.type == 'html':
+            req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
+        elif response.type == 'xml':
+            req.out.write("Content-Type: text/xml; charset=utf-8\r\n\r\n")
+        else:
+            raise Exception("unknown response type " + response.type)
         if req.env.get('REQUEST_METHOD') == 'HEAD':
             req.Finish()
             return
 
-        footer = template('footer')
-        header = template('header', {
-            'postcode': fs.getfirst('pc', ''),
-            'refresh': response.refresh and '<meta http-equiv="refresh" content="%d">' % response.refresh or '',
-            'body_id': response.id and ' id="%s"' % response.id or '',
-        })
-        req.out.write(header + str(response) + footer)
+        if response.type == 'html':
+            footer = template('footer')
+            header = template('header', {
+                'postcode': fs.getfirst('pc', ''),
+                'refresh': response.refresh and '<meta http-equiv="refresh" content="%d">' % response.refresh or '',
+                'body_id': response.id and ' id="%s"' % response.id or '',
+            })
+            req.out.write(header + str(response) + footer)
+        else:
+            req.out.write(str(response))
 
     except Exception, e:
         req.out.write("Content-Type: text/plain\r\n\r\n")
@@ -42,18 +50,19 @@ def fcgi_loop(main):
     req.Finish()
 
 class Response(object):
-    def __init__(self, template='', vars={}, status=200, url='', refresh=False, id=''):
+    def __init__(self, template='', vars={}, status=200, url='', refresh=False, id='', type="html"):
         self.template = template
         self.vars = vars
         self.status = status
         self.url = url
         self.refresh = refresh
         self.id = id
+        self.type = type
 
     def __str__(self):
         if self.status == 302:
             return "Please visit <a href='%s'>%s</a>." % (self.url, self.url)
-        return template(self.template, self.vars)
+        return template(self.template, self.vars, self.type)
 
     def headers(self):
         if self.status == 302:
@@ -71,8 +80,8 @@ def pluralize(m, vars):
         return singular
     return plural
 
-def template(name, vars={}):
-    template = slurp_file('../templates/%s.html' % name)
+def template(name, vars={}, type='html'):
+    template = slurp_file('../templates/%s.%s' % (name, type))
     vars['self'] = os.environ.get('REQUEST_URI', '')
     template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), '')), True), template)
     template = re.sub('{{ ([a-z_]*)\.([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), []).get(x.group(2), '')), True), template)

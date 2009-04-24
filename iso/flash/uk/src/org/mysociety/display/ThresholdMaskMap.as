@@ -4,6 +4,7 @@ package org.mysociety.display
     import com.modestmaps.events.MapEvent;
     import com.modestmaps.mapproviders.IMapProvider;
     import com.modestmaps.overlays.MarkerClip;
+    import com.modestmaps.geo.Location;
     import com.stamen.ui.BlockSprite;
     
     import flash.display.Bitmap;
@@ -20,6 +21,11 @@ package org.mysociety.display
     import flash.geom.Point;
     import flash.geom.Rectangle;
     import flash.utils.getTimer;
+    import flash.text.TextField;
+
+    import mx.rpc.http.HTTPService;
+    import mx.rpc.events.ResultEvent;
+    import mx.formatters.NumberBase;
     
     import org.mysociety.map.providers.ThresholdMaskProvider;
 
@@ -42,6 +48,9 @@ package org.mysociety.display
         
         // different color outlines may require different blend modes (white: BlendMode.SCREEN; black: BlendMode.DARKEN)
         public var outlineBlendMode:String;
+
+        // debug info
+        public var debugDisplayString:String;
         
         protected var _displayMap:BitmapCacheMap;
         protected var _maskMap:BitmapCacheMap;
@@ -61,6 +70,7 @@ package org.mysociety.display
             _displayMap.name = 'display';
             _displayMap.addEventListener(MouseEvent.DOUBLE_CLICK, _displayMap.onDoubleClick);
             //_displayMap.grid.setTileClass(NullTile);
+            _displayMap.addEventListener(MouseEvent.CLICK, onDisplayMapClick);
             _displayMap.addEventListener(MapEvent.RENDERED, onDisplayMapRendered);
             _displayMap.grid.addEventListener(ProgressEvent.PROGRESS, onMapRendered);
             addChild(_displayMap);
@@ -217,6 +227,7 @@ package org.mysociety.display
                     bmp.draw(white, m, null, outlineBlendMode);
                 }
             }
+
             trace('[took', getTimer() - t, 'ms]');
 
             white.dispose();
@@ -237,8 +248,54 @@ package org.mysociety.display
         
         protected function onDisplayMapRendered(event:Event):void
         {
+            var w:int = _displayMap.getSize()[0];
+            var h:int = 20;
+            // draw the debug line
+            var tf:TextField = new TextField();
+            tf.width = w;
+            tf.height = h;
+            tf.wordWrap = true;
+            tf.text = debugDisplayString;
+            _displayMap.cache.fillRect(new Rectangle(0, 0, w, h), 0xFFFFFFFF);
+            _displayMap.cache.draw(tf);
+
+
             _maskMap.grid.setMatrix(_displayMap.grid.getMatrix());
             dirty = true;
+        }
+
+        protected function onDisplayMapClick(event:MouseEvent):void
+        {
+            var p:Point = new Point(event.localX, event.localY);
+            var l:Location = _displayMap.pointLocation(p);
+
+            var h:HTTPService = new HTTPService();
+            h.method = "GET";
+            h.url = "?lat=" + l.lat + "&lon=" + l.lon;
+            // HTTP.resultFormat="e4x";
+            //This is to return the php results
+            h.addEventListener(ResultEvent.RESULT, mapClickResults);
+            h.send();
+
+            debugDisplayString = " lat " + l.lat;
+            debugDisplayString += " lon " + l.lon;
+        }
+
+        public function mapClickResults(event:ResultEvent):void
+        {
+            debugDisplayString = ""
+            debugDisplayString += event.result.station.station_long;
+            debugDisplayString += " id:";
+            debugDisplayString += event.result.station.station;
+            var b:NumberBase = new NumberBase();
+            debugDisplayString += " lat:";
+            debugDisplayString += b.formatPrecision(event.result.station.lat, 2);
+            debugDisplayString += " lon:";
+            debugDisplayString += b.formatPrecision(event.result.station.lon, 2);
+            //_displayMap.refresh()
+
+            // force refresh somehow
+            _displayMap.dispatchEvent(new MapEvent(MapEvent.RESIZED, _displayMap.getSize()));
         }
 
         override protected function resize():void

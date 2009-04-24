@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.52 2009-04-20 11:41:04 francis Exp $
+# $Id: index.cgi,v 1.53 2009-04-24 20:00:46 francis Exp $
 #
 
 import re
@@ -28,6 +28,20 @@ import coldb
 
 db = coldb.get_cursor()
 
+def nearest_station(E, N):
+    db.execute('''SELECT text_id, long_description FROM station WHERE
+        position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
+        AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
+        ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
+        LIMIT 1''' % (E, N, E, N, E, N))
+    row = db.fetchone()
+
+    if not row:
+        return None
+
+    return row
+
+
 def lookup(pc):
     """Given a postcode, look up the nearest station ID
     and redirect to a URL containing that"""
@@ -42,18 +56,14 @@ def lookup(pc):
     E = int(f['easting'])
     N = int(f['northing'])
 
-    db.execute('''SELECT text_id FROM station WHERE
-        position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
-        AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
-        ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
-        LIMIT 1''' % (E, N, E, N, E, N))
-    row = db.fetchone()
-    if not row:
+    (station, station_long) = nearest_station(E, N)
+
+    if not station:
         return Response('index', {
             'error': '<div id="errors">Could not find a station or bus stop :(</div>'
         })
 
-    return Response(status=302, url='/station/%s' % row[0])
+    return Response(status=302, url='/station/%s' % station)
 
 def map(text_id):
     db.execute('BEGIN')
@@ -118,9 +128,19 @@ def map(text_id):
         return Response('map-pleasewait', { 'state': state }, refresh=2, id='map-wait')
     else:
         raise Exception("unknown state " + current_state)
+
+# Used when in Flash you click on somewhere to get the route
+def get_route(lat, lon):
+    E, N = wgs84_to_national_grid(lat, lon)
+    (station, station_long) = nearest_station(E, N)
+    return Response('route', 
+                { 'lat': lat, 'lon': lon, 'e': E, 'n': N, 'station' : station, 'station_long' : station_long},
+                type='xml')
     
 def main(fs):
-    if 'pc' in fs:
+    if 'lat' in fs:
+        return get_route(fs.getfirst('lat'), fs.getfirst('lon'))
+    elif 'pc' in fs:
         return lookup(fs.getfirst('pc'))
     elif 'station_id' in fs:
         return map(fs.getfirst('station_id'))
@@ -133,6 +153,12 @@ def national_grid_to_wgs84(x, y):
     """Project from British National Grid to WGS-84 lat/lon"""
     lon, lat = pyproj.transform(BNG, WGS, x, y)
     return lat, lon
+
+def wgs84_to_national_grid(lat, lon):
+    """Project from WGS-84 lat/lon to British National Grid"""
+    x, y = pyproj.transform(WGS, BNG, lon, lat)
+    return x, y
+
 
 # Main FastCGI loop
 while fcgi.isFCGI():
