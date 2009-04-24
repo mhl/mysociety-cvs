@@ -276,14 +276,17 @@ package org.mysociety.display
             //This is to return the php results
             h.addEventListener(ResultEvent.RESULT, mapClickResults);
             h.send();
-
-            debugDisplayString = " lat " + l.lat;
-            debugDisplayString += " lon " + l.lon;
         }
 
         public function mapClickResults(event:ResultEvent):void
         {
             debugDisplayString = ""
+            if (event.result.station.time_taken < 0) {
+                debugDisplayString += "no route ";
+            } else {
+                debugDisplayString += event.result.station.time_taken;
+                debugDisplayString += " mins ";
+            }
             debugDisplayString += event.result.station.station_long;
             debugDisplayString += " id:";
             debugDisplayString += event.result.station.station;

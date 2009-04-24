@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.53 2009-04-24 20:00:46 francis Exp $
+# $Id: index.cgi,v 1.54 2009-04-24 21:02:46 francis Exp $
 #
 
 import re
@@ -17,6 +17,7 @@ sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 import fcgi
 import psycopg2 as postgres
 import pyproj
+import struct
 
 from page import *
 import mysociety.config
@@ -28,8 +29,10 @@ import coldb
 
 db = coldb.get_cursor()
 
+tmpwork = mysociety.config.get('TMPWORK')
+
 def nearest_station(E, N):
-    db.execute('''SELECT text_id, long_description FROM station WHERE
+    db.execute('''SELECT text_id, long_description, id FROM station WHERE
         position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
         AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
         ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
@@ -41,31 +44,7 @@ def nearest_station(E, N):
 
     return row
 
-
-def lookup(pc):
-    """Given a postcode, look up the nearest station ID
-    and redirect to a URL containing that"""
-
-    try:
-        f = mysociety.mapit.get_location(pc)
-    except RABXException, e:
-        return Response('index', {
-            'error': '<div id="errors">%s</div>' % e
-        })
-
-    E = int(f['easting'])
-    N = int(f['northing'])
-
-    (station, station_long) = nearest_station(E, N)
-
-    if not station:
-        return Response('index', {
-            'error': '<div id="errors">Could not find a station or bus stop :(</div>'
-        })
-
-    return Response(status=302, url='/station/%s' % station)
-
-def map(text_id):
+def get_map(text_id):
     db.execute('BEGIN')
     db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station
         WHERE text_id = %s FOR UPDATE''', (text_id,))
@@ -81,6 +60,35 @@ def map(text_id):
     db.execute('''SELECT id, state, working_server FROM map WHERE target_station_id = %s
         AND target_latest = %s AND target_earliest = %s AND target_date = %s''', (target_station_id, target_latest, target_earliest, target_date))
     map = db.fetchone()
+
+    return (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon)
+ 
+def lookup(pc):
+    """Given a postcode, look up the nearest station ID
+    and redirect to a URL containing that"""
+
+    try:
+        f = mysociety.mapit.get_location(pc)
+    except RABXException, e:
+        return Response('index', {
+            'error': '<div id="errors">%s</div>' % e
+        })
+
+    E = int(f['easting'])
+    N = int(f['northing'])
+
+    (station, station_long, station_id) = nearest_station(E, N)
+
+    if not station:
+        return Response('index', {
+            'error': '<div id="errors">Could not find a station or bus stop :(</div>'
+        })
+
+    return Response(status=302, url='/station/%s' % station)
+
+def map(text_id):
+    (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id)
+
     if map is None:
         # Start off generation of map!
         db.execute("SELECT nextval('map_id_seq')")
@@ -95,7 +103,6 @@ def map(text_id):
         working_server = map[2]
         db.execute('ROLLBACK')
 
-    tmpwork = mysociety.config.get('TMPWORK')
     tile_web_host = mysociety.config.get('TILE_WEB_HOST')
     file = os.path.join(tmpwork, str(map_id))
     if current_state == 'complete':
@@ -130,16 +137,28 @@ def map(text_id):
         raise Exception("unknown state " + current_state)
 
 # Used when in Flash you click on somewhere to get the route
-def get_route(lat, lon):
+def get_route(text_id, lat, lon):
     E, N = wgs84_to_national_grid(lat, lon)
-    (station, station_long) = nearest_station(E, N)
+    (station, station_long, station_id) = nearest_station(E, N)
+
+    # Look up time taken
+    (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id)
+    map_id = map[0]
+    iso_file = tmpwork + "/" + repr(map_id) + ".iso"
+    isof = open(iso_file, 'rb')
+    isof.seek(station_id * 2)
+    tim = struct.unpack("h", isof.read(2))[0]
+
+    # Look up route
+    # ...
+
     return Response('route', 
-                { 'lat': lat, 'lon': lon, 'e': E, 'n': N, 'station' : station, 'station_long' : station_long},
+            { 'lat': lat, 'lon': lon, 'e': E, 'n': N, 'station' : station, 'station_long' : station_long, 'time_taken' : tim},
                 type='xml')
     
 def main(fs):
     if 'lat' in fs:
-        return get_route(fs.getfirst('lat'), fs.getfirst('lon'))
+        return get_route(fs.getfirst('station_id'), fs.getfirst('lat'), fs.getfirst('lon'))
     elif 'pc' in fs:
         return lookup(fs.getfirst('pc'))
     elif 'station_id' in fs:
