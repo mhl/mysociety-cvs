@@ -5,13 +5,15 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.7 2009-03-26 11:08:57 francis Exp $
+# $Id: Makefile,v 1.8 2009-04-24 14:16:44 francis Exp $
 #
 
-CFLAGS = -Wall -O2 -fno-exceptions -fno-rtti
+CFLAGS = -Wall -O2 
 CFLAGS_WITH_ROUTE = -Wall -O2 -DOUTPUT_ROUTE_DETAILS 
 CFLAGS_DEBUG = -Wall -g -DDEBUG -DOUTPUT_ROUTE_DETAILS
 CFLAGS_PROFILE = ${CFLAGS} -pg
+
+# -fno-exceptions -fno-rtti # these can make it faster, or slower... needs better analysis
 
 BINARIES=fastplan fastplan-with-route fastplan-debug fastplan-profile fastplan-coopt fastplan-coopt-debug stationlist
 

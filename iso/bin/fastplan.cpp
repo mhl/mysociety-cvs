@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.7 2009-04-24 10:13:06 francis Exp $
+// $Id: fastplan.cpp,v 1.8 2009-04-24 14:16:44 francis Exp $
 //
 
 // Usage:
@@ -73,9 +73,13 @@ int main(int argc, char * argv[]) {
         std::string grid_time_file = outputprefix + ".txt";
         std::ofstream f;
         f.open(grid_time_file.c_str());
-        BOOST_FOREACH(const SettledPair& p, atco.settled) {
-            const LocationID& l_id = p.first;
-            const Minutes& min = target_minutes_after_midnight - p.second;
+        for (LocationID l_id = 1; l_id <= atco.number_of_locations; ++l_id) {
+            if (atco.settled[l_id] == MINUTES_NULL) {
+                continue;
+            }
+
+            const Minutes& min = target_minutes_after_midnight - atco.settled[l_id];
+
             int secs = min * 60;
             Location *l = &atco.locations[l_id];
             f << l->easting << " " << l->northing << " " << secs << " " << "\n";
@@ -88,7 +92,7 @@ int main(int argc, char * argv[]) {
         std::string human_file = outputprefix + "-human.txt";
         std::ofstream g;
         g.open(human_file.c_str());
-        g << atco.pretty_print_routes(atco.settled, atco.routes);
+        g << atco.pretty_print_routes();
         g.close();
         pm.display("human output took");
 #endif

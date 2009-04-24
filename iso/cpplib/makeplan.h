@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.5 2009-04-22 13:14:00 francis Exp $
+// $Id: makeplan.h,v 1.6 2009-04-24 14:16:45 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -39,6 +39,8 @@ std::string format_time(const Minutes& mins_after_midnight) {
 }
 #endif
 
+#define MINUTES_NULL Minutes(-1)
+
 typedef int LocationID;
 class Location {
     public:
@@ -53,11 +55,13 @@ class Location {
 #endif
 };
 
+#define LOCATION_NULL LocationID(-1)
+
 class Hop {
     public:
     LocationID location_id;
-    Minutes mins_arr; // minutes after midnight of arrival, or -1 if not set down stop
-    Minutes mins_dep; // minutes after midnight of departure, or -1 if not pick up stop
+    Minutes mins_arr; // minutes after midnight of arrival, or MINUTES_NULL if not set down stop
+    Minutes mins_dep; // minutes after midnight of departure, or MINUTES_NULL if not pick up stop
 
 #ifdef DEBUG
     std::string toString() const {
@@ -66,10 +70,10 @@ class Hop {
 #endif
 
     bool is_pick_up() const {
-        return mins_dep != -1;
+        return mins_dep != MINUTES_NULL;
     }
     bool is_set_down() const {
-        return mins_arr != -1;
+        return mins_arr != MINUTES_NULL;
     }
 };
 
@@ -105,6 +109,10 @@ class Journey {
 #endif
 };
 
+#define JOURNEY_NULL JourneyID(-1)
+#define JOURNEY_ALREADY_THERE JourneyID(-2)
+#define JOURNEY_WALK JourneyID(-3)
+
 class ArrivePlaceTime {
     /* Stores a location and date/time of arrival (including interchange wait)
     at that location. */
@@ -115,29 +123,25 @@ class ArrivePlaceTime {
     Minutes when; // minutes after midnight
 
 #ifdef OUTPUT_ROUTE_DETAILS
-    char onwards_leg_type; // W = walk or J = journey or A = already there
     JourneyID onwards_journey_id;
-    Minutes onwards_walk_time;
 #endif
 
     ArrivePlaceTime(LocationID l_location_id, Minutes l_when
 #ifdef OUTPUT_ROUTE_DETAILS
-        , char l_onwards_leg_type, JourneyID l_onwards_journey_id, Minutes l_onwards_walk_time
+        , JourneyID l_onwards_journey_id
 #endif
     ) {
         this->location_id = l_location_id;
         this->when = l_when;
 
 #ifdef OUTPUT_ROUTE_DETAILS
-        this->onwards_leg_type = l_onwards_leg_type;
         this->onwards_journey_id = l_onwards_journey_id;
-        this->onwards_walk_time = l_onwards_walk_time;
 #endif
     }
 
     ArrivePlaceTime() {
-        this->location_id = -1;
-        this->when = -1;
+        this->location_id = LOCATION_NULL;
+        this->when = MINUTES_NULL;
     }
 
     std::string repr() const {
@@ -148,17 +152,31 @@ class ArrivePlaceTime {
     }
 };
 
+class RouteNode {
+    public:
+
+    LocationID location_id;
+    JourneyID journey_id;
+
+    RouteNode(LocationID l_location_id, JourneyID l_journey_id) {
+        this->location_id = l_location_id;
+        this->journey_id = l_journey_id;
+    }
+
+    RouteNode() { 
+        this->location_id = LOCATION_NULL;
+        this->journey_id = JOURNEY_NULL;
+    }
+};
+
 /* Map from a location, to the best time/location to leave that place */
 typedef std::map<LocationID, ArrivePlaceTime> Adjacents;
 typedef std::pair<LocationID, ArrivePlaceTime> AdjacentsPair;
 
 /* Result types from Dijkstra's algorithm */
-typedef std::pair<LocationID, Minutes> SettledPair;
-typedef std::vector<SettledPair> Settled;
+typedef std::vector<Minutes> Settled;
 #ifdef OUTPUT_ROUTE_DETAILS
-typedef std::list<ArrivePlaceTime> Route;
-typedef std::map<LocationID, Route> Routes;
-typedef std::pair<LocationID, std::list<ArrivePlaceTime> > RoutesPair;
+typedef std::vector<RouteNode> Routes;
 #endif
 
 // Stuff for relaxed_heap for Dijkstra's algorithm
@@ -224,6 +242,7 @@ class PlanningATCO {
 #ifdef OUTPUT_ROUTE_DETAILS
     Routes routes;
 #endif
+    // ... for dijkstra_output_store_by_id
     // ... for dijkstra_output_store_by_id
     std::vector<short> time_taken_by_location_id; // in delta minutes
 
@@ -437,7 +456,7 @@ class PlanningATCO {
     // Given a grid coordinate, find the nearest station.
     LocationID find_nearest_station_to_point(double easting, double northing) {
         double best_dist_so_far_sq = -1;
-        LocationID best_location_id = -1;
+        LocationID best_location_id = LOCATION_NULL;
         for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
             const Location &location = this->locations[location_id];
             double dist_sq = (easting - location.easting)*(easting - location.easting)
@@ -449,7 +468,7 @@ class PlanningATCO {
                 best_location_id = location_id;
             }
         }
-        assert(best_location_id != -1);
+        assert(best_location_id != LOCATION_NULL);
         return best_location_id;
     }
 
@@ -552,13 +571,13 @@ class PlanningATCO {
 
             Minutes walk_time = this->_walk_time_apart(dist);
             Minutes walk_departure_time = target_arrival_time - walk_time;
-            ArrivePlaceTime arrive_time_place(location_id, walk_departure_time
+            ArrivePlaceTime arrive_place_time(location_id, walk_departure_time
 #ifdef OUTPUT_ROUTE_DETAILS
-                , 'W', -1, walk_time
+                , JOURNEY_WALK
 #endif
             );
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
-            this->_add_to_adjacents(arrive_time_place, adjacents);
+            this->_add_to_adjacents(arrive_place_time, adjacents);
         }
     }
 
@@ -598,7 +617,7 @@ class PlanningATCO {
         // currently at (plus interchange time of course). Usually there'll
         // only be one of arrival time to check, but there can be more for
         // looped journeys.
-        Minutes arrival_time_at_target_location = -1;
+        Minutes arrival_time_at_target_location = MINUTES_NULL;
         BOOST_FOREACH(const Hop& hop, journey.hops) {
             // Find hops that arrive at the target
             if (hop.location_id != target_location_id) {
@@ -612,14 +631,14 @@ class PlanningATCO {
             // See if that is a closer arrival time than what we got so far
             assert(hop.mins_arr >= 0);
             if (possible_arrival_time_at_target_location + interchange_time <= target_arrival_time 
-                && (arrival_time_at_target_location == -1 || arrival_time_at_target_location < possible_arrival_time_at_target_location)) {
+                && (arrival_time_at_target_location == MINUTES_NULL || arrival_time_at_target_location < possible_arrival_time_at_target_location)) {
                 arrival_time_at_target_location = possible_arrival_time_at_target_location;
             }
         }
 
         // See whether if we want to use this journey to get to this
         // stop, we get there on time to change to the next journey.
-        if (arrival_time_at_target_location == -1) {
+        if (arrival_time_at_target_location == MINUTES_NULL) {
             log(boost::format("\t\twhich are all too late for %s by %s with interchange time %d so not using journey") % this->locations[target_location_id].text_id % format_time(target_arrival_time) % interchange_time);
             return;
         }
@@ -665,7 +684,7 @@ class PlanningATCO {
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
             ArrivePlaceTime arrive_place_time(hop.location_id, departure_time
 #ifdef OUTPUT_ROUTE_DETAILS
-                , 'J', journey_id, -1
+                , journey_id
 #endif
             );
 #ifdef DEBUG
@@ -677,11 +696,7 @@ class PlanningATCO {
 
     /* Method pointer type for what to do with results from do_dijkstra.
      * Various dijkstra_output_* methods below are suitable. */
-    typedef void (PlanningATCO::*ResultFunctionPointer)(const LocationID&, const Minutes&
-#ifdef OUTPUT_ROUTE_DETAILS
-        , const Route&
-#endif
-    );
+    typedef void (PlanningATCO::*ResultFunctionPointer)(const LocationID&, const Minutes&);
 
     /*
     Run Dijkstra's algorithm to find latest departure time from all locations to
@@ -695,21 +710,22 @@ class PlanningATCO {
     void do_dijkstra(ResultFunctionPointer result_function_pointer,
         const LocationID target_location_id, const Minutes target_time, const Minutes earliest_departure
     ) {
-#ifdef OUTPUT_ROUTE_DETAILS
-        Routes routes; // how to get there
-        routes[target_location_id].push_front(ArrivePlaceTime(target_location_id, target_time, 'A', -1, -1));
-#endif
-
         // Initialize data structures for output if appropriate
         if (result_function_pointer == &PlanningATCO::dijkstra_output_store_by_id) {
             time_taken_by_location_id.resize(this->number_of_locations + 1);
             std::fill(time_taken_by_location_id.begin(), time_taken_by_location_id.end(), -1);
         } else if (result_function_pointer == &PlanningATCO::dijkstra_output_store) {
-            this->settled.clear();
-#ifdef OUTPUT_ROUTE_DETAILS
-            this->routes.clear();
-#endif
         }
+
+        this->settled.resize(this->number_of_locations + 1);
+        std::fill(this->settled.begin(), this->settled.end(), MINUTES_NULL);
+
+#ifdef OUTPUT_ROUTE_DETAILS
+        // How to get there
+        this->routes.resize(this->number_of_locations + 1);
+        std::fill(this->routes.begin(), this->routes.end(), RouteNode());
+        this->routes[target_location_id] = RouteNode(target_location_id, JOURNEY_ALREADY_THERE);
+#endif
         
         // Other variables
         this->final_destination_id = target_location_id;
@@ -721,7 +737,6 @@ class PlanningATCO {
         queue_first_location = &this->locations[0];
         typedef std::pair<unsigned, LessValues> HeapPair;
         boost::relaxed_heap<unsigned, LessValues> heap(max_values);
-        std::set<LocationID> settled_set;
 
         // Put in initial value
         queue_values[target_location_id] = target_time; 
@@ -740,13 +755,9 @@ class PlanningATCO {
             }
 
             // That item is now settled
-            settled_set.insert(nearest_location_id);
+            this->settled[nearest_location_id] = nearest_time;
             // ... do whatever is required with it
-            (*this.*result_function_pointer)(nearest_location_id, nearest_time
-#ifdef OUTPUT_ROUTE_DETAILS
-                , routes[nearest_location_id]
-#endif
-            );
+            (*this.*result_function_pointer)(nearest_location_id, nearest_time);
             log(boost::format("settled location %s time %s") % this->locations[nearest_location_id].text_id % format_time(nearest_time));
             
             // Add all of its neighbours to the queue
@@ -763,27 +774,25 @@ class PlanningATCO {
                 if (queue_values[location_id]) {
                     // already in heap
                     Minutes current_priority = *queue_values[location_id];
-                    debug_assert(settled_set.find(location_id) == settled_set.end());
+                    debug_assert(this->settled[location_id] == MINUTES_NULL);
                     if (arrive_place_time.when > current_priority) {
                         log(boost::format("\tupdated location %s from priority %s to priority %s") % this->locations[location_id].text_id % format_time(current_priority) % format_time(arrive_place_time.when));
                         queue_values[location_id] = arrive_place_time.when;
                         heap.update(location_id);
 #ifdef OUTPUT_ROUTE_DETAILS
-                        routes[location_id] = routes[nearest_location_id];
-                        routes[location_id].push_front(arrive_place_time);
+                        this->routes[location_id] = RouteNode(nearest_location_id, arrive_place_time.onwards_journey_id);
 #endif
                     } else {
                         log(boost::format("\tlocation %s already in heap priority %s") % this->locations[location_id].text_id % format_time(current_priority));
                     }
                 } else {
-                    if (settled_set.find(location_id) == settled_set.end()) {
+                    if (this->settled[location_id] == MINUTES_NULL) {
                         // new priority to heap
                         log(boost::format("\tadded location %s with priority %s") % this->locations[location_id].text_id % format_time(arrive_place_time.when));
                         queue_values[location_id] = arrive_place_time.when;
                         heap.push(location_id);
 #ifdef OUTPUT_ROUTE_DETAILS
-                        routes[location_id] = routes[nearest_location_id];
-                        routes[location_id].push_front(arrive_place_time);
+                        this->routes[location_id] = RouteNode(nearest_location_id, arrive_place_time.onwards_journey_id);
 #endif
                     } else {
                         log(boost::format("\tlocation %s already settled") %  this->locations[location_id].text_id);
@@ -798,36 +807,21 @@ class PlanningATCO {
     // For do_dijkstra output. Store in order of the journey, and if compiled
     // to also store the route. pretty_print_routes below can print output from
     // this. Output arrays are cleared in do_dijkstra if this is passed in.
-    void dijkstra_output_store(const LocationID& location_id, const Minutes& when
-#ifdef OUTPUT_ROUTE_DETAILS
-        , const Route& route
-#endif
-    ) {
-        this->settled.push_back(std::make_pair(location_id, when));
-#ifdef OUTPUT_ROUTE_DETAILS
-        this->routes[location_id] = route;
-#endif
+    void dijkstra_output_store(const LocationID& location_id, const Minutes& when) {
+        // nothing to do, is stored in this->routes / this->settled anyway
     }
 
     // For do_dijkstra output. Store in array, so can find time for a
     // particular location quickly. Array is cleared in do_dijkstra is this is
     // passed in.
-    void dijkstra_output_store_by_id(const LocationID& location_id, const Minutes& when
-#ifdef OUTPUT_ROUTE_DETAILS
-        , const Route& route
-#endif
-    ) {
+    void dijkstra_output_store_by_id(const LocationID& location_id, const Minutes& when) {
         const Minutes& mins = this->final_destination_time - when;
         time_taken_by_location_id[location_id] = mins;
         //printf("settled loc_id %d mins %d\n", location_id, mins);
     }
 
     // For do_dijkstra output. Output results as they come to stdout. Don't store anything.
-    void dijkstra_output_stream_stdout(const LocationID& location_id, const Minutes& when
-#ifdef OUTPUT_ROUTE_DETAILS
-        , const Route& route
-#endif
-    ) {
+    void dijkstra_output_stream_stdout(const LocationID& location_id, const Minutes& when) {
         const Minutes& mins = this->final_destination_time - when;
         int secs = mins * 60;
         Location *l = &this->locations[location_id];
@@ -836,46 +830,37 @@ class PlanningATCO {
 
 #ifdef OUTPUT_ROUTE_DETAILS
     /* do_dijkstra returns a journey routes array, this prints it in a human readable format. */
-    std::string pretty_print_routes(const Settled& settled, const Routes& routes) {
+    std::string pretty_print_routes() {
         const Location& final_destination = this->locations[this->final_destination_id];
         std::string ret = (boost::format("Journey times to %s by %s\n") % final_destination.text_id % format_time(this->final_destination_time)).str();
-        BOOST_FOREACH(const SettledPair& p, settled) {
-            const LocationID& l_id = p.first;
+        
+        for (LocationID l_id = 1; l_id <= this->number_of_locations; ++l_id) {
+            if (this->settled[l_id] == MINUTES_NULL) {
+                continue;
+            }
             const Location& from_location = this->locations[l_id];
-            int mins = this->final_destination_time - p.second;
-            const Route& route = routes.find(l_id)->second;
+            int mins = this->final_destination_time - this->settled[l_id];
 
             ret += (boost::format("From %s in %d mins:\n") % from_location.text_id % mins).str();
 
-            for (Route::const_iterator it = route.begin(); it != route.end(); it++) {
-                const ArrivePlaceTime& stop = *it;
-                const Location& location = this->locations[stop.location_id];
-                if (stop.onwards_leg_type == 'A') {
-                    ret += (boost::format("    You've arrived at %s\n") % location.text_id).str();
-                    continue;
-                }
-                it++; const ArrivePlaceTime& next_stop = *it; it--;
-                const Location& next_location = this->locations[next_stop.location_id];
-                
-                if (stop.onwards_leg_type == 'W') {
-                    ret += (boost::format("    Leave by walking to %s, will take %d mins\n") % next_location.text_id % stop.onwards_walk_time).str();
-                } else if (stop.onwards_leg_type == 'J') {
-                    const Journey& journey = this->journeys[stop.onwards_journey_id];
-                    ret += (boost::format("    Leave %s by %s on %s at ") % location.text_id.c_str() % journey.pretty_vehicle_type() % journey.text_id.c_str()).str();
-                    BOOST_FOREACH(const Hop& hop, journey.hops) {
-                        if (hop.is_pick_up() && hop.location_id == stop.location_id) {
-                            ret += (format_time(hop.mins_dep).c_str());
-                        }
-                    }
+            LocationID location_id = l_id;
+            for (;;) {
+                const Location& location = this->locations[location_id];
+                const RouteNode& route_node = this->routes[location_id];
+                Minutes leaving_time = this->settled[location_id];
 
-                    ret += (boost::format(", arriving %s at ") % next_location.text_id).str();
-                    BOOST_FOREACH(const Hop& hop, journey.hops) {
-                        if (hop.is_set_down() && hop.location_id == next_stop.location_id) {
-                            ret += (format_time(hop.mins_arr).c_str());
-                        }
-                    }
-
-                    ret += ("\n");
+                if (route_node.journey_id > 0) {
+                    const Journey& journey = this->journeys[route_node.journey_id];
+                    const Location& next_location = this->locations[route_node.location_id];
+                    ret += (boost::format("    %s Leave to %s by %s %s\n") % format_time(leaving_time) % next_location.text_id % journey.pretty_vehicle_type() % journey.text_id).str();
+                    location_id = route_node.location_id;
+                } else if (route_node.journey_id == JOURNEY_WALK) {
+                    const Location& next_location = this->locations[route_node.location_id];
+                    ret += (boost::format("    %s Leave to %s by walking\n") % format_time(leaving_time) % next_location.text_id).str();
+                    location_id = route_node.location_id;
+                } else if (route_node.journey_id == JOURNEY_ALREADY_THERE) {
+                    ret += (boost::format("    %s You've arrived at %s\n") % format_time(leaving_time) % location.text_id).str();
+                    break;
                 } else {
                     assert(0);
                 }
