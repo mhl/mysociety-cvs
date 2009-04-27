@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.57 2009-04-27 15:33:31 francis Exp $
+# $Id: index.cgi,v 1.58 2009-04-27 15:46:52 francis Exp $
 #
 
 import re
@@ -52,9 +52,13 @@ def current_generation_time():
     avg_time, = db.fetchone()
     return avg_time
 
-def get_map(text_id):
+def get_map(text_id, for_update = False):
+    if for_update:
+        for_update = 'FOR UPDATE';
+    else:
+        for_update = ''
     db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station
-        WHERE text_id = %s FOR UPDATE''', (text_id,))
+        WHERE text_id = %s ''' + for_update, (text_id,))
     row = db.fetchone()
     target_station_id, easting, northing = row
     lat, lon = national_grid_to_wgs84(easting, northing)
@@ -136,7 +140,7 @@ def lookup(pc):
 
 def map(text_id):
     db.execute('BEGIN')
-    (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id)
+    (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id, True)
 
     if map is None:
         # Start off generation of map!
@@ -232,7 +236,7 @@ def get_route(text_id, lat, lon):
             route_str += "Leave to " + next_location_name;
         elif journey_id == JOURNEY_WALK:
             next_location_name = name_by_id[next_location_id]
-            route_str += "Leave to " + next_location_name + " by walking";
+            route_str += "Walk to " + next_location_name;
         elif journey_id == JOURNEY_ALREADY_THERE:
             location_name = name_by_id[location_id]
             route_str += "You've at " + location_name;
