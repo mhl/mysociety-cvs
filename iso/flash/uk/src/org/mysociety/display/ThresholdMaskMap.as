@@ -51,6 +51,7 @@ package org.mysociety.display
 
         // debug info
         public var debugDisplayString:String = "";
+        public var routeDisplayString:String = "";
         
         protected var _displayMap:BitmapCacheMap;
         protected var _maskMap:BitmapCacheMap;
@@ -248,16 +249,16 @@ package org.mysociety.display
         protected function onDisplayMapRendered(event:Event):void
         {
             if (debugDisplayString != "") {
-                var w:int = _displayMap.getSize()[0];
-                var h:int = 20;
-                // draw the debug line
-                var tf:TextField = new TextField();
-                tf.width = w;
-                tf.height = h;
-                tf.wordWrap = true;
-                tf.text = debugDisplayString;
-                _displayMap.cache.fillRect(new Rectangle(0, 0, w, h), 0xFFFFFFFF);
-                _displayMap.cache.draw(tf);
+                var w2:int = _displayMap.getSize()[0];
+                var h2:int = _displayMap.getSize()[1];
+                var r:Rectangle = new Rectangle(0, 0, 300, h2)
+                var tf2:TextField = new TextField();
+                tf2.width = r.width;
+                tf2.height = r.height;
+                tf2.wordWrap = true;
+                tf2.text = debugDisplayString + "\n\n" + routeDisplayString;
+                _displayMap.cache.fillRect(r, 0xFFFFFFFF);
+                _displayMap.cache.draw(tf2);
             }
 
             _maskMap.grid.setMatrix(_displayMap.grid.getMatrix());
@@ -297,6 +298,8 @@ package org.mysociety.display
             debugDisplayString += b.formatPrecision(event.result.station.lat, 2);
             debugDisplayString += " lon:";
             debugDisplayString += b.formatPrecision(event.result.station.lon, 2);
+        
+            routeDisplayString = event.result.station.route_str;
 
             // force refresh somehow
             _displayMap.dispatchEvent(new MapEvent(MapEvent.RESIZED, _displayMap.getSize()));

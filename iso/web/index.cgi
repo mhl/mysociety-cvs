@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.56 2009-04-27 14:02:27 matthew Exp $
+# $Id: index.cgi,v 1.57 2009-04-27 15:33:31 francis Exp $
 #
 
 import re
@@ -30,6 +30,9 @@ import coldb
 db = coldb.get_cursor()
 
 tmpwork = mysociety.config.get('TMPWORK')
+
+#####################################################################
+# Helper functions
 
 def nearest_station(E, N):
     db.execute('''SELECT text_id, long_description, id FROM station WHERE
@@ -66,6 +69,47 @@ def get_map(text_id):
     map = db.fetchone()
 
     return (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon)
+
+def format_time(mins_after_midnight):
+    hours = mins_after_midnight / 60
+    mins = mins_after_midnight % 60
+    return "%02d:%02d:00" % (hours, mins)
+
+def look_up_time_taken(map_id, station_id):
+    iso_file = tmpwork + "/" + repr(map_id) + ".iso"
+    isof = open(iso_file, 'rb')
+    isof.seek(station_id * 2)
+    tim = struct.unpack("h", isof.read(2))[0]
+    return tim
+
+def look_up_route_node(map_id, station_id):
+    iso_file = tmpwork + "/" + repr(map_id) + ".iso.routes"
+    isof = open(iso_file, 'rb')
+    isof.seek(station_id * 8)
+    location_id = struct.unpack("i", isof.read(4))[0]
+    journey_id = struct.unpack("i", isof.read(4))[0]
+    return (location_id, journey_id)
+
+# Constants from cpplib/makeplan.h
+JOURNEY_NULL = -1
+JOURNEY_ALREADY_THERE = -2
+JOURNEY_WALK = -3
+
+BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
+WGS = pyproj.Proj(proj='latlong', towgs84="0,0,0", ellps="WGS84", no_defs=True)
+
+def national_grid_to_wgs84(x, y):
+    """Project from British National Grid to WGS-84 lat/lon"""
+    lon, lat = pyproj.transform(BNG, WGS, x, y)
+    return lat, lon
+
+def wgs84_to_national_grid(lat, lon):
+    """Project from WGS-84 lat/lon to British National Grid"""
+    x, y = pyproj.transform(WGS, BNG, lon, lat)
+    return x, y
+
+#####################################################################
+# Controllers
  
 def lookup(pc):
     """Given a postcode, look up the nearest station ID
@@ -152,17 +196,72 @@ def get_route(text_id, lat, lon):
     # Look up time taken
     (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id)
     map_id = map[0]
-    iso_file = tmpwork + "/" + repr(map_id) + ".iso"
-    isof = open(iso_file, 'rb')
-    isof.seek(station_id * 2)
-    tim = struct.unpack("h", isof.read(2))[0]
+    tim = look_up_time_taken(map_id, station_id)
 
-    # Look up route
-    # ...
+    # Look up route...
+    location_id = station_id
+    route = []
+    c = 0 
+    while True:
+        (next_location_id, next_journey_id) = look_up_route_node(map_id, location_id)
+        leaving_time = look_up_time_taken(map_id, location_id)
+
+        c = c + 1 
+        if c > 100:
+            raise Exception("route displayer probably in infinite loop")
+
+        route.append((location_id, next_location_id, next_journey_id))
+        if next_journey_id == JOURNEY_ALREADY_THERE:
+            break
+
+        location_id = next_location_id
+    # ... get station names from database
+    ids = ','.join([ str(int(route_node[0])) for route_node in route ]) + "," + str(station_id)
+    db.execute('''SELECT text_id, long_description, id FROM station WHERE id in (%s)''' % ids)
+    name_by_id = {}
+    for row in db.fetchall():
+        name_by_id[row[2]] = row[1] + " (" + row[0] + ")"
+    # ... and show it
+    route_str = "From " + str(name_by_id[station_id]) + " \n"
+    for location_id, next_location_id, journey_id in route:
+        location_time = look_up_time_taken(map_id, location_id)
+        leaving_after_midnight = target_latest - location_time
+        route_str += format_time(leaving_after_midnight) + " "
+        if journey_id > 0: 
+            next_location_name = name_by_id[next_location_id]
+            route_str += "Leave to " + next_location_name;
+        elif journey_id == JOURNEY_WALK:
+            next_location_name = name_by_id[next_location_id]
+            route_str += "Leave to " + next_location_name + " by walking";
+        elif journey_id == JOURNEY_ALREADY_THERE:
+            location_name = name_by_id[location_id]
+            route_str += "You've at " + location_name;
+        route_str += "\n";
+
+    """
+        if (next_journey_id > 0) {
+            const Journey& journey = this->journeys[next_journey_id];
+            const Location& next_location = this->locations[route_node.location_id];
+            ret += (boost::format("    %s Leave to %s by %s %s\n") % format_time(leaving_time) % next_location.text_id % journey.pretty_vehicle_type() % journey.text_id).str();
+            location_id = route_node.location_id;
+        } else if (next_journey_id == JOURNEY_WALK) {
+            const Location& next_location = this->locations[route_node.location_id];
+            ret += (boost::format("    %s Leave to %s by walking\n") % format_time(leaving_time) % next_location.text_id).str();
+            location_id = route_node.location_id;
+        } else if (next_journey_id == JOURNEY_ALREADY_THERE) {
+            ret += (boost::format("    %s You've arrived at %s\n") % format_time(leaving_time) % location.text_id).str();
+            break;
+        } else {
+            assert(0);
+        }
+    """
 
     return Response('route', 
-            { 'lat': lat, 'lon': lon, 'e': E, 'n': N, 'station' : station, 'station_long' : station_long, 'time_taken' : tim},
+            { 'lat': lat, 'lon': lon, 'e': E, 'n': N, 'station' : station, 'station_long' : station_long, 'time_taken' : tim, 'route_str' : route_str},
                 type='xml')
+
+#####################################################################
+# Main FastCGI loop
     
 def main(fs):
     if 'lat' in fs:
@@ -172,20 +271,6 @@ def main(fs):
     elif 'station_id' in fs:
         return map(fs.getfirst('station_id'))
     return Response('index')
-
-BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
-WGS = pyproj.Proj(proj='latlong', towgs84="0,0,0", ellps="WGS84", no_defs=True)
-
-def national_grid_to_wgs84(x, y):
-    """Project from British National Grid to WGS-84 lat/lon"""
-    lon, lat = pyproj.transform(BNG, WGS, x, y)
-    return lat, lon
-
-def wgs84_to_national_grid(lat, lon):
-    """Project from WGS-84 lat/lon to British National Grid"""
-    x, y = pyproj.transform(WGS, BNG, lon, lat)
-    return x, y
-
 
 # Main FastCGI loop
 while fcgi.isFCGI():
