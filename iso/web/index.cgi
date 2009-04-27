@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.55 2009-04-24 22:20:33 francis Exp $
+# $Id: index.cgi,v 1.56 2009-04-27 14:02:27 matthew Exp $
 #
 
 import re
@@ -43,6 +43,11 @@ def nearest_station(E, N):
         return None
 
     return row
+
+def current_generation_time():
+    db.execute('''SELECT AVG(working_took) FROM map WHERE working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval;''')
+    avg_time, = db.fetchone()
+    return avg_time
 
 def get_map(text_id):
     db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station
@@ -118,13 +123,16 @@ def map(text_id):
         }, id='map')
 
     # Info for progress
-    db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
-    rows = db.fetchall()
     state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
-    for row in rows:
-        state[row[0]] = row[1]
     db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
     state['ahead'] = db.fetchone()[0]
+    db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
+    for row in db.fetchall():
+        state[row[0]] = row[1]
+
+    # Pseudo-code
+    if not fs.getfirst('wait') and current_state in ('new', 'working') and state['ahead'] * current_generation_time() > 60:
+        return Response('map-provideemail', { 'state': state }, id='map-wait')
 
     # Please wait...
     if current_state == 'working':
