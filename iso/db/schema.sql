@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.18 2009-04-22 13:17:09 francis Exp $
+-- $Id: schema.sql,v 1.19 2009-04-27 16:19:19 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -63,6 +63,12 @@ create table map (
     target_date date not null
 );
 
+create table email_queue (
+    id serial not null primary key,
+    email text not null,
+    map_id integer not null references map(id)
+);
+
 -- We grant privileges back to the actual user who is using the database.
 -- Shame it had to all be made by user "postgres", see top of file.
 grant all on table station to col;
@@ -70,4 +76,5 @@ grant all on table map to col;
 grant all on table map_id_seq to col;
 grant all on table spatial_ref_sys to col;
 grant all on table geometry_columns to col;
+grant all on table email_queue to col;
 
