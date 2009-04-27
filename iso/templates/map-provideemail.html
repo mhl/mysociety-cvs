@@ -4,13 +4,17 @@ map{{ state.ahead|pluralize }} in front of yours in a queue of
 map{{ state.working|pluralize:" is,s are" }} being made.</p>
 
 <p>We have guesstimated that with this workload, your map will take <strong>longer
-than a minute</strong> to generate. If you&rsquo;re happy to leave your browser window
-for this length of time or more, please <a href="{{ self }}?wait=1">move to our Please Wait page</a>.
-Alternatively, please provide your email address below and we will email you
+than a minute</strong> to generate (our guesstimate is {{ approx_waiting_time }} seconds).
+<!-- If you&rsquo;re happy to leave your browser window
+for this length of time or more, please <a href="{{ self }}?wait=1">move to our Please Wait page</a>. -->
+<p>Please provide your email address below and we will email you
 when your map is ready to be looked at.</p>
 
 <form method="post" action="{{ self }}">
-<label for="email">Email:</label>
+<input type="hidden" name="station_id" value="{{ station_id }}">
+<p align="center"><label for="email">Email:</label>
 <input type="text" name="email" id="email" value="{{ email }}">
-<input type="submit" value="Request">
+<input type="submit" value="Request"></p>
 </form>
+
+<p><small>We won&rsquo;t use your email address for anything else.</small></p>

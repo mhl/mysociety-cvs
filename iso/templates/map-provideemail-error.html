@@ -1,0 +1,13 @@
+<p id="errors">Please provide a valid email address.</p>
+
+<p>Please provide your email address below and we will email you
+when your map is ready to be looked at.</p>
+
+<form method="post" action="{{ self }}">
+<input type="hidden" name="station_id" value="{{ station_id }}">
+<p align="center"><label for="email">Email:</label>
+<input type="text" name="email" id="email" value="{{ email }}">
+<input type="submit" value="Request"></p>
+</form>
+
+<p><small>We won&rsquo;t use your email address for anything else.</small></p>

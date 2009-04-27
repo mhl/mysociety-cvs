@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.58 2009-04-27 15:46:52 francis Exp $
+# $Id: index.cgi,v 1.59 2009-04-27 16:18:14 francis Exp $
 #
 
 import re
@@ -46,11 +46,6 @@ def nearest_station(E, N):
         return None
 
     return row
-
-def current_generation_time():
-    db.execute('''SELECT AVG(working_took) FROM map WHERE working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval;''')
-    avg_time, = db.fetchone()
-    return avg_time
 
 def get_map(text_id, for_update = False):
     if for_update:
@@ -112,6 +107,11 @@ def wgs84_to_national_grid(lat, lon):
     x, y = pyproj.transform(WGS, BNG, lon, lat)
     return x, y
 
+def current_generation_time():
+    db.execute('''SELECT AVG(working_took) FROM map WHERE working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval''')
+    avg_time, = db.fetchone()
+    return avg_time
+
 #####################################################################
 # Controllers
  
@@ -138,36 +138,30 @@ def lookup(pc):
 
     return Response(status=302, url='/station/%s' % station)
 
-def map(text_id):
+def map(text_id, email=''):
     db.execute('BEGIN')
     (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id, True)
 
     if map is None:
-        # Start off generation of map!
-        db.execute("SELECT nextval('map_id_seq')")
-        map_id = db.fetchone()[0]
-        db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
-        db.execute('COMMIT')
         current_state = 'new'
         working_server = None
     else:
         map_id = map[0]
         current_state = map[1]
         working_server = map[2]
-        db.execute('ROLLBACK')
 
-    tile_web_host = mysociety.config.get('TILE_WEB_HOST')
-    file = os.path.join(tmpwork, str(map_id))
     if current_state == 'complete':
+        db.execute('ROLLBACK')
         # Check there is a route file
-        if not os.path.exists(file + ".iso"):
+        file = os.path.join(tmpwork, '%s.iso' % str(map_id))
+        if not os.path.exists(file):
             return Response('map-noiso', { 'map_id' : map_id }, id='map-noiso')
         # Let's show the map
         return Response('map', {
             'centre_lat': lat,
             'centre_lon': lon,
             'tile_id': map_id,
-            'tile_web_host' : tile_web_host,
+            'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
         }, id='map')
 
     # Info for progress
@@ -178,9 +172,26 @@ def map(text_id):
     for row in db.fetchall():
         state[row[0]] = row[1]
 
-    # Pseudo-code
-    if not fs.getfirst('wait') and current_state in ('new', 'working') and state['ahead'] * current_generation_time() > 60:
-        return Response('map-provideemail', { 'state': state }, id='map-wait')
+    state['ahead'] = 60
+    state['new'] = 90
+    approx_waiting_time = (state['ahead']+state['working']+1) * current_generation_time()
+    if current_state in ('new', 'working') and state['ahead'] * approx_waiting_time > 60:
+        db.execute('ROLLBACK')
+        return Response('map-provideemail', {
+            'state': state,
+            'approx_waiting_time': int(approx_waiting_time),
+            'station_id': text_id,
+            'email': email,
+        }, id='map-wait')
+
+    if map is None:
+        # Start off generation of map!
+        db.execute("SELECT nextval('map_id_seq')")
+        map_id = db.fetchone()[0]
+        db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
+        db.execute('COMMIT')
+    else:
+        db.execute('ROLLBACK')
 
     # Please wait...
     if current_state == 'working':
@@ -191,6 +202,26 @@ def map(text_id):
         return Response('map-pleasewait', { 'state': state }, refresh=2, id='map-wait')
     else:
         raise Exception("unknown state " + current_state)
+
+def log_email(text_id, email):
+    if not validate_email(email):
+        return Response('map-provideemail-error', {
+            'station_id': text_id,
+            'email': email,
+        }, id='map-wait')
+    # Okay, we have an email, set off the process
+    (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id, True)
+    if map is None:
+        db.execute('BEGIN')
+        db.execute("SELECT nextval('map_id_seq')")
+        map_id = db.fetchone()[0]
+        db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
+    else:
+        map_id = map[0]
+    db.execute('INSERT INTO  email_queue (email, map_id) VALUES (%s, %s)', (email, map_id))
+    db.execute('COMMIT')
+    return Response('map-provideemail-thanks', {
+    })
 
 # Used when in Flash you click on somewhere to get the route
 def get_route(text_id, lat, lon):
@@ -272,6 +303,8 @@ def main(fs):
         return get_route(fs.getfirst('station_id'), fs.getfirst('lat'), fs.getfirst('lon'))
     elif 'pc' in fs:
         return lookup(fs.getfirst('pc'))
+    elif 'station_id' in fs and 'email' in fs:
+        return log_email(fs.getfirst('station_id'), fs.getfirst('email'))
     elif 'station_id' in fs:
         return map(fs.getfirst('station_id'))
     return Response('index')
