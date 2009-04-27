@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.59 2009-04-27 16:18:14 francis Exp $
+# $Id: index.cgi,v 1.60 2009-04-27 16:35:22 francis Exp $
 #
 
 import re
@@ -172,8 +172,6 @@ def map(text_id, email=''):
     for row in db.fetchall():
         state[row[0]] = row[1]
 
-    state['ahead'] = 60
-    state['new'] = 90
     approx_waiting_time = (state['ahead']+state['working']+1) * current_generation_time()
     if current_state in ('new', 'working') and state['ahead'] * approx_waiting_time > 60:
         db.execute('ROLLBACK')
