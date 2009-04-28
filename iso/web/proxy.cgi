@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.5 2009-04-28 14:41:01 matthew Exp $
+# $Id: proxy.cgi,v 1.6 2009-04-28 14:42:31 matthew Exp $
 #
 
 import sys, os.path, os, re, urllib
@@ -30,9 +30,9 @@ def main(fs):
         image = fp.read()
         fp.close()
         if not os.path.exists(os.path.join(dir, zoom)):
-            os.makedir(os.path.join(dir, zoom))
+            os.mkdir(os.path.join(dir, zoom))
         if not os.path.exists(os.path.join(dir, zoom, x)):
-            os.makedir(os.path.join(dir, zoom, x))
+            os.mkdir(os.path.join(dir, zoom, x))
         fp = open(cache_path, 'w') 
         fp.write(image)
         fp.close()
