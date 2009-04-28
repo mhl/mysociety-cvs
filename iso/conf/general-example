@@ -14,7 +14,7 @@
  * Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: general-example,v 1.14 2009-04-20 14:42:59 francis Exp $
+ * $Id: general-example,v 1.15 2009-04-28 13:24:52 matthew Exp $
  * 
  */
 
@@ -34,10 +34,13 @@ define('OPTION_NPTDR_DATA', '/library/transport/nptdr/October 2008');
 // Directory for any temporary files while route planning etc.
 define('OPTION_TMPWORK', '/data/vhost/foo/tmpwork');
 
+// Base URL for emails etc.
+define('OPTION_BASE_URL', '');
+
 // Tile server daemon
 define('OPTION_TILECACHE_DIR', '/tmp/tilecache-col/');
 define('OPTION_ISO_TILE_LOG', '/tmp/tilecache.iso.log');
-// has a., b., c. appended to it e.g. col.mysociety.org
+// has a., b., c. prepended to it e.g. col.mysociety.org
 define('OPTION_TILE_WEB_HOST', 'localhost');
 
 // Parameters for isodaemon

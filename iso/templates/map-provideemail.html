@@ -1,7 +1,7 @@
-<p>There {{ state.ahead|pluralize:"is,are" }} {{ state.ahead }}
-map{{ state.ahead|pluralize }} in front of yours in a queue of
-{{ state.new }}, and currently {{ state.working }}
-map{{ state.working|pluralize:" is,s are" }} being made.</p>
+<p>There {{ state.new|pluralize:"is,are" }} {{ state.new }}
+map{{ state.new|pluralize }} in a queue waiting to be made,
+and {{ state.working }} map{{ state.working|pluralize:" is,s are" }}
+currently being made.</p>
 
 <p>We have guesstimated that with this workload, your map will take <strong>longer
 than a minute</strong> to generate (our guesstimate is {{ approx_waiting_time }} seconds).

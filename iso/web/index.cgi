@@ -6,16 +6,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.62 2009-04-28 12:31:19 matthew Exp $
+# $Id: index.cgi,v 1.63 2009-04-28 13:24:53 matthew Exp $
 #
 
-import re
 import sys
 import os.path
-import traceback
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 import fcgi
-import psycopg2 as postgres
 import pyproj
 import struct
 
@@ -147,12 +144,11 @@ def map(text_id, email=''):
         current_state = 'new'
         working_server = None
     else:
-        map_id = map[0]
-        current_state = map[1]
-        working_server = map[2]
+        map_id = map['id']
+        current_state = map['state']
+        working_server = map['working_server']
 
     if current_state == 'complete':
-        db.execute('ROLLBACK')
         # Check there is a route file
         file = os.path.join(tmpwork, '%s.iso' % str(map_id))
         if not os.path.exists(file):
@@ -180,7 +176,6 @@ def map(text_id, email=''):
 
     approx_waiting_time = maps_to_be_made * current_generation_time()
     if current_state in ('new', 'working') and approx_waiting_time > 60:
-        db.execute('ROLLBACK')
         return Response('map-provideemail', {
             'state': state,
             'approx_waiting_time': int(approx_waiting_time),
@@ -196,8 +191,6 @@ def map(text_id, email=''):
         db.execute('COMMIT')
         state['ahead'] = state['new']
         state['new'] += 1
-    else:
-        db.execute('ROLLBACK')
 
     # Please wait...
     if current_state == 'working':
@@ -261,7 +254,7 @@ def get_route(text_id, lat, lon):
     db.execute('''SELECT text_id, long_description, id FROM station WHERE id in (%s)''' % ids)
     name_by_id = {}
     for row in db.fetchall():
-        name_by_id[row[2]] = row[1] + " (" + row[0] + ")"
+        name_by_id[row['id']] = row['long_description'] + " (" + row['text_id'] + ")"
     # ... and show it
     route_str = "From " + str(name_by_id[station_id]) + " \n"
     for location_id, next_location_id, journey_id in route:

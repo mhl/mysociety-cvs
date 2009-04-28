@@ -6,10 +6,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.7 2009-04-28 13:17:44 francis Exp $
+# $Id: page.py,v 1.8 2009-04-28 13:24:53 matthew Exp $
 #
 
-import os, re, cgi, fcgi, cgitb
+import os, re, cgi, fcgi, cgitb, sys
 
 cgitb.enable()
 
@@ -84,7 +84,7 @@ def pluralize(m, vars):
     return plural
 
 def template(name, vars={}, type='html'):
-    template = slurp_file('../templates/%s.%s' % (name, type))
+    template = slurp_file(sys.path[0] + '/../templates/%s.%s' % (name, type))
     vars['self'] = os.environ.get('REQUEST_URI', '')
     template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), '')), True), template)
     template = re.sub('{{ ([a-z_]*)\.([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), []).get(x.group(2), '')), True), template)

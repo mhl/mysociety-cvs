@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.19 2009-04-27 16:19:19 francis Exp $
+-- $Id: schema.sql,v 1.20 2009-04-28 13:24:52 matthew Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -77,4 +77,5 @@ grant all on table map_id_seq to col;
 grant all on table spatial_ref_sys to col;
 grant all on table geometry_columns to col;
 grant all on table email_queue to col;
+grant all on table email_queue_id_seq to col;
 
