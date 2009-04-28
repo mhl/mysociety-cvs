@@ -6,46 +6,49 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.6 2009-04-24 20:00:46 francis Exp $
+# $Id: page.py,v 1.7 2009-04-28 13:17:44 francis Exp $
 #
 
-import os, re, cgi, fcgi
+import os, re, cgi, fcgi, cgitb
+
+cgitb.enable()
 
 def fcgi_loop(main):
     req = fcgi.Accept()
     fs = req.getFieldStorage()
 
-    try:
-        response = main(fs)
-        if response.headers():
-            req.out.write(response.headers())
+    #try:
+    response = main(fs)
+    if response.headers():
+        req.out.write(response.headers())
 
-        if response.type == 'html':
-            req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
-        elif response.type == 'xml':
-            req.out.write("Content-Type: text/xml; charset=utf-8\r\n\r\n")
-        else:
-            raise Exception("unknown response type " + response.type)
-        if req.env.get('REQUEST_METHOD') == 'HEAD':
-            req.Finish()
-            return
+    if response.type == 'html':
+        req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
+    elif response.type == 'xml':
+        req.out.write("Content-Type: text/xml; charset=utf-8\r\n\r\n")
+    else:
+        raise Exception("unknown response type " + response.type)
+    if req.env.get('REQUEST_METHOD') == 'HEAD':
+        req.Finish()
+        return
 
-        if response.type == 'html':
-            footer = template('footer')
-            header = template('header', {
-                'postcode': fs.getfirst('pc', ''),
-                'refresh': response.refresh and '<meta http-equiv="refresh" content="%d">' % response.refresh or '',
-                'body_id': response.id and ' id="%s"' % response.id or '',
-            })
-            req.out.write(header + str(response) + footer)
-        else:
-            req.out.write(str(response))
+    if response.type == 'html':
+        footer = template('footer')
+        header = template('header', {
+            'postcode': fs.getfirst('pc', ''),
+            'refresh': response.refresh and '<meta http-equiv="refresh" content="%d">' % response.refresh or '',
+            'body_id': response.id and ' id="%s"' % response.id or '',
+        })
+        req.out.write(header + str(response) + footer)
+    else:
+        req.out.write(str(response))
 
-    except Exception, e:
-        req.out.write("Content-Type: text/plain\r\n\r\n")
-        req.out.write("Sorry, we've had some sort of problem.\n\n")
-        req.out.write(str(e) + "\n")
-        traceback.print_exc()
+    #except Exception, e:
+        #req.out.write("Content-Type: text/plain\r\n\r\n")
+        #req.out.write("Sorry, we've had some sort of problem.\n\n")
+        #req.out.write(str(e) + "\n")
+        #req.out.write(traceback.format_exc() + "\n")
+        #traceback.print_exc()
 
     req.Finish()
 
