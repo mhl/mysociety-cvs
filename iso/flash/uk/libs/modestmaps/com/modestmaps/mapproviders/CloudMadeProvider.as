@@ -33,7 +33,7 @@ package com.modestmaps.mapproviders
 			}
 			coord = sourceCoordinate(coord);
 			var server:String = [ 'a.', 'b.', 'c.', '' ][int(coord.row + coord.column) % 4];
-			var url:String = 'http://' + server + 'tile.cloudmade.com/' + [ key, style, tileWidth, coord.zoom, coord.column, coord.row ].join('/') + '.png'; 
+			var url:String = '/proxy.cgi?u=http://' + server + 'tile.cloudmade.com/' + [ key, style, tileWidth, coord.zoom, coord.column, coord.row ].join('/') + '.png'; 
 			return [ url ];
 		}
 		
