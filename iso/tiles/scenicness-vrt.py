@@ -15,9 +15,8 @@ if __name__ == '__main__':
         print >> sys.stderr, 'Usage: scenicness-vrt.py <csv output file> <vrt output file>'
 
     else:
-        print >> vrtfile, '<?xml version="1.0"?>'
         print >> vrtfile, '<OGRVRTDataSource>'
-        print >> vrtfile, '    <OGRVRTLayer name="scenic">'
+        print >> vrtfile, '    <OGRVRTLayer name="change me">'
         print >> vrtfile, '        <SrcDataSource>%s</SrcDataSource>' % csvfilename
         print >> vrtfile, '        <GeometryType>wkbPoint</GeometryType>'
         print >> vrtfile, '        <GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Rating"/>'
