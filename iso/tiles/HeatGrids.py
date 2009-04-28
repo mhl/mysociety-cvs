@@ -4,7 +4,7 @@ Custom TileCache module for rendering of heat grids based on GDAL VRT files.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: HeatGrids.py,v 1.1 2009-04-28 00:24:18 migurski Exp $
+$Id: HeatGrids.py,v 1.2 2009-04-28 01:57:57 migurski Exp $
 """
 import os
 import sys
@@ -12,9 +12,13 @@ import time
 import os.path
 import StringIO
 import tempfile
+import commands
+import struct
 
-import PIL.Image
+import numpy
+import PIL.Image, PIL.ImageOps
 import TileCache
+import osgeo.gdal as gdal
 
 class ScenicLayer(TileCache.Layer.MetaLayer):
 
@@ -38,7 +42,7 @@ class ScenicLayer(TileCache.Layer.MetaLayer):
         # open a log file, or not, either way is cool
         log = self.iso_tile_log and open(self.iso_tile_log, 'a') or None
         
-        radius = 5000
+        radius = 10000
         datafile = self.datafile
         xmin, ymin, xmax, ymax = tile.bounds()
         width, height = tile.size()
@@ -50,17 +54,44 @@ class ScenicLayer(TileCache.Layer.MetaLayer):
         os.close(handle)
         
         # render an image
-        cmd = '/opt/local/bin/gdal_grid -a average:radius1=%(radius)d:radius2=%(radius)d ' % locals() \
+        cmd = '/usr/bin/gdal_grid -a invdist:power=2.0:smoothing=2.0:radius1=%(radius)d:radius2=%(radius)d ' % locals() \
             + '-txe %(xmin)f %(xmax)f -tye %(ymin)f %(ymax)f -outsize %(width)d %(height)d ' % locals() \
             + '-l scenicness.2009-04-27 -of GTiff -ot Float32 %(datafile)s %(filename)s' % locals()
 
         print >> log, cmd
+        
+        status, output = commands.getstatusoutput(cmd)
+
+        print >> log, status
+        
+        if status == 0:
+        
+            heat = gdal.Open(filename)
+            band = heat.GetRasterBand(1)
+            cols, rows = heat.RasterXSize, heat.RasterYSize
+            
+            print >> log, cols, rows
+            
+            data = band.ReadRaster(0, 0, cols, rows, buf_type=gdal.GDT_Float32)
+            
+            print >> log, repr(data[:16]), struct.unpack('ffff', data[:16])
+            
+            cell = numpy.fromstring(data, dtype=numpy.float32).reshape(rows, cols)
+
+            # flip it, because GDAL gives it to us upside-down
+            image = arr2img(cell * 25)
+            image = PIL.ImageOps.flip(image)
         
         os.unlink(filename)
         
         tile.data = img2str(image, self.extension)
 
         return tile.data
+
+def arr2img(ar):
+    """ Convert Numeric.array to PIL.Image.
+    """
+    return PIL.Image.fromstring('L', (ar.shape[1], ar.shape[0]), ar.astype('b').tostring())
 
 def img2str(image, format):
     """ Convert image to a data buffer in a given format, e.g. PNG or JPEG
