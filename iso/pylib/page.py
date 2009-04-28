@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.8 2009-04-28 13:24:53 matthew Exp $
+# $Id: page.py,v 1.9 2009-04-28 14:22:23 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -26,6 +26,8 @@ def fcgi_loop(main):
         req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
     elif response.type == 'xml':
         req.out.write("Content-Type: text/xml; charset=utf-8\r\n\r\n")
+    elif response.type == 'png':
+        req.out.write("Content-Type: image/png\r\n\r\n")
     else:
         raise Exception("unknown response type " + response.type)
     if req.env.get('REQUEST_METHOD') == 'HEAD':
@@ -71,6 +73,15 @@ class Response(object):
         if self.status == 302:
             return "Status: 302 Found\r\nLocation: %s\r\n" % self.url
         return ''
+
+class ImageResponse(Response):
+    def __init__(self, image):
+        self.image = image
+        self.status = 200
+        self.type = 'png'
+
+    def __str__(self):
+        return self.image
 
 def pluralize(m, vars):
     if m.group('lookup'):
