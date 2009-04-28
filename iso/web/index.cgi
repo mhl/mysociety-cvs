@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.63 2009-04-28 13:24:53 matthew Exp $
+# $Id: index.cgi,v 1.64 2009-04-28 19:17:57 francis Exp $
 #
 
 import sys
@@ -15,6 +15,7 @@ sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 import fcgi
 import pyproj
 import struct
+import re
 
 from page import *
 import mysociety.config
@@ -44,27 +45,91 @@ def nearest_station(E, N):
 
     return row
 
-def get_map(text_id, for_update = False):
-    if for_update:
-        for_update = 'FOR UPDATE';
-    else:
-        for_update = ''
-    db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station
-        WHERE text_id = %s ''' + for_update, (text_id,))
-    row = db.fetchone()
-    target_station_id, easting, northing = row
-    lat, lon = national_grid_to_wgs84(easting, northing)
+class Map:
+    # Given URL parameters, look up parameters of map
+    def __init__(self, fs, for_update = False):
+        if for_update:
+            for_update = 'FOR UPDATE';
+        else:
+            for_update = ''
 
-    # XXX These data are all fixed for now
-    target_latest = 540
-    target_earliest = 0
-    target_date = '2008-10-07'
+        if 'station_id' in fs:
+            # target is specific station
+            text_id = fs.getfirst('station_id')
+            db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s ''' + for_update, (text_id,))
+            row = db.fetchone()
+            self.target_station_id, self.target_e, self.target_n = row
+        else:
+            # target is a grid reference
+            if 'target_postcode' in fs:
+                f = mysociety.mapit.get_location(fs.getfirst('target_postcode'))
+                self.target_e = int(f['easting'])
+                self.target_n = int(f['northing'])
+            else:
+                self.target_e = fs.getfirst('target_e')
+                self.target_n = fs.getfirst('target_n')
+            self.target_station_id = None
 
-    db.execute('''SELECT id, state, working_server FROM map WHERE target_station_id = %s
-        AND target_latest = %s AND target_earliest = %s AND target_date = %s''', (target_station_id, target_latest, target_earliest, target_date))
-    map = db.fetchone()
+        # Used for centring map
+        self.lat, self.lon = national_grid_to_wgs84(self.target_e, self.target_n)
 
-    return (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon)
+        # XXX These data are all fixed for now
+        self.target_latest = 540
+        self.target_earliest = 0
+        self.target_date = '2008-10-07'
+
+        # Get record from database
+        if self.target_station_id:
+            db.execute('''SELECT id, state, working_server FROM map WHERE 
+                target_station_id = %s AND 
+                target_latest = %s AND target_earliest = %s 
+                AND target_date = %s''', 
+                (self.target_station_id, self.target_latest, self.target_earliest, self.target_date))
+        else:
+            db.execute('''SELECT id, state, working_server FROM map WHERE 
+                target_e = %s AND target_n = %s AND 
+                target_latest = %s AND target_earliest = %s 
+                AND target_date = %s''', 
+                (self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+        row = db.fetchone()
+        if row is None:
+            (self.id, self.current_state, self.working_server) = (None, 'new', None)
+        else:
+            (self.id, self.current_state, self.working_server) = row
+
+    # How far is making this map? 
+    def get_progress_info(self):
+        self.state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
+        db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
+        for row in db.fetchall():
+            self.state[row[0]] = row[1]
+
+        if self.id:
+            db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (self.id,))
+            self.state['ahead'] = db.fetchone()[0]
+            self.maps_to_be_made = self.state['ahead'] + self.state['working']
+        else:
+            self.maps_to_be_made = self.state['new'] + self.state['working'] + 1
+
+    # Merges hashes for URL into dict and return
+    def add_url_params(self, d):
+        new_d = d.copy()
+        if self.target_station_id:
+            new_d.merge( { 'station_id' : self.target_station_id } )
+        else:
+            new_d.merge( { 'target_e' : self.target_e, 'target_n' : self.target_n } )
+        return new_d
+
+    # Start off generation of map!
+    def start_generation(self):
+        db.execute("SELECT nextval('map_id_seq')")
+        self.id = db.fetchone()[0]
+        db.execute('INSERT INTO map (id, state, target_station_id, target_e, target_n, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+        db.execute('COMMIT')
+        if self.state:
+            self.state['ahead'] = self.state['new']
+            self.state['new'] += 1
+
 
 def format_time(mins_after_midnight):
     hours = mins_after_midnight / 60
@@ -91,6 +156,9 @@ JOURNEY_NULL = -1
 JOURNEY_ALREADY_THERE = -2
 JOURNEY_WALK = -3
 
+LOCATION_NULL = -1
+LOCATION_TARGET = 0
+
 BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
 WGS = pyproj.Proj(proj='latlong', towgs84="0,0,0", ellps="WGS84", no_defs=True)
 
@@ -113,9 +181,10 @@ def current_generation_time():
 # Controllers
  
 def lookup(pc):
-    """Given a postcode, look up the nearest station ID
-    and redirect to a URL containing that"""
+    """Given a postcode, look up grid reference and redirect to a URL
+    containing that"""
 
+    # Check postcode is valid
     try:
         f = mysociety.mapit.get_location(pc)
     except RABXException, e:
@@ -123,128 +192,99 @@ def lookup(pc):
             'error': '<div id="errors">%s</div>' % e
         })
 
-    E = int(f['easting'])
-    N = int(f['northing'])
+    #(station, station_long, station_id) = nearest_station(E, N)
+    #if not station:
+    #    return Response('index', {
+    #        'error': '<div id="errors">Could not find a station or bus stop :(</div>'
+    #    })
 
-    (station, station_long, station_id) = nearest_station(E, N)
+    # Canonicalise it, and redirect to that URL
+    pc = pc.upper()
+    pc = re.sub('[^A-Z0-9]', '', pc)
 
-    if not station:
-        return Response('index', {
-            'error': '<div id="errors">Could not find a station or bus stop :(</div>'
-        })
+    return Response(status=302, url='/postcode/%s' % (pc))
 
-    return Response(status=302, url='/station/%s' % station)
-
-def map(text_id, email=''):
+def map(fs, email=''):
     db.execute('BEGIN')
-    (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id, True)
+    map = Map(fs, for_update = True)
 
-    if map is None:
-        map_id = None
-        current_state = 'new'
-        working_server = None
-    else:
-        map_id = map['id']
-        current_state = map['state']
-        working_server = map['working_server']
-
-    if current_state == 'complete':
+    if map.current_state == 'complete':
         # Check there is a route file
-        file = os.path.join(tmpwork, '%s.iso' % str(map_id))
+        file = os.path.join(tmpwork, '%s.iso' % str(map.id))
         if not os.path.exists(file):
-            return Response('map-noiso', { 'map_id' : map_id }, id='map-noiso')
+            return Response('map-noiso', { 'map_id' : map.id }, id='map-noiso')
         # Let's show the map
         return Response('map', {
-            'centre_lat': lat,
-            'centre_lon': lon,
-            'tile_id': map_id,
+            'centre_lat': map.lat,
+            'centre_lon': map.lon,
+            'tile_id': map.id,
             'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
         }, id='map')
 
-    # Info for progress
-    state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
-    db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
-    for row in db.fetchall():
-        state[row[0]] = row[1]
-
-    if map_id:
-        db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
-        state['ahead'] = db.fetchone()[0]
-        maps_to_be_made = state['ahead'] + state['working']
-    else:
-        maps_to_be_made = state['new'] + state['working'] + 1
-
-    approx_waiting_time = maps_to_be_made * current_generation_time()
-    if current_state in ('new', 'working') and approx_waiting_time > 60:
-        return Response('map-provideemail', {
-            'state': state,
+    # See how long it will take to make it
+    map.get_progress_info()
+    approx_waiting_time = map.maps_to_be_made * current_generation_time()
+    # ... if too long, ask for email
+    if map.current_state in ('new', 'working') and approx_waiting_time > 60:
+        return Response('map-provideemail', map.add_url_params({
+            'state': map.state,
             'approx_waiting_time': int(approx_waiting_time),
-            'station_id': text_id,
             'email': email,
-        }, id='map-wait')
+        }), id='map-wait')
 
-    if map is None:
-        # Start off generation of map!
-        db.execute("SELECT nextval('map_id_seq')")
-        map_id = db.fetchone()[0]
-        db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
-        db.execute('COMMIT')
-        state['ahead'] = state['new']
-        state['new'] += 1
+    # If map isn't being made , set it going
+    if map.id is None:
+        map.start_generation()
 
     # Please wait...
-    if current_state == 'working':
-        return Response('map-working', { 'state' : state, 'server' : working_server }, refresh=3, id='map-wait')
-    elif current_state == 'error':
-        return Response('map-error', { 'map_id' : map_id }, id='map-wait')
-    elif current_state == 'new':
-        return Response('map-pleasewait', { 'state': state }, refresh=2, id='map-wait')
+    if map.current_state == 'working':
+        return Response('map-working', { 'state' : map.state, 'server' : map.working_server }, refresh=3, id='map-wait')
+    elif map.current_state == 'error':
+        return Response('map-error', { 'map_id' : map.id }, id='map-wait')
+    elif map.current_state == 'new':
+        return Response('map-pleasewait', { 'state' : map.state }, refresh=2, id='map-wait')
     else:
-        raise Exception("unknown state " + current_state)
+        raise Exception("unknown state " + map.current_state)
 
-def log_email(text_id, email):
+# Email has been given, remember to mail them when map is ready
+def log_email(fs, email):
     if not validate_email(email):
-        return Response('map-provideemail-error', {
-            'station_id': text_id,
+        return Response('map-provideemail-error', map.add_url_params({
             'email': email,
-        }, id='map-wait')
+        }), id='map-wait')
     # Okay, we have an email, set off the process
-    (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id, True)
-    if map is None:
-        db.execute('BEGIN')
-        db.execute("SELECT nextval('map_id_seq')")
-        map_id = db.fetchone()[0]
-        db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
-    else:
-        map_id = map[0]
-    db.execute('INSERT INTO  email_queue (email, map_id) VALUES (%s, %s)', (email, map_id))
+    map = Map(fs, for_update = True)
+    db.execute('BEGIN')
+    if map.id is None:
+        map.start_generation()
+    db.execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
     db.execute('COMMIT')
-    return Response('map-provideemail-thanks', {
-    })
+    return Response('map-provideemail-thanks', { })
 
 # Used when in Flash you click on somewhere to get the route
-def get_route(text_id, lat, lon):
+def get_route(fs, lat, lon):
     E, N = wgs84_to_national_grid(lat, lon)
     (station, station_long, station_id) = nearest_station(E, N)
 
     # Look up time taken
-    (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id)
-    map_id = map[0]
-    tim = look_up_time_taken(map_id, station_id)
+    map = Map(fs, for_update = True)
+    tim = look_up_time_taken(map.id, station_id)
 
     # Look up route...
     location_id = station_id
     route = []
     c = 0 
     while True:
-        (next_location_id, next_journey_id) = look_up_route_node(map_id, location_id)
-        leaving_time = look_up_time_taken(map_id, location_id)
+        (next_location_id, next_journey_id) = look_up_route_node(map.id, location_id)
+        leaving_time = look_up_time_taken(map.id, location_id)
 
         c = c + 1 
         if c > 100:
             raise Exception("route displayer probably in infinite loop")
 
         route.append((location_id, next_location_id, next_journey_id))
+        if next_journey_id == JOURNEY_NULL:
+            break
         if next_journey_id == JOURNEY_ALREADY_THERE:
             break
 
@@ -255,11 +295,12 @@ def get_route(text_id, lat, lon):
     name_by_id = {}
     for row in db.fetchall():
         name_by_id[row['id']] = row['long_description'] + " (" + row['text_id'] + ")"
+    name_by_id[LOCATION_TARGET] = 'TARGET'
     # ... and show it
     route_str = "From " + str(name_by_id[station_id]) + " \n"
     for location_id, next_location_id, journey_id in route:
-        location_time = look_up_time_taken(map_id, location_id)
-        leaving_after_midnight = target_latest - location_time
+        location_time = look_up_time_taken(map.id, location_id)
+        leaving_after_midnight = map.target_latest - location_time
         route_str += format_time(leaving_after_midnight) + " "
         if journey_id > 0: 
             next_location_name = name_by_id[next_location_id]
@@ -269,26 +310,11 @@ def get_route(text_id, lat, lon):
             route_str += "Walk to " + next_location_name;
         elif journey_id == JOURNEY_ALREADY_THERE:
             location_name = name_by_id[location_id]
-            route_str += "You've at " + location_name;
+            arrived = True
+            route_str += "You've arrived"
+        elif journey_id == JOURNEY_NULL:
+            route_str += "No route found"
         route_str += "\n";
-
-    """
-        if (next_journey_id > 0) {
-            const Journey& journey = this->journeys[next_journey_id];
-            const Location& next_location = this->locations[route_node.location_id];
-            ret += (boost::format("    %s Leave to %s by %s %s\n") % format_time(leaving_time) % next_location.text_id % journey.pretty_vehicle_type() % journey.text_id).str();
-            location_id = route_node.location_id;
-        } else if (next_journey_id == JOURNEY_WALK) {
-            const Location& next_location = this->locations[route_node.location_id];
-            ret += (boost::format("    %s Leave to %s by walking\n") % format_time(leaving_time) % next_location.text_id).str();
-            location_id = route_node.location_id;
-        } else if (next_journey_id == JOURNEY_ALREADY_THERE) {
-            ret += (boost::format("    %s You've arrived at %s\n") % format_time(leaving_time) % location.text_id).str();
-            break;
-        } else {
-            assert(0);
-        }
-    """
 
     return Response('route', 
             { 'lat': lat, 'lon': lon, 'e': E, 'n': N, 'station' : station, 'station_long' : station_long, 'time_taken' : tim, 'route_str' : route_str},
@@ -298,14 +324,16 @@ def get_route(text_id, lat, lon):
 # Main FastCGI loop
     
 def main(fs):
+    got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
+
     if 'lat' in fs:
-        return get_route(fs.getfirst('station_id'), fs.getfirst('lat'), fs.getfirst('lon'))
+        return get_route(fs, fs.getfirst('lat'), fs.getfirst('lon'))
     elif 'pc' in fs:
         return lookup(fs.getfirst('pc'))
-    elif 'station_id' in fs and 'email' in fs:
-        return log_email(fs.getfirst('station_id'), fs.getfirst('email'))
-    elif 'station_id' in fs:
-        return map(fs.getfirst('station_id'))
+    elif got_map_spec and 'email' in fs:
+        return log_email(fs, fs.getfirst('email'))
+    elif got_map_spec:
+        return map(fs)
     return Response('index')
 
 # Main FastCGI loop

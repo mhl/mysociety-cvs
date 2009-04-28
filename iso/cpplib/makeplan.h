@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.7 2009-04-24 16:45:49 francis Exp $
+// $Id: makeplan.h,v 1.8 2009-04-28 19:17:56 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -56,6 +56,7 @@ class Location {
 };
 
 #define LOCATION_NULL LocationID(-1)
+#define LOCATION_TARGET LocationID(0) // represents your destination as an exact grid coordinate
 
 class Hop {
     public:
@@ -346,10 +347,13 @@ class PlanningATCO {
                 journeys_visiting_location[hop.location_id].insert(id);
             }
         }
+
+        // Set dummy value for LOCATION_TARGET
+        this->set_location_target(0, 0);
     }
 
     // Find out which stations are near to which others - naive agorithm.
-    // This is never called, is just left here in case there are bugs in 
+    // XXX This is never called, is just left here in case there are bugs in 
     // generate_proximity_index_fast, so the two can be compared.
     void generate_proximity_index_slow() {
         // Proximity index
@@ -381,81 +385,98 @@ class PlanningATCO {
 
     // Find out which stations are near to which others - with some spacial
     // partitioning to speed it up
+    typedef std::map<int, std::set<LocationID> > SpaceFindInner;
+    typedef std::map<int, SpaceFindInner > SpaceFind;
+    SpaceFind sf;
+    double nearby_max_distance;
+    double nearby_max_distance_sq;
+    int boxsize;
+    int boxscanrange;
     void generate_proximity_index_fast() {
-        double nearby_max_distance = double(this->walk_speed) * double(this->walk_time);
-        double nearby_max_distance_sq = nearby_max_distance * nearby_max_distance;
+        this->nearby_max_distance = double(this->walk_speed) * double(this->walk_time);
+        this->nearby_max_distance_sq = this->nearby_max_distance * this->nearby_max_distance;
 
         // we put a grid of boxes over the plane
-        int boxsize = 1000;
-        int boxscanrange = int(nearby_max_distance / double(boxsize)) + 1;
+        this->boxsize = 1000;
+        this->boxscanrange = int(this->nearby_max_distance / double(this->boxsize)) + 1;
 
         // store the loctions in each box cell, for later speed
-        typedef std::map<int, std::set<LocationID> > SpaceFindInner;
-        typedef std::map<int, SpaceFindInner > SpaceFind;
-        SpaceFind sf;
-        for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
+        for (LocationID location_id = 0; location_id <= this->number_of_locations; location_id++) {
             const Location &location = this->locations[location_id];
             double easting = location.easting;
             double northing = location.northing;
 
-            int box_e = int(easting) / boxsize;
-            int box_n = int(northing) / boxsize;
+            int box_e = int(easting) / this->boxsize;
+            int box_n = int(northing) / this->boxsize;
 
-            sf[box_e][box_n].insert(location_id);
+            this->sf[box_e][box_n].insert(location_id);
         }
 
         // do actual calculation
         this->nearby_locations.clear();
         this->nearby_locations.resize(this->number_of_locations + 1);
-        for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
-            const Location &location = this->locations[location_id];
-            double easting = location.easting;
-            double northing = location.northing;
-
-            // loop over boxes that we have to cover in order to definitely reach everything in range 
-            int box_e_center = int(easting) / boxsize;
-            int box_n_center = int(northing) / boxsize;
-            for (int box_e = box_e_center - boxscanrange; box_e <= box_e_center + boxscanrange; ++box_e) {
-                for (int box_n = box_n_center - boxscanrange; box_n <= box_n_center + boxscanrange; ++box_n) {
-                    SpaceFind::iterator it = sf.find(box_e);
-                    if (it == sf.end()) {
-                        continue;
-                    }
-                    SpaceFindInner& sfi = it->second;
-                    SpaceFindInner::iterator it2 = sfi.find(box_n);
-                    if (it2 == sfi.end()) {
-                        continue;
-                    }
-
-                    // see which of the locations we have to check *are* actually near enough
-                    const std::set<LocationID>& other_location_list = it2->second;
-                    BOOST_FOREACH(const LocationID& other_location_id, other_location_list) {
-                        // ignore own location
-                        if (location_id == other_location_id) {
-                            continue;
-                        }
-                        const Location &other_location = this->locations[other_location_id];
-
-                        // more precise accuracy check
-                        double other_easting = other_location.easting;
-                        double other_northing = other_location.northing;
-                        double sqdist = (easting - other_easting)*(easting - other_easting)
-                                      + (northing - other_northing)*(northing - other_northing);
-
-                        if (sqdist < nearby_max_distance_sq) {
-                            double dist = sqrt(sqdist);
-                            log(boost::format("generate_proximity_index_fast: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location.text_id % other_easting % other_northing);
-                            nearby_locations[location_id][other_location_id] = dist;
-                        }
-                    }
-
-                }
-            }
-
+        for (LocationID location_id = 0; location_id <= this->number_of_locations; location_id++) {
+            this->_update_proximate_stations(location_id);
         }
 
     }
-    
+    void _update_proximate_stations(LocationID location_id) {
+        const Location &location = this->locations[location_id];
+        double easting = location.easting;
+        double northing = location.northing;
+
+        // loop over boxes that we have to cover in order to definitely reach everything in range 
+        int box_e_center = int(easting) / this->boxsize;
+        int box_n_center = int(northing) / this->boxsize;
+        for (int box_e = box_e_center - this->boxscanrange; box_e <= box_e_center + this->boxscanrange; ++box_e) {
+            for (int box_n = box_n_center - this->boxscanrange; box_n <= box_n_center + this->boxscanrange; ++box_n) {
+                SpaceFind::iterator it = this->sf.find(box_e);
+                if (it == this->sf.end()) {
+                    continue;
+                }
+                SpaceFindInner& sfi = it->second;
+                SpaceFindInner::iterator it2 = sfi.find(box_n);
+                if (it2 == sfi.end()) {
+                    continue;
+                }
+
+                // see which of the locations we have to check *are* actually near enough
+                const std::set<LocationID>& other_location_list = it2->second;
+                BOOST_FOREACH(const LocationID& other_location_id, other_location_list) {
+                    // ignore own location
+                    if (location_id == other_location_id) {
+                        continue;
+                    }
+                    const Location &other_location = this->locations[other_location_id];
+
+                    // more precise accuracy check
+                    double other_easting = other_location.easting;
+                    double other_northing = other_location.northing;
+                    double sqdist = (easting - other_easting)*(easting - other_easting)
+                                  + (northing - other_northing)*(northing - other_northing);
+
+                    if (sqdist < nearby_max_distance_sq) {
+                        double dist = sqrt(sqdist);
+                        log(boost::format("generate_proximity_index_fast: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % this->nearby_max_distance % other_location.text_id % other_easting % other_northing);
+                        nearby_locations[location_id][other_location_id] = dist;
+                    }
+                }
+
+            }
+        }
+    }
+
+    // Change LOCATION_TARGET to have a given coordinate
+    void set_location_target(int target_e, int target_n) {
+        Location &location = this->locations[LOCATION_TARGET];
+        location.text_id = "TARGET";
+        location.easting = target_e;
+        location.northing = target_n;
+
+        // XXX get small speedup from only finding new proximate stations to target
+        this->generate_proximity_index_fast();
+    }
+
     // Given a grid coordinate, find the nearest station.
     LocationID find_nearest_station_to_point(double easting, double northing) {
         double best_dist_so_far_sq = -1;

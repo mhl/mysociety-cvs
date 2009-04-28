@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.10 2009-04-24 16:45:49 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.11 2009-04-28 19:17:55 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -75,17 +75,27 @@ int main(int argc, char * argv[]) {
             pm.display("route finding took");
         } else if (command == "binplan") {
             // Make a plan, and output binary file of coordinates to use.
-            std::string arg1, arg2, arg3, arg4, arg5;
-            std::cin >> arg1 >> arg2 >> arg3 >> arg4 >> arg5;
+            std::string arg1, arg2, arg3, arg4, arg5, arg6, arg7;
+            std::cin >> arg1 >> arg2 >> arg3 >> arg4 >> arg5 >> arg6 >> arg7;
 
             std::string output_binary = arg1.c_str();
             std::string output_routes = arg2.c_str();
             Minutes target_minutes_after_midnight = atoi(arg3.c_str());
             Minutes earliest_departure = atoi(arg4.c_str());
             std::string target_location_text_id = arg5;
-    
-            LocationID target_location_id = atco.locations_by_text_id[target_location_text_id];
-            fprintf(stdout, "target location: %d %s\n", target_location_id, target_location_text_id.c_str());
+            int target_e = atoi(arg6.c_str());
+            int target_n = atoi(arg7.c_str());
+
+            LocationID target_location_id;
+            if (target_location_text_id == "None") {
+                fprintf(stdout, "target grid: %d %d\n", target_e, target_n);
+                // make fake location
+                target_location_id = LOCATION_TARGET;
+                atco.set_location_target(target_e, target_n);
+            } else {
+                target_location_id = atco.locations_by_text_id[target_location_text_id];
+                fprintf(stdout, "target location: %d %s\n", target_location_id, target_location_text_id.c_str());
+            }
 
             // Do route finding
             atco.do_dijkstra(

@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.20 2009-04-28 13:24:52 matthew Exp $
+-- $Id: schema.sql,v 1.21 2009-04-28 19:17:56 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -57,7 +57,9 @@ create table map (
     working_took float, -- wall clock time for route finding part in seconds
 
     -- Parameters used to make the map
-    target_station_id integer not null references station(id),
+    target_station_id integer references station(id),
+    target_e integer,
+    target_n integer,
     target_latest integer not null, -- mins after midnight to arrive by
     target_earliest integer not null, -- mins after midnight to go back to
     target_date date not null
