@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.64 2009-04-28 19:17:57 francis Exp $
+# $Id: index.cgi,v 1.65 2009-04-28 19:31:59 francis Exp $
 #
 
 import sys
@@ -75,6 +75,8 @@ class Map:
 
         # XXX These data are all fixed for now
         self.target_latest = 540
+        if 'target_latest' in fs:
+            self.target_latest = int(fs.getfirst('target_latest'))
         self.target_earliest = 0
         self.target_date = '2008-10-07'
 
@@ -130,6 +132,8 @@ class Map:
             self.state['ahead'] = self.state['new']
             self.state['new'] += 1
 
+    def target_latest_formatted(self):
+        return format_time(self.target_latest)
 
 def format_time(mins_after_midnight):
     hours = mins_after_midnight / 60
@@ -219,6 +223,7 @@ def map(fs, email=''):
             'centre_lon': map.lon,
             'tile_id': map.id,
             'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
+            'target_latest_formatted': map.target_latest_formatted()
         }, id='map')
 
     # See how long it will take to make it
