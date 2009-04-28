@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.60 2009-04-27 16:35:22 francis Exp $
+# $Id: index.cgi,v 1.61 2009-04-28 12:06:14 matthew Exp $
 #
 
 import re
@@ -110,7 +110,7 @@ def wgs84_to_national_grid(lat, lon):
 def current_generation_time():
     db.execute('''SELECT AVG(working_took) FROM map WHERE working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval''')
     avg_time, = db.fetchone()
-    return avg_time
+    return avg_time or 10
 
 #####################################################################
 # Controllers
@@ -143,6 +143,7 @@ def map(text_id, email=''):
     (map, target_latest, target_earliest, target_date, target_station_id, easting, northing, lat, lon) = get_map(text_id, True)
 
     if map is None:
+        map_id = None
         current_state = 'new'
         working_server = None
     else:
@@ -166,14 +167,15 @@ def map(text_id, email=''):
 
     # Info for progress
     state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
-    db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
-    state['ahead'] = db.fetchone()[0]
     db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
     for row in db.fetchall():
         state[row[0]] = row[1]
 
-    approx_waiting_time = (state['ahead']+state['working']+1) * current_generation_time()
-    if current_state in ('new', 'working') and state['ahead'] * approx_waiting_time > 60:
+    maps_to_be_made = state['new'] + state['working']
+    if map_id is None: # Nothing in the database, so add one to include this one.
+        maps_to_be_made += 1
+    approx_waiting_time = maps_to_be_made * current_generation_time()
+    if current_state in ('new', 'working') and state['new'] * approx_waiting_time > 60:
         db.execute('ROLLBACK')
         return Response('map-provideemail', {
             'state': state,
@@ -188,8 +190,12 @@ def map(text_id, email=''):
         map_id = db.fetchone()[0]
         db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
         db.execute('COMMIT')
+        state['new'] += 1
     else:
         db.execute('ROLLBACK')
+
+    db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
+    state['ahead'] = db.fetchone()[0]
 
     # Please wait...
     if current_state == 'working':
