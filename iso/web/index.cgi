@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.61 2009-04-28 12:06:14 matthew Exp $
+# $Id: index.cgi,v 1.62 2009-04-28 12:31:19 matthew Exp $
 #
 
 import re
@@ -171,11 +171,15 @@ def map(text_id, email=''):
     for row in db.fetchall():
         state[row[0]] = row[1]
 
-    maps_to_be_made = state['new'] + state['working']
-    if map_id is None: # Nothing in the database, so add one to include this one.
-        maps_to_be_made += 1
+    if map_id:
+        db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
+        state['ahead'] = db.fetchone()[0]
+        maps_to_be_made = state['ahead'] + state['working']
+    else:
+        maps_to_be_made = state['new'] + state['working'] + 1
+
     approx_waiting_time = maps_to_be_made * current_generation_time()
-    if current_state in ('new', 'working') and state['new'] * approx_waiting_time > 60:
+    if current_state in ('new', 'working') and approx_waiting_time > 60:
         db.execute('ROLLBACK')
         return Response('map-provideemail', {
             'state': state,
@@ -190,12 +194,10 @@ def map(text_id, email=''):
         map_id = db.fetchone()[0]
         db.execute('INSERT INTO map (id, state, target_station_id, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_latest, target_earliest, target_date))
         db.execute('COMMIT')
+        state['ahead'] = state['new']
         state['new'] += 1
     else:
         db.execute('ROLLBACK')
-
-    db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
-    state['ahead'] = db.fetchone()[0]
 
     # Please wait...
     if current_state == 'working':
