@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.6 2009-04-28 14:42:31 matthew Exp $
+# $Id: proxy.cgi,v 1.7 2009-04-28 14:55:58 matthew Exp $
 #
 
 import sys, os.path, os, re, urllib
@@ -17,7 +17,7 @@ from page import *
 def main(fs):
     dir = '/tmp/tilecache-cloudmade'
     url = fs.getfirst('u', '')
-    m = re.match('http://.\.tile\.cloudmade\.com/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*\.png$', url)
+    m = re.match('http://(.\.)?tile\.cloudmade\.com/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*\.png$', url)
     if not url or not m:
         return Response(status=302, url='/')
     zoom, x, y = url.split('/')[-3:]
