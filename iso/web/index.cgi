@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.70 2009-04-29 18:17:12 matthew Exp $
+# $Id: index.cgi,v 1.71 2009-04-29 18:26:14 matthew Exp $
 #
 
 import sys
@@ -140,9 +140,6 @@ class Map:
             self.maps_to_be_made = self.state['ahead'] + self.state['working']
         else:
             self.maps_to_be_made = self.state['new'] + self.state['working'] + 1
-        self.state['new'] = 300
-        self.state['working'] = 16
-        self.maps_to_be_made = 317
 
     # Merges hashes for URL into dict and return
     def add_url_params(self, d):
