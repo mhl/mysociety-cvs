@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.66 2009-04-29 08:22:32 francis Exp $
+# $Id: index.cgi,v 1.67 2009-04-29 08:35:23 francis Exp $
 #
 
 import sys
@@ -68,6 +68,11 @@ class Map:
             for_update = 'FOR UPDATE';
         else:
             for_update = ''
+
+        # Be sure to properly sanitise any inputs read from fs into this
+        # function, so they don't have characters that might need escaping in
+        # them. This will make URLs look nicer, and is also assumed by Map.url
+        # below.
 
         if 'station_id' in fs:
             # target is specific station
@@ -143,6 +148,9 @@ class Map:
 
     # Construct own URL
     def url(self):
+        # We assume members have been properly sanitised when loaded, so there
+        # are no characters that need escaping.
+
         if self.target_station_id:
             url = "/station/" + self.target_station_id
         elif self.target_postcode:
