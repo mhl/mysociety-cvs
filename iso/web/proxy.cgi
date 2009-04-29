@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.7 2009-04-28 14:55:58 matthew Exp $
+# $Id: proxy.cgi,v 1.8 2009-04-29 19:17:38 matthew Exp $
 #
 
 import sys, os.path, os, re, urllib
@@ -29,13 +29,14 @@ def main(fs):
         fp = urllib.urlopen(url)
         image = fp.read()
         fp.close()
-        if not os.path.exists(os.path.join(dir, zoom)):
-            os.mkdir(os.path.join(dir, zoom))
-        if not os.path.exists(os.path.join(dir, zoom, x)):
-            os.mkdir(os.path.join(dir, zoom, x))
-        fp = open(cache_path, 'w') 
-        fp.write(image)
-        fp.close()
+        if len(image) != 53: # Not found XXX
+            if not os.path.exists(os.path.join(dir, zoom)):
+                os.mkdir(os.path.join(dir, zoom))
+            if not os.path.exists(os.path.join(dir, zoom, x)):
+                os.mkdir(os.path.join(dir, zoom, x))
+            fp = open(cache_path, 'w') 
+            fp.write(image)
+            fp.close()
     response = ImageResponse(image=image)
     return response
 
