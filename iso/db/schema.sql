@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.22 2009-04-29 14:05:43 francis Exp $
+-- $Id: schema.sql,v 1.23 2009-04-29 18:17:12 matthew Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -65,6 +65,7 @@ create table map (
 
     -- Parameters used to make the map
     target_station_id integer references station(id),
+    target_postcode text,
     target_e integer,
     target_n integer,
     target_latest integer not null, -- mins after midnight to arrive by

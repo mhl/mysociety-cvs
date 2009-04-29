@@ -7,7 +7,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: email-finished-maps,v 1.1 2009-04-28 13:24:52 matthew Exp $
+# $Id: email-finished-maps,v 1.2 2009-04-29 18:17:12 matthew Exp $
 #
 
 import sys
@@ -21,13 +21,12 @@ from page import template
 import coldb
 db = coldb.get_cursor()
 
-db.execute('''SELECT * FROM email_queue, map, station WHERE map.id=map_id AND target_station_id=station.id AND state='complete' ''')
+db.execute('''SELECT * FROM email_queue, map WHERE map.id=map_id AND state='complete' ''')
 for row in db:
-    url = mysociety.config.get('BASE_URL') + 'station/' + row['text_id']
+    url = mysociety.config.get('BASE_URL') + 'postcode/' + row['target_postcode']
     server, port = row['working_server'].split(':')
     print template('email-map-ready', {
         'url': url,
-        'long_description': row['long_description'],
         'server': server,
         'took': row['working_took'],
     }, 'txt')

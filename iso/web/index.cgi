@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.69 2009-04-29 16:42:57 matthew Exp $
+# $Id: index.cgi,v 1.70 2009-04-29 18:17:12 matthew Exp $
 #
 
 import sys
@@ -62,6 +62,8 @@ default_target_earliest = 0
 default_target_date = '2008-10-07'
 
 class Map:
+    state = {}
+
     # Given URL parameters, look up parameters of map
     def __init__(self, fs, for_update = False):
         if for_update:
@@ -80,6 +82,7 @@ class Map:
             db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s ''' + for_update, (text_id,))
             row = db.fetchone()
             self.target_station_id, self.target_e, self.target_n = row
+            self.target_postcode = None
         else:
             # target is a grid reference
             if 'target_postcode' in fs:
@@ -88,6 +91,7 @@ class Map:
                 self.target_e = int(f['easting'])
                 self.target_n = int(f['northing'])
             else:
+                self.target_postcode = None
                 self.target_e = int(fs.getfirst('target_e'))
                 self.target_n = int(fs.getfirst('target_n'))
             self.target_station_id = None
@@ -136,14 +140,19 @@ class Map:
             self.maps_to_be_made = self.state['ahead'] + self.state['working']
         else:
             self.maps_to_be_made = self.state['new'] + self.state['working'] + 1
+        self.state['new'] = 300
+        self.state['working'] = 16
+        self.maps_to_be_made = 317
 
     # Merges hashes for URL into dict and return
     def add_url_params(self, d):
         new_d = d.copy()
         if self.target_station_id:
-            new_d.merge( { 'station_id' : self.target_station_id } )
+            new_d.update( { 'station_id' : self.target_station_id } )
+        elif self.target_postcode:
+            new_d.update( { 'target_postcode': self.target_postcode } )
         else:
-            new_d.merge( { 'target_e' : self.target_e, 'target_n' : self.target_n } )
+            new_d.update( { 'target_e' : self.target_e, 'target_n' : self.target_n } )
         return new_d
 
     # Construct own URL
@@ -184,9 +193,9 @@ class Map:
     def start_generation(self):
         db.execute("SELECT nextval('map_id_seq')")
         self.id = db.fetchone()[0]
-        db.execute('INSERT INTO map (id, state, target_station_id, target_e, target_n, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+        db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
         db.execute('COMMIT')
-        if self.state:
+        if 'new' in self.state:
             self.state['ahead'] = self.state['new']
             self.state['new'] += 1
 
@@ -338,12 +347,13 @@ def map(fs, email=''):
 # Email has been given, remember to mail them when map is ready
 def log_email(fs, email):
     if not validate_email(email):
-        return Response('map-provideemail-error', map.add_url_params({
+        return Response('map-provideemail-error', {
+            'target_postcode': fs.getfirst('target_postcode'),
             'email': email,
-        }), id='map-wait')
+        }, id='map-wait')
     # Okay, we have an email, set off the process
-    map = Map(fs, for_update = True)
     db.execute('BEGIN')
+    map = Map(fs, for_update = True)
     if map.id is None:
         map.start_generation()
     db.execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
