@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.9 2009-04-28 23:00:40 francis Exp $
+// $Id: makeplan.h,v 1.10 2009-04-29 11:02:17 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -376,8 +376,8 @@ class PlanningATCO {
                 if (sqdist < nearby_max_distance_sq) {
                     double dist = sqrt(sqdist);
                     log(boost::format("generate_proximity_index_slow: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location.text_id % other_easting % other_northing);
-                    nearby_locations[location_id][other_location_id] = dist;
-                    nearby_locations[other_location_id][location_id] = dist;
+                    this->nearby_locations[location_id][other_location_id] = dist;
+                    this->nearby_locations[other_location_id][location_id] = dist;
                 }
             }
         }
@@ -458,7 +458,7 @@ class PlanningATCO {
                     if (sqdist < nearby_max_distance_sq) {
                         double dist = sqrt(sqdist);
                         log(boost::format("generate_proximity_index_fast: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % this->nearby_max_distance % other_location.text_id % other_easting % other_northing);
-                        nearby_locations[location_id][other_location_id] = dist;
+                        this->nearby_locations[location_id][other_location_id] = dist;
                     }
                 }
 
@@ -472,9 +472,6 @@ class PlanningATCO {
         location.text_id = "TARGET";
         location.easting = target_e;
         location.northing = target_n;
-
-        // XXX get small speedup from only finding new proximate stations to target
-        this->generate_proximity_index_fast();
     }
 
     // Given a grid coordinate, find the nearest station.
@@ -734,6 +731,11 @@ class PlanningATCO {
     void do_dijkstra(ResultFunctionPointer result_function_pointer,
         const LocationID target_location_id, const Minutes target_time, const Minutes earliest_departure
     ) {
+        // Generate proximity index
+        // (we do this each time as a) station 0 moves location, and b) maybe we'll let
+        // walk times and things be parameters
+        this->generate_proximity_index_fast();
+        
         // Initialize data structures for output if appropriate
         if (result_function_pointer == &PlanningATCO::dijkstra_output_store_by_id) {
             time_taken_by_location_id.resize(this->number_of_locations + 1);

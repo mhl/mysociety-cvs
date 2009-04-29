@@ -1,18 +1,17 @@
-remove stationlist etc. from CVS
-call culling from populate-all
-
-4. Make route dumping go through to output
+Show journey type in route finder
 
 
-doh - make it so JOURNEY_TARGET proximate is cleared when doing a station 
 
 Contours of life TODO
 =====================
 
-Remove flights other than internal Scotland ones
+Make clear maps use new initial state
 
-Properly do walking time at end point
-    - maybe use station number 0 for that
+Put interchange times and walking speeds in as parameters
+- Prevent chained walks, instead increase walk times?
+- a walk should have an interchange time after it? -- nah it is included in previous route?
+
+Remove flights other than internal Scotland ones
 
 Show that it is only up to 9am, perhaps by marking time on sliders.
 
@@ -22,18 +21,13 @@ Code to take email if isodaemon or tile server load to high
 
 CloudMade tiles onto CDN or similar
 
-Choose different times of day
+UI for choose different times of day
 
-Check data quality
-- Option to see routes easily
-
-Update Flash UI with Stamen updates
-
-Call PostgreSQL LISTEN/NOTIFY to trigger when there is a new map (if psycopg2 supports it)
+Check data quality more
 
 Try optimisations
     - try Flash renderer
-    - refresh rate with AJAX?
+    - refresh rate with AJAX? (and/or with LISTEN/NOTIFY in PostgreSQL if psycopg2 supports it)
     - do obvious planner improvements
     - tileserver precache station coordinates 
     - tileserver rewrite in C

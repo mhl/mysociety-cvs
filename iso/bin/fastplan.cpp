@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.8 2009-04-24 14:16:44 francis Exp $
+// $Id: fastplan.cpp,v 1.9 2009-04-29 11:02:17 francis Exp $
 //
 
 // Usage:
@@ -39,8 +39,6 @@ int main(int argc, char * argv[]) {
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
     pm.display("loading timetables took");
-    atco.generate_proximity_index_fast();
-    pm.display("generating proximity index took");
 
     // Find nearest place from grid reference
     LocationID target_location_id;

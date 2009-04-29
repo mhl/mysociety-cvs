@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.11 2009-04-28 19:17:55 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.12 2009-04-29 11:02:17 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -38,7 +38,6 @@ int main(int argc, char * argv[]) {
     PerformanceMonitor pm(stdout); // output everything to stdout except errors, so easier for Python script
     PlanningATCO atco;
     atco.load_binary_timetable(fastindexprefix);
-    atco.generate_proximity_index_fast();
     pm.display("loading took");
     
     // Read commands from stdin
