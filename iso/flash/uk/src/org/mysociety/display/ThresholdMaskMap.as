@@ -64,8 +64,10 @@ package org.mysociety.display
         protected var _minThreshold:uint = absMinThreshold;
         
         protected var mapsLoaded:int = 0;
+
+        protected var _routeURLBase:String = null;
         
-        public function ThresholdMaskMap(width:Number=640, height:Number=480, draggable:Boolean=true, provider:IMapProvider=null, thresholdBaseURL:String=null)
+        public function ThresholdMaskMap(width:Number=640, height:Number=480, draggable:Boolean=true, provider:IMapProvider=null, routeURLBase:String=null)
         {
             _displayMap = new BitmapCacheMap(width, height, draggable, provider);
             _displayMap.name = 'display';
@@ -75,7 +77,7 @@ package org.mysociety.display
             _displayMap.grid.addEventListener(ProgressEvent.PROGRESS, onMapRendered);
             addChild(_displayMap);
 
-            _maskMap = new BitmapCacheMap(width, height, false, new ThresholdMaskProvider(thresholdBaseURL));
+            _maskMap = new BitmapCacheMap(width, height, false, new ThresholdMaskProvider());
             _maskMap.name = 'mask';
             //_maskMap.backgroundColor = 0x000000;
             //_maskMap.grid.setTileClass(NullTile);
@@ -91,6 +93,8 @@ package org.mysociety.display
 
             _maskMap.visible = false;
             _displayMap.alpha = 0;
+
+            _routeURLBase = routeURLBase
 
             super(width, height, null);
             
@@ -267,13 +271,13 @@ package org.mysociety.display
 
         protected function onDisplayMapClick(event:MouseEvent):void
         {
-            if (event.shiftKey) {
+            if (event.shiftKey /*&& _routeURLBase != null*/) {
                 var p:Point = new Point(event.localX, event.localY);
                 var l:Location = _displayMap.pointLocation(p);
 
                 var h:HTTPService = new HTTPService();
                 h.method = "GET";
-                h.url = "?lat=" + l.lat + "&lon=" + l.lon;
+                h.url = _routeURLBase + "lat=" + l.lat + "&lon=" + l.lon;
                 // HTTP.resultFormat="e4x";
                 //This is to return the php results
                 h.addEventListener(ResultEvent.RESULT, mapClickResults);

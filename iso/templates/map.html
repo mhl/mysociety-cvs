@@ -44,7 +44,9 @@ closest stop or station to your postcode by <strong>{{ target_latest_formatted }
           // Iso tile URL and format template.
           'iso_tile_url_base':    'http://{{ tile_web_host }}/tilecache.fcgi/{{ tile_id }}/iso',
           // {Z}, {X}, and {Y} here are replaced by the tile coordinate zoom, column and row, respectively.
-          'iso_tile_url_format':  '{Z}/{X}/{Y}.png'
+          'iso_tile_url_format':  '{Z}/{X}/{Y}.png',
+          // URL to get routes from
+          'route_url_base': escape("{{ route_url_base|safe }}")
         };
 
         // Flash Player parameters

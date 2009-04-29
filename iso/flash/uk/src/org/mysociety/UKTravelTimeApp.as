@@ -52,6 +52,8 @@ package org.mysociety
         
         protected var isoTileBase:String;
         protected var isoTileFormat:String = '{Z}/{X}/{Y}.png';
+
+        protected var routeURLBase:String;
         
         protected var cloudmadeAPIKey:String;
         
@@ -127,6 +129,10 @@ package org.mysociety
                     isoTileFormat = value;
                     return true;
 
+                case 'route_url_base':
+                    routeURLBase = value;
+                    return true;
+
                 case 'min_threshold':
                     minThreshold = parseInt(value);
                     return true;
@@ -169,7 +175,7 @@ package org.mysociety
         
         protected function createChildren():void
         {
-            map = new ThresholdMaskMap(100, 100, true, new CloudMadeProvider(cloudmadeAPIKey, CloudMadeProvider.PALE_DAWN));
+            map = new ThresholdMaskMap(100, 100, true, new CloudMadeProvider(cloudmadeAPIKey, CloudMadeProvider.PALE_DAWN), routeURLBase);
 
             var m:ColorMatrix = new ColorMatrix();
             // m.invert();

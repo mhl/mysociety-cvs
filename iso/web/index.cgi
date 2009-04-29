@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.65 2009-04-28 19:31:59 francis Exp $
+# $Id: index.cgi,v 1.66 2009-04-29 08:22:32 francis Exp $
 #
 
 import sys
@@ -45,6 +45,22 @@ def nearest_station(E, N):
 
     return row
 
+# Make sure no bad characters in postcode
+def sanitise_postcode(pc):
+    pc = pc.upper()
+    pc = re.sub('[^A-Z0-9]', '', pc)
+    return pc
+# Make sure no bad characters in station ID
+def sanitise_station_id(text_id):
+    text_id = text_id.upper()
+    text_id = re.sub('[^A-Z0-9]', '', text_id)
+    return text_id
+
+# Used when not specified in URL (so changing will change meaning of old URLs)
+default_target_latest = 540
+default_target_earliest = 0
+default_target_date = '2008-10-07'
+
 class Map:
     # Given URL parameters, look up parameters of map
     def __init__(self, fs, for_update = False):
@@ -55,30 +71,33 @@ class Map:
 
         if 'station_id' in fs:
             # target is specific station
-            text_id = fs.getfirst('station_id')
+            text_id = sanitise_station_id(fs.getfirst('station_id'))
             db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s ''' + for_update, (text_id,))
             row = db.fetchone()
             self.target_station_id, self.target_e, self.target_n = row
         else:
             # target is a grid reference
             if 'target_postcode' in fs:
-                f = mysociety.mapit.get_location(fs.getfirst('target_postcode'))
+                self.target_postcode = sanitise_postcode(fs.getfirst('target_postcode'))
+                f = mysociety.mapit.get_location(self.target_postcode)
                 self.target_e = int(f['easting'])
                 self.target_n = int(f['northing'])
             else:
-                self.target_e = fs.getfirst('target_e')
-                self.target_n = fs.getfirst('target_n')
+                self.target_e = int(fs.getfirst('target_e'))
+                self.target_n = int(fs.getfirst('target_n'))
             self.target_station_id = None
 
         # Used for centring map
         self.lat, self.lon = national_grid_to_wgs84(self.target_e, self.target_n)
 
         # XXX These data are all fixed for now
-        self.target_latest = 540
+        self.target_latest = default_target_latest
         if 'target_latest' in fs:
             self.target_latest = int(fs.getfirst('target_latest'))
-        self.target_earliest = 0
-        self.target_date = '2008-10-07'
+        self.target_earliest = default_target_earliest
+        if 'target_earliest' in fs:
+            self.target_earliest = int(fs.getfirst('target_earliest'))
+        self.target_date = default_target_date
 
         # Get record from database
         if self.target_station_id:
@@ -121,6 +140,37 @@ class Map:
         else:
             new_d.merge( { 'target_e' : self.target_e, 'target_n' : self.target_n } )
         return new_d
+
+    # Construct own URL
+    def url(self):
+        if self.target_station_id:
+            url = "/station/" + self.target_station_id
+        elif self.target_postcode:
+            url = "/postcode/" + self.target_postcode
+        elif self.target_e and self.target_n:
+            url = "/grid/" + str(self.target_e) + "/" + str(self.target_n)
+        else:
+            raise Exception("can't make URL")
+
+        url_params = []
+        if self.target_latest != default_target_latest:
+            url_params.append("target_latest=" + str(self.target_latest))
+        if self.target_earliest != default_target_earliest:
+            url_params.append("target_earliest=" + str(self.target_earliest))
+        if len(url_params) > 0:
+            url = url + "?" + "&".join(url_params)
+        
+        return url
+
+    # Construct own URL, ensure ends inside query parameters so can add more
+    # (Flash just appends strings to this URL for e.g. route URL)
+    def url_with_params(self):
+        ret = self.url()
+        if not '?' in ret:
+            ret = ret + "?"
+        else:
+            ret = ret + "&"
+        return ret
 
     # Start off generation of map!
     def start_generation(self):
@@ -184,7 +234,7 @@ def current_generation_time():
 #####################################################################
 # Controllers
  
-def lookup(pc):
+def check_postcode(pc):
     """Given a postcode, look up grid reference and redirect to a URL
     containing that"""
 
@@ -203,8 +253,7 @@ def lookup(pc):
     #    })
 
     # Canonicalise it, and redirect to that URL
-    pc = pc.upper()
-    pc = re.sub('[^A-Z0-9]', '', pc)
+    pc = sanitise_postcode(pc)
 
     return Response(status=302, url='/postcode/%s' % (pc))
 
@@ -223,7 +272,8 @@ def map(fs, email=''):
             'centre_lon': map.lon,
             'tile_id': map.id,
             'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
-            'target_latest_formatted': map.target_latest_formatted()
+            'target_latest_formatted': map.target_latest_formatted(),
+            'route_url_base': map.url_with_params()
         }, id='map')
 
     # See how long it will take to make it
@@ -334,7 +384,7 @@ def main(fs):
     if 'lat' in fs:
         return get_route(fs, fs.getfirst('lat'), fs.getfirst('lon'))
     elif 'pc' in fs:
-        return lookup(fs.getfirst('pc'))
+        return check_postcode(fs.getfirst('pc'))
     elif got_map_spec and 'email' in fs:
         return log_email(fs, fs.getfirst('email'))
     elif got_map_spec:
