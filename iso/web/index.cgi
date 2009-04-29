@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.68 2009-04-29 14:05:43 francis Exp $
+# $Id: index.cgi,v 1.69 2009-04-29 16:42:57 matthew Exp $
 #
 
 import sys
@@ -196,7 +196,17 @@ class Map:
 def format_time(mins_after_midnight):
     hours = mins_after_midnight / 60
     mins = mins_after_midnight % 60
-    return "%02d:%02d:00" % (hours, mins)
+    if hours == 12 and mins == 0:
+        return 'noon'
+    suffix = hours < 12 and 'am' or 'pm'
+    hours = hours % 12
+    if hours == 0:
+        hours = 12
+    time = str(hours)
+    if mins:
+        time += ':%02d' % mins
+    time += suffix
+    return time
 
 def look_up_time_taken(map_id, station_id):
     iso_file = tmpwork + "/" + repr(map_id) + ".iso"
