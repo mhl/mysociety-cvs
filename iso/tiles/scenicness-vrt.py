@@ -24,12 +24,13 @@ if __name__ == '__main__':
         print >> vrtfile, '    </OGRVRTLayer>'
         print >> vrtfile, '</OGRVRTDataSource>'
 
-        src = urllib.urlopen('http://scenic.mysociety.org/votes2009-04-27.tsv')
-        input = csv.DictReader(src, dialect='excel-tab')
+        src = urllib.urlopen('http://scenic.mysociety.org/votes2009-04-29.tsv')
+        input = csv.reader(src, dialect='excel-tab')
         output = csv.writer(csvfile)
         
         print >> csvfile, 'Easting,Northing,Rating'
         
         for row in input:
-            x, y = GYM(row['Lon'], row['Lat'])
-            output.writerow((x, y, row['Rating']))
+            id, lat, lon, rating = row
+            x, y = GYM(lon, lat)
+            output.writerow((x, y, rating))
