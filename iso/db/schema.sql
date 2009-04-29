@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.21 2009-04-28 19:17:56 francis Exp $
+-- $Id: schema.sql,v 1.22 2009-04-29 14:05:43 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -40,6 +40,13 @@ select AddGeometryColumn('', 'station', 'position_merc', 900913, 'POINT', 2) int
 -- (the "into temp" stuff above serves to suppress the output of the return value of the "select AddGeometryColumn")
 create index station_position_merc on station using GIST (position_merc);
 
+-- Every journey
+create table journey (
+    id integer not null primary key,
+    text_id text not null, -- identifier from NPTDR
+    vehicle_code char(1) -- T for train etc.
+);
+
 -- Represents a map made by the user
 create table map (
     id serial not null primary key,
@@ -74,6 +81,7 @@ create table email_queue (
 -- We grant privileges back to the actual user who is using the database.
 -- Shame it had to all be made by user "postgres", see top of file.
 grant all on table station to col;
+grant all on table journey to col;
 grant all on table map to col;
 grant all on table map_id_seq to col;
 grant all on table spatial_ref_sys to col;

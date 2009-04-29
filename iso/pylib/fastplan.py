@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fastplan.py,v 1.19 2009-04-24 09:54:44 francis Exp $
+# $Id: fastplan.py,v 1.20 2009-04-29 14:05:43 francis Exp $
 #
 
 import logging
@@ -39,6 +39,7 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
         if self.reload_database:
             self.reload_database.execute('begin')
             self.reload_database.execute('delete from station')
+            self.reload_database.execute('delete from journey')
 
         # output locations in binary
         logging.info("FastPregenATCO: making locations file")
@@ -166,6 +167,12 @@ class FastPregenATCO(mysociety.atcocif.ATCO):
 
             # count for storing connectedness in database
             self.journeys_visiting_location_c[fastix] = self.journeys_visiting_location_c.get(fastix, 0) + 1
+
+        # if we're storing in the database, then do that 
+        if self.reload_database:
+            self.reload_database.execute('''insert into journey (id, text_id, vehicle_code) 
+                    values (%s, %s, %s)''', (self.journey_c, item.id, vehicle_code)
+                    )
 
 
     # Internal binary packing function, with logging for debugging

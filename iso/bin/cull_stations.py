@@ -8,7 +8,7 @@ to the extent that a more-connected station should beat out a less-connected sta
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: cull_stations.py,v 1.2 2009-04-20 11:41:03 francis Exp $
+$Id: cull_stations.py,v 1.3 2009-04-29 14:05:43 francis Exp $
 """
 import os
 import sys
@@ -37,9 +37,14 @@ if __name__ == '__main__':
                   WHERE minimum_zoom = 0
                   ORDER BY connectedness ASC""")
 
-    for (id, text_id, easting_osgb, northing_osgb, connectedness, easting_merc, northing_merc) in db.fetchall():
+    c = 0
 
-        print "cull_stations.py:", id, text_id, connectedness, easting_osgb, northing_osgb,
+    for (id, text_id, easting_osgb, northing_osgb, connectedness, easting_merc, northing_merc) in db.fetchall():
+        c = c + 1
+        if c % 1000 == 0:
+            print "cull station: " + str(c)
+
+        #print "cull_stations.py:", id, text_id, connectedness, easting_osgb, northing_osgb,
 
         # narrow down a window around the station, searching
         # for nearby stations with a higher journey count.
@@ -62,7 +67,7 @@ if __name__ == '__main__':
             if db.fetchone() is None:
                 break
 
-        print "minimum_zoom", minimum_zoom
+        #print "minimum_zoom", minimum_zoom
         
         db.execute("""UPDATE station SET minimum_zoom = %s + 1
                       WHERE id = %s """ \

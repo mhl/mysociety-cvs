@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.67 2009-04-29 08:35:23 francis Exp $
+# $Id: index.cgi,v 1.68 2009-04-29 14:05:43 francis Exp $
 #
 
 import sys
@@ -213,6 +213,22 @@ def look_up_route_node(map_id, station_id):
     journey_id = struct.unpack("i", isof.read(4))[0]
     return (location_id, journey_id)
 
+def pretty_vehicle_code(vehicle_code):
+    if vehicle_code == 'T':
+        return "Train";
+    elif vehicle_code == 'B':
+        return "Bus";
+    elif vehicle_code == 'C':
+        return "Coach";
+    elif vehicle_code == 'M':
+        return "Metro";
+    elif vehicle_code == 'A':
+        return "Air";
+    elif vehicle_code == 'F':
+        return "Ferry";
+    else:
+        assert False;
+
 # Constants from cpplib/makeplan.h
 JOURNEY_NULL = -1
 JOURNEY_ALREADY_THERE = -2
@@ -359,6 +375,14 @@ def get_route(fs, lat, lon):
     for row in db.fetchall():
         name_by_id[row['id']] = row['long_description'] + " (" + row['text_id'] + ")"
     name_by_id[LOCATION_TARGET] = 'TARGET'
+    # ... get journey info from database
+    ids = ','.join([ str(int(route_node[2])) for route_node in route ])
+    db.execute('''SELECT text_id, vehicle_code, id FROM journey WHERE id in (%s)''' % ids)
+    journey_by_id = {}
+    vehicle_code_by_id = {}
+    for row in db.fetchall():
+        journey_by_id[row['id']] = row['text_id']
+        vehicle_code_by_id[row['id']] = row['vehicle_code']
     # ... and show it
     route_str = "From " + str(name_by_id[station_id]) + " \n"
     for location_id, next_location_id, journey_id in route:
@@ -367,7 +391,8 @@ def get_route(fs, lat, lon):
         route_str += format_time(leaving_after_midnight) + " "
         if journey_id > 0: 
             next_location_name = name_by_id[next_location_id]
-            route_str += "Leave to " + next_location_name;
+            vehicle_code = vehicle_code_by_id[journey_id]
+            route_str += pretty_vehicle_code(vehicle_code) + " (" + journey_by_id[journey_id] + ") to " + next_location_name
         elif journey_id == JOURNEY_WALK:
             next_location_name = name_by_id[next_location_id]
             route_str += "Walk to " + next_location_name;

@@ -1,19 +1,23 @@
 #!/bin/bash
 
+set -e
+
 SORT=$1
 
 if [ "$SORT" == "all-country" ]
 then
-    ./do-nptdr.py --datavalidfrom="6 Oct 2008" --datavalidto="12 Oct 2008" --data="Timetable Data/CIF/National/CIF-National/*.CIF" --dataname="all-country" --whenarrive="7 Oct 2008" livecalc
+    FILES="National/CIF-National/*.CIF"
 elif [ "$SORT" == "oxfordshire" ]
 then
-    ./do-nptdr.py --datavalidfrom="6 Oct 2008" --datavalidto="12 Oct 2008" --data="Timetable Data/CIF/Admin_Area_340/*.CIF" --dataname="oxfordshire" --whenarrive="7 Oct 2008" livecalc
+    FILES="Admin_Area_340/*.CIF"
 elif [ "$SORT" == "west-midlands" ]
 then
-    ./do-nptdr.py --datavalidfrom="6 Oct 2008" --datavalidto="12 Oct 2008" --data="Timetable Data/CIF/Admin_Area_430/*.CIF" --dataname="west-midlands" --whenarrive="7 Oct 2008" livecalc
+    FILES="Admin_Area_430/*.CIF"
 else
     echo "Please specify which dataset name to load as argument"
+    exit
 fi
 
+./do-nptdr.py --datavalidfrom="6 Oct 2008" --datavalidto="12 Oct 2008" --data="Timetable Data/CIF/$FILES" --dataname="$SORT" --whenarrive="7 Oct 2008" livecalc
 ./cull_stations.py
 
