@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.76 2009-04-30 14:31:46 matthew Exp $
+# $Id: index.cgi,v 1.77 2009-04-30 14:44:03 matthew Exp $
 #
 
 import sys
@@ -128,20 +128,11 @@ class Map:
             (self.id, self.current_state, self.working_server) = row
 
     def current_generation_time(self):
-        if self.target_station_id:
-            db.execute('''SELECT AVG(working_took) FROM map WHERE
-                working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval AND
-                target_station_id = %s AND 
-                target_latest = %s AND target_earliest = %s 
-                AND target_date = %s''', 
-                (self.target_station_id, self.target_latest, self.target_earliest, self.target_date))
-        else:
-            db.execute('''SELECT AVG(working_took) FROM map WHERE
-                working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval AND
-                target_e = %s AND target_n = %s AND 
-                target_latest = %s AND target_earliest = %s 
-                AND target_date = %s''', 
-                (self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+        db.execute('''SELECT AVG(working_took) FROM map WHERE
+            working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval AND
+            target_latest = %s AND target_earliest = %s 
+            AND target_date = %s''', 
+            (self.target_latest, self.target_earliest, self.target_date))
         avg_time, = db.fetchone()
         return avg_time or 10
 
@@ -353,7 +344,7 @@ def map(fs, email=''):
             'state' : map.state,
             'server': server,
             'server_port': server_port,
-        }, refresh=int(generation_time)+1, id='map-wait')
+        }, refresh=int(generation_time)<5 and int(generation_time) or 5, id='map-wait')
     elif map.current_state == 'error':
         return Response('map-error', { 'map_id' : map.id }, id='map-wait')
     elif map.current_state == 'new':
