@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.73 2009-04-30 14:06:57 matthew Exp $
+# $Id: index.cgi,v 1.74 2009-04-30 14:14:13 matthew Exp $
 #
 
 import sys
@@ -340,7 +340,7 @@ def map(fs, email=''):
             'state' : map.state,
             'server': server,
             'server_port': server_port,
-        }, refresh=3, id='map-wait')
+        }, refresh=int(generation_time)+1, id='map-wait')
     elif map.current_state == 'error':
         return Response('map-error', { 'map_id' : map.id }, id='map-wait')
     elif map.current_state == 'new':

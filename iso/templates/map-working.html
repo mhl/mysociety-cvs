@@ -1,6 +1,6 @@
 <p>Your map is at the <strong>front of the queue</strong>, and is being made
-by robot #{{ server_port }} on a server powered by <strong>{{ server }}</strong>,
-we guesstimate it&rsquo;ll be {{ approx_waiting_time }}s.
+by robot #{{ server_port }} on a server powered by <strong>{{ server }}</strong>;
+we guesstimate it&rsquo;ll take {{ approx_waiting_time }} seconds to finish.
 {{ state.working }} map{{ state.working|pluralize }} in total
 {{ state.working|pluralize:"is,are" }} being
 made right now. There {{ state.new|pluralize:"is,are" }} {{ state.new }} map{{ state.new|pluralize }} behind you in the queue.
