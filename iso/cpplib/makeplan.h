@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.10 2009-04-29 11:02:17 francis Exp $
+// $Id: makeplan.h,v 1.11 2009-04-30 14:51:04 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -215,7 +215,7 @@ class PlanningATCO {
     public: 
 
     // input parameters
-    int train_interchange_default;
+    int general_interchange_default;
     int bus_interchange_default;
     int number_of_locations;
     int number_of_journeys;
@@ -253,12 +253,12 @@ class PlanningATCO {
     /* Create object that generates shortest journey times for all stations
     in a public transport network defined by an ATCO-CIF timetable file.
 
-    train_interchange_default - time in minutes to allow by default to change trains at same station
+    general_interchange_default - time in minutes to allow by default to change trains etc. at one station
     bus_interchange_default - likewise for buses, at exact same stop
     */
-    PlanningATCO(int l_train_interchange_default = 5, int l_bus_interchange_default = 1, float l_walk_speed=1.0, float l_walk_time=600.0 
+    PlanningATCO(int l_general_interchange_default = 5, int l_bus_interchange_default = 1, float l_walk_speed=1.0, float l_walk_time=600.0 
     ) {
-        this->train_interchange_default = l_train_interchange_default;
+        this->general_interchange_default = l_general_interchange_default;
         this->bus_interchange_default = l_bus_interchange_default;
         this->walk_speed = l_walk_speed;
         this->walk_time = l_walk_time;
@@ -607,9 +607,9 @@ class PlanningATCO {
     Minutes _interchange_time_after_journey(JourneyID journey_id) {
         Journey& journey = this->journeys[journey_id];
 
-        if (journey.vehicle_type == 'T' || journey.vehicle_type == 'F' || journey.vehicle_type == 'A') {
-            return this->train_interchange_default;
-        } else if (journey.vehicle_type == 'B' || journey.vehicle_type == 'C' || journey.vehicle_type == 'M') {
+        if (journey.vehicle_type == 'T' || journey.vehicle_type == 'F' || journey.vehicle_type == 'A' || journey.vehicle_type == 'C' || journey.vehicle_type == 'M') {
+            return this->general_interchange_default;
+        } else if (journey.vehicle_type == 'B') {
             return this->bus_interchange_default;
         } else {
             assert(0);
