@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.74 2009-04-30 14:14:13 matthew Exp $
+# $Id: index.cgi,v 1.75 2009-04-30 14:30:21 matthew Exp $
 #
 
 import sys
@@ -126,6 +126,24 @@ class Map:
             (self.id, self.current_state, self.working_server) = (None, 'new', None)
         else:
             (self.id, self.current_state, self.working_server) = row
+
+    def current_generation_time():
+        if self.target_station_id:
+            db.execute('''SELECT AVG(working_took) FROM map WHERE
+                working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval AND
+                target_station_id = %s AND 
+                target_latest = %s AND target_earliest = %s 
+                AND target_date = %s''', 
+                (self.target_station_id, self.target_latest, self.target_earliest, self.target_date))
+        else:
+            db.execute('''SELECT AVG(working_took) FROM map WHERE
+                working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval AND
+                target_e = %s AND target_n = %s AND 
+                target_latest = %s AND target_earliest = %s 
+                AND target_date = %s''', 
+                (self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+        avg_time, = db.fetchone()
+        return avg_time or 10
 
     # How far is making this map? 
     def get_progress_info(self):
@@ -266,11 +284,6 @@ def wgs84_to_national_grid(lat, lon):
     x, y = pyproj.transform(WGS, BNG, lon, lat)
     return x, y
 
-def current_generation_time():
-    db.execute('''SELECT AVG(working_took) FROM map WHERE working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval''')
-    avg_time, = db.fetchone()
-    return avg_time or 10
-
 #####################################################################
 # Controllers
  
@@ -318,7 +331,7 @@ def map(fs, email=''):
 
     # See how long it will take to make it
     map.get_progress_info()
-    generation_time = current_generation_time()
+    generation_time = map.current_generation_time()
     approx_waiting_time = map.maps_to_be_made * generation_time
     # ... if too long, ask for email
     if map.current_state in ('new', 'working') and approx_waiting_time > 60:
