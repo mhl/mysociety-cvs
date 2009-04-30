@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.28 2009-03-27 23:11:10 matthew Exp $
+$Id: Isochrones.py,v 1.29 2009-04-30 15:31:37 francis Exp $
 """
 import os
 import sys
@@ -65,7 +65,7 @@ class TileLayer(TileCache.Layer.MetaLayer):
         """
         # open a log file, or not, either way is cool
         log = self.iso_tile_log and open(self.iso_tile_log, 'a') or None
-        
+
         if self.map_id is None:
             raise Exception('self.map_id is missing, did you forget to call updatePathInfo()?')
         
@@ -100,7 +100,7 @@ def draw_tile(points, tile, log):
     """ Render points to a single tile image
     """
     prep_start = time.time()
-    
+
     # get the tile in spherical mercator
     xmin, ymin, xmax, ymax = tile.bounds()
     width, height = tile.size()
