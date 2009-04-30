@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.77 2009-04-30 14:44:03 matthew Exp $
+# $Id: index.cgi,v 1.78 2009-04-30 17:03:53 matthew Exp $
 #
 
 import sys
@@ -295,6 +295,11 @@ def check_postcode(pc):
     #    return Response('index', {
     #        'error': '<div id="errors">Could not find a station or bus stop :(</div>'
     #    })
+
+    if f['coordsyst'] == 'I':
+        return Response('index', {
+            'error': '<div id="errors">I&rsquo;m afraid we don&rsquo;t have information for Northern Ireland.</div>'
+        })
 
     # Canonicalise it, and redirect to that URL
     pc = sanitise_postcode(pc)
