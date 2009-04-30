@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.71 2009-04-29 18:26:14 matthew Exp $
+# $Id: index.cgi,v 1.72 2009-04-30 13:58:13 matthew Exp $
 #
 
 import sys
@@ -318,7 +318,8 @@ def map(fs, email=''):
 
     # See how long it will take to make it
     map.get_progress_info()
-    approx_waiting_time = map.maps_to_be_made * current_generation_time()
+    current_generation_time = current_generation_time()
+    approx_waiting_time = map.maps_to_be_made * current_generation_time
     # ... if too long, ask for email
     if map.current_state in ('new', 'working') and approx_waiting_time > 60:
         return Response('map-provideemail', map.add_url_params({
@@ -333,11 +334,20 @@ def map(fs, email=''):
 
     # Please wait...
     if map.current_state == 'working':
-        return Response('map-working', { 'state' : map.state, 'server' : map.working_server }, refresh=3, id='map-wait')
+        server, server_port = map.working_server.split(':')
+        return Response('map-working', {
+            'approx_waiting_time': current_generation_time,
+            'state' : map.state,
+            'server': server,
+            'server_port': server_port,
+        }, refresh=3, id='map-wait')
     elif map.current_state == 'error':
         return Response('map-error', { 'map_id' : map.id }, id='map-wait')
     elif map.current_state == 'new':
-        return Response('map-pleasewait', { 'state' : map.state }, refresh=2, id='map-wait')
+        return Response('map-pleasewait', {
+            'approx_waiting_time': int(approx_waiting_time),
+            'state' : map.state,
+        }, refresh=2, id='map-wait')
     else:
         raise Exception("unknown state " + map.current_state)
 
