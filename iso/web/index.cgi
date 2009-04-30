@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.72 2009-04-30 13:58:13 matthew Exp $
+# $Id: index.cgi,v 1.73 2009-04-30 14:06:57 matthew Exp $
 #
 
 import sys
@@ -318,8 +318,8 @@ def map(fs, email=''):
 
     # See how long it will take to make it
     map.get_progress_info()
-    current_generation_time = current_generation_time()
-    approx_waiting_time = map.maps_to_be_made * current_generation_time
+    generation_time = current_generation_time()
+    approx_waiting_time = map.maps_to_be_made * generation_time
     # ... if too long, ask for email
     if map.current_state in ('new', 'working') and approx_waiting_time > 60:
         return Response('map-provideemail', map.add_url_params({
@@ -336,7 +336,7 @@ def map(fs, email=''):
     if map.current_state == 'working':
         server, server_port = map.working_server.split(':')
         return Response('map-working', {
-            'approx_waiting_time': current_generation_time,
+            'approx_waiting_time': generation_time,
             'state' : map.state,
             'server': server,
             'server_port': server_port,
