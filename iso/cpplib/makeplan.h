@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.11 2009-04-30 14:51:04 francis Exp $
+// $Id: makeplan.h,v 1.12 2009-04-30 15:32:27 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -602,17 +602,32 @@ class PlanningATCO {
         }
     }
 
-    // How long after a journey it takes to interchange to catch another form of
-    // transport at the destination stop.
-    Minutes _interchange_time_after_journey(JourneyID journey_id) {
+    // How long after a journey it takes to interchange to catch the next form
+    // of transport at the given destination stop.
+    Minutes _interchange_time_after_journey(JourneyID journey_id, LocationID location_id) {
         Journey& journey = this->journeys[journey_id];
 
-        if (journey.vehicle_type == 'T' || journey.vehicle_type == 'F' || journey.vehicle_type == 'A' || journey.vehicle_type == 'C' || journey.vehicle_type == 'M') {
-            return this->general_interchange_default;
-        } else if (journey.vehicle_type == 'B') {
+        // Work out type of next onwards journey
+        RouteNode& onwards_route = this->routes[location_id];
+        if (onwards_route.journey_id == JOURNEY_ALREADY_THERE) {
+            // No interchange time at the end
+            assert(location_id == this->final_destination_id);
+            return 0;
+        } else if (onwards_route.journey_id == JOURNEY_WALK) {
+            // No interchange time if walking
+            return 0;
+        } else if (onwards_route.journey_id == JOURNEY_NULL) {
+            // Should never happen
+            assert(0);
+            return 0;
+        }
+        Journey& onwards_journey = this->journeys[onwards_route.journey_id];
+
+        // Base interchange time on vehicle type
+        if (journey.vehicle_type == 'B' && onwards_journey.vehicle_type == 'B') {
             return this->bus_interchange_default;
         } else {
-            assert(0);
+            return this->general_interchange_default;
         }
     }
 
@@ -627,12 +642,7 @@ class PlanningATCO {
         // All journeys run on the valid date; the check is done in the Python binary exporter.
 
         // Work out how long we need to allow to change at the stop
-        Minutes interchange_time;
-        if (target_location_id == this->final_destination_id) {
-            interchange_time = 0;
-        } else {
-            interchange_time = this->_interchange_time_after_journey(journey_id);
-        }
+        Minutes interchange_time = this->_interchange_time_after_journey(journey_id, target_location_id);
         
         // Pick the latest of arrival times that's before the time we're
         // currently at (plus interchange time of course). Usually there'll
