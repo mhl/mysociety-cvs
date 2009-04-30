@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.75 2009-04-30 14:30:21 matthew Exp $
+# $Id: index.cgi,v 1.76 2009-04-30 14:31:46 matthew Exp $
 #
 
 import sys
@@ -127,7 +127,7 @@ class Map:
         else:
             (self.id, self.current_state, self.working_server) = row
 
-    def current_generation_time():
+    def current_generation_time(self):
         if self.target_station_id:
             db.execute('''SELECT AVG(working_took) FROM map WHERE
                 working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval AND
