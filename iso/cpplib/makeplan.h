@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.12 2009-04-30 15:32:27 francis Exp $
+// $Id: makeplan.h,v 1.13 2009-05-01 00:15:50 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -256,7 +256,7 @@ class PlanningATCO {
     general_interchange_default - time in minutes to allow by default to change trains etc. at one station
     bus_interchange_default - likewise for buses, at exact same stop
     */
-    PlanningATCO(int l_general_interchange_default = 5, int l_bus_interchange_default = 1, float l_walk_speed=1.0, float l_walk_time=600.0 
+    PlanningATCO(int l_general_interchange_default = 5, int l_bus_interchange_default = 1, float l_walk_speed=1.34, float l_walk_time=600.0 
     ) {
         this->general_interchange_default = l_general_interchange_default;
         this->bus_interchange_default = l_bus_interchange_default;
