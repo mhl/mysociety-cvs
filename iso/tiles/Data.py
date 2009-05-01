@@ -34,10 +34,10 @@ def get_place_times(map_id, tile, db, log, tmpwork):
     xmin, xmax = min(xmin, xmax), max(xmin, xmax)
     ymin, ymax = min(ymin, ymax), max(ymin, ymax)
     
-    # adjust by 1800 meters
+    # adjust by 2400 meters
     xmin, ymin = gym2bng(xmin, ymin)
     xmax, ymax = gym2bng(xmax, ymax)
-    xmin, ymin, xmax, ymax = xmin - 1800, ymin - 1800, xmax + 1800, ymax + 1800
+    xmin, ymin, xmax, ymax = xmin - 2400, ymin - 2400, xmax + 2400, ymax + 2400
     xmin, ymin = bng2gym(xmin, ymin)
     xmax, ymax = bng2gym(xmax, ymax)
     

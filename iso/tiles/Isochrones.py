@@ -4,7 +4,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.29 2009-04-30 15:31:37 francis Exp $
+$Id: Isochrones.py,v 1.30 2009-05-01 00:22:41 francis Exp $
 """
 import os
 import sys
@@ -114,15 +114,15 @@ def draw_tile(points, tile, log):
     # note that here 0x00 = zero time; inversion for output image happens later
     array = numpy.ones(tile.size(), numpy.int32) * 0xFFFFFF
     
-    # 1800 meters is a half hour of walking at 1m/s
-    pixels_per_1800_meters = 1800 * Cone.pixels_per_kilometer(tile) / 1000
+    # 2400 meters is a half hour of walking at 1.34 m/s
+    pixels_per_max_walk_meters = 2400 * Cone.pixels_per_kilometer(tile) / 1000
     
     prep_time = time.time() - prep_start
     cone_start = time.time()
     
     # create a station cone and mask where value is walking seconds
-    station_cone = Cone.make_cone(pixels_per_1800_meters)
-    station_mask = station_cone <= 1800
+    station_cone = Cone.make_cone(pixels_per_max_walk_meters)
+    station_mask = station_cone <= 2400
     
     cone_time = time.time() - cone_start
     points_start = time.time()
