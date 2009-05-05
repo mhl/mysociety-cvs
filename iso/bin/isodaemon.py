@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4
+#!/usr/bin/python2.5
 #
 # isodaemon.py:
 # Daemon to generate coordinates for isochrone maps in the background
