@@ -3,14 +3,12 @@
 import os
 import sys
 import struct
+import psycopg2 as postgres
 
-import pyproj
 import Cone
 
-try:
-    import psycopg2 as postgres
-except ImportError:
-    import pgdb as postgres
+sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
+import geoconvert
 
 def get_db_cursor(*args, **kwargs):
     """
@@ -27,19 +25,19 @@ def get_place_times(map_id, tile, db, log, tmpwork):
         print >> log, 'cone pixels per km', Cone.pixels_per_kilometer(tile)
 
     ## convert bounds to british national grid
-    #xmin, ymin = gym2bng(xmin, ymin)
-    #xmax, ymax = gym2bng(xmax, ymax)
+    #xmin, ymin = geoconvert.gym2bng(xmin, ymin)
+    #xmax, ymax = geoconvert.gym2bng(xmax, ymax)
     
     # make it true
     xmin, xmax = min(xmin, xmax), max(xmin, xmax)
     ymin, ymax = min(ymin, ymax), max(ymin, ymax)
     
     # adjust by 2400 meters
-    xmin, ymin = gym2bng(xmin, ymin)
-    xmax, ymax = gym2bng(xmax, ymax)
+    xmin, ymin = geoconvert.gym2bng(xmin, ymin)
+    xmax, ymax = geoconvert.gym2bng(xmax, ymax)
     xmin, ymin, xmax, ymax = xmin - 2400, ymin - 2400, xmax + 2400, ymax + 2400
-    xmin, ymin = bng2gym(xmin, ymin)
-    xmax, ymax = bng2gym(xmax, ymax)
+    xmin, ymin = geoconvert.bng2gym(xmin, ymin)
+    xmax, ymax = geoconvert.bng2gym(xmax, ymax)
     
     # look at stations in database to find out which are on this tile
     capped_cull_zoom = max(tile.z, 9) # zoomed out culling is excessive and loses too much detail
@@ -47,8 +45,8 @@ def get_place_times(map_id, tile, db, log, tmpwork):
                   FROM station
                   WHERE 
                     minimum_zoom <= %s
-                    AND (position_merc && SetSRID(MakeBox2D(MakePoint(%s, %s), MakePoint(%s, %s)), 900913))""" \
-                % (capped_cull_zoom, xmin, ymin, xmax, ymax))
+                    AND (position_merc && SetSRID(MakeBox2D(MakePoint(%s, %s), MakePoint(%s, %s)), 900913))""",
+                (capped_cull_zoom, xmin, ymin, xmax, ymax))
     db_results = db.fetchall()
 
     # look up each of those stations in the binary distances .iso file made by isodaemon.py
@@ -68,6 +66,15 @@ def get_place_times(map_id, tile, db, log, tmpwork):
             place_times.append((x, y, secs ))
     isof.close()
 
+    # add in origin station if there is one, and it is in the set
+    db.execute("""SELECT target_e, target_n from map WHERE id = %s""", (map_id,))
+    row = db.fetchone()
+    if row[0]:
+        x, y = geoconvert.bng2gym(row[0], row[1])
+        # print >> log, "got origin station merc: x ", xmin, x, xmax, " y ", ymin, y, ymax, " grid: ", row[0], row[1]
+        if xmin < x < xmax and ymin < y < ymax:
+            place_times.append((x, y, 0))
+
 #    raise Exception(repr(place_times))
 
     if log:
@@ -75,16 +82,4 @@ def get_place_times(map_id, tile, db, log, tmpwork):
     
     return place_times
 
-BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
-GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=0.0, y_0=0, k=1.0, units='m', nadgrids=None, no_defs=True)
-
-def bng2gym(x, y):
-    """ Project from British National Grid to spherical mercator
-    """
-    return pyproj.transform(BNG, GYM, x, y)
-
-def gym2bng(x, y):
-    """ Project from spherical mercator to British National Grid
-    """
-    return pyproj.transform(GYM, BNG, x, y)
 

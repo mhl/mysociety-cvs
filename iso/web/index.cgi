@@ -6,14 +6,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.79 2009-05-05 10:07:48 matthew Exp $
+# $Id: index.cgi,v 1.80 2009-05-05 22:09:37 francis Exp $
 #
 
 import sys
 import os.path
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 import fcgi
-import pyproj
 import struct
 import re
 
@@ -24,6 +23,7 @@ mysociety.config.set_file("../conf/general")
 from mysociety.rabx import RABXException
 
 import coldb
+import geoconvert
 
 db = coldb.get_cursor()
 
@@ -97,7 +97,7 @@ class Map:
             self.target_station_id = None
 
         # Used for centring map
-        self.lat, self.lon = national_grid_to_wgs84(self.target_e, self.target_n)
+        self.lat, self.lon = geoconvert.national_grid_to_wgs84(self.target_e, self.target_n)
 
         # XXX These data are all fixed for now
         self.target_latest = default_target_latest
@@ -262,19 +262,6 @@ JOURNEY_WALK = -3
 LOCATION_NULL = -1
 LOCATION_TARGET = 0
 
-BNG = pyproj.Proj(proj='tmerc', lat_0=49, lon_0=-2, k=0.999601, x_0=400000, y_0=-100000, ellps='airy', towgs84='446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894', units='m', no_defs=True)
-WGS = pyproj.Proj(proj='latlong', towgs84="0,0,0", ellps="WGS84", no_defs=True)
-
-def national_grid_to_wgs84(x, y):
-    """Project from British National Grid to WGS-84 lat/lon"""
-    lon, lat = pyproj.transform(BNG, WGS, x, y)
-    return lat, lon
-
-def wgs84_to_national_grid(lat, lon):
-    """Project from WGS-84 lat/lon to British National Grid"""
-    x, y = pyproj.transform(WGS, BNG, lon, lat)
-    return x, y
-
 #####################################################################
 # Controllers
  
@@ -378,7 +365,7 @@ def log_email(fs, email):
 
 # Used when in Flash you click on somewhere to get the route
 def get_route(fs, lat, lon):
-    E, N = wgs84_to_national_grid(lat, lon)
+    E, N = geoconvert.wgs84_to_national_grid(lat, lon)
     (station, station_long, station_id) = nearest_station(E, N)
 
     # Look up time taken
