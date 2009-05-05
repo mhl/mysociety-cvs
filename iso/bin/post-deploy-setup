@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# For deploy on mySociety servers
+
+if [ ! -e "../tmpwork" ]
+then
+    PWD=`pwd`
+    if [ "$PWD" == "/data/vhost/col.mysociety.org/mysociety" ]
+    then
+        # use shared tmpwork directory
+        cd ..
+        ln -s /colwork/tmpwork .
+        cd mysociety
+    else
+        # make local tmpwork directory
+        mkdir ../tmpwork
+    fi
+fi
+
+# Make C++ binaries
+cd iso/bin
+make --quiet
+
+# Make config files for tilecache
+./generate-config
+
+
