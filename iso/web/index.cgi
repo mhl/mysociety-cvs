@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.78 2009-04-30 17:03:53 matthew Exp $
+# $Id: index.cgi,v 1.79 2009-05-05 10:07:48 matthew Exp $
 #
 
 import sys
@@ -345,7 +345,7 @@ def map(fs, email=''):
     if map.current_state == 'working':
         server, server_port = map.working_server.split(':')
         return Response('map-working', {
-            'approx_waiting_time': generation_time,
+            'approx_waiting_time': round(generation_time),
             'state' : map.state,
             'server': server,
             'server_port': server_port,
