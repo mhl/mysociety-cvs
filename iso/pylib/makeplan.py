@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.52 2009-03-17 16:43:19 francis Exp $
+# $Id: makeplan.py,v 1.53 2009-05-05 18:15:59 francis Exp $
 #
 
 '''Finds shortest route from all points on a public transport network to arrive
@@ -212,15 +212,15 @@ class PlanningATCO(mysociety.atcocif.ATCO):
     '''Loads and represents a set of ATCO-CIF files, and can generate large
     sets of quickest routes from them.'''
 
-    def __init__(self, train_interchange_default = 5, bus_interchange_default = 1):
+    def __init__(self, general_interchange_default = 5, bus_interchange_default = 1):
         '''Create object that generates shortest journey times for all stations
         in a public transport network defined by an ATCO-CIF timetable file.
 
-        train_interchange_default - time in minutes to allow by default to change trains at same station
+        general_interchange_default - time in minutes to allow by default to change trains etc. at one station
         bus_interchange_default - likewise for buses, at exact same stop
         '''
 
-        self.train_interchange_default = train_interchange_default
+        self.general_interchange_default = general_interchange_default
         self.bus_interchange_default = bus_interchange_default
         mysociety.atcocif.ATCO.__init__(self)
 
@@ -288,22 +288,55 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             logging.debug("_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)" % (location, location.additional.grid_reference_easting, location.additional.grid_reference_northing, dist, target_location, target_easting, target_northing))
             walk_time = self._walk_time_apart(dist)
             walk_departure_datetime = target_arrival_datetime - walk_time
-            arrive_time_place = ArrivePlaceTime(location.location, walk_departure_datetime, onwards_leg_type = 'walk', onwards_walk_time = walk_time)
+            arrive_place_time = ArrivePlaceTime(location.location, walk_departure_datetime, onwards_leg_type = 'walk', onwards_walk_time = walk_time)
             # Use this location if new, or if it is later departure time than any previous one the same we've found.
-            self._add_to_adjacents(arrive_time_place, adjacents)
+            self._add_to_adjacents(arrive_place_time, adjacents)
 
     # How long after a journey it takes to interchange to catch another form of
-    # transport at the destination stop.
-    def _interchange_time_after_journey(self, journey):
-        if journey.vehicle_type == 'TRAIN':
-            return self.train_interchange_default
-        else: # Bus, Air, Metro/Tram, Ferry/River Bus XXX
+    # transport at the given destination stop.
+    def _interchange_time_after_journey(self, journey, location):
+        # Work out type of next onwards journey
+        onwards_arrive_place_time = self._settled_routes[location][0]
+        onwards_leg_type = onwards_arrive_place_time.onwards_leg_type 
+
+        if onwards_leg_type == 'already_there':
+            # No interchange time at the end
+            assert location == self.final_destination
+            return 0
+        elif onwards_leg_type == 'walk':
+            # No interchange time if walking
+            return 0
+
+        # Look up before and after vehicle code types
+        assert onwards_leg_type == 'journey'
+        onwards_journey = onwards_arrive_place_time.onwards_journey
+        vehicle_code = journey.vehicle_code(self)
+        onwards_vehicle_code = onwards_journey.vehicle_code(self)
+
+        # Base interchange time on vehicle type
+        if vehicle_code == 'B' and onwards_vehicle_code == 'B':
             return self.bus_interchange_default
+        else:
+            return self.general_interchange_default
+
+    # Name of vehicle type for journey
     def _vehicle_type_name_for_journey(self, journey):
-        if journey.vehicle_type == 'TRAIN':
-            return 'train';
-        else: # Bus, Air, Metro/Tram, Ferry/River Bus XXX
-            return 'bus';
+        vehicle_code = journey.vehicle_code(self)
+
+        if vehicle_code == 'T':
+            return "train"
+        elif vehicle_code == 'B':
+            return "bus"
+        elif vehicle_code == 'C':
+            return "coach"
+        elif vehicle_code == 'M':
+            return "metro"
+        elif vehicle_code == 'A':
+            return "air"
+        elif vehicle_code == 'F':
+            return "ferry"
+        else:
+            raise Exception("Unknown vehicle code " + str(vehicle_code))
 
     def _adjacent_location_times_for_journey(self, target_location, target_arrival_datetime, adjacents, journey):
         '''Private function, called by adjacent_location_times. Finds every
@@ -329,10 +362,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         logging.debug("\t\tarrival times at target location: " + str(arrival_times_at_target_location))
 
         # Work out how long we need to allow to change at the stop
-        if target_location == self.final_destination:
-            interchange_time_in_minutes = 0
-        else:
-            interchange_time_in_minutes = self._interchange_time_after_journey(journey)
+        interchange_time_in_minutes = self._interchange_time_after_journey(journey, target_location)
         interchange_time = datetime.timedelta(minutes = interchange_time_in_minutes)
         
         # Pick the latest of the arrival times that's before the time we're
@@ -449,7 +479,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         # Set up initial state
         settled_in_order = []
         settled_set = set() # dictionary from location to datetime
-        settled_routes = {} # routes of settled journeys
+        self._settled_routes = {} # routes of settled journeys
         queue = pqueue.PQueue()
         queue.insert(Priority(target_datetime, target_location), target_location)
         routes = {}
@@ -474,7 +504,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
             # ... copy the route into settled_routes, so we only return routes
             # we know we finished (rather than the partial, best-so-far that is
             # in routes)
-            settled_routes[nearest_location] = routes[nearest_location]
+            self._settled_routes[nearest_location] = routes[nearest_location]
             logging.info("settled " + nearest_location + " " + str(nearest_datetime))
             
             # Add all of its neighbours to the queue
@@ -497,7 +527,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
                         routes[location] = [ arrive_place_time ] + routes[nearest_location] 
                         logging.debug("added " + location + " " + str(new_priority) + " to queue")
 
-        return (settled_in_order, settled_routes)
+        return (settled_in_order, self._settled_routes)
 
     def pretty_print_routes(self, results, routes):
         '''do_dijkstra returns a journey routes array, this prints it in a human readable format.'''
