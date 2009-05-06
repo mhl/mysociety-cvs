@@ -4,7 +4,7 @@ Custom TileCache module for rendering of heat grids based on GDAL VRT files.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: HeatGrids.py,v 1.4 2009-05-06 00:41:44 migurski Exp $
+$Id: HeatGrids.py,v 1.5 2009-05-06 23:58:45 migurski Exp $
 """
 import os
 import sys
@@ -79,7 +79,7 @@ class ScenicLayer(TileCache.Layer.MetaLayer):
             cell = numpy.fromstring(data, dtype=numpy.float32).reshape(rows, cols)
 
             # flip it, because GDAL gives it to us upside-down
-            image = arr2img(cell * 25)
+            image = arr2img(cell * 1)
             image = PIL.ImageOps.flip(image)
         
         os.unlink(filename)
