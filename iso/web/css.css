@@ -109,26 +109,30 @@ h1 a {
     margin: 24px;
     width: 337px; height: 78px;
     position: relative;
+    cursor: pointer;
 }
+
 h1 a span {
-    background: url("/i/title-small.png") 0 0 no-repeat;
+    background: url("/i/title-small-hover.png") 0 0 no-repeat;
+}
+
+h1 a:hover span {
+    background-position: 0 -78px;
 }
 
 #home h1 a {
     margin: 48px;
     width: 402px; height: 93px;
 }
+
 #home h1 a span {
     background: url("/i/title.png") 0 0 no-repeat;
-}
-
-h1 a:hover span {
-    background: url("/i/title-small-orange.png") 0 0 no-repeat;
 }
 
 p#subtitle {
     display: none;
 }
+
 #home p#subtitle {
     display: block;
     float: left;
