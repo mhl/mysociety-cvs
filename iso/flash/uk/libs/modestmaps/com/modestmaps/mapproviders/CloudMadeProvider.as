@@ -18,6 +18,8 @@ package com.modestmaps.mapproviders
 		/** use the constants above or see maps.cloudmade.com for more styles */
 		public var style:String;
 		
+		public var subdomains:Array = ['a.', 'b.', 'c.', ''];
+		
 		public function CloudMadeProvider(key:String, style:String='1')
 		{
 			super();
@@ -32,14 +34,14 @@ package com.modestmaps.mapproviders
 				return [];
 			}
 			coord = sourceCoordinate(coord);
-			var server:String = [ 'a.', 'b.', 'c.', '' ][int(coord.row + coord.column) % 4];
-			var url:String = 'http://' + server + 'col.mysociety.org/proxy.cgi?u=http://' + server + 'tile.cloudmade.com/' + [ key, style, tileWidth, coord.zoom, coord.column, coord.row ].join('/') + '.png'; 
+			var server:String = subdomains[int(worldSize * coord.row + coord.column) % 4];
+			var url:String = 'http://' + server + 'tile.cloudmade.com/' + [ key, style, tileWidth, coord.zoom, coord.column, coord.row ].join('/') + '.png'; 
 			return [ url ];
 		}
 		
 		override public function toString():String
 		{
-			return 'CLOUDMADE';
+			return 'CLOUDMADE:' + style;
 		}	
 	}
 }
