@@ -8,7 +8,6 @@
 
 # Todo: 
 # Get CloudMade tiles
-# Improve range of random tile get
 
 import sys
 import optparse
@@ -20,6 +19,7 @@ import datetime
 import time
 import re
 import imghdr
+import traceback
 
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 
@@ -152,7 +152,7 @@ def do_map_session():
         img_type = imghdr.what(None, h=iso_tile)
         if img_type != 'png':
             raise Exception("iso tile not PNG: " + iso_tile)
-        log("successfully got iso tile " + str(tile_number))
+        log("successfully got iso tile " + str(tile_number + 1) + " of " + str(options.tiles_in_session))
 
         # Get CloudMade tile - reenable this when it is faster
         #cm_tile = get_url(cloudmade_tile_url_base + random_tile_postfix)
@@ -171,5 +171,12 @@ for fork_count in range(0, options.instances - 1):
 
 # Run lots of "map sessions"
 while True:
-    do_map_session()
+    try:
+        do_map_session()
+    except (SystemExit, KeyboardInterrupt):
+        traceback.print_exc()
+        break
+    except:
+        traceback.print_exc()
+        time.sleep(1)
 
