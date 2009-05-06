@@ -132,7 +132,10 @@ def do_map_session():
         page = get_url("/?pc=" + str(postcode))
         if "Showing public transport travel options" in page:
             break
-        check_content(page, "automatically refresh")
+        if "Please provide your email address" in page:
+            log("OVERLOADED - server is asking for email address")
+        else:
+            check_content(page, "automatically refresh")
         log("waiting for route finder")
         time.sleep(2) # HTML refresh number from index.cgi
 
@@ -167,7 +170,7 @@ def do_map_session():
 
 # Make multiple instances
 for fork_count in range(0, options.instances - 1):
-    log("forking time " + str(fork_count))
+    log("forking time " + str(fork_count + 1))
     pid = os.fork()
     if pid == 0:
         # child
