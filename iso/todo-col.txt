@@ -2,22 +2,23 @@ Contours of life TODO
 =====================
 
 Code to take email if isodaemon or tile server load to high
+    Find out why load tester script isn't erroring from tileserver timeouts
+    Try reducing number of isodaemon instances on stilton by 4 or 8 to see if that makes overall performance better
     Failover for tileserver too busy (1 day)
+    Finish email-finished-maps:
 
 Stamen's design things
 
 Locking knackered now not on stations
 
 CloudMade tiles onto CDN or similar
-Make cache of tiles use tmpwork
-
-Pregrab all UK tiles from cloudmade for correct sort
+    Pregrab all UK tiles from cloudmade for correct sort
 
 
 Permalinks - put the current map pan/zoom and slider values in # URL
 
 
-Improve HTML titles
+Improve HTML <title>s
 
 Make populate-all more idempotent and awesome, and let you preload and then
 move into a live site and stuff.
@@ -31,18 +32,7 @@ UI for choose different times of day
 
 Check data quality more
 
-Try optimisations
-    - try Flash renderer
-    - refresh rate with AJAX? (and/or with LISTEN/NOTIFY in PostgreSQL if psycopg2 supports it)
-    - do obvious planner improvements
-    - tileserver precache station coordinates 
-    - tileserver rewrite in C
-
 Work more on culling algorithm
-
-Put interchange times and walking speeds in as parameters
-- Prevent chained walks, instead increase walk times?
-- separate walk time for middle and end
 
 Thank the original people who told us about existence of NPTDR
 
@@ -60,14 +50,20 @@ Worry about the places we've stripped because they don't have a location
 field in ATCO-CIF. Should we be loading their coordinates from NaPTAN?
 Francis has file nptdr-missing-grid-2008.txt of the places
 
-Interchange times
-- find proper ones to use for TRAIN and BUS
-- possibly load QV records if needed to discriminate times
-- need another longer time for QVNAIR/12? (should we be including air at all?)
-- measures according to type of journey before, not pair of before/after
+Put interchange times and walking speeds in as parameters
+- Prevent chained walks, instead increase walk times?
+- separate walk time for middle and end
+
 
 Optimisation ideas
 ------------------
+
+Try optimisations
+    - try Flash renderer
+    - refresh rate with AJAX? (and/or with LISTEN/NOTIFY in PostgreSQL if psycopg2 supports it)
+    - do obvious planner improvements
+    - tileserver precache station coordinates 
+    - tileserver rewrite in C
 
 Use binary search to find latest time in a journey before a time
 Sort the journeys at a location by time and binary slice them 
