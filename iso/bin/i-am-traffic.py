@@ -35,12 +35,16 @@ parser.set_usage('''
 ./opt-parse.py [OPTIONS]
 ''')
 
-parser.add_option('--top-level-url', type='string', dest="top_level_url", help='Without the terminating slash, please.', default='http://col.cat')
+parser.add_option('--top-level-url', type='string', dest="top_level_url", help='Defaults to value from conf/general', default=mysociety.config.get('BASE_URL'))
 parser.add_option('--inter-request-wait', type='float', dest="inter_request_wait", help='Within one web session, how long in seconds to wait between requests to spread them out a bit.', default=0.1)
 parser.add_option('--tiles-in-session', type='int', dest="tiles_in_session", help='Number of tiles a user gets in one web session.', default=40)
 parser.add_option('--instances', type='int', dest="instances", help='Number of processes to fork into', default=1)
 
 (options, args) = parser.parse_args()
+
+# Remove trailing slash if there is one
+if options.top_level_url[-1] == '/':
+    options.top_level_url = options.top_level_url[0:-1]
 
 #######################################################################################
 # Helper functions
