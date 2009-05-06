@@ -70,13 +70,14 @@ fieldset div.checkbox {
 }
 
 #home #header {
-    height: 256px;
+    height: 256px; /* Larger heading on front page */
 }
 
 #header a:link, #header a:visited {
     color: #ffffff;
 }
 
+/* Image replacement - 100% span used for opaque, text-indent for transparent */
 #header span {
     position: absolute;
     width: 100%;
@@ -117,7 +118,8 @@ h1 a span {
 }
 
 h1 a:hover span {
-    background-position: 0 -78px;
+    /* Doesn't appear to work in IE6 without switching windows and back! */
+    background: url("/i/title-small-hover.png") 0 -78px no-repeat;
 }
 
 #home h1 a {
@@ -130,11 +132,11 @@ h1 a:hover span {
 }
 
 p#subtitle {
-    display: none;
+    display: none; /* Only want subtitle on front page */
 }
 
 #home p#subtitle {
-    display: block;
+    display: inline; /* inline rather than block to work around IE6 double left margin bug */
     float: left;
     clear: left;
     margin: 0 0 0 48px;
