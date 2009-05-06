@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.80 2009-05-05 22:09:37 francis Exp $
+# $Id: index.cgi,v 1.81 2009-05-06 12:37:09 matthew Exp $
 #
 
 import sys
@@ -445,7 +445,7 @@ def main(fs):
         return log_email(fs, fs.getfirst('email'))
     elif got_map_spec:
         return map(fs)
-    return Response('index')
+    return Response('index', id='home')
 
 # Main FastCGI loop
 while fcgi.isFCGI():

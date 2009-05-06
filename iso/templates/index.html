@@ -1,5 +1,7 @@
 {{ error|safe }}
 
+<div id="main-column">
+
 <p><img id="front-example" src="/example.png" alt="To arrive at Birmingham Art Gallery by 9am, and leave at 8:15am, you can start from many different locations, from Halesowen to Solihull. ">
 Have you ever wondered where you should house hunt to get an
 acceptable commute? Or job hunt? Or where you could go for the weekend
@@ -8,7 +10,7 @@ box, and we&rsquo;ll help.</p>
 
 <form method="get" action="/" id="pc-front">
 <label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</label>
-<input type="text" name="pc" value="{{ postcode }}" size="8" id="pc_f">
+<input type="text" name="pc" value="{{ postcode }}" size="6" id="pc_f">
 <input type="submit" value="Go">
 </form>
 
@@ -19,14 +21,11 @@ double checked these results with the real transport authority, it ain&rsquo;t
 our fault.</em>
 </p>
 
-<!--
-<p>Examples:</p>
-<ul>
-<li><a href="/?pc=OX13DR">OX1 3DR</a>
-<li><a href="/?pc=OX42HB">OX42HB</a>
-<li><a href="/?pc=OX141AQ">OX141AQ</a>
-<li><a href="/?pc=OX262XL">OX262XL</a>
-<li><a href="/?pc=OX201LL">OX201LL</a>
-</ul>
--->
+</div>
 
+<div id="side-column">
+<p>Mapumental is a project of Channel 4 and mySociety,
+<i>other metadata here</i>.
+<a href="/help">Read more about the project</a>,
+or <a href="/contact">get in touch</a>.</p>
+</div>
