@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: contact.cgi,v 1.6 2009-04-01 15:57:00 matthew Exp $
+# $Id: contact.cgi,v 1.7 2009-05-06 19:30:21 matthew Exp $
 #
 
 import re
@@ -71,6 +71,7 @@ def contact_submit(fs):
 
 def contact_page(fs, errors = ''):
     return Response('contact', {
+        'title': 'Contact the team',
         'errors': errors,
         'name': fs.getfirst('name', ''),
         'email': fs.getfirst('em', ''),

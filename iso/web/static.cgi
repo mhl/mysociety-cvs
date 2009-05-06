@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: static.cgi,v 1.4 2009-04-01 14:14:06 matthew Exp $
+# $Id: static.cgi,v 1.5 2009-05-06 19:30:21 matthew Exp $
 #
 
 import sys
@@ -17,7 +17,7 @@ from page import *
 def main(fs):
     page = fs.getfirst('page')
     if page == 'faq':
-        return Response('faq')
+        return Response('faq', { 'title': 'Help' })
     return Response(status=302, url='/')
 
 # Main FastCGI loop

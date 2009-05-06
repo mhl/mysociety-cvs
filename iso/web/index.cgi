@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.83 2009-05-06 18:44:13 francis Exp $
+# $Id: index.cgi,v 1.84 2009-05-06 19:30:21 matthew Exp $
 #
 
 import sys
@@ -78,8 +78,8 @@ class Map:
 
         if 'station_id' in fs:
             # target is specific station
-            text_id = sanitise_station_id(fs.getfirst('station_id'))
-            db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s ''' + for_update, (text_id,))
+            self.text_id = sanitise_station_id(fs.getfirst('station_id'))
+            db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s ''' + for_update, (self.text_id,))
             row = db.fetchone()
             self.target_station_id, self.target_e, self.target_n = row
             self.target_postcode = None
@@ -153,6 +153,15 @@ class Map:
         self.concurrent_map_makers = self.state['working']
         if self.concurrent_map_makers < 1:
             self.concurrent_map_makers = 1
+
+    def title(self):
+        # XXX Currently just location, needs to include arrival time etc.
+        if self.target_station_id:
+            return self.text_id
+        elif self.target_postcode:
+            return self.target_postcode
+        else:
+            return '%d,%d' % (self.target_e, self.target_n)
 
     # Merges hashes for URL into dict and return
     def add_url_params(self, d):
@@ -308,6 +317,7 @@ def map(fs, email=''):
             return Response('map-noiso', { 'map_id' : map.id }, id='map-noiso')
         # Let's show the map
         return Response('map', {
+            'title': map.title(),
             'centre_lat': map.lat,
             'centre_lon': map.lon,
             'tile_id': map.id,
@@ -323,6 +333,7 @@ def map(fs, email=''):
     # ... if too long, ask for email
     if map.current_state in ('new', 'working') and approx_waiting_time > 60:
         return Response('map-provideemail', map.add_url_params({
+            'title': 'Please provide your email - %s' % map.title(),
             'state': map.state,
             'approx_waiting_time': int(approx_waiting_time),
             'email': email,
@@ -336,6 +347,7 @@ def map(fs, email=''):
     if map.current_state == 'working':
         server, server_port = map.working_server.split(':')
         return Response('map-working', {
+            'title': 'Working - %s' % map.title(),
             'approx_waiting_time': round(generation_time),
             'state' : map.state,
             'server': server,
@@ -345,6 +357,7 @@ def map(fs, email=''):
         return Response('map-error', { 'map_id' : map.id }, id='map-wait')
     elif map.current_state == 'new':
         return Response('map-pleasewait', {
+            'title': 'Please wait - %s' % map.title(),
             'approx_waiting_time': int(approx_waiting_time),
             'state' : map.state,
         }, refresh=2, id='map-wait')

@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.9 2009-04-28 14:22:23 matthew Exp $
+# $Id: page.py,v 1.10 2009-05-06 19:30:20 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -40,6 +40,7 @@ def fcgi_loop(main):
             'postcode': fs.getfirst('pc', ''),
             'refresh': response.refresh and '<meta http-equiv="refresh" content="%d">' % response.refresh or '',
             'body_id': response.id and ' id="%s"' % response.id or '',
+            'title': 'title' in response.vars and '%s - ' % response.vars['title'] or '',
         })
         req.out.write(header + str(response) + footer)
     else:
