@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.5
 #
 # index.cgi:
 # Main code
@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.81 2009-05-06 12:37:09 matthew Exp $
+# $Id: index.cgi,v 1.82 2009-05-06 16:09:14 francis Exp $
 #
 
 import sys
