@@ -7,16 +7,13 @@
 #
 
 # Todo: 
-# Check what happens on error cases
-# Get CSS files
 # Get CloudMade tiles
 # Improve range of random tile get
-# Check tile got is PNG
 
 import sys
 import optparse
 import random
-import urllib
+import urllib2
 import socket
 import os
 import datetime
@@ -30,6 +27,7 @@ import mysociety.config
 import mysociety.mapit
 mysociety.config.set_file("../conf/general")
 
+import geoconvert
 
 parser = optparse.OptionParser()
 
@@ -76,10 +74,18 @@ def get_random_gb_postcode():
         if 'NIA' not in areas_in_postcode:
             return postcode
 
-# Return end part of tile URL, randomly from country
+# Return end part of tile URL, randomly from different zoom levels, tiles
+# near to the specified lat/lon
 # XXX should get differing zoom levels, and get tiles near destination point ideally
-def get_random_tile_url_part():
-    return "/11/" + str(random.randint(700, 1300)) + "/" + str(random.randint(300, 700)) + ".png"
+def get_random_tile_url_part(lat, lon):
+    zoom = random.randint(8, 14)
+    (xtile, ytile) = geoconvert.wgs84_to_tile(lat, lon, zoom)
+    (xtile, ytile) = (int(xtile), int(ytile))
+
+    xtile += random.randint(-2, 2)
+    ytile += random.randint(-2, 2)
+
+    return "/" + str(zoom) + "/" + str(xtile) + "/" + str(ytile) + ".png"
 
 # Primitive WWW::Mechanize type functions
 def get_url(path):
@@ -89,7 +95,13 @@ def get_url(path):
         full_path = options.top_level_url + path
     else:
         full_path = path
-    return urllib.urlopen(full_path).read()
+    try:
+        return urllib2.urlopen(full_path).read()
+    except urllib2.HTTPError, e:
+        print "URL: ", e.geturl()
+        print "Headers: ", e.info()
+        print e.read()
+        raise e
 def check_content(content, text):
     if text not in content:
         raise Exception("Could not find " + text + " in: " + content)
@@ -105,6 +117,8 @@ def re_check_content(content, regexp):
 def do_map_session():
     postcode = get_random_gb_postcode()
     log("new web session with postcode " + postcode)
+    loc = mysociety.mapit.get_location(postcode)
+    lat, lon = (loc['wgs84_lat'], loc['wgs84_lon'])
 
     front_page = get_url("/")
     check_content(front_page, "postcode:")
@@ -112,7 +126,7 @@ def do_map_session():
     page = None
     while True:
         page = get_url("/?pc=" + str(postcode))
-        if "Your map will load below" in page:
+        if "Showing public transport travel options" in page:
             break
         check_content(page, "automatically refresh")
         log("waiting for route finder")
@@ -120,17 +134,32 @@ def do_map_session():
 
     iso_tile_url_base = re_check_content(page, """'iso_tile_url_base':\s*'(.*)'""")[0]
     cloudmade_api_key = re_check_content(page, """'cloudmade_api_key':\s*'(.*)'""")[0]
+    cloudmade_tile_url_base = "/proxy.cgi?u=http://tile.cloudmade.com/" + cloudmade_api_key + "/998/256"
     log("got map iso_tile_url_base: " + iso_tile_url_base + " cloudmade_api_key: " + cloudmade_api_key)
 
     get_url("/UKTransitTime.swf")
+    get_url("/js/swfobject.js")
+    get_url("/js/jquery-1.3.2.min.js")
+    get_url("/i/header-map.png")
+    get_url("/i/logo-c4-small.png")
+    get_url("/i/title-small-hover.png")
+    get_url("/css.css")
     
     for tile_number in range(0, options.tiles_in_session):
-        random_tile_postfix = get_random_tile_url_part()
-        tile = get_url(iso_tile_url_base + random_tile_postfix)
-        img_type = imghdr.what(None, h=tile)
+        random_tile_postfix = get_random_tile_url_part(lat, lon)
+
+        iso_tile = get_url(iso_tile_url_base + random_tile_postfix)
+        img_type = imghdr.what(None, h=iso_tile)
         if img_type != 'png':
-            raise Exception("Not PNG file: " + tile)
-        log("successfully got tile " + str(tile_number))
+            raise Exception("iso tile not PNG: " + iso_tile)
+        log("successfully got iso tile " + str(tile_number))
+
+        # Get CloudMade tile - reenable this when it is faster
+        #cm_tile = get_url(cloudmade_tile_url_base + random_tile_postfix)
+        #img_type = imghdr.what(None, h=cm_tile)
+        #if img_type != 'png':
+        #    raise Exception("CloudMade file not PNG: " + cm_tile)
+        #log("successfully got cloudmade tile " + str(tile_number))
 
 # Make multiple instances
 for fork_count in range(0, options.instances - 1):

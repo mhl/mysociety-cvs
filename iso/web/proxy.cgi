@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.9 2009-05-05 23:00:07 francis Exp $
+# $Id: proxy.cgi,v 1.10 2009-05-06 17:25:28 francis Exp $
 #
 
 import sys, os.path, os, re, urllib
@@ -14,8 +14,11 @@ sys.path.extend(("../pylib", "../../pylib"))
 import fcgi
 from page import *
 
+import mysociety.config
+mysociety.config.set_file("../conf/general")
+
 def main(fs):
-    dir = '/colwork/tilecache-cloudmade'
+    dir = mysociety.config.get('CLOUDMADE_PROXY_CACHE_DIR', '/colwork/tilecache-cloudmade')
     url = fs.getfirst('u', '')
     m = re.match('http://(.\.)?tile\.cloudmade\.com/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*\.png$', url)
     if not url or not m:
