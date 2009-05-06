@@ -65,29 +65,37 @@ fieldset div.checkbox {
 #header {
     overflow: auto;
     color: #ffffff;
-    background: url("/i/header-map.png") 0 0 no-repeat;
+    background: #051736 url("/i/header-map.png") no-repeat 0 0;
     height: 128px;
-}
-
-#header span {
-    display: none;
 }
 
 #home #header {
     height: 256px;
 }
 
+#header a:link, #header a:visited {
+    color: #ffffff;
+}
+
+#header span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
 #c4logo {
-    margin: 24px;
     float: right;
-    background: url("/i/logo-c4-small.png") 0 0 no-repeat;
+    margin: 24px;
     width: 60px; height: 80px;
+    text-indent: -1000em;
+    overflow: hidden;
+    background: url("/i/logo-c4-small.png") 0 0 no-repeat;
 }
 
 #home #c4logo {
     margin: 48px;
-    background: url("/i/logo-c4.png") 0 0 no-repeat;
     width: 120px; height: 160px;
+    background: url("/i/logo-c4.png") 0 0 no-repeat;
 }
 
 h1 {
@@ -99,27 +107,38 @@ h1 a {
     text-decoration: none;
     float: left;
     margin: 24px;
-    background: url("/i/title-small.png") 0 0 no-repeat;
     width: 337px; height: 78px;
+    position: relative;
+}
+h1 a span {
+    background: url("/i/title-small.png") 0 0 no-repeat;
 }
 
 #home h1 a {
     margin: 48px;
-    background: url("/i/title.png") 0 0 no-repeat;
     width: 402px; height: 93px;
 }
+#home h1 a span {
+    background: url("/i/title.png") 0 0 no-repeat;
+}
 
-h1 a:hover {
+h1 a:hover span {
     background: url("/i/title-small-orange.png") 0 0 no-repeat;
 }
 
+p#subtitle {
+    display: none;
+}
 #home p#subtitle {
+    display: block;
     float: left;
     clear: left;
     margin: 0 0 0 48px;
-    background: url("/i/subtitle.png") 0 0 no-repeat;
     width: 265px; height: 40px;
-
+    position: relative;
+}
+#home p#subtitle span {
+    background: url("/i/subtitle.png") 0 0 no-repeat;
 }
 
 #content {
