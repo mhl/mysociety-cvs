@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.82 2009-05-06 16:09:14 francis Exp $
+# $Id: index.cgi,v 1.83 2009-05-06 18:44:13 francis Exp $
 #
 
 import sys
@@ -149,6 +149,10 @@ class Map:
             self.maps_to_be_made = self.state['ahead'] + self.state['working']
         else:
             self.maps_to_be_made = self.state['new'] + self.state['working'] + 1
+
+        self.concurrent_map_makers = self.state['working']
+        if self.concurrent_map_makers < 1:
+            self.concurrent_map_makers = 1
 
     # Merges hashes for URL into dict and return
     def add_url_params(self, d):
@@ -315,7 +319,7 @@ def map(fs, email=''):
     # See how long it will take to make it
     map.get_progress_info()
     generation_time = map.current_generation_time()
-    approx_waiting_time = map.maps_to_be_made * generation_time
+    approx_waiting_time = map.maps_to_be_made * generation_time / float(map.concurrent_map_makers)
     # ... if too long, ask for email
     if map.current_state in ('new', 'working') and approx_waiting_time > 60:
         return Response('map-provideemail', map.add_url_params({
