@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.84 2009-05-06 19:30:21 matthew Exp $
+# $Id: index.cgi,v 1.85 2009-05-07 15:25:11 francis Exp $
 #
 
 import sys
@@ -128,10 +128,16 @@ class Map:
             (self.id, self.current_state, self.working_server) = row
 
     def current_generation_time(self):
-        db.execute('''SELECT AVG(working_took) FROM map WHERE
-            working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval AND
-            target_latest = %s AND target_earliest = %s 
-            AND target_date = %s''', 
+        # Take average time for maps with the same times, taken from the last
+        # day, or last 50 at most.
+        # XXX will need to make times ranges if we let people enter any time in UI
+        db.execute('''SELECT AVG(working_took) FROM 
+            ( SELECT working_took FROM map WHERE
+                target_latest = %s AND target_earliest = %s AND target_date = %s AND
+                working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval 
+                ORDER BY working_start DESC LIMIT 50
+            ) AS working_took
+            ''', 
             (self.target_latest, self.target_earliest, self.target_date))
         avg_time, = db.fetchone()
         return avg_time or 10
