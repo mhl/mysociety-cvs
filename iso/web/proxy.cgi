@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.10 2009-05-06 17:25:28 francis Exp $
+# $Id: proxy.cgi,v 1.11 2009-05-07 18:51:00 matthew Exp $
 #
 
 import sys, os.path, os, re, urllib
@@ -18,12 +18,20 @@ import mysociety.config
 mysociety.config.set_file("../conf/general")
 
 def main(fs):
-    dir = mysociety.config.get('CLOUDMADE_PROXY_CACHE_DIR', '/colwork/tilecache-cloudmade')
+    dir = mysociety.config.get('CLOUDMADE_PROXY_CACHE_DIR', '/colwork/cloudmade-tiles')
     url = fs.getfirst('u', '')
-    m = re.match('http://(.\.)?tile\.cloudmade\.com/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*\.png$', url)
-    if not url or not m:
+    if url:
+        m = re.match('http://(.\.)?tile\.cloudmade\.com/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*/[^/]*\.png$', url)
+        if not m:
+            return Response(status=302, url='/')
+        zoom, x, y = url.split('/')[-3:]
+    else:
+        zoom = fs.getfirst('z', 0)
+        x = fs.getfirst('x', 0)
+        y = fs.getfirst('y', 0)
+        url = 'http://tile.cloudmade.com/f42ed2bf2ce15484a17cef7fe5e6df0f/997/256/%s/%s/%s.png' % (zoom, x, y)
+    if not zoom or not x or not y:
         return Response(status=302, url='/')
-    zoom, x, y = url.split('/')[-3:]
     cache_dir = os.path.join(dir, zoom, x)
     cache_path = os.path.join(cache_dir, y)
     if os.path.exists(cache_path):
