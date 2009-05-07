@@ -20,6 +20,7 @@ import time
 import re
 import imghdr
 import traceback
+import threading
 
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 
@@ -38,7 +39,8 @@ parser.set_usage('''
 parser.add_option('--top-level-url', type='string', dest="top_level_url", help='Defaults to value from conf/general', default=mysociety.config.get('BASE_URL'))
 parser.add_option('--inter-request-wait', type='float', dest="inter_request_wait", help='Within one web session, how long in seconds to wait between requests to spread them out a bit.', default=0.1)
 parser.add_option('--tiles-in-session', type='int', dest="tiles_in_session", help='Number of tiles a user gets in one web session.', default=40)
-parser.add_option('--instances', type='int', dest="instances", help='Number of processes to fork into', default=1)
+parser.add_option('--instances', type='int', dest="instances", help='Number of concurrent threads', default=1)
+parser.add_option('--single-postcode', dest='single_postcode', default=None, help="Always uses the same postcode, rather than a random one. Use for load testing with cachin.")
 
 (options, args) = parser.parse_args()
 
@@ -49,12 +51,9 @@ if options.top_level_url[-1] == '/':
 #######################################################################################
 # Helper functions
 
-def server_and_pid():
-    return socket.gethostname() + ":" + str(os.getpid())
-
 # Used at the start of each logfile line
 def stamp():
-    return server_and_pid() + " " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return threading.currentThread().getName() + " " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # Write something to logfile
 def log(str):
@@ -64,6 +63,13 @@ def log(str):
 def verbose(str):
     print stamp(), str
     sys.stdout.flush()
+
+# Display time taken
+def format_timedelta(td):
+    assert td.days == 0
+    return "%d.%06d" % (td.seconds, td.microseconds)
+def timedelta_in_secs(td):
+    return float(td.days) * (24 * 60 * 60) + float(td.seconds) + (float(td.microseconds) / 1000000)
 
 # Get a random postcode - we go via getting a random westminster constituency.
 WMC_areas = mysociety.mapit.get_areas_by_type('WMC')
@@ -119,7 +125,10 @@ def re_check_content(content, regexp):
 # Main code to simulate map session
 
 def do_map_session():
-    postcode = get_random_gb_postcode()
+    if options.single_postcode:
+        postcode = options.single_postcode
+    else:
+        postcode = get_random_gb_postcode()
     log("new web session with postcode " + postcode)
     loc = mysociety.mapit.get_location(postcode)
     lat, lon = (loc['wgs84_lat'], loc['wgs84_lon'])
@@ -168,22 +177,54 @@ def do_map_session():
         #    raise Exception("CloudMade file not PNG: " + cm_tile)
         #log("successfully got cloudmade tile " + str(tile_number))
 
-# Make multiple instances
-for fork_count in range(0, options.instances - 1):
-    log("forking time " + str(fork_count + 1))
-    pid = os.fork()
-    if pid == 0:
-        # child
-        break
-
 # Run lots of "map sessions"
+sessions_completed = 0
+sessions_completed_time_taken = datetime.timedelta()
+sessions_error = 0
+def multiple_map_sessions():
+    global sessions_completed, sessions_completed_time_taken, sessions_error
+
+    while True:
+        start_time = datetime.datetime.now()
+        try:
+            do_map_session()
+        except (SystemExit, KeyboardInterrupt):
+            traceback.print_exc()
+            thread.interrupt_main()
+        except:
+            sessions_error += 1
+            traceback.print_exc()
+            time.sleep(1)
+            continue
+        finish_time = datetime.datetime.now()
+        time_taken = finish_time - start_time
+        sessions_completed += 1
+        sessions_completed_time_taken += time_taken
+        log("Map session took: " + format_timedelta(time_taken) + " secs")
+
+# Make multiple instances
+threads = []
+for thread_count in range(0, options.instances):
+    t = threading.Thread(target=multiple_map_sessions, name="traffic-" + str(thread_count + 1))
+    log("threading out " + str(thread_count + 1))
+    t.start()
+    threads.append(t)
+
+# Parent
 while True:
     try:
-        do_map_session()
+        number_of_workers = threading.activeCount() - 1
+        assert number_of_workers == len(threads)
+        log("%d worker threads, %d sessions completed, %d sessions error" % (number_of_workers, sessions_completed, sessions_error))
+        if sessions_completed > 0:
+            wall_time_per_session = timedelta_in_secs(sessions_completed_time_taken) / sessions_completed
+            overall_session_time = wall_time_per_session / float(number_of_workers)
+            log(str(round(wall_time_per_session,3)) + " secs/session, " + str(round(overall_session_time,3)) + " secs/concurrent session")
+        time.sleep(5)
     except (SystemExit, KeyboardInterrupt):
         traceback.print_exc()
-        break
-    except:
-        traceback.print_exc()
-        time.sleep(1)
+        # easiest way to kill all threads on abort
+        sys.exit()
+            
+
 
