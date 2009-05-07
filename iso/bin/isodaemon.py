@@ -23,6 +23,7 @@ import datetime
 import traceback
 import socket
 import signal
+import psycopg2
 
 os.chdir(sys.path[0])
 sys.path.append("../../pylib")
