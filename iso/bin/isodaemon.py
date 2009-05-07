@@ -173,6 +173,7 @@ def check_for_new_maps_to_make(p, db):
         return
 
     # recording in the database that we are working on this
+    log("working on map " + str(id))
     db.execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
             dict(id=id, server=server_and_pid()))
     db.execute("commit")
@@ -188,10 +189,12 @@ def check_for_new_maps_to_make(p, db):
             do_binplan(p, outfile, target_latest, target_earliest, target_station_text_id, target_e, target_n)
 
         # mark that we've done
+        log("completed map " + str(id))
         db.execute("update map set state = 'complete', working_took = %(took)s where id = %(id)s", dict(id=id, took=route_finding_time_taken))
         db.execute("commit")
     except (SystemExit, KeyboardInterrupt, AbortIsoException):
         # daemon was explicitly stopped, don't mark map as error
+        log("explicit stop received for map " + str(id) + ", reverting from 'working' to 'new'")
         db.execute("rollback")
         db.execute("begin")
         db.execute("update map set state = 'new' where id = %(id)s", dict(id=id))
@@ -200,6 +203,7 @@ def check_for_new_maps_to_make(p, db):
     except:
         # record there was an error, so we can find out easily
         # if the recording error doesn't work, then presumably it was a database error
+        log("error received for map " + str(id) + ", reverting from 'working' to 'error'")
         db.execute("rollback")
         db.execute("begin")
         db.execute("update map set state = 'error' where id = %(id)s", dict(id=id))
