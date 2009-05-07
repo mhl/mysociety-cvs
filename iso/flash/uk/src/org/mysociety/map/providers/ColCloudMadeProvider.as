@@ -1,15 +1,16 @@
 package org.mysociety.map.providers
 {
 	import com.modestmaps.core.Coordinate;
+	import com.modestmaps.mapproviders.OpenStreetMapProvider;
 	
 	public class ColCloudMadeProvider extends OpenStreetMapProvider
-    {
-        public var subdomains:Array = ['a.', 'b.', 'c.', ''];
+	{
+		public var subdomains:Array = ['a.', 'b.', 'c.', ''];
 
-        public function ColCloudMadeProvider()
-        {
-            super();
-        }
+		public function ColCloudMadeProvider()
+		{
+			super();
+		}
 
 		override public function getTileUrls(coord:Coordinate):Array
 		{
@@ -23,9 +24,9 @@ package org.mysociety.map.providers
 			return [ url ];
 		}
 
-        override public function toString():String
-        {
-            return 'MS-CLOUDMADE';
-        }
+		override public function toString():String
+		{
+			return 'MS-CLOUDMADE';
+		}
 	}
 }
