@@ -193,6 +193,7 @@ def multiple_map_sessions():
             thread.interrupt_main()
         except:
             sessions_error += 1
+            log("Error caught")
             traceback.print_exc()
             time.sleep(1)
             continue
