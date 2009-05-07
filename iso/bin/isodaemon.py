@@ -147,7 +147,7 @@ def check_for_new_maps_to_make(p, db):
                             state = 'new' order by created limit 1 offset %s for update nowait""" % offset)
             row = db.fetchone()
             break
-        except postgres.OperationalError:
+        except psycopg2.OperationalError:
             # if someone else has the item locked, i.e. they are working on it, then we
             # try and find a different one to work on
             db.execute("rollback")
