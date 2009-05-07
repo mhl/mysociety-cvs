@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: mike@stamen.com; WWW: http://www.mysociety.org/
 # 
-# $Id: tilecache.cfg-incvs,v 1.6 2009-05-06 00:41:44 migurski Exp $
+# $Id: tilecache.cfg-incvs,v 1.7 2009-05-07 01:02:38 migurski Exp $
 
 [cache]
 type=Disk
@@ -17,8 +17,8 @@ base=/tmp/tilecache
 # servers=192.168.1.1:11211
 
 [iso]
-module=Isochrones
-type=TileLayer
+module=Layers
+type=IsochronesLayer
 spherical_mercator=true
 tms_type=google
 metaTile=false
@@ -39,7 +39,7 @@ iso_tile_log=ISOTILELOG
 
 
 [scenic]
-module=HeatGrids
+module=Layers
 type=ScenicLayer
 spherical_mercator=true
 tms_type=google
@@ -49,7 +49,7 @@ datafile=scenicness.2009-04-29.vrt
 iso_tile_log=log.txt
 
 [housing]
-module=HeatGrids
+module=Layers
 type=HousingLayer
 spherical_mercator=true
 tms_type=google
