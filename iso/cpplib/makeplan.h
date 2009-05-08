@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.15 2009-05-05 18:16:08 francis Exp $
+// $Id: makeplan.h,v 1.16 2009-05-08 15:12:29 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -638,6 +638,11 @@ class PlanningATCO {
     */
     void _adjacent_location_times_for_journey(const LocationID target_location_id, const Minutes target_arrival_time, Adjacents& adjacents, const JourneyID journey_id) {
         const Journey& journey = this->journeys[journey_id];
+
+        // For now we don't use internal flights (because only Scotland is covered)
+        if (journey.vehicle_type == 'A') {
+            return;
+        }
 
         // All journeys run on the valid date; the check is done in the Python binary exporter.
 
