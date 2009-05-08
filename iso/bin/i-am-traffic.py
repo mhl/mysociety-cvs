@@ -6,9 +6,6 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-# Todo: 
-# Get CloudMade tiles
-
 import sys
 import optparse
 import random
@@ -177,11 +174,11 @@ def do_map_session():
         log("successfully got iso tile " + str(tile_number + 1) + " of " + str(options.tiles_in_session))
 
         # Get CloudMade tile - reenable this when it is faster
-        #cm_tile = get_url(cloudmade_tile_url_base + random_tile_postfix)
-        #img_type = imghdr.what(None, h=cm_tile)
-        #if img_type != 'png':
-        #    raise Exception("CloudMade file not PNG: " + cm_tile)
-        #log("successfully got cloudmade tile " + str(tile_number))
+        cm_tile = get_url(cloudmade_tile_url_base + random_tile_postfix)
+        img_type = imghdr.what(None, h=cm_tile)
+        if img_type != 'png':
+            raise Exception("CloudMade file not PNG: " + cm_tile)
+        log("successfully got cloudmade tile " + str(tile_number))
 
 # Run lots of "map sessions"
 sessions_completed = 0
