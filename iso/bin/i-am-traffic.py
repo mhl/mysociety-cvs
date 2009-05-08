@@ -156,9 +156,8 @@ def do_map_session():
         time.sleep(2) # HTML refresh number from index.cgi
 
     iso_tile_url_base = re_check_content(page, """'iso_tile_url_base':\s*'(.*)'""")[0]
-    cloudmade_api_key = re_check_content(page, """'cloudmade_api_key':\s*'(.*)'""")[0]
-    cloudmade_tile_url_base = "/proxy.cgi?u=http://tile.cloudmade.com/" + cloudmade_api_key + "/998/256"
-    log("map iso_tile_url_base: " + iso_tile_url_base + " cloudmade_api_key: " + cloudmade_api_key)
+    cloudmade_tile_url_base = "/cloudmade-tiles"
+    log("map iso_tile_url_base: " + iso_tile_url_base)
 
     get_url("/UKTransitTime.swf")
     get_url("/js/swfobject.js")
@@ -197,7 +196,7 @@ def multiple_map_sessions():
             do_map_session()
         except (SystemExit, KeyboardInterrupt):
             traceback.print_exc()
-            thread.interrupt_main()
+            sys.exit()
         except:
             sessions_error += 1
             log("Error caught")

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Run load testing with various numbers of workers
+
+OUT=/tmp/col-traffic-analyse-out
+rm -f $OUT
+
+for X in 1 2 4 8 16 32 64 128 256
+do
+    echo "workers: $X; tail $OUT for progress"
+    ./i-am-traffic.py --instances=$X --max-sessions-per-worker=5 >>$OUT
+done
+
+grep FINAL /tmp/$OUT
+
