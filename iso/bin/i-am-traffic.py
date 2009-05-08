@@ -33,14 +33,19 @@ import geoconvert
 parser = optparse.OptionParser()
 
 parser.set_usage('''
-./opt-parse.py [OPTIONS]
+./i-am-traffic.py [OPTIONS]
+
+Load tests isochrone public transport map generation website by simulating "map
+sessions". A "map session" consists of asking for a public transport map for a
+random postcode, waiting for it to be made, and downloading 40 isochrone tiles
+in the vicinity of the postcode at different zoom levels.
 ''')
 
-parser.add_option('--top-level-url', type='string', dest="top_level_url", help='Defaults to value from conf/general', default=mysociety.config.get('BASE_URL'))
-parser.add_option('--inter-request-wait', type='float', dest="inter_request_wait", help='Within one web session, how long in seconds to wait between requests to spread them out a bit.', default=0.1)
-parser.add_option('--tiles-in-session', type='int', dest="tiles_in_session", help='Number of tiles a user gets in one web session.', default=40)
-parser.add_option('--instances', type='int', dest="instances", help='Number of concurrent threads', default=1)
-parser.add_option('--single-postcode', dest='single_postcode', default=None, help="Always uses the same postcode, rather than a random one. Use for load testing with cachin.")
+parser.add_option('--top-level-url', type='string', dest="top_level_url", help='website to load tests; defaults to value of BASE_URL from conf/general which is %default', default=mysociety.config.get('BASE_URL'))
+parser.add_option('--inter-request-wait', type='float', dest="inter_request_wait", help='within one web session, how long in seconds to wait between requests to spread them out a bit; default %default', default=0.1)
+parser.add_option('--tiles-in-session', type='int', dest="tiles_in_session", help='number of tiles a user gets in one web session; default %default', default=40)
+parser.add_option('--instances', type='int', dest="instances", help='number of concurrent worker threads that are simulating "map sessions"; default %default', default=1)
+parser.add_option('--single-postcode', dest='single_postcode', default=None, help='uses the same postcode for each "map session", rather than the default of a random one each time; use for load testing of cached maps')
 
 (options, args) = parser.parse_args()
 
