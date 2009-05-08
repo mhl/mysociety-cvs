@@ -76,7 +76,9 @@ fastplan.cpp - C++ journey planner
 fastplan-coopt.cpp - coopeted C++ journey planner, for calling by isodaemon
 isodaemon.py - daemon to call C++ planner and make .iso route files
 
+post-deploy-setup - used when deploying the site
 generate-config - used when deploying the site
+make-logos.php - generate Mapumental logos
 test-run - test script for Contours of Life
 
 clear-generated-maps - erase maps entries in database and .iso route files
@@ -84,6 +86,9 @@ clear-tile-cache - clear tile server's cache of tiles
 
 populate-all - generate binary files for C++ journey planner, and put stations in database
 cull_stations.py - calculate render threshold for stations at different zoom levels
+
+i-am-traffic.py - load test Contours of Life
+traffic-analyse - run i-am-traffic.py with varying numbers of worker map sessions
 
 do-westmidlands-anim - on off to make an animation
 
