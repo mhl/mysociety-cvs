@@ -192,12 +192,12 @@ def multiple_map_sessions():
         try:
             do_map_session()
         except (SystemExit, KeyboardInterrupt):
-            traceback.print_exc()
+            log(traceback.format_exc())
             sys.exit()
         except:
             sessions_error += 1
             log("Error caught")
-            traceback.print_exc()
+            log(traceback.format_exc())
             time.sleep(1)
             continue
         finish_time = datetime.datetime.now()
@@ -239,7 +239,7 @@ while True:
         # Wait for workers to do stuff before displaying progress again
         time.sleep(5)
     except (SystemExit, KeyboardInterrupt):
-        traceback.print_exc()
+        log(traceback.format_exc())
         # Easiest way to kill all threads on abort
         sys.exit()
             
