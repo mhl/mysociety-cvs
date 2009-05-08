@@ -24,7 +24,7 @@ if __name__ == '__main__':
         print >> vrtfile, '    </OGRVRTLayer>'
         print >> vrtfile, '</OGRVRTDataSource>'
 
-        src = urllib.urlopen('http://scenic.mysociety.org/votes2009-04-29.tsv')
+        src = urllib.urlopen('http://scenic.mysociety.org/votes.tsv')
         input = csv.reader(src, dialect='excel-tab')
         output = csv.writer(csvfile)
         
