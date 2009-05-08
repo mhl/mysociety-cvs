@@ -83,6 +83,7 @@ test-run - test script for Contours of Life
 
 clear-generated-maps - erase maps entries in database and .iso route files
 clear-tile-cache - clear tile server's cache of tiles
+uk-bounds - Provide tile bounds for the UK at different zoom levels
 
 populate-all - generate binary files for C++ journey planner, and put stations in database
 cull_stations.py - calculate render threshold for stations at different zoom levels

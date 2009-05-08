@@ -1,0 +1,22 @@
+#!/usr/bin/python2.5
+#
+# Get the bounds of the UK in tile co-ordinates.
+#
+# Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+# Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
+#
+
+import sys
+sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
+import geoconvert
+
+lat_max = 60.85 # Out Stack, Shetland Islands
+lat_min = 49.85 # Western Rocks, Isles of Scilly
+lon_max = 1.762833 # Lowestoft Ness, Suffolk
+lon_min = -8.64 # Soay
+
+for zoom in range(7,16):
+    (xtileL, ytileL) = geoconvert.wgs84_to_tile(lat_max, lon_min, zoom)
+    (xtileR, ytileR) = geoconvert.wgs84_to_tile(lat_min, lon_max, zoom)
+    print '%d: %d-%d / %d-%d' % (zoom, int(xtileL), int(xtileR), int(ytileL), int(ytileR))
+
