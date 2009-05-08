@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.85 2009-05-07 15:25:11 francis Exp $
+# $Id: index.cgi,v 1.86 2009-05-08 15:55:51 matthew Exp $
 #
 
 import sys
@@ -15,6 +15,7 @@ sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 import fcgi
 import struct
 import re
+import psycopg2
 
 from page import *
 import mysociety.config
@@ -65,12 +66,7 @@ class Map:
     state = {}
 
     # Given URL parameters, look up parameters of map
-    def __init__(self, fs, for_update = False):
-        if for_update:
-            for_update = 'FOR UPDATE';
-        else:
-            for_update = ''
-
+    def __init__(self, fs):
         # Be sure to properly sanitise any inputs read from fs into this
         # function, so they don't have characters that might need escaping in
         # them. This will make URLs look nicer, and is also assumed by Map.url
@@ -79,7 +75,7 @@ class Map:
         if 'station_id' in fs:
             # target is specific station
             self.text_id = sanitise_station_id(fs.getfirst('station_id'))
-            db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s ''' + for_update, (self.text_id,))
+            db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (self.text_id,))
             row = db.fetchone()
             self.target_station_id, self.target_e, self.target_n = row
             self.target_postcode = None
@@ -215,14 +211,26 @@ class Map:
         return ret
 
     # Start off generation of map!
+    # Returns False if the insert failed due to an integrity error
+    # True otherwise
     def start_generation(self):
+        db.execute('BEGIN')
         db.execute("SELECT nextval('map_id_seq')")
         self.id = db.fetchone()[0]
-        db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+        try:
+            db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+        except psycopg2.IntegrityError, e:
+            # Let's assume the integrity error is because of a unique key
+            # violation - ie. an identical row has appeared in the milliseconds
+            # since we looked
+            self.id = None
+            db.execute('ROLLBACK')
+            return False
         db.execute('COMMIT')
         if 'new' in self.state:
             self.state['ahead'] = self.state['new']
             self.state['new'] += 1
+        return True
 
     def target_latest_formatted(self):
         return format_time(self.target_latest)
@@ -312,25 +320,27 @@ def check_postcode(pc):
 
     return Response(status=302, url='/postcode/%s' % (pc))
 
+def map_complete(map):
+    # Check there is a route file
+    file = os.path.join(tmpwork, '%s.iso' % str(map.id))
+    if not os.path.exists(file):
+        return Response('map-noiso', { 'map_id' : map.id }, id='map-noiso')
+    # Let's show the map
+    return Response('map', {
+        'title': map.title(),
+        'centre_lat': map.lat,
+        'centre_lon': map.lon,
+        'tile_id': map.id,
+        'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
+        'target_latest_formatted': map.target_latest_formatted(),
+        'route_url_base': map.url_with_params()
+    }, id='map')
+
 def map(fs, email=''):
-    db.execute('BEGIN')
-    map = Map(fs, for_update = True)
+    map = Map(fs)
 
     if map.current_state == 'complete':
-        # Check there is a route file
-        file = os.path.join(tmpwork, '%s.iso' % str(map.id))
-        if not os.path.exists(file):
-            return Response('map-noiso', { 'map_id' : map.id }, id='map-noiso')
-        # Let's show the map
-        return Response('map', {
-            'title': map.title(),
-            'centre_lat': map.lat,
-            'centre_lon': map.lon,
-            'tile_id': map.id,
-            'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
-            'target_latest_formatted': map.target_latest_formatted(),
-            'route_url_base': map.url_with_params()
-        }, id='map')
+        return map_complete(map)
 
     # See how long it will take to make it
     map.get_progress_info()
@@ -347,10 +357,13 @@ def map(fs, email=''):
 
     # If map isn't being made , set it going
     if map.id is None:
-        map.start_generation()
+        if not map.start_generation():
+            map = Map(fs) # Fetch it again, it must be there now
 
     # Please wait...
-    if map.current_state == 'working':
+    if map.current_state == 'complete':
+        return map_complete(map)
+    elif map.current_state == 'working':
         server, server_port = map.working_server.split(':')
         return Response('map-working', {
             'title': 'Working - %s' % map.title(),
@@ -378,10 +391,11 @@ def log_email(fs, email):
             'email': email,
         }, id='map-wait')
     # Okay, we have an email, set off the process
-    db.execute('BEGIN')
-    map = Map(fs, for_update = True)
+    map = Map(fs)
     if map.id is None:
-        map.start_generation()
+        if not map.start_generation():
+            map = Map(fs) # Fetch it again
+
     db.execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
     db.execute('COMMIT')
     return Response('map-provideemail-thanks', { })
@@ -392,7 +406,7 @@ def get_route(fs, lat, lon):
     (station, station_long, station_id) = nearest_station(E, N)
 
     # Look up time taken
-    map = Map(fs, for_update = True)
+    map = Map(fs)
     tim = look_up_time_taken(map.id, station_id)
 
     # Look up route...

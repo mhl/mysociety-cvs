@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.23 2009-04-29 18:17:12 matthew Exp $
+-- $Id: schema.sql,v 1.24 2009-05-08 15:55:50 matthew Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -72,6 +72,8 @@ create table map (
     target_earliest integer not null, -- mins after midnight to go back to
     target_date date not null
 );
+create unique index map_unique_station_idx on map(target_station_id, target_latest, target_earliest, target_date);
+create unique index map_unique_coord_idx on map(target_e, target_n, target_latest, target_earliest, target_date);
 
 create table email_queue (
     id serial not null primary key,
