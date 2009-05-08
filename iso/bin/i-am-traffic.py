@@ -21,6 +21,7 @@ import re
 import imghdr
 import traceback
 import threading
+import thread
 
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 
@@ -42,10 +43,11 @@ in the vicinity of the postcode at different zoom levels.
 ''')
 
 parser.add_option('--top-level-url', type='string', dest="top_level_url", help='website to load tests; defaults to value of BASE_URL from conf/general which is %default', default=mysociety.config.get('BASE_URL'))
-parser.add_option('--inter-request-wait', type='float', dest="inter_request_wait", help='within one web session, how long in seconds to wait between requests to spread them out a bit; default %default', default=0.1)
-parser.add_option('--tiles-in-session', type='int', dest="tiles_in_session", help='number of tiles a user gets in one web session; default %default', default=40)
+parser.add_option('--inter-request-wait', type='float', dest="inter_request_wait", help='within one "map session", how long in seconds to wait between requests to spread them out a bit; default %default', default=0.1)
+parser.add_option('--tiles-in-session', type='int', dest="tiles_in_session", help='number of tiles a user gets in one "map session"; default %default', default=40)
 parser.add_option('--instances', type='int', dest="instances", help='number of concurrent worker threads that are simulating "map sessions"; default %default', default=1)
 parser.add_option('--single-postcode', dest='single_postcode', default=None, help='uses the same postcode for each "map session", rather than the default of a random one each time; use for load testing of cached maps')
+parser.add_option('--max-sessions-per-worker', type='int', dest="max_sessions_per_worker", help='if present, terminates when average number of sessions completed by a worker reaches this value; default is to carry on forever', default=None)
 
 (options, args) = parser.parse_args()
 
@@ -156,7 +158,7 @@ def do_map_session():
     iso_tile_url_base = re_check_content(page, """'iso_tile_url_base':\s*'(.*)'""")[0]
     cloudmade_api_key = re_check_content(page, """'cloudmade_api_key':\s*'(.*)'""")[0]
     cloudmade_tile_url_base = "/proxy.cgi?u=http://tile.cloudmade.com/" + cloudmade_api_key + "/998/256"
-    log("got map iso_tile_url_base: " + iso_tile_url_base + " cloudmade_api_key: " + cloudmade_api_key)
+    log("map iso_tile_url_base: " + iso_tile_url_base + " cloudmade_api_key: " + cloudmade_api_key)
 
     get_url("/UKTransitTime.swf")
     get_url("/js/swfobject.js")
@@ -206,9 +208,10 @@ def multiple_map_sessions():
         time_taken = finish_time - start_time
         sessions_completed += 1
         sessions_completed_time_taken += time_taken
-        log("Map session took: " + format_timedelta(time_taken) + " secs")
+        log("map session took: " + format_timedelta(time_taken) + " secs")
 
 # Make multiple instances
+threading.currentThread().setName("progress")
 threads = []
 for thread_count in range(0, options.instances):
     t = threading.Thread(target=multiple_map_sessions, name="traffic-" + str(thread_count + 1))
@@ -219,18 +222,31 @@ for thread_count in range(0, options.instances):
 # Parent
 while True:
     try:
+        # Display progress
         number_of_workers = threading.activeCount() - 1
         assert number_of_workers == len(threads)
-        log("%d worker threads, %d sessions completed, %d sessions error" % (number_of_workers, sessions_completed, sessions_error))
+        log_message = str(number_of_workers) + " workers"
         if sessions_completed > 0:
             wall_time_per_session = timedelta_in_secs(sessions_completed_time_taken) / sessions_completed
             overall_session_time = wall_time_per_session / float(number_of_workers)
-            log(str(round(wall_time_per_session,3)) + " secs/session, " + str(round(overall_session_time,3)) + " secs/concurrent session")
+            log_message += ", " + str(round(wall_time_per_session,3)) + " secs/session, " + str(round(overall_session_time,3)) + " secs/concurrent session"
+        log_message += " (sessions: %d completed, %d errors)" % (sessions_completed, sessions_error)
+        log(log_message)
+
+        # Check for termination
+        sessions_per_worker = sessions_completed / number_of_workers
+        if options.max_sessions_per_worker and sessions_per_worker >= options.max_sessions_per_worker:
+            log("completed " + str(sessions_per_worker) + " sessions per worker")
+            log("FINAL: " + log_message)
+            break
+
+        # Wait for workers to do stuff before displaying progress again
         time.sleep(5)
     except (SystemExit, KeyboardInterrupt):
         traceback.print_exc()
-        # easiest way to kill all threads on abort
+        # Easiest way to kill all threads on abort
         sys.exit()
             
-
+# Make sure all threads gone
+sys.exit()
 
