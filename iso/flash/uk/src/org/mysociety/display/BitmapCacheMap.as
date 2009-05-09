@@ -8,7 +8,6 @@ package org.mysociety.display
     import flash.display.BitmapData;
     import flash.events.Event;
     import flash.geom.ColorTransform;
-    import flash.geom.Rectangle;
 
     public class BitmapCacheMap extends Map
     {
