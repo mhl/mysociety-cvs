@@ -10,7 +10,6 @@ package org.mysociety
     import com.stamen.ui.BlockSprite;
     import com.stamen.utils.MathUtils;
     import com.stamen.utils.NumberFormatter;
-    import com.stamen.utils.StringUtils;
     
     import flash.display.Bitmap;
     import flash.display.BitmapData;
@@ -35,58 +34,67 @@ package org.mysociety
     import org.mysociety.map.C4MapButton;
     import org.mysociety.map.providers.ThresholdMaskProvider;
     import org.mysociety.style.StyleGuide;
+    import org.mysociety.utils.DateUtils;
 
     [SWF(frameRate="24")]
     public class UKTravelTimeApp extends BlockSprite
     {
         public var map:BitmapCacheMap;
         
-        protected var minThreshold:uint = 0;
-        protected var maxThreshold:uint = 0xFFFFFF;
+        // These are PIXEL VALUES!
         protected var minMinutes:uint = 0;
         protected var maxMinutes:uint = 0xFFFFFF;
         protected var minPrice:uint = 0;
         protected var maxPrice:uint = 0xFFFFFF;
-        protected var minScenicScore:uint = 1;
-        protected var maxScenicScore:uint = 10;
 
-        // the maximum value for the minute slider
-        protected var showMaxMinutes:uint = 360;
-        // the initial value for the minute slider
+        // min/max/initial value minutes for the time slider
+        protected var showMinMinutes:uint = 1;
+        protected var showMaxMinutes:uint = 60 * 12;
         protected var initialMinutes:uint = 0;
 
-        // the maximum value for the price slider        
+        // min/max/initial value for the price slider
+        protected var showMinPrice:uint = 1;
         protected var showMaxPrice:uint = 1000000;
-        // initial value for the price slider
         protected var initialPrice:uint = 150000;
 
-        // the maximum value for the scenicness slider        
-        protected var showMaxScenicScore:uint = maxScenicScore;
-        // initial value for the scenicness slider
-        protected var initialScenicScore:uint = maxScenicScore / 2;
+        // min/max/initial value for the scenicness slider        
+        protected var showMinScenicScore:uint = 1;
+        protected var showMaxScenicScore:uint = 10;
+        protected var initialScenicScore:uint = 5;
+        // scenicness score multiplier: what to divide the slider value by to get a displayable score
+        protected var scenicMultiplier:uint = 10;
+        
+        // minutes after midnight that represents the *max* of the time slider
+        protected var minutesAfterMidnight:uint = 60 * 17;
 
+        // time tile URL parameters
         protected var timeTileURLTemplate:String;
         protected var timeTileURLSubdomains:Array;
 
+        // price tile URL parameters
         protected var priceTileURLTemplate:String;
         protected var priceTileURLSubdomains:Array;
         
+        // scenicness tile URL parameters
         protected var scenicTileURLTemplate:String;
         protected var scenicTileURLSubdomains:Array;
         
+        // initial map provider; filled in according to flashvars
+        // NOTE: this defaults to a CloudMadeProvider with an API key and style ID from the parameters below
         protected var mapProvider:IMapProvider;
 
-        protected var routeURLBase:String;
-        
+        // Cloudmade API key        
         protected var cloudmadeAPIKey:String;
+        // Cloudmade style ID
         protected var cloudmadeStyle:String = CloudMadeProvider.FRESH;
         
         protected var markerLocation:Location;
         
+        // initial map state parameters
         protected var initialMapExtent:MapExtent; // = new MapExtent(59.57885104663186, 49.724479188712984, 2.98828125, -11.07421875);
         protected var initialMapLocation:Location = new Location(51.759865102943905, -1.2658309936523438);
         protected var initialMapZoom:int = 11;
-
+        // map min/max zoom levels
         protected var minMapZoom:int = 6;
         protected var maxMapZoom:int = 12;
 
@@ -174,57 +182,47 @@ package org.mysociety
                 case 'scenic_tile_subdomains':
                     scenicTileURLSubdomains = value.split(',');
                     return true;
-                                        
-                case 'route_url_base':
-                    routeURLBase = value;
-                    return true;
 
-                case 'min_threshold':
-                    minThreshold = parseInt(value);
+                case 'base_minutes':
+                    minutesAfterMidnight = parseInt(value);
                     return true;
-                case 'max_threshold':
-                    maxThreshold = parseInt(value);
+                case 'show_min_minutes':
+                    showMinMinutes = parseInt(value);
                     return true;
-
-                case 'min_minutes':
-                    minMinutes = parseInt(value);
-                    return true;
-                case 'max_minutes':
-                    maxMinutes = parseInt(value);
-                    return true;
-                case 'show_minutes':
+                case 'show_max_minutes':
                     showMaxMinutes = parseInt(value);
                     return true;
                 case 'initial_minutes':
                     initialMinutes = parseInt(value);
                     return true;
 
-                case 'min_price':
-                    minPrice = parseInt(value);
+                case 'show_min_price':
+                    showMinPrice = parseInt(value);
                     return true;
-                case 'max_price':
-                    maxPrice = parseInt(value);
-                    return true;
-                case 'show_price':
+                case 'show_max_price':
                     showMaxPrice = parseInt(value);
                     return true;
                 case 'initial_price':
                     initialPrice = parseInt(value);
                     return true;
                     
-                case 'min_scenicness':
-                    minScenicScore = parseInt(value);
+                case 'show_min_scenicness':
+                    showMinScenicScore = parseInt(value);
                     return true;
-                case 'max_scenicness':
-                    maxScenicScore = parseInt(value);
-                    return true;
-                case 'show_scenicness':
+                case 'show_max_scenicness':
                     showMaxScenicScore = parseInt(value);
                     return true;
                 case 'initial_scenicness':
                     initialScenicScore = parseInt(value);
                     return true;
-                                        
+                case 'scenicness_multiplier':
+                    scenicMultiplier = parseInt(value);
+                    return true;
+                          
+                case 'marker_location':
+                    markerLocation = Location.fromString(value);
+                    return true;
+                                  
                 case 'map_extent':
                     initialMapExtent = MapExtent.fromString(value);
                     return true;
@@ -297,12 +295,14 @@ package org.mysociety
             timeMap = createThresholdMap(timeTileURLTemplate, timeTileURLSubdomains);
             timeMap.name = 'time';
             thresholdContainer.addChild(timeMap);
+
             priceMap = createThresholdMap(priceTileURLTemplate, priceTileURLSubdomains);
             priceMap.name = 'price';
             thresholdContainer.addChild(priceMap);
             scenicMap = createThresholdMap(scenicTileURLTemplate, scenicTileURLSubdomains);
             scenicMap.name = 'scenicness';
-            scenicMap.maxThreshold = new RGB(maxScenicScore, maxScenicScore, maxScenicScore).hex;
+            var maxScenicness:uint = showMaxScenicScore * scenicMultiplier;
+            scenicMap.maxThreshold = new RGB(maxScenicness, maxScenicness, maxScenicness).hex;
             thresholdContainer.addChild(scenicMap);
 
             // make them all transparent            
@@ -320,8 +320,6 @@ package org.mysociety
             {
                 trace('* initial location:', initialMapLocation, 'zoom:', initialMapZoom);
                 map.setCenterZoom(initialMapLocation, initialMapZoom);
-                
-                if (!markerLocation) markerLocation = initialMapLocation.clone();
             }
             
             if (markerLocation)
@@ -341,19 +339,19 @@ package org.mysociety
             topPanel.filters = [new DropShadowFilter(0, 90, 0x000000, 1, 0, 2, 1)];
             addChild(topPanel);
             
-            timePanel = new SliderPanel('Travel time', minMinutes, showMaxMinutes, initialMinutes, 100);
+            timePanel = new SliderPanel('Travel time', showMinMinutes, showMaxMinutes, initialMinutes, 100);
             timePanel.slider.updateTicks(15, 60);
             timePanel.slider.addEventListener(Event.CHANGE, onTimeChange);
             topPanel.addChild(timePanel);
             onTimeChange(null);
             
-            pricePanel = new SliderPanel('Price', 0, showMaxPrice, initialPrice, 100);
+            pricePanel = new SliderPanel('Price', showMinPrice, showMaxPrice, initialPrice, 100);
             pricePanel.slider.updateTicks(25000, 100000);
             pricePanel.slider.addEventListener(Event.CHANGE, onPriceChange);
             topPanel.addChild(pricePanel);
             onPriceChange(null);
             
-            scenicPanel = new SliderPanel('Scenicness', 1, showMaxScenicScore, initialScenicScore, 100);
+            scenicPanel = new SliderPanel('Scenicness', showMinScenicScore, showMaxScenicScore, initialScenicScore, 100);
             scenicPanel.slider.updateTicks(1);
             scenicPanel.slider.flipFill = true;
             scenicPanel.slider.addEventListener(Event.CHANGE, onScenicChange);
@@ -455,6 +453,10 @@ package org.mysociety
             var minutes:uint = timePanel.slider.value;
             if (timeMap) timeMap.maxThreshold = minutes * 60;
             var field:TextField = timePanel.label;
+            
+            var date:Date = DateUtils.dateFromMinutesAfterMidnight(minutesAfterMidnight - (timePanel.slider.max - minutes));
+            field.text = 'Leaving at '+ date.hours + ':' + NumberFormatter.zerofill(date.minutes, 2);
+            /*
             if (minutes < 60)
             {
                 field.text = minutes + StringUtils.pluralize(minutes, ' minute');
@@ -469,21 +471,23 @@ package org.mysociety
                     field.appendText(', ' + minutes + StringUtils.pluralize(minutes, ' minute'));
                 }
             }
+            */
             dirty = true;
         }
         
         protected function onPriceChange(event:Event):void
         {
             var price:uint = MathUtils.quantize(pricePanel.slider.value, 1000);
-            pricePanel.label.text = '£' + NumberFormatter.thousands(price);
+            pricePanel.label.text = 'Less than £' + NumberFormatter.thousands(price);
             priceMap.maxThreshold = price;
             dirty = true;
         }
         
         protected function onScenicChange(event:Event):void
         {
-            var value:uint = Math.round(scenicPanel.slider.value);
-            scenicPanel.label.text = 'Score: ' + value;
+            var value:Number = scenicPanel.slider.value;
+            scenicPanel.label.text = 'Score: ' + ((value % 1 == 0) ? value : value.toFixed(1));
+            value *= scenicMultiplier;
             if (scenicMap) scenicMap.minThreshold = new RGB(value, value, value).hex;
             dirty = true;
         }
