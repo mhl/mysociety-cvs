@@ -34,7 +34,7 @@ package com.modestmaps.mapproviders
 				return [];
 			}
 			coord = sourceCoordinate(coord);
-			var server:String = subdomains[int(worldSize * coord.row + coord.column) % 4];
+			var server:String = subdomains[int(coord.row + coord.column) % subdomains.length];
 			var url:String = 'http://' + server + 'tile.cloudmade.com/' + [ key, style, tileWidth, coord.zoom, coord.column, coord.row ].join('/') + '.png'; 
 			return [ url ];
 		}
