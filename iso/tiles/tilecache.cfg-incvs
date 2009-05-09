@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: mike@stamen.com; WWW: http://www.mysociety.org/
 # 
-# $Id: tilecache.cfg-incvs,v 1.8 2009-05-07 15:52:32 francis Exp $
+# $Id: tilecache.cfg-incvs,v 1.9 2009-05-09 00:39:14 migurski Exp $
 
 [cache]
 type=Disk
@@ -57,3 +57,12 @@ metaTile=false
 
 datafile=housingprices.vrt
 iso_tile_log=ISOTILELOG
+
+[landmass]
+module=Layers
+type=LandMassLayer
+spherical_mercator=true
+tms_type=google
+metaTile=true
+metaBuffer=0
+metaSize=4,4
