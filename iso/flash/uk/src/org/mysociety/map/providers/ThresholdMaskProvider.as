@@ -6,13 +6,14 @@ package org.mysociety.map.providers
 
     public class ThresholdMaskProvider extends OpenStreetMapProvider
     {
-        // protected var _baseURL:String = 'http://studio.stamen.com/~tom/mysociety_tiles/$z/$r/$c.png';
-        protected var _baseURL:String = 'http://locog.stamen.com/~allens/mysociety/guardian-tiles/out/{Z}-r{Y}-c{X}.png';
+        public var subdomains:Array;
+        protected var _baseURL:String;
         
-        public function ThresholdMaskProvider(baseURL:String=null, minZoom:int=MIN_ZOOM, maxZoom:int=MAX_ZOOM)
+        public function ThresholdMaskProvider(baseURL:String, subdomains:Array=null, minZoom:int=MIN_ZOOM, maxZoom:int=MAX_ZOOM)
         {
             super(minZoom, maxZoom);
-            if (baseURL) this.baseURL = baseURL;
+            this.baseURL = baseURL;
+            this.subdomains = subdomains;
         }
         
         public function get baseURL():String
@@ -33,9 +34,14 @@ package org.mysociety.map.providers
             // fill in coordinates into URL
             var url:String = baseURL.replace('{Z}', mod.zoom).replace('{X}', mod.column).replace('{Y}', mod.row);
 
-            // work out which subdomain to retrieve it from 
-            var server:String = [ 'a.', 'b.', 'c.', '' ][int(mod.row + mod.column) % 4];
-            url = StringUtils.replace(url, { 'http://' : 'http://'+server });
+            // replace the {S} portion of the url with the appropriate subdomain
+            if (url.indexOf('{S}') > -1)
+            {
+                var subdomain:String = (subdomains && subdomains.length > 0)
+                                       ? subdomains[int(mod.row + mod.column) % subdomains.length]
+                                       : '';
+                url = url.replace('{S}', subdomain ? subdomain + '.' : '');
+            }
 
             return [url];
         }
