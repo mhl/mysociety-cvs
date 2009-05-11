@@ -1,15 +1,32 @@
 #!/bin/bash
 
+# Takes options from conf/general and substitutes them into config files for
+# the tile cache.
+
 set -e
 . ../../shlib/deployfns
 read_conf ../conf/general
 cd ../
 
-# make sure only we can read it
+# make sure only we can read files (as have db passwords in them)
 umask 0077
 
+# filter to substitute template
+function template_filter()
+{
+    sed "s/HOSTNAME/$OPTION_COL_DB_HOST/; s/PORT/$OPTION_COL_DB_PORT/; s/DATABASE/$OPTION_COL_DB_NAME/; s/USERNAME/$OPTION_COL_DB_USER/; s/PASSWORD/$OPTION_COL_DB_PASS/; s#TMPWORK#$OPTION_TMPWORK#; s#/tmp/tilecache#$OPTION_TILECACHE_DIR#; s#ISOTILELOG#$OPTION_ISO_TILE_LOG#;"
+}
+
+# fill in variables in one template
+function do_template()
+{
+    FILE=$1
+    cat $FILE-incvs | template_filter > $FILE.new
+    mv $FILE.new $FILE
+}
+
 # make tilecache.cfg file
-cat tiles/tilecache.cfg-incvs | sed "s/HOSTNAME/$OPTION_COL_DB_HOST/; s/PORT/$OPTION_COL_DB_PORT/; s/DATABASE/$OPTION_COL_DB_NAME/; s/USERNAME/$OPTION_COL_DB_USER/; s/PASSWORD/$OPTION_COL_DB_PASS/; s#TMPWORK#$OPTION_TMPWORK#; s#/tmp/tilecache#$OPTION_TILECACHE_DIR#; s#ISOTILELOG#$OPTION_ISO_TILE_LOG#;" > tiles/tilecache.cfg.new
-mv tiles/tilecache.cfg.new tiles/tilecache.cfg
+do_template tiles/tilecache.cfg
+do_template tiles/housingprices-db.vrt
 
 
