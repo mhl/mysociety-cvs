@@ -9,12 +9,12 @@ package
     {
         public function ColUKTransitTime()
         {
-            super();
-
             // Use URL for our own proxy of CloudMade.
             // Also fixes bug in pattern that tiles are loaded from different
             // servers with.
-            map.displayMap.setMapProvider(new ColCloudMadeProvider())
+            mapProvider = new ColCloudMadeProvider();
+
+            super();
         }
     }
 }
