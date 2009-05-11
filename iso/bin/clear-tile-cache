@@ -5,12 +5,36 @@ set -e
 read_conf ../conf/general
 cd ../
 
+SORTS=$@
+
 if [ ! -d "$OPTION_TILECACHE_DIR" ]
 then
     echo "Tile cache directory $OPTION_TILECACHE_DIR not found / configured right"
     exit
 fi
 
-# Clear tile cache
-rm -fr $OPTION_TILECACHE_DIR/iso?*
+if [ "$SORTS" == "" ]
+then
+    echo "Specify caches to clear - iso, housing or scenic as list"
+    exit
+fi
+
+for SORT in $SORTS
+do
+    # Clear tile cache
+    if [ "$SORT" = "iso" ]
+    then
+        rm -fr $OPTION_TILECACHE_DIR/iso?*
+    elif [ "$SORT" = "housing" ]
+    then
+        rm -fr $OPTION_TILECACHE_DIR/housing
+    elif [ "$SORT" = "scenic" ]
+    then
+        rm -fr $OPTION_TILECACHE_DIR/scenic
+    else
+        echo "Unknown sort $SORT"
+        exit
+    fi
+done
+
 
