@@ -5,7 +5,7 @@ Put house price data into database.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 
-$Id: populate-houseprices.py,v 1.2 2009-05-11 20:58:44 matthew Exp $
+$Id: populate-houseprices.py,v 1.3 2009-05-11 22:16:13 francis Exp $
 """
 import os
 import sys
@@ -26,15 +26,6 @@ import coldb
 db = coldb.get_cursor()
 
 import geoconvert
-
-#print >> vrtfile, '<OGRVRTDataSource>'
-#print >> vrtfile, '    <OGRVRTLayer name="housingprices">'
-#print >> vrtfile, '        <SrcDataSource>%s</SrcDataSource>' % csvfilename
-#print >> vrtfile, '        <GeometryType>wkbPoint</GeometryType>'
-#print >> vrtfile, '        <GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Amount"/>'
-#print >> vrtfile, '        <LayerSRS>%s</LayerSRS>' % GYM.srs.replace('"', '&quot;')
-#print >> vrtfile, '    </OGRVRTLayer>'
-#print >> vrtfile, '</OGRVRTDataSource>'
 
 src = open('/library/landregistry/uk-20080101-20090331/ew_010108-310309_inc_addresses.txt', 'r')
 input = csv.reader(src)

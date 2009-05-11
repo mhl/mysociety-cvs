@@ -5,36 +5,38 @@ Code to take email if isodaemon or tile server load to high
     play with socket.setdefaulttimeout?
     Try reducing number of isodaemon instances on stilton by 4 or 8 to see if that makes overall performance better
     Failover for tileserver too busy (1 day)
-    Finish email-finished-maps:
     Measure how much data per session
 
 Consider getting squid to cache cached tiles?
 Get squid to cache at least the front page etc.
 
-Stamen's design things
+Check not exceeding maximum files in directory limit
 
-Locking knackered now not on stations
+Show that it is only up to 9am, perhaps by marking time on sliders.
+- template needs these passing in from backend
 
-CloudMade tiles onto CDN or similar
+Thank the original people who told us about existence of NPTDR
+
+Invite system
+    Make clearing generated maps deal with email signup OK
+    Finish email-finished-maps:
+
+Mask off sea
+
+
+UI for choose different times of day
 
 Permalinks - put the current map pan/zoom and slider values in # URL
 
 
-Make populate-all more idempotent and awesome, and let you preload and then
-move into a live site and stuff.
-Make clear-generated-maps clear by a new new initial state
+Later
+-----
 
-Remove flights other than internal Scotland ones
+Find journeys leaving after
 
-Show that it is only up to 9am, perhaps by marking time on sliders.
-
-UI for choose different times of day
+Route finding in proper interface
 
 Check data quality more
-
-Work more on culling algorithm
-
-Thank the original people who told us about existence of NPTDR
 
 
 Timetable planner questions

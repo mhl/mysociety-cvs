@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.26 2009-05-11 20:49:48 matthew Exp $
+-- $Id: schema.sql,v 1.27 2009-05-11 22:16:13 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -92,9 +92,19 @@ create table house_price (
     address text not null
 );
 -- SRID 27700 = OSGB 1936 / British National Grid
-select AddGeometryColumn('', 'house_price', 'position_osgb', 27700, 'POINT', 2) into temp result_add_position_osgb;
-select AddGeometryColumn('', 'house_price', 'position_merc', 900913, 'POINT', 2) into temp result_add_position_merc;
+select AddGeometryColumn('', 'house_price', 'position_osgb', 27700, 'POINT', 2) into temp result_add_position_osgb_2;
+select AddGeometryColumn('', 'house_price', 'position_merc', 900913, 'POINT', 2) into temp result_add_position_merc_2;
 create index house_price_position_merc on house_price using GIST (position_merc);
+
+-- Scenicness
+create table scenic (
+    id serial not null primary key,
+    rating float not null
+);
+-- SRID 27700 = OSGB 1936 / British National Grid
+select AddGeometryColumn('', 'scenic', 'position_osgb', 27700, 'POINT', 2) into temp result_add_position_osgb_3;
+select AddGeometryColumn('', 'scenic', 'position_merc', 900913, 'POINT', 2) into temp result_add_position_merc_3;
+create index scenic_position_merc on scenic using GIST (position_merc);
 
 -- We grant privileges back to the actual user who is using the database.
 -- Shame it had to all be made by user "postgres", see top of file.
@@ -109,5 +119,7 @@ grant all on table email_queue_id_seq to col;
 grant all on table email_queue_id_seq to col;
 grant all on table house_price to col;
 grant all on table house_price_id_seq to col;
+grant all on table scenic to col;
+grant all on table scenic_id_seq to col;
 
 

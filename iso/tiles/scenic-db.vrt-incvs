@@ -1,0 +1,12 @@
+<OGRVRTDataSource>
+<OGRVRTLayer name="scenic">
+<SrcDataSource>PG:dbname='DATABASE' host='HOSTNAME' port='PORT' user='USERNAME' password='PASSWORD'</SrcDataSource>
+<SrcSQL>SELECT X(position_merc) as Easting, Y(position_merc) as Northing, rating as Rating FROM scenic</SrcSQL>
+<GeometryType>wkbPoint</GeometryType>
+<GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Rating"/>
+<LayerSRS>+a=6378137 +lon_0=0.0 +k=1.0 +y_0=0 +nadgrids=None +no_defs=True +proj=merc +x_0=0.0 +units=m +lat_ts=0.0 +b=6378137 </LayerSRS>
+</OGRVRTLayer>
+</OGRVRTDataSource>
+
+
+
