@@ -5,7 +5,7 @@ Put house price data into database.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 
-$Id: populate-scenic.py,v 1.1 2009-05-11 22:16:13 francis Exp $
+$Id: populate-scenic.py,v 1.2 2009-05-11 22:23:44 francis Exp $
 """
 import os
 import sys
@@ -48,7 +48,6 @@ for row in input:
                         SetSRID(MakePoint(%s, %s), 900913), 
                         %s
                     )''', (x, y, merc_x, merc_y, rating))
-    db.execute('''commit''')
 
 db.execute('''commit''')
 

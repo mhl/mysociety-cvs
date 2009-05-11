@@ -5,7 +5,7 @@ Put house price data into database.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 
-$Id: populate-houseprices.py,v 1.3 2009-05-11 22:16:13 francis Exp $
+$Id: populate-houseprices.py,v 1.4 2009-05-11 22:23:44 francis Exp $
 """
 import os
 import sys
@@ -84,8 +84,6 @@ for row in input:
                             SetSRID(MakePoint(%s, %s), 900913), 
                             %s, %s, %s, %s, %s, %s
                         )''', (x, y, merc_x, merc_y, date, amount, type_of_house, new_build, tenure, address))
-        db.execute('''commit''')
-
 
         print >> sys.stderr, date, postcode, amount, lat, lon, x, y, address
 
