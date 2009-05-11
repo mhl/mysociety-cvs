@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.25 2009-05-11 15:57:52 francis Exp $
+-- $Id: schema.sql,v 1.26 2009-05-11 20:49:48 matthew Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -93,7 +93,8 @@ create table house_price (
 );
 -- SRID 27700 = OSGB 1936 / British National Grid
 select AddGeometryColumn('', 'house_price', 'position_osgb', 27700, 'POINT', 2) into temp result_add_position_osgb;
-create index station_position_osgb on station using GIST (position_osgb);
+select AddGeometryColumn('', 'house_price', 'position_merc', 900913, 'POINT', 2) into temp result_add_position_merc;
+create index house_price_position_merc on house_price using GIST (position_merc);
 
 -- We grant privileges back to the actual user who is using the database.
 -- Shame it had to all be made by user "postgres", see top of file.
