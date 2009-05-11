@@ -12,38 +12,74 @@ your postcode by <strong>{{ target_latest_formatted }}</strong>.</p>
           'map_center':     '{{ centre_lat }},{{ centre_lon }}',
           'map_zoom':       11,
 
+          // Which Cloudmade map style to use for the displayed tiles.
+          // Allowed values are: 'midnight', 'fresh', and 'pale_dawn'
+          'map_provider': 'fresh'
+
           // Geographical bounds of the map in 'N,S,E,W' format.
           // NOTE: center and zoom are ignored if an extent is provided.
           // 'map_extent': '',
 
           /*
-           * These parameters control the mapping between RGB values in the iso tiles
-           * and minutes of travel time. The minimums and maximums of each map to
-           * each other directly.
-           *
-           * NOTE: This has changed slightly. RGB values now directly encode the number
-           * of minutes travel time.
+           * These parameters control the values available to the time slider.
            */
-          // Black is 0 minutes.
-          // 'min_threshold':  0,
-          // 'min_minutes':    0,
-          // 'max_threshold':  0xFFFFFF,
-          // 'max_minutes':    0xFFFFFF,
-          // The number of minutes to make available in the time slider.
-          'show_minutes':   60 * 9,
-          // The initial value of the time slider. (<= show_minutes)
+          // The transit arrival time, represented in number of minutes after midnight.
+          'base_minutes': 60 * 17, // 5pm
+          // The number of RELATIVE minutes represented by the minimum of the time slider.
+          'show_min_minutes': 1,
+          // The number of RELATIVE minutes represented by the time slider maximum.
+          'show_max_minutes': 60 * 12, // 12 hours
+          // The initial value of the time slider. (show_min_minutes <= n <= show_max_minutes)
           'initial_minutes': 60,
-
+          
           // Minimum and Maximum map zoom levels.
           'min_zoom':       8,
           'max_zoom':       12,
 
-          // Iso tile URL and format template.
-          'iso_tile_url_base':    'http://{{ tile_web_host }}/tilecache.fcgi/{{ tile_id }}/iso',
-          // {Z}, {X}, and {Y} here are replaced by the tile coordinate zoom, column and row, respectively.
-          'iso_tile_url_format':  '{Z}/{X}/{Y}.png',
           // URL to get routes from
-          'route_url_base': escape("{{ route_url_base|safe }}")
+          'route_url_base': escape("{{ route_url_base|safe }}"),
+
+          /*
+           * These parameters control the values available to the price slider,
+           * in pounds sterling.
+           */
+          // The low end of the price slider.
+          'show_min_price': 1,
+          // The high end.
+          'show_max_price': 1000000,
+          // The initial slider value.
+          'initial_price': 200000,
+
+          /*
+           * These parameters control the values of the scenicness slider.
+           */
+          // The low end.
+          'show_min_scenicness': 1,
+          // The high end.
+          'show_max_scenicness': 10,
+          // The initial slider value.
+          'initial_scenicness': 3,
+          // The multiplier that gives us values for pixel thresholding on smoothed tiles.
+          'scenicness_multiplier': 10,
+
+          // Iso tile URL template. Substitution strings are as follows:
+          // {S}: subdomain variations of the URL, substituted from the list below
+          // {Z}: the integer tile zoom level
+          // {X}: the integer tile column
+          // {Y}: the integer tile row
+          'iso_tile_url':       'http://{S}{{ tile_web_host }}/tilecache.fcgi/{{ tile_id }}/iso/{Z}/{X}/{Y}.png',
+                    // 'iso_tile_url':       'http://studio.stamen.com/geo-mysociety-iso/tiles/tilecache.cgi/1.0.0/iso/{Z}/{X}/{Y}.png',
+                    // available subdomains (sans trailing ".") for replacement of {S} above
+          'iso_tile_subdomains':  'a,b,c,',
+
+          // Price tile URL template. Subsitutions are the same as above.
+          'price_tile_url':     '/tilecache.fcgi/1.0.0/housing/{Z}/{X}/{Y}.png',
+          'price_tile_subdomains':  '',
+
+          // Scenic tile URL template. Subsitutions are the same as above.
+          'scenic_tile_url':    '/tilecache.fcgi/1.0.0/scenic/{Z}/{X}/{Y}.png',
+          'scenic_tile_subdomains':  '',
+
         };
 
         // Flash Player parameters
