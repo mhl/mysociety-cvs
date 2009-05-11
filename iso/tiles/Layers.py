@@ -1,8 +1,8 @@
 import Isochrones
 import HeatGrids
-import LandMasses
+#import LandMasses
 
 IsochronesLayer = Isochrones.TileLayer
 HousingLayer = HeatGrids.HousingLayer
 ScenicLayer = HeatGrids.ScenicLayer
-LandMassLayer = LandMasses.LandMassLayer
+#LandMassLayer = LandMasses.LandMassLayer

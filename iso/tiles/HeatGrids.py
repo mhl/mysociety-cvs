@@ -4,7 +4,7 @@ Custom TileCache module for rendering of heat grids based on GDAL VRT files.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: HeatGrids.py,v 1.7 2009-05-11 11:10:05 matthew Exp $
+$Id: HeatGrids.py,v 1.8 2009-05-11 15:59:29 francis Exp $
 """
 import os
 import sys
@@ -132,25 +132,26 @@ class HousingLayer(TileCache.Layer.MetaLayer):
 
         print >> log, status
         
-        if status == 0:
+        if status != 0:
+            raise Exception("Got error code from GDAL " + str(status))
         
-            heat = gdal.Open(filename)
-            band = heat.GetRasterBand(1)
-            cols, rows = heat.RasterXSize, heat.RasterYSize
-            
-            print >> log, cols, rows
-            
-            data = band.ReadRaster(0, 0, cols, rows, buf_type=gdal.GDT_Float32)
-            
-            print >> log, repr(data[:16]), struct.unpack('ffff', data[:16])
-            
-            cell = numpy.fromstring(data, dtype=numpy.float32).reshape(rows, cols)
-            
-            print >> log, numpy.min(cell), '-', numpy.max(cell)
+        heat = gdal.Open(filename)
+        band = heat.GetRasterBand(1)
+        cols, rows = heat.RasterXSize, heat.RasterYSize
+        
+        print >> log, cols, rows
+        
+        data = band.ReadRaster(0, 0, cols, rows, buf_type=gdal.GDT_Float32)
+        
+        print >> log, repr(data[:16]), struct.unpack('ffff', data[:16])
+        
+        cell = numpy.fromstring(data, dtype=numpy.float32).reshape(rows, cols)
+        
+        print >> log, numpy.min(cell), '-', numpy.max(cell)
 
-            # flip it, because GDAL gives it to us upside-down
-            image = arr2img32(cell)
-            image = PIL.ImageOps.flip(image)
+        # flip it, because GDAL gives it to us upside-down
+        image = arr2img32(cell)
+        image = PIL.ImageOps.flip(image)
         
         os.unlink(filename)
         
