@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.24 2009-05-08 15:55:50 matthew Exp $
+-- $Id: schema.sql,v 1.25 2009-05-11 15:57:52 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -81,6 +81,20 @@ create table email_queue (
     map_id integer not null references map(id)
 );
 
+-- House prices
+create table house_price (
+    id serial not null primary key,
+    transaction_date date not null,
+    amount integer not null,
+    type_of_house char(1) not null, -- D, T, S, F for detached/semi/terrace/flat
+    new_build boolean not null,
+    tenure char(1) not null, -- F or L for freehold/leasehold
+    address text not null
+);
+-- SRID 27700 = OSGB 1936 / British National Grid
+select AddGeometryColumn('', 'house_price', 'position_osgb', 27700, 'POINT', 2) into temp result_add_position_osgb;
+create index station_position_osgb on station using GIST (position_osgb);
+
 -- We grant privileges back to the actual user who is using the database.
 -- Shame it had to all be made by user "postgres", see top of file.
 grant all on table station to col;
@@ -91,4 +105,8 @@ grant all on table spatial_ref_sys to col;
 grant all on table geometry_columns to col;
 grant all on table email_queue to col;
 grant all on table email_queue_id_seq to col;
+grant all on table email_queue_id_seq to col;
+grant all on table house_price to col;
+grant all on table house_price_id_seq to col;
+
 
