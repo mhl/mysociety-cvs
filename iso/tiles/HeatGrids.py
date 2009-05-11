@@ -4,7 +4,7 @@ Custom TileCache module for rendering of heat grids based on GDAL VRT files.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: HeatGrids.py,v 1.9 2009-05-11 19:16:18 francis Exp $
+$Id: HeatGrids.py,v 1.10 2009-05-11 21:16:04 matthew Exp $
 """
 import os
 import sys
@@ -52,17 +52,19 @@ class ScenicLayer(TileCache.Layer.MetaLayer):
         
         (handle, filename) = tempfile.mkstemp(suffix='.tif', prefix='scenic-grid-')
         os.close(handle)
-        
+
+        where_clause = """-where "Easting >= %d and Northing >= %d and Easting <= %d and Northing <= %d" """ % (int(xmin - radius), int(ymin - radius), int(xmax + radius), int(ymax + radius))
+
         # render an image
         cmd = '/usr/bin/gdal_grid -a invdist:power=2.0:smoothing=2.0:radius1=%(radius)d:radius2=%(radius)d ' % locals() \
             + '-txe %(xmin)f %(xmax)f -tye %(ymin)f %(ymax)f -outsize %(width)d %(height)d ' % locals() \
-            + '-l scenicness -of GTiff -ot Float32 %(datafile)s %(filename)s' % locals()
+            + '%(where_clause)s -l scenicness -of GTiff -ot Float32 %(datafile)s %(filename)s' % locals()
 
         print >> log, cmd
         
         status, output = commands.getstatusoutput(cmd)
 
-        print >> log, status
+        print >> log, "gdal_grid output status", status
         
         if status != 0:
             raise Exception("Got error code from GDAL " + str(status) + " message " + output)
@@ -71,11 +73,11 @@ class ScenicLayer(TileCache.Layer.MetaLayer):
         band = heat.GetRasterBand(1)
         cols, rows = heat.RasterXSize, heat.RasterYSize
         
-        print >> log, cols, rows
+        print >> log, "raster cols, rows", cols, rows
         
         data = band.ReadRaster(0, 0, cols, rows, buf_type=gdal.GDT_Float32)
         
-        print >> log, repr(data[:16]), struct.unpack('ffff', data[:16])
+        print >> log, "start of data", repr(data[:16]), struct.unpack('ffff', data[:16])
         
         cell = numpy.fromstring(data, dtype=numpy.float32).reshape(rows, cols)
 
@@ -122,10 +124,12 @@ class HousingLayer(TileCache.Layer.MetaLayer):
         (handle, filename) = tempfile.mkstemp(suffix='.tif', prefix='scenic-grid-')
         os.close(handle)
         
+        where_clause = """-where "Easting > %d and Northing > %d and Easting < %d and Northing < %d" """ % (int(xmin), int(ymin), int(xmax), int(ymax))
+
         # render an image
         cmd = '/usr/bin/gdal_grid -a average:radius1=%(radius)d:radius2=%(radius)d ' % locals() \
             + '-txe %(xmin)f %(xmax)f -tye %(ymin)f %(ymax)f -outsize %(width)d %(height)d ' % locals() \
-            + '-l housingprices -of GTiff -ot Float32 %(datafile)s %(filename)s' % locals()
+            + '%(where_clause)s -l housingprices -of GTiff -ot Float32 %(datafile)s %(filename)s' % locals()
 
         print >> log, cmd
         
