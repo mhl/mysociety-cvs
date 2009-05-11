@@ -5,10 +5,11 @@ Put house price data into database.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 
-$Id: populate-houseprices.py,v 1.1 2009-05-11 15:57:52 francis Exp $
+$Id: populate-houseprices.py,v 1.2 2009-05-11 20:58:44 matthew Exp $
 """
 import os
 import sys
+sys.path.append('/home/matthew/lib/python')
 import math
 import csv
 import datetime
@@ -82,13 +83,16 @@ for row in input:
         
         lat, lon = postcodes[postcode]
         x, y = geoconvert.wgs84_to_national_grid(lat, lon)
+        merc_x, merc_y = geoconvert.bng2gym(x, y)
         #output.writerow((x, y, amount))
         #db.execute("""insert into """, % (minimum_zoom, id))
 
-        db.execute('''insert into house_price (position_osgb, transaction_date, amount, type_of_house, new_build, tenure, address)
+        db.execute('''insert into house_price (position_osgb, position_merc, transaction_date, amount, type_of_house, new_build, tenure, address)
                       values (
-                            SetSRID(MakePoint(%s, %s), 27700), %s, %s, %s, %s, %s, %s
-                        )''', (x, y, date, amount, type_of_house, new_build, tenure, address))
+                            SetSRID(MakePoint(%s, %s), 27700), 
+                            SetSRID(MakePoint(%s, %s), 900913), 
+                            %s, %s, %s, %s, %s, %s
+                        )''', (x, y, merc_x, merc_y, date, amount, type_of_house, new_build, tenure, address))
         db.execute('''commit''')
 
 
