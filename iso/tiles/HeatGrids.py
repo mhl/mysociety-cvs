@@ -4,7 +4,7 @@ Custom TileCache module for rendering of heat grids based on GDAL VRT files.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: HeatGrids.py,v 1.11 2009-05-11 22:16:14 francis Exp $
+$Id: HeatGrids.py,v 1.12 2009-05-11 23:31:17 francis Exp $
 """
 import os
 import sys
@@ -124,7 +124,7 @@ class HousingLayer(TileCache.Layer.MetaLayer):
         (handle, filename) = tempfile.mkstemp(suffix='.tif', prefix='scenic-grid-')
         os.close(handle)
         
-        where_clause = """-where "Easting > %d and Northing > %d and Easting < %d and Northing < %d" """ % (int(xmin), int(ymin), int(xmax), int(ymax))
+        where_clause = """-where "Easting > %d and Northing > %d and Easting < %d and Northing < %d" """ % (int(xmin - radius), int(ymin - radius), int(xmax + radius), int(ymax + radius))
 
         # render an image
         cmd = '/usr/bin/gdal_grid -a average:radius1=%(radius)d:radius2=%(radius)d ' % locals() \
