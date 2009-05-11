@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.86 2009-05-08 15:55:51 matthew Exp $
+# $Id: index.cgi,v 1.87 2009-05-11 16:39:54 matthew Exp $
 #
 
 import sys
@@ -333,6 +333,8 @@ def map_complete(map):
         'tile_id': map.id,
         'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
         'target_latest_formatted': map.target_latest_formatted(),
+        'target_latest': map.target_latest,
+        'show_max_minutes': map.target_latest - map.target_earliest,
         'route_url_base': map.url_with_params()
     }, id='map')
 

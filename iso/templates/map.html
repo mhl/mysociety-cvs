@@ -24,11 +24,11 @@ your postcode by <strong>{{ target_latest_formatted }}</strong>.</p>
            * These parameters control the values available to the time slider.
            */
           // The transit arrival time, represented in number of minutes after midnight.
-          'base_minutes': 60 * 17, // 5pm
+          'base_minutes': {{ target_latest }}, // 5pm
           // The number of RELATIVE minutes represented by the minimum of the time slider.
           'show_min_minutes': 1,
           // The number of RELATIVE minutes represented by the time slider maximum.
-          'show_max_minutes': 60 * 12, // 12 hours
+          'show_max_minutes': {{ show_max_minutes }}, // 12 hours
           // The initial value of the time slider. (show_min_minutes <= n <= show_max_minutes)
           'initial_minutes': 60,
           
@@ -58,7 +58,7 @@ your postcode by <strong>{{ target_latest_formatted }}</strong>.</p>
           // The high end.
           'show_max_scenicness': 10,
           // The initial slider value.
-          'initial_scenicness': 3,
+          'initial_scenicness': 1,
           // The multiplier that gives us values for pixel thresholding on smoothed tiles.
           'scenicness_multiplier': 10,
 
