@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.5
 
 # Changes to work on pudding. Isochrones.py/Cones.py are level up,
 # and pyproj is currently manually compiled. XXX
