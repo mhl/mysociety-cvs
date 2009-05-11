@@ -45,7 +45,7 @@ if __name__ == '__main__':
         input = csv.reader(src)
         output = csv.writer(csvfile)
         
-        print >> csvfile, 'Easting,Northing,Rating'
+        print >> csvfile, 'Easting,Northing,Amount'
         
         min_date = datetime.date(2008, 1, 1)
 
