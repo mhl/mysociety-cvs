@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     else:
         print >> vrtfile, '<OGRVRTDataSource>'
-        print >> vrtfile, '    <OGRVRTLayer name="change me">'
+        print >> vrtfile, '    <OGRVRTLayer name="housingprices">'
         print >> vrtfile, '        <SrcDataSource>%s</SrcDataSource>' % csvfilename
         print >> vrtfile, '        <GeometryType>wkbPoint</GeometryType>'
         print >> vrtfile, '        <GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Amount"/>'

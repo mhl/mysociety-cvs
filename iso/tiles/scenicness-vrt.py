@@ -1,4 +1,5 @@
 import sys
+sys.path.append('/home/matthew/lib/python') # XXX For pyproj, won't affect anything
 import csv
 import urllib
 import pyproj
@@ -16,7 +17,7 @@ if __name__ == '__main__':
 
     else:
         print >> vrtfile, '<OGRVRTDataSource>'
-        print >> vrtfile, '    <OGRVRTLayer name="change me">'
+        print >> vrtfile, '    <OGRVRTLayer name="scenicness">'
         print >> vrtfile, '        <SrcDataSource>%s</SrcDataSource>' % csvfilename
         print >> vrtfile, '        <GeometryType>wkbPoint</GeometryType>'
         print >> vrtfile, '        <GeometryField encoding="PointFromColumns" x="Easting" y="Northing" z="Rating"/>'

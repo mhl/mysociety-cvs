@@ -4,7 +4,7 @@ Custom TileCache module for rendering of heat grids based on GDAL VRT files.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: HeatGrids.py,v 1.6 2009-05-09 00:59:30 migurski Exp $
+$Id: HeatGrids.py,v 1.7 2009-05-11 11:10:05 matthew Exp $
 """
 import os
 import sys
@@ -56,7 +56,7 @@ class ScenicLayer(TileCache.Layer.MetaLayer):
         # render an image
         cmd = '/usr/bin/gdal_grid -a invdist:power=2.0:smoothing=2.0:radius1=%(radius)d:radius2=%(radius)d ' % locals() \
             + '-txe %(xmin)f %(xmax)f -tye %(ymin)f %(ymax)f -outsize %(width)d %(height)d ' % locals() \
-            + '-l scenicness.2009-04-29 -of GTiff -ot Float32 %(datafile)s %(filename)s' % locals()
+            + '-l scenicness -of GTiff -ot Float32 %(datafile)s %(filename)s' % locals()
 
         print >> log, cmd
         
