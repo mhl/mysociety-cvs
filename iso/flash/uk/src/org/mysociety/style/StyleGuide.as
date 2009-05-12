@@ -1,7 +1,5 @@
 package org.mysociety.style
 {
-    import com.bitstream.fonts.VeraSans;
-    import com.bitstream.fonts.VeraSansBold;
     import com.stamen.graphics.color.IColor;
     import com.stamen.graphics.color.RGB;
     
@@ -10,10 +8,13 @@ package org.mysociety.style
     import flash.text.TextField;
     import flash.text.TextFormat;
     
+    import org.mysociety.style.fonts.c4.C4TextBold;
+    import org.mysociety.style.fonts.c4.C4TextRegular;
+    
     public class StyleGuide
     {
-        public static var baseFont:Font = new VeraSans();
-        public static var boldFont:Font = new VeraSansBold();
+        public static var baseFont:Font = new C4TextRegular();
+        public static var boldFont:Font = new C4TextBold();
         
         public static var turquoise:RGB = RGB.fromHex(0x339999);
         public static var darkBlue:RGB = RGB.fromHex(0x003366);
