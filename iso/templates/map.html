@@ -26,7 +26,7 @@ your postcode by <strong>{{ target_latest_formatted }}</strong>.</p>
           // The transit arrival time, represented in number of minutes after midnight.
           'base_minutes': {{ target_latest }}, // 5pm
           // The number of RELATIVE minutes represented by the minimum of the time slider.
-          'show_min_minutes': 1,
+          'show_min_minutes': 0,
           // The number of RELATIVE minutes represented by the time slider maximum.
           'show_max_minutes': {{ show_max_minutes }}, // 12 hours
           // The initial value of the time slider. (show_min_minutes <= n <= show_max_minutes)
@@ -44,7 +44,7 @@ your postcode by <strong>{{ target_latest_formatted }}</strong>.</p>
            * in pounds sterling.
            */
           // The low end of the price slider.
-          'show_min_price': 1,
+          'show_min_price': 0,
           // The high end.
           'show_max_price': 1000000,
           // The initial slider value.
