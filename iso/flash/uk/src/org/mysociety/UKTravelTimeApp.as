@@ -423,6 +423,7 @@ package org.mysociety
             {
                 removeChild(loadingIndicator);
             }
+            updateTooltipText();
         }
         
         protected function onThresholdMapRendered(event:MapEvent):void
@@ -567,6 +568,13 @@ package org.mysociety
             tooltipTimer.reset();
             tooltip.x = mouseX;
             tooltip.y = mouseY - 2;
+            tooltip.visible = true;
+            
+            updateTooltipText();
+        }
+        
+        protected function updateTooltipText():void
+        {
             var minutes:uint = timeMap.cache.getPixel(map.mouseX, map.mouseY) / 60;
             var timeText:String = timeMap
                                   ? formatTravelTime(minutes)
@@ -579,7 +587,6 @@ package org.mysociety
                                     : '?';
             tooltip.field.htmlText = StringUtils.replace(tooltipText,
                                                          {'{T}': timeText, '{P}': priceText, '{S}': scenicText});
-            tooltip.visible = true;
         }
         
         protected function onStageResize(event:Event):void
