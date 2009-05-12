@@ -33,7 +33,7 @@
 
           // Which Cloudmade map style to use for the displayed tiles.
           // Allowed values are: 'midnight', 'fresh', and 'pale_dawn'
-          'map_provider': 'fresh'
+          'map_provider': 'fresh',
 
           // Geographical bounds of the map in 'N,S,E,W' format.
           // NOTE: center and zoom are ignored if an extent is provided.
@@ -45,18 +45,18 @@
           // The transit arrival time, represented in number of minutes after midnight.
           'base_minutes': 60 * 17, // 5pm
           // The number of RELATIVE minutes represented by the minimum of the time slider.
-          'show_min_minutes': 1,
+          'show_min_minutes': 0,
           // The number of RELATIVE minutes represented by the time slider maximum.
           'show_max_minutes': 60 * 12, // 12 hours
           // The initial value of the time slider. (show_min_minutes >= n <= show_max_minutes)
-          'initial_minutes': 60,
+          'initial_minutes': 0,
           
           /*
            * These parameters control the values available to the price slider,
            * in pounds sterling.
            */
           // The low end of the price slider.
-          'show_min_price': 1,
+          'show_min_price': 0,
           // The high end.
           'show_max_price': 1000000,
           // The initial slider value.
@@ -70,7 +70,7 @@
           // The high end.
           'show_max_scenicness': 10,
           // The initial slider value.
-          'initial_scenicness': 3,
+          'initial_scenicness': 1,
           // The multiplier that gives us values for pixel thresholding on smoothed tiles.
           'scenicness_multiplier': 10,
 
@@ -79,18 +79,19 @@
           // {Z}: the integer tile zoom level
           // {X}: the integer tile column
           // {Y}: the integer tile row
-          'iso_tile_url':       'http://{S}col.mysociety.org/tilecache.fcgi/7/iso/{Z}/{X}/{Y}.png',
-          // 'iso_tile_url':       'http://studio.stamen.com/geo-mysociety-iso/tiles/tilecache.cgi/1.0.0/iso/{Z}/{X}/{Y}.png',
+          // Whether to enable the time slider (and load tiles, etc.)
+          // 'iso_enabled': 'false',
+          'iso_tile_url':       'http://{S}col.mysociety.org/tilecache.fcgi/16941/iso/{Z}/{X}/{Y}.png',
           // available subdomains (sans trailing ".") for replacement of {S} above
           'iso_tile_subdomains':  'a,b,c,',
           
           // Price tile URL template. Subsitutions are the same as above.
-          'price_tile_url':     'http://studio.stamen.com/geo-mysociety-iso/tiles/tilecache.cgi/1.0.0/housing/{Z}/{X}/{Y}.png',
+          'price_tile_url':     'http://col.mysociety.org/tilecache.fcgi/1.0.0/housing/{Z}/{X}/{Y}.png',
           'price_tile_subdomains':  '',
           
           // Scenic tile URL template. Subsitutions are the same as above.
-          'scenic_tile_url':    'http://studio.stamen.com/geo-mysociety-iso/tiles/tilecache.cgi/1.0.0/scenic/{Z}/{X}/{Y}.png',
-          'scenic_tile_subdomains':  '',
+          'scenic_tile_url':    'http://col.mysociety.org/tilecache.fcgi/1.0.0/scenic/{Z}/{X}/{Y}.png',
+          'scenic_tile_subdomains':  ''
           
         };
 

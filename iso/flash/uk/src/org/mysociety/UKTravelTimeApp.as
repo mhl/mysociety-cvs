@@ -10,6 +10,7 @@ package org.mysociety
     import com.stamen.ui.BlockSprite;
     import com.stamen.utils.MathUtils;
     import com.stamen.utils.NumberFormatter;
+    import com.stamen.utils.StringUtils;
     
     import flash.display.Bitmap;
     import flash.display.BitmapData;
@@ -20,18 +21,21 @@ package org.mysociety
     import flash.events.Event;
     import flash.events.KeyboardEvent;
     import flash.events.MouseEvent;
+    import flash.events.TimerEvent;
     import flash.filters.DropShadowFilter;
     import flash.filters.GlowFilter;
     import flash.geom.Matrix;
     import flash.geom.Point;
     import flash.geom.Rectangle;
     import flash.text.TextField;
+    import flash.utils.Timer;
     
     import org.mysociety.display.BitmapCacheMap;
     import org.mysociety.display.BitmapThresholdMap;
     import org.mysociety.display.MapLoadingIndicator;
     import org.mysociety.display.ui.SliderPanel;
     import org.mysociety.map.C4MapButton;
+    import org.mysociety.map.DataTooltip;
     import org.mysociety.map.providers.ThresholdMaskProvider;
     import org.mysociety.style.StyleGuide;
     import org.mysociety.utils.DateUtils;
@@ -48,14 +52,15 @@ package org.mysociety
         protected var maxPrice:uint = 0xFFFFFF;
 
         // min/max/initial value minutes for the time slider
-        protected var showMinMinutes:uint = 1;
+        protected var showMinMinutes:uint = 0;
         protected var showMaxMinutes:uint = 60 * 12;
         protected var initialMinutes:uint = 0;
 
         // min/max/initial value for the price slider
-        protected var showMinPrice:uint = 1;
+        protected var showMinPrice:uint = 1000;
         protected var showMaxPrice:uint = 1000000;
         protected var initialPrice:uint = 150000;
+        protected var freeString:String = '£0';
 
         // min/max/initial value for the scenicness slider        
         protected var showMinScenicScore:uint = 1;
@@ -66,8 +71,11 @@ package org.mysociety
         
         // minutes after midnight that represents the *max* of the time slider
         protected var minutesAfterMidnight:uint = 60 * 17;
+        // maximum number of travel minutes before we show the "inaccessible" text in the tooltip
+        protected var maxTravelMinutes:uint = 24 * 60;
 
         // time tile URL parameters
+        protected var enableTime:Boolean = true;
         protected var timeTileURLTemplate:String;
         protected var timeTileURLSubdomains:Array;
 
@@ -114,6 +122,11 @@ package org.mysociety
         
         protected var displayBitmap:Bitmap;
         
+        protected var tooltipText:String = 'Showing travel time of <a class="time">{T}</a> where the house price is <a class="price">{P}</a> and below. ' + 
+                                           'This area has a scenicness score of <a class="scenic">{S}</a>.';
+        protected var tooltip:DataTooltip;
+        protected var tooltipTimer:Timer = new Timer(750);
+        
         public function UKTravelTimeApp()
         {
             if (stage)
@@ -137,6 +150,10 @@ package org.mysociety
                 stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
                 onStageResize(null);
             }
+            
+            map.addEventListener(MouseEvent.MOUSE_MOVE, resetTooltip);
+            map.addEventListener(MouseEvent.MOUSE_OUT, disableTooltip);
+            tooltipTimer.addEventListener(TimerEvent.TIMER, showTooltip);
         }
         
         protected function onKeyUp(event:KeyboardEvent):void
@@ -162,6 +179,9 @@ package org.mysociety
                     cloudmadeAPIKey = value;
                     return true;
 
+                case 'iso_enabled':
+                    enableTime = (value == 'true');
+                    return true;
                 case 'iso_tile_url':
                     timeTileURLTemplate = value;
                     return true;
@@ -204,6 +224,9 @@ package org.mysociety
                     return true;
                 case 'initial_price':
                     initialPrice = parseInt(value);
+                    return true;
+                case 'free_string':
+                    freeString = value;
                     return true;
                     
                 case 'show_min_scenicness':
@@ -292,13 +315,17 @@ package org.mysociety
 
             addChild(controls);
 
-            timeMap = createThresholdMap(timeTileURLTemplate, timeTileURLSubdomains);
-            timeMap.name = 'time';
-            thresholdContainer.addChild(timeMap);
+            if (enableTime)
+            {
+                timeMap = createThresholdMap(timeTileURLTemplate, timeTileURLSubdomains);
+                timeMap.name = 'time';
+                thresholdContainer.addChild(timeMap);
+            }
 
             priceMap = createThresholdMap(priceTileURLTemplate, priceTileURLSubdomains);
             priceMap.name = 'price';
             thresholdContainer.addChild(priceMap);
+            
             scenicMap = createThresholdMap(scenicTileURLTemplate, scenicTileURLSubdomains);
             scenicMap.name = 'scenicness';
             var maxScenicness:uint = showMaxScenicScore * scenicMultiplier;
@@ -344,6 +371,7 @@ package org.mysociety
             timePanel.slider.addEventListener(Event.CHANGE, onTimeChange);
             topPanel.addChild(timePanel);
             onTimeChange(null);
+            timePanel.enabled = enableTime;
             
             pricePanel = new SliderPanel('Price', showMinPrice, showMaxPrice, initialPrice, 100);
             pricePanel.slider.updateTicks(25000, 100000);
@@ -359,6 +387,13 @@ package org.mysociety
             onScenicChange(null);
             
             loadingIndicator = new MapLoadingIndicator();
+            
+            tooltip = new DataTooltip();
+            tooltip.filters = [new DropShadowFilter(.5, 45, 0x000000, .25, 2, 2, 2)];
+            tooltip.field.htmlText = 'This is a <b>test of bold text</b>. We should have all of the characters to display <b>£123,456,789</b>';
+            trace('text:', tooltip.field.htmlText);
+            tooltip.visible = false;
+            addChild(tooltip);
         }
         
         protected function createThresholdMap(baseTileURL:String, subdomains:Array=null):BitmapThresholdMap
@@ -454,7 +489,7 @@ package org.mysociety
             if (timeMap) timeMap.maxThreshold = minutes * 60;
             var field:TextField = timePanel.label;
             
-            var date:Date = DateUtils.dateFromMinutesAfterMidnight(minutesAfterMidnight - (timePanel.slider.max - minutes));
+            var date:Date = DateUtils.dateFromMinutesAfterMidnight(minutesAfterMidnight - minutes);
             field.text = 'Leaving at '+ date.hours + ':' + NumberFormatter.zerofill(date.minutes, 2);
             /*
             if (minutes < 60)
@@ -478,7 +513,7 @@ package org.mysociety
         protected function onPriceChange(event:Event):void
         {
             var price:uint = MathUtils.quantize(pricePanel.slider.value, 1000);
-            pricePanel.label.text = 'Less than £' + NumberFormatter.thousands(price);
+            pricePanel.label.text = formatPrice(price);
             priceMap.maxThreshold = price;
             dirty = true;
         }
@@ -486,10 +521,65 @@ package org.mysociety
         protected function onScenicChange(event:Event):void
         {
             var value:Number = scenicPanel.slider.value;
-            scenicPanel.label.text = 'Score: ' + ((value % 1 == 0) ? value : value.toFixed(1));
+            scenicPanel.label.text = 'Score: ' + formatScenicness(value);
             value *= scenicMultiplier;
             if (scenicMap) scenicMap.minThreshold = new RGB(value, value, value).hex;
             dirty = true;
+        }
+        
+        protected function formatTravelTime(minutes:uint):String
+        {
+            return (minutes <= maxTravelMinutes)
+                   ? DateUtils.relativeTimeString(minutes)
+                   : 'over ' + (maxTravelMinutes / 60) + ' hours'
+        }
+        
+        protected function formatPrice(price:uint):String
+        {
+            price = MathUtils.quantize(price, 1000, Math.ceil);
+            return (price > 0)
+                   ? '£' + NumberFormatter.thousands(price)
+                   : freeString;
+        }
+        
+        protected function formatScenicness(score:Number):String
+        {
+            return (score % 1 == 0)
+                   ? score.toString()
+                   : score.toFixed(1);
+        }
+        
+        protected function resetTooltip(event:Event=null):void
+        {
+            tooltip.visible = false;
+            tooltipTimer.reset();
+            tooltipTimer.start();
+        }
+        
+        protected function disableTooltip(event:Event=null):void
+        {
+            tooltip.visible = false;
+            tooltipTimer.stop();
+        }
+        
+        protected function showTooltip(event:TimerEvent):void
+        {
+            tooltipTimer.reset();
+            tooltip.x = mouseX;
+            tooltip.y = mouseY - 2;
+            var minutes:uint = timeMap.cache.getPixel(map.mouseX, map.mouseY) / 60;
+            var timeText:String = timeMap
+                                  ? formatTravelTime(minutes)
+                                  : '?';
+            var priceText:String = priceMap
+                                   ? formatPrice(priceMap.cache.getPixel(map.mouseX, map.mouseY))
+                                   : '?';
+            var scenicText:String = scenicMap
+                                    ? formatScenicness((scenicMap.cache.getPixel(map.mouseX, map.mouseY) & 0x0000FF) / scenicMultiplier)
+                                    : '?';
+            tooltip.field.htmlText = StringUtils.replace(tooltipText,
+                                                         {'{T}': timeText, '{P}': priceText, '{S}': scenicText});
+            tooltip.visible = true;
         }
         
         protected function onStageResize(event:Event):void
