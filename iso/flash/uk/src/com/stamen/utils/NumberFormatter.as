@@ -21,7 +21,7 @@ package com.stamen.utils
                         
             var expString:String = thousands(exp, thousandsDelimiter);
 
-            if (decimalPlaces > 0)
+            if (decimalPlaces > 0 && man > 0)
             {
                 var manString:String = zerofill(man, 2);
                 return [sign, expString, decimalDelimiter, manString].join('');
