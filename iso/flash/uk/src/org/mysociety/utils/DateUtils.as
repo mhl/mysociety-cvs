@@ -14,7 +14,6 @@ package org.mysociety.utils
         
         public static function relativeTimeString(minutes:uint, minuteString:String='minute', hourString:String='hour'):String
         {
-            trace('* got', minutes, 'minutes');
             if (minutes > 60)
             {
                 var hours:uint = minutes / 60;  
