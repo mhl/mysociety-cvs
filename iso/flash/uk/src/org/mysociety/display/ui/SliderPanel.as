@@ -1,10 +1,14 @@
 package org.mysociety.display.ui
 {
+    import com.quasimondo.geom.ColorMatrix;
     import com.stamen.graphics.color.IColor;
     import com.stamen.graphics.color.RGB;
     import com.stamen.ui.BlockSprite;
     
     import flash.display.Shape;
+    import flash.filters.BlurFilter;
+    import flash.filters.ColorMatrixFilter;
+    import flash.geom.ColorTransform;
     import flash.text.TextField;
     import flash.text.TextFieldAutoSize;
     
@@ -14,9 +18,10 @@ package org.mysociety.display.ui
     {
         public var slider:Slider;
         public var label:TextField;
-        
+
         protected var titleField:TextField;
         protected var titleBg:Shape;
+        protected var _enabled:Boolean = true;
         
         public function SliderPanel(title:String, sliderMin:Number=0, sliderMax:Number=1, sliderValue:Number=0, w:Number=240, h:Number=60, color:IColor=null)
         {
@@ -26,7 +31,7 @@ package org.mysociety.display.ui
             titleBg.graphics.endFill();
             addChild(titleBg);
             
-            titleField = StyleGuide.createTextField(16, RGB.white(), true);
+            titleField = StyleGuide.createTextField(17, RGB.white(), true);
             titleField.autoSize = TextFieldAutoSize.LEFT;
             titleField.text = title;
             addChild(titleField);
@@ -34,11 +39,38 @@ package org.mysociety.display.ui
             slider = new Slider(sliderMin, sliderMax, sliderValue);
             addChild(slider);
             
-            label = StyleGuide.createTextField(12, RGB.black(), false);
+            label = StyleGuide.createTextField(13, RGB.black(), false);
             label.autoSize = TextFieldAutoSize.LEFT;
             addChild(label);
              
             super(w, h, color);
+        }
+        
+        public function get enabled():Boolean
+        {
+            return _enabled;
+        }
+        
+        public function set enabled(value:Boolean):void
+        {
+            if (enabled != value)
+            {
+                _enabled = value;
+                mouseEnabled = mouseChildren = enabled;
+                if (enabled)
+                {
+                    filters = [];
+                }
+                else
+                {
+                    var offMatrix:ColorMatrix = new ColorMatrix();
+                    offMatrix.adjustBrightness(0x33);
+                    offMatrix.desaturate();
+                    var offFilter:ColorMatrixFilter = new ColorMatrixFilter(offMatrix.matrix);
+                    
+                    filters = [offFilter];
+                }
+            }
         }
         
         public function get titleWidth():Number
