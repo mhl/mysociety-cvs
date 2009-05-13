@@ -97,17 +97,23 @@
 
 <div id="map-footer">
 
+<p id="footer-side">
+
 {% if num_invites %}
 <a id="footer-invite" href="/invite">Invite <em>{{ num_invites }}</em> friend{{ num_invites|pluralize }}</a>
 {% else %}
 <span id="footer-invite">You have no invites</span>
 {% endif %}
 
+| <a href="/help">Help</a>
+</p>
+
 {% ifequal invite.maps_left 0 %}
 
 Your maps:
 {% for p in invite.postcodes %}
-<a href="/postcode/{{ p }}">{{ p }}</a> |
+<a href="/postcode/{{ p }}">{{ p }}</a>
+{% if not forloop.last %} | {% endif %}
 {% endfor %}
 
 {% else %}
@@ -126,9 +132,11 @@ New map? <label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</labe
 
 {% endifequal %}
 
+<!--
 <span id="footer-share">
 <a href="/postcode/{{ postcode }}/share">Share</a>
 </span>
+-->
 
 </div>
 {% endblock %}
