@@ -1,30 +1,36 @@
-{{ error|safe }}
+{% extends 'base.html' %}
+{% block content %}
+
+{% if error %}<div id="errors">{{ error }}</div>{% endif %}
 
 <div id="main-column">
 
-<p><!-- <img id="front-example" src="/example.jpg" alt="To arrive at Birmingham Art Gallery by 9am, and leave at 8:15am, you can start from many different locations, from Halesowen to Solihull. "> -->
-House hunting? Job hunting?
-Give us your postcode and we&rsquo;ll help you with some awesome maps.</p>
+<p>Mapumental: A ninja tool for helping you house or job hunt within Great Britain.</p>
 
 <form method="get" action="/" id="pc-front">
-<label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</label>
+<p><label for="pc_f">Enter a <abbr title="Great Britain">GB</abbr> postcode:</label>
 <input type="text" name="pc" value="{{ postcode }}" size="6" id="pc_f">
-<input type="submit" value="Go">
+<input type="submit" value="Go"></p>
 </form>
 
-<p><strong>Please note:</strong> The maps generated show travel options
-arriving at your postcode by public transport by
-9am, based on October 2008 data. <em>Disclaimer: If you buy a house without having
-double checked these results with the real transport authority, it ain&rsquo;t
-our fault.</em>
+<p align="center">
+You can generate <strong>{{ maps_left }}</strong> map{{ maps_left|pluralize }}.
+{{ already_generated|safe }}
 </p>
 
 </div>
 
+<div id="side-map">
+<h2>Most recent</h2>
+<img src="/uk-map.png" alt="">
+</div>
+
 <div id="side-column">
 <p id="mysoc-logo"><a href="http://www.mysociety.org/"><img src="http://www.mysociety.org/mysociety_sm.gif" alt="mySociety"></a></p>
-<p>Mapumental is a project of Channel 4 and mySociety,
-<i>other metadata here</i>.
-<a href="/help">Read more about the project</a>,
+<p>Mapumental helps you build custom maps that help you work out the optimal
+place to live or work in order to have an easy commute and an affordable home.
+It is a project of Channel 4 and mySociety &mdash;
+<a href="/help">read more about the project</a>,
 or <a href="/contact">get in touch</a>.</p>
 </div>
+{% endblock %}

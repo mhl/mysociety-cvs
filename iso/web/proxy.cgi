@@ -6,13 +6,14 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.12 2009-05-07 23:16:29 matthew Exp $
+# $Id: proxy.cgi,v 1.13 2009-05-13 13:31:18 matthew Exp $
 #
 
 import sys, os.path, os, re, urllib
 sys.path.extend(("../pylib", "../../pylib"))
 import fcgi
-from page import *
+from page import fcgi_loop
+from django.http import HttpResponse, HttpResponseRedirect
 
 import mysociety.config
 mysociety.config.set_file("../conf/general")
@@ -23,14 +24,14 @@ def main(fs):
     if url:
         m = re.match('http://(?:.\.)?tile\.cloudmade\.com/[^/]*/[^/]*/[^/]*/([^/]*)/([^/]*)/([^/]*)\.png$', url)
         if not m:
-            return Response(status=302, url='/')
+            return HttpResponseRedirect('/')
         zoom, x, y = m.groups()
     else:
         zoom = fs.getfirst('z', 0)
         x = fs.getfirst('x', 0)
         y = fs.getfirst('y', 0)
     if not zoom or not x or not y:
-        return Response(status=302, url='/')
+        return HttpResponseRedirect('/')
     cache_dir = os.path.join(dir, zoom, x)
     cache_path = os.path.join(cache_dir, y)
     if os.path.exists(cache_path):
@@ -48,8 +49,7 @@ def main(fs):
             fp = open(cache_path, 'w') 
             fp.write(image)
             fp.close()
-    response = ImageResponse(image=image)
-    return response
+    return HttpResponse(image, mimetype='image/png')
 
 # Main FastCGI loop
 while fcgi.isFCGI():

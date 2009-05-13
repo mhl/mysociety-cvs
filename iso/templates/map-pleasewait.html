@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <p>Your map is waiting to be made; there {{ state.ahead|pluralize:"is,are" }}
 <strong>{{ state.ahead }} map{{ state.ahead|pluralize }} in front</strong> of
 yours in a queue of {{ state.new }}. 
@@ -8,3 +10,5 @@ yours is done.</p>
 <p>This page will automatically refresh until it is done; if this doesn&rsquo;t
 work in your browser, please wait a few seconds and then
 <a href="{{ self }}">see if your map is ready</a>.</p>
+{% endblock %}
+

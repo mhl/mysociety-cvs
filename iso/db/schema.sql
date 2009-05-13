@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.28 2009-05-13 12:10:42 francis Exp $
+-- $Id: schema.sql,v 1.29 2009-05-13 13:31:17 matthew Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -110,6 +110,25 @@ select AddGeometryColumn('', 'scenic', 'position_osgb', 27700, 'POINT', 2) into 
 select AddGeometryColumn('', 'scenic', 'position_merc', 900913, 'POINT', 2) into temp result_add_position_merc_3;
 create index scenic_position_merc on scenic using GIST (position_merc);
 
+-- For invites
+create table invite (
+    id serial not null primary key,
+    email text not null,
+    source text not null,
+    source_id integer,
+    token text,
+    num_invites integer not null default 0,
+    created timestamp not null default now()
+);
+create unique index invite_token_idx on invite(token);
+create unique index invite_email_idx on invite(email);
+
+create table invite_postcode (
+    id serial not null primary key,
+    invite_id integer not null references invite(id),
+    postcode text not null
+);
+
 -- We grant privileges back to the actual user who is using the database.
 -- Shame it had to all be made by user "postgres", see top of file.
 grant all on table station to col;
@@ -120,10 +139,12 @@ grant all on table spatial_ref_sys to col;
 grant all on table geometry_columns to col;
 grant all on table email_queue to col;
 grant all on table email_queue_id_seq to col;
-grant all on table email_queue_id_seq to col;
 grant all on table house_price to col;
 grant all on table house_price_id_seq to col;
 grant all on table scenic to col;
 grant all on table scenic_id_seq to col;
-
+grant all on table invite to col;
+grant all on table invite_id_seq to col;
+grant all on table invite_postcode to col;
+grant all on table invite_postcode_id_seq to col;
 

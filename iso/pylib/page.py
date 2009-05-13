@@ -6,104 +6,38 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.10 2009-05-06 19:30:20 matthew Exp $
+# $Id: page.py,v 1.11 2009-05-13 13:31:17 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
+import Cookie
+import random
 
 cgitb.enable()
+
+from django.conf import settings
+settings.configure( TEMPLATE_DIRS=(sys.path[0] + '/../templates/',), TEMPLATE_DEBUG=True)
+from django.template.loader import render_to_string
+from django.http import HttpResponse, HttpResponseRedirect
+
+def render_to_response(template, vars={}, mimetype=None):
+    vars.update({
+        'self': os.environ.get('REQUEST_URI', ''),
+    })
+    return HttpResponse(render_to_string(template, vars), mimetype=mimetype)
 
 def fcgi_loop(main):
     req = fcgi.Accept()
     fs = req.getFieldStorage()
-
-    #try:
     response = main(fs)
-    if response.headers():
-        req.out.write(response.headers())
-
-    if response.type == 'html':
-        req.out.write("Content-Type: text/html; charset=utf-8\r\n\r\n")
-    elif response.type == 'xml':
-        req.out.write("Content-Type: text/xml; charset=utf-8\r\n\r\n")
-    elif response.type == 'png':
-        req.out.write("Content-Type: image/png\r\n\r\n")
-    else:
-        raise Exception("unknown response type " + response.type)
-    if req.env.get('REQUEST_METHOD') == 'HEAD':
-        req.Finish()
-        return
-
-    if response.type == 'html':
-        footer = template('footer')
-        header = template('header', {
-            'postcode': fs.getfirst('pc', ''),
-            'refresh': response.refresh and '<meta http-equiv="refresh" content="%d">' % response.refresh or '',
-            'body_id': response.id and ' id="%s"' % response.id or '',
-            'title': 'title' in response.vars and '%s - ' % response.vars['title'] or '',
-        })
-        req.out.write(header + str(response) + footer)
-    else:
-        req.out.write(str(response))
-
-    #except Exception, e:
-        #req.out.write("Content-Type: text/plain\r\n\r\n")
-        #req.out.write("Sorry, we've had some sort of problem.\n\n")
-        #req.out.write(str(e) + "\n")
-        #req.out.write(traceback.format_exc() + "\n")
-        #traceback.print_exc()
-
+    if isinstance(response, HttpResponseRedirect):
+        req.out.write("Status: 302 Found\r\n")
+    # XXX Need to deal with HEAD
+    #if req.env.get('REQUEST_METHOD') == 'HEAD':
+    #    req.Finish()
+    #    return
+    req.out.write(str(response))
     req.Finish()
-
-class Response(object):
-    def __init__(self, template='', vars={}, status=200, url='', refresh=False, id='', type="html"):
-        self.template = template
-        self.vars = vars
-        self.status = status
-        self.url = url
-        self.refresh = refresh
-        self.id = id
-        self.type = type
-
-    def __str__(self):
-        if self.status == 302:
-            return "Please visit <a href='%s'>%s</a>." % (self.url, self.url)
-        return template(self.template, self.vars, self.type)
-
-    def headers(self):
-        if self.status == 302:
-            return "Status: 302 Found\r\nLocation: %s\r\n" % self.url
-        return ''
-
-class ImageResponse(Response):
-    def __init__(self, image):
-        self.image = image
-        self.status = 200
-        self.type = 'png'
-
-    def __str__(self):
-        return self.image
-
-def pluralize(m, vars):
-    if m.group('lookup'):
-        n = vars.get(m.group('var'), []).get(m.group('lookup'), 0)
-    else:
-        n = vars.get(m.group('var'), 0)
-    singular = m.group('singular') or ''
-    plural = m.group('plural') or 's'
-    if n==1:
-        return singular
-    return plural
-
-def template(name, vars={}, type='html'):
-    template = slurp_file(sys.path[0] + '/../templates/%s.%s' % (name, type))
-    vars['self'] = os.environ.get('REQUEST_URI', '')
-    template = re.sub('{{ ([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), '')), True), template)
-    template = re.sub('{{ ([a-z_]*)\.([a-z_]*) }}', lambda x: cgi.escape(str(vars.get(x.group(1), []).get(x.group(2), '')), True), template)
-    template = re.sub('{{ ([a-z_]*)\|safe }}', lambda x: str(vars.get(x.group(1), '')), template)
-    template = re.sub('{{ (?P<var>[a-z_]*)(?:\.(?P<lookup>[a-z_]*))?\|pluralize(?::"(?P<singular>[^,]*),(?P<plural>[^"]*)")? }}',
-        lambda x: pluralize(x, vars), template)
-    return template
 
 def slurp_file(filename):
     f = file(filename, 'rb')
@@ -116,4 +50,61 @@ def validate_email(address):
         return True
     else:
         return False
+
+# Cookie invite handling stuff
+
+class Invite(object):
+    id = 0
+    num_invites = 0
+    _postcodes = []
+
+    def __init__(self, db):
+        cookie_str = ''
+        if 'HTTP_COOKIE' in os.environ:
+            cookie_str = os.environ['HTTP_COOKIE']
+        cookies = Cookie.BaseCookie(cookie_str)
+        if not 'token' in cookies:
+            return
+        self.db = db
+        self.token = cookies['token']
+        self.check()
+
+    def __str__(self):
+        return self.token
+
+    def check(self):
+        self.db.execute('SELECT * FROM invite WHERE token=%s', (self.token.value,))
+        row = self.db.fetchone()
+        if not row: return
+        self.__dict__.update(row)
+
+    @property
+    def postcodes(self):
+        if not self._postcodes:
+            self.db.execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s', (self.id, ))
+            self._postcodes = [ row['postcode'] for row in self.db.fetchall() ]
+        return self._postcodes
+
+    @property
+    def postcodes_html(self):
+        already_generated = []
+        for pc in self.postcodes:
+            already_generated.append('<a href="/postcode/%s">%s</a>' % (pc, pc))
+        already_generated = ' | '.join(already_generated)
+        return already_generated
+
+    def add_postcode(self, pc):
+        self.db.execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%s, '%s')''' % (self.id, pc))
+        self.db.execute('COMMIT')
+        self._postcodes.append(pc)
+
+# Random token generation
+
+def random_token():
+    chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789'
+    token = ''
+    for k in range(17):
+        token += random.choice(chars)
+    return token
+
 

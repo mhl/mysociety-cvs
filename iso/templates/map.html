@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <div id="swf">
     <script type="text/javascript" defer="defer"><!--
         var getParam = swfobject.getQueryParamValue;
@@ -92,3 +94,25 @@
 
       //--></script>
 </div>
+
+<div id="map-footer">
+
+<a id="footer-invite" href="/invite">Invite <em>{{ num_invites }}</em> friend{{ num_invites|pluralize }}</a>
+
+{% if maps_left %}
+<form method="get" action="/">
+New map? <label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</label>
+<input type="text" name="pc" value="" size="6" id="pc_f">
+<input type="submit" value="Go">
+</form>
+{% endif %}
+
+(<strong>{{ maps_left }}</strong> map{{ maps_left|pluralize }} left.
+{{ already_generated|safe }})
+
+<span id="footer-share">
+<a href="/postcode/{{ postcode }}/share">Share</a>
+</span>
+
+</div>
+{% endblock %}

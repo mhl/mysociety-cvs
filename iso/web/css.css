@@ -135,11 +135,8 @@ h1 a:hover span {
     background: url("/i/title.png") 0 0 no-repeat;
 }
 
+/* Subtitle is on front page */
 p#subtitle {
-    display: none; /* Only want subtitle on front page */
-}
-
-#home p#subtitle {
     display: inline; /* inline rather than block to work around IE6 double left margin bug */
     float: left;
     clear: left;
@@ -147,7 +144,7 @@ p#subtitle {
     width: 265px; height: 40px;
     position: relative;
 }
-#home p#subtitle span {
+p#subtitle span {
     background: url("/i/subtitle.png") 0 0 no-repeat;
 }
 
@@ -157,14 +154,8 @@ p#subtitle {
     max-width: 60em;
 }
 
-#footer {
-    text-align: center;
-    padding: 1em 0;
-    clear: both;
-}
-
 #errors {
-    border: solid 1px #990000;
+    border: solid 1px #cc0033;
     background-color: #ffeeee;
     padding: 5px;
     width: 80%;
@@ -172,6 +163,13 @@ p#subtitle {
 ul#errors {
     margin: 0;
     padding-left: 1.5em;
+}
+
+#success {
+    border: solid 1px #335238;
+    background-color: #eeffee;
+    padding: 5px;
+    width: 80%;
 }
 
 /* Map related pages */
@@ -182,15 +180,48 @@ ul#errors {
 }
 
 #map #content {
-    width: 95%;
-    height: 70%;
+    width: 100%;
+    height: 75%;
     margin: 1em auto;
     padding: 0;
     max-width: none;
 }
 
-#map #footer {
-    padding: 0;
+#map-footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #ffffff;
+    padding: 4px;
+    border-top: solid 2px #051736;
+}
+
+#map-footer form {
+    display: inline;
+}
+
+#footer-share {
+    margin: 0 2em;
+}
+
+a#footer-invite {
+    float: right;
+    background-color: #ff6908;
+    border: solid 2px #ed3b21;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 2px;
+    font-weight: bold;
+}
+a#footer-invite:hover {
+    background-color: #4a8594;
+    border: solid 2px #051736;
+    text-decoration: underline;
+}
+#share-button a {
+    left: 5px;
+    right: auto;
 }
 
 /* Front page */
@@ -208,15 +239,32 @@ ul#errors {
 
 div#main-column {
     float: left;
-    width: 81%;
+    width: 45%;
+    margin-right: 10%;
+}
+
+div#side-map {
+    float: right;
+    text-align: center;
+    width: 150px;
+    margin: 0 0 0 2em;
 }
 
 div#side-column {
-    float: right;
-    width: 14%;
+    float: left;
+    width: 20%;
     color: #706357;
 }
 
 #mysoc-logo {
     margin-top: 0.8125em;
+}
+
+#postcode-list {
+    font-size: 200%;
+}
+
+#postcode-list li {
+    float: left;
+    width: 30%;
 }

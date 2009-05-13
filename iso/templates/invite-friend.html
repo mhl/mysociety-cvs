@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if error %}
+<p id="errors">{{ error }}</p>
+{% endif %}
+
+{% if success_p %}
+<p id="success">{{ success_p }}</p>
+{% endif %}
+
+<p>Mapumental is currently in a private beta-testing phase. If you
+know of a friend who would be interested in using the site, please
+provide their email address below and we&rsquo;ll send them an invite code.
+</p>
+
+<form method="post" action="{{ self }}">
+<p align="center"><label for="friend">Email:</label>
+<input type="text" name="friend" id="friend" value="{{ email }}">
+<input type="submit" value="Request"></p>
+</form>
+
+<p><small>We will only use the email address to send an invite, nothing more.</small></p>
+{% endblock %}
+

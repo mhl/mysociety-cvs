@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.88 2009-05-13 12:10:42 francis Exp $
+# $Id: index.cgi,v 1.89 2009-05-13 13:31:18 matthew Exp $
 #
 
 import sys
@@ -16,6 +16,7 @@ import fcgi
 import struct
 import re
 import psycopg2
+import Cookie
 import psycopg2.errorcodes
 
 from page import *
@@ -23,6 +24,8 @@ import mysociety.config
 import mysociety.mapit
 mysociety.config.set_file("../conf/general")
 from mysociety.rabx import RABXException
+
+from django.http import HttpResponseRedirect
 
 import coldb
 import geoconvert
@@ -323,34 +326,31 @@ def check_postcode(pc):
     try:
         f = mysociety.mapit.get_location(pc)
     except RABXException, e:
-        return Response('index', {
-            'error': '<div id="errors">%s</div>' % e
-        })
+        return render_to_response('index.html', { 'error': e })
 
     #(station, station_long, station_id) = nearest_station(E, N)
     #if not station:
-    #    return Response('index', {
-    #        'error': '<div id="errors">Could not find a station or bus stop :(</div>'
-    #    })
+    #    return render_to_response('index.html', { 'error': 'Could not find a station or bus stop :(' })
 
     if f['coordsyst'] == 'I':
-        return Response('index', {
-            'error': '<div id="errors">I&rsquo;m afraid we don&rsquo;t have information for Northern Ireland.</div>'
+        return render_to_response('index.html', {
+            'error': u'I\u2019m afraid we don\u2019t have information for Northern Ireland.'
         })
 
     # Canonicalise it, and redirect to that URL
     pc = sanitise_postcode(pc)
 
-    return Response(status=302, url='/postcode/%s' % (pc))
+    return HttpResponseRedirect('/postcode/%s' % (pc))
 
-def map_complete(map):
+def map_complete(map, invite):
     # Check there is a route file
     file = os.path.join(tmpwork, '%s.iso' % str(map.id))
     if not os.path.exists(file):
-        return Response('map-noiso', { 'map_id' : map.id }, id='map-noiso')
+        return render_to_response('map-noiso.html', { 'map_id' : map.id, 'body_id': 'map-noiso' })
     # Let's show the map
-    return Response('map', {
+    return render_to_response('map.html', {
         'title': map.title(),
+        'postcode': map.target_postcode,
         'centre_lat': map.lat,
         'centre_lon': map.lon,
         'tile_id': map.id,
@@ -358,14 +358,19 @@ def map_complete(map):
         'target_time_formatted': map.target_time_formatted(),
         'target_time': map.target_time,
         'show_max_minutes': abs(map.target_time - map.target_limit_time),
-        'route_url_base': map.url_with_params()
-    }, id='map')
+        'route_url_base': map.url_with_params(),
+        'num_invites': invite.num_invites,
+        'invite': invite,
+        'maps_left': INVITE_NUM_MAPS - len(invite.postcodes),
+        'already_generated': invite.postcodes_html,
+        'body_id': 'map',
+    })
 
-def map(fs, email=''):
+def map(fs, invite):
     map = Map(fs)
 
     if map.current_state == 'complete':
-        return map_complete(map)
+        return map_complete(map, invite)
 
     # See how long it will take to make it
     map.get_progress_info()
@@ -373,12 +378,13 @@ def map(fs, email=''):
     approx_waiting_time = map.maps_to_be_made * generation_time / float(map.concurrent_map_makers)
     # ... if too long, ask for email
     if map.current_state in ('new', 'working') and approx_waiting_time > 60:
-        return Response('map-provideemail', map.add_url_params({
+        return render_to_response('map-provideemail.html', map.add_url_params({
             'title': 'Please provide your email - %s' % map.title(),
             'state': map.state,
             'approx_waiting_time': int(approx_waiting_time),
             'email': email,
-        }), id='map-wait')
+            'body_id': 'map-wait',
+        }))
 
     # If map isn't being made , set it going
     if map.id is None:
@@ -387,34 +393,39 @@ def map(fs, email=''):
 
     # Please wait...
     if map.current_state == 'complete':
-        return map_complete(map)
+        return map_complete(map, invite)
     elif map.current_state == 'working':
         server, server_port = map.working_server.split(':')
-        return Response('map-working', {
+        return render_to_response('map-working.html', {
             'title': 'Working - %s' % map.title(),
             'approx_waiting_time': round(generation_time),
             'state' : map.state,
             'server': server,
             'server_port': server_port,
-        }, refresh=int(generation_time)<5 and int(generation_time) or 5, id='map-wait')
+            'refresh': int(generation_time)<5 and int(generation_time) or 5,
+            'body_id': 'map-wait'
+        })
     elif map.current_state == 'error':
-        return Response('map-error', { 'map_id' : map.id }, id='map-wait')
+        return render_to_response('map-error.html', { 'map_id' : map.id, 'body_id': 'map-wait' })
     elif map.current_state == 'new':
-        return Response('map-pleasewait', {
+        return render_to_response('map-pleasewait.html', {
             'title': 'Please wait - %s' % map.title(),
             'approx_waiting_time': int(approx_waiting_time),
             'state' : map.state,
-        }, refresh=2, id='map-wait')
+            'refresh': 2,
+            'body_id': 'map-wait',
+        })
     else:
         raise Exception("unknown state " + map.current_state)
 
 # Email has been given, remember to mail them when map is ready
 def log_email(fs, email):
     if not validate_email(email):
-        return Response('map-provideemail-error', {
+        return render_to_response('map-provideemail-error.html', {
             'target_postcode': fs.getfirst('target_postcode'),
             'email': email,
-        }, id='map-wait')
+            'body_id': 'map-wait',
+        })
     # Okay, we have an email, set off the process
     map = Map(fs)
     if map.id is None:
@@ -423,7 +434,7 @@ def log_email(fs, email):
 
     db.execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
     db.execute('COMMIT')
-    return Response('map-provideemail-thanks', { })
+    return render_to_response('map-provideemail-thanks.html')
 
 # Used when in Flash you click on somewhere to get the route
 def get_route(fs, lat, lon):
@@ -494,25 +505,51 @@ def get_route(fs, lat, lon):
             route_str += "No route found"
         route_str += "\n";
 
-    return Response('route', 
-            { 'lat': lat, 'lon': lon, 'e': E, 'n': N, 'station' : station, 'station_long' : station_long, 'time_taken' : tim, 'route_str' : route_str},
-                type='xml')
+    return render_to_response('route.xml', {
+        'lat': lat, 'lon': lon,
+        'e': E, 'n': N,
+        'station' : station,
+        'station_long' : station_long,
+        'time_taken' : tim,
+        'route_str' : route_str
+    }, mimetype='text/xml')
 
 #####################################################################
 # Main FastCGI loop
-    
-def main(fs):
-    got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
 
-    if 'lat' in fs:
+INVITE_NUM_MAPS = 3
+
+def main(fs):
+    invite = Invite(db)
+    if not invite.id:
+        return HttpResponseRedirect('/signup')
+
+    #got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
+    got_map_spec = ('target_postcode' in fs)
+
+    if 'lat' in fs: # Flash request for route
         return get_route(fs, fs.getfirst('lat'), fs.getfirst('lon'))
-    elif 'pc' in fs:
+    elif 'pc' in fs: # Front page submission
         return check_postcode(fs.getfirst('pc'))
-    elif got_map_spec and 'email' in fs:
+    elif got_map_spec and 'email' in fs: # Overloaded email request
         return log_email(fs, fs.getfirst('email'))
-    elif got_map_spec:
-        return map(fs)
-    return Response('index', id='home')
+    elif got_map_spec: # Page for generating/ displaying map
+        postcode = sanitise_postcode(fs.getfirst('target_postcode'))
+        postcodes = invite.postcodes
+        if postcode not in postcodes:
+            if len(postcodes) >= INVITE_NUM_MAPS:
+                return render_to_response('beta-limit.html', { 'postcodes': postcodes })
+            invite.add_postcode(postcode)
+        return map(fs, invite)
+
+    # Front page display
+    maps_left = INVITE_NUM_MAPS - len(invite.postcodes)
+    return render_to_response('index.html', {
+        'invite': invite,
+        'maps_left': maps_left,
+        'already_generated': invite.postcodes_html,
+        'body_id': 'home'
+    })
 
 # Main FastCGI loop
 while fcgi.isFCGI():

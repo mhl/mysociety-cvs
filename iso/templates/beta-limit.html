@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<p>During our testing beta phase, each invite only has the ability to create
+maps for three different postcodes. Your three are:</p>
+
+<ul id="postcode-list">
+<li><a href="/postcode/{{ postcodes.0 }}">{{ postcodes.0 }}</a></li>
+<li><a href="/postcode/{{ postcodes.1 }}">{{ postcodes.1 }}</a></li>
+<li><a href="/postcode/{{ postcodes.2 }}">{{ postcodes.2 }}</a></li>
+</ul>
+{% endblock %}
+

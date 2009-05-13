@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: contact.cgi,v 1.7 2009-05-06 19:30:21 matthew Exp $
+# $Id: contact.cgi,v 1.8 2009-05-13 13:31:18 matthew Exp $
 #
 
 import re
@@ -43,7 +43,6 @@ def contact_submit(fs):
     if not re.search(r'\S', message):
         errors.append('Please write a message')
     if errors:
-        errors = '<ul id="errors"><li>%s</li></ul>' % '</li><li>'.join(errors)
         return contact_page(fs, errors)
 
     message = re.sub('\r\n', '\n', message)
@@ -63,14 +62,14 @@ def contact_submit(fs):
     try:
         server.sendmail(email, mysociety.config.get('CONTACT_EMAIL'), msg.as_string())
     except smtplib.SMTPResponseException, e:
-        return contact_page(fs, '<div id="errors">%s</div>' % e.smtp_error)
+        return contact_page(fs, [ e.smtp_error ])
     finally:
         server.quit()
 
-    return Response('contact-thanks')
+    return render_to_response('contact-thanks.html')
 
-def contact_page(fs, errors = ''):
-    return Response('contact', {
+def contact_page(fs, errors = []):
+    return render_to_response('contact.html', {
         'title': 'Contact the team',
         'errors': errors,
         'name': fs.getfirst('name', ''),

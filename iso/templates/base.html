@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-{{ refresh|safe }}
+{% if refresh %}<meta http-equiv="refresh" content="{{ refresh }}">{% endif %}
 <link rel="stylesheet" type="text/css" href="/css.css">
 <!--[if LT IE 7]>
 <style type="text/css">@import url("/ie6.css");</style>
@@ -10,17 +10,25 @@
 <script type="text/javascript" src="/js/swfobject.js"></script>
 <script type="text/javascript" src="/js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="/js/site.js"></script>
-<title>{{ title }}Mapumental</title>
+<title>{% if title %}{{ title }} - {% endif %}Mapumental</title>
 </head>
-<body{{ body_id|safe }}>
+<body{% if body_id %} id="{{ body_id }}"{% endif %}>
 
 <div id="header">
 
 <a id="c4logo" href="http://www.channel4.com/">Channel 4</a>
 <h1><a href="/"><span></span>Mapumental</a></h1>
 
+{% ifequal body_id 'home' %}
 <p id="subtitle"><span></span>How far will you go?</p>
+{% endifequal %}
 
 </div>
 
 <div id="content">
+{% block content %}
+{% endblock %}
+</div>
+
+</body>
+</html>

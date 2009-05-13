@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if error %}
+<p id="errors">{{ error }}</p>
+{% endif %}
+
+<p>Mapumental is currently in a private beta-testing phase. If
+you&rsquo;re interested in using the site, please provide your email
+address below and we&rsquo;ll send you an invite code when one is
+available.</p>
+
+<form method="post" action="{{ self }}">
+<p align="center"><label for="email">Email:</label>
+<input type="text" name="email" id="email" value="{{ email }}">
+<input type="submit" value="Request"></p>
+</form>
+
+<p><small>We will only use your email address to send you an invite code,
+and updates about the site, such as when it goes public for all.</small></p>
+{% endblock %}
+

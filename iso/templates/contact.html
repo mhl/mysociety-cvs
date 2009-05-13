@@ -1,4 +1,13 @@
-{{ errors|safe }}
+{% extends 'base.html' %}
+{% block content %}
+
+{% if errors %}
+<ul id="errors">
+{% for e in errors %}
+<li>{{ e }}
+{% endfor %}
+</ul>
+{% endif %}
 
 <h2>Contact the team</h2>
 
@@ -20,4 +29,5 @@ send an email to <a href='mailto:{{ contact_email }}'>{{ contact_email }}</a>:
 <div class="checkbox"><input type="submit" value="Post"></div>
 </fieldset>
 </form>
+{% endblock %}
 
