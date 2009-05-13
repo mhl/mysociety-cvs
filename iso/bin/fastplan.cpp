@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.9 2009-04-29 11:02:17 francis Exp $
+// $Id: fastplan.cpp,v 1.10 2009-05-13 01:44:29 francis Exp $
 //
 
 // Usage:
@@ -62,7 +62,8 @@ int main(int argc, char * argv[]) {
     atco.do_dijkstra(
         result_function_pointer,
         target_location_id, target_minutes_after_midnight,
-        earliest_departure
+        earliest_departure,
+        DIRECTION_ARRIVE_BY
     );
     pm.display("route finding took");
 

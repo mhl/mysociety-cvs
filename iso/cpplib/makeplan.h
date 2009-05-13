@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.16 2009-05-08 15:12:29 francis Exp $
+// $Id: makeplan.h,v 1.17 2009-05-13 01:44:29 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -31,15 +31,20 @@
 #include <math.h>
 
 typedef short Minutes; // after midnight (only needs to be a short, and we assume it is that for binary output)
+#define MINUTES_NULL Minutes(-1)
 #ifdef OUTPUT_ROUTE_DETAILS
 std::string format_time(const Minutes& mins_after_midnight) {
+    if (mins_after_midnight == MINUTES_NULL) {
+        return("MINUTES_NULL");
+    }
+
+    assert(mins_after_midnight >= 0);
+
     int hours = mins_after_midnight / 60;
     int mins = mins_after_midnight % 60;
     return (boost::format("%02d:%02d:00") % hours % mins).str();
 }
 #endif
-
-#define MINUTES_NULL Minutes(-1)
 
 typedef int LocationID;
 class Location {
@@ -114,20 +119,166 @@ class Journey {
 #define JOURNEY_ALREADY_THERE JourneyID(-2)
 #define JOURNEY_WALK JourneyID(-3)
 
-class ArrivePlaceTime {
-    /* Stores a location and date/time of arrival (including interchange wait)
-    at that location. */
+// Which way we are targetting the journey - arrive by, or depart after
+#define INT_DIRECTION_NULL 0
+#define INT_DIRECTION_ARRIVE_BY 1
+#define INT_DIRECTION_DEPART_AFTER 2
+class Direction {
+    public:
+    int type;
+
+    Direction() {
+        this->type = INT_DIRECTION_NULL;
+    }
+
+    Direction(int l_type) {
+        assert(l_type == 1 || l_type == 2);
+        this->type = l_type;
+    }
+
+    // Whether a is later than b (for arrive by). Reverse for depart after.
+    bool later_than(Minutes a, Minutes b) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return a > b;
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return a < b;
+        } else {
+            assert(false);
+        }
+    }
+    // Whether a is earlier than b or equal (for arrive by). Reverse for depart after.
+    bool earlier_than_or_equal(Minutes a, Minutes b) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return a <= b;
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return a >= b;
+        } else {
+            assert(false);
+        }
+    }
+    // Whether a is earlier than b (for arrive by). Reverse for depart after.
+    bool earlier_than(Minutes a, Minutes b) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return a < b;
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return a > b;
+        } else {
+            assert(false);
+        }
+    }
+
+
+
+    // Subtract b from a (for arrive by). Reverse for depart after.
+    Minutes subtract_minutes(Minutes a, Minutes b) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return a - b;
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return a + b;
+        } else {
+            assert(false);
+        }
+    }
+    // Add b to a (for arrive by). Reverse for depart after.
+    Minutes add_minutes(Minutes a, Minutes b) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return a + b;
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return a - b;
+        } else {
+            assert(false);
+        }
+    }
+
+
+    // Reversible version of pick up / set down
+    bool is_set_down(const Hop& hop) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return hop.is_set_down();
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return hop.is_pick_up();
+        } else {
+            assert(false);
+        }
+    }
+    bool is_pick_up(const Hop& hop) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return hop.is_pick_up();
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return hop.is_set_down();
+        } else {
+            assert(false);
+        }
+    }
+    Minutes mins_arr(const Hop& hop) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return hop.mins_arr;
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return hop.mins_dep;
+        } else {
+            assert(false);
+        }
+    }
+    Minutes mins_dep(const Hop& hop) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return hop.mins_dep;
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return hop.mins_arr;
+        } else {
+            assert(false);
+        }
+    }
+
+
+
+    std::string arrive_depart() {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return "arrival";
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return "departure";
+        } else {
+            assert(false);
+        }
+    }
+    std::string late_early() {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return "late";
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return "early";
+        } else {
+            assert(false);
+        }
+    }
+
+    bool operator==(const Direction& d) const {
+        return this->type == d.type;
+    }
+ 
+};
+#define DIRECTION_ARRIVE_BY Direction(INT_DIRECTION_ARRIVE_BY)
+#define DIRECTION_DEPART_AFTER Direction(INT_DIRECTION_DEPART_AFTER)
+
+class PlaceTime {
+    /* 
+    For "arrive by" route finding is an PlaceTime: Stores a location and
+    date/time of arrival (including interchange wait) at that location. 
+
+    For "leave after" route finding is a DepartPlaceTime: Stores a location and
+    date/time of departure (including interchange wait) at that location.
+    */
 
     public:
 
     LocationID location_id;
     Minutes when; // minutes after midnight
 
+    // "Onwards" here means towards target in time - so for "arrive at", means
+    // the next journey, and "leave after" the previous.
 #ifdef OUTPUT_ROUTE_DETAILS
     JourneyID onwards_journey_id;
 #endif
 
-    ArrivePlaceTime(LocationID l_location_id, Minutes l_when
+    PlaceTime(LocationID l_location_id, Minutes l_when
 #ifdef OUTPUT_ROUTE_DETAILS
         , JourneyID l_onwards_journey_id
 #endif
@@ -140,15 +291,15 @@ class ArrivePlaceTime {
 #endif
     }
 
-    ArrivePlaceTime() {
+    PlaceTime() {
         this->location_id = LOCATION_NULL;
         this->when = MINUTES_NULL;
     }
 
     std::string repr() const {
         std::string ret;
-        //ret = "ArrivePlaceTime(" + this->location_id + ", " + this->when + ")";
-        ret = "ArrivePlaceTime(...)";
+        //ret = "PlaceTime(" + this->location_id + ", " + this->when + ")";
+        ret = "PlaceTime(...)";
         return ret;
     }
 };
@@ -174,8 +325,8 @@ class RouteNode {
 };
 
 /* Map from a location, to the best time/location to leave that place */
-typedef std::map<LocationID, ArrivePlaceTime> Adjacents;
-typedef std::pair<LocationID, ArrivePlaceTime> AdjacentsPair;
+typedef std::map<LocationID, PlaceTime> Adjacents;
+typedef std::pair<LocationID, PlaceTime> AdjacentsPair;
 
 /* Result types from Dijkstra's algorithm */
 typedef std::vector<Minutes> Settled;
@@ -190,6 +341,7 @@ typedef std::vector<RouteNode> Routes;
 typedef std::vector<boost::optional<Minutes> > QueueValuesType;
 QueueValuesType queue_values;
 Location *queue_first_location = NULL;
+bool queue_reverse_direction;
 struct LessValues
 {
     bool operator()(unsigned x, unsigned y) const
@@ -203,8 +355,13 @@ struct LessValues
             Location *l_y = &queue_first_location[y];
             return l_x->text_id < l_y->text_id;
         }
-        // reverse order - nearer to end time is better
-        return queue_values[x] > queue_values[y];
+        if (queue_reverse_direction) {
+            // "depart after" - nearer to start time is better
+            return queue_values[x] < queue_values[y];
+        } else {
+            // "arrive by" - nearer to end time is better
+            return queue_values[x] > queue_values[y];
+        }
     }
 };
 
@@ -213,6 +370,9 @@ sets of quickest routes from them.
 */
 class PlanningATCO {
     public: 
+
+    // Arrive by or depart after
+    Direction direction;
 
     // input parameters
     int general_interchange_default;
@@ -256,7 +416,9 @@ class PlanningATCO {
     general_interchange_default - time in minutes to allow by default to change trains etc. at one station
     bus_interchange_default - likewise for buses, at exact same stop
     */
-    PlanningATCO(int l_general_interchange_default = 5, int l_bus_interchange_default = 1, float l_walk_speed=1.34, float l_walk_time=600.0 
+    PlanningATCO(
+        int l_general_interchange_default = 5, int l_bus_interchange_default = 1, 
+        float l_walk_speed=1.34, float l_walk_time=600.0
     ) {
         this->general_interchange_default = l_general_interchange_default;
         this->bus_interchange_default = l_bus_interchange_default;
@@ -544,20 +706,20 @@ class PlanningATCO {
     /* Private helper function. Store a time we can leave a station, if it
     is later than previous direct routes we have for leaving from that
     station and arriving at target. */
-    void _add_to_adjacents(ArrivePlaceTime &arrive_place_time, Adjacents &adjacents) {
+    void _add_to_adjacents(PlaceTime &place_time, Adjacents &adjacents) {
         // This is written to minimise the number of searches of the map, as it
         // is performance critical. So, uses "insert" rather than "[]".
-        AdjacentsPair ap(arrive_place_time.location_id, arrive_place_time);
+        AdjacentsPair ap(place_time.location_id, place_time);
         std::pair<Adjacents::iterator, bool> p = adjacents.insert(ap);
         if (!p.second) {
             // Element already exists, update it in place if new one is better
             const Adjacents::iterator& it = p.first;
-            if (arrive_place_time.when > it->second.when) {
-                it->second = arrive_place_time;
+            if (this->direction.later_than(place_time.when, it->second.when)) {
+                it->second = place_time;
             }
         }
     }
-
+    
     /* How long it takes to walk between two stations dist distance apart.
     */
     Minutes _walk_time_apart(float dist) {
@@ -591,19 +753,23 @@ class PlanningATCO {
             #endif
 
             Minutes walk_time = this->_walk_time_apart(dist);
-            Minutes walk_departure_time = target_arrival_time - walk_time;
-            ArrivePlaceTime arrive_place_time(location_id, walk_departure_time
+            // walk_departure_time is departure time of walk (direction "arrive
+            // by"), or arrival time of walk (direction "depart after")
+            Minutes walk_departure_time = this->direction.subtract_minutes(target_arrival_time, walk_time);
+            PlaceTime place_time(location_id, walk_departure_time
 #ifdef OUTPUT_ROUTE_DETAILS
                 , JOURNEY_WALK
 #endif
             );
             // Use this location if new, or if it is later departure time than any previous one the same we've found.
-            this->_add_to_adjacents(arrive_place_time, adjacents);
+            this->_add_to_adjacents(place_time, adjacents);
         }
     }
 
     // How long after a journey it takes to interchange to catch the next form
-    // of transport at the given destination stop.
+    // of transport at the given destination stop (for "arrive by").
+    // How long before a journey it takes to interchange from the previous form
+    // of transport at the given stop (for "depart after").
     Minutes _interchange_time_after_journey(JourneyID journey_id, LocationID location_id) {
         Journey& journey = this->journeys[journey_id];
 
@@ -652,22 +818,23 @@ class PlanningATCO {
         // Pick the latest of arrival times that's before the time we're
         // currently at (plus interchange time of course). Usually there'll
         // only be one of arrival time to check, but there can be more for
-        // looped journeys.
+        // looped journeys. (This description is for "arrive by"; "depart
+        // after" is opposite)
         Minutes arrival_time_at_target_location = MINUTES_NULL;
         BOOST_FOREACH(const Hop& hop, journey.hops) {
             // Find hops that arrive at the target
             if (hop.location_id != target_location_id) {
                 continue;
             }
-            if (!hop.is_set_down()) {
+            if (!this->direction.is_set_down(hop)) {
                 continue;
             }
-            Minutes possible_arrival_time_at_target_location = hop.mins_arr;
-            log(boost::format("\t\tarrival time %s at target location %s") % format_time(possible_arrival_time_at_target_location) % this->locations[target_location_id].text_id);
+            Minutes possible_arrival_time_at_target_location = this->direction.mins_arr(hop);
+            log(boost::format("\t\t%s time %s at target location %s") % this->direction.arrive_depart() % format_time(possible_arrival_time_at_target_location) % this->locations[target_location_id].text_id);
             // See if that is a closer arrival time than what we got so far
             assert(hop.mins_arr >= 0);
-            if (possible_arrival_time_at_target_location + interchange_time <= target_arrival_time 
-                && (arrival_time_at_target_location == MINUTES_NULL || arrival_time_at_target_location < possible_arrival_time_at_target_location)) {
+            if (this->direction.earlier_than_or_equal(this->direction.add_minutes(possible_arrival_time_at_target_location, interchange_time), target_arrival_time)
+                && (arrival_time_at_target_location == MINUTES_NULL || this->direction.earlier_than(arrival_time_at_target_location, possible_arrival_time_at_target_location))) {
                 arrival_time_at_target_location = possible_arrival_time_at_target_location;
             }
         }
@@ -675,58 +842,77 @@ class PlanningATCO {
         // See whether if we want to use this journey to get to this
         // stop, we get there on time to change to the next journey.
         if (arrival_time_at_target_location == MINUTES_NULL) {
-            log(boost::format("\t\twhich are all too late for %s by %s with interchange time %d so not using journey") % this->locations[target_location_id].text_id % format_time(target_arrival_time) % interchange_time);
+            log(boost::format("\t\twhich are all too %s for %s by %s with interchange time %d so not using journey") % this->direction.late_early() % this->locations[target_location_id].text_id % format_time(target_arrival_time) % interchange_time);
             return;
         }
 
         log("\t\tadding stops");
-        this->_adjacent_location_times_add_stops(target_location_id, target_arrival_time, adjacents, journey_id, arrival_time_at_target_location);
+        this->_adjacent_location_times_add_stops(target_location_id, adjacents, journey_id, arrival_time_at_target_location);
     }
 
+    /* Internal function for _adjacent_location_times_add_stops which follows */
+    bool _process_hop(const Hop& hop, const LocationID target_location_id, Adjacents &adjacents, const JourneyID journey_id, const Minutes arrival_time_at_target_location) {
+        // Ignore the target location
+        if (hop.location_id == target_location_id) {
+            return true;
+        }
+
+        // If the stop doesn't pick up passengers, don't use it
+        if (!this->direction.is_pick_up(hop)) {
+            return true;
+        }
+
+        Minutes departure_time = this->direction.mins_dep(hop);
+
+        // If the time at this hop is later than at target, we stop.
+        // We use time for this, rather than stopping at the target location,
+        // so we cope with looped journeys.
+        // XXX This will also stop midnight rollover journeys at midnight.
+        // If we care about maps near midnight, then this needs fixing by
+        // duplicating the journey at an earlier stage in processing, as
+        // well as by working out the right date/time in
+        // _adjacent_location_times_for_journey to get is_valid_on_date
+        // right.
+        if (this->direction.later_than(departure_time, arrival_time_at_target_location)) {
+            return false;
+        }
+
+        // Use this location if new, or if it is later departure time than any previous one the same we've found.
+        PlaceTime place_time(hop.location_id, departure_time
+#ifdef OUTPUT_ROUTE_DETAILS
+            , journey_id
+#endif
+        );
+#ifdef DEBUG
+        log(boost::format("\t\t\tadding stop: %s %s") % this->locations[hop.location_id].text_id % format_time(departure_time));
+#endif
+        this->_add_to_adjacents(place_time, adjacents);
+        return true;
+    }
     /* Private function, called by _adjacent_location_times_for_journey.
     For a given journey, adds individual stops which are valid to the
     adjacents structure.
     */
-    void _adjacent_location_times_add_stops(const LocationID target_location_id, const Minutes target_arrival_time, Adjacents &adjacents, const JourneyID journey_id, const Minutes arrival_time_at_target_location) {
+    void _adjacent_location_times_add_stops(const LocationID target_location_id, Adjacents &adjacents, const JourneyID journey_id, const Minutes arrival_time_at_target_location) {
         Journey& journey = this->journeys[journey_id];
 
-        // Now go through every earlier stop, and add it to the list of returnable nodes
-        BOOST_FOREACH(const Hop& hop, journey.hops) {
-            // Ignore the target location
-            if (hop.location_id == target_location_id) {
-                continue;
+        // Go through every earlier stop, and add it to the list of returnable nodes
+        if (this->direction == DIRECTION_ARRIVE_BY) {
+            for (std::vector<Hop>::iterator it = journey.hops.begin(); it != journey.hops.end(); it++) {
+                const Hop& hop = *it;
+                if (!_process_hop(hop, target_location_id, adjacents, journey_id, arrival_time_at_target_location)) {
+                    break;
+                }
             }
-
-            // If the stop doesn't pick up passengers, don't use it
-            if (!hop.is_pick_up()) {
-                continue;
+        } else if (this->direction == DIRECTION_DEPART_AFTER) {
+            for (std::vector<Hop>::reverse_iterator it = journey.hops.rbegin(); it != journey.hops.rend(); it++) {
+                const Hop& hop = *it;
+                if (!_process_hop(hop, target_location_id, adjacents, journey_id, arrival_time_at_target_location)) {
+                    break;
+                }
             }
-
-            Minutes departure_time = hop.mins_dep;
-
-            // If the time at this hop is later than at target, we stop.
-            // We use time for this, rather than stopping at the target location,
-            // so we cope with looped journeys.
-            // XXX This will also stop midnight rollover journeys at midnight.
-            // If we care about maps near midnight, then this needs fixing by
-            // duplicating the journey at an earlier stage in processing, as
-            // well as by working out the right date/time in
-            // _adjacent_location_times_for_journey to get is_valid_on_date
-            // right.
-            if (departure_time > arrival_time_at_target_location) {
-                break;
-            }
-
-            // Use this location if new, or if it is later departure time than any previous one the same we've found.
-            ArrivePlaceTime arrive_place_time(hop.location_id, departure_time
-#ifdef OUTPUT_ROUTE_DETAILS
-                , journey_id
-#endif
-            );
-#ifdef DEBUG
-            log(boost::format("\t\t\tadding stop: %s %s") % this->locations[hop.location_id].text_id % format_time(departure_time));
-#endif
-            this->_add_to_adjacents(arrive_place_time, adjacents);
+        } else {
+            assert(false);
         }
     }
 
@@ -744,8 +930,11 @@ class PlanningATCO {
     earliest_departure - what minute in day to stop when we get back to
     */
     void do_dijkstra(ResultFunctionPointer result_function_pointer,
-        const LocationID target_location_id, const Minutes target_time, const Minutes earliest_departure
+        const LocationID target_location_id, const Minutes target_time, const Minutes earliest_departure,
+        Direction l_direction
     ) {
+        this->direction = l_direction;
+
         // Generate proximity index
         // (we do this each time as a) station 0 moves location, and b) maybe we'll let
         // walk times and things be parameters
@@ -778,7 +967,16 @@ class PlanningATCO {
         queue_first_location = &this->locations[0];
         typedef std::pair<unsigned, LessValues> HeapPair;
         boost::relaxed_heap<unsigned, LessValues> heap(max_values);
-
+        
+        // Set direction of queue according to whether we are "arrive by" or
+        // "depart after"
+        if (this->direction == DIRECTION_ARRIVE_BY) {
+            queue_reverse_direction = false;
+        } else if (this->direction == DIRECTION_DEPART_AFTER) {
+            queue_reverse_direction = true;
+        } else {
+            assert(false);
+        }
         // Put in initial value
         queue_values[target_location_id] = target_time; 
         heap.update(target_location_id);
@@ -791,7 +989,7 @@ class PlanningATCO {
             queue_values[nearest_location_id] = boost::optional<Minutes>();
 
             // If it is earlier than earliest departure we are going back to, then finish
-            if (nearest_time < earliest_departure) {
+            if (this->direction.earlier_than(nearest_time, earliest_departure)) {
                 break;
             }
 
@@ -810,13 +1008,15 @@ class PlanningATCO {
                 #ifdef DEBUG
                 const Location& location = this->locations[location_id];
                 #endif 
-                const ArrivePlaceTime& arrive_place_time = p.second;
+                const PlaceTime& arrive_place_time = p.second;
                 log(boost::format("considering direct connecting station: %s priority %s") % location.text_id.c_str() % format_time(arrive_place_time.when));
                 if (queue_values[location_id]) {
                     // already in heap
                     Minutes current_priority = *queue_values[location_id];
                     debug_assert(this->settled[location_id] == MINUTES_NULL);
-                    if (arrive_place_time.when > current_priority) {
+                    // is the new one better than the old?
+                    if (this->direction.later_than(arrive_place_time.when, current_priority)) {
+                        // yep, replace it
                         log(boost::format("\tupdated location %s from priority %s to priority %s") % this->locations[location_id].text_id % format_time(current_priority) % format_time(arrive_place_time.when));
                         queue_values[location_id] = arrive_place_time.when;
                         heap.update(location_id);
@@ -824,11 +1024,12 @@ class PlanningATCO {
                         this->routes[location_id] = RouteNode(nearest_location_id, arrive_place_time.onwards_journey_id);
 #endif
                     } else {
+                        // nope, don't bother with it
                         log(boost::format("\tlocation %s already in heap priority %s") % this->locations[location_id].text_id % format_time(current_priority));
                     }
                 } else {
                     if (this->settled[location_id] == MINUTES_NULL) {
-                        // new priority to heap
+                        // completely new priority to heap
                         log(boost::format("\tadded location %s with priority %s") % this->locations[location_id].text_id % format_time(arrive_place_time.when));
                         queue_values[location_id] = arrive_place_time.when;
                         heap.push(location_id);

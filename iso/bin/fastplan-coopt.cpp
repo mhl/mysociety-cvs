@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.12 2009-04-29 11:02:17 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.13 2009-05-13 01:44:29 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -69,7 +69,8 @@ int main(int argc, char * argv[]) {
             atco.do_dijkstra(
                 &PlanningATCO::dijkstra_output_stream_stdout,
                 target_location_id, target_minutes_after_midnight,
-                earliest_departure
+                earliest_departure,
+                DIRECTION_ARRIVE_BY
             );
             pm.display("route finding took");
         } else if (command == "binplan") {
@@ -100,7 +101,8 @@ int main(int argc, char * argv[]) {
             atco.do_dijkstra(
                 &PlanningATCO::dijkstra_output_store_by_id,
                 target_location_id, target_minutes_after_midnight,
-                earliest_departure
+                earliest_departure,
+                DIRECTION_ARRIVE_BY
             );
             pm.display("route finding took");
 

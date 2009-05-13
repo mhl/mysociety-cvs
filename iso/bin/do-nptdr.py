@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.5
 #
 # do-nptdr.py: Generate diagram of time travel to arrive by a certain time by
 # public transport using NPTDR - used for testing/debugging. Final live code is
