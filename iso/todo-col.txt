@@ -44,6 +44,7 @@ Find journeys leaving after
 * break in _adjacent_location_times_add_stops won't work for midnight
 alter table map rename target_latest to target_time;
 alter table map add target_direction text check ( target_direction = 'arrive_by' or target_direction = 'depart_after' );
+update map set target_direction = 'arrive_by' where target_direction is null;
 alter table map alter target_direction set not null;
 alter table map rename target_earliest to target_limit_time;
 alter table map add check ( (target_direction = 'arrive_by' and target_limit_time <= target_time)
