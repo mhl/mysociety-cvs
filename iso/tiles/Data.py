@@ -3,7 +3,6 @@
 import os
 import sys
 import struct
-import psycopg2 as postgres
 
 import Cone
 
@@ -13,7 +12,7 @@ import geoconvert
 def get_db_cursor(*args, **kwargs):
     """
     """
-    return postgres.connect(*args, **kwargs).cursor()
+    return psycopg2.connect(*args, **kwargs).cursor()
 
 def get_place_times(map_id, tile, db, log, tmpwork):
     """ Given a result ID, a tile, and a DB cursor, return data points for all the bits that intersect
