@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.10 2009-05-13 01:44:29 francis Exp $
+// $Id: fastplan.cpp,v 1.11 2009-05-13 12:10:41 francis Exp $
 //
 
 // Usage:
@@ -22,17 +22,18 @@
 
 int main(int argc, char * argv[]) {
     if (argc < 7) {
-        fprintf(stderr, "fastplan.cpp:\n  fast index file prefix as first argument\n  output prefix (or 'stream' for stdout incremental) as second\n  target arrival time in mins after midnight as third\n  target location as fourth\n  earliest departure in mins after midnight to go back to as fifth\n  easting, northing to use to find destination if destination is 'coordinate' as sixth and seventh\n");
+        fprintf(stderr, "fastplan.cpp arguments are:\n  1. fast index file prefix\n  2. output prefix (or 'stream' for stdout incremental)\n  3. arrive_by or depart_after\n  4. target arrival time / departure in mins after midnight\n  5. target location\n  6. earliest/latest departure in mins after midnight to go back to\n  7, 8. easting, northing to use to find destination if destination is 'coordinate'\n");
         return 1;
     }
 
     std::string fastindexprefix = argv[1];
     std::string outputprefix = argv[2];
-    Minutes target_minutes_after_midnight = atoi(argv[3]);
-    std::string target_location_text_id = argv[4]; // e.g. "9100BHAMSNH";
-    Minutes earliest_departure = atoi(argv[5]);
-    double easting = atoi(argv[6]);
-    double northing = atoi(argv[7]);
+    Direction direction = direction_from_string(argv[3]);
+    Minutes target_minutes_after_midnight = atoi(argv[4]);
+    std::string target_location_text_id = argv[5]; // e.g. "9100BHAMSNH";
+    Minutes target_limit_time = atoi(argv[6]);
+    double easting = atoi(argv[7]);
+    double northing = atoi(argv[8]);
 
     // Load timetables
     PerformanceMonitor pm;
@@ -62,8 +63,8 @@ int main(int argc, char * argv[]) {
     atco.do_dijkstra(
         result_function_pointer,
         target_location_id, target_minutes_after_midnight,
-        earliest_departure,
-        DIRECTION_ARRIVE_BY
+        target_limit_time,
+        direction
     );
     pm.display("route finding took");
 
@@ -77,7 +78,7 @@ int main(int argc, char * argv[]) {
                 continue;
             }
 
-            const Minutes& min = target_minutes_after_midnight - atco.settled[l_id];
+            const Minutes& min = atco.direction.diff_minutes(target_minutes_after_midnight, atco.settled[l_id]);
 
             int secs = min * 60;
             Location *l = &atco.locations[l_id];

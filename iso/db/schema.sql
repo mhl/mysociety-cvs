@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.27 2009-05-11 22:16:13 francis Exp $
+-- $Id: schema.sql,v 1.28 2009-05-13 12:10:42 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -68,12 +68,16 @@ create table map (
     target_postcode text,
     target_e integer,
     target_n integer,
-    target_latest integer not null, -- mins after midnight to arrive by
-    target_earliest integer not null, -- mins after midnight to go back to
-    target_date date not null
+    target_direction text not null check ( target_direction = 'arrive_by' or target_direction = 'depart_after' ),
+    target_time integer not null, -- mins after midnight to arrive by / depart after
+    target_limit_time integer not null, -- mins after midnight to go back to / forward to
+    target_date date not null,
+
+    check ( (target_direction = 'arrive_by' and target_limit_time <= target_time)
+          or (target_direction = 'depart_after' and target_limit_time >= target_time) )
 );
-create unique index map_unique_station_idx on map(target_station_id, target_latest, target_earliest, target_date);
-create unique index map_unique_coord_idx on map(target_e, target_n, target_latest, target_earliest, target_date);
+create unique index map_unique_station_idx on map(target_station_id, target_direction, target_time, target_limit_time, target_date);
+create unique index map_unique_coord_idx on map(target_e, target_n, target_direction, target_time, target_limit_time, target_date);
 
 create table email_queue (
     id serial not null primary key,

@@ -5,7 +5,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: makeplan.py,v 1.53 2009-05-05 18:15:59 francis Exp $
+# $Id: makeplan.py,v 1.54 2009-05-13 12:10:42 francis Exp $
 #
 
 '''Finds shortest route from all points on a public transport network to arrive
@@ -69,12 +69,12 @@ target destination, and ending with the place/time that appeared in the results
 dictionary.
 >>> print atco.pretty_print_routes(results, routes),
 Journey times to TORYRECK by 08:00:00
-From TORYRECK in 0 mins:
+Travel from TORYRECK in 0 mins:
     You've arrived at TORYRECK
-From DRYAW in 40 mins:
+Travel from DRYAW in 40 mins:
     Leave DRYAW by train on NWR-TT01 at 07:20:00, arriving TORYRECK at 07:45:00
     You've arrived at TORYRECK
-From KNAPFORD in 60 mins:
+Travel from KNAPFORD in 60 mins:
     Leave KNAPFORD by train on NWR-TT01 at 07:00:00, arriving TORYRECK at 07:45:00
     You've arrived at TORYRECK
 
@@ -99,36 +99,36 @@ from the end of the railway line.
 [('ANOPHAB', datetime.datetime(2007, 1, 8, 9, 15)), ('FFARQUHARB', datetime.datetime(2007, 1, 8, 8, 50)), ('FFARQUHAR', datetime.datetime(2007, 1, 8, 8, 49)), ('HACKENBECK', datetime.datetime(2007, 1, 8, 8, 32)), ('ELSBRIDGE', datetime.datetime(2007, 1, 8, 8, 11)), ('TORYRECK', datetime.datetime(2007, 1, 8, 7, 45)), ('DRYAW', datetime.datetime(2007, 1, 8, 7, 20)), ('KNAPFORD', datetime.datetime(2007, 1, 8, 7, 0))]
 >>> print atco.pretty_print_routes(results, routes),
 Journey times to ANOPHAB by 09:15:00
-From ANOPHAB in 0 mins:
+Travel from ANOPHAB in 0 mins:
     You've arrived at ANOPHAB
-From FFARQUHARB in 25 mins:
+Travel from FFARQUHARB in 25 mins:
     Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From FFARQUHAR in 26 mins:
+Travel from FFARQUHAR in 26 mins:
     Leave by walking to FFARQUHARB, will take 1 mins
     Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From HACKENBECK in 43 mins:
+Travel from HACKENBECK in 43 mins:
     Leave HACKENBECK by train on NWR-TT01 at 08:32:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
     Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From ELSBRIDGE in 64 mins:
+Travel from ELSBRIDGE in 64 mins:
     Leave ELSBRIDGE by train on NWR-TT01 at 08:11:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
     Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From TORYRECK in 90 mins:
+Travel from TORYRECK in 90 mins:
     Leave TORYRECK by train on NWR-TT01 at 07:45:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
     Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From DRYAW in 115 mins:
+Travel from DRYAW in 115 mins:
     Leave DRYAW by train on NWR-TT01 at 07:20:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
     Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
     You've arrived at ANOPHAB
-From KNAPFORD in 135 mins:
+Travel from KNAPFORD in 135 mins:
     Leave KNAPFORD by train on NWR-TT01 at 07:00:00, arriving FFARQUHAR at 08:41:00
     Leave by walking to FFARQUHARB, will take 1 mins
     Leave FFARQUHARB by bus on NWRB-TT01 at 08:50:00, arriving ANOPHAB at 09:05:00
@@ -537,7 +537,7 @@ class PlanningATCO(mysociety.atcocif.ATCO):
         for place, when in results:
             route = routes[place]
             mins = int((self.final_datetime - when).seconds / 60.0);
-            ret += "From " + place + " in " + str(mins) + " mins:\n"
+            ret += "Travel from " + place + " in " + str(mins) + " mins:\n"
             for ix in range(len(route)):
                 stop = route[ix]
                 if stop.onwards_leg_type == 'already_there':

@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.17 2009-05-13 01:44:29 francis Exp $
+// $Id: makeplan.h,v 1.18 2009-05-13 12:10:41 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -169,7 +169,7 @@ class Direction {
 
 
 
-    // Subtract b from a (for arrive by). Reverse for depart after.
+    // Subtract b from a (for arrive by). Add for depart after.
     Minutes subtract_minutes(Minutes a, Minutes b) {
         if (this->type == INT_DIRECTION_ARRIVE_BY) {
             return a - b;
@@ -179,12 +179,22 @@ class Direction {
             assert(false);
         }
     }
-    // Add b to a (for arrive by). Reverse for depart after.
+    // Add b to a (for arrive by). Add for depart after.
     Minutes add_minutes(Minutes a, Minutes b) {
         if (this->type == INT_DIRECTION_ARRIVE_BY) {
             return a + b;
         } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
             return a - b;
+        } else {
+            assert(false);
+        }
+    }
+    // Find difference in minutes between a and b, a is later than b. Earlier for depart after.
+    Minutes diff_minutes(Minutes a, Minutes b) {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return a - b;
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return b - a;
         } else {
             assert(false);
         }
@@ -249,6 +259,36 @@ class Direction {
             assert(false);
         }
     }
+    std::string from_to() {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return "from";
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return "to";
+        } else {
+            assert(false);
+        }
+    }
+    std::string to_from() {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return "to";
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return "from";
+        } else {
+            assert(false);
+        }
+    }
+    std::string by_at() {
+        if (this->type == INT_DIRECTION_ARRIVE_BY) {
+            return "by";
+        } else if (this->type == INT_DIRECTION_DEPART_AFTER) {
+            return "at";
+        } else {
+            assert(false);
+        }
+    }
+
+
+
 
     bool operator==(const Direction& d) const {
         return this->type == d.type;
@@ -257,6 +297,20 @@ class Direction {
 };
 #define DIRECTION_ARRIVE_BY Direction(INT_DIRECTION_ARRIVE_BY)
 #define DIRECTION_DEPART_AFTER Direction(INT_DIRECTION_DEPART_AFTER)
+
+// Convert input variable string to direction object
+Direction direction_from_string(const std::string& direction_str) {
+    Direction direction;
+    if (direction_str == "arrive_by") {
+        direction = DIRECTION_ARRIVE_BY;
+    } else if (direction_str == "depart_after") {
+        direction = DIRECTION_DEPART_AFTER;
+    } else {
+        assert(false);
+    }
+    return direction;
+}
+
 
 class PlaceTime {
     /* 
@@ -406,7 +460,6 @@ class PlanningATCO {
 #ifdef OUTPUT_ROUTE_DETAILS
     Routes routes;
 #endif
-    // ... for dijkstra_output_store_by_id
     // ... for dijkstra_output_store_by_id
     std::vector<short> time_taken_by_location_id; // in delta minutes
 
@@ -832,7 +885,7 @@ class PlanningATCO {
             Minutes possible_arrival_time_at_target_location = this->direction.mins_arr(hop);
             log(boost::format("\t\t%s time %s at target location %s") % this->direction.arrive_depart() % format_time(possible_arrival_time_at_target_location) % this->locations[target_location_id].text_id);
             // See if that is a closer arrival time than what we got so far
-            assert(hop.mins_arr >= 0);
+            assert(this->direction.mins_arr(hop) >= 0);
             if (this->direction.earlier_than_or_equal(this->direction.add_minutes(possible_arrival_time_at_target_location, interchange_time), target_arrival_time)
                 && (arrival_time_at_target_location == MINUTES_NULL || this->direction.earlier_than(arrival_time_at_target_location, possible_arrival_time_at_target_location))) {
                 arrival_time_at_target_location = possible_arrival_time_at_target_location;
@@ -927,13 +980,21 @@ class PlanningATCO {
     result_function_pointer - which of various dijkstra_output_* functions to use for output
     target_location_id - station id to go to, e.g. 9100AYLSBRY or 210021422650
     target_time - when we want to arrive by, minutes after midnight
-    earliest_departure - what minute in day to stop when we get back to
+    target_limit_time - what minute in day to stop when we get back to (go forward to for "depart after")
+    l_direction - arrive by or depart after
     */
     void do_dijkstra(ResultFunctionPointer result_function_pointer,
-        const LocationID target_location_id, const Minutes target_time, const Minutes earliest_departure,
+        const LocationID target_location_id, const Minutes target_time, const Minutes target_limit_time,
         Direction l_direction
     ) {
         this->direction = l_direction;
+        if (this->direction == DIRECTION_ARRIVE_BY) {
+            assert(target_limit_time <= target_time);
+        } else if (this->direction == DIRECTION_DEPART_AFTER) {
+            assert(target_limit_time >= target_time);
+        } else {
+            assert(false);
+        }
 
         // Generate proximity index
         // (we do this each time as a) station 0 moves location, and b) maybe we'll let
@@ -989,7 +1050,7 @@ class PlanningATCO {
             queue_values[nearest_location_id] = boost::optional<Minutes>();
 
             // If it is earlier than earliest departure we are going back to, then finish
-            if (this->direction.earlier_than(nearest_time, earliest_departure)) {
+            if (this->direction.earlier_than(nearest_time, target_limit_time)) {
                 break;
             }
 
@@ -1057,14 +1118,14 @@ class PlanningATCO {
     // particular location quickly. Array is cleared in do_dijkstra is this is
     // passed in.
     void dijkstra_output_store_by_id(const LocationID& location_id, const Minutes& when) {
-        const Minutes& mins = this->final_destination_time - when;
+        const Minutes& mins = this->direction.diff_minutes(this->final_destination_time, when);
         time_taken_by_location_id[location_id] = mins;
         //printf("settled loc_id %d mins %d\n", location_id, mins);
     }
 
     // For do_dijkstra output. Output results as they come to stdout. Don't store anything.
     void dijkstra_output_stream_stdout(const LocationID& location_id, const Minutes& when) {
-        const Minutes& mins = this->final_destination_time - when;
+        const Minutes& mins = this->direction.diff_minutes(this->final_destination_time, when);
         int secs = mins * 60;
         Location *l = &this->locations[location_id];
         printf("%d %d %d\n", l->easting, l->northing, secs);
@@ -1074,38 +1135,71 @@ class PlanningATCO {
     /* do_dijkstra returns a journey routes array, this prints it in a human readable format. */
     std::string pretty_print_routes() {
         const Location& final_destination = this->locations[this->final_destination_id];
-        std::string ret = (boost::format("Journey times to %s by %s\n") % final_destination.text_id % format_time(this->final_destination_time)).str();
+        std::string ret = (boost::format("Journey times %s %s %s %s\n") % this->direction.to_from() % final_destination.text_id % this->direction.by_at() % format_time(this->final_destination_time)).str();
         
         for (LocationID l_id = 1; l_id <= this->number_of_locations; ++l_id) {
             if (this->settled[l_id] == MINUTES_NULL) {
                 continue;
             }
             const Location& from_location = this->locations[l_id];
-            int mins = this->final_destination_time - this->settled[l_id];
+            int mins = this->direction.diff_minutes(this->final_destination_time, this->settled[l_id]);
 
-            ret += (boost::format("From %s in %d mins:\n") % from_location.text_id % mins).str();
+            ret += (boost::format("Travel %s %s in %d mins:\n") % this->direction.from_to() % from_location.text_id % mins).str();
 
-            LocationID location_id = l_id;
-            for (;;) {
-                const Location& location = this->locations[location_id];
-                const RouteNode& route_node = this->routes[location_id];
-                Minutes leaving_time = this->settled[location_id];
+            if (this->direction == DIRECTION_ARRIVE_BY) {
+                LocationID location_id = l_id;
+                for (;;) {
+                    const Location& location = this->locations[location_id];
+                    const RouteNode& route_node = this->routes[location_id];
+                    Minutes leaving_time = this->settled[location_id];
 
-                if (route_node.journey_id > 0) {
-                    const Journey& journey = this->journeys[route_node.journey_id];
-                    const Location& next_location = this->locations[route_node.location_id];
-                    ret += (boost::format("    %s Leave to %s by %s %s\n") % format_time(leaving_time) % next_location.text_id % journey.pretty_vehicle_type() % journey.text_id).str();
-                    location_id = route_node.location_id;
-                } else if (route_node.journey_id == JOURNEY_WALK) {
-                    const Location& next_location = this->locations[route_node.location_id];
-                    ret += (boost::format("    %s Leave to %s by walking\n") % format_time(leaving_time) % next_location.text_id).str();
-                    location_id = route_node.location_id;
-                } else if (route_node.journey_id == JOURNEY_ALREADY_THERE) {
-                    ret += (boost::format("    %s You've arrived at %s\n") % format_time(leaving_time) % location.text_id).str();
-                    break;
-                } else {
-                    assert(0);
+                    if (route_node.journey_id > 0) {
+                        const Journey& journey = this->journeys[route_node.journey_id];
+                        const Location& next_location = this->locations[route_node.location_id];
+                        ret += (boost::format("    %s Leave to %s by %s %s\n") % format_time(leaving_time) % next_location.text_id % journey.pretty_vehicle_type() % journey.text_id).str();
+                        location_id = route_node.location_id;
+                    } else if (route_node.journey_id == JOURNEY_WALK) {
+                        const Location& next_location = this->locations[route_node.location_id];
+                        ret += (boost::format("    %s Leave to %s by walking\n") % format_time(leaving_time) % next_location.text_id).str();
+                        location_id = route_node.location_id;
+                    } else if (route_node.journey_id == JOURNEY_ALREADY_THERE) {
+                        ret += (boost::format("    %s You're at %s\n") % format_time(leaving_time) % location.text_id).str();
+                        break;
+                    } else {
+                        assert(0);
+                    }
                 }
+            } else if (this->direction == DIRECTION_DEPART_AFTER) {
+                // store route text in array as we get it in reverse time order here
+                std::vector<std::string> route_strs;
+                LocationID location_id = l_id;
+                for (;;) {
+                    const Location& location = this->locations[location_id];
+                    const RouteNode& route_node = this->routes[location_id];
+                    Minutes leaving_time = this->settled[location_id];
+
+                    if (route_node.journey_id > 0) {
+                        const Journey& journey = this->journeys[route_node.journey_id];
+                        //const Location& next_location = this->locations[route_node.location_id];
+                        route_strs.push_back((boost::format("    %s Arrive at %s by %s %s\n") % format_time(leaving_time) % location.text_id % journey.pretty_vehicle_type() % journey.text_id).str());
+                        location_id = route_node.location_id;
+                    } else if (route_node.journey_id == JOURNEY_WALK) {
+                        //const Location& next_location = this->locations[route_node.location_id];
+                        route_strs.push_back((boost::format("    %s Arrive at %s by walking\n") % format_time(leaving_time) % location.text_id).str());
+                        location_id = route_node.location_id;
+                    } else if (route_node.journey_id == JOURNEY_ALREADY_THERE) {
+                        route_strs.push_back((boost::format("    %s You're at %s\n") % format_time(leaving_time) % location.text_id).str());
+                        break;
+                    } else {
+                        assert(0);
+                    }
+                }
+                // print in right order, as we get in reverse time above
+                for (std::vector<std::string>::reverse_iterator it = route_strs.rbegin(); it != route_strs.rend(); it++) {
+                    ret += *it;
+                }
+            } else {
+                assert(false);
             }
         }
         return ret;

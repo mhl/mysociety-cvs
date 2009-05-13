@@ -4,22 +4,30 @@ Contours of life TODO
 Code to take email if isodaemon or tile server load to high
     play with socket.setdefaulttimeout?
     Try reducing number of isodaemon instances on stilton by 4 or 8 to see if that makes overall performance better
+    - site needs to naturally use all CPU on both machines, whether isodaemon or tile cache is busiest
     Failover for tileserver too busy (1 day)
     Measure how much data per session
 
 Consider getting squid to cache cached tiles?
 Get squid to cache at least the front page etc.
 
-Check not exceeding maximum files in directory limit
-
 Show that it is only up to 9am, perhaps by marking time on sliders.
 - template needs these passing in from backend
-
-Thank the original people who told us about existence of NPTDR
 
 Invite system
     Make clearing generated maps deal with email signup OK
     Finish email-finished-maps:
+
+Render with better algorithms
+- house prices (make tiles smaller in kilobytes!)
+    * use median rather than mean
+    * inflate house prices up to current month
+    * do something clever varying circle radius according to population density?
+- scenic
+
+Are housing/scenic tiles always loading from same subdomain?
+
+Make it use less CPU when you're not changing anything
 
 Mask off sea
 
@@ -28,11 +36,23 @@ UI for choose different times of day
 
 Permalinks - put the current map pan/zoom and slider values in # URL
 
+Thank the original people who told us about existence of NPTDR
+
+
+Find journeys leaving after
+* check _interchange_time_after_journey
+* break in _adjacent_location_times_add_stops won't work for midnight
+alter table map rename target_latest to target_time;
+alter table map add target_direction text check ( target_direction = 'arrive_by' or target_direction = 'depart_after' );
+alter table map alter target_direction set not null;
+alter table map rename target_earliest to target_limit_time;
+alter table map add check ( (target_direction = 'arrive_by' and target_limit_time <= target_time)
+      or (target_direction = 'depart_after' and target_limit_time >= target_time) )
+
 
 Later
 -----
 
-Find journeys leaving after
 
 Route finding in proper interface
 

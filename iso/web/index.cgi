@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.87 2009-05-11 16:39:54 matthew Exp $
+# $Id: index.cgi,v 1.88 2009-05-13 12:10:42 francis Exp $
 #
 
 import sys
@@ -16,6 +16,7 @@ import fcgi
 import struct
 import re
 import psycopg2
+import psycopg2.errorcodes
 
 from page import *
 import mysociety.config
@@ -58,9 +59,16 @@ def sanitise_station_id(text_id):
     return text_id
 
 # Used when not specified in URL (so changing will change meaning of old URLs)
-default_target_latest = 540
-default_target_earliest = 0
+default_target_direction = 'arrive_by'
+default_target_time = 540 # 09:00
 default_target_date = '2008-10-07'
+def default_target_limit_time(target_direction):
+    if target_direction == 'arrive_by':
+        return 0 # 00:00
+    elif target_direction == 'depart_after':
+        return 1439 # 23:59
+    else:
+        assert False
 
 class Map:
     state = {}
@@ -95,28 +103,38 @@ class Map:
         # Used for centring map
         self.lat, self.lon = geoconvert.national_grid_to_wgs84(self.target_e, self.target_n)
 
-        # XXX These data are all fixed for now
-        self.target_latest = default_target_latest
-        if 'target_latest' in fs:
-            self.target_latest = int(fs.getfirst('target_latest'))
-        self.target_earliest = default_target_earliest
-        if 'target_earliest' in fs:
-            self.target_earliest = int(fs.getfirst('target_earliest'))
+        # Times, directions and date
+        self.target_direction = default_target_direction
+        if 'target_direction' in fs:
+            direction = fs.getfirst('target_direction')
+            if direction in ['arrive_by', 'depart_after']:
+                self.target_direction = direction
+            else:
+                raise Exception("Bad direction parameter specified, only arrive_by and depart_after supported")
+        self.target_time = default_target_time
+        if 'target_time' in fs:
+            self.target_time = int(fs.getfirst('target_time'))
+        self.target_limit_time = default_target_limit_time(self.target_direction)
+        if 'target_limit_time' in fs:
+            self.target_limit_time = int(fs.getfirst('target_limit_time'))
+        # XXX date is fixed for now
         self.target_date = default_target_date
 
         # Get record from database
         if self.target_station_id:
             db.execute('''SELECT id, state, working_server FROM map WHERE 
                 target_station_id = %s AND 
-                target_latest = %s AND target_earliest = %s 
+                target_direction = %s AND
+                target_time = %s AND target_limit_time = %s 
                 AND target_date = %s''', 
-                (self.target_station_id, self.target_latest, self.target_earliest, self.target_date))
+                (self.target_station_id, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
         else:
             db.execute('''SELECT id, state, working_server FROM map WHERE 
                 target_e = %s AND target_n = %s AND 
-                target_latest = %s AND target_earliest = %s 
+                target_direction = %s AND
+                target_time = %s AND target_limit_time = %s 
                 AND target_date = %s''', 
-                (self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+                (self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
         row = db.fetchone()
         if row is None:
             (self.id, self.current_state, self.working_server) = (None, 'new', None)
@@ -129,12 +147,13 @@ class Map:
         # XXX will need to make times ranges if we let people enter any time in UI
         db.execute('''SELECT AVG(working_took) FROM 
             ( SELECT working_took FROM map WHERE
-                target_latest = %s AND target_earliest = %s AND target_date = %s AND
+                target_direction = %s AND
+                target_time = %s AND target_limit_time = %s AND target_date = %s AND
                 working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval 
                 ORDER BY working_start DESC LIMIT 50
             ) AS working_took
             ''', 
-            (self.target_latest, self.target_earliest, self.target_date))
+            (self.target_direction, self.target_time, self.target_limit_time, self.target_date))
         avg_time, = db.fetchone()
         return avg_time or 10
 
@@ -191,10 +210,12 @@ class Map:
             raise Exception("can't make URL")
 
         url_params = []
-        if self.target_latest != default_target_latest:
-            url_params.append("target_latest=" + str(self.target_latest))
-        if self.target_earliest != default_target_earliest:
-            url_params.append("target_earliest=" + str(self.target_earliest))
+        if self.target_direction != default_target_direction:
+            url_params.append("target_direction=" + str(self.target_direction))
+        if self.target_time != default_target_time:
+            url_params.append("target_time=" + str(self.target_time))
+        if self.target_limit_time != default_target_limit_time(self.target_direction):
+            url_params.append("target_limit_time=" + str(self.target_limit_time))
         if len(url_params) > 0:
             url = url + "?" + "&".join(url_params)
         
@@ -218,22 +239,24 @@ class Map:
         db.execute("SELECT nextval('map_id_seq')")
         self.id = db.fetchone()[0]
         try:
-            db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_latest, target_earliest, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_latest, self.target_earliest, self.target_date))
+            db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
         except psycopg2.IntegrityError, e:
-            # Let's assume the integrity error is because of a unique key
-            # violation - ie. an identical row has appeared in the milliseconds
-            # since we looked
-            self.id = None
-            db.execute('ROLLBACK')
-            return False
+            if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
+                # The integrity error is because of a unique key violation - ie. an
+                # identical row has appeared in the milliseconds since we looked
+                self.id = None
+                db.execute('ROLLBACK')
+                return False
+            else:
+                raise
         db.execute('COMMIT')
         if 'new' in self.state:
             self.state['ahead'] = self.state['new']
             self.state['new'] += 1
         return True
 
-    def target_latest_formatted(self):
-        return format_time(self.target_latest)
+    def target_time_formatted(self):
+        return format_time(self.target_time)
 
 def format_time(mins_after_midnight):
     hours = mins_after_midnight / 60
@@ -332,9 +355,9 @@ def map_complete(map):
         'centre_lon': map.lon,
         'tile_id': map.id,
         'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
-        'target_latest_formatted': map.target_latest_formatted(),
-        'target_latest': map.target_latest,
-        'show_max_minutes': map.target_latest - map.target_earliest,
+        'target_time_formatted': map.target_time_formatted(),
+        'target_time': map.target_time,
+        'show_max_minutes': abs(map.target_time - map.target_limit_time),
         'route_url_base': map.url_with_params()
     }, id='map')
 
@@ -449,7 +472,12 @@ def get_route(fs, lat, lon):
     route_str = "From " + str(name_by_id[station_id]) + " \n"
     for location_id, next_location_id, journey_id in route:
         location_time = look_up_time_taken(map.id, location_id)
-        leaving_after_midnight = map.target_latest - location_time
+        if map.target_direction == 'arrive_by':
+            leaving_after_midnight = map.target_time - location_time
+        elif map.target_direction == 'depart_after':
+            leaving_after_midnight = map.target_time - location_time
+        else:
+            assert(False)
         route_str += format_time(leaving_after_midnight) + " "
         if journey_id > 0: 
             next_location_name = name_by_id[next_location_id]

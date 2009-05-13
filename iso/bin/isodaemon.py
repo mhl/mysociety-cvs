@@ -98,8 +98,10 @@ def my_readline(p, check_regexp = None):
 #######################################################################################
 
 # Runs a route calculation
-def do_binplan(p, outfile, end_min, start_min, station_text_id, target_e, target_n):
-    log("making route %s endtime:%d starttime:%d station:%s E:%s N:%s" % (outfile, end_min, start_min, station_text_id, target_e, target_n))
+def do_binplan(p, outfile, target_direction, target_time, target_limit_time, station_text_id, target_e, target_n):
+    assert target_direction in [ 'arrive_by', 'depart_after' ]
+
+    log("making route %s %s time:%d limit_time:%d station:%s E:%s N:%s" % (outfile, target_direction, target_time, target_limit_time, station_text_id, target_e, target_n))
     outfile_routes = outfile + ".routes"
     outfile_new = outfile + ".new"
     outfile_routes_new = outfile_routes + ".new"
@@ -110,7 +112,7 @@ def do_binplan(p, outfile, end_min, start_min, station_text_id, target_e, target
         time.sleep(10)
 
     # cause C++ program to do route finding
-    p.stdin.write("binplan %s %s %d %d %s %d %d\n" % (outfile_new, outfile_routes_new, end_min, start_min, station_text_id, target_e, target_n))
+    p.stdin.write("binplan %s %s %s %d %d %s %d %d\n" % (outfile_new, outfile_routes_new, target_direction, target_time, target_limit_time, station_text_id, target_e, target_n))
     line = my_readline(p, 'target')
 
     # wait for it to finish
@@ -144,7 +146,7 @@ def check_for_new_maps_to_make(p, db):
             # get an exception if someone else already has it, rather than
             # pointlessly waiting for them
             db.execute("""select id, state, (select text_id from station where id = target_station_id), 
-                            target_e, target_n, target_latest, target_earliest, target_date from map where 
+                            target_e, target_n, target_direction, target_time, target_limit_time, target_date from map where 
                             state = 'new' order by created limit 1 offset %s for update nowait""" % offset)
             row = db.fetchone()
             break
@@ -163,7 +165,7 @@ def check_for_new_maps_to_make(p, db):
         time.sleep(sleep_db_poll)
         return
 
-    (id, state, target_station_text_id, target_e, target_n, target_latest, target_earliest, target_date) = row
+    (id, state, target_station_text_id, target_e, target_n, target_direction, target_time, target_limit_time, target_date) = row
     # XXX check target_date here is same as whatever fastindex timetable file we're using
 
     # see if another instance of daemon got it *just* before us
@@ -186,7 +188,7 @@ def check_for_new_maps_to_make(p, db):
         #        raise Exception("testbroken")
 
         (route_finding_time_taken, output_time_taken) = \
-            do_binplan(p, outfile, target_latest, target_earliest, target_station_text_id, target_e, target_n)
+            do_binplan(p, outfile, target_direction, target_time, target_limit_time, target_station_text_id, target_e, target_n)
 
         # mark that we've done
         log("completed map " + str(id))

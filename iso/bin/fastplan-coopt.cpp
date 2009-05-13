@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.13 2009-05-13 01:44:29 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.14 2009-05-13 12:10:41 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -51,13 +51,14 @@ int main(int argc, char * argv[]) {
         } else if (command == "plan") {
             // Make a plan, and output the time coordinates to get to each grid
             // reference as text.
-            std::string arg1, arg2, arg3, arg4;
-            std::cin >> arg1 >> arg2 >> arg3 >> arg4;
+            std::string arg1, arg2, arg3, arg4, arg5;
+            std::cin >> arg1 >> arg2 >> arg3 >> arg4 >> arg5;
 
-            Minutes target_minutes_after_midnight = atoi(arg1.c_str());
-            Minutes earliest_departure = atoi(arg2.c_str());
-            double easting = atoi(arg3.c_str());
-            double northing = atoi(arg4.c_str());
+            Direction direction = direction_from_string(arg1);
+            Minutes target_minutes_after_midnight = atoi(arg2.c_str());
+            Minutes target_limit_time = atoi(arg3.c_str());
+            double easting = atoi(arg4.c_str());
+            double northing = atoi(arg5.c_str());
 
             // Find nearest place from grid reference
             LocationID target_location_id;
@@ -69,22 +70,23 @@ int main(int argc, char * argv[]) {
             atco.do_dijkstra(
                 &PlanningATCO::dijkstra_output_stream_stdout,
                 target_location_id, target_minutes_after_midnight,
-                earliest_departure,
-                DIRECTION_ARRIVE_BY
+                target_limit_time,
+                direction
             );
             pm.display("route finding took");
         } else if (command == "binplan") {
             // Make a plan, and output binary file of coordinates to use.
-            std::string arg1, arg2, arg3, arg4, arg5, arg6, arg7;
-            std::cin >> arg1 >> arg2 >> arg3 >> arg4 >> arg5 >> arg6 >> arg7;
+            std::string arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8;
+            std::cin >> arg1 >> arg2 >> arg3 >> arg4 >> arg5 >> arg6 >> arg7 >> arg8;
 
             std::string output_binary = arg1.c_str();
             std::string output_routes = arg2.c_str();
-            Minutes target_minutes_after_midnight = atoi(arg3.c_str());
-            Minutes earliest_departure = atoi(arg4.c_str());
-            std::string target_location_text_id = arg5;
-            int target_e = atoi(arg6.c_str());
-            int target_n = atoi(arg7.c_str());
+            Direction direction = direction_from_string(arg3);
+            Minutes target_minutes_after_midnight = atoi(arg4.c_str());
+            Minutes target_limit_time = atoi(arg5.c_str());
+            std::string target_location_text_id = arg6;
+            int target_e = atoi(arg7.c_str());
+            int target_n = atoi(arg8.c_str());
 
             LocationID target_location_id;
             if (target_location_text_id == "None") {
@@ -101,8 +103,8 @@ int main(int argc, char * argv[]) {
             atco.do_dijkstra(
                 &PlanningATCO::dijkstra_output_store_by_id,
                 target_location_id, target_minutes_after_midnight,
-                earliest_departure,
-                DIRECTION_ARRIVE_BY
+                target_limit_time,
+                direction
             );
             pm.display("route finding took");
 

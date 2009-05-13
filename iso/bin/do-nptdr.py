@@ -64,6 +64,7 @@ Examples
 
 parser.add_option('--destination', type='string', dest="destination", help='Target location for route finding, as in ATCO-CIF file e.g. 9100MARYLBN, or if set to "coordinate" uses --postcode or --centre/centern')
 parser.add_option('--whenarrive', type='string', dest="whenarrive", help='Time and date to arrive at destination by. Must be a day for which the ATCO-CIF timetables loaded are valid. Fairly freeform format, e.g. "15 Oct 2008, 9:00"', default="15 Oct 2008, 9:00") # Some week in October 2008, need to check exactly when
+parser.add_option('--whendepart', type='string', dest="whendepart", help='Instead of --whenarrive, does depart after', default=None) # Some week in October 2008, need to check exactly when
 parser.add_option('--data', type='string', dest="data", help='ATCO-CIF files containing timetables to use. At the command line, put the value in quotes, file globs such as * will be expanded later.')
 parser.add_option('--dataname', type='string', dest="data_name", help='Identifier to use in livecalc for output data files, e.g. oxford, all-country etc.')
 parser.add_option('--datavalidfrom', type='string', dest="data_valid_from", help='Date range we know the data is good for')
@@ -142,10 +143,22 @@ if command in ['slowplan', 'fastplan']:
     rect = "%f %f %f %f" % (WW, EE, SS, NN)
 
 if command in ['slowplan', 'fastcalc', 'fastplan', 'livecalc']:
-    target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whenarrive))
+    if options.whendepart:
+        target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whendepart))
+        target_direction = 'depart_after'
+    else:
+        target_direction = 'arrive_by'
+        target_when = datetime.datetime.fromtimestamp(mx.DateTime.DateTimeFrom(options.whenarrive))
     assert data_valid_from <= target_when.date() <= data_valid_to
 if command in ['slowplan', 'fastplan']:
-    scan_back_when = target_when - datetime.timedelta(hours=options.hours)
+    if target_direction == 'arrive_by':
+        scan_back_when = target_when - datetime.timedelta(hours=options.hours)
+    elif target_direction == 'depart_after':
+        if command == 'slowplan':
+            raise Exception('Python planner does not (yet) do depart_after, only arrive_by')
+        scan_back_when = target_when + datetime.timedelta(hours=options.hours)
+    else:
+        assert(False)
 
 # Output files
 if command in ['slowplan']:
@@ -287,7 +300,7 @@ def fast_plan():
     if scan_back_when.date() < target_when.date():
         scan_back_when = target_when.replace(hour=0, minute=0, second=0)
 
-    run_cmd("%s %s %s %d %s %d %d %d" % (options.fastplan_bin, fastindexfile, outfile, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute, E, N))
+    run_cmd("%s %s %s %s %d %s %d %d %d" % (options.fastplan_bin, fastindexfile, outfile, target_direction, target_when.hour * 60 + target_when.minute, options.destination, scan_back_when.hour * 60 + scan_back_when.minute, E, N))
     do_external_contours()
 
 # Precalculate binary data files, for later use by faster C++ Dijkstra's algorithm
