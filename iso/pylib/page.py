@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.13 2009-05-13 17:44:40 matthew Exp $
+# $Id: page.py,v 1.14 2009-05-13 18:50:41 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -35,8 +35,10 @@ def fcgi_loop(main):
     response = main(fs)
     if isinstance(response, HttpResponseRedirect):
         req.out.write("Status: 302 Found\r\n")
+    if response.cookies:
+        req.out.write(str(response.cookies) + "\r\n")
     if req.env.get('REQUEST_METHOD') == 'HEAD':
-        req.out.write('\r\n'.join(['%s: %s' % (key, value) for key, value in response._headers.values()]) + '\r\n\r\n')
+        req.out.write('\r\n'.join(['%s: %s' % (k, v) for k, v in response.items()]) + '\r\n\r\n')
     else:
         req.out.write(str(response))
     req.Finish()
