@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.1 2009-05-13 13:31:18 matthew Exp $
+# $Id: invite.cgi,v 1.2 2009-05-13 15:28:50 matthew Exp $
 #
 
 import sys
@@ -27,7 +27,7 @@ def friend_invite(invite, email):
     if not email:
         return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide an email address.', 'body_id': 'map-wait'})
     if not validate_email(email):
-        return render_to_response('invite-friend', { 'email': email, 'error': 'Please provide a valid email address.', 'body_id': 'map-wait' })
+        return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide a valid email address.', 'body_id': 'map-wait' })
     db.execute('BEGIN')
     try:
         db.execute("INSERT INTO invite (email, source, source_id) VALUES (%s, 'friend', %s)", (email, invite.id))
@@ -36,14 +36,18 @@ def friend_invite(invite, email):
         # violation - ie. an identical row has appeared in the milliseconds
         # since we looked
         db.execute('ROLLBACK')
-        return render_to_response('invite-friend', { 'email': email, 'error': 'That email address has already had an invite.', 'body_id': 'map-wait' })
+        return render_to_response('invite-friend.html', { 'email': email, 'error': 'That email address has already had an invite.', 'body_id': 'map-wait' })
     db.execute('UPDATE invite SET num_invites = num_invites - 1 WHERE id=%s', (invite.id,))
     db.execute('COMMIT')
     db.execute('SELECT num_invites FROM invite WHERE id=%s', (invite.id,))
     num = db.fetchone()[0]
+    vars = {
+        'body_id': 'map-wait',
+        'success': 'An invite has been queued.',
+    }
     if num==0:
-        return render_to_response('invite-none.html', { 'body_id': 'map-wait' })
-    return render_to_response('invite-friend.html', { 'success_p': 'An invite has been queued.', 'body_id': 'map-wait' })
+        return render_to_response('invite-none.html', vars)
+    return render_to_response('invite-friend.html', vars)
 
 def log_email(email):
     if not email:
