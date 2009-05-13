@@ -97,18 +97,34 @@
 
 <div id="map-footer">
 
+{% if num_invites %}
 <a id="footer-invite" href="/invite">Invite <em>{{ num_invites }}</em> friend{{ num_invites|pluralize }}</a>
+{% else %}
+<span id="footer-invite">You have no invites</span>
+{% endif %}
 
-{% if maps_left %}
+{% ifequal invite.maps_left 0 %}
+
+Your maps:
+{% for p in invite.postcodes %}
+<a href="/postcode/{{ p }}">{{ p }}</a> |
+{% endfor %}
+
+{% else %}
+
 <form method="get" action="/">
 New map? <label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</label>
 <input type="text" name="pc" value="" size="6" id="pc_f">
 <input type="submit" value="Go">
 </form>
-{% endif %}
 
-(<strong>{{ maps_left }}</strong> map{{ maps_left|pluralize }} left.
-{{ already_generated|safe }})
+(<strong>{{ invite.maps_left }}</strong> map{{ invite.maps_left|pluralize }} left
+{% for p in invite.postcodes %}
+| <a href="/postcode/{{ p }}">{{ p }}</a>
+{% endfor %}
+)
+
+{% endifequal %}
 
 <span id="footer-share">
 <a href="/postcode/{{ postcode }}/share">Share</a>

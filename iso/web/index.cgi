@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.89 2009-05-13 13:31:18 matthew Exp $
+# $Id: index.cgi,v 1.90 2009-05-13 15:05:22 matthew Exp $
 #
 
 import sys
@@ -318,24 +318,29 @@ LOCATION_TARGET = 0
 #####################################################################
 # Controllers
  
-def check_postcode(pc):
+def check_postcode(pc, invite):
     """Given a postcode, look up grid reference and redirect to a URL
     containing that"""
+
+    vars = {
+        'invite': invite,
+        'postcode': pc,
+    }
 
     # Check postcode is valid
     try:
         f = mysociety.mapit.get_location(pc)
     except RABXException, e:
-        return render_to_response('index.html', { 'error': e })
+        vars['error'] = e.text
+        return render_to_response('index.html', vars)
 
     #(station, station_long, station_id) = nearest_station(E, N)
     #if not station:
     #    return render_to_response('index.html', { 'error': 'Could not find a station or bus stop :(' })
 
     if f['coordsyst'] == 'I':
-        return render_to_response('index.html', {
-            'error': u'I\u2019m afraid we don\u2019t have information for Northern Ireland.'
-        })
+        vars['error'] = u'I\u2019m afraid we don\u2019t have information for Northern Ireland.'
+        return render_to_response('index.html', vars)
 
     # Canonicalise it, and redirect to that URL
     pc = sanitise_postcode(pc)
@@ -361,8 +366,6 @@ def map_complete(map, invite):
         'route_url_base': map.url_with_params(),
         'num_invites': invite.num_invites,
         'invite': invite,
-        'maps_left': INVITE_NUM_MAPS - len(invite.postcodes),
-        'already_generated': invite.postcodes_html,
         'body_id': 'map',
     })
 
@@ -517,8 +520,6 @@ def get_route(fs, lat, lon):
 #####################################################################
 # Main FastCGI loop
 
-INVITE_NUM_MAPS = 3
-
 def main(fs):
     invite = Invite(db)
     if not invite.id:
@@ -530,24 +531,21 @@ def main(fs):
     if 'lat' in fs: # Flash request for route
         return get_route(fs, fs.getfirst('lat'), fs.getfirst('lon'))
     elif 'pc' in fs: # Front page submission
-        return check_postcode(fs.getfirst('pc'))
+        return check_postcode(fs.getfirst('pc'), invite)
     elif got_map_spec and 'email' in fs: # Overloaded email request
         return log_email(fs, fs.getfirst('email'))
     elif got_map_spec: # Page for generating/ displaying map
         postcode = sanitise_postcode(fs.getfirst('target_postcode'))
         postcodes = invite.postcodes
         if postcode not in postcodes:
-            if len(postcodes) >= INVITE_NUM_MAPS:
+            if invite.maps_left <= 0:
                 return render_to_response('beta-limit.html', { 'postcodes': postcodes })
             invite.add_postcode(postcode)
         return map(fs, invite)
 
     # Front page display
-    maps_left = INVITE_NUM_MAPS - len(invite.postcodes)
     return render_to_response('index.html', {
         'invite': invite,
-        'maps_left': maps_left,
-        'already_generated': invite.postcodes_html,
         'body_id': 'home'
     })
 

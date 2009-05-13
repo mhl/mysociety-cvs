@@ -7,6 +7,17 @@
 
 <p>Mapumental: A ninja tool for helping you house or job hunt within Great Britain.</p>
 
+{% ifequal invite.maps_left 0 %}
+
+<p>Your three maps are:
+<ul style="font-size:200%; margin-top:0">
+{% for p in invite.postcodes %}
+<li><a href="/postcode/{{ p }}">{{ p }}</a></li>
+{% endfor %}
+</ul>
+
+{% else %}
+
 <form method="get" action="/" id="pc-front">
 <p><label for="pc_f">Enter a <abbr title="Great Britain">GB</abbr> postcode:</label>
 <input type="text" name="pc" value="{{ postcode }}" size="6" id="pc_f">
@@ -14,9 +25,13 @@
 </form>
 
 <p align="center">
-You can generate <strong>{{ maps_left }}</strong> map{{ maps_left|pluralize }}.
-{{ already_generated|safe }}
+You can generate <strong>{{ invite.maps_left }}</strong> map{{ invite.maps_left|pluralize }}
+{% for p in invite.postcodes %}
+| <a href="/postcode/{{ p }}">{{ p }}</a>
+{% endfor %}
 </p>
+
+{% endifequal %}
 
 </div>
 

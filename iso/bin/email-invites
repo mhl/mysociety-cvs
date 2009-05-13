@@ -1,0 +1,49 @@
+#!/usr/bin/python
+#
+# email-invites:
+# Send out invites
+# XXX Currently just prints out a template
+#
+# Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+# Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
+#
+# $Id: email-invites,v 1.1 2009-05-13 15:05:17 matthew Exp $
+#
+
+import sys
+sys.path.extend((sys.path[0]+"/../pylib", sys.path[0]+"/../../pylib", "/home/matthew/lib/python"))
+import os
+
+import mysociety.config
+mysociety.config.set_file(sys.path[0]+"/../conf/general")
+
+from page import template, random_token
+
+import coldb
+db = coldb.get_cursor()
+
+db.execute('''SELECT invite.*, inviter.email as inviter_email FROM invite, invite as inviter WHERE invite.source_id = inviter.id AND invite.token IS null''')
+invites = db.fetchall()
+for row in invites:
+    token = random_token()
+    db.execute('UPDATE invite SET token=%s where id=%s', (token, row['id']))
+    db.execute('COMMIT')
+    url = mysociety.config.get('BASE_URL') + 'T/' + token
+    print template('email-invite', {
+        'url': url,
+        'pid': os.getpid(),
+        'inviter_email': row['inviter_email'],
+    }, 'txt')
+
+db.execute('''SELECT * FROM invite WHERE token IS null''')
+invites = db.fetchall()
+for row in invites:
+    token = random_token()
+    db.execute('UPDATE invite SET token=%s where id=%s', (token, row['id']))
+    db.execute('COMMIT')
+    url = mysociety.config.get('BASE_URL') + 'T/' + token
+    print template('email-signup', {
+        'url': url,
+        'pid': os.getpid(),
+    }, 'txt')
+

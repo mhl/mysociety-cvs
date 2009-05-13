@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.11 2009-05-13 13:31:17 matthew Exp $
+# $Id: page.py,v 1.12 2009-05-13 15:05:21 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -32,11 +32,10 @@ def fcgi_loop(main):
     response = main(fs)
     if isinstance(response, HttpResponseRedirect):
         req.out.write("Status: 302 Found\r\n")
-    # XXX Need to deal with HEAD
-    #if req.env.get('REQUEST_METHOD') == 'HEAD':
-    #    req.Finish()
-    #    return
-    req.out.write(str(response))
+    if req.env.get('REQUEST_METHOD') == 'HEAD':
+        req.out.write('\r\n'.join(['%s: %s' % (key, value) for key, value in response._headers.values()]) + '\r\n\r\n')
+    else:
+        req.out.write(str(response))
     req.Finish()
 
 def slurp_file(filename):
@@ -52,6 +51,8 @@ def validate_email(address):
         return False
 
 # Cookie invite handling stuff
+
+INVITE_NUM_MAPS = 3
 
 class Invite(object):
     id = 0
@@ -86,12 +87,8 @@ class Invite(object):
         return self._postcodes
 
     @property
-    def postcodes_html(self):
-        already_generated = []
-        for pc in self.postcodes:
-            already_generated.append('<a href="/postcode/%s">%s</a>' % (pc, pc))
-        already_generated = ' | '.join(already_generated)
-        return already_generated
+    def maps_left(self):
+        return INVITE_NUM_MAPS - len(self.postcodes)
 
     def add_postcode(self, pc):
         self.db.execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%s, '%s')''' % (self.id, pc))
