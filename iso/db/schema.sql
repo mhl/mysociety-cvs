@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.29 2009-05-13 13:31:17 matthew Exp $
+-- $Id: schema.sql,v 1.30 2009-05-13 17:59:01 matthew Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -82,6 +82,7 @@ create unique index map_unique_coord_idx on map(target_e, target_n, target_direc
 create table email_queue (
     id serial not null primary key,
     email text not null,
+    sent boolean not null default 'f',
     map_id integer not null references map(id)
 );
 
