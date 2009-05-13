@@ -6,17 +6,16 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: contact.cgi,v 1.8 2009-05-13 13:31:18 matthew Exp $
+# $Id: contact.cgi,v 1.9 2009-05-13 17:44:40 matthew Exp $
 #
 
 import re
 import sys
-from email.mime.text import MIMEText
-import smtplib
 sys.path.extend(("../pylib", "../../pylib"))
 import fcgi
 
 from page import *
+from sendemail import send_email
 import mysociety.config
 mysociety.config.set_file("../conf/general")
 
@@ -45,26 +44,18 @@ def contact_submit(fs):
     if errors:
         return contact_page(fs, errors)
 
-    message = re.sub('\r\n', '\n', message)
-    subject = re.sub('\r|\n', ' ', subject)
-    name = re.sub('\r|\n', ' ', name)
     postfix = '[ Sent by contact.cgi on %s. IP address %s%s. ]' % (
         os.environ.get('HTTP_HOST', 'n/a'),
         os.environ.get('REMOTE_ADDR', 'n/a'),
         os.environ.get('HTTP_X_FORWARDED_FOR', '') and ' (forwarded from '+os.environ.get('HTTP_X_FORWARDED_FOR')+')' or ''
     )
+    message = message + "\n\n" + postfix
 
-    msg = MIMEText("%s\n\n%s" % (message, postfix))
-    msg['From'] = '%s <%s>' % (name, email)
-    msg['To'] = mysociety.config.get('CONTACT_EMAIL')
-    msg['Subject'] = 'COL message: %s' % subject
-    server = smtplib.SMTP('localhost')
-    try:
-        server.sendmail(email, mysociety.config.get('CONTACT_EMAIL'), msg.as_string())
-    except smtplib.SMTPResponseException, e:
-        return contact_page(fs, [ e.smtp_error ])
-    finally:
-        server.quit()
+    send_email(email, mysociety.config.get('CONTACT_EMAIL'), message, {
+        'Subject': 'Mapumental message: %s' % subject,
+        'From': (email, name),
+        'To': mysociety.config.get('CONTACT_EMAIL'),
+    })
 
     return render_to_response('contact-thanks.html')
 

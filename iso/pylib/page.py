@@ -1,12 +1,12 @@
 #!/usr/bin/env python2.5
 #
 # page.py:
-# Front end shared functions
+# Various shared functions
 #
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.12 2009-05-13 15:05:21 matthew Exp $
+# $Id: page.py,v 1.13 2009-05-13 17:44:40 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -19,6 +19,9 @@ from django.conf import settings
 settings.configure( TEMPLATE_DIRS=(sys.path[0] + '/../templates/',), TEMPLATE_DEBUG=True)
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseRedirect
+
+from sendemail import send_email
+import mysociety.config
 
 def render_to_response(template, vars={}, mimetype=None):
     vars.update({
@@ -44,12 +47,27 @@ def slurp_file(filename):
     f.close()
     return content
 
+# Email functions
+
 def validate_email(address):
     if re.match('([^()<>@,;:\\".\[\] \000-\037\177\200-\377]+(\s*\.\s*[^()<>@,;:\\".\[\] \000-\037\177\200-\377]+)*|"([^"\\\r\n\200-\377]|\.)*")\s*@\s*[A-Za-z0-9][A-Za-z0-9-]*(\s*\.\s*[A-Za-z0-9][A-Za-z0-9-]*)*$', address):
         return True
     else:
         return False
 
+def send_template_email(to, template, vars):
+    message = render_to_string(template, vars)
+    subject = 'Message from Mapumental'
+    m = re.match('Subject: (.*)\n', message)
+    if m:
+        subject = m.group(1)
+        message = re.sub(m.group(0), '', message)
+
+    send_email(mysociety.config.get('CONTACT_EMAIL'), to, message, {
+        'From': (mysociety.config.get('CONTACT_EMAIL'), 'Mapumental'),
+        'To': to,
+        'Subject': subject,
+    })
 # Cookie invite handling stuff
 
 INVITE_NUM_MAPS = 3

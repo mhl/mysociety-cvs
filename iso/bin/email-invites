@@ -2,48 +2,50 @@
 #
 # email-invites:
 # Send out invites
-# XXX Currently just prints out a template
 #
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: email-invites,v 1.1 2009-05-13 15:05:17 matthew Exp $
+# $Id: email-invites,v 1.2 2009-05-13 17:44:40 matthew Exp $
 #
 
 import sys
-sys.path.extend((sys.path[0]+"/../pylib", sys.path[0]+"/../../pylib", "/home/matthew/lib/python"))
+sys.path.extend((sys.path[0]+"/../pylib", sys.path[0]+"/../../pylib"))
 import os
+import re
 
 import mysociety.config
 mysociety.config.set_file(sys.path[0]+"/../conf/general")
 
-from page import template, random_token
+from page import random_token, send_template_email
 
 import coldb
 db = coldb.get_cursor()
 
-db.execute('''SELECT invite.*, inviter.email as inviter_email FROM invite, invite as inviter WHERE invite.source_id = inviter.id AND invite.token IS null''')
-invites = db.fetchall()
-for row in invites:
-    token = random_token()
-    db.execute('UPDATE invite SET token=%s where id=%s', (token, row['id']))
-    db.execute('COMMIT')
-    url = mysociety.config.get('BASE_URL') + 'T/' + token
-    print template('email-invite', {
-        'url': url,
-        'pid': os.getpid(),
-        'inviter_email': row['inviter_email'],
-    }, 'txt')
+# XXX Currently will just email all waiting invites at once. XXX
+def main():
+    send_invites('SELECT invite.*, inviter.email as inviter_email FROM invite, invite as inviter WHERE invite.source_id = inviter.id AND invite.token IS NULL')
+    send_invites('SELECT * FROM invite WHERE token IS NULL AND invite.source_id IS NULL')
 
-db.execute('''SELECT * FROM invite WHERE token IS null''')
-invites = db.fetchall()
-for row in invites:
-    token = random_token()
-    db.execute('UPDATE invite SET token=%s where id=%s', (token, row['id']))
-    db.execute('COMMIT')
-    url = mysociety.config.get('BASE_URL') + 'T/' + token
-    print template('email-signup', {
-        'url': url,
-        'pid': os.getpid(),
-    }, 'txt')
+def send_invites(query):
+    db.execute(query)
+    invites = db.fetchall()
+    for row in invites:
+        if 'inviter_email' in row:
+            template = 'email-invite.txt'
+            inviter_email = row['inviter_email']
+        else:
+            template = 'email-signup.txt'
+            inviter_email = None
 
+        token = random_token()
+        db.execute('UPDATE invite SET token=%s where id=%s', (token, row['id']))
+        db.execute('COMMIT')
+        url = mysociety.config.get('BASE_URL') + 'T/' + token
+        send_template_email(row['email'], template, {
+            'url': url,
+            'pid': os.getpid(),
+            'inviter_email': inviter_email,
+        })
+
+main()

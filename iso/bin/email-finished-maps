@@ -2,21 +2,20 @@
 #
 # email-finished-maps:
 # Send out emails to people who signed up rather than waited
-# XXX Currently just prints out a template
 #
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: email-finished-maps,v 1.2 2009-04-29 18:17:12 matthew Exp $
+# $Id: email-finished-maps,v 1.3 2009-05-13 17:44:40 matthew Exp $
 #
 
 import sys
-sys.path.extend((sys.path[0]+"/../pylib", sys.path[0]+"/../../pylib", "/home/matthew/lib/python"))
+sys.path.extend((sys.path[0]+"/../pylib", sys.path[0]+"/../../pylib"))
 
 import mysociety.config
 mysociety.config.set_file(sys.path[0]+"/../conf/general")
 
-from page import template
+from page import send_template_email
 
 import coldb
 db = coldb.get_cursor()
@@ -25,9 +24,9 @@ db.execute('''SELECT * FROM email_queue, map WHERE map.id=map_id AND state='comp
 for row in db:
     url = mysociety.config.get('BASE_URL') + 'postcode/' + row['target_postcode']
     server, port = row['working_server'].split(':')
-    print template('email-map-ready', {
+    send_template_email(row['email'], 'email-map-ready.txt', {
         'url': url,
         'server': server,
         'took': row['working_took'],
-    }, 'txt')
+    })
 
