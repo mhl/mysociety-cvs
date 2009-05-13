@@ -3,6 +3,7 @@
 import os
 import sys
 import struct
+import psycopg2
 
 import Cone
 
