@@ -88,16 +88,17 @@ package com.stamen.ui
 			var g:Graphics = graphics;
 			g.clear();
 				
-			if (color || bitmap)
+		    if (bitmap)
+		    {
+		        g.beginBitmapFill(bitmap);
+		    }
+		    else if (color)
+		    {
+                g.beginFill(color.hex, color.alpha);
+		    }
+			else
 			{
-			    if (bitmap)
-			    {
-			        g.beginBitmapFill(bitmap);
-			    }
-			    else
-			    {
-                    g.beginFill(color.hex, color.alpha);
-			    }
+			    g.beginFill(0xFFFFFF, 0);
 			}
 		    drawShape(g);
 		    

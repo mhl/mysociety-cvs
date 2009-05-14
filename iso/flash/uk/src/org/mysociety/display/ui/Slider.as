@@ -3,6 +3,7 @@ package org.mysociety.display.ui
     import com.stamen.graphics.color.IColor;
     import com.stamen.graphics.color.RGB;
     import com.stamen.ui.BlockSprite;
+    import com.stamen.ui.tooltip.TooltipProvider;
     import com.stamen.utils.MathUtils;
     
     import flash.display.CapsStyle;
@@ -16,11 +17,12 @@ package org.mysociety.display.ui
     
     import org.mysociety.style.StyleGuide;
 
-    public class Slider extends BlockSprite
+    public class Slider extends BlockSprite implements TooltipProvider
     {
         public var track:Sprite;
         public var thumb:Sprite;
         public var dragRect:Rectangle;
+        public var tooltipText:String;
         
         protected var _value:Number = 0;
         protected var _min:Number = 0;
@@ -79,6 +81,11 @@ package org.mysociety.display.ui
             addChild(thumb);
             
             super(w, 0);
+        }
+        
+        public function getTooltipText():String
+        {
+            return tooltipText;
         }
         
         public function get flipFill():Boolean
@@ -257,6 +264,17 @@ package org.mysociety.display.ui
 
             updateThumbPosition();
             updateTicksPosition();
+        }
+
+        override protected function drawShape(g:Graphics=null):void
+        {
+            var rect:Rectangle = thumb.getRect(this);
+            rect.left = 0;
+            rect.right = width;
+            rect.inflate(2, 0);
+            rect.bottom = ticks.getRect(this).bottom;
+            
+            g.drawRect(rect.x, rect.y, rect.width, rect.height);
         }
     }
 }

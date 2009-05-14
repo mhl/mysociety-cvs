@@ -41,6 +41,7 @@ package org.mysociety.display.ui
             
             label = StyleGuide.createTextField(13, RGB.black(), false);
             label.autoSize = TextFieldAutoSize.LEFT;
+            label.selectable = false;
             addChild(label);
              
             super(w, h, color);
