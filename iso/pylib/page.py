@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.18 2009-05-14 18:16:16 matthew Exp $
+# $Id: page.py,v 1.19 2009-05-14 19:17:39 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -32,6 +32,8 @@ def render_to_response(template, vars={}, mimetype=None):
 def fcgi_loop(main):
     req = fcgi.Accept()
     fs = req.getFieldStorage()
+    for k in os.environ.keys():
+        del os.environ[k]
     for k, v in req.env.items():
         os.environ[k] = v
     response = main(fs)
