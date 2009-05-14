@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.95 2009-05-14 12:21:45 matthew Exp $
+# $Id: index.cgi,v 1.96 2009-05-14 12:28:58 matthew Exp $
 #
 
 import sys
@@ -376,7 +376,6 @@ def map(fs, invite):
             'title': map.title(),
             'state': map.state,
             'approx_waiting_time': int(approx_waiting_time),
-            'email': email,
         }))
 
     # If map isn't being made , set it going
