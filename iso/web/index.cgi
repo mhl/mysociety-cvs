@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.94 2009-05-14 12:11:24 matthew Exp $
+# $Id: index.cgi,v 1.95 2009-05-14 12:21:45 matthew Exp $
 #
 
 import sys
@@ -354,17 +354,9 @@ def map_complete(map, invite):
         return render_to_response('map-noiso.html', { 'map_id' : map.id })
     # Let's show the map
     return render_to_response('map.html', {
-        'title': map.title(),
-        'postcode': map.target_postcode,
-        'centre_lat': map.lat,
-        'centre_lon': map.lon,
-        'tile_id': map.id,
+        'map': map,
         'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
-        'target_time_formatted': map.target_time_formatted(),
-        'target_time': map.target_time,
         'show_max_minutes': abs(map.target_time - map.target_limit_time),
-        'route_url_base': map.url_with_params(),
-        'num_invites': invite.num_invites,
         'invite': invite,
     })
 
@@ -381,7 +373,7 @@ def map(fs, invite):
     # ... if too long, ask for email
     if map.current_state in ('new', 'working') and approx_waiting_time > 60:
         return render_to_response('map-provideemail.html', map.add_url_params({
-            'title': 'Please provide your email - %s' % map.title(),
+            'title': map.title(),
             'state': map.state,
             'approx_waiting_time': int(approx_waiting_time),
             'email': email,
@@ -398,7 +390,7 @@ def map(fs, invite):
     elif map.current_state == 'working':
         server, server_port = map.working_server.split(':')
         return render_to_response('map-working.html', {
-            'title': 'Working - %s' % map.title(),
+            'title': map.title(),
             'approx_waiting_time': round(generation_time),
             'state' : map.state,
             'server': server,
@@ -409,7 +401,7 @@ def map(fs, invite):
         return render_to_response('map-error.html', { 'map_id' : map.id })
     elif map.current_state == 'new':
         return render_to_response('map-pleasewait.html', {
-            'title': 'Please wait - %s' % map.title(),
+            'title': map.title(),
             'approx_waiting_time': int(approx_waiting_time),
             'state' : map.state,
             'refresh': 2,

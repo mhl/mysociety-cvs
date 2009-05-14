@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: static.cgi,v 1.6 2009-05-13 13:31:18 matthew Exp $
+# $Id: static.cgi,v 1.7 2009-05-14 12:21:45 matthew Exp $
 #
 
 import sys
@@ -18,7 +18,7 @@ from django.http import HttpResponseRedirect
 def main(fs):
     page = fs.getfirst('page')
     if page == 'faq':
-        return render_to_response('faq.html', { 'title': 'Help' })
+        return render_to_response('faq.html')
     return HttpResponseRedirect('/')
 
 # Main FastCGI loop

@@ -1,4 +1,7 @@
 {% extends 'base-thin.html' %}
+
+{% block title %}Working - {{ title }}{% endblock %}
+
 {% block content %}
 <p>Your map is at the <strong>front of the queue</strong>, and is being made
 by robot #{{ server_port }} on a server powered by <strong>{{ server }}</strong>;

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ map.title }}{% endblock %}
+ 
 {% block body_id %}map{% endblock %}
 
 {% block content %}
@@ -11,7 +13,7 @@
           'cloudmade_api_key': 'f42ed2bf2ce15484a17cef7fe5e6df0f',
 
           // Map center ('lat,lon') and zoom (int).
-          'map_center':     '{{ centre_lat }},{{ centre_lon }}',
+          'map_center':     '{{ map.lat }},{{ map.lon }}',
           'map_zoom':       11,
 
           // Which Cloudmade map style to use for the displayed tiles.
@@ -26,7 +28,7 @@
            * These parameters control the values available to the time slider.
            */
           // The transit arrival time, represented in number of minutes after midnight.
-          'base_minutes': {{ target_time }}, // 5pm
+          'base_minutes': {{ map.target_time }}, // 5pm
           // The number of RELATIVE minutes represented by the minimum of the time slider.
           'show_min_minutes': 0,
           // The number of RELATIVE minutes represented by the time slider maximum.
@@ -39,7 +41,7 @@
           'max_zoom':       12,
 
           // URL to get routes from
-          'route_url_base': escape("{{ route_url_base|safe }}"),
+          'route_url_base': escape("{{ map.url_with_params|safe }}"),
 
           /*
            * These parameters control the values available to the price slider,
@@ -69,7 +71,7 @@
           // {Z}: the integer tile zoom level
           // {X}: the integer tile column
           // {Y}: the integer tile row
-          'iso_tile_url':       'http://{S}{{ tile_web_host }}/tilecache.fcgi/{{ tile_id }}/iso/{Z}/{X}/{Y}.png',
+          'iso_tile_url':       'http://{S}{{ tile_web_host }}/tilecache.fcgi/{{ map.id }}/iso/{Z}/{X}/{Y}.png',
                     // 'iso_tile_url':       'http://studio.stamen.com/geo-mysociety-iso/tiles/tilecache.cgi/1.0.0/iso/{Z}/{X}/{Y}.png',
                     // available subdomains (sans trailing ".") for replacement of {S} above
           'iso_tile_subdomains':  'a,b,c,',
@@ -102,8 +104,8 @@
 
 <p id="footer-side">
 
-{% if num_invites %}
-<a id="footer-invite" href="/invite">Invite <em>{{ num_invites }}</em> friend{{ num_invites|pluralize }}</a>
+{% if invite.num_invites %}
+<a id="footer-invite" href="/invite">Invite <em>{{ invite.num_invites }}</em> friend{{ invite.num_invites|pluralize }}</a>
 {% else %}
 <span id="footer-invite">You have no invites</span>
 {% endif %}
@@ -137,7 +139,7 @@ New map? <label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</labe
 
 <!--
 <span id="footer-share">
-<a href="/postcode/{{ postcode }}/share">Share</a>
+<a href="/postcode/{{ map.target_postcode }}/share">Share</a>
 </span>
 -->
 
