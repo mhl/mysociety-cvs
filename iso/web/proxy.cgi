@@ -6,13 +6,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.13 2009-05-13 13:31:18 matthew Exp $
+# $Id: proxy.cgi,v 1.14 2009-05-14 11:27:55 matthew Exp $
 #
 
 import sys, os.path, os, re, urllib
 sys.path.extend(("../pylib", "../../pylib"))
 import fcgi
-from page import fcgi_loop
+from page import fcgi_loop, slurp_file
 from django.http import HttpResponse, HttpResponseRedirect
 
 import mysociety.config

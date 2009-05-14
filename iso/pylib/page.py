@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.15 2009-05-14 11:09:15 matthew Exp $
+# $Id: page.py,v 1.16 2009-05-14 11:27:55 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -32,7 +32,8 @@ def render_to_response(template, vars={}, mimetype=None):
 def fcgi_loop(main):
     req = fcgi.Accept()
     fs = req.getFieldStorage()
-    os.environ = req.env # XXX??
+    for k, v in req.env.items():
+        os.environ[k] = v
     response = main(fs)
     if isinstance(response, HttpResponseRedirect):
         req.out.write("Status: 302 Found\r\n")
