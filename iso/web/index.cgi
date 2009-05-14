@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.93 2009-05-14 11:10:23 matthew Exp $
+# $Id: index.cgi,v 1.94 2009-05-14 12:11:24 matthew Exp $
 #
 
 import sys
@@ -351,7 +351,7 @@ def map_complete(map, invite):
     # Check there is a route file
     file = os.path.join(tmpwork, '%s.iso' % str(map.id))
     if not os.path.exists(file):
-        return render_to_response('map-noiso.html', { 'map_id' : map.id, 'body_id': 'map-noiso' })
+        return render_to_response('map-noiso.html', { 'map_id' : map.id })
     # Let's show the map
     return render_to_response('map.html', {
         'title': map.title(),
@@ -366,7 +366,6 @@ def map_complete(map, invite):
         'route_url_base': map.url_with_params(),
         'num_invites': invite.num_invites,
         'invite': invite,
-        'body_id': 'map',
     })
 
 def map(fs, invite):
@@ -386,7 +385,6 @@ def map(fs, invite):
             'state': map.state,
             'approx_waiting_time': int(approx_waiting_time),
             'email': email,
-            'body_id': 'map-wait',
         }))
 
     # If map isn't being made , set it going
@@ -406,17 +404,15 @@ def map(fs, invite):
             'server': server,
             'server_port': server_port,
             'refresh': int(generation_time)<5 and int(generation_time) or 5,
-            'body_id': 'map-wait'
         })
     elif map.current_state == 'error':
-        return render_to_response('map-error.html', { 'map_id' : map.id, 'body_id': 'map-wait' })
+        return render_to_response('map-error.html', { 'map_id' : map.id })
     elif map.current_state == 'new':
         return render_to_response('map-pleasewait.html', {
             'title': 'Please wait - %s' % map.title(),
             'approx_waiting_time': int(approx_waiting_time),
             'state' : map.state,
             'refresh': 2,
-            'body_id': 'map-wait',
         })
     else:
         raise Exception("unknown state " + map.current_state)
@@ -427,7 +423,6 @@ def log_email(fs, email):
         return render_to_response('map-provideemail-error.html', {
             'target_postcode': fs.getfirst('target_postcode'),
             'email': email,
-            'body_id': 'map-wait',
         })
     # Okay, we have an email, set off the process
     map = Map(fs)
@@ -550,7 +545,6 @@ def main(fs):
     return render_to_response('index.html', {
         'invite': invite,
         'most_recent': most_recent,
-        'body_id': 'home'
     })
 
 # Main FastCGI loop

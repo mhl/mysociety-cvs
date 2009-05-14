@@ -12,16 +12,15 @@
 <script type="text/javascript" src="/js/site.js"></script>
 <title>{% if title %}{{ title }} - {% endif %}Mapumental</title>
 </head>
-<body{% if body_id %} id="{{ body_id }}"{% endif %}>
+<body id="{% block body_id %}base{% endblock %}">
 
 <div id="header">
 
 <a id="c4logo" href="http://www.channel4.com/">Channel 4</a>
 <h1><a href="/"><span></span>Mapumental</a></h1>
 
-{% ifequal body_id 'home' %}
-<p id="subtitle"><span></span>How far will you go?</p>
-{% endifequal %}
+{% block subtitle %}
+{% endblock %}
 
 </div>
 

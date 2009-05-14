@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.2 2009-05-13 15:28:50 matthew Exp $
+# $Id: invite.cgi,v 1.3 2009-05-14 12:11:24 matthew Exp $
 #
 
 import sys
@@ -25,9 +25,9 @@ db = coldb.get_cursor()
 
 def friend_invite(invite, email):
     if not email:
-        return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide an email address.', 'body_id': 'map-wait'})
+        return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide an email address.' })
     if not validate_email(email):
-        return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide a valid email address.', 'body_id': 'map-wait' })
+        return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide a valid email address.' })
     db.execute('BEGIN')
     try:
         db.execute("INSERT INTO invite (email, source, source_id) VALUES (%s, 'friend', %s)", (email, invite.id))
@@ -36,13 +36,12 @@ def friend_invite(invite, email):
         # violation - ie. an identical row has appeared in the milliseconds
         # since we looked
         db.execute('ROLLBACK')
-        return render_to_response('invite-friend.html', { 'email': email, 'error': 'That email address has already had an invite.', 'body_id': 'map-wait' })
+        return render_to_response('invite-friend.html', { 'email': email, 'error': 'That email address has already had an invite.' })
     db.execute('UPDATE invite SET num_invites = num_invites - 1 WHERE id=%s', (invite.id,))
     db.execute('COMMIT')
     db.execute('SELECT num_invites FROM invite WHERE id=%s', (invite.id,))
     num = db.fetchone()[0]
     vars = {
-        'body_id': 'map-wait',
         'success': 'An invite has been queued.',
     }
     if num==0:
@@ -51,9 +50,9 @@ def friend_invite(invite, email):
 
 def log_email(email):
     if not email:
-        return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide your email address.', 'body_id': 'map-wait' })
+        return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide your email address.' })
     if not validate_email(email):
-        return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide a valid email address.', 'body_id': 'map-wait' })
+        return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide a valid email address.' })
     db.execute('BEGIN')
     try:
         db.execute("INSERT INTO invite (email, source) VALUES (%s, 'web')", (email,))
@@ -62,9 +61,9 @@ def log_email(email):
         # violation - ie. an identical row has appeared in the milliseconds
         # since we looked
         db.execute('ROLLBACK')
-        return render_to_response('invite-email.html', { 'email': email, 'error': 'That email address is already in our system.', 'body_id': 'map-wait' })
+        return render_to_response('invite-email.html', { 'email': email, 'error': 'That email address is already in our system.' })
     db.execute('COMMIT')
-    return render_to_response('invite-email-thanks.html', { 'body_id': 'map-wait' })
+    return render_to_response('invite-email-thanks.html')
 
 def parse_token(token):
     db.execute('SELECT * FROM invite WHERE token=%s', (token,))
@@ -83,7 +82,7 @@ def main(fs):
     if 'email' in fs:
         return log_email(fs.getfirst('email'))
     if 'signup' in fs:
-        return render_to_response('invite-email.html', { 'body_id': 'map-wait' })
+        return render_to_response('invite-email.html')
 
     # Link in email being clicked on
     if 'token' in fs:
@@ -92,10 +91,10 @@ def main(fs):
     # Invite system
     invite = Invite(db)
     if not invite.num_invites or invite.num_invites==0:
-        return render_to_response('invite-none.html', { 'body_id': 'map-wait' })
+        return render_to_response('invite-none.html')
     if 'friend' in fs:
         return friend_invite(invite, fs.getfirst('friend'))
-    return render_to_response('invite-friend.html', { 'body_id': 'map-wait' })
+    return render_to_response('invite-friend.html')
 
 # Main FastCGI loop
 while fcgi.isFCGI():

@@ -1,4 +1,11 @@
 {% extends 'base.html' %}
+
+{% block body_id %}home{% endblock %}
+
+{% block subtitle %}
+<p id="subtitle"><span></span>How far will you go?</p>
+{% endblock %}
+
 {% block content %}
 
 {% if error %}<div id="errors">{{ error }}</div>{% endif %}
