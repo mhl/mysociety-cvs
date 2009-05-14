@@ -12,6 +12,7 @@ import geoconvert
 
 lat_max = 60.85 # Out Stack, Shetland Islands
 lat_max = 58.67 # Dunnet Head
+lat_max = 55.8 # Marshall meadows Bay, Northumberland
 
 lat_min = 49.85 # Western Rocks, Isles of Scilly
 lat_min = 49.95 # The Lizard
@@ -19,6 +20,7 @@ lat_min = 49.95 # The Lizard
 lon_max = 1.762833 # Lowestoft Ness, Suffolk
 lon_min = -8.64 # Soay
 lon_min = -7.54 # Caolos, Outer Heb.
+lon_min = -5.49 # Grassholm, Pembrokeshire
 
 for zoom in range(7,16):
     (xtileL, ytileL) = geoconvert.wgs84_to_tile(lat_max, lon_min, zoom)

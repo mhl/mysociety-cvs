@@ -7,6 +7,7 @@ $array = array(
     array(40, 'Mapumental', 'title-small', 'lightblue'),
     array(40, 'Mapumental', 'title-small-orange', 'orange'),
     array(20, 'How far will you go?', 'subtitle', 'lightblue'),
+    array(20, 'Most Recent', 'most-recent', 'lightblue'),
 );
 
 foreach ($array as $row) {
@@ -17,7 +18,7 @@ foreach ($array as $row) {
 `convert logo.jpg -fuzz 60% -transparent white -fill white -opaque black -resize 80x80 logo-c4-small.png`;
 
 function generate($size, $text, $out, $col) {
-    $font = "../../C4HeaReg.ttf";
+    $font = "/home/matthew/C4HeaReg.ttf";
 
     $extraW = floor(0.4 * $size);
 
@@ -34,6 +35,8 @@ function generate($size, $text, $out, $col) {
     $height = $bbheight;
     if ($descenders) {
         $height += floor(0.6 * $size);
+    } else {
+        $height += floor(0.1 * $size);
     }
 
     $image = imagecreatetruecolor($width, $height);
@@ -56,6 +59,6 @@ function generate($size, $text, $out, $col) {
     }
     imagettftext($image, $size, 0, $extraW/2, $bbheight, $white, $font, $text);
 
-    imagepng($image, "$out.png");
+    imagepng($image, "../web/i/$out.png");
 }
 

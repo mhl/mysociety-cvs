@@ -5,7 +5,7 @@ maps for three different postcodes. Your three are:</p>
 
 <ul id="postcode-list">
 {% for p in postcodes %}
-<li><a href="/postcode/{{ p }}">{{ p }}</a></li>
+<li><a href="/postcode/{{ p.0 }}">{{ p.1 }}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}

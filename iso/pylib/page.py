@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.17 2009-05-14 16:09:27 matthew Exp $
+# $Id: page.py,v 1.18 2009-05-14 18:16:16 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -72,6 +72,7 @@ def send_template_email(to, template, vars):
         'To': to,
         'Subject': subject,
     })
+
 # Cookie invite handling stuff
 
 class Invite(object):
@@ -103,7 +104,7 @@ class Invite(object):
     def postcodes(self):
         if not self._postcodes:
             self.db.execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s', (self.id, ))
-            self._postcodes = [ row['postcode'] for row in self.db.fetchall() ]
+            self._postcodes = [ (row['postcode'], canonicalise_postcode(row['postcode']) ) for row in self.db.fetchall() ]
         return self._postcodes
 
     @property
@@ -113,7 +114,7 @@ class Invite(object):
     def add_postcode(self, pc):
         self.db.execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%s, '%s')''' % (self.id, pc))
         self.db.execute('COMMIT')
-        self._postcodes.append(pc)
+        self._postcodes.append( (pc, canonicalise_postcode(pc)) )
 
 # Random token generation
 
@@ -124,4 +125,10 @@ def random_token():
         token += random.choice(chars)
     return token
 
+# Prettifying functions
+
+def canonicalise_postcode(pc):
+    pc = re.sub('[^A-Z0-9]', '', pc.upper())
+    pc = re.sub('(\d[A-Z]{2})$', r' \1', pc)
+    return pc
 

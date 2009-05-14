@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.97 2009-05-14 15:14:22 francis Exp $
+# $Id: index.cgi,v 1.98 2009-05-14 18:16:16 matthew Exp $
 #
 
 import sys
@@ -523,7 +523,7 @@ def main(fs):
     elif got_map_spec: # Page for generating/ displaying map
         postcode = sanitise_postcode(fs.getfirst('target_postcode'))
         postcodes = invite.postcodes
-        if postcode not in postcodes:
+        if (postcode, canonicalise_postcode(postcode)) not in postcodes:
             if invite.maps_left <= 0:
                 return render_to_response('beta-limit.html', { 'postcodes': postcodes })
             invite.add_postcode(postcode)
@@ -532,7 +532,7 @@ def main(fs):
     # Front page display
     db.execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
         ORDER BY working_start DESC LIMIT 10''')
-    most_recent = db.fetchall()
+    most_recent = [ canonicalise_postcode(row[0]) for row in db.fetchall() ]
     return render_to_response('index.html', {
         'invite': invite,
         'most_recent': most_recent,

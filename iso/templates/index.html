@@ -21,7 +21,7 @@
 <p>Your three maps are:
 <ul style="font-size:200%; margin-top:0">
 {% for p in invite.postcodes %}
-<li><a href="/postcode/{{ p }}">{{ p }}</a></li>
+<li><a href="/postcode/{{ p.0 }}">{{ p.1 }}</a></li>
 {% endfor %}
 </ul>
 
@@ -36,7 +36,7 @@
 <p align="center">
 You can generate <strong>{{ invite.maps_left }}</strong> map{{ invite.maps_left|pluralize }}
 {% for p in invite.postcodes %}
-| <a href="/postcode/{{ p }}">{{ p }}</a>
+| <a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
 {% endfor %}
 </p>
 
@@ -45,20 +45,39 @@ You can generate <strong>{{ invite.maps_left }}</strong> map{{ invite.maps_left|
 </div>
 
 <div id="side-map">
-<h2>Most recent</h2>
+<h2><img src="/i/most-recent.png" alt="Most Recent"></h2>
 <ul>
 {% for p in most_recent %}
-<li>{{ p.0 }}
+<li>{{ p }}
 {% endfor %}
 </ul>
 </div>
 
 <div id="side-column">
-<p id="mysoc-logo"><a href="http://www.mysociety.org/"><img src="http://www.mysociety.org/mysociety_sm.gif" alt="mySociety"></a></p>
 <p>Mapumental helps you build custom maps that help you work out the optimal
 place to live or work in order to have an easy commute and an affordable home.
 It is a project of Channel 4 and mySociety &mdash;
 <a href="/help">read more about the project</a>,
 or <a href="/contact">get in touch</a>.</p>
 </div>
+
+<div id="map-footer">
+
+<p id="footer-side">
+
+{% if invite.num_invites %}
+<a id="footer-invite" href="/invite">Invite <em>{{ invite.num_invites }}</em>
+friend{{ invite.num_invites|pluralize }}</a>
+{% else %}
+<span id="footer-invite">You have no invites</span>
+{% endif %}
+
+| <a href="/help">Help</a>
+| <a href="/contact">Contact</a>
+| <a href="http://www.mysociety.org/"><img src="/i/mysoc.png" alt="mySociety" width="" height="20" align="top"></a>
+
+</p>
+
+</div>
+
 {% endblock %}
