@@ -4,7 +4,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: sendemail.py,v 1.1 2009-05-13 17:44:40 matthew Exp $
+# $Id: sendemail.py,v 1.2 2009-05-14 12:50:47 matthew Exp $
 #
 
 import re, smtplib
@@ -17,6 +17,9 @@ charset = Charset('utf-8')
 charset.body_encoding = QP
 
 def send_email(sender, to, message, headers={}):
+    """Sends MESSAGE from SENDER to TO, with HEADERS
+    Returns True if successful, False if not"""
+
     message = re.sub('\r\n', '\n', message)
 
     msg = Message()
@@ -37,11 +40,13 @@ def send_email(sender, to, message, headers={}):
                 value = unicode(value, 'utf-8')
             msg[key] = Header(value, 'utf-8')
 
+    success = True
     server = smtplib.SMTP('localhost')
     try:
         server.sendmail(sender, to, msg.as_string())
     except smtplib.SMTPResponseException, e:
-        raise
+        success = False
     finally:
         server.quit()
+    return success
 
