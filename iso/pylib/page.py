@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.16 2009-05-14 11:27:55 matthew Exp $
+# $Id: page.py,v 1.17 2009-05-14 16:09:27 matthew Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -74,8 +74,6 @@ def send_template_email(to, template, vars):
     })
 # Cookie invite handling stuff
 
-INVITE_NUM_MAPS = 3
-
 class Invite(object):
     id = 0
     num_invites = 0
@@ -110,7 +108,7 @@ class Invite(object):
 
     @property
     def maps_left(self):
-        return INVITE_NUM_MAPS - len(self.postcodes)
+        return self.num_maps - len(self.postcodes)
 
     def add_postcode(self, pc):
         self.db.execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%s, '%s')''' % (self.id, pc))
