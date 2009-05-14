@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.91 2009-05-14 10:48:38 matthew Exp $
+# $Id: index.cgi,v 1.92 2009-05-14 11:09:15 matthew Exp $
 #
 
 import sys
@@ -544,7 +544,8 @@ def main(fs):
         return map(fs, invite)
 
     # Front page display
-    db.execute("SELECT target_postcode FROM map WHERE state='complete' ORDER BY working_start DESC LIMIT 10")
+    db.execute("SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
+        ORDER BY working_start DESC LIMIT 10")
     most_recent = db.fetchall()
     return render_to_response('index.html', {
         'invite': invite,
