@@ -3,9 +3,11 @@
 {% block title %}Please wait - {{ title }}{% endblock %}
 
 {% block content %}
-<p>Your map is waiting to be made; there {{ state.ahead|pluralize:"is,are" }}
-<strong>{{ state.ahead }} map{{ state.ahead|pluralize }} in front</strong> of
-yours in a queue of {{ state.new }}. 
+<p>Your map is in a queue waiting to be made; you are at <strong>position
+{{ state.ahead }}</strong> (out of {{ state.new }}).
+</p>
+
+<p>
 Currently, {{ state.working }} map{{ state.working|pluralize:" is,s are" }} being made,
 and we&rsquo;ve guesstimated it&rsquo;ll take {{ approx_waiting_time }} seconds until
 yours is done.</p>
