@@ -37,7 +37,11 @@ You can generate <strong>{{ invite.maps_left }}</strong> map{{ invite.maps_left|
 
 <div id="side-map">
 <h2>Most recent</h2>
-<img src="/uk-map.png" alt="">
+<ul>
+{% for p in most_recent %}
+<li>{{ p.0 }}
+{% endfor %}
+</ul>
 </div>
 
 <div id="side-column">
