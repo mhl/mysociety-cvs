@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.98 2009-05-14 18:16:16 matthew Exp $
+# $Id: index.cgi,v 1.99 2009-05-14 18:39:08 matthew Exp $
 #
 
 import sys
@@ -183,7 +183,7 @@ class Map:
         if self.target_station_id:
             return self.text_id
         elif self.target_postcode:
-            return self.target_postcode
+            return canonicalise_postcode(self.target_postcode)
         else:
             return '%d,%d' % (self.target_e, self.target_n)
 
