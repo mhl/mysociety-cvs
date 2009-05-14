@@ -1,0 +1,11 @@
+# crontab.ugly:
+# Timed tasks for Mapumental. Template file.
+#
+# Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+# Email: matthew@mysociety.org. WWW: http://www.mysociety.org/
+#
+# $Id: crontab.ugly,v 1.1 2009-05-14 13:11:42 matthew Exp $
+
+*/5 * * * * !!(*= $user *)!! run-with-lockfile -n /data/vhost/!!(*= $vhost *)!!/email-invites.lock /data/vhost/!!(*= $vhost *)!!/mysociety/iso/bin/email-invites
+*/15 * * * * !!(*= $user *)!! run-with-lockfile -n /data/vhost/!!(*= $vhost *)!!/email-finished-maps.lock /data/vhost/!!(*= $vhost *)!!/mysociety/iso/bin/email-finished-maps
+
