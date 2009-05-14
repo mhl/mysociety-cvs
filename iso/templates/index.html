@@ -18,7 +18,7 @@
 
 {% ifequal invite.maps_left 0 %}
 
-<p>Your three maps are:
+<p>Your maps are:
 <ul style="font-size:200%; margin-top:0">
 {% for p in invite.postcodes %}
 <li><a href="/postcode/{{ p.0 }}">{{ p.1 }}</a></li>
