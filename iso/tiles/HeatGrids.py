@@ -4,7 +4,7 @@ Custom TileCache module for rendering of heat grids based on GDAL VRT files.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: HeatGrids.py,v 1.13 2009-05-12 15:25:28 francis Exp $
+$Id: HeatGrids.py,v 1.14 2009-05-14 11:18:26 francis Exp $
 """
 import os
 import sys
@@ -110,7 +110,7 @@ class ScenicLayer(GenericHeatGridLayer):
 
 class HousingLayer(GenericHeatGridLayer):
     def get_gdal_command(self, params):
-        cmd = '/usr/bin/gdal_grid -a average:radius1=%(radius)d:radius2=%(radius)d ' % params
+        cmd = '/usr/bin/gdal_grid -a invdist:power=2.0:smoothing=2.0:min_points=3:radius1=%(radius)d:radius2=%(radius)d ' % params
         return cmd
 
     def convert_cell_to_image(self, cell):
@@ -121,7 +121,7 @@ class HousingLayer(GenericHeatGridLayer):
         return "housingprices"
 
     def get_radius(self):
-        return 10000
+        return 5000
 
 def arr2img(ar):
     """ Convert Numeric.array to PIL.Image.
