@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.96 2009-05-14 12:28:58 matthew Exp $
+# $Id: index.cgi,v 1.97 2009-05-14 15:14:22 francis Exp $
 #
 
 import sys
@@ -158,7 +158,7 @@ class Map:
             ''', 
             (self.target_direction, self.target_time, self.target_limit_time, self.target_date))
         avg_time, = db.fetchone()
-        return avg_time or 10
+        return avg_time or 30
 
     # How far is making this map? 
     def get_progress_info(self):
