@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.3 2009-05-14 12:11:24 matthew Exp $
+# $Id: invite.cgi,v 1.4 2009-05-14 14:06:28 matthew Exp $
 #
 
 import sys
@@ -42,7 +42,7 @@ def friend_invite(invite, email):
     db.execute('SELECT num_invites FROM invite WHERE id=%s', (invite.id,))
     num = db.fetchone()[0]
     vars = {
-        'success': 'An invite has been queued.',
+        'success': u'Thanks, we\u2019ll send an invite.',
     }
     if num==0:
         return render_to_response('invite-none.html', vars)

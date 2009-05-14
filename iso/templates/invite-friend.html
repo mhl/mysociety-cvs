@@ -1,16 +1,13 @@
 {% extends 'base-thin.html' %}
 {% block content %}
 
-{% if error %}
-<p id="errors">{{ error }}</p>
-{% endif %}
+{% if error %}<p id="errors">{{ error }}</p>{% endif %}
 
 {% if success %}<p id="success">{{ success }}</p>{% endif %}
 
-<p>Mapumental is currently in a private beta-testing phase. If you
-know of a friend who would be interested in using the site, please
-provide their email address below and we&rsquo;ll send them an invite code.
-</p>
+<p>Invites to Mapumental are strictly limited whilst the site is in its private
+beta-testing phase. You are amongst the chosen few and can invite someone
+to also use the site. Think hard about who you owe favours to!</p>
 
 <form method="post" action="{{ self }}">
 <p align="center"><label for="friend">Email:</label>
