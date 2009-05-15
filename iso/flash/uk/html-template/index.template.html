@@ -31,6 +31,15 @@
           'min_zoom':       8,
           'max_zoom':       12,
 
+          // Whether or not the time slider and other measurements are relative to departure
+          // time or arrival time.
+          'depart_or_arrive': 'depart', // 'depart' or 'arrive'
+          // The name of the travel origin (a post code)
+          'origin_name': 'E16 1AG',
+          // This might need to be customized for 'arrive mode, in which case it should
+          // probably be 'the chosen destination'
+          'origin_prefix': 'the chosen origin',
+          
           // Which Cloudmade map style to use for the displayed tiles.
           // Allowed values are: 'midnight', 'fresh', and 'pale_dawn'
           'map_provider': 'fresh',
@@ -42,8 +51,8 @@
           /*
            * These parameters control the values available to the time slider.
            */
-          // The transit arrival time, represented in number of minutes after midnight.
-          'base_minutes': 60 * 17, // 5pm
+          // The transit arrival/departure time, represented in number of minutes after midnight.
+          'base_minutes': 9 * 60, // 9am
           // The number of RELATIVE minutes represented by the minimum of the time slider.
           'show_min_minutes': 0,
           // The number of RELATIVE minutes represented by the time slider maximum.
@@ -58,9 +67,9 @@
           // The low end of the price slider.
           'show_min_price': 0,
           // The high end.
-          'show_max_price': 1000000,
+          'show_max_price': 1500000,
           // The initial slider value.
-          'initial_price': 1000000,
+          'initial_price': 1500000,
           
           /*
            * These parameters control the values of the scenicness slider.
