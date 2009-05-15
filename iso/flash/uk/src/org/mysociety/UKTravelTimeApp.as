@@ -54,8 +54,8 @@ package org.mysociety
         protected var timeSliderDepartTooltip:String = "Setting the travel time slider to a certain time highlights everywhere on the map\n" + 
                                                        "that you could get to at that time, given departure from your chosen origin at {T},\n" + 
                                                        "via the quickest possible combination of public transport.";
-        protected var priceSliderTooltip:String = "Setting the house prices slider highlights everywhere on the map where the\n" + 
-                                                  "average price of homes sold in the last year was less than the price you've chosen.";
+        protected var priceSliderTooltip:String = "Setting the house prices slider highlights everywhere on the map where the average mean\n" + 
+                                                  "price of homes sold from January 2008 to March 2009 was less than the price you've chosen.";
         protected var scenicSliderTooltip:String = "Setting the scenicness slider highlights everywhere on the map that players of\n" + 
                                                    "the game ScenicOrNot (http://scenic.mysociety.org) rated as equally or more pretty\n" + 
                                                    "than the score you've chosen (score is out of 10).";
@@ -419,7 +419,7 @@ package org.mysociety
             onTimeChange(null);
             timePanel.enabled = enableTime;
             
-            pricePanel = new SliderPanel('Price', showMinPrice, showMaxPrice, initialPrice, 100);
+            pricePanel = new SliderPanel('House price (average)', showMinPrice, showMaxPrice, initialPrice, 100);
             pricePanel.slider.tooltipText = priceSliderTooltip;
             pricePanel.slider.updateTicks(25000, 100000);
             pricePanel.slider.addEventListener(Event.CHANGE, onPriceChange);
