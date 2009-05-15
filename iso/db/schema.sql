@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.31 2009-05-14 16:09:26 matthew Exp $
+-- $Id: schema.sql,v 1.32 2009-05-15 14:23:32 matthew Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -128,6 +128,7 @@ create unique index invite_email_idx on invite(email);
 create table invite_postcode (
     id serial not null primary key,
     invite_id integer not null references invite(id),
+    created timestamp not null default now(),
     postcode text not null
 );
 
