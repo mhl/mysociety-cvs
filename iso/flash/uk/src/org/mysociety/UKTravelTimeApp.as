@@ -136,7 +136,7 @@ package org.mysociety
         protected var displayBitmap:Bitmap;
         
         protected var mapBubble:MapInfoBubble;
-        protected var bubbleText:String = 'This exact location is <a class="time">{T}</a> by public transport from {O}<a class="location">{L}</a>. ' + 
+        protected var bubbleText:String = 'This exact location is <a class="time">{T}</a> by public transport {O}<a class="location">{L}</a>. ' + 
                                           'The house prices here average <a class="price">{P}</a> and the scenicess rating is <a class="scenic">{S}</a> out of 10.';
         protected var bubbleTimer:Timer;
         
