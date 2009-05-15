@@ -19,6 +19,7 @@ import imghdr
 import traceback
 import threading
 import thread
+import cookielib
 
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 
@@ -102,6 +103,13 @@ def get_random_tile_url_part(lat, lon):
     return "/" + str(zoom) + "/" + str(xtile) + "/" + str(ytile) + ".png"
 
 # Primitive WWW::Mechanize type functions
+def set_cookies_up():
+    cookie_jar = cookielib.LWPCookieJar()
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie_jar))
+    urllib2.install_opener(opener)
+
+    # go to URL to get infinite map making powerz
+    get_url('/T/' + mysociety.config.get('TESTING_TOKEN'))
 def get_url(path):
     time.sleep(options.inter_request_wait)
     verbose("GET " + path)
@@ -143,7 +151,7 @@ def do_map_session():
     page = None
     while True:
         page = get_url("/?pc=" + str(postcode))
-        if "Showing public transport travel options" in page:
+        if "UKTransitTime.swf" in page:
             break
         if "Please provide your email address" in page:
             log("OVERLOADED - server is asking for email address")
@@ -152,7 +160,8 @@ def do_map_session():
         log("waiting for route finder")
         time.sleep(2) # HTML refresh number from index.cgi
 
-    iso_tile_url_base = re_check_content(page, """'iso_tile_url_base':\s*'(.*)'""")[0]
+    iso_tile_url = re_check_content(page, """'iso_tile_url':\s*'(.*)'""")[0]
+    iso_tile_url_base = iso_tile_url.replace("/{Z}/{X}/{Y}.png", "").replace("{S}", "")
     cloudmade_tile_url_base = "/cloudmade-tiles"
     log("map iso_tile_url_base: " + iso_tile_url_base)
 
@@ -180,7 +189,7 @@ def do_map_session():
             raise Exception("CloudMade file not PNG: " + cm_tile)
         log("successfully got cloudmade tile " + str(tile_number))
 
-# Run lots of "map sessions"
+# Function to run lots of "map sessions"
 sessions_completed = 0
 sessions_completed_time_taken = datetime.timedelta()
 sessions_error = 0
@@ -205,6 +214,12 @@ def multiple_map_sessions():
         sessions_completed += 1
         sessions_completed_time_taken += time_taken
         log("map session took: " + format_timedelta(time_taken) + " secs")
+
+#######################################################################################
+# Entry point
+
+# Get account that can make arbitary number of maps
+set_cookies_up()
 
 # Make multiple instances
 threading.currentThread().setName("progress")
