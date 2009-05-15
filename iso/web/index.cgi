@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.100 2009-05-15 09:11:44 matthew Exp $
+# $Id: index.cgi,v 1.101 2009-05-15 09:17:15 matthew Exp $
 #
 
 import sys
@@ -168,7 +168,7 @@ class Map:
             self.state[row[0]] = row[1]
 
         if self.id:
-            db.execute('''SELECT count(*) FROM map WHERE created < (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (self.id,))
+            db.execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (self.id,))
             self.state['ahead'] = db.fetchone()[0]
             self.maps_to_be_made = self.state['ahead'] + self.state['working']
         else:
@@ -254,8 +254,8 @@ class Map:
                 raise
         db.execute('COMMIT')
         if 'new' in self.state:
-            self.state['ahead'] = self.state['new']
             self.state['new'] += 1
+            self.state['ahead'] = self.state['new']
         return True
 
     def target_time_formatted(self):
