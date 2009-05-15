@@ -43,6 +43,9 @@ package org.mysociety.display.ui
             label.autoSize = TextFieldAutoSize.LEFT;
             label.selectable = false;
             addChild(label);
+            
+            mouseEnabled = false;
+            mouseChildren = true;
              
             super(w, h, color);
         }

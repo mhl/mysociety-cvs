@@ -1,5 +1,6 @@
 package org.mysociety
 {
+    import com.modestmaps.Map;
     import com.modestmaps.core.MapExtent;
     import com.modestmaps.events.MapEvent;
     import com.modestmaps.extras.MapControls;
@@ -8,6 +9,7 @@ package org.mysociety
     import com.modestmaps.mapproviders.IMapProvider;
     import com.stamen.graphics.color.RGB;
     import com.stamen.ui.BlockSprite;
+    import com.stamen.ui.tooltip.Tooltip;
     import com.stamen.utils.MathUtils;
     import com.stamen.utils.NumberFormatter;
     import com.stamen.utils.StringUtils;
@@ -30,12 +32,11 @@ package org.mysociety
     import flash.text.TextField;
     import flash.utils.Timer;
     
-    import org.mysociety.display.BitmapCacheMap;
     import org.mysociety.display.BitmapThresholdMap;
     import org.mysociety.display.MapLoadingIndicator;
     import org.mysociety.display.ui.SliderPanel;
     import org.mysociety.map.C4MapButton;
-    import org.mysociety.map.DataTooltip;
+    import org.mysociety.map.MapInfoBubble;
     import org.mysociety.map.providers.ThresholdMaskProvider;
     import org.mysociety.style.StyleGuide;
     import org.mysociety.utils.DateUtils;
@@ -43,18 +44,34 @@ package org.mysociety
     [SWF(frameRate="24")]
     public class UKTravelTimeApp extends BlockSprite
     {
-        public var map:BitmapCacheMap;
+        public static const ARRIVE:String = 'arrive';
+        public static const DEPART:String = 'depart';
         
-        // These are PIXEL VALUES!
-        protected var minMinutes:uint = 0;
-        protected var maxMinutes:uint = 0xFFFFFF;
-        protected var minPrice:uint = 0;
-        protected var maxPrice:uint = 0xFFFFFF;
-
+        // tooltip strings
+        protected var timeSliderArriveTooltip:String = "Setting the travel time slider to a certain time highlights everywhere on the map\n" + 
+                                                       "that you could leave at that time, in order to get to your chosen destination by {T},\n" + 
+                                                       "via the quickest possible combination of public transport."
+        protected var timeSliderDepartTooltip:String = "Setting the travel time slider to a certain time highlights everywhere on the map\n" + 
+                                                       "that you could get to at that time, given departure from your chosen origin at {T},\n" + 
+                                                       "via the quickest possible combination of public transport.";
+        protected var priceSliderTooltip:String = "Setting the house prices slider highlights everywhere on the map where the\n" + 
+                                                  "average price of homes sold in the last year was less than the price you've chosen.";
+        protected var scenicSliderTooltip:String = "Setting the scenicness slider highlights everywhere on the map that players of\n" + 
+                                                   "the game ScenicOrNot (http://scenic.mysociety.org) rated as equally or more pretty\n" + 
+                                                   "than the score you've chosen (score is out of 10).";
+                                                   
+        protected var originName:String;
+        protected var originPrefix:String;
+        
         // min/max/initial value minutes for the time slider
         protected var showMinMinutes:uint = 0;
         protected var showMaxMinutes:uint = 60 * 12;
         protected var initialMinutes:uint = 0;
+        // minutes after midnight that represents the *max* of the time slider
+        protected var baseTimeInMinutes:uint = 60 * 17;
+        // maximum number of travel minutes before we show the "inaccessible" text in the tooltip
+        protected var maxTravelMinutes:uint = 24 * 60;
+        protected var arriveOrDepart:String = ARRIVE;
 
         // min/max/initial value for the price slider
         protected var showMinPrice:uint = 1000;
@@ -69,11 +86,6 @@ package org.mysociety
         // scenicness score multiplier: what to divide the slider value by to get a displayable score
         protected var scenicMultiplier:uint = 10;
         
-        // minutes after midnight that represents the *max* of the time slider
-        protected var minutesAfterMidnight:uint = 60 * 17;
-        // maximum number of travel minutes before we show the "inaccessible" text in the tooltip
-        protected var maxTravelMinutes:uint = 24 * 60;
-
         // time tile URL parameters
         protected var enableTime:Boolean = true;
         protected var timeTileURLTemplate:String;
@@ -96,12 +108,13 @@ package org.mysociety
         // Cloudmade style ID
         protected var cloudmadeStyle:String = CloudMadeProvider.FRESH;
         
-        protected var markerLocation:Location;
-        
+        protected var map:Map;
+
         // initial map state parameters
         protected var initialMapExtent:MapExtent; // = new MapExtent(59.57885104663186, 49.724479188712984, 2.98828125, -11.07421875);
         protected var initialMapLocation:Location = new Location(51.759865102943905, -1.2658309936523438);
         protected var initialMapZoom:int = 11;
+        protected var markerLocation:Location;
         // map min/max zoom levels
         protected var minMapZoom:int = 6;
         protected var maxMapZoom:int = 12;
@@ -122,10 +135,12 @@ package org.mysociety
         
         protected var displayBitmap:Bitmap;
         
-        protected var tooltipText:String = 'Showing travel time of <a class="time">{T}</a> where the house price is <a class="price">{P}</a> and below. ' + 
-                                           'This area has a scenicness score of <a class="scenic">{S}</a>.';
-        protected var tooltip:DataTooltip;
-        protected var tooltipTimer:Timer = new Timer(750);
+        protected var mapBubble:MapInfoBubble;
+        protected var bubbleText:String = 'This exact location is <a class="time">{T}</a> by public transport from {O}<a class="location">{L}</a>. ' + 
+                                          'The house prices here average <a class="price">{P}</a> and the scenicess rating is <a class="scenic">{S}</a> out of 10.';
+        protected var bubbleTimer:Timer;
+        
+        protected var tooltip:Tooltip;
         
         public function UKTravelTimeApp()
         {
@@ -150,10 +165,9 @@ package org.mysociety
                 stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
                 onStageResize(null);
             }
-            
-            map.addEventListener(MouseEvent.MOUSE_MOVE, resetTooltip);
-            map.addEventListener(MouseEvent.MOUSE_OUT, disableTooltip);
-            tooltipTimer.addEventListener(TimerEvent.TIMER, showTooltip);
+
+            bubbleTimer = new Timer(750);
+            bubbleTimer.addEventListener(TimerEvent.TIMER, showMapBubble);
         }
         
         protected function onKeyUp(event:KeyboardEvent):void
@@ -175,6 +189,13 @@ package org.mysociety
             
             switch (name)
             {
+                case 'origin_name':
+                    originName = value;
+                    return true;
+                case 'origin_prefix':
+                    originPrefix = value;
+                    return true;
+
                 case 'cloudmade_api_key':
                     cloudmadeAPIKey = value;
                     return true;
@@ -204,7 +225,7 @@ package org.mysociety
                     return true;
 
                 case 'base_minutes':
-                    minutesAfterMidnight = parseInt(value);
+                    baseTimeInMinutes = parseInt(value);
                     return true;
                 case 'show_min_minutes':
                     showMinMinutes = parseInt(value);
@@ -214,6 +235,9 @@ package org.mysociety
                     return true;
                 case 'initial_minutes':
                     initialMinutes = parseInt(value);
+                    return true;
+                case 'depart_or_arrive':
+                    arriveOrDepart = value;
                     return true;
 
                 case 'show_min_price':
@@ -287,21 +311,13 @@ package org.mysociety
                 mapProvider = new CloudMadeProvider(cloudmadeAPIKey, cloudmadeStyle);
             }
             
-            map = new BitmapCacheMap(100, 100, true, mapProvider);
+            map = new Map(100, 100, true, mapProvider);
+            map.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick);
+            map.addEventListener(MouseEvent.MOUSE_MOVE, resetMapBubble);
+            map.addEventListener(MouseEvent.MOUSE_OUT, disableMapBubble);
             map.addEventListener(MapEvent.RENDERED, onMapRendered);
             map.addEventListener(MapEvent.BEGIN_TILE_LOADING, onMapBeginTileLoad);
             map.addEventListener(MapEvent.ALL_TILES_LOADED, onMapFinishTileLoad);
-            map.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick);
-            var positions:Object = { 
-                leftButton:     {left: '0px', top: '12px'},
-                rightButton:    {left: '50px', top: '12px'},
-                upButton:       {left: '25px', top: '0px'},
-                downButton:     {left: '25px', top: '25px'},
-                inButton:       {left: '25px', top: '53px'},
-                outButton:      {left: '25px', top: '78px'}
-            };
-            controls = new MapControls(map, true, false, positions, C4MapButton);
-            controls.filters = [new GlowFilter(0x000000, .6, 3, 3, 2)];
             addChild(map);
 
             thresholdContainer = new Sprite();
@@ -313,6 +329,16 @@ package org.mysociety
             displayBitmap.alpha = .65;
             addChild(displayBitmap);
 
+            var positions:Object = { 
+                leftButton:     {left: '0px', top: '12px'},
+                rightButton:    {left: '50px', top: '12px'},
+                upButton:       {left: '25px', top: '0px'},
+                downButton:     {left: '25px', top: '25px'},
+                inButton:       {left: '25px', top: '53px'},
+                outButton:      {left: '25px', top: '78px'}
+            };
+            controls = new MapControls(map, true, false, positions, C4MapButton);
+            controls.filters = [new GlowFilter(0x000000, .6, 3, 3, 2)];
             addChild(controls);
 
             if (enableTime)
@@ -364,9 +390,29 @@ package org.mysociety
             
             topPanel = new BlockSprite(width, 82, RGB.white());
             topPanel.filters = [new DropShadowFilter(0, 90, 0x000000, 1, 0, 2, 1)];
+            // topPanel.visible = false;
             addChild(topPanel);
             
-            timePanel = new SliderPanel('Travel time', showMinMinutes, showMaxMinutes, initialMinutes, 100);
+            var timeSliderTooltip:String;
+            var timeSliderFlip:Boolean = false;
+            var timePanelTitle:String;
+            var timeSliderDate:Date = DateUtils.dateFromMinutesAfterMidnight(baseTimeInMinutes);
+            switch (arriveOrDepart)
+            {
+                case ARRIVE:
+                    timePanelTitle = 'Public transport arriving at ' + formatTime(timeSliderDate);
+                    timeSliderFlip = true;
+                    timeSliderTooltip = timeSliderArriveTooltip;
+                    break;
+                case DEPART:
+                default:
+                    timePanelTitle = 'Public transport departing at ' + formatTime(timeSliderDate); 
+                    timeSliderTooltip = timeSliderDepartTooltip;
+                    break;
+            }
+            timePanel = new SliderPanel(timePanelTitle, showMinMinutes, showMaxMinutes, initialMinutes, 100);
+            timePanel.slider.tooltipText = timeSliderTooltip.replace('{T}', formatTime(timeSliderDate));
+            timePanel.slider.flipFill = timeSliderFlip;
             timePanel.slider.updateTicks(15, 60);
             timePanel.slider.addEventListener(Event.CHANGE, onTimeChange);
             topPanel.addChild(timePanel);
@@ -374,12 +420,14 @@ package org.mysociety
             timePanel.enabled = enableTime;
             
             pricePanel = new SliderPanel('Price', showMinPrice, showMaxPrice, initialPrice, 100);
+            pricePanel.slider.tooltipText = priceSliderTooltip;
             pricePanel.slider.updateTicks(25000, 100000);
             pricePanel.slider.addEventListener(Event.CHANGE, onPriceChange);
             topPanel.addChild(pricePanel);
             onPriceChange(null);
             
             scenicPanel = new SliderPanel('Scenicness', showMinScenicScore, showMaxScenicScore, initialScenicScore, 100);
+            scenicPanel.slider.tooltipText = scenicSliderTooltip;
             scenicPanel.slider.updateTicks(1);
             scenicPanel.slider.flipFill = true;
             scenicPanel.slider.addEventListener(Event.CHANGE, onScenicChange);
@@ -388,12 +436,17 @@ package org.mysociety
             
             loadingIndicator = new MapLoadingIndicator();
             
-            tooltip = new DataTooltip();
-            tooltip.filters = [new DropShadowFilter(.5, 45, 0x000000, .25, 2, 2, 2)];
-            tooltip.field.htmlText = 'This is a <b>test of bold text</b>. We should have all of the characters to display <b>£123,456,789</b>';
-            trace('text:', tooltip.field.htmlText);
-            tooltip.visible = false;
-            addChild(tooltip);
+            mapBubble = new MapInfoBubble();
+            mapBubble.filters = [new DropShadowFilter(.5, 45, 0x000000, .25, 2, 2, 2)];
+            mapBubble.field.htmlText = 'This is a <b>test of bold text</b>. We should have all of the characters to display <b>£123,456,789</b>';
+            trace('text:', mapBubble.field.htmlText);
+            mapBubble.visible = false;
+            addChild(mapBubble);
+            
+            tooltip = new Tooltip();
+            tooltip.bgColor = 0x000000;
+            tooltip.setTextFormat(StyleGuide.getTextFormat(13, RGB.white()), true);
+            stage.addChild(tooltip);
         }
         
         protected function createThresholdMap(baseTileURL:String, subdomains:Array=null):BitmapThresholdMap
@@ -423,7 +476,7 @@ package org.mysociety
             {
                 removeChild(loadingIndicator);
             }
-            updateTooltipText();
+            updateMapBubble();
         }
         
         protected function onThresholdMapRendered(event:MapEvent):void
@@ -469,7 +522,7 @@ package org.mysociety
         {
             if (!displayBitmap.bitmapData)
             {
-                displayBitmap.bitmapData = new BitmapData(map.cache.width, map.cache.height, true, 0x00000000);
+                displayBitmap.bitmapData = new BitmapData(map.getWidth(), map.getHeight(), true, 0x00000000);
             }
             else
             {
@@ -487,34 +540,36 @@ package org.mysociety
         protected function onTimeChange(event:Event):void
         {
             var minutes:uint = timePanel.slider.value;
-            if (timeMap) timeMap.maxThreshold = minutes * 60;
             var field:TextField = timePanel.label;
-            
-            var date:Date = DateUtils.dateFromMinutesAfterMidnight(minutesAfterMidnight - minutes);
-            field.text = 'Leaving at '+ date.hours + ':' + NumberFormatter.zerofill(date.minutes, 2);
-            /*
-            if (minutes < 60)
+            var date:Date;
+            switch (arriveOrDepart)
             {
-                field.text = minutes + StringUtils.pluralize(minutes, ' minute');
+                case ARRIVE:
+                    minutes = (timePanel.slider.max - minutes);
+                    if (timeMap)
+                    {
+                        timeMap.maxThreshold = minutes * 60;
+                    }
+                    date = DateUtils.dateFromMinutesAfterMidnight(baseTimeInMinutes - minutes);
+                    field.text = 'Departing at ' + formatTime(date);
+                    break;
+                case DEPART:
+                default:
+                    if (timeMap)
+                    {
+                        timeMap.maxThreshold = minutes * 60;
+                    }
+                    date = DateUtils.dateFromMinutesAfterMidnight(baseTimeInMinutes + minutes);
+                    field.text = 'Arriving by ' + formatTime(date);
+                    break;
             }
-            else
-            {
-                var hours:int = minutes / 60;
-                minutes %= 60;
-                field.text = hours + StringUtils.pluralize(hours, ' hour');
-                if (minutes > 0)
-                {
-                    field.appendText(', ' + minutes + StringUtils.pluralize(minutes, ' minute'));
-                }
-            }
-            */
             dirty = true;
         }
         
         protected function onPriceChange(event:Event):void
         {
             var price:uint = MathUtils.quantize(pricePanel.slider.value, 1000);
-            pricePanel.label.text = formatPrice(price);
+            pricePanel.label.text = formatPrice(price) + ((price > 0) ? ' or less' : '');
             priceMap.maxThreshold = price;
             dirty = true;
         }
@@ -526,6 +581,11 @@ package org.mysociety
             value *= scenicMultiplier;
             if (scenicMap) scenicMap.minThreshold = new RGB(value, value, value).hex;
             dirty = true;
+        }
+        
+        protected function formatTime(date:Date):String
+        {
+            return date.hours + ':' + NumberFormatter.zerofill(date.minutes, 2);
         }
         
         protected function formatTravelTime(minutes:uint):String
@@ -550,43 +610,51 @@ package org.mysociety
                    : score.toFixed(1);
         }
         
-        protected function resetTooltip(event:Event=null):void
+        protected function resetMapBubble(event:Event=null):void
         {
-            tooltip.visible = false;
-            tooltipTimer.reset();
-            tooltipTimer.start();
+            trace('* move', mouseX, mouseY);
+            mapBubble.visible = false;
+            bubbleTimer.reset();
+            bubbleTimer.start();
         }
         
-        protected function disableTooltip(event:Event=null):void
+        protected function disableMapBubble(event:Event=null):void
         {
-            tooltip.visible = false;
-            tooltipTimer.stop();
+            trace('- out');
+            mapBubble.visible = false;
+            bubbleTimer.stop();
         }
         
-        protected function showTooltip(event:TimerEvent):void
+        protected function showMapBubble(event:TimerEvent):void
         {
-            tooltipTimer.reset();
-            tooltip.x = mouseX;
-            tooltip.y = mouseY - 2;
-            tooltip.visible = true;
+            trace('+ show!');
+            bubbleTimer.reset();
+            mapBubble.x = Math.round(mouseX);
+            mapBubble.y = Math.floor(mouseY - 2);
+            mapBubble.visible = true;
             
-            updateTooltipText();
+            updateMapBubble();
         }
         
-        protected function updateTooltipText():void
+        protected function updateMapBubble():void
         {
             var minutes:uint = timeMap.cache.getPixel(map.mouseX, map.mouseY) / 60;
             var timeText:String = timeMap
-                                  ? formatTravelTime(minutes)
-                                  : '?';
+                ? formatTravelTime(minutes)
+                : '?';
             var priceText:String = priceMap
-                                   ? formatPrice(priceMap.cache.getPixel(map.mouseX, map.mouseY))
-                                   : '?';
+                ? formatPrice(priceMap.cache.getPixel(map.mouseX, map.mouseY))
+                : '?';
             var scenicText:String = scenicMap
-                                    ? formatScenicness((scenicMap.cache.getPixel(map.mouseX, map.mouseY) & 0x0000FF) / scenicMultiplier)
-                                    : '?';
-            tooltip.field.htmlText = StringUtils.replace(tooltipText,
-                                                         {'{T}': timeText, '{P}': priceText, '{S}': scenicText});
+                ? formatScenicness((scenicMap.cache.getPixel(map.mouseX, map.mouseY) & 0x0000FF) / scenicMultiplier)
+                : '?';
+            var originPrefixText:String = originPrefix ? originPrefix + ', ' : '';
+            mapBubble.field.htmlText = StringUtils.replace(bubbleText,
+                                                           {'{T}': timeText,
+                                                            '{P}': priceText,
+                                                            '{S}': scenicText,
+                                                            '{O}': originPrefixText,
+                                                            '{L}': originName});
         }
         
         protected function onStageResize(event:Event):void
@@ -606,8 +674,10 @@ package org.mysociety
                 topPanel.y = 0;
                 
                 var controlRect:Rectangle = rect.clone();
+                controlRect.bottom = topPanel.y + topPanel.height;
                 controlRect.inflate(-15, -10);
                 controlRect.right -= 5;
+                
                 var right:Number = controlRect.right;
                 controlRect.width = Math.floor(.45 * controlRect.width);
                 timePanel.setRect(controlRect);

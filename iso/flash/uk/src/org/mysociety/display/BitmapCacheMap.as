@@ -26,12 +26,12 @@ package org.mysociety.display
         
         public function BitmapCacheMap(width:Number=320, height:Number=240, draggable:Boolean=true, mapProvider:IMapProvider=null, ...rest)
         {
-            addEventListener(MapEvent.RESIZED, onResized);
-            addEventListener(MapEvent.RENDERED, onRendered);
-            
             super(width, height, draggable, mapProvider, rest);
             
             TileGrid.cacheLoaders = true;
+            
+            addEventListener(MapEvent.RESIZED, onResized);
+            addEventListener(MapEvent.RENDERED, onRendered);
         }
         
         protected function onResized(event:Event):void
