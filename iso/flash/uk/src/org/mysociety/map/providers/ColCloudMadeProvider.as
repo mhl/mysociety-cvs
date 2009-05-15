@@ -5,7 +5,7 @@ package org.mysociety.map.providers
 	
 	public class ColCloudMadeProvider extends OpenStreetMapProvider
 	{
-		public var subdomains:Array = ['a.', 'b.', 'c.', ''];
+		public var subdomains:Array = ['a.', 'b.', 'c.', 'd.'];
 
 		public function ColCloudMadeProvider()
 		{
@@ -20,7 +20,7 @@ package org.mysociety.map.providers
 			}
 			coord = sourceCoordinate(coord);
 			var server:String = subdomains[int(coord.row + coord.column) % 4];
-			var url:String = 'http://' + server + 'col.mysociety.org/cloudmade-tiles/' + [ coord.zoom, coord.column, coord.row ].join('/') + '.png'; 
+			var url:String = 'http://' + server + 'mapumental.channel4.com/cloudmade-tiles/' + [ coord.zoom, coord.column, coord.row ].join('/') + '.png'; 
 			return [ url ];
 		}
 
