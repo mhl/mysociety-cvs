@@ -2,17 +2,23 @@ Contours of life TODO
 =====================
 
 Code to take email if isodaemon or tile server load to high
-    play with socket.setdefaulttimeout?
     Try reducing number of isodaemon instances on stilton by 4 or 8 to see if that makes overall performance better
-    - site needs to naturally use all CPU on both machines, whether isodaemon or tile cache is busiest
     Failover for tileserver too busy (1 day)
-    Measure how much data per session
+    Change weight in haproxy so stilton gets more
+    Make haproxy detect when just Apache's are down, not Squids
+    Look at errors going to bugs@
+    
 
 Consider getting squid to cache cached tiles?
 Get squid to cache at least the front page etc.
 
-Show that it is only up to 9am, perhaps by marking time on sliders.
-- template needs these passing in from backend
+Flash things:
+    Make it use less CPU when you're not changing anything
+    Make top of house price slider go to "anything"
+
+    Tool tip to show a route
+    Version where you can't scroll/zoom
+
 
 Invite system
     Make clearing generated maps deal with email signup OK
@@ -27,7 +33,6 @@ Render with better algorithms
 
 Are housing/scenic tiles always loading from same subdomain?
 
-Make it use less CPU when you're not changing anything
 
 Mask off sea
 
@@ -42,13 +47,8 @@ Thank the original people who told us about existence of NPTDR
 Find journeys leaving after
 * check _interchange_time_after_journey
 * break in _adjacent_location_times_add_stops won't work for midnight
-alter table map rename target_latest to target_time;
-alter table map add target_direction text check ( target_direction = 'arrive_by' or target_direction = 'depart_after' );
-update map set target_direction = 'arrive_by' where target_direction is null;
-alter table map alter target_direction set not null;
-alter table map rename target_earliest to target_limit_time;
-alter table map add check ( (target_direction = 'arrive_by' and target_limit_time <= target_time)
-      or (target_direction = 'depart_after' and target_limit_time >= target_time) )
+* put some kind of route preview back and test that
+
 
 
 Later
