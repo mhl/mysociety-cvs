@@ -169,7 +169,7 @@ package com.stamen.ui.tooltip
 
 							tipField.htmlText = tipText;
 							tipField.x = padding;
-							tipField.y = 0;
+							tipField.y = padding;
 							tipField.width = tipField.textWidth + 4;
 							tipField.height = tipField.textHeight + 4;
 							
@@ -204,7 +204,7 @@ package com.stamen.ui.tooltip
 		protected function redraw():void
 		{
 			var w:Number = tipField.width + 2*tipField.x;
-			var h:Number = tipField.height + 2*tipField.y;
+			var h:Number = tipField.height + 2*tipField.y - 1;
 			with (this.graphics) {
 				clear();
 				beginFill(bgColor, 1.0);
