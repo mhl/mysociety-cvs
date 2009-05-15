@@ -18,12 +18,24 @@
 
 {% ifequal invite.maps_left 0 %}
 
-<p>Your maps are:
-<ul style="font-size:200%; margin-top:0">
-{% for p in invite.postcodes %}
-<li><a href="/postcode/{{ p.0 }}">{{ p.1 }}</a></li>
-{% endfor %}
-</ul>
+    {% if show_dropdown %}
+
+        <p>Your maps:</p>
+        <form method="get" action="/" id="pc-front">
+        <select name="pc">{% for p in invite.postcodes %}<option>{{ p.1 }}</option>{% endfor %}</select>
+        <input type="submit" value="Go">
+        </form>
+
+    {% else %}
+
+        <p>Your maps are:
+        <ul style="font-size:200%; margin-top:0">
+        {% for p in invite.postcodes %}
+        <li><a href="/postcode/{{ p.0 }}">{{ p.1 }}</a></li>
+        {% endfor %}
+        </ul>
+
+    {% endif %}
 
 {% else %}
 
@@ -35,9 +47,23 @@
 
 <p align="center">
 You can generate <strong>{{ invite.maps_left }}</strong> map{{ invite.maps_left|pluralize }}
-{% for p in invite.postcodes %}
-| <a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
-{% endfor %}
+
+    {% if show_dropdown %}
+
+        <form method="get" action="/">
+        <p>Your previous maps:
+        <select name="pc">{% for p in invite.postcodes %}<option>{{ p.1 }}</option>{% endfor %}</select>
+        <input type="submit" value="Go">
+        </form>
+
+    {% else %}
+
+        {% for p in invite.postcodes %}
+        | <a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
+        {% endfor %}
+
+    {% endif %}
+
 </p>
 
 {% endifequal %}

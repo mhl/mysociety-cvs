@@ -127,25 +127,50 @@ friend{{ invite.num_invites|pluralize }}</a>
 
 {% ifequal invite.maps_left 0 %}
 
-Your maps:
-{% for p in invite.postcodes %}
-<a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
-{% if not forloop.last %} | {% endif %}
-{% endfor %}
+    Your maps:
+
+    {% if show_dropdown %}
+
+        <form method="get" action="/">
+        <select name="pc">{% for p in invite.postcodes %}<option>{{ p.1 }}</option>{% endfor %}</select>
+        <input type="submit" value="Go">
+        </form>
+
+    {% else %}
+
+        {% for p in invite.postcodes %}
+            <a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
+            {% if not forloop.last %} | {% endif %}
+        {% endfor %}
+
+    {% endif %}
 
 {% else %}
 
-<form method="get" action="/">
-New map? <label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</label>
-<input type="text" name="pc" value="" size="6" id="pc_f">
-<input type="submit" value="Go">
-</form>
+    <form method="get" action="/">
+    New map? <label for="pc_f"><abbr title="Great Britain">GB</abbr> postcode:</label>
+    <input type="text" name="pc" value="" size="6" id="pc_f">
+    <input type="submit" value="Go">
+    </form>
 
-(<strong>{{ invite.maps_left }}</strong> map{{ invite.maps_left|pluralize }} left
-{% for p in invite.postcodes %}
-| <a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
-{% endfor %}
-)
+    (<strong>{{ invite.maps_left }}</strong> map{{ invite.maps_left|pluralize }} left
+
+    {% if show_dropdown %}
+
+        <form method="get" action="/">
+        <select name="pc">{% for p in invite.postcodes %}<option>{{ p.1 }}</option>{% endfor %}</select>
+        <input type="submit" value="Go">
+        </form>
+
+    {% else %}
+
+        {% for p in invite.postcodes %}
+        | <a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
+        {% endfor %}
+
+    {% endif %}
+
+    )
 
 {% endifequal %}
 

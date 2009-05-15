@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.101 2009-05-15 09:17:15 matthew Exp $
+# $Id: index.cgi,v 1.102 2009-05-15 09:28:50 matthew Exp $
 #
 
 import sys
@@ -363,6 +363,7 @@ def map_complete(map, invite):
         'show_max_minutes': abs(map.target_time - map.target_limit_time),
         'initial_minutes': initial_minutes,
         'invite': invite,
+        'show_dropdown': len(invite.postcodes) > 3,
     })
 
 def map(fs, invite):
@@ -541,6 +542,7 @@ def main(fs):
     return render_to_response('index.html', {
         'invite': invite,
         'most_recent': most_recent,
+        'show_dropdown': len(invite.postcodes) > 3,
     })
 
 # Main FastCGI loop
