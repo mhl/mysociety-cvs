@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.99 2009-05-14 18:39:08 matthew Exp $
+# $Id: index.cgi,v 1.100 2009-05-15 09:11:44 matthew Exp $
 #
 
 import sys
@@ -353,10 +353,15 @@ def map_complete(map, invite):
     if not os.path.exists(file):
         return render_to_response('map-noiso.html', { 'map_id' : map.id })
     # Let's show the map
+    if map.target_direction == 'arrive_by':
+        initial_minutes = abs(map.target_time - map.target_limit_time) - 60
+    else:
+        initial_minutes = 60
     return render_to_response('map.html', {
         'map': map,
         'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
         'show_max_minutes': abs(map.target_time - map.target_limit_time),
+        'initial_minutes': initial_minutes,
         'invite': invite,
     })
 

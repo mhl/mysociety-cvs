@@ -27,18 +27,27 @@
           /*
            * These parameters control the values available to the time slider.
            */
-          // The transit arrival time, represented in number of minutes after midnight.
+          // The transit departure/arrival time, represented in number of minutes after midnight.
           'base_minutes': {{ map.target_time }}, // 5pm
           // The number of RELATIVE minutes represented by the minimum of the time slider.
           'show_min_minutes': 0,
           // The number of RELATIVE minutes represented by the time slider maximum.
           'show_max_minutes': {{ show_max_minutes }}, // 12 hours
           // The initial value of the time slider. (show_min_minutes <= n <= show_max_minutes)
-          'initial_minutes': 60,
+          'initial_minutes': {{ initial_minutes }},
           
           // Minimum and Maximum map zoom levels.
           'min_zoom':       8,
           'max_zoom':       12,
+
+          // Whether or not the time slider and other measurements are relative to departure
+          // time or arrival time.
+          'depart_or_arrive': 'arrive', // 'depart' or 'arrive'
+          // The name of the travel origin (a post code)
+          'origin_name': '{{ map.title }}',
+          // This might need to be customized for 'arrive mode, in which case it should
+          // probably be 'the chosen destination'
+          'origin_prefix': 'the chosen destination',
 
           // URL to get routes from
           'route_url_base': escape("{{ map.url_with_params|safe }}"),
@@ -50,9 +59,9 @@
           // The low end of the price slider.
           'show_min_price': 0,
           // The high end.
-          'show_max_price': 1000000,
+          'show_max_price': 1500000,
           // The initial slider value.
-          'initial_price': 1000000,
+          'initial_price': 1500000,
 
           /*
            * These parameters control the values of the scenicness slider.
