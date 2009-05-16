@@ -30,5 +30,16 @@ package com.stamen.utils
         {
             return minB + (maxB - minB) * normalize(value, minA, maxA, bound);
         }
+
+	    public static function logn(x:Number, base:Number):Number
+	    {
+	        if (!base) base = Math.E;
+	        return Math.log(x) / Math.log(base);
+	    }
+
+        public static function logScale(value:Number, min:Number, max:Number, stretch:Number=1):Number
+        {
+            return logn((value - min + 1) / stretch, (max - min) / stretch);
+        }
 	}
 }
