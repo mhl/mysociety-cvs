@@ -421,7 +421,7 @@ package org.mysociety
             
             pricePanel = new SliderPanel('House price (average)', showMinPrice, showMaxPrice, initialPrice, 100);
             pricePanel.slider.tooltipText = priceSliderTooltip;
-            pricePanel.slider.updateTicks(25000, 100000);
+            pricePanel.slider.updateTicks(20000, 100000);
             pricePanel.slider.addEventListener(Event.CHANGE, onPriceChange);
             topPanel.addChild(pricePanel);
             onPriceChange(null);
@@ -520,6 +520,7 @@ package org.mysociety
         
         protected function rasterize(event:Event):void
         {
+            trace('rasterizing!');
             if (!displayBitmap.bitmapData)
             {
                 displayBitmap.bitmapData = new BitmapData(map.getWidth(), map.getHeight(), true, 0x00000000);
@@ -535,6 +536,7 @@ package org.mysociety
                 var thresholdMap:BitmapThresholdMap = thresholdContainer.getChildAt(i) as BitmapThresholdMap;
                 shield.threshold(thresholdMap.maskBitmap, shield.rect, new Point(), '!=', 0xFFFFFF, fillColor, 0x00FFFFFF);
             }
+            dirty = false;
         }
 
         protected function onTimeChange(event:Event):void
@@ -568,9 +570,17 @@ package org.mysociety
         
         protected function onPriceChange(event:Event):void
         {
-            var price:uint = MathUtils.quantize(pricePanel.slider.value, 1000);
-            pricePanel.label.text = formatPrice(price) + ((price > 0) ? ' or less' : '');
-            priceMap.maxThreshold = price;
+            if (pricePanel.slider.value == pricePanel.slider.max)
+            {
+                priceMap.maxThreshold = 0xFFFFFF;
+                pricePanel.label.text = 'Any price';
+            }
+            else
+            {
+                var price:uint = MathUtils.quantize(pricePanel.slider.value, 1000);
+                pricePanel.label.text = formatPrice(price) + ((price > 0) ? ' or less' : '');
+                priceMap.maxThreshold = price;
+            }
             dirty = true;
         }
         
@@ -612,7 +622,6 @@ package org.mysociety
         
         protected function resetMapBubble(event:Event=null):void
         {
-            trace('* move', mouseX, mouseY);
             mapBubble.visible = false;
             bubbleTimer.reset();
             bubbleTimer.start();
@@ -620,14 +629,12 @@ package org.mysociety
         
         protected function disableMapBubble(event:Event=null):void
         {
-            trace('- out');
             mapBubble.visible = false;
             bubbleTimer.stop();
         }
         
         protected function showMapBubble(event:TimerEvent):void
         {
-            trace('+ show!');
             bubbleTimer.reset();
             mapBubble.x = Math.round(mouseX);
             mapBubble.y = Math.floor(mouseY - 2);
