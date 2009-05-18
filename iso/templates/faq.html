@@ -54,24 +54,54 @@ this service for free. Dumb, eh?</dd>
 
 <dt>What day are the public transport journey times for?</dt>
 
-<dd>The journey times shown are rough only, and you should not use them for
-planning actual journeys. They are only valid for one Tuesday in October last
-year, and the transport services will have changed since then.
+<dd>The journey times shown are rough only, and you should <strong>not</strong>
+use them for planning actual journeys. They are only valid for one Tuesday in
+October last year, and the transport services will have changed since then.
 </dd>
 
 <dt>What modes of transport are covered?</dt>
 
 <dd>Trains, buses, coaches, the underground, trams and ferries. Air travel is
-not included, because NPTDR only contains flights connecting to Scotland.
+not included at all, because NPTDR only contains flights connecting to
+Scotland. International sea and rail journeys are not included.
 </dd>
 
 <dt>What are the interchange times and walking speeds?</dt>
 
 <dd>The public transport journey times assume you can walk at 3mph as the crow
-flies.  10 minutes walking is allowed between stations and to your final
-destination, and 30 minutes walking at the start. 1 minute is allowed to change
-buses at the same stop, and 5 minutes for changing train, coach, underground
-and ferry at the same station.</dd>
+flies. 10 minutes walking is allowed between stations and to/from your final
+destination. 30 minutes walking is allowed at the other end of the journey,
+partly so it displays clearly on the map.  1 minute is allowed to change buses
+at the same stop, and 5 minutes for changing train, coach, underground and
+ferry at the same station.</dd>
+
+<dt>How are the house prices calculated?</dt>
+
+<dd>We bought a list of every actual domestic property sale recorded with the
+Land Registry for England and Wales between the start of January 2008 and the
+end of March 2009. They are being displayed with a weighted, inverse distance
+decaying mean (see 
+<a href="https://secure.mysociety.org/cvstrac/rlog?f=mysociety/iso/tiles/HeatGrids.py">source
+    code</a> and <a href="http://www.gdal.org/grid_tutorial.html">GDAL documentation</a>). 
+No attempt has been made to deflate house prices forward to one time
+period.</dd>
+
+<dt>Why are there no house prices in Scotland?</dt>
+
+<dd>It turns out that to find out the cost of a house in Scotland costs
+about ten times more than to find one in England and Wales. Maybe
+they're ten times nicer houses? Who knows, but we ain't paying.
+</dd>
+
+<dt>Where is the scenicness data from?</dt>
+
+<dd>People vote on the scenicness of photos of Britain on
+<a href="http://scenic.mysociety.org/">ScenicOrNot</a>, a site we specially
+made to create the data for this one. Please go there and help improve the
+data! The photos ultimately come from <a href="http://www.geograph.org.uk/">Geograph</a>.
+The scenicness is display on the map with a similar weighted, inverse distance
+mean to the one used for house prices as described above.
+
 
 <dt>Who are you?</dt>
 <dd>We are <a href="http://www.mysociety.org/">mySociety</a>, a charity that
