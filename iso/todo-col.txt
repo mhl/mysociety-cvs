@@ -5,9 +5,7 @@ Code to take email if isodaemon or tile server load to high
     Try reducing number of isodaemon instances on stilton by 4 or 8 to see if that makes overall performance better
     Failover for tileserver too busy (1 day)
     Change weight in haproxy so stilton gets more
-    Make haproxy detect when just Apache's are down, not Squids
     Look at errors going to bugs@
-    
 
 Consider getting squid to cache cached tiles?
 Get squid to cache at least the front page etc.
@@ -16,13 +14,34 @@ Flash things:
     Make it use less CPU when you're not changing anything
     Make top of house price slider go to "anything"
 
+    People don't seem able to find the slider tooltip (while pressing button doesn't show)
+    When house price is zero should have special text
+    Also shouldn't say "more than 24 hours" for main tooltip
+
     Tool tip to show a route
     Version where you can't scroll/zoom
-
+    Permalinks - put the current map pan/zoom and slider values in # URL
 
 Invite system
     Make clearing generated maps deal with email signup OK
-    Finish email-finished-maps:
+    Check what emails for invites go out and when/how
+
+Are housing/scenic tiles always loading from same subdomain?
+
+Mask off sea
+
+UI for choose different times of day and depart after
+
+Find journeys leaving after
+* check _interchange_time_after_journey
+* break in _adjacent_location_times_add_stops won't work for midnight
+* put some kind of route preview back and test that
+
+Thank the original people who told us about existence of NPTDR
+
+
+Later
+-----
 
 Render with better algorithms
 - house prices (make tiles smaller in kilobytes!)
@@ -30,30 +49,6 @@ Render with better algorithms
     * inflate house prices up to current month
     * do something clever varying circle radius according to population density?
 - scenic
-
-Are housing/scenic tiles always loading from same subdomain?
-
-
-Mask off sea
-
-
-UI for choose different times of day
-
-Permalinks - put the current map pan/zoom and slider values in # URL
-
-Thank the original people who told us about existence of NPTDR
-
-
-Find journeys leaving after
-* check _interchange_time_after_journey
-* break in _adjacent_location_times_add_stops won't work for midnight
-* put some kind of route preview back and test that
-
-
-
-Later
------
-
 
 Route finding in proper interface
 
