@@ -5,6 +5,7 @@
 {% block body_id %}map{% endblock %}
 
 {% block content %}
+
 <div id="swf">
     <script type="text/javascript" defer="defer"><!--
         var getParam = swfobject.getQueryParamValue;
@@ -84,14 +85,17 @@
                     // 'iso_tile_url':       'http://studio.stamen.com/geo-mysociety-iso/tiles/tilecache.cgi/1.0.0/iso/{Z}/{X}/{Y}.png',
                     // available subdomains (sans trailing ".") for replacement of {S} above
           'iso_tile_subdomains':  'a,b,c,',
+          'iso_enabled': 'true',
 
           // Price tile URL template. Subsitutions are the same as above.
           'price_tile_url':     '/tilecache.fcgi/1.0.0/housing/{Z}/{X}/{Y}.png',
           'price_tile_subdomains':  '',
+          'price_enabled': 'true',
 
           // Scenic tile URL template. Subsitutions are the same as above.
           'scenic_tile_url':    '/tilecache.fcgi/1.0.0/scenic/{Z}/{X}/{Y}.png',
-          'scenic_tile_subdomains':  ''
+          'scenic_tile_subdomains':  '',
+          'scenic_enabled': 'true'
 
         };
 
