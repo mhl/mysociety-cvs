@@ -1,0 +1,31 @@
+#!/usr/bin/python
+#
+# manual-invites:
+# Create some invite tokens
+#
+# Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+# Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
+#
+# $Id: manual-invites,v 1.1 2009-05-19 11:03:57 matthew Exp $
+#
+
+import sys
+sys.path.extend((sys.path[0]+"/../pylib", sys.path[0]+"/../../pylib"))
+
+import mysociety.config
+mysociety.config.set_file(sys.path[0]+"/../conf/general")
+
+from page import random_token
+
+import coldb
+db = coldb.get_cursor()
+
+fp = open('Emails')
+for row in fp:
+    email = row.strip()
+    token = random_token()
+    db.execute('''INSERT INTO invite (email, source, token) VALUES (%s, 'manual', %s)''', (email, token))
+    db.execute('COMMIT')
+    url = mysociety.config.get('BASE_URL') + 'T/' + token
+    print '%s\t%s' % (email, url)
+
