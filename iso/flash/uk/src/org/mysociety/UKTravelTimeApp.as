@@ -87,15 +87,17 @@ package org.mysociety
         protected var scenicMultiplier:uint = 10;
         
         // time tile URL parameters
-        protected var enableTime:Boolean = true;
+        protected var enableIso:Boolean = true;
         protected var timeTileURLTemplate:String;
         protected var timeTileURLSubdomains:Array;
 
         // price tile URL parameters
+        protected var enablePrice:Boolean = true;
         protected var priceTileURLTemplate:String;
         protected var priceTileURLSubdomains:Array;
         
         // scenicness tile URL parameters
+        protected var enableScenic:Boolean = true;
         protected var scenicTileURLTemplate:String;
         protected var scenicTileURLSubdomains:Array;
         
@@ -201,7 +203,7 @@ package org.mysociety
                     return true;
 
                 case 'iso_enabled':
-                    enableTime = (value == 'true');
+                    enableIso = (value == 'true');
                     return true;
                 case 'iso_tile_url':
                     timeTileURLTemplate = value;
@@ -210,6 +212,9 @@ package org.mysociety
                     timeTileURLSubdomains = value.split(',');
                     return true;
 
+                case 'price_enabled':
+                    enablePrice = (value == 'true');
+                    return true;
                 case 'price_tile_url':
                     priceTileURLTemplate = value;
                     return true;
@@ -217,6 +222,9 @@ package org.mysociety
                     priceTileURLSubdomains = value.split(',');
                     return true;
                     
+                case 'scenic_enabled':
+                    enableScenic = (value == 'true');
+                    return true;
                 case 'scenic_tile_url':
                     scenicTileURLTemplate = value;
                     return true;
@@ -341,22 +349,27 @@ package org.mysociety
             controls.filters = [new GlowFilter(0x000000, .6, 3, 3, 2)];
             addChild(controls);
 
-            if (enableTime)
+            if (enableIso)
             {
                 timeMap = createThresholdMap(timeTileURLTemplate, timeTileURLSubdomains);
                 timeMap.name = 'time';
                 thresholdContainer.addChild(timeMap);
             }
 
-            priceMap = createThresholdMap(priceTileURLTemplate, priceTileURLSubdomains);
-            priceMap.name = 'price';
-            thresholdContainer.addChild(priceMap);
+            if (enablePrice)
+            {
+                priceMap = createThresholdMap(priceTileURLTemplate, priceTileURLSubdomains);
+                priceMap.name = 'price';
+                thresholdContainer.addChild(priceMap);
+            }
             
-            scenicMap = createThresholdMap(scenicTileURLTemplate, scenicTileURLSubdomains);
-            scenicMap.name = 'scenicness';
-            var maxScenicness:uint = showMaxScenicScore * scenicMultiplier;
-            scenicMap.maxThreshold = new RGB(maxScenicness, maxScenicness, maxScenicness).hex;
-            thresholdContainer.addChild(scenicMap);
+            if (enableScenic) {
+                scenicMap = createThresholdMap(scenicTileURLTemplate, scenicTileURLSubdomains);
+                scenicMap.name = 'scenicness';
+                var maxScenicness:uint = showMaxScenicScore * scenicMultiplier;
+                scenicMap.maxThreshold = new RGB(maxScenicness, maxScenicness, maxScenicness).hex;
+                thresholdContainer.addChild(scenicMap);
+            }
 
             // make them all transparent            
             for (var i:int = 0; i < thresholdContainer.numChildren; i++)
@@ -411,28 +424,36 @@ package org.mysociety
                     break;
             }
             timePanel = new SliderPanel(timePanelTitle, showMinMinutes, showMaxMinutes, initialMinutes, 100);
-            timePanel.slider.tooltipText = timeSliderTooltip.replace('{T}', formatTime(timeSliderDate));
-            timePanel.slider.flipFill = timeSliderFlip;
-            timePanel.slider.updateTicks(15, 60);
-            timePanel.slider.addEventListener(Event.CHANGE, onTimeChange);
-            topPanel.addChild(timePanel);
-            onTimeChange(null);
-            timePanel.enabled = enableTime;
+            if (enableIso) {
+                timePanel.slider.tooltipText = timeSliderTooltip.replace('{T}', formatTime(timeSliderDate));
+                timePanel.slider.flipFill = timeSliderFlip;
+                timePanel.slider.updateTicks(15, 60);
+                timePanel.slider.addEventListener(Event.CHANGE, onTimeChange);
+                topPanel.addChild(timePanel);
+                onTimeChange(null);
+            }
+            timePanel.enabled = enableIso;
             
             pricePanel = new SliderPanel('House price (average)', showMinPrice, showMaxPrice, initialPrice, 100);
-            pricePanel.slider.tooltipText = priceSliderTooltip;
-            pricePanel.slider.updateTicks(20000, 100000);
-            pricePanel.slider.addEventListener(Event.CHANGE, onPriceChange);
-            topPanel.addChild(pricePanel);
-            onPriceChange(null);
+            if (enablePrice) {
+                pricePanel.slider.tooltipText = priceSliderTooltip;
+                pricePanel.slider.updateTicks(20000, 100000);
+                pricePanel.slider.addEventListener(Event.CHANGE, onPriceChange);
+                topPanel.addChild(pricePanel);
+                onPriceChange(null);
+            }
+            pricePanel.enabled = enablePrice;
             
             scenicPanel = new SliderPanel('Scenicness', showMinScenicScore, showMaxScenicScore, initialScenicScore, 100);
-            scenicPanel.slider.tooltipText = scenicSliderTooltip;
-            scenicPanel.slider.updateTicks(1);
-            scenicPanel.slider.flipFill = true;
-            scenicPanel.slider.addEventListener(Event.CHANGE, onScenicChange);
-            topPanel.addChild(scenicPanel);
-            onScenicChange(null);
+            if (enableScenic) {
+                scenicPanel.slider.tooltipText = scenicSliderTooltip;
+                scenicPanel.slider.updateTicks(1);
+                scenicPanel.slider.flipFill = true;
+                scenicPanel.slider.addEventListener(Event.CHANGE, onScenicChange);
+                topPanel.addChild(scenicPanel);
+                onScenicChange(null);
+            }
+            scenicPanel.enabled = enableScenic;
             
             loadingIndicator = new MapLoadingIndicator();
             
@@ -534,6 +555,12 @@ package org.mysociety
             for (var i:int = 0; i < thresholdContainer.numChildren; i++)
             {
                 var thresholdMap:BitmapThresholdMap = thresholdContainer.getChildAt(i) as BitmapThresholdMap;
+                // if statment here added by FAI, as before first resize event
+                // for scenic slider thresholdMap has NULL maskBitmap, so
+                // shield.threshold call below fails
+                if (!thresholdMap.maskBitmap) {
+                    continue;
+                }
                 shield.threshold(thresholdMap.maskBitmap, shield.rect, new Point(), '!=', 0xFFFFFF, fillColor, 0x00FFFFFF);
             }
             dirty = false;
