@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.4 2009-05-14 14:06:28 matthew Exp $
+# $Id: invite.cgi,v 1.5 2009-05-19 22:21:45 matthew Exp $
 #
 
 import sys
@@ -71,7 +71,7 @@ def parse_token(token):
     if not row:
         return HttpResponseRedirect('/signup')
     response = HttpResponseRedirect('/')
-    response.set_cookie('token', token)
+    response.set_cookie('token', value=token, max_age=86400*28)
     return response
 
 #####################################################################
