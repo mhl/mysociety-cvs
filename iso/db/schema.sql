@@ -4,7 +4,7 @@
 -- Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 -- Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 --
--- $Id: schema.sql,v 1.33 2009-05-20 01:32:12 francis Exp $
+-- $Id: schema.sql,v 1.34 2009-05-20 15:48:29 francis Exp $
 --
 
 -- The following must be done first to set up PostGIS, as user "postgres":
@@ -132,13 +132,6 @@ create table invite_postcode (
     postcode text not null
 );
 
--- Marks whether load is high enough to allow display of a map.
--- See bin/check-haproxy-load 
-create table allow_new_map (
-    state bool not null 
-);
-insert into allow_new_map (state) values ('t');
-
 -- We grant privileges back to the actual user who is using the database.
 -- Shame it had to all be made by user "postgres", see top of file.
 grant all on table station to col;
@@ -157,5 +150,4 @@ grant all on table invite to col;
 grant all on table invite_id_seq to col;
 grant all on table invite_postcode to col;
 grant all on table invite_postcode_id_seq to col;
-grant all on table allow_new_map to col;
 

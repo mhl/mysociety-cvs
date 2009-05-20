@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.103 2009-05-20 01:32:51 francis Exp $
+# $Id: index.cgi,v 1.104 2009-05-20 15:48:28 francis Exp $
 #
 
 import sys
@@ -103,10 +103,25 @@ def look_up_route_node(map_id, station_id):
     journey_id = struct.unpack("i", isof.read(4))[0]
     return (location_id, journey_id)
 
-def get_allow_new_map():
-    db.execute('''SELECT state FROM allow_new_map''')
-    row = db.fetchone()
-    return row[0]
+# Read the haproxy statistics page to see if there are too many connections
+haproxy_stats_url = mysociety.config.get('BASE_URL') + 'haproxy_stats'
+max_connections = mysociety.config.get('MAX_HAPROXY_CONNECTIONS')
+def load_too_high():
+    try:
+        stats = urllib2.urlopen(haproxy_stats_url).read()
+    except urllib2.HTTPError, e:
+        # on test sites etc. no haproxy
+        if e.code == 404:
+            return False
+        raise
+
+    matches = re.search("current conns = ([0-9]+)", stats)
+    current_connections = matches.groups()[0]
+
+    if current_connections > max_connections:
+        return True
+    else:
+        return False
 
 def pretty_vehicle_code(vehicle_code):
     if vehicle_code == 'T':
@@ -380,8 +395,7 @@ def map(fs, invite):
     map = Map(fs)
 
     # If the load is too high on the server, don't allow new map
-    allow_new_map = get_allow_new_map()
-    if not allow_new_map:
+    if load_too_high():
         return render_to_response('map-http-overload.html', map.add_url_params({ }))
 
     # If it is complete, then render it
