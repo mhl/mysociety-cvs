@@ -2,10 +2,9 @@ Contours of life TODO
 =====================
 
 Code to take email if isodaemon or tile server load to high
-    Try reducing number of isodaemon instances on stilton by 4 or 8 to see if that makes overall performance better
-    Failover for tileserver too busy (1 day)
-    Change weight in haproxy so stilton gets more
-    Look at errors going to bugs@
+    Look at errors going to bugs@ - they look like just timeouts
+    Failover for tileserver too busy
+    Change error page to be custom
 
 Consider getting squid to cache cached tiles?
 Get squid to cache at least the front page etc.
@@ -25,6 +24,8 @@ Flash things:
 Invite system
     Make clearing generated maps deal with email signup OK
     Check what emails for invites go out and when/how
+    email-form.html doesn't have other variables than target_postcode in it
+    Make it not email invites while server overloaded
 
 Are housing/scenic tiles always loading from same subdomain?
 
