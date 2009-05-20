@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.104 2009-05-20 15:48:28 francis Exp $
+# $Id: index.cgi,v 1.105 2009-05-20 23:39:26 francis Exp $
 #
 
 import sys
@@ -18,6 +18,7 @@ import re
 import psycopg2
 import Cookie
 import psycopg2.errorcodes
+import urllib2
 
 from page import *
 import mysociety.config
