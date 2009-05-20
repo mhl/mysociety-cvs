@@ -14,7 +14,7 @@
  * Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: general-example,v 1.17 2009-05-14 16:14:52 matthew Exp $
+ * $Id: general-example,v 1.18 2009-05-20 01:33:27 francis Exp $
  * 
  */
 
@@ -42,6 +42,9 @@ define('OPTION_TILECACHE_DIR', '/tmp/tilecache-col/');
 define('OPTION_ISO_TILE_LOG', '/tmp/tilecache.iso.log');
 // has a., b., c. prepended to it e.g. col.mysociety.org
 define('OPTION_TILE_WEB_HOST', 'localhost');
+
+// Stops allowing new maps when server too busy, see check-haproxy-load
+define('OPTION_MAX_HAPROXY_CONNECTIONS', 200);
 
 // Proxy for CloudMade tiles
 define('OPTION_CLOUDMADE_PROXY_CACHE_DIR', '/tmp/tilecache-cloudmade/');
