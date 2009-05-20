@@ -18,11 +18,11 @@ TMP_OUTPUT=/tmp/iso-test-run-$RANDOM$RANDOM$RANDOM
 
 # test atcocif.py
 cd ../pylib/mysociety
-nosetests
+nosetests --with-doctest
 cd ../../iso/pylib
-nosetests
+nosetests --with-doctest
 cd ../tiles
-#nosetests # reenable when pyproj packages ready
+#nosetests --with-doctest # reenable when pyproj packages ready
 cd ..
 
 # compare C++ and Python planner on Oxford NPTDR data set
