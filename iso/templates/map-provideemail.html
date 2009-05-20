@@ -12,16 +12,8 @@ currently being made.</p>
 than a minute</strong> to generate (our guesstimate is {{ approx_waiting_time }} seconds).
 <!-- If you&rsquo;re happy to leave your browser window
 for this length of time or more, please <a href="{{ self }}?wait=1">move to our Please Wait page</a>. -->
-<p>Please provide your email address below and we will email you
-when your map is ready to be looked at.</p>
 
-<form method="post" action="{{ self }}">
-<input type="hidden" name="target_postcode" value="{{ target_postcode }}">
-<p align="center"><label for="email">Email:</label>
-<input type="text" name="email" id="email" value="{{ email }}">
-<input type="submit" value="Request"></p>
-</form>
+{% include "email-form.html" %}
 
-<p><small>We won&rsquo;t use your email address for anything else.</small></p>
 {% endblock %}
 

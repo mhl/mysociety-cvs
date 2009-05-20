@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.102 2009-05-15 09:28:50 matthew Exp $
+# $Id: index.cgi,v 1.103 2009-05-20 01:32:51 francis Exp $
 #
 
 import sys
@@ -72,6 +72,69 @@ def default_target_limit_time(target_direction):
         return 1439 # 23:59
     else:
         assert False
+
+def format_time(mins_after_midnight):
+    hours = mins_after_midnight / 60
+    mins = mins_after_midnight % 60
+    if hours == 12 and mins == 0:
+        return 'noon'
+    suffix = hours < 12 and 'am' or 'pm'
+    hours = hours % 12
+    if hours == 0:
+        hours = 12
+    time = str(hours)
+    if mins:
+        time += ':%02d' % mins
+    time += suffix
+    return time
+
+def look_up_time_taken(map_id, station_id):
+    iso_file = tmpwork + "/" + repr(map_id) + ".iso"
+    isof = open(iso_file, 'rb')
+    isof.seek(station_id * 2)
+    tim = struct.unpack("h", isof.read(2))[0]
+    return tim
+
+def look_up_route_node(map_id, station_id):
+    iso_file = tmpwork + "/" + repr(map_id) + ".iso.routes"
+    isof = open(iso_file, 'rb')
+    isof.seek(station_id * 8)
+    location_id = struct.unpack("i", isof.read(4))[0]
+    journey_id = struct.unpack("i", isof.read(4))[0]
+    return (location_id, journey_id)
+
+def get_allow_new_map():
+    db.execute('''SELECT state FROM allow_new_map''')
+    row = db.fetchone()
+    return row[0]
+
+def pretty_vehicle_code(vehicle_code):
+    if vehicle_code == 'T':
+        return "Train";
+    elif vehicle_code == 'B':
+        return "Bus";
+    elif vehicle_code == 'C':
+        return "Coach";
+    elif vehicle_code == 'M':
+        return "Metro";
+    elif vehicle_code == 'A':
+        return "Air";
+    elif vehicle_code == 'F':
+        return "Ferry";
+    else:
+        assert False;
+
+# Constants from cpplib/makeplan.h
+JOURNEY_NULL = -1
+JOURNEY_ALREADY_THERE = -2
+JOURNEY_WALK = -3
+
+LOCATION_NULL = -1
+LOCATION_TARGET = 0
+
+
+#####################################################################
+# Class representing the parameters for a map, and its status
 
 class Map:
     state = {}
@@ -261,60 +324,6 @@ class Map:
     def target_time_formatted(self):
         return format_time(self.target_time)
 
-def format_time(mins_after_midnight):
-    hours = mins_after_midnight / 60
-    mins = mins_after_midnight % 60
-    if hours == 12 and mins == 0:
-        return 'noon'
-    suffix = hours < 12 and 'am' or 'pm'
-    hours = hours % 12
-    if hours == 0:
-        hours = 12
-    time = str(hours)
-    if mins:
-        time += ':%02d' % mins
-    time += suffix
-    return time
-
-def look_up_time_taken(map_id, station_id):
-    iso_file = tmpwork + "/" + repr(map_id) + ".iso"
-    isof = open(iso_file, 'rb')
-    isof.seek(station_id * 2)
-    tim = struct.unpack("h", isof.read(2))[0]
-    return tim
-
-def look_up_route_node(map_id, station_id):
-    iso_file = tmpwork + "/" + repr(map_id) + ".iso.routes"
-    isof = open(iso_file, 'rb')
-    isof.seek(station_id * 8)
-    location_id = struct.unpack("i", isof.read(4))[0]
-    journey_id = struct.unpack("i", isof.read(4))[0]
-    return (location_id, journey_id)
-
-def pretty_vehicle_code(vehicle_code):
-    if vehicle_code == 'T':
-        return "Train";
-    elif vehicle_code == 'B':
-        return "Bus";
-    elif vehicle_code == 'C':
-        return "Coach";
-    elif vehicle_code == 'M':
-        return "Metro";
-    elif vehicle_code == 'A':
-        return "Air";
-    elif vehicle_code == 'F':
-        return "Ferry";
-    else:
-        assert False;
-
-# Constants from cpplib/makeplan.h
-JOURNEY_NULL = -1
-JOURNEY_ALREADY_THERE = -2
-JOURNEY_WALK = -3
-
-LOCATION_NULL = -1
-LOCATION_TARGET = 0
-
 #####################################################################
 # Controllers
  
@@ -367,8 +376,15 @@ def map_complete(map, invite):
     })
 
 def map(fs, invite):
+    # Look up state of map etc.
     map = Map(fs)
 
+    # If the load is too high on the server, don't allow new map
+    allow_new_map = get_allow_new_map()
+    if not allow_new_map:
+        return render_to_response('map-http-overload.html', map.add_url_params({ }))
+
+    # If it is complete, then render it
     if map.current_state == 'complete':
         return map_complete(map, invite)
 
@@ -521,7 +537,7 @@ def main(fs):
     got_map_spec = ('target_postcode' in fs)
 
     if 'lat' in fs: # Flash request for route
-        return get_route(fs, fs.getfirst('lat'), fs.getfirst('lon'))
+        return get_route(fs, float(fs.getfirst('lat')), float(fs.getfirst('lon')))
     elif 'pc' in fs: # Front page submission
         return check_postcode(fs.getfirst('pc'), invite)
     elif got_map_spec and 'email' in fs: # Overloaded email request
