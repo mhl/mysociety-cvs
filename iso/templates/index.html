@@ -57,7 +57,8 @@
     {% else %}
 
         {% for p in invite.postcodes %}
-        | <a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
+            <a href="/postcode/{{ p.0 }}">{{ p.1 }}</a>
+            {% if not forloop.last %} | {% endif %}
         {% endfor %}
 
     {% endif %}
