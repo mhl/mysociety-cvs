@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.107 2009-05-21 15:52:31 francis Exp $
+# $Id: index.cgi,v 1.108 2009-05-21 16:22:56 francis Exp $
 #
 
 import sys
@@ -113,7 +113,7 @@ def current_proxy_connections():
     except urllib2.HTTPError, e:
         # on test sites etc. no haproxy
         if e.code == 404:
-            return False
+            return -1
         raise
 
     matches = re.search("current conns = ([0-9]+)", stats)
