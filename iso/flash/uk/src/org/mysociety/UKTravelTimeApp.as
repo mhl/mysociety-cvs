@@ -15,7 +15,7 @@ package org.mysociety
     import com.stamen.utils.StringUtils;
     
     import flash.display.Bitmap;
-    import flash.display.BitmapData;
+    import flash.display.BlendMode;
     import flash.display.Graphics;
     import flash.display.Sprite;
     import flash.display.StageAlign;
@@ -27,7 +27,6 @@ package org.mysociety
     import flash.filters.DropShadowFilter;
     import flash.filters.GlowFilter;
     import flash.geom.Matrix;
-    import flash.geom.Point;
     import flash.geom.Rectangle;
     import flash.text.TextField;
     import flash.utils.Timer;
@@ -330,11 +329,14 @@ package org.mysociety
 
             thresholdContainer = new Sprite();
             thresholdContainer.mouseEnabled = thresholdContainer.mouseChildren = false;
-            thresholdContainer.visible = false;
+            // BlendMode.LAYER: "Forces the creation of a transparency group for the display object."
+            // Yeah, that's the ticket.
+            thresholdContainer.blendMode = BlendMode.LAYER;
+            thresholdContainer.alpha = .6;
             addChild(thresholdContainer);
 
             displayBitmap = new Bitmap();
-            displayBitmap.alpha = .65;
+            displayBitmap.alpha = .3;
             addChild(displayBitmap);
 
             var positions:Object = { 
@@ -369,12 +371,6 @@ package org.mysociety
                 var maxScenicness:uint = showMaxScenicScore * scenicMultiplier;
                 scenicMap.maxThreshold = new RGB(maxScenicness, maxScenicness, maxScenicness).hex;
                 thresholdContainer.addChild(scenicMap);
-            }
-
-            // make them all transparent            
-            for (var i:int = 0; i < thresholdContainer.numChildren; i++)
-            {
-                thresholdContainer.getChildAt(i).alpha = 1 / thresholdContainer.numChildren;
             }
             
             if (initialMapExtent && false)
@@ -474,9 +470,14 @@ package org.mysociety
         {
             var provider:ThresholdMaskProvider = new ThresholdMaskProvider(baseTileURL, subdomains);
             var thresholdMap:BitmapThresholdMap = new BitmapThresholdMap(100, 100, false, provider);
-            thresholdMap.addEventListener(MapEvent.RENDERED, onThresholdMapRendered);
             thresholdMap.addEventListener(MapEvent.BEGIN_TILE_LOADING, onMapBeginTileLoad);
             thresholdMap.addEventListener(MapEvent.ALL_TILES_LOADED, onMapFinishTileLoad);
+            
+            // transparent white on, and...
+            thresholdMap.onColor = 0x00FFFFFF;
+            // opaque dark blue off (we'll composite these together later)
+            thresholdMap.offColor = 0xFF000000 | StyleGuide.darkBlue.hex;
+
             return thresholdMap;
         }
         
@@ -493,77 +494,23 @@ package org.mysociety
         protected function onMapFinishTileLoad(event:MapEvent):void
         {
             mapsLoading--;
-            if (mapsLoading <= 0 && contains(loadingIndicator))
+            if (mapsLoading == 0 && contains(loadingIndicator))
             {
                 removeChild(loadingIndicator);
             }
             updateMapBubble();
         }
         
-        protected function onThresholdMapRendered(event:MapEvent):void
-        {
-            dirty = true;
-        }
-        
         protected function onMapRendered(event:MapEvent):void
         {
             if (!thresholdContainer) return;
             
+            // trace('+ main map rendered');
             var m:Matrix = map.grid.getMatrix();
             for (var i:int = 0; i < thresholdContainer.numChildren; i++)
             {
                 (thresholdContainer.getChildAt(i) as BitmapThresholdMap).grid.setMatrix(m);
             }
-            dirty = true;
-        }
-
-        protected var _dirty:Boolean = false;
-        public function get dirty():Boolean        
-        {
-            return _dirty;
-        }
-        
-        public function set dirty(value:Boolean):void
-        {
-            if (dirty != value)
-            {
-                _dirty = value;
-                if (value)
-                {
-                    addEventListener(Event.ENTER_FRAME, rasterize);
-                }
-                else
-                {
-                    removeEventListener(Event.ENTER_FRAME, rasterize);
-                }
-            }
-        }
-        
-        protected function rasterize(event:Event):void
-        {
-            trace('rasterizing!');
-            if (!displayBitmap.bitmapData)
-            {
-                displayBitmap.bitmapData = new BitmapData(map.getWidth(), map.getHeight(), true, 0x00000000);
-            }
-            else
-            {
-                displayBitmap.bitmapData.fillRect(displayBitmap.bitmapData.rect, 0x00000000);
-            }
-            var shield:BitmapData = displayBitmap.bitmapData;
-            var fillColor:uint = 0xFF000000 | StyleGuide.darkBlue.hex;
-            for (var i:int = 0; i < thresholdContainer.numChildren; i++)
-            {
-                var thresholdMap:BitmapThresholdMap = thresholdContainer.getChildAt(i) as BitmapThresholdMap;
-                // if statment here added by FAI, as before first resize event
-                // for scenic slider thresholdMap has NULL maskBitmap, so
-                // shield.threshold call below fails
-                if (!thresholdMap.maskBitmap) {
-                    continue;
-                }
-                shield.threshold(thresholdMap.maskBitmap, shield.rect, new Point(), '!=', 0xFFFFFF, fillColor, 0x00FFFFFF);
-            }
-            dirty = false;
         }
 
         protected function onTimeChange(event:Event):void
@@ -592,7 +539,6 @@ package org.mysociety
                     field.text = 'Arriving by ' + formatTime(date);
                     break;
             }
-            dirty = true;
         }
         
         protected function onPriceChange(event:Event):void
@@ -608,7 +554,6 @@ package org.mysociety
                 pricePanel.label.text = formatPrice(price) + ((price > 0) ? ' or less' : '');
                 priceMap.maxThreshold = price;
             }
-            dirty = true;
         }
         
         protected function onScenicChange(event:Event):void
@@ -617,7 +562,6 @@ package org.mysociety
             scenicPanel.label.text = 'Score: ' + formatScenicness(value);
             value *= scenicMultiplier;
             if (scenicMap) scenicMap.minThreshold = new RGB(value, value, value).hex;
-            dirty = true;
         }
         
         protected function formatTime(date:Date):String
