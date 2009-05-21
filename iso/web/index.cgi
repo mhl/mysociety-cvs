@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.105 2009-05-20 23:39:26 francis Exp $
+# $Id: index.cgi,v 1.106 2009-05-21 10:39:41 francis Exp $
 #
 
 import sys
@@ -107,7 +107,7 @@ def look_up_route_node(map_id, station_id):
 # Read the haproxy statistics page to see if there are too many connections
 haproxy_stats_url = mysociety.config.get('BASE_URL') + 'haproxy_stats'
 max_connections = mysociety.config.get('MAX_HAPROXY_CONNECTIONS')
-def load_too_high():
+def current_proxy_connections():
     try:
         stats = urllib2.urlopen(haproxy_stats_url).read()
     except urllib2.HTTPError, e:
@@ -119,10 +119,7 @@ def load_too_high():
     matches = re.search("current conns = ([0-9]+)", stats)
     current_connections = matches.groups()[0]
 
-    if current_connections > max_connections:
-        return True
-    else:
-        return False
+    return current_connections
 
 def pretty_vehicle_code(vehicle_code):
     if vehicle_code == 'T':
@@ -396,8 +393,9 @@ def map(fs, invite):
     map = Map(fs)
 
     # If the load is too high on the server, don't allow new map
-    if load_too_high():
-        return render_to_response('map-http-overload.html', map.add_url_params({ }))
+    current_connections = current_proxy_connections()
+    if current_connections >= max_connections:
+        return render_to_response('map-http-overload.html', map.add_url_params({ 'current_connections' : current_connections, 'max_connections' : max_connections }))
 
     # If it is complete, then render it
     if map.current_state == 'complete':
