@@ -155,6 +155,7 @@ def do_map_session():
             break
         if "Please provide your email address" in page:
             log("OVERLOADED - server is asking for email address")
+            time.sleep(60)
         else:
             check_content(page, "automatically refresh")
         log("waiting for route finder")
