@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.108 2009-05-21 16:22:56 francis Exp $
+# $Id: index.cgi,v 1.109 2009-05-21 16:33:25 francis Exp $
 #
 
 import sys
@@ -571,7 +571,7 @@ def main(fs):
     return render_to_response('index.html', {
         'invite': invite,
         'most_recent': most_recent,
-        'show_dropdown': len(invite.postcodes) > 3,
+        'show_dropdown': len(invite.postcodes) > 3
     })
 
 # Main FastCGI loop

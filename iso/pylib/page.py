@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.20 2009-05-15 09:11:43 matthew Exp $
+# $Id: page.py,v 1.21 2009-05-21 16:33:25 francis Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -23,11 +23,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 from sendemail import send_email
 import mysociety.config
 
-def render_to_response(template, vars={}, mimetype=None):
+def render_to_response(template, vars={}, mimetype=None, cache_max_age = None):
     vars.update({
         'self': os.environ.get('REQUEST_URI', ''),
     })
-    return HttpResponse(render_to_string(template, vars), mimetype=mimetype)
+    response = HttpResponse(render_to_string(template, vars), mimetype=mimetype)
+
+    if cache_max_age:
+        response['Cache-Control'] = 'max-age: ' + str(cache_max_age)
+
+    return response
 
 def fcgi_loop(main):
     req = fcgi.Accept()

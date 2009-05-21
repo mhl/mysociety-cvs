@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.5 2009-05-19 22:21:45 matthew Exp $
+# $Id: invite.cgi,v 1.6 2009-05-21 16:33:25 francis Exp $
 #
 
 import sys
@@ -82,7 +82,7 @@ def main(fs):
     if 'email' in fs:
         return log_email(fs.getfirst('email'))
     if 'signup' in fs:
-        return render_to_response('invite-email.html')
+        return render_to_response('invite-email.html', cache_max_age = 3600)
 
     # Link in email being clicked on
     if 'token' in fs:
