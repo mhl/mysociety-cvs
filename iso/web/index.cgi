@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.106 2009-05-21 10:39:41 francis Exp $
+# $Id: index.cgi,v 1.107 2009-05-21 15:52:31 francis Exp $
 #
 
 import sys
@@ -106,7 +106,7 @@ def look_up_route_node(map_id, station_id):
 
 # Read the haproxy statistics page to see if there are too many connections
 haproxy_stats_url = mysociety.config.get('BASE_URL') + 'haproxy_stats'
-max_connections = mysociety.config.get('MAX_HAPROXY_CONNECTIONS')
+max_connections = int(mysociety.config.get('MAX_HAPROXY_CONNECTIONS'))
 def current_proxy_connections():
     try:
         stats = urllib2.urlopen(haproxy_stats_url).read()
@@ -117,7 +117,7 @@ def current_proxy_connections():
         raise
 
     matches = re.search("current conns = ([0-9]+)", stats)
-    current_connections = matches.groups()[0]
+    current_connections = int(matches.groups()[0])
 
     return current_connections
 
