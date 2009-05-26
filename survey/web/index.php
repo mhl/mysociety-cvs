@@ -6,7 +6,7 @@
  * Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: index.php,v 1.5 2009-01-16 11:08:48 matthew Exp $
+ * $Id: index.php,v 1.6 2009-05-26 23:16:12 francis Exp $
  * 
  */
 
@@ -39,6 +39,7 @@ if (get_http_var('querydone')) {
         err("Signature wasn't verified.");
     db_do('delete from survey_done where user_code = ?', array($user_code));
     db_commit();
+    print 1;
 } elseif (!count($_POST)) {
     err("Nothing to see here.", E_USER_NOTICE);
 } else {
