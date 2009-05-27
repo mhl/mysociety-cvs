@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2009-05-27 15:38+0100\n"
+"POT-Creation-Date: 2009-05-27 16:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <team@fixmystreet.com>\n"
@@ -343,7 +343,7 @@ msgid "RSS feed of nearby problems"
 msgstr ""
 
 #: bci/web/alert.cgi:222 bci/web/alert.cgi:254 bci/web/index.cgi:803
-#: bci/web/index.cgi:931 bci/web/reports.cgi:214
+#: bci/web/index.cgi:931 bci/web/reports.cgi:212
 msgid "RSS feed"
 msgstr ""
 
@@ -1228,7 +1228,7 @@ msgstr ""
 msgid "Submit questionnaire"
 msgstr ""
 
-#: bci/web/reports.cgi:158 bci/web/reports.cgi:201
+#: bci/web/reports.cgi:158 bci/web/reports.cgi:199
 msgid "Summary reports"
 msgstr ""
 
@@ -1246,84 +1246,80 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: bci/web/reports.cgi:165 bci/web/reports.cgi:232
+#: bci/web/reports.cgi:165 bci/web/reports.cgi:230
 msgid "New problems"
 msgstr ""
 
-#: bci/web/reports.cgi:165 bci/web/reports.cgi:239
+#: bci/web/reports.cgi:165 bci/web/reports.cgi:237
 msgid "Older problems"
 msgstr ""
 
 #: bci/web/reports.cgi:167
-msgid "Recently returned to use"
-msgstr ""
-
-#: bci/web/reports.cgi:167
-msgid "Older returned to use"
-msgstr ""
-
-#: bci/web/reports.cgi:169
 msgid "Old problems,<br>state unknown"
 msgstr ""
 
-#: bci/web/reports.cgi:170 bci/web/reports.cgi:246
+#: bci/web/reports.cgi:169 bci/web/reports.cgi:244
 msgid "Recently fixed"
 msgstr ""
 
-#: bci/web/reports.cgi:170 bci/web/reports.cgi:247
-msgid "Old fixed"
+#: bci/web/reports.cgi:169
+msgid "Older fixed"
 msgstr ""
 
-#: bci/web/reports.cgi:213
+#: bci/web/reports.cgi:211
 #, perl-format
 msgid "%s - Summary reports"
 msgstr ""
 
-#: bci/web/reports.cgi:213
+#: bci/web/reports.cgi:211
 #, perl-format
 msgid "Problems within %s, FixMyStreet"
 msgstr ""
 
-#: bci/web/reports.cgi:215
+#: bci/web/reports.cgi:213
 #, perl-format
 msgid "RSS feed of problems in this %s"
 msgstr ""
 
-#: bci/web/reports.cgi:218
+#: bci/web/reports.cgi:216
 #, perl-format
 msgid "You can <a href=\"%s\">see less detail</a>."
 msgstr ""
 
-#: bci/web/reports.cgi:220
+#: bci/web/reports.cgi:218
 #, perl-format
 msgid "You can <a href=\"%s\">see more details</a>."
 msgstr ""
 
-#: bci/web/reports.cgi:222
+#: bci/web/reports.cgi:220
 #, perl-format
 msgid ""
 "You can <a href=\"%s\">see less detail</a> or go back and <a href=\"/reports"
 "\">show all councils</a>."
 msgstr ""
 
-#: bci/web/reports.cgi:224
+#: bci/web/reports.cgi:222
 #, perl-format
 msgid ""
 "You can <a href=\"%s\">see more details</a> or go back and <a href=\"/reports"
 "\">show all councils</a>."
 msgstr ""
 
-#: bci/web/reports.cgi:228
+#: bci/web/reports.cgi:226
 #, perl-format
 msgid "This is a summary of all reports for one %s."
 msgstr ""
 
-#: bci/web/reports.cgi:237
+#: bci/web/reports.cgi:235
 msgid "Older empty properties"
 msgstr ""
 
-#: bci/web/reports.cgi:240
+#: bci/web/reports.cgi:238
 msgid "Old problems, state unknown"
+msgstr ""
+
+#: bci/web/reports.cgi:245
+msgid "Old fixed"
 msgstr ""
 
 #: bci/bin/send-reports:77
@@ -1470,6 +1466,30 @@ msgid ""
 "please follow this link: <?=$values['unsubscribe_url']?>\n"
 msgstr ""
 
+#: bci/templates/emails/empty property-confirm
+msgid ""
+"Subject: Confirm your empty property report\n"
+"\n"
+"Hi <?=$values['name']?>,\n"
+"\n"
+"Please click on the link below to confirm the empty property\n"
+"report you just added to the site:\n"
+"\n"
+"<?=$values['url']?>\n"
+"\n"
+"If your email program does not let you click on this link,\n"
+"copy and paste it into your web browser and press return.\n"
+"\n"
+"Your report had the subject:\n"
+"<?=$values['title']?>\n"
+"\n"
+"And details:\n"
+"<?=$values['detail']?>\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+msgstr ""
+
 #: bci/templates/emails/flickr-confirm
 msgid ""
 "Subject: Confirm your email address on FixMyStreet\n"
@@ -1571,6 +1591,64 @@ msgid ""
 "Your problem was as follows:\n"
 "\n"
 "<?=$values['title']?>\n"
+"\n"
+"<?=$values['detail']?>\n"
+"\n"
+msgstr ""
+
+#: bci/templates/emails/questionnaire-eha-26weeks
+msgid ""
+"Subject: Questionnaire about your empty property report\n"
+"\n"
+"Hi <?=$values['name']?>,\n"
+"\n"
+"Six months ago, you reported an empty home on ReportEmptyHomes.com with the\n"
+"details provided at the end of this email. To keep our site up to date and\n"
+"relevant, I'd be grateful if you could fill in this short questionnaire to tell\n"
+"us what has happened: \n"
+"\n"
+"    <?=$values['url']?>\n"
+"\n"
+"Please do not reply to this email; there is a public comment\n"
+"box on the questionnaire.\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+"Your report was as follows:\n"
+"\n"
+"<?=$values['title']?>\n"
+"\n"
+"Property type: <?=$values['category']?>\n"
+"\n"
+"<?=$values['detail']?>\n"
+"\n"
+msgstr ""
+
+#: bci/templates/emails/questionnaire-eha-4weeks
+msgid ""
+"Subject: Questionnaire about your empty property report\n"
+"\n"
+"Hi <?=$values['name']?>,\n"
+"\n"
+"Four weeks ago, you reported an empty home on ReportEmptyHomes.com with the\n"
+"details provided at the end of this email. To keep our site up to date and\n"
+"relevant, I'd be grateful if you could fill in this short questionnaire to tell\n"
+"us what has happened:\n"
+"\n"
+"    <?=$values['url']?>\n"
+"\n"
+"Please do not reply to this email; there is a public comment\n"
+"box on the questionnaire.\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+"Your report was as follows:\n"
+"\n"
+"<?=$values['title']?>\n"
+"\n"
+"Property type: <?=$values['category']?>\n"
 "\n"
 "<?=$values['detail']?>\n"
 "\n"
@@ -1687,6 +1765,54 @@ msgid ""
 "\n"
 msgstr ""
 
+#: bci/templates/emails/submit-eha
+msgid ""
+"Subject: Empty property report\n"
+"\n"
+"Dear Empty Property Officer,\n"
+"\n"
+"This is a new referral of an empty property in your area made by a user of the\n"
+"website ReportEmptyHomes.com; the website user has been told that the case has\n"
+"been referred to you.  We would be grateful if you could do whatever you can to\n"
+"help get this property back into use. We will contact the user in a month and\n"
+"again in six months and ask them what has happened to the property.  \n"
+"\n"
+"We'd encourage you to tell us what you have done, and when the property comes\n"
+"back into use, by filling in an update against the property referral on the\n"
+"website:\n"
+"\n"
+"    <?=$values['url']?>\n"
+"\n"
+"This gives useful feedback to website users and helps them understand what\n"
+"action you are taking. We will offer advice to the user on other action they\n"
+"might take if the property isn't successfully dealt with.  \n"
+"\n"
+"<?=$values['has_photo']?>If you would like help or advice on getting empty properties back into use\n"
+"there is lots of useful information on the Empty Homes Agency's website\n"
+"www.EmptyHomes.com - if you have further questions please give us a call. \n"
+"\n"
+"----------\n"
+"\n"
+"Name: <?=$values['name']?>\n"
+"\n"
+"Email: <?=$values['email']?>\n"
+"\n"
+"<?=$values['phone_line']?>Subject: <?=$values['title']?>\n"
+"\n"
+"Property type: <?=$values['category']?>\n"
+"\n"
+"Details: <?=$values['detail']?>\n"
+"\n"
+"<?=$values['closest_address']?>----------\n"
+"\n"
+"Replies to this email will go to the user who submitted the report, if\n"
+"you would like to ask for any further information.\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+msgstr ""
+
 #: bci/templates/emails/tms-confirm
 msgid ""
 "Subject: Confirm your expression of interest in TextMyStreet\n"
@@ -1724,4 +1850,101 @@ msgid ""
 "\n"
 "Yours,  \n"
 "The FixMyStreet team\n"
+msgstr ""
+
+#: bci/templates/emails/eha/alert-problem
+msgid ""
+"Subject: New empty properties on reportemptyhomes.com\n"
+"\n"
+"The following empty properties have been added:\n"
+"\n"
+"<?=$values['data']?>\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+"To stop receiving emails when there are new properties,\n"
+"please follow this link: <?=$values['unsubscribe_url']?>\n"
+msgstr ""
+
+#: bci/templates/emails/eha/alert-problem-area
+msgid ""
+"Subject: New empty properties in <?=$values['area_name']?> on reportemptyhomes.com\n"
+"\n"
+"The following empty properties have been added within\n"
+"<?=$values['area_name']?>:\n"
+"\n"
+"<?=$values['data']?>\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+"To stop receiving emails when there are new properties in\n"
+"<?=$values['area_name']?>, please follow this link: \n"
+"<?=$values['unsubscribe_url']?>\n"
+msgstr ""
+
+#: bci/templates/emails/eha/alert-problem-council
+msgid ""
+"Subject: New empty properties reported to <?=$values['area_name']?> on reportemptyhomes.com\n"
+"\n"
+"The following empty properties have been reported to <?=$values['area_name']?>:\n"
+"\n"
+"<?=$values['data']?>\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+"To stop receiving emails when there are new properties reported to\n"
+"<?=$values['area_name']?>, please follow this link: \n"
+"<?=$values['unsubscribe_url']?>\n"
+msgstr ""
+
+#: bci/templates/emails/eha/alert-problem-nearby
+msgid ""
+"Subject: New nearby empty properties on reportemptyhomes.com\n"
+"\n"
+"The following nearby empty properties have been added:\n"
+"\n"
+"<?=$values['data']?>\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+"To stop receiving emails when there are nearby properties,\n"
+"please follow this link: <?=$values['unsubscribe_url']?>\n"
+msgstr ""
+
+#: bci/templates/emails/eha/alert-problem-ward
+msgid ""
+"Subject: New empty properties reported to <?=$values['area_name']?> within <?=$values['ward_name']?> on reportemptyhomes.com\n"
+"\n"
+"The following empty properties have been reported to <?=$values['area_name']?>\n"
+"within <?=$values['ward_name']?>:\n"
+"\n"
+"<?=$values['data']?>\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+"To stop receiving emails when there are new properties reported to\n"
+"<?=$values['area_name']?> within <?=$values['ward_name']?>,\n"
+"please follow this link: <?=$values['unsubscribe_url']?>\n"
+msgstr ""
+
+#: bci/templates/emails/eha/alert-update
+msgid ""
+"Subject: New updates on empty property- '<?=$values['title']?>'\n"
+"\n"
+"The following updates have been left on this empty property:\n"
+"\n"
+"<?=$values['data']?>\n"
+"\n"
+"View or reply to these updates: <?=$values['problem_url']?>\n"
+"\n"
+"Yours,  \n"
+"The Empty Homes Agency\n"
+"\n"
+"To stop receiving emails when there are new updates on this property,\n"
+"please follow this link: <?=$values['unsubscribe_url']?>\n"
 msgstr ""
