@@ -134,9 +134,11 @@ package org.mysociety.display
             display.visible = true;
             grid.visible = false;
 
-            _maskBitmap.fillRect(_maskBitmap.rect, onColor);
+            _maskBitmap.fillRect(_cache.rect, onColor);
+            
             if (minThreshold > absMinThreshold)
                 _maskBitmap.threshold(_cache, _cache.rect, new Point(), '<', _minThreshold, offColor, thresholdMask);
+                
             if (maxThreshold < absMaxThreshold)
                 _maskBitmap.threshold(_cache, _cache.rect, new Point(), '>', _maxThreshold, offColor, thresholdMask);
 

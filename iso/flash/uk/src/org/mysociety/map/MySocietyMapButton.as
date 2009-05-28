@@ -12,7 +12,7 @@ package org.mysociety.map
         {
             overTransform = new ColorTransform();
             outTransform = new ColorTransform();
-            super(type, radius, StyleGuide.liteGreen.hex, 0x000000, false);
+            super(type, radius, StyleGuide.turquoise.hex, 0x000000, false);
             
             scaleX = scaleY = 2;
         }

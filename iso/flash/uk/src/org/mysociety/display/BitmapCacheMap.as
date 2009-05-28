@@ -28,6 +28,7 @@ package org.mysociety.display
         {
             super(width, height, draggable, mapProvider, rest);
             
+            grid.setTileClass(NullTile);
             TileGrid.cacheLoaders = true;
             
             addEventListener(MapEvent.RESIZED, onResized);

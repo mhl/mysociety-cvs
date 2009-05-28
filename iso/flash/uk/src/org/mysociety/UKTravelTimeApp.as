@@ -14,7 +14,6 @@ package org.mysociety
     import com.stamen.utils.NumberFormatter;
     import com.stamen.utils.StringUtils;
     
-    import flash.display.Bitmap;
     import flash.display.BlendMode;
     import flash.display.Graphics;
     import flash.display.Sprite;
@@ -33,6 +32,7 @@ package org.mysociety
     
     import org.mysociety.display.BitmapThresholdMap;
     import org.mysociety.display.MapLoadingIndicator;
+    import org.mysociety.display.NullTile;
     import org.mysociety.display.ui.SliderPanel;
     import org.mysociety.map.C4MapButton;
     import org.mysociety.map.MapInfoBubble;
@@ -40,7 +40,7 @@ package org.mysociety
     import org.mysociety.style.StyleGuide;
     import org.mysociety.utils.DateUtils;
 
-    [SWF(frameRate="24")]
+    [SWF(frameRate="30")]
     public class UKTravelTimeApp extends BlockSprite
     {
         public static const ARRIVE:String = 'arrive';
@@ -110,6 +110,7 @@ package org.mysociety
         protected var cloudmadeStyle:String = CloudMadeProvider.FRESH;
         
         protected var map:Map;
+        protected var displayMap:Map;
 
         // initial map state parameters
         protected var initialMapExtent:MapExtent; // = new MapExtent(59.57885104663186, 49.724479188712984, 2.98828125, -11.07421875);
@@ -133,8 +134,6 @@ package org.mysociety
         
         protected var loadingIndicator:MapLoadingIndicator;
         protected var loadingProgressMaps:Array;
-        
-        protected var displayBitmap:Bitmap;
         
         protected var mapBubble:MapInfoBubble;
         protected var bubbleText:String = 'This exact location is <a class="time">{T}</a> by public transport {O}<a class="location">{L}</a>. ' + 
@@ -323,10 +322,24 @@ package org.mysociety
             map.addEventListener(MouseEvent.MOUSE_MOVE, resetMapBubble);
             map.addEventListener(MouseEvent.MOUSE_OUT, disableMapBubble);
             map.addEventListener(MapEvent.RENDERED, onMapRendered);
-            map.addEventListener(MapEvent.BEGIN_TILE_LOADING, onMapBeginTileLoad);
-            map.addEventListener(MapEvent.ALL_TILES_LOADED, onMapFinishTileLoad);
+            map.addEventListener(MapEvent.ZOOMED_BY, onMapRendered);
+            map.addEventListener(MapEvent.PANNED, onMapRendered);
+            map.addEventListener(MapEvent.EXTENT_CHANGED, onMapRendered);
             addChild(map);
+            
+            if (false)
+            {
+                map.alpha = 0;
+                displayMap = new Map(100, 100, false, mapProvider);
+                displayMap.addEventListener(MapEvent.BEGIN_TILE_LOADING, onMapBeginTileLoad);
+                displayMap.addEventListener(MapEvent.ALL_TILES_LOADED, onMapFinishTileLoad);
+                displayMap.mouseEnabled = displayMap.mouseChildren = false;
+                addChild(displayMap);
+            }
 
+            // draw empty/error tiles with black
+            NullTile.fillColor = NullTile.errorColor = RGB.black();
+            
             thresholdContainer = new Sprite();
             thresholdContainer.mouseEnabled = thresholdContainer.mouseChildren = false;
             // BlendMode.LAYER: "Forces the creation of a transparency group for the display object."
@@ -334,10 +347,6 @@ package org.mysociety
             thresholdContainer.blendMode = BlendMode.LAYER;
             thresholdContainer.alpha = .6;
             addChild(thresholdContainer);
-
-            displayBitmap = new Bitmap();
-            displayBitmap.alpha = .3;
-            addChild(displayBitmap);
 
             var positions:Object = { 
                 leftButton:     {left: '0px', top: '12px'},
@@ -507,9 +516,13 @@ package org.mysociety
             
             // trace('+ main map rendered');
             var m:Matrix = map.grid.getMatrix();
+            if (displayMap)
+            {
+                displayMap.grid.setMatrix(m);
+            }
             for (var i:int = 0; i < thresholdContainer.numChildren; i++)
             {
-                (thresholdContainer.getChildAt(i) as BitmapThresholdMap).grid.setMatrix(m);
+                (thresholdContainer.getChildAt(i) as Map).grid.setMatrix(m);
             }
         }
 
@@ -679,6 +692,12 @@ package org.mysociety
                 controls.x = map.x + 16;
                 controls.y = map.y + 16;
                 map.setSize(rect.width, rect.height);
+                if (displayMap)
+                {
+                    displayMap.x = map.x;
+                    displayMap.y = map.y;
+                    displayMap.setSize(map.getWidth(), map.getHeight());
+                }
                 
                 thresholdContainer.x = map.x;
                 thresholdContainer.y = map.y;
@@ -686,11 +705,6 @@ package org.mysociety
                 {
                     (thresholdContainer.getChildAt(i) as BitmapThresholdMap).setSize(map.getWidth(), map.getHeight());
                 }
-                
-                displayBitmap.x = map.x;
-                displayBitmap.y = map.y;
-                
-                displayBitmap.bitmapData = null;
             }
             if (loadingIndicator)
             {
