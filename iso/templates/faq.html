@@ -4,42 +4,99 @@
 
 {% block content %}
 <dl>
-<dt>What is this site?</dt>
-<dd>This is a site that provides users with maps that help them find
-places to live, work or holiday.</dd>
+<dt>What is Mapumental?</dt>
+<dd>
+<p>It's a tool that uses lovely maps to help you work out where in Britain
+you might like to live, work or visit for a holiday.</p>
+</dd>
 
 <dt>How do I use it?</dt>
-<dd>Put in a postcode for your home or your place of work. When the map
-appears, it will show you everywhere else in the UK that you could
-start from in order to reach your chosen location by public transport by 9am. So, if you
-put in your place of work, it&rsquo;ll show you everywhere you could live in
-order to have a public transport commute that would take less than an hour.</dd>
+<dd>
+<p>At the moment Mapumental is best at helping you work out where else you might
+live to have a better daily commute. This will change in the future, but for
+now, here's how to use it.</p>
 
-<dt>What happens if I move the slider?</dt>
-<dd>The slider changes the amount of time it takes to get to the
-destination you&rsquo;ve chosen. So if you set it to 30 minutes, it&rsquo;ll show
-you everywhere you can start if you want to leave after
-8.30am.</dd>
+<p>First, enter a postcode for a place of work, a college, or anywhere you have
+to be regularly.</p>
 
-<h2>How to use the maps</h2>
+<p>Mapumental will then create and show you a map of a few miles around the
+postcode you entered, with a big splodge in the middle. That splodge represents
+every location you could live if you needed to get to your workplace by 9am,
+assuming you want to travel less than an hour by public transport.</p>
 
-<dt>How do I use it to help me house hunt?</dt>
-<dd>Put in the postcode of your place of work. Move the slider to the
-length of commute that you&rsquo;re willing to tolerate. House hunt only in
-places highlighted.</dd>
+<p>Now for the clever bit. Let's say you don't want to commute for an hour, but
+you'd be happy with half an hour. What you do now is grab the slider and slide
+it to the right, until it says 'Departing at 8.30'. As you do this you'll see
+the splodge change size and shape to show only those places half an hour or
+less away from your chosen destination.</p>
 
-<dt>How can it help me job hunt?</dt>
-<dd>Put in the postcode of your current home. Move the slider to the
-length of commute that you&rsquo;re willing to tolerate. Job hunt only in
-places highlighted. <em>This would be better if we let you pick multiple
-times and/or have &ldquo;depart after&rdquo; as well as &ldquo;arrive by&rdquo;.</em></dd>
+</dd>
 
-<dt>How can it help me holiday?</dt>
-<dd>Put in the postcode of your current home. Zoom out so you can see
-more of the country. Then set the slider to an acceptable number of
-hours you&rsquo;re willing to travel to go on your holiday.
-<em>This would be better if we let you have &ldquo;depart after&rdquo; as well
-as &ldquo;arrive by&rdquo;, and pick your departure time.</em></p>
+<dt>What about the house prices slider?</dt>
+
+<dd>
+
+<p>It isn't much use knowing that an area is an acceptable commute to your chosen
+destination if you can't possibly afford to live there.</p>
+
+<p>Grab the slider and slide it up and down to hide places that are too expensive.</p>
+
+<p>Now you can see places which are both 30 minutes or less away, AND which cost
+an acceptable amount.</p>
+
+<p>Sorry - we don't have house prices for Scotland. They wanted to sell them for
+an outrageous price, so we said no.</p>
+
+</dd>
+
+<dt>And scenicness - what's that?</dt>
+
+<dd>
+
+<p>Some people like to live in or near places that are pretty. The scenicness
+slider lets you hide places with a low 'scenicness' score.</p>
+
+<p>We get the scores from our mini game ScenicOrNot - if you go and play that game
+for a bit you'll help us to increase the quality of our scenicness data. The
+photos that make ScenicOrNot work are from the volunteers at Geograph.co.uk, a
+cool project well worth checking out.</p>
+
+</dd>
+
+<dt>How do the sliders combine?</dt>
+
+<dd>
+
+<p>All the sliders can be set to different positions, and they always produce a
+single map for you to look at. What the sliders do is effectively hide places
+that are too far in time, too expensive and too ugly, leaving you with a map of
+what's left.</p>
+
+<p>If you set the sliders to an impossible combination, it'll simply show you
+nothing - that's because there isn't anywhere you can live 10 minutes from
+Mayfair and pay under £25k for a house, sorry :) </p>
+
+</dd>
+
+<dt>What comes next?</dt>
+
+<dd>
+
+<p>Ooh, lots of things, including:</p>
+
+<ul>
+    <li> Building the system to scale industrially, so we can make it fully
+public. It is a very high bandwidth and computationally intensive website, so
+this will take a little more time.</li>
+    <li> Allowing you to choose journeys arriving at more times than just 9am.</li>
+    <li> Allowing you to choose journeys that leave after a specified time,
+rather than arrive (good for planning holidays).</li>
+    <li> Allowing multiple centres, so you can see places to live within 40
+minutes of two different places of work (for couples, say).</li>
+    <li> More stuff that our users suggest...</li>
+</ul>
+
+</dd>
 
 </dl>
 
@@ -47,33 +104,72 @@ as &ldquo;arrive by&rdquo;, and pick your departure time.</em></p>
 
 <dl>
 
+<dt>Who built this?</dt>
+
+<dd>
+
+<p><a href="http://www.mysociety.org/">mySociety</a>, in partnership with 
+<a href="http://www.4ip.org.uk/">Channel 4's 4IP</a>.</p>
+
+<p><a href="http://flourish.org/">Francis Irving</a> from mySociety was lead
+developer, and <a href="http://dracos.co.uk/">Matthew Somerville</a> helped a
+lot too. The scale of technical challenge this project represented was simply
+awesome, and they rose to the occasion.</p>
+
+<p>The slidey, zoomey, splodgey flash front end was made by <a
+href="http://stamen.com">Stamen</a>, who remain quite peerless in the field of
+geovisualisation online.</p>
+
+<p>Nearly 15,000 people who played <a href="http://scenic.mysociety.org/">ScenicOrNot</a>, 
+who helped create the scenicness data layer.</p>
+
+<p>And Chris Lightfoot, of course, <a href="http://www.mysociety.org/2006/travel-time-maps/">pioneered the whole thing</a>.</p>
+
+</dd>
+
+<dt>Where do the background maps come from?</dt>
+
+<dd>
+They're <a href="http://openstreetmap.org/">OpenStreetMap</a>, made by their wonderful, 
+insanely hard-working magical internet pixies.
+</dd>
+
+
 <dt>Where does the public transport data come from?</dt>
-<dd>Traveline, it's called the National Public Transport Data Repository. We
-had to buy it from the public body for nearly £9000 quid, just so you can have
-this service for free. Dumb, eh?</dd>
+<dd>Traveline, it's called the National Public Transport Data Repository. 
+It costs about £9000 inc. VAT, if you're in the market yourself.
+</dd>
 
-<dt>What day are the public transport journey times for?</dt>
+<dt>How accurate is the transport data?</dt>
 
-<dd>The journey times shown are rough only, and you should <strong>not</strong>
-use them for planning actual journeys. They are only valid for one Tuesday in
-October last year, and the transport services will have changed since then.
+<dd>The journey times shown are a moderately good reflection of reality, but
+with lots of caveats and you should <strong>not</strong> use them for planning
+actual journeys.  We take absolutely no responsibility if you do something
+stupid like buy a house in the middle of a lake because you thought it looked
+like a sensible option on our maps. Check first!
+</dd>
+
+<dt>When was the transport data captured?</dt>
+
+<dd>One Tuesday in October last year.
 </dd>
 
 <dt>What modes of transport are covered?</dt>
 
 <dd>Trains, buses, coaches, the underground, trams and ferries. Air travel is
 not included at all, because NPTDR only contains flights connecting to
-Scotland. International sea and rail journeys are not included.
+Scotland. International sea and rail journeys are not included, either.
 </dd>
 
 <dt>What are the interchange times and walking speeds?</dt>
 
-<dd>The public transport journey times assume you can walk at 3mph as the crow
-flies. 10 minutes walking is allowed between stations and to/from your final
-destination. 30 minutes walking is allowed at the other end of the journey,
-partly so it displays clearly on the map.  1 minute is allowed to change buses
-at the same stop, and 5 minutes for changing train, coach, underground and
-ferry at the same station.</dd>
+<dd>My - you really do want to know details, don't you? The public transport
+journey times assume you can walk at 3mph as the crow flies. 10 minutes walking
+is allowed between stations and to/from your final destination. 30 minutes
+walking is allowed at the other end of the journey, partly so it displays
+clearly on the map.  1 minute is allowed to change buses at the same stop, and
+5 minutes for changing train, coach, underground and ferry at the same
+station.</dd>
 
 <dt>How are the house prices calculated?</dt>
 
@@ -96,9 +192,9 @@ they're ten times nicer houses? Who knows, but we ain't paying.
 <dt>Where is the scenicness data from?</dt>
 
 <dd>People vote on the scenicness of photos of Britain on
-<a href="http://scenic.mysociety.org/">ScenicOrNot</a>, a site we specially
-made to create the data for this one. Please go there and help improve the
-data! The photos ultimately come from <a href="http://www.geograph.org.uk/">Geograph</a>.
+<a href="http://scenic.mysociety.org/">ScenicOrNot</a>, a site we made specially
+to create the data for this one. Please go there and help improve the data! The
+photos ultimately come from <a href="http://www.geograph.org.uk/">Geograph</a>.
 The scenicness is display on the map with a similar weighted, inverse distance
 mean to the one used for house prices as described above.
 
@@ -109,6 +205,11 @@ builds useful websites. For example, you can report potholes
 or abandoned mozarella cheese using <a href="http://www.fixmystreet.com">FixMyStreet</a>, 
 and check up on your MP's expenses using <a href="http://www.theyworkforyou.com">TheyWorkForYou</a>. 
 </dd>
+
+<dt>Who provides the hosting?</dt>
+
+<dd>mySociety's hosting is kindly supplied by Easynet.</dd>
+
 
 </dl>
 {% endblock %}
