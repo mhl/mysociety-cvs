@@ -1,7 +1,7 @@
 import sys
 import unittest
-sys.path.append("../../pylib")
-import piwik
+sys.path.append("../../../pylib")
+from sitestats import piwik
 
 #---
 
