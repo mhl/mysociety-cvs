@@ -1,4 +1,4 @@
-{% extends 'extends/base-thin.html' %}
+{% extends 'extends/base.html' %}
 
 {% block fulltitle %}Mapumental{% endblock %}
 
@@ -7,6 +7,10 @@
 {% if error %}
 <p id="errors">{{ error }}</p>
 {% endif %}
+
+<p style="float: right; margin-left: 1em">
+<object width="560" height="340"><param name="movie" value="http://www.youtube.com/v/vVZkHuomqfM&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/vVZkHuomqfM&hl=en&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="340"></embed></object>
+</p>
 
 <p>Hi,</p>
 
@@ -24,5 +28,5 @@ Sign up and we&rsquo;ll send you an invite when we&rsquo;re ready.</p>
 
 <p><small>We will only use your email address to send you an invite code,
 and updates about the site, such as when it goes public for all.</small></p>
-{% endblock %}
 
+{% endblock %}
