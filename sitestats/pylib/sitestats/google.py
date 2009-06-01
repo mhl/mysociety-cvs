@@ -4,12 +4,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: google.py,v 1.1 2009-06-01 15:04:38 louise Exp $
+# $Id: google.py,v 1.2 2009-06-01 18:16:30 louise Exp $
 #
 import urllib
-from datetime import date, timedelta
+
 import mysociety
 import re
+import common
 
 class Google:
     '''Interfaces with google'''
@@ -21,11 +22,11 @@ class Google:
     
     def _date_params(self, period, end_date):
         if end_date == None:
-            end_date = date.today()
+            end_date = common.end_of_current_week()
         if period == None:
             period = self.default_period
         if period == 'week':
-            start_date = end_date - timedelta(days=7)
+            start_date = common.start_of_current_week()
         else:
             raise NotImplementedError, period + ' interval not implemented in date_params'
         params = { 'as_mind' : start_date.day, 

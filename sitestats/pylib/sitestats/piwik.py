@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.1 2009-06-01 15:04:38 louise Exp $
+# $Id: piwik.py,v 1.2 2009-06-01 18:16:30 louise Exp $
 #
 
 import urllib
@@ -21,6 +21,7 @@ class Piwik:
         self.default_period = 'week'
         self.default_date = 'yesterday'
         self.default_format = 'JSON'
+        self.referrers = {}
     
     def __api_result(self, params, result_type):
         query_url = self.base_url + '&' + urllib.urlencode(params)
@@ -52,10 +53,49 @@ class Piwik:
         params.update(site_params)
         return self.__api_result(params, result_type='structure')
 
+    def __referrer_api_result(self, method, site_id, date, period):
+        params = self.__default_params()
+        referrer_params = { 'method': 'Referers.' + method, 
+                            'idSite': site_id, 
+                            'date': date or self.default_date, 
+                            'period': period or self.default_period }    
+        params.update(referrer_params)
+        return self.__api_result(params, result_type='structure')
+        
     def unique_visitors(self, site_id, period=None, date=None):
         '''Returns the unique visitors for a site in the period'''
         return self.__visit_api_result('getUniqueVisitors', site_id, date, period)
 
+    def percent_visits_from_search(self, site_id, period=None, date=None):
+        '''Returns the percentage of visits coming from search engines in the period'''
+        search_visits = self.visits_from_search(site_id, period, date)
+        visits = self.visits(site_id, period, date)
+        percentage = float(search_visits) / float(visits) * 100
+        return round(percentage, 2)
+        
+    def percent_visits_from_sites(self, site_id, period=None, date=None):
+        '''Returns the percentage of visits coming from websites in the period'''
+        site_visits = self.visits_from_sites(site_id, period, date)
+        visits = self.visits(site_id, period, date)
+        percentage = float(site_visits) / float(visits) * 100
+        return round(percentage, 2) 
+        
+    def visits_from_search(self, site_id, period=None, date=None):
+        '''Returns the number of visits coming from search engines in the period'''
+        return self.__get_visits_from('Search Engines', site_id, period, date)
+
+    def visits_from_sites(self, site_id, period=None, date=None):
+        '''Returns the number of visits coming from websites in the period'''
+        return self.__get_visits_from('Websites', site_id, period, date)
+  
+    def __get_visits_from(self, source, site_id, period, date):
+        key = "%s_%s_%s" % (site_id, period, date)
+        if (not self.referrers.has_key(key)):
+            self.referrers[key] = self.__referrer_api_result('getRefererType', site_id, date, period)
+        for referrer in self.referrers[key]:
+            if referrer['label'] == source:
+                return referrer['nb_visits']
+        
     def visits(self, site_id, period=None, date=None):
         '''Returns the visits to a site in the period'''
         return self.__visit_api_result('getVisits', site_id, date, period)

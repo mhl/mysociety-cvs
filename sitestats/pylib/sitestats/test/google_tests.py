@@ -32,13 +32,13 @@ class GoogleTests(unittest.TestCase):
         self.assertRaises(NotImplementedError, self.google._date_params, 'month', end_date)
             
     def testDateParamsCorrectForWeek(self):
-        end_date = date(2009, 6, 1)
-        date_params = self.google._date_params('week', end_date)
+        current_date = date(2009, 5, 31)
+        date_params = self.google._date_params('week', current_date)
         expected_params = { 'as_mind' : 25,
                             'as_minm' : 5,
                             'as_miny' : 2009,
-                            'as_maxd' : 1,
-                            'as_maxm' : 6,
+                            'as_maxd' : 31,
+                            'as_maxm' : 5,
                             'as_maxy' : 2009, 
                             'as_drrb'  : 'b' }
         self.assertEqual(expected_params, date_params, 'date_params produces correct params for a week period')
@@ -52,7 +52,7 @@ class GoogleTests(unittest.TestCase):
         self.fake_blog_search_response()
         result_attributes = self.google.blogs('test')
         expected_attributes = {'results': '24', 
-                               'url'    : 'http://blogsearch.google.com/blogsearch?as_miny=2009&as_maxy=2009&as_maxd=1&as_minm=5&as_q=test&as_maxm=6&as_mind=25&as_drrb=b'}
+                               'url'    : 'http://blogsearch.google.com/blogsearch?as_miny=2009&as_maxy=2009&as_maxd=31&as_minm=5&as_q=test&as_maxm=5&as_mind=25&as_drrb=b'}
         self.assertEqual(expected_attributes, result_attributes, 'blogs returns correct querystring and result count for example')
         
     def testNewsResultsParsing(self):
@@ -64,7 +64,7 @@ class GoogleTests(unittest.TestCase):
         self.fake_news_search_response()
         result_attributes = self.google.news('test')
         expected_attributes = {'results' : '26', 
-                               'url' : 'http://news.google.com/news?as_miny=2009&as_maxy=2009&q=test&as_maxd=1&as_minm=5&as_maxm=6&as_mind=25&as_drrb=b'}
+                               'url' : 'http://news.google.com/news?as_miny=2009&as_maxy=2009&q=test&as_maxd=31&as_minm=5&as_maxm=5&as_mind=25&as_drrb=b'}
         self.assertEqual(expected_attributes, result_attributes, 'news returns correct querystring and results for example')
         
 def main():
