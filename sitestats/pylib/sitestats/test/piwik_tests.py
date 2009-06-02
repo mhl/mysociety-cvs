@@ -48,26 +48,30 @@ class PiwikTests(unittest.TestCase):
          
     def testTotalTime(self):
         self.fake_api_response(8)
-        bounces = self.piwik.total_time(1)
-        self.assertEqual(8, bounces, "total_time returns the expected time")    
+        time = self.piwik.total_time(1)
+        self.assertEqual(8, time, "total_time returns the expected time")    
     
+    def testRaisesErrorWhenErrorReturned(self):
+        self.fake_api_response("{'message': 'You are requesting a precise subTable but there is not such data in the Archive.', 'result': 'error'}")
+        self.assertRaises(Exception, self.piwik.total_time, 1)
+        
     def testTimePerVisit(self):
-        self.piwik.total_time = lambda site_id, period, date: 25
-        self.piwik.visits = lambda site_id, period, date: 100
+        self.piwik.total_time = lambda site_id, period, date: 100
+        self.piwik.visits = lambda site_id, period, date: 33
         time_per_visit = self.piwik.time_per_visit(1)
-        self.assertEqual(0.25, time_per_visit, "time_per_visit returns the expected time per visit")         
+        self.assertEqual(3, time_per_visit, "time_per_visit returns the expected time per visit")         
     
     def testPageviewsPerVisit(self):
-        self.piwik.actions = lambda site_id, period, date: 25
-        self.piwik.visits = lambda site_id, period, date: 100
+        self.piwik.actions = lambda site_id, period, date: 33
+        self.piwik.visits = lambda site_id, period, date: 99
         pageviews_per_visit = self.piwik.pageviews_per_visit(1)
-        self.assertEqual(0.25, pageviews_per_visit, "pageviews_per_visit returns the expected pageviews per visit")
+        self.assertEqual(0.3, pageviews_per_visit, "pageviews_per_visit returns the expected pageviews per visit")
     
     def testBounceRate(self):
-        self.piwik.bounces = lambda site_id, period, date: 25
-        self.piwik.visits = lambda site_id, period, date: 100
+        self.piwik.bounces = lambda site_id, period, date: 33
+        self.piwik.visits = lambda site_id, period, date: 99
         bounce_rate = self.piwik.bounce_rate(1)
-        self.assertEqual(0.25, bounce_rate, "bounce_rate returns the expected time bounce rate")
+        self.assertEqual(33, bounce_rate, "bounce_rate returns the expected time bounce rate")
         
     def testSiteIds(self):
         self.fake_api_response('[["1"],["2"],["3"]]')
@@ -86,9 +90,9 @@ class PiwikTests(unittest.TestCase):
     
     def testSites(self):
         self.fake_api_response('[["1"],["2"]]')
-        self.piwik.site = lambda site_id: {'test': 'value'}
+        self.piwik.site = lambda site_id: {  'name' : str(site_id) }
         sites = self.piwik.sites()
-        self.assertEqual([{'test': 'value'}, {'test': 'value'}], sites, 'sites returns hashes of site info for all sites')
+        self.assertEqual([{'name': '1'}, {'name': '2'}], sites, 'sites returns hashes of site info for all sites sorted by name')
         
     def testVisitsFromSearch(self):
         self.fake_api_response('[{"label":"Search Engines","nb_uniq_visitors":350,"nb_visits":353,"nb_actions":506,"max_actions":23,"sum_visit_length":21751,"bounce_count":294,"nb_visits_converted":0},{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
@@ -101,16 +105,16 @@ class PiwikTests(unittest.TestCase):
         self.assertEqual(184, visits_from_sites, 'visits_from_sites returns correct information from example')
          
     def testPercentVisitsFromSearch(self):
-        self.piwik.visits_from_search = lambda site_id, period, date: 25
-        self.piwik.visits = lambda site_id, period, date: 100
+        self.piwik.visits_from_search = lambda site_id, period, date: 33
+        self.piwik.visits = lambda site_id, period, date: 99
         percent_from_search = self.piwik.percent_visits_from_search(1)
-        self.assertEqual(25, percent_from_search, "percent_visits_from_search returns the expected figure")
+        self.assertEqual(33, percent_from_search, "percent_visits_from_search returns the expected figure")
    
     def testPercentVisitsFromSites(self):
         self.piwik.visits_from_sites = lambda site_id, period, date: 33
         self.piwik.visits = lambda site_id, period, date: 99
         percent_from_sites = self.piwik.percent_visits_from_sites(1)
-        self.assertEqual(33.33, percent_from_sites, "percent_visits_from_sites returns the expected figure")
+        self.assertEqual(33, percent_from_sites, "percent_visits_from_sites returns the expected figure")
         
 def main():
     unittest.main()

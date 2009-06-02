@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.2 2009-06-01 18:16:30 louise Exp $
+# $Id: piwik.py,v 1.3 2009-06-02 18:14:24 louise Exp $
 #
 
 import urllib
@@ -27,6 +27,9 @@ class Piwik:
         query_url = self.base_url + '&' + urllib.urlencode(params)
         response = urllib.urlopen(query_url)
         result = simplejson.loads(response.read())
+        if type(result) == type({}) and result.has_key('result') and result['result'] == 'error':
+            message = "Error returned from piwik. Message: %s, query %s" % (result['message'], query_url)
+            raise Exception, message
         if result_type == 'simple':
             value = result['value']
         else:
@@ -43,7 +46,8 @@ class Piwik:
                          'date': date or self.default_date, 
                          'period': period or self.default_period }
         params.update(visit_params)
-        return self.__api_result(params, result_type='simple')
+        result = self.__api_result(params, result_type='simple')
+        return int(result)
     
     def __sites_api_result(self, method, site_id=None):
         params = self.__default_params()
@@ -71,14 +75,14 @@ class Piwik:
         search_visits = self.visits_from_search(site_id, period, date)
         visits = self.visits(site_id, period, date)
         percentage = float(search_visits) / float(visits) * 100
-        return round(percentage, 2)
+        return int(round(percentage, 0))
         
     def percent_visits_from_sites(self, site_id, period=None, date=None):
         '''Returns the percentage of visits coming from websites in the period'''
         site_visits = self.visits_from_sites(site_id, period, date)
         visits = self.visits(site_id, period, date)
         percentage = float(site_visits) / float(visits) * 100
-        return round(percentage, 2) 
+        return int(round(percentage, 0))
         
     def visits_from_search(self, site_id, period=None, date=None):
         '''Returns the number of visits coming from search engines in the period'''
@@ -116,19 +120,23 @@ class Piwik:
         '''Returns the time spent per visit to a site in the period'''
         total_time = self.total_time(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        return float(total_time) / float(visits)
+        time_per_visit = float(total_time) / float(visits)
+        return int(round(time_per_visit, 0))
 
     def pageviews_per_visit(self, site_id, period=None, date=None):
         '''Returns the number of pageviews per visit to a site in the period'''
         actions = self.actions(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        return float(actions) / float(visits)
+        pageviews_per_visit = float(actions) / float(visits)
+        return round(pageviews_per_visit, 1)
         
     def bounce_rate(self, site_id, period=None, date=None):
         '''Returns the bounce rate for the site in the period'''
         bounces = self.bounces(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        return float(bounces) / float(visits)
+        bounce_fraction = float(bounces) / float(visits)
+        bounce_percent = bounce_fraction * 100
+        return int(round(bounce_percent, 0))
     
     def site_ids(self):
         '''Returns a list of site ids'''
@@ -153,4 +161,6 @@ class Piwik:
     def sites(self):
         '''Returns a list of hashes of site information as returned by site()'''
         site_list = [self.site(site_id) for site_id in self.site_ids()]
+        site_list.sort(lambda x, y: cmp(x['name'].lower, y['name'].lower()))
+        site_list.reverse()
         return site_list
