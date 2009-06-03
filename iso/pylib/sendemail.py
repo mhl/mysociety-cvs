@@ -4,11 +4,11 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: sendemail.py,v 1.3 2009-06-03 10:54:12 francis Exp $
+# $Id: sendemail.py,v 1.4 2009-06-03 18:44:08 francis Exp $
 #
 
 import re, smtplib
-import minimock
+from minimock import mock, Mock
 from email.message import Message
 from email.header import Header
 from email.utils import formataddr, make_msgid, formatdate
@@ -21,8 +21,7 @@ def send_email(sender, to, message, headers={}):
     """Sends MESSAGE from SENDER to TO, with HEADERS
     Returns True if successful, False if not
     
-    >>> smtplib.SMTP = minimock.Mock('smtplib.SMTP')
-    >>> smtplib.SMTP.mock_returns = minimock.Mock('smtp_connection')
+    >>> mock('smtplib.SMTP', returns=Mock('smtp_connection'))
     >>> send_email("a@b.c", "d@e.f", "Hello, this is a message!", {
     ...     'Subject': 'Mapumental message',
     ...     'From': ("a@b.c", "Ms. A"),

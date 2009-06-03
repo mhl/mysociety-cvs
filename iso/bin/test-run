@@ -16,14 +16,18 @@ cd ../
 OXFORD_CIFS="$OPTION_NPTDR_DATA/Timetable Data/CIF/Admin_Area_340/*.zip"
 TMP_OUTPUT=/tmp/iso-test-run-$RANDOM$RANDOM$RANDOM
 
-# test atcocif.py
+# test atcocif loader
 cd ../pylib/mysociety
 nosetests --with-doctest
+# test common iso modules
 cd ../../iso/pylib
 nosetests --with-doctest
+# test tile code
 cd ../tiles
 #nosetests --with-doctest # reenable when pyproj packages ready
-cd ..
+# test web
+cd ../web
+./test.py
 
 # compare C++ and Python planner on Oxford NPTDR data set
 cd bin

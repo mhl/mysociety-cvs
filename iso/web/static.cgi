@@ -6,12 +6,16 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: static.cgi,v 1.7 2009-05-14 12:21:45 matthew Exp $
+# $Id: static.cgi,v 1.8 2009-06-03 18:44:08 francis Exp $
 #
 
 import sys
 sys.path.extend(("../pylib", "../../pylib"))
 import fcgi
+
+import mysociety.config
+mysociety.config.set_file("../conf/general")
+
 from page import *
 from django.http import HttpResponseRedirect
 

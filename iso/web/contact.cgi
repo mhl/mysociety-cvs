@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: contact.cgi,v 1.11 2009-05-14 12:50:47 matthew Exp $
+# $Id: contact.cgi,v 1.12 2009-06-03 18:44:08 francis Exp $
 #
 
 import re
@@ -14,10 +14,11 @@ import sys
 sys.path.extend(("../pylib", "../../pylib"))
 import fcgi
 
-from page import *
-from sendemail import send_email
 import mysociety.config
 mysociety.config.set_file("../conf/general")
+
+from page import *
+from sendemail import send_email
 
 def main(fs):
     if 'submit_form' in fs:

@@ -1,17 +1,18 @@
 #!/usr/bin/env python2.5
 #
 # page.py:
-# Various shared functions
+# Various shared functions for web page display.
 #
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.21 2009-05-21 16:33:25 francis Exp $
+# $Id: page.py,v 1.22 2009-06-03 18:44:08 francis Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
 import Cookie
 import random
+import urllib2
 
 cgitb.enable()
 
@@ -125,7 +126,6 @@ class Invite(object):
         self._postcodes.append( (pc, canonicalise_postcode(pc)) )
 
 # Random token generation
-
 def random_token():
     chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789'
     token = ''
@@ -134,9 +134,38 @@ def random_token():
     return token
 
 # Prettifying functions
-
 def canonicalise_postcode(pc):
     pc = re.sub('[^A-Z0-9]', '', pc.upper())
     pc = re.sub('(\d[A-Z]{2})$', r' \1', pc)
     return pc
+
+# Make sure no bad characters in postcode
+def sanitise_postcode(pc):
+    pc = pc.upper()
+    pc = re.sub('[^A-Z0-9]', '', pc)
+    return pc
+
+# Make sure no bad characters in station ID
+def sanitise_station_id(text_id):
+    text_id = text_id.upper()
+    text_id = re.sub('[^A-Z0-9]', '', text_id)
+    return text_id
+
+# Read the haproxy statistics page to see if there are too many connections
+haproxy_stats_url = mysociety.config.get('BASE_URL') + 'haproxy_stats'
+max_connections = int(mysociety.config.get('MAX_HAPROXY_CONNECTIONS'))
+def current_proxy_connections():
+    try:
+        stats = urllib2.urlopen(haproxy_stats_url).read()
+    except urllib2.HTTPError, e:
+        # on test sites etc. no haproxy
+        if e.code == 404:
+            return -1
+        raise
+
+    matches = re.search("current conns = ([0-9]+)", stats)
+    current_connections = int(matches.groups()[0])
+
+    return current_connections
+
 

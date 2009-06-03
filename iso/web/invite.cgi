@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.6 2009-05-21 16:33:25 francis Exp $
+# $Id: invite.cgi,v 1.7 2009-06-03 18:44:08 francis Exp $
 #
 
 import sys
@@ -14,11 +14,11 @@ sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 import fcgi
 from psycopg2 import IntegrityError
 
-from page import *
-from django.http import HttpResponseRedirect
-
 import mysociety.config
 mysociety.config.set_file("../conf/general")
+
+from page import *
+from django.http import HttpResponseRedirect
 
 import coldb
 db = coldb.get_cursor()

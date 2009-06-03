@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.109 2009-05-21 16:33:25 francis Exp $
+# $Id: index.cgi,v 1.110 2009-06-03 18:44:08 francis Exp $
 #
 
 import sys
@@ -20,136 +20,33 @@ import Cookie
 import psycopg2.errorcodes
 import urllib2
 
-from page import *
 import mysociety.config
-import mysociety.mapit
 mysociety.config.set_file("../conf/general")
+
+import page
+from page import *
+import mysociety.mapit
 from mysociety.rabx import RABXException
 
 from django.http import HttpResponseRedirect
 
 import coldb
 import geoconvert
+import isoweb
 
 db = coldb.get_cursor()
 
 tmpwork = mysociety.config.get('TMPWORK')
 
 #####################################################################
-# Helper functions
-
-def nearest_station(E, N):
-    db.execute('''SELECT text_id, long_description, id FROM station WHERE
-        position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
-        AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
-        ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
-        LIMIT 1''' % (E, N, E, N, E, N))
-    row = db.fetchone()
-
-    if not row:
-        return None
-
-    return row
-
-# Make sure no bad characters in postcode
-def sanitise_postcode(pc):
-    pc = pc.upper()
-    pc = re.sub('[^A-Z0-9]', '', pc)
-    return pc
-# Make sure no bad characters in station ID
-def sanitise_station_id(text_id):
-    text_id = text_id.upper()
-    text_id = re.sub('[^A-Z0-9]', '', text_id)
-    return text_id
-
-# Used when not specified in URL (so changing will change meaning of old URLs)
-default_target_direction = 'arrive_by'
-default_target_time = 540 # 09:00
-default_target_date = '2008-10-07'
-def default_target_limit_time(target_direction):
-    if target_direction == 'arrive_by':
-        return 0 # 00:00
-    elif target_direction == 'depart_after':
-        return 1439 # 23:59
-    else:
-        assert False
-
-def format_time(mins_after_midnight):
-    hours = mins_after_midnight / 60
-    mins = mins_after_midnight % 60
-    if hours == 12 and mins == 0:
-        return 'noon'
-    suffix = hours < 12 and 'am' or 'pm'
-    hours = hours % 12
-    if hours == 0:
-        hours = 12
-    time = str(hours)
-    if mins:
-        time += ':%02d' % mins
-    time += suffix
-    return time
-
-def look_up_time_taken(map_id, station_id):
-    iso_file = tmpwork + "/" + repr(map_id) + ".iso"
-    isof = open(iso_file, 'rb')
-    isof.seek(station_id * 2)
-    tim = struct.unpack("h", isof.read(2))[0]
-    return tim
-
-def look_up_route_node(map_id, station_id):
-    iso_file = tmpwork + "/" + repr(map_id) + ".iso.routes"
-    isof = open(iso_file, 'rb')
-    isof.seek(station_id * 8)
-    location_id = struct.unpack("i", isof.read(4))[0]
-    journey_id = struct.unpack("i", isof.read(4))[0]
-    return (location_id, journey_id)
-
-# Read the haproxy statistics page to see if there are too many connections
-haproxy_stats_url = mysociety.config.get('BASE_URL') + 'haproxy_stats'
-max_connections = int(mysociety.config.get('MAX_HAPROXY_CONNECTIONS'))
-def current_proxy_connections():
-    try:
-        stats = urllib2.urlopen(haproxy_stats_url).read()
-    except urllib2.HTTPError, e:
-        # on test sites etc. no haproxy
-        if e.code == 404:
-            return -1
-        raise
-
-    matches = re.search("current conns = ([0-9]+)", stats)
-    current_connections = int(matches.groups()[0])
-
-    return current_connections
-
-def pretty_vehicle_code(vehicle_code):
-    if vehicle_code == 'T':
-        return "Train";
-    elif vehicle_code == 'B':
-        return "Bus";
-    elif vehicle_code == 'C':
-        return "Coach";
-    elif vehicle_code == 'M':
-        return "Metro";
-    elif vehicle_code == 'A':
-        return "Air";
-    elif vehicle_code == 'F':
-        return "Ferry";
-    else:
-        assert False;
-
-# Constants from cpplib/makeplan.h
-JOURNEY_NULL = -1
-JOURNEY_ALREADY_THERE = -2
-JOURNEY_WALK = -3
-
-LOCATION_NULL = -1
-LOCATION_TARGET = 0
-
-
-#####################################################################
 # Class representing the parameters for a map, and its status
 
 class Map:
+    '''Represents the parameters needed to make one public transport map.
+    >>> Map({ 'target_postcode' : 'ox13dr' })
+    fooble
+    '''
+
     state = {}
 
     # Given URL parameters, look up parameters of map
@@ -161,7 +58,7 @@ class Map:
 
         if 'station_id' in fs:
             # target is specific station
-            self.text_id = sanitise_station_id(fs.getfirst('station_id'))
+            self.text_id = page.sanitise_station_id(fs.getfirst('station_id'))
             db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (self.text_id,))
             row = db.fetchone()
             self.target_station_id, self.target_e, self.target_n = row
@@ -169,7 +66,7 @@ class Map:
         else:
             # target is a grid reference
             if 'target_postcode' in fs:
-                self.target_postcode = sanitise_postcode(fs.getfirst('target_postcode'))
+                self.target_postcode = page.sanitise_postcode(fs.getfirst('target_postcode'))
                 f = mysociety.mapit.get_location(self.target_postcode)
                 self.target_e = int(f['easting'])
                 self.target_n = int(f['northing'])
@@ -183,21 +80,21 @@ class Map:
         self.lat, self.lon = geoconvert.national_grid_to_wgs84(self.target_e, self.target_n)
 
         # Times, directions and date
-        self.target_direction = default_target_direction
+        self.target_direction = isoweb.default_target_direction
         if 'target_direction' in fs:
             direction = fs.getfirst('target_direction')
             if direction in ['arrive_by', 'depart_after']:
                 self.target_direction = direction
             else:
                 raise Exception("Bad direction parameter specified, only arrive_by and depart_after supported")
-        self.target_time = default_target_time
+        self.target_time = isoweb.default_target_time
         if 'target_time' in fs:
             self.target_time = int(fs.getfirst('target_time'))
-        self.target_limit_time = default_target_limit_time(self.target_direction)
+        self.target_limit_time = isoweb.default_target_limit_time(self.target_direction)
         if 'target_limit_time' in fs:
             self.target_limit_time = int(fs.getfirst('target_limit_time'))
         # XXX date is fixed for now
-        self.target_date = default_target_date
+        self.target_date = isoweb.default_target_date
 
         # Get record from database
         if self.target_station_id:
@@ -289,11 +186,11 @@ class Map:
             raise Exception("can't make URL")
 
         url_params = []
-        if self.target_direction != default_target_direction:
+        if self.target_direction != isoweb.default_target_direction:
             url_params.append("target_direction=" + str(self.target_direction))
-        if self.target_time != default_target_time:
+        if self.target_time != isoweb.default_target_time:
             url_params.append("target_time=" + str(self.target_time))
-        if self.target_limit_time != default_target_limit_time(self.target_direction):
+        if self.target_limit_time != isoweb.default_target_limit_time(self.target_direction):
             url_params.append("target_limit_time=" + str(self.target_limit_time))
         if len(url_params) > 0:
             url = url + "?" + "&".join(url_params)
@@ -335,7 +232,7 @@ class Map:
         return True
 
     def target_time_formatted(self):
-        return format_time(self.target_time)
+        return isoweb.format_time(self.target_time)
 
 #####################################################################
 # Controllers
@@ -356,7 +253,7 @@ def check_postcode(pc, invite):
         vars['error'] = e.text
         return render_to_response('index.html', vars)
 
-    #(station, station_long, station_id) = nearest_station(E, N)
+    #(station, station_long, station_id) = isoweb.nearest_station(E, N)
     #if not station:
     #    return render_to_response('index.html', { 'error': 'Could not find a station or bus stop :(' })
 
@@ -365,7 +262,7 @@ def check_postcode(pc, invite):
         return render_to_response('index.html', vars)
 
     # Canonicalise it, and redirect to that URL
-    pc = sanitise_postcode(pc)
+    pc = page.sanitise_postcode(pc)
 
     return HttpResponseRedirect('/postcode/%s' % (pc))
 
@@ -393,9 +290,9 @@ def map(fs, invite):
     map = Map(fs)
 
     # If the load is too high on the server, don't allow new map
-    current_connections = current_proxy_connections()
-    if current_connections >= max_connections:
-        return render_to_response('map-http-overload.html', map.add_url_params({ 'current_connections' : current_connections, 'max_connections' : max_connections }))
+    current_connections = page.current_proxy_connections()
+    if current_connections >= page.max_connections:
+        return render_to_response('map-http-overload.html', map.add_url_params({ 'current_connections' : current_connections, 'max_connections' : page.max_connections }))
 
     # If it is complete, then render it
     if map.current_state == 'complete':
@@ -463,28 +360,28 @@ def log_email(fs, email):
 # Used when in Flash you click on somewhere to get the route
 def get_route(fs, lat, lon):
     E, N = geoconvert.wgs84_to_national_grid(lat, lon)
-    (station, station_long, station_id) = nearest_station(E, N)
+    (station, station_long, station_id) = isoweb.nearest_station(db, E, N)
 
     # Look up time taken
     map = Map(fs)
-    tim = look_up_time_taken(map.id, station_id)
+    tim = isoweb.look_up_time_taken(map.id, station_id)
 
     # Look up route...
     location_id = station_id
     route = []
     c = 0 
     while True:
-        (next_location_id, next_journey_id) = look_up_route_node(map.id, location_id)
-        leaving_time = look_up_time_taken(map.id, location_id)
+        (next_location_id, next_journey_id) = isoweb.look_up_route_node(map.id, location_id)
+        leaving_time = isoweb.look_up_time_taken(map.id, location_id)
 
         c = c + 1 
         if c > 100:
             raise Exception("route displayer probably in infinite loop")
 
         route.append((location_id, next_location_id, next_journey_id))
-        if next_journey_id == JOURNEY_NULL:
+        if next_journey_id == isoweb.JOURNEY_NULL:
             break
-        if next_journey_id == JOURNEY_ALREADY_THERE:
+        if next_journey_id == isoweb.JOURNEY_ALREADY_THERE:
             break
 
         location_id = next_location_id
@@ -494,7 +391,7 @@ def get_route(fs, lat, lon):
     name_by_id = {}
     for row in db.fetchall():
         name_by_id[row['id']] = row['long_description'] + " (" + row['text_id'] + ")"
-    name_by_id[LOCATION_TARGET] = 'TARGET'
+    name_by_id[isoweb.LOCATION_TARGET] = 'TARGET'
     # ... get journey info from database
     ids = ','.join([ str(int(route_node[2])) for route_node in route ])
     db.execute('''SELECT text_id, vehicle_code, id FROM journey WHERE id in (%s)''' % ids)
@@ -506,26 +403,26 @@ def get_route(fs, lat, lon):
     # ... and show it
     route_str = "From " + str(name_by_id[station_id]) + " \n"
     for location_id, next_location_id, journey_id in route:
-        location_time = look_up_time_taken(map.id, location_id)
+        location_time = isoweb.look_up_time_taken(map.id, location_id)
         if map.target_direction == 'arrive_by':
             leaving_after_midnight = map.target_time - location_time
         elif map.target_direction == 'depart_after':
             leaving_after_midnight = map.target_time - location_time
         else:
             assert(False)
-        route_str += format_time(leaving_after_midnight) + " "
+        route_str += isoweb.format_time(leaving_after_midnight) + " "
         if journey_id > 0: 
             next_location_name = name_by_id[next_location_id]
             vehicle_code = vehicle_code_by_id[journey_id]
-            route_str += pretty_vehicle_code(vehicle_code) + " (" + journey_by_id[journey_id] + ") to " + next_location_name
-        elif journey_id == JOURNEY_WALK:
+            route_str += isoweb.pretty_vehicle_code(vehicle_code) + " (" + journey_by_id[journey_id] + ") to " + next_location_name
+        elif journey_id == isoweb.JOURNEY_WALK:
             next_location_name = name_by_id[next_location_id]
             route_str += "Walk to " + next_location_name;
-        elif journey_id == JOURNEY_ALREADY_THERE:
+        elif journey_id == isoweb.JOURNEY_ALREADY_THERE:
             location_name = name_by_id[location_id]
             arrived = True
             route_str += "You've arrived"
-        elif journey_id == JOURNEY_NULL:
+        elif journey_id == isoweb.JOURNEY_NULL:
             route_str += "No route found"
         route_str += "\n";
 
@@ -556,7 +453,7 @@ def main(fs):
     elif got_map_spec and 'email' in fs: # Overloaded email request
         return log_email(fs, fs.getfirst('email'))
     elif got_map_spec: # Page for generating/ displaying map
-        postcode = sanitise_postcode(fs.getfirst('target_postcode'))
+        postcode = page.sanitise_postcode(fs.getfirst('target_postcode'))
         postcodes = invite.postcodes
         if (postcode, canonicalise_postcode(postcode)) not in postcodes:
             if invite.maps_left <= 0:
@@ -575,7 +472,8 @@ def main(fs):
     })
 
 # Main FastCGI loop
-while fcgi.isFCGI():
-    fcgi_loop(main)
-    db.execute('ROLLBACK')
+if __name__ == "__main__":
+    while fcgi.isFCGI():
+        fcgi_loop(main)
+        db.execute('ROLLBACK')
 
