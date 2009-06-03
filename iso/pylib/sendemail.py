@@ -4,13 +4,14 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: sendemail.py,v 1.2 2009-05-14 12:50:47 matthew Exp $
+# $Id: sendemail.py,v 1.3 2009-06-03 10:54:12 francis Exp $
 #
 
 import re, smtplib
+import minimock
 from email.message import Message
 from email.header import Header
-from email.utils import formataddr, make_msgid
+from email.utils import formataddr, make_msgid, formatdate
 from email.charset import Charset, QP
 
 charset = Charset('utf-8')
@@ -18,13 +19,30 @@ charset.body_encoding = QP
 
 def send_email(sender, to, message, headers={}):
     """Sends MESSAGE from SENDER to TO, with HEADERS
-    Returns True if successful, False if not"""
+    Returns True if successful, False if not
+    
+    >>> smtplib.SMTP = minimock.Mock('smtplib.SMTP')
+    >>> smtplib.SMTP.mock_returns = minimock.Mock('smtp_connection')
+    >>> send_email("a@b.c", "d@e.f", "Hello, this is a message!", {
+    ...     'Subject': 'Mapumental message',
+    ...     'From': ("a@b.c", "Ms. A"),
+    ...     'To': "d@e.f"
+    ... }) # doctest:+ELLIPSIS
+    Called smtplib.SMTP('localhost')
+    Called smtp_connection.sendmail(
+        'a@b.c',
+        'd@e.f',
+        'MIME-Version: 1.0\\nContent-Type: text/plain; charset="utf-8"\\nContent-Transfer-Encoding: quoted-printable\\nMessage-ID: <...>\\nDate: ...\\nTo: d@e.f\\nFrom: "Ms. A" <a@b.c>\\nSubject: Mapumental message\\n\\nHello, this is a message!')
+    Called smtp_connection.quit()
+    True
+    """
 
     message = re.sub('\r\n', '\n', message)
 
     msg = Message()
     msg.set_payload(message, charset)
     msg['Message-ID'] = make_msgid()
+    msg['Date'] = formatdate(localtime=True)
 
     for key, value in headers.items():
         if isinstance(value, tuple):
