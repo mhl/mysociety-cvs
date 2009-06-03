@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.110 2009-06-03 18:44:08 francis Exp $
+# $Id: index.cgi,v 1.111 2009-06-03 23:20:30 francis Exp $
 #
 
 import sys
@@ -43,8 +43,7 @@ tmpwork = mysociety.config.get('TMPWORK')
 
 class Map:
     '''Represents the parameters needed to make one public transport map.
-    >>> Map({ 'target_postcode' : 'ox13dr' })
-    fooble
+    >>> # Map({ 'target_postcode' : 'ox13dr' })
     '''
 
     state = {}
