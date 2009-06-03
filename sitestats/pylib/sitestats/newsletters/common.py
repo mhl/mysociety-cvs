@@ -3,11 +3,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: common.py,v 1.2 2009-06-02 18:14:24 louise Exp $
+# $Id: common.py,v 1.1 2009-06-03 17:01:42 louise Exp $
 #
 
 from datetime import date, timedelta
-
 
 def end_of_current_week():
     return date.today() - timedelta(days=1)

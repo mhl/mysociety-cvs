@@ -1,0 +1,33 @@
+{% block content %}
+
+
+<table>
+  <tr>
+  
+{% for header in headers %}
+  <th>{{ header }}</th>
+{% endfor %}
+  </tr>
+  
+{% for row in rows %}
+  <tr>
+    {% for value in row %}
+      <td>
+        {{ value|safe }}
+      </td>
+    {% endfor %}
+  </tr>
+{% endfor %}
+  <tr>
+      <th>
+        Totals
+      </th>
+{% for total in totals %}
+      <td>
+        {{ total }}
+      </td>
+{% endfor %}
+  </tr>
+</table>
+
+{% endblock %}

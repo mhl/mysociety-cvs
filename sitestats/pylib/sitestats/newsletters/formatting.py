@@ -3,11 +3,8 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: formatting.py,v 1.1 2009-06-02 18:14:24 louise Exp $
+# $Id: formatting.py,v 1.1 2009-06-03 17:01:42 louise Exp $
 #
-import sitestats
-from django.conf import settings
-settings.configure( TEMPLATE_DIRS=(sitestats.package_dir + '/../../templates/',), TEMPLATE_DEBUG=True)
 from django.template.loader import render_to_string
 
 def format_cell_value(format, info):

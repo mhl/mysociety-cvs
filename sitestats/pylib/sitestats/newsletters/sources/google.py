@@ -4,7 +4,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: google.py,v 1.3 2009-06-02 18:14:24 louise Exp $
+# $Id: google.py,v 1.1 2009-06-03 17:01:43 louise Exp $
 #
 import urllib
 
@@ -15,7 +15,7 @@ urllib._urlopener = AppURLopener()
 
 import mysociety
 import re
-import common
+from sitestats.newsletters import common
 
 class Google:
     '''Interfaces with google'''
