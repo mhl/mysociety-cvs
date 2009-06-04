@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: contact.cgi,v 1.12 2009-06-03 18:44:08 francis Exp $
+# $Id: contact.cgi,v 1.13 2009-06-04 14:40:27 francis Exp $
 #
 
 import re
@@ -27,10 +27,10 @@ def main(fs):
 
 def contact_submit(fs):
     errors = []
-    name = fs.getfirst('name', '')
-    email = fs.getfirst('em', '')
-    subject = fs.getfirst('subject', '')
-    message = fs.getfirst('message', '')
+    name = fs.get('name', '')
+    email = fs.get('em', '')
+    subject = fs.get('subject', '')
+    message = fs.get('message', '')
 
     if not re.search(r'\S', name):
         errors.append('Please give your name')
@@ -65,14 +65,13 @@ def contact_submit(fs):
 def contact_page(fs, errors = []):
     return render_to_response('contact.html', {
         'errors': errors,
-        'name': fs.getfirst('name', ''),
-        'email': fs.getfirst('em', ''),
-        'subject': fs.getfirst('subject', ''),
-        'message': fs.getfirst('message', ''),
+        'name': fs.get('name', ''),
+        'email': fs.get('em', ''),
+        'subject': fs.get('subject', ''),
+        'message': fs.get('message', ''),
         'contact_email': mysociety.config.get('CONTACT_EMAIL'),
     })
 
 # Main FastCGI loop
-while fcgi.isFCGI():
-    fcgi_loop(main)
-
+if __name__ == "__main__":
+    wsgi_loop(main)

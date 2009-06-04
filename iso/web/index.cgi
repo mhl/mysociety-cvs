@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.114 2009-06-04 10:48:21 francis Exp $
+# $Id: index.cgi,v 1.115 2009-06-04 14:40:27 francis Exp $
 #
 
 import sys
@@ -41,7 +41,13 @@ tmpwork = mysociety.config.get('TMPWORK')
 
 class Map:
     '''Represents the parameters needed to make one public transport map.
-    >>> # Map({ 'target_postcode' : 'ox13dr' })
+    >>> map = Map({ 'target_postcode' : 'ox13dr' })
+    >>> map.title()
+    'OX1 3DR'
+    >>> map.url()
+    '/postcode/OX13DR'
+
+    XXX Does lots of database things not easily tested in doctest
     '''
 
     state = {}
