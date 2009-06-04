@@ -6,13 +6,14 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.22 2009-06-03 18:44:08 francis Exp $
+# $Id: page.py,v 1.23 2009-06-04 02:31:52 francis Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
 import Cookie
 import random
 import urllib2
+import flup.server.fcgi_fork
 
 cgitb.enable()
 
@@ -20,6 +21,8 @@ from django.conf import settings
 settings.configure( TEMPLATE_DIRS=(sys.path[0] + '/../templates/',), TEMPLATE_DEBUG=True)
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseRedirect
+
+from paste.request import parse_formvars
 
 from sendemail import send_email
 import mysociety.config
@@ -53,6 +56,35 @@ def fcgi_loop(main):
     else:
         req.out.write(str(response))
     req.Finish()
+
+def wsgi_loop(main):
+    def wsgiApp(environ, start_response):
+        fs = parse_formvars(environ)
+
+        fcgi_env = environ.copy()
+        for k in os.environ.keys():
+            del os.environ[k]
+        for k, v in fcgi_env.items():
+            if re.match('paste.', k) or re.match('wsgi.', k):
+                continue
+            os.environ[k] = v
+
+        response = main(fs)
+
+        status = "200 OK"
+        if isinstance(response, HttpResponseRedirect):
+            status = "302 Found"
+        start_response(status, response.items())
+
+#        if response.cookies:
+            #req.out.write(str(response.cookies) + "\r\n")
+ #           return str(response.cookies)
+        if os.environ['REQUEST_METHOD'] == 'HEAD':
+            return('\r\n'.join(['%s: %s' % (k, v) for k, v in response.items()]) + '\r\n\r\n')
+        else:
+            return response.content
+
+    flup.server.fcgi_fork.WSGIServer(wsgiApp).run()
 
 def slurp_file(filename):
     f = file(filename, 'rb')

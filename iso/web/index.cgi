@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.111 2009-06-03 23:20:30 francis Exp $
+# $Id: index.cgi,v 1.112 2009-06-04 02:31:52 francis Exp $
 #
 
 import sys
@@ -34,7 +34,8 @@ import coldb
 import geoconvert
 import isoweb
 
-db = coldb.get_cursor()
+db_connection = coldb.get_connection()
+db = None
 
 tmpwork = mysociety.config.get('TMPWORK')
 
@@ -57,7 +58,7 @@ class Map:
 
         if 'station_id' in fs:
             # target is specific station
-            self.text_id = page.sanitise_station_id(fs.getfirst('station_id'))
+            self.text_id = page.sanitise_station_id(fs['station_id'])
             db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (self.text_id,))
             row = db.fetchone()
             self.target_station_id, self.target_e, self.target_n = row
@@ -65,14 +66,14 @@ class Map:
         else:
             # target is a grid reference
             if 'target_postcode' in fs:
-                self.target_postcode = page.sanitise_postcode(fs.getfirst('target_postcode'))
+                self.target_postcode = page.sanitise_postcode(fs['target_postcode'])
                 f = mysociety.mapit.get_location(self.target_postcode)
                 self.target_e = int(f['easting'])
                 self.target_n = int(f['northing'])
             else:
                 self.target_postcode = None
-                self.target_e = int(fs.getfirst('target_e'))
-                self.target_n = int(fs.getfirst('target_n'))
+                self.target_e = int(fs['target_e'])
+                self.target_n = int(fs['target_n'])
             self.target_station_id = None
 
         # Used for centring map
@@ -81,17 +82,17 @@ class Map:
         # Times, directions and date
         self.target_direction = isoweb.default_target_direction
         if 'target_direction' in fs:
-            direction = fs.getfirst('target_direction')
+            direction = fs['target_direction']
             if direction in ['arrive_by', 'depart_after']:
                 self.target_direction = direction
             else:
                 raise Exception("Bad direction parameter specified, only arrive_by and depart_after supported")
         self.target_time = isoweb.default_target_time
         if 'target_time' in fs:
-            self.target_time = int(fs.getfirst('target_time'))
+            self.target_time = int(fs['target_time'])
         self.target_limit_time = isoweb.default_target_limit_time(self.target_direction)
         if 'target_limit_time' in fs:
-            self.target_limit_time = int(fs.getfirst('target_limit_time'))
+            self.target_limit_time = int(fs['target_limit_time'])
         # XXX date is fixed for now
         self.target_date = isoweb.default_target_date
 
@@ -220,10 +221,11 @@ class Map:
                 # The integrity error is because of a unique key violation - ie. an
                 # identical row has appeared in the milliseconds since we looked
                 self.id = None
-                db.execute('ROLLBACK')
                 return False
             else:
                 raise
+        finally:
+            db.execute('ROLLBACK')
         db.execute('COMMIT')
         if 'new' in self.state:
             self.state['new'] += 1
@@ -343,7 +345,7 @@ def map(fs, invite):
 def log_email(fs, email):
     if not validate_email(email):
         return render_to_response('map-provideemail-error.html', {
-            'target_postcode': fs.getfirst('target_postcode'),
+            'target_postcode': fs['target_postcode'],
             'email': email,
         })
     # Okay, we have an email, set off the process
@@ -352,6 +354,7 @@ def log_email(fs, email):
         if not map.start_generation():
             map = Map(fs) # Fetch it again
 
+    db.execute('BEGIN')
     db.execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
     db.execute('COMMIT')
     return render_to_response('map-provideemail-thanks.html')
@@ -438,41 +441,52 @@ def get_route(fs, lat, lon):
 # Main FastCGI loop
 
 def main(fs):
-    invite = Invite(db)
-    if not invite.id:
-        return HttpResponseRedirect('/signup')
+    global db
+    db = coldb.get_cursor(db_connection)
 
-    #got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
-    got_map_spec = ('target_postcode' in fs)
+    try:
+        if db == None:
+            raise "ugh, db None inmain"
+        invite = Invite(db)
+        if not invite.id:
+            raise "ugh, db None inmain 2"
+            return HttpResponseRedirect('/signup')
 
-    if 'lat' in fs: # Flash request for route
-        return get_route(fs, float(fs.getfirst('lat')), float(fs.getfirst('lon')))
-    elif 'pc' in fs: # Front page submission
-        return check_postcode(fs.getfirst('pc'), invite)
-    elif got_map_spec and 'email' in fs: # Overloaded email request
-        return log_email(fs, fs.getfirst('email'))
-    elif got_map_spec: # Page for generating/ displaying map
-        postcode = page.sanitise_postcode(fs.getfirst('target_postcode'))
-        postcodes = invite.postcodes
-        if (postcode, canonicalise_postcode(postcode)) not in postcodes:
-            if invite.maps_left <= 0:
-                return render_to_response('beta-limit.html', { 'postcodes': postcodes })
-            invite.add_postcode(postcode)
-        return map(fs, invite)
+        #got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
+        got_map_spec = ('target_postcode' in fs)
 
-    # Front page display
-    db.execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
-        ORDER BY working_start DESC LIMIT 10''')
-    most_recent = [ canonicalise_postcode(row[0]) for row in db.fetchall() ]
-    return render_to_response('index.html', {
-        'invite': invite,
-        'most_recent': most_recent,
-        'show_dropdown': len(invite.postcodes) > 3
-    })
+        if 'lat' in fs: # Flash request for route
+            return get_route(fs, float(fs['lat']), float(fs['lon']))
+        elif 'pc' in fs: # Front page submission
+            return check_postcode(fs['pc'], invite)
+        elif got_map_spec and 'email' in fs: # Overloaded email request
+            return log_email(fs, fs['email'])
+        elif got_map_spec: # Page for generating/ displaying map
+            postcode = page.sanitise_postcode(fs['target_postcode'])
+            postcodes = invite.postcodes
+            if (postcode, canonicalise_postcode(postcode)) not in postcodes:
+                if invite.maps_left <= 0:
+                    return render_to_response('beta-limit.html', { 'postcodes': postcodes })
+                invite.add_postcode(postcode)
+            return map(fs, invite)
+
+        # Front page display
+        db.execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
+            ORDER BY working_start DESC LIMIT 10''')
+        most_recent = [ canonicalise_postcode(row[0]) for row in db.fetchall() ]
+        return render_to_response('index.html', {
+            'invite': invite,
+            'most_recent': most_recent,
+            'show_dropdown': len(invite.postcodes) > 3
+        })
+    finally:
+        db.execute('ROLLBACK')
 
 # Main FastCGI loop
 if __name__ == "__main__":
-    while fcgi.isFCGI():
-        fcgi_loop(main)
-        db.execute('ROLLBACK')
+#    while fcgi.isFCGI():
+#        fcgi_loop(main)
+#       db.execute('ROLLBACK')
+    wsgi_loop(main)
+
 
