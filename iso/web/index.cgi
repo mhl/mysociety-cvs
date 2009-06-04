@@ -6,13 +6,12 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.115 2009-06-04 14:40:27 francis Exp $
+# $Id: index.cgi,v 1.116 2009-06-04 14:45:13 francis Exp $
 #
 
 import sys
 import os.path
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
-import fcgi
 import struct
 import re
 import psycopg2

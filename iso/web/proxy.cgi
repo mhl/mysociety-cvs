@@ -6,12 +6,11 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.16 2009-06-04 14:43:32 francis Exp $
+# $Id: proxy.cgi,v 1.17 2009-06-04 14:45:13 francis Exp $
 #
 
 import sys, os.path, os, re, urllib
 sys.path.extend(("../pylib", "../../pylib"))
-import fcgi
 
 import mysociety.config
 mysociety.config.set_file("../conf/general")
