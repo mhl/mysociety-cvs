@@ -6,10 +6,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.25 2009-06-04 10:48:21 francis Exp $
+# $Id: page.py,v 1.26 2009-06-04 14:48:18 francis Exp $
 #
 
-import os, re, cgi, fcgi, cgitb, sys
+import os, re, cgi, cgitb, sys
 import Cookie
 import random
 import urllib2
@@ -38,25 +38,6 @@ def render_to_response(template, vars={}, mimetype=None, cache_max_age = None):
         response['Cache-Control'] = 'max-age: ' + str(cache_max_age)
 
     return response
-
-def fcgi_loop(main):
-    req = fcgi.Accept()
-    fs = req.getFieldStorage()
-    fcgi_env = req.env.copy()
-    for k in os.environ.keys():
-        del os.environ[k]
-    for k, v in fcgi_env.items():
-        os.environ[k] = v
-    response = main(fs)
-    if isinstance(response, HttpResponseRedirect):
-        req.out.write("Status: 302 Found\r\n")
-    if response.cookies:
-        req.out.write(str(response.cookies) + "\r\n")
-    if req.env.get('REQUEST_METHOD') == 'HEAD':
-        req.out.write('\r\n'.join(['%s: %s' % (k, v) for k, v in response.items()]) + '\r\n\r\n')
-    else:
-        req.out.write(str(response))
-    req.Finish()
 
 def wsgi_loop(main):
     def wsgiApp(environ, start_response):
