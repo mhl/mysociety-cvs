@@ -1,3 +1,4 @@
+import mysociety.config
 # Django settings for sitestats project.
 
 DEBUG = True
