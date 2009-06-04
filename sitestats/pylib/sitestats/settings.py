@@ -66,7 +66,10 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-  'backports.contrib.auth.backends.RemoteUserBackend',
+
+    'backports.contrib.auth.backends.RemoteUserBackend',
+    'django.contrib.auth.backends.ModelBackend',   
+
 )
 
 
