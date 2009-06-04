@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.9 2009-06-04 14:45:13 francis Exp $
+# $Id: invite.cgi,v 1.10 2009-06-04 14:55:41 francis Exp $
 #
 
 import sys
@@ -87,7 +87,7 @@ def main(fs):
         return parse_token(fs['token'])
 
     # Invite system
-    invite = Invite(db)
+    invite = Invite()
     if not invite.num_invites or invite.num_invites==0:
         return render_to_response('invite-none.html')
     if 'friend' in fs:

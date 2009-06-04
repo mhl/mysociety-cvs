@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.116 2009-06-04 14:45:13 francis Exp $
+# $Id: index.cgi,v 1.117 2009-06-04 14:55:41 francis Exp $
 #
 
 import sys
@@ -364,7 +364,7 @@ def log_email(fs, email):
 # Used when in Flash you click on somewhere to get the route
 def get_route(fs, lat, lon):
     E, N = geoconvert.wgs84_to_national_grid(lat, lon)
-    (station, station_long, station_id) = isoweb.nearest_station(db, E, N)
+    (station, station_long, station_id) = isoweb.nearest_station(E, N)
 
     # Look up time taken
     map = Map(fs)

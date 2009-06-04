@@ -5,7 +5,9 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: isoweb.py,v 1.1 2009-06-04 02:32:06 francis Exp $
+# $Id: isoweb.py,v 1.2 2009-06-04 14:55:40 francis Exp $
+
+from coldb import db
 
 # Default values for various parameters to route finder. These are used when
 # not specified in URL (so changing them will change the meaning of old URLs).
@@ -21,13 +23,13 @@ def default_target_limit_time(target_direction):
         assert False
 
 # Find station nearest to given easting/northing
-def nearest_station(db, E, N):
-    db.execute('''SELECT text_id, long_description, id FROM station WHERE
+def nearest_station(E, N):
+    db().execute('''SELECT text_id, long_description, id FROM station WHERE
         position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
         AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
         ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
         LIMIT 1''' % (E, N, E, N, E, N))
-    row = db.fetchone()
+    row = db().fetchone()
 
     if not row:
         return None
