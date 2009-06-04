@@ -60,6 +60,7 @@ ircwww - Internet Relay Chat web interface, www.irc.mysociety.org
 lists - Mailing lists
 rt - Modifications to Request Tracker
 piwik - Open source web analytics
+sitestats - Website statistics updates
 
 Web services
 ============
