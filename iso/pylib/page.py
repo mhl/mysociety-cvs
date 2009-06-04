@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.24 2009-06-04 10:37:51 francis Exp $
+# $Id: page.py,v 1.25 2009-06-04 10:48:21 francis Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -60,30 +60,37 @@ def fcgi_loop(main):
 
 def wsgi_loop(main):
     def wsgiApp(environ, start_response):
-        fs = parse_formvars(environ)
+        try:
+            fs = parse_formvars(environ)
 
-        fcgi_env = environ.copy()
-        for k in os.environ.keys():
-            del os.environ[k]
-        for k, v in fcgi_env.items():
-            if re.match('paste.', k) or re.match('wsgi.', k):
-                continue
-            os.environ[k] = v
+            fcgi_env = environ.copy()
+            for k in os.environ.keys():
+                del os.environ[k]
+            for k, v in fcgi_env.items():
+                if re.match('paste.', k) or re.match('wsgi.', k):
+                    continue
+                os.environ[k] = v
 
-        response = main(fs)
+            response = main(fs)
 
-        status = "200 OK"
-        if isinstance(response, HttpResponseRedirect):
-            status = "302 Found"
-        start_response(status, response.items())
+            status = "200 OK"
+            if isinstance(response, HttpResponseRedirect):
+                status = "302 Found"
 
-#        if response.cookies:
-            #req.out.write(str(response.cookies) + "\r\n")
- #           return str(response.cookies)
-        if os.environ['REQUEST_METHOD'] == 'HEAD':
-            return('\r\n'.join(['%s: %s' % (k, v) for k, v in response.items()]) + '\r\n\r\n')
-        else:
-            return response.content
+            items = response.items()
+            if response.cookies:
+                cookie_header = str(response.cookies)
+                (cookie_key, cookie_value) = cookie_header.split(": ")
+                items.append((cookie_key, cookie_value))
+            start_response(status, items)
+
+            if os.environ['REQUEST_METHOD'] == 'HEAD':
+                return('\r\n'.join(['%s: %s' % (k, v) for k, v in response.items()]) + '\r\n\r\n')
+            else:
+                return response.content
+        finally:
+            db().execute('ROLLBACK')
+
 
     flup.server.fcgi_fork.WSGIServer(wsgiApp).run()
 

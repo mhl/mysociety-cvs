@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.7 2009-06-03 18:44:08 francis Exp $
+# $Id: invite.cgi,v 1.8 2009-06-04 10:48:21 francis Exp $
 #
 
 import sys
@@ -20,27 +20,26 @@ mysociety.config.set_file("../conf/general")
 from page import *
 from django.http import HttpResponseRedirect
 
-import coldb
-db = coldb.get_cursor()
+from coldb import db
 
 def friend_invite(invite, email):
     if not email:
         return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide an email address.' })
     if not validate_email(email):
         return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide a valid email address.' })
-    db.execute('BEGIN')
+    db().execute('BEGIN')
     try:
-        db.execute("INSERT INTO invite (email, source, source_id) VALUES (%s, 'friend', %s)", (email, invite.id))
+        db().execute("INSERT INTO invite (email, source, source_id) VALUES (%s, 'friend', %s)", (email, invite.id))
     except IntegrityError, e:
         # Let's assume the integrity error is because of a unique key
         # violation - ie. an identical row has appeared in the milliseconds
         # since we looked
-        db.execute('ROLLBACK')
+        db().execute('ROLLBACK')
         return render_to_response('invite-friend.html', { 'email': email, 'error': 'That email address has already had an invite.' })
-    db.execute('UPDATE invite SET num_invites = num_invites - 1 WHERE id=%s', (invite.id,))
-    db.execute('COMMIT')
-    db.execute('SELECT num_invites FROM invite WHERE id=%s', (invite.id,))
-    num = db.fetchone()[0]
+    db().execute('UPDATE invite SET num_invites = num_invites - 1 WHERE id=%s', (invite.id,))
+    db().execute('COMMIT')
+    db().execute('SELECT num_invites FROM invite WHERE id=%s', (invite.id,))
+    num = db().fetchone()[0]
     vars = {
         'success': u'Thanks, we\u2019ll send an invite.',
     }
@@ -53,21 +52,21 @@ def log_email(email):
         return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide your email address.' })
     if not validate_email(email):
         return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide a valid email address.' })
-    db.execute('BEGIN')
+    db().execute('BEGIN')
     try:
-        db.execute("INSERT INTO invite (email, source) VALUES (%s, 'web')", (email,))
+        db().execute("INSERT INTO invite (email, source) VALUES (%s, 'web')", (email,))
     except IntegrityError, e:
         # Let's assume the integrity error is because of a unique key
         # violation - ie. an identical row has appeared in the milliseconds
         # since we looked
-        db.execute('ROLLBACK')
+        db().execute('ROLLBACK')
         return render_to_response('invite-email.html', { 'email': email, 'error': 'That email address is already in our system.' })
-    db.execute('COMMIT')
+    db().execute('COMMIT')
     return render_to_response('invite-email-thanks.html')
 
 def parse_token(token):
-    db.execute('SELECT * FROM invite WHERE token=%s', (token,))
-    row = db.fetchone()
+    db().execute('SELECT * FROM invite WHERE token=%s', (token,))
+    row = db().fetchone()
     if not row:
         return HttpResponseRedirect('/signup')
     response = HttpResponseRedirect('/')
@@ -80,24 +79,23 @@ def parse_token(token):
 def main(fs):
     # Someone signing themselves up
     if 'email' in fs:
-        return log_email(fs.getfirst('email'))
+        return log_email(fs['email'])
     if 'signup' in fs:
         return render_to_response('invite-email.html', cache_max_age = 3600)
 
     # Link in email being clicked on
     if 'token' in fs:
-        return parse_token(fs.getfirst('token'))
+        return parse_token(fs['token'])
 
     # Invite system
     invite = Invite(db)
     if not invite.num_invites or invite.num_invites==0:
         return render_to_response('invite-none.html')
     if 'friend' in fs:
-        return friend_invite(invite, fs.getfirst('friend'))
+        return friend_invite(invite, fs['friend'])
     return render_to_response('invite-friend.html')
 
 # Main FastCGI loop
-while fcgi.isFCGI():
-    fcgi_loop(main)
-    db.execute('ROLLBACK')
+if __name__ == "__main__":
+    wsgi_loop(main)
 

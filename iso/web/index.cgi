@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.113 2009-06-04 10:37:51 francis Exp $
+# $Id: index.cgi,v 1.114 2009-06-04 10:48:21 francis Exp $
 #
 
 import sys
@@ -438,14 +438,6 @@ def get_route(fs, lat, lon):
 # Main FastCGI loop
 
 def main(fs):
-    try:
-        ret = main_inner()
-    finally:
-        db().execute('ROLLBACK')
-
-    return ret
-
-def main_inner():
     invite = Invite()
     if not invite.id:
         return HttpResponseRedirect('/signup')
@@ -480,9 +472,6 @@ def main_inner():
 
 # Main FastCGI loop
 if __name__ == "__main__":
-#    while fcgi.isFCGI():
-#        fcgi_loop(main)
-#       db().execute('ROLLBACK')
     wsgi_loop(main)
 
 
