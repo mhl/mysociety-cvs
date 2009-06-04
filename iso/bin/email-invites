@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: email-invites,v 1.6 2009-06-04 15:55:57 francis Exp $
+# $Id: email-invites,v 1.7 2009-06-04 15:59:25 francis Exp $
 #
 
 import sys
@@ -29,9 +29,9 @@ parser.set_usage('''
 
 Sends out various sorts of email invites to people in the database who are waiting for them.
 ''')
-parser.add_option('--friend', action='store_true', dest="friend", help='Send invites from friends.', default=False)
-parser.add_option('--signup', action='store_true', dest="signup", help='Send invites from signups.', default=False)
-parser.add_option('--signup-limit', action='store_true', dest="signup_limit", help='Limit to number of signup invites to send', default=1)
+parser.add_option('--friend', action='store_true', dest="friend", help='Send invites of friends type', default=False)
+parser.add_option('--signup', action='store_true', dest="signup", help='Send invites of signups type', default=False)
+parser.add_option('--limit', action='store_true', dest="limit", help='Limit to number of invites to send per type', default=None)
 parser.add_option('--email', type='string', dest="email", help='Restrict to only sending invites to this email', default=None)
 parser.add_option('--debug', action='store_true', dest="debug", help='Print some debugging.', default=False)
 (options, args) = parser.parse_args()
@@ -44,13 +44,20 @@ def main():
     if options.friend:
         send_invites('SELECT invite.*, inviter.email as inviter_email FROM invite, invite as inviter WHERE invite.source_id = inviter.id AND invite.token IS NULL')
     if options.signup:
-        send_invites('SELECT * FROM invite WHERE token IS NULL AND invite.source_id IS NULL LIMIT %s' % (options.signup_limit))
+        send_invites('SELECT * FROM invite WHERE token IS NULL AND invite.source_id IS NULL')
 
 def send_invites(query):
+    if options.email:
+        query = query + ' AND %s' % (options.email)
+    if options.limit:
+        query = query + ' LIMIT %s' % (options.limit)
+
     if options.debug:
         print "Query:", query
+
     db.execute(query)
     invites = db.fetchall()
+
     for row in invites:
         if 'inviter_email' in row:
             template = 'email-invite.txt'
@@ -59,8 +66,6 @@ def send_invites(query):
             template = 'email-signup.txt'
             inviter_email = None
 
-        if options.email and options.email != row['email']:
-            continue
         if options.debug:
             print "Sending invite to", row['email'], "from", inviter_email, "using template", template,
 
