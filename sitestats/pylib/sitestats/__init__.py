@@ -1,7 +1,7 @@
 
 import os
 import sys
-
+print "about to import config"
 filename = __file__
 package_dir = os.path.abspath(os.path.dirname(filename))
 sys.path.append(package_dir + "/../../../pylib")
