@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.117 2009-06-04 14:55:41 francis Exp $
+# $Id: index.cgi,v 1.118 2009-06-04 16:04:14 francis Exp $
 #
 
 import sys
@@ -219,6 +219,7 @@ class Map:
         try:
             db().execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
         except psycopg2.IntegrityError, e:
+            db().execute('ROLLBACK')
             if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 # The integrity error is because of a unique key violation - ie. an
                 # identical row has appeared in the milliseconds since we looked
@@ -226,8 +227,9 @@ class Map:
                 return False
             else:
                 raise
-        finally:
+        except:
             db().execute('ROLLBACK')
+            raise
         db().execute('COMMIT')
         if 'new' in self.state:
             self.state['new'] += 1
