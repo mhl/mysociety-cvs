@@ -6,13 +6,14 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: email-invites,v 1.3 2009-05-15 14:40:51 matthew Exp $
+# $Id: email-invites,v 1.4 2009-06-04 15:39:34 francis Exp $
 #
 
 import sys
 sys.path.extend((sys.path[0]+"/../pylib", sys.path[0]+"/../../pylib"))
 import os
 import re
+import optparse
 
 import mysociety.config
 mysociety.config.set_file(sys.path[0]+"/../conf/general")
@@ -22,10 +23,27 @@ from page import random_token, send_template_email
 import coldb
 db = coldb.get_cursor()
 
-# XXX Currently will just email all waiting invites at once. XXX
+parser = optparse.OptionParser()
+parser.set_usage('''
+./email-invites [OPTIONS]
+
+Sends out various sorts of email invites.
+''')
+parser.add_option('--friend', action='store_true', dest="friend", help='Send invites from friends.', default=False)
+parser.add_option('--signup', action='store_true', dest="signup", help='Send invites from signups.', default=False)
+parser.add_option('--signup-limit', action='store_true', dest="signup_limit", help='Limit to number of signup invites to send', default=1)
+parser.add_option('--debug', action='store_true', dest="debug", help='Print some debugging.', default=False)
+(options, args) = parser.parse_args()
+
+if not options.friend and not options.signup:
+    print "Please specify at least --friend or --signup"
+    sys.exit(1)
+
 def main():
-    send_invites('SELECT invite.*, inviter.email as inviter_email FROM invite, invite as inviter WHERE invite.source_id = inviter.id AND invite.token IS NULL')
-    #send_invites('SELECT * FROM invite WHERE token IS NULL AND invite.source_id IS NULL')
+    if options.friend:
+        send_invites('SELECT invite.*, inviter.email as inviter_email FROM invite, invite as inviter WHERE invite.source_id = inviter.id AND invite.token IS NULL')
+    if options.signup:
+        send_invites('SELECT * FROM invite WHERE token IS NULL AND invite.source_id IS NULL LIMIT %s' % (options.signup_limit))
 
 def send_invites(query):
     db.execute(query)
@@ -38,6 +56,9 @@ def send_invites(query):
             template = 'email-signup.txt'
             inviter_email = None
 
+        if options.debug:
+            print "Sending invite to", row['email'], "from", inviter_email, "using template", template,
+
         token = random_token()
         db.execute('UPDATE invite SET token=%s where id=%s', (token, row['id']))
         db.execute('COMMIT')
@@ -47,5 +68,7 @@ def send_invites(query):
             'pid': os.getpid(),
             'inviter_email': inviter_email,
         })
+        if options.debug:
+            print "done"
 
 main()

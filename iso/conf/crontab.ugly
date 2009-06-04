@@ -4,10 +4,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org. WWW: http://www.mysociety.org/
 #
-# $Id: crontab.ugly,v 1.3 2009-06-04 15:38:54 francis Exp $
+# $Id: crontab.ugly,v 1.4 2009-06-04 15:39:34 francis Exp $
 
 MAILTO=team@mysociety.org
 
-*/5 * * * * !!(*= $user *)!! /usr/local/bin/run-with-lockfile -n /data/vhost/!!(*= $vhost *)!!/email-invites.lock /data/vhost/!!(*= $vhost *)!!/mysociety/iso/bin/email-invites
+*/5 * * * * !!(*= $user *)!! /usr/local/bin/run-with-lockfile -n /data/vhost/!!(*= $vhost *)!!/email-invites.lock /data/vhost/!!(*= $vhost *)!!/mysociety/iso/bin/email-invites --friend --debug
 */15 * * * * !!(*= $user *)!! /usr/local/bin/run-with-lockfile -n /data/vhost/!!(*= $vhost *)!!/email-finished-maps.lock /data/vhost/!!(*= $vhost *)!!/mysociety/iso/bin/email-finished-maps
 
