@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.112 2009-06-04 02:31:52 francis Exp $
+# $Id: index.cgi,v 1.113 2009-06-04 10:37:51 francis Exp $
 #
 
 import sys
@@ -30,12 +30,9 @@ from mysociety.rabx import RABXException
 
 from django.http import HttpResponseRedirect
 
-import coldb
+from coldb import db
 import geoconvert
 import isoweb
-
-db_connection = coldb.get_connection()
-db = None
 
 tmpwork = mysociety.config.get('TMPWORK')
 
@@ -59,8 +56,8 @@ class Map:
         if 'station_id' in fs:
             # target is specific station
             self.text_id = page.sanitise_station_id(fs['station_id'])
-            db.execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (self.text_id,))
-            row = db.fetchone()
+            db().execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (self.text_id,))
+            row = db().fetchone()
             self.target_station_id, self.target_e, self.target_n = row
             self.target_postcode = None
         else:
@@ -98,20 +95,20 @@ class Map:
 
         # Get record from database
         if self.target_station_id:
-            db.execute('''SELECT id, state, working_server FROM map WHERE 
+            db().execute('''SELECT id, state, working_server FROM map WHERE 
                 target_station_id = %s AND 
                 target_direction = %s AND
                 target_time = %s AND target_limit_time = %s 
                 AND target_date = %s''', 
                 (self.target_station_id, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
         else:
-            db.execute('''SELECT id, state, working_server FROM map WHERE 
+            db().execute('''SELECT id, state, working_server FROM map WHERE 
                 target_e = %s AND target_n = %s AND 
                 target_direction = %s AND
                 target_time = %s AND target_limit_time = %s 
                 AND target_date = %s''', 
                 (self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
-        row = db.fetchone()
+        row = db().fetchone()
         if row is None:
             (self.id, self.current_state, self.working_server) = (None, 'new', None)
         else:
@@ -121,7 +118,7 @@ class Map:
         # Take average time for maps with the same times, taken from the last
         # day, or last 50 at most.
         # XXX will need to make times ranges if we let people enter any time in UI
-        db.execute('''SELECT AVG(working_took) FROM 
+        db().execute('''SELECT AVG(working_took) FROM 
             ( SELECT working_took FROM map WHERE
                 target_direction = %s AND
                 target_time = %s AND target_limit_time = %s AND target_date = %s AND
@@ -130,19 +127,19 @@ class Map:
             ) AS working_took
             ''', 
             (self.target_direction, self.target_time, self.target_limit_time, self.target_date))
-        avg_time, = db.fetchone()
+        avg_time, = db().fetchone()
         return avg_time or 30
 
     # How far is making this map? 
     def get_progress_info(self):
         self.state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
-        db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
-        for row in db.fetchall():
+        db().execute('''SELECT state, count(*) FROM map GROUP BY state''')
+        for row in db().fetchall():
             self.state[row[0]] = row[1]
 
         if self.id:
-            db.execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (self.id,))
-            self.state['ahead'] = db.fetchone()[0]
+            db().execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (self.id,))
+            self.state['ahead'] = db().fetchone()[0]
             self.maps_to_be_made = self.state['ahead'] + self.state['working']
         else:
             self.maps_to_be_made = self.state['new'] + self.state['working'] + 1
@@ -211,11 +208,11 @@ class Map:
     # Returns False if the insert failed due to an integrity error
     # True otherwise
     def start_generation(self):
-        db.execute('BEGIN')
-        db.execute("SELECT nextval('map_id_seq')")
-        self.id = db.fetchone()[0]
+        db().execute('BEGIN')
+        db().execute("SELECT nextval('map_id_seq')")
+        self.id = db().fetchone()[0]
         try:
-            db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
+            db().execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
         except psycopg2.IntegrityError, e:
             if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 # The integrity error is because of a unique key violation - ie. an
@@ -225,8 +222,8 @@ class Map:
             else:
                 raise
         finally:
-            db.execute('ROLLBACK')
-        db.execute('COMMIT')
+            db().execute('ROLLBACK')
+        db().execute('COMMIT')
         if 'new' in self.state:
             self.state['new'] += 1
             self.state['ahead'] = self.state['new']
@@ -354,9 +351,9 @@ def log_email(fs, email):
         if not map.start_generation():
             map = Map(fs) # Fetch it again
 
-    db.execute('BEGIN')
-    db.execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
-    db.execute('COMMIT')
+    db().execute('BEGIN')
+    db().execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
+    db().execute('COMMIT')
     return render_to_response('map-provideemail-thanks.html')
 
 # Used when in Flash you click on somewhere to get the route
@@ -389,17 +386,17 @@ def get_route(fs, lat, lon):
         location_id = next_location_id
     # ... get station names from database
     ids = ','.join([ str(int(route_node[0])) for route_node in route ]) + "," + str(station_id)
-    db.execute('''SELECT text_id, long_description, id FROM station WHERE id in (%s)''' % ids)
+    db().execute('''SELECT text_id, long_description, id FROM station WHERE id in (%s)''' % ids)
     name_by_id = {}
-    for row in db.fetchall():
+    for row in db().fetchall():
         name_by_id[row['id']] = row['long_description'] + " (" + row['text_id'] + ")"
     name_by_id[isoweb.LOCATION_TARGET] = 'TARGET'
     # ... get journey info from database
     ids = ','.join([ str(int(route_node[2])) for route_node in route ])
-    db.execute('''SELECT text_id, vehicle_code, id FROM journey WHERE id in (%s)''' % ids)
+    db().execute('''SELECT text_id, vehicle_code, id FROM journey WHERE id in (%s)''' % ids)
     journey_by_id = {}
     vehicle_code_by_id = {}
-    for row in db.fetchall():
+    for row in db().fetchall():
         journey_by_id[row['id']] = row['text_id']
         vehicle_code_by_id[row['id']] = row['vehicle_code']
     # ... and show it
@@ -441,52 +438,51 @@ def get_route(fs, lat, lon):
 # Main FastCGI loop
 
 def main(fs):
-    global db
-    db = coldb.get_cursor(db_connection)
-
     try:
-        if db == None:
-            raise "ugh, db None inmain"
-        invite = Invite(db)
-        if not invite.id:
-            raise "ugh, db None inmain 2"
-            return HttpResponseRedirect('/signup')
-
-        #got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
-        got_map_spec = ('target_postcode' in fs)
-
-        if 'lat' in fs: # Flash request for route
-            return get_route(fs, float(fs['lat']), float(fs['lon']))
-        elif 'pc' in fs: # Front page submission
-            return check_postcode(fs['pc'], invite)
-        elif got_map_spec and 'email' in fs: # Overloaded email request
-            return log_email(fs, fs['email'])
-        elif got_map_spec: # Page for generating/ displaying map
-            postcode = page.sanitise_postcode(fs['target_postcode'])
-            postcodes = invite.postcodes
-            if (postcode, canonicalise_postcode(postcode)) not in postcodes:
-                if invite.maps_left <= 0:
-                    return render_to_response('beta-limit.html', { 'postcodes': postcodes })
-                invite.add_postcode(postcode)
-            return map(fs, invite)
-
-        # Front page display
-        db.execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
-            ORDER BY working_start DESC LIMIT 10''')
-        most_recent = [ canonicalise_postcode(row[0]) for row in db.fetchall() ]
-        return render_to_response('index.html', {
-            'invite': invite,
-            'most_recent': most_recent,
-            'show_dropdown': len(invite.postcodes) > 3
-        })
+        ret = main_inner()
     finally:
-        db.execute('ROLLBACK')
+        db().execute('ROLLBACK')
+
+    return ret
+
+def main_inner():
+    invite = Invite()
+    if not invite.id:
+        return HttpResponseRedirect('/signup')
+
+    #got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
+    got_map_spec = ('target_postcode' in fs)
+
+    if 'lat' in fs: # Flash request for route
+        return get_route(fs, float(fs['lat']), float(fs['lon']))
+    elif 'pc' in fs: # Front page submission
+        return check_postcode(fs['pc'], invite)
+    elif got_map_spec and 'email' in fs: # Overloaded email request
+        return log_email(fs, fs['email'])
+    elif got_map_spec: # Page for generating/ displaying map
+        postcode = page.sanitise_postcode(fs['target_postcode'])
+        postcodes = invite.postcodes
+        if (postcode, canonicalise_postcode(postcode)) not in postcodes:
+            if invite.maps_left <= 0:
+                return render_to_response('beta-limit.html', { 'postcodes': postcodes })
+            invite.add_postcode(postcode)
+        return map(fs, invite)
+
+    # Front page display
+    db().execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
+        ORDER BY working_start DESC LIMIT 10''')
+    most_recent = [ canonicalise_postcode(row[0]) for row in db().fetchall() ]
+    return render_to_response('index.html', {
+        'invite': invite,
+        'most_recent': most_recent,
+        'show_dropdown': len(invite.postcodes) > 3
+    })
 
 # Main FastCGI loop
 if __name__ == "__main__":
 #    while fcgi.isFCGI():
 #        fcgi_loop(main)
-#       db.execute('ROLLBACK')
+#       db().execute('ROLLBACK')
     wsgi_loop(main)
 
 

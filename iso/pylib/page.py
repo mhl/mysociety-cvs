@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.23 2009-06-04 02:31:52 francis Exp $
+# $Id: page.py,v 1.24 2009-06-04 10:37:51 francis Exp $
 #
 
 import os, re, cgi, fcgi, cgitb, sys
@@ -26,6 +26,7 @@ from paste.request import parse_formvars
 
 from sendemail import send_email
 import mysociety.config
+from coldb import db
 
 def render_to_response(template, vars={}, mimetype=None, cache_max_age = None):
     vars.update({
@@ -121,14 +122,13 @@ class Invite(object):
     num_invites = 0
     _postcodes = []
 
-    def __init__(self, db):
+    def __init__(self):
         cookie_str = ''
         if 'HTTP_COOKIE' in os.environ:
             cookie_str = os.environ['HTTP_COOKIE']
         cookies = Cookie.BaseCookie(cookie_str)
         if not 'token' in cookies:
             return
-        self.db = db
         self.token = cookies['token']
         self.check()
 
@@ -136,16 +136,16 @@ class Invite(object):
         return self.token
 
     def check(self):
-        self.db.execute('SELECT * FROM invite WHERE token=%s', (self.token.value,))
-        row = self.db.fetchone()
+        db().execute('SELECT * FROM invite WHERE token=%s', (self.token.value,))
+        row = db().fetchone()
         if not row: return
         self.__dict__.update(row)
 
     @property
     def postcodes(self):
         if not self._postcodes:
-            self.db.execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s', (self.id, ))
-            self._postcodes = [ (row['postcode'], canonicalise_postcode(row['postcode']) ) for row in self.db.fetchall() ]
+            db().execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s', (self.id, ))
+            self._postcodes = [ (row['postcode'], canonicalise_postcode(row['postcode']) ) for row in db().fetchall() ]
         return self._postcodes
 
     @property
@@ -153,8 +153,8 @@ class Invite(object):
         return self.num_maps - len(self.postcodes)
 
     def add_postcode(self, pc):
-        self.db.execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%s, '%s')''' % (self.id, pc))
-        self.db.execute('COMMIT')
+        db().execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%s, '%s')''' % (self.id, pc))
+        db().execute('COMMIT')
         self._postcodes.append( (pc, canonicalise_postcode(pc)) )
 
 # Random token generation
