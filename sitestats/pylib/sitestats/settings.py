@@ -61,7 +61,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'backports.contrib.auth.middleware.RemoteUserMiddleware',
+
 )
+
+AUTHENTICATION_BACKENDS = (
+  'backports.contrib.auth.backends.RemoteUserBackend',
+)
+
 
 ROOT_URLCONF = 'sitestats.urls'
 
