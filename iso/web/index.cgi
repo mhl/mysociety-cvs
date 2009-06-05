@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.118 2009-06-04 16:04:14 francis Exp $
+# $Id: index.cgi,v 1.119 2009-06-05 10:05:13 francis Exp $
 #
 
 import sys
@@ -37,6 +37,13 @@ tmpwork = mysociety.config.get('TMPWORK')
 
 #####################################################################
 # Class representing the parameters for a map, and its status
+
+def get_queue_state():
+    state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
+    db().execute('''SELECT state, count(*) FROM map GROUP BY state''')
+    for row in db().fetchall():
+        state[row[0]] = row[1]
+    return state
 
 class Map:
     '''Represents the parameters needed to make one public transport map.
@@ -137,10 +144,7 @@ class Map:
 
     # How far is making this map? 
     def get_progress_info(self):
-        self.state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
-        db().execute('''SELECT state, count(*) FROM map GROUP BY state''')
-        for row in db().fetchall():
-            self.state[row[0]] = row[1]
+        self.state = get_queue_state()
 
         if self.id:
             db().execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (self.id,))
@@ -466,6 +470,11 @@ def main(fs):
                 return render_to_response('beta-limit.html', { 'postcodes': postcodes })
             invite.add_postcode(postcode)
         return map(fs, invite)
+    elif 'stats' in fs:
+        state = get_queue_state()
+        return render_to_response('map-stats.html', {
+            'state': state
+        })
 
     # Front page display
     db().execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL

@@ -1,0 +1,17 @@
+{% extends 'extends/base.html' %}
+
+{% block title %}Map queue statistics - {{ title }}{% endblock %}
+
+{% block content %}
+
+<h1>Map queue statistics</h1>
+
+<p> 
+New: {{ state.new }}
+<br>Working: {{ state.working }}
+<br>Complete: {{ state.complete }}
+<br>Error: {{ state.error }}
+</p>
+
+{% endblock %}
+
