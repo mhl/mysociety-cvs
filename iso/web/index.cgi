@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.119 2009-06-05 10:05:13 francis Exp $
+# $Id: index.cgi,v 1.120 2009-06-05 17:14:37 francis Exp $
 #
 
 import sys
@@ -449,6 +449,12 @@ def get_route(fs, lat, lon):
 # Main FastCGI loop
 
 def main(fs):
+    if 'stats' in fs:
+        state = get_queue_state()
+        return render_to_response('map-stats.html', {
+            'state': state
+        })
+
     invite = Invite()
     if not invite.id:
         return HttpResponseRedirect('/signup')
@@ -470,11 +476,6 @@ def main(fs):
                 return render_to_response('beta-limit.html', { 'postcodes': postcodes })
             invite.add_postcode(postcode)
         return map(fs, invite)
-    elif 'stats' in fs:
-        state = get_queue_state()
-        return render_to_response('map-stats.html', {
-            'state': state
-        })
 
     # Front page display
     db().execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
