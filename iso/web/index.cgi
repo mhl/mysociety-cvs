@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.120 2009-06-05 17:14:37 francis Exp $
+# $Id: index.cgi,v 1.121 2009-06-05 19:11:28 francis Exp $
 #
 
 import sys
@@ -451,8 +451,11 @@ def get_route(fs, lat, lon):
 def main(fs):
     if 'stats' in fs:
         state = get_queue_state()
+        current_connections = page.current_proxy_connections()
         return render_to_response('map-stats.html', {
-            'state': state
+            'state': state,
+            'current_connections' : current_connections, 
+            'max_connections' : page.max_connections 
         })
 
     invite = Invite()
