@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.122 2009-06-07 19:16:28 matthew Exp $
+# $Id: index.cgi,v 1.123 2009-06-07 19:18:36 matthew Exp $
 #
 
 import sys
@@ -167,9 +167,9 @@ class Map:
             return '%d,%d' % (self.target_e, self.target_n)
 
     def direction(self):
-        if map.target_direction == 'arrive_by':
+        if self.target_direction == 'arrive_by':
             return 'arrive'
-        elif map.target_direction == 'depart_after':
+        elif self.target_direction == 'depart_after':
             return 'depart'
 
     # Merges hashes for URL into dict and return
