@@ -4,6 +4,7 @@ filename = __file__
 package_dir = os.path.abspath(os.path.dirname(filename))
 sys.path.append(package_dir + "/../../../pylib")
 import mysociety.config
+
 mysociety.config.set_file(os.path.abspath(package_dir + "/../../conf/general"))
 
 # Django settings for sitestats project.
@@ -93,7 +94,11 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'sitestats.newsletters',
     'django.contrib.admin'
 )
+
+# Whether to use the "HTTP_X_FORWARDED_HOST" header as the hostname. Useful for some 
+# virtual hosting situations. See patches/django/http and http://code.djangoproject.com/ticket/6880
+USE_X_FORWARDED_HOST = False 
+import patches.django.http
