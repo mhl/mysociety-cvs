@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: email-invites,v 1.11 2009-06-04 16:30:09 francis Exp $
+# $Id: email-invites,v 1.12 2009-06-08 10:08:51 francis Exp $
 #
 
 import sys
@@ -49,6 +49,7 @@ def main():
 def send_invites(query):
     if options.email:
         query = query + " AND email = '%s'" % (options.email)
+    query = query + ' ORDER BY invite.id'
     query = query + ' LIMIT %s' % (options.limit)
 
     if options.debug:
