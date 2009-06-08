@@ -4,7 +4,7 @@ filename = __file__
 package_dir = os.path.abspath(os.path.dirname(filename))
 sys.path.append(package_dir + "/../../../pylib")
 import mysociety.config
-mysociety.config.set_file(package_dir + "/../../conf/general")
+mysociety.config.set_file(os.path.abspath(package_dir + "/../../conf/general"))
 
 # Django settings for sitestats project.
 
@@ -69,13 +69,13 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'backports.contrib.auth.middleware.RemoteUserMiddleware',
+    'sitestats.backports.contrib.auth.middleware.RemoteUserMiddleware',
 
 )
 
 AUTHENTICATION_BACKENDS = (
 
-    'backports.contrib.auth.backends.RemoteUserBackend',
+    'sitestats.backports.contrib.auth.backends.RemoteUserBackend',
     'django.contrib.auth.backends.ModelBackend',   
 
 )
