@@ -2,6 +2,7 @@ import os
 import sys
 filename = __file__
 package_dir = os.path.abspath(os.path.dirname(filename))
+sys.path.append(package_dir + "/../../pylib")
 sys.path.append(package_dir + "/../../../pylib")
 import mysociety.config
 
@@ -101,4 +102,4 @@ INSTALLED_APPS = (
 # Whether to use the "HTTP_X_FORWARDED_HOST" header as the hostname. Useful for some 
 # virtual hosting situations. See patches/django/http and http://code.djangoproject.com/ticket/6880
 USE_X_FORWARDED_HOST = False 
-import patches.django.http
+import sitestats.patches.django.http
