@@ -43,12 +43,11 @@
 
           // Whether or not the time slider and other measurements are relative to departure
           // time or arrival time.
-          'depart_or_arrive': '{{ map.direction }}', // 'depart' or 'arrive'
+          'depart_or_arrive': '{{ map.flash_direction }}', // 'depart' or 'arrive'
           // The name of the travel origin (a post code)
           'origin_name': '{{ map.title }}',
-          // This might need to be customized for 'arrive mode, in which case it should
-          // probably be 'to the chosen destination'
-          'origin_prefix': 'to the chosen destination',
+          // Text used to end sentence in hover pop-up on map
+          'origin_prefix': '{{ map.flash_hover_text }}',
 
           // URL to get routes from
           'route_url_base': escape("{{ map.url_with_params|safe }}"),
