@@ -1,4 +1,5 @@
 import django.http
+from django.conf import settings
 
 def get_host(self):
     """Returns the HTTP host using the environment or request headers."""
