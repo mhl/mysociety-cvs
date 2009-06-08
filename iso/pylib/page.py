@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.27 2009-06-05 19:00:10 francis Exp $
+# $Id: page.py,v 1.28 2009-06-08 10:07:12 francis Exp $
 #
 
 import os, re, cgi, cgitb, sys
@@ -132,7 +132,7 @@ class Invite(object):
     @property
     def postcodes(self):
         if not self._postcodes:
-            db().execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s ORDER BY id DESC LIMIT 20', (self.id, ))
+            db().execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s ORDER BY id DESC LIMIT 100', (self.id, ))
             self._postcodes = [ (row['postcode'], canonicalise_postcode(row['postcode']) ) for row in db().fetchall() ]
         return self._postcodes
 
