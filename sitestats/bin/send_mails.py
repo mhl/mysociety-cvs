@@ -19,6 +19,7 @@ from django.core.mail import EmailMessage
 from sitestats.newsletters.models import CommonBaseMeasuresNewsletter, Newsletter, Subscription
 from sitestats.newsletters.sources import piwik
 from sitestats.newsletters.sources import google
+import mysociety
 ###############################################################################
 # Read parameters
 
@@ -34,16 +35,14 @@ Send out mySociety site stats emails. Run with "--help" to see available options
 parser.add_option('--verbose', action='store_true', default=False, dest="verbose", help='Produce extra debugging output')
 (options, args) = parser.parse_args()
 
-print options.verbose
-
 sources = {'piwik' : piwik.Piwik(), 'google' : google.Google()}
 
 
 for newsletter in CommonBaseMeasuresNewsletter.objects.all():
     print newsletter.name
+    content = newsletter.render('html', sources, date=date(2009, 1, 11))
     for subscription in newsletter.subscription_set.all():
         print subscription.user.email
-        content = newsletter.render('html', sources, date=date(2009, 1, 11))
         msg = EmailMessage('hi', content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
         msg.content_subtype = "html"  
         msg.send()
