@@ -86,13 +86,13 @@ class MockPiwik:
         else:
             return 23
 
-    def percent_visits_from_search(self, site_id, period=None, date=None):
+    def percent_visitors_from_search(self, site_id, period=None, date=None):
         if date == common.end_of_current_week():
             return 34
         else:
             return 45
 
-    def percent_visits_from_sites(self, site_id, period=None, date=None):
+    def percent_visitors_from_sites(self, site_id, period=None, date=None):
         if date == common.end_of_current_week():
             return 56
         else:
@@ -320,32 +320,32 @@ class PiwikTests(unittest.TestCase):
         sites = self.piwik.sites()
         self.assertEqual([{'name': '1'}, {'name': '2'}], sites, 'sites returns hashes of site info for all sites sorted by name')
 
-    def testVisitsFromSearch(self):
+    def testVisitorsFromSearch(self):
         self.fake_api_response('[{"label":"Search Engines","nb_uniq_visitors":350,"nb_visits":353,"nb_actions":506,"max_actions":23,"sum_visit_length":21751,"bounce_count":294,"nb_visits_converted":0},{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
-        visits_from_search = self.piwik.visits_from_search(1)
-        self.assertEqual(353, visits_from_search, 'visits_from_search returns correct information from example')
+        visitors_from_search = self.piwik.visitors_from_search(1)
+        self.assertEqual(350, visitors_from_search, 'visitors_from_search returns correct information from example')
 
-    def testVisitsFromSearchShouldReturnZeroIfNoSearchKey(self):
+    def testVisitorsFromSearchShouldReturnZeroIfNoSearchKey(self):
         self.fake_api_response('[{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
-        visits_from_search = self.piwik.visits_from_search(1)
-        self.assertEqual(0, visits_from_search, 'visits_from_search returns zero when key "Search Engines" is not present')        
+        visitors_from_search = self.piwik.visitors_from_search(1)
+        self.assertEqual(0, visitors_from_search, 'visitors_from_search returns zero when key "Search Engines" is not present')        
         
-    def testVisitsFromSites(self):
+    def testVisitorsFromSites(self):
         self.fake_api_response('[{"label":"Search Engines","nb_uniq_visitors":350,"nb_visits":353,"nb_actions":506,"max_actions":23,"sum_visit_length":21751,"bounce_count":294,"nb_visits_converted":0},{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
-        visits_from_sites = self.piwik.visits_from_sites(1)
-        self.assertEqual(184, visits_from_sites, 'visits_from_sites returns correct information from example')
+        visitors_from_sites = self.piwik.visitors_from_sites(1)
+        self.assertEqual(176, visitors_from_sites, 'visitors_from_sites returns correct information from example')
 
     def testPercentVisitsFromSearch(self):
-        self.piwik.visits_from_search = lambda site_id, period, date: 33
+        self.piwik.visitors_from_search = lambda site_id, period, date: 33
         self.piwik.visits = lambda site_id, period, date: 99
-        percent_from_search = self.piwik.percent_visits_from_search(1)
-        self.assertEqual(33, percent_from_search, "percent_visits_from_search returns the expected figure")
+        percent_from_search = self.piwik.percent_visitors_from_search(1)
+        self.assertEqual(33, percent_from_search, "percent_visitors_from_search returns the expected figure")
 
     def testPercentVisitsFromSites(self):
-        self.piwik.visits_from_sites = lambda site_id, period, date: 33
+        self.piwik.visitors_from_sites = lambda site_id, period, date: 33
         self.piwik.visits = lambda site_id, period, date: 99
-        percent_from_sites = self.piwik.percent_visits_from_sites(1)
-        self.assertEqual(33, percent_from_sites, "percent_visits_from_sites returns the expected figure")
+        percent_from_sites = self.piwik.percent_visitors_from_sites(1)
+        self.assertEqual(33, percent_from_sites, "percent_visitors_from_sites returns the expected figure")
 
 def main():
     unittest.main()

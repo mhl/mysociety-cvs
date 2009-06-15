@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.4 2009-06-15 17:28:11 louise Exp $
+# $Id: piwik.py,v 1.5 2009-06-15 18:19:04 louise Exp $
 #
 
 import urllib
@@ -70,33 +70,33 @@ class Piwik:
         '''Returns the unique visitors for a site in the period'''
         return self.__visit_api_result('getUniqueVisitors', site_id, date, period)
 
-    def percent_visits_from_search(self, site_id, period=None, date=None):
-        '''Returns the percentage of visits coming from search engines in the period'''
-        search_visits = self.visits_from_search(site_id, period, date)
+    def percent_visitors_from_search(self, site_id, period=None, date=None):
+        '''Returns the percentage of visitors coming from search engines in the period'''
+        search_visitors = self.visitors_from_search(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        return self.__percent(search_visits, visits)
+        return self.__percent(search_visitors, visits)
         
-    def percent_visits_from_sites(self, site_id, period=None, date=None):
-        '''Returns the percentage of visits coming from websites in the period'''
-        site_visits = self.visits_from_sites(site_id, period, date)
+    def percent_visitors_from_sites(self, site_id, period=None, date=None):
+        '''Returns the percentage of visitors coming from websites in the period'''
+        site_visitors = self.visitors_from_sites(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        return self.__percent(site_visits, visits)
+        return self.__percent(site_visitors, visits)
         
-    def visits_from_search(self, site_id, period=None, date=None):
-        '''Returns the number of visits coming from search engines in the period'''
-        return self.__get_visits_from('Search Engines', site_id, period, date)
+    def visitors_from_search(self, site_id, period=None, date=None):
+        '''Returns the number of visitors coming from search engines in the period'''
+        return self.__get_visitors_from('Search Engines', site_id, period, date)
 
-    def visits_from_sites(self, site_id, period=None, date=None):
-        '''Returns the number of visits coming from websites in the period'''
-        return self.__get_visits_from('Websites', site_id, period, date)
+    def visitors_from_sites(self, site_id, period=None, date=None):
+        '''Returns the number of visitors coming from websites in the period'''
+        return self.__get_visitors_from('Websites', site_id, period, date)
   
-    def __get_visits_from(self, source, site_id, period, date):
+    def __get_visitors_from(self, source, site_id, period, date):
         key = "%s_%s_%s" % (site_id, period, date)
         if (not self.referrers.has_key(key)):
             self.referrers[key] = self.__referrer_api_result('getRefererType', site_id, date, period)
         for referrer in self.referrers[key]:
             if referrer['label'] == source:
-                return referrer['nb_visits']
+                return referrer['nb_uniq_visitors']
         return 0
 
     def __fraction(self, numerator, denominator):
