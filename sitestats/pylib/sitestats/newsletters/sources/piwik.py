@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.3 2009-06-15 17:26:27 louise Exp $
+# $Id: piwik.py,v 1.4 2009-06-15 17:28:11 louise Exp $
 #
 
 import urllib
@@ -145,7 +145,7 @@ class Piwik:
         bounces = self.bounces(site_id, period, date)
         visits = self.visits(site_id, period, date)
         bounce_fraction = self.__fraction(bounces, visits)
-        self.__percent(bounces, visits)
+        return self.__percent(bounces, visits)
     
     def site_ids(self):
         '''Returns a list of site ids'''

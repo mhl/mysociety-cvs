@@ -296,6 +296,7 @@ class PiwikTests(unittest.TestCase):
         self.piwik.bounces = lambda site_id, period, date: 0
         self.piwik.visits = lambda site_id, period, date: 0
         bounce_rate = self.piwik.bounce_rate(1)
+        print bounce_rate
         self.assertEqual(0, bounce_rate, "bounce_rate returns zero for zero values")
             
     def testSiteIds(self):
