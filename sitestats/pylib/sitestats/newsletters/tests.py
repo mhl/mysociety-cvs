@@ -292,6 +292,12 @@ class PiwikTests(unittest.TestCase):
         bounce_rate = self.piwik.bounce_rate(1)
         self.assertEqual(33, bounce_rate, "bounce_rate returns the expected time bounce rate")
 
+    def testBounceRateWithZeroValues(self):
+        self.piwik.bounces = lambda site_id, period, date: 0
+        self.piwik.visits = lambda site_id, period, date: 0
+        bounce_rate = self.piwik.bounce_rate(1)
+        self.assertEqual(0, bounce_rate, "bounce_rate returns zero for zero values")
+            
     def testSiteIds(self):
         self.fake_api_response('[["1"],["2"],["3"]]')
         site_ids = self.piwik.site_ids()     
@@ -318,6 +324,11 @@ class PiwikTests(unittest.TestCase):
         visits_from_search = self.piwik.visits_from_search(1)
         self.assertEqual(353, visits_from_search, 'visits_from_search returns correct information from example')
 
+    def testVisitsFromSearchShouldReturnZeroIfNoSearchKey(self):
+        self.fake_api_response('[{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
+        visits_from_search = self.piwik.visits_from_search(1)
+        self.assertEqual(0, visits_from_search, 'visits_from_search returns zero when key "Search Engines" is not present')        
+        
     def testVisitsFromSites(self):
         self.fake_api_response('[{"label":"Search Engines","nb_uniq_visitors":350,"nb_visits":353,"nb_actions":506,"max_actions":23,"sum_visit_length":21751,"bounce_count":294,"nb_visits_converted":0},{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
         visits_from_sites = self.piwik.visits_from_sites(1)

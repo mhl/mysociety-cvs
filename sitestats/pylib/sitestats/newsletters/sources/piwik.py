@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.1 2009-06-03 17:01:43 louise Exp $
+# $Id: piwik.py,v 1.2 2009-06-15 17:20:52 louise Exp $
 #
 
 import urllib
@@ -99,6 +99,13 @@ class Piwik:
         for referrer in self.referrers[key]:
             if referrer['label'] == source:
                 return referrer['nb_visits']
+        return 0
+
+    def __fraction(self, numerator, denominator):
+        if numerator == 0:
+            return 0
+        fraction = float(numerator) / float(denominator)
+        return fraction
         
     def visits(self, site_id, period=None, date=None):
         '''Returns the visits to a site in the period'''
@@ -120,21 +127,21 @@ class Piwik:
         '''Returns the time spent per visit to a site in the period'''
         total_time = self.total_time(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        time_per_visit = float(total_time) / float(visits)
+        time_per_visit = self.__fraction(total_time, visits)
         return int(round(time_per_visit, 0))
 
     def pageviews_per_visit(self, site_id, period=None, date=None):
         '''Returns the number of pageviews per visit to a site in the period'''
         actions = self.actions(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        pageviews_per_visit = float(actions) / float(visits)
+        pageviews_per_visit = self.__fraction(actions, visits)
         return round(pageviews_per_visit, 1)
         
     def bounce_rate(self, site_id, period=None, date=None):
         '''Returns the bounce rate for the site in the period'''
         bounces = self.bounces(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        bounce_fraction = float(bounces) / float(visits)
+        bounce_fraction = self.__fraction(bounces, visits)
         bounce_percent = bounce_fraction * 100
         return int(round(bounce_percent, 0))
     
