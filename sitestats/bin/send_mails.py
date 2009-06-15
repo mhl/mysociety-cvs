@@ -37,12 +37,14 @@ parser.add_option('--verbose', action='store_true', default=False, dest="verbose
 
 sources = {'piwik' : piwik.Piwik(), 'google' : google.Google()}
 
+date=date(2009, 1, 11)
 
 for newsletter in CommonBaseMeasuresNewsletter.objects.all():
     print newsletter.name
-    content = newsletter.render('html', sources, date=date(2009, 1, 11))
+    
+    content = newsletter.render('html', sources, date)
     for subscription in newsletter.subscription_set.all():
         print subscription.user.email
-        msg = EmailMessage('hi', content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
+        msg = EmailMessage("Weekly site stats for mySociety for %s" % (d.strftime("%d/%m/%y")), content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
         msg.content_subtype = "html"  
         msg.send()
