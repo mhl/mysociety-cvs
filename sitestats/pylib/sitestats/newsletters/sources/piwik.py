@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.2 2009-06-15 17:20:52 louise Exp $
+# $Id: piwik.py,v 1.3 2009-06-15 17:26:27 louise Exp $
 #
 
 import urllib
@@ -74,15 +74,13 @@ class Piwik:
         '''Returns the percentage of visits coming from search engines in the period'''
         search_visits = self.visits_from_search(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        percentage = float(search_visits) / float(visits) * 100
-        return int(round(percentage, 0))
+        return self.__percent(search_visits, visits)
         
     def percent_visits_from_sites(self, site_id, period=None, date=None):
         '''Returns the percentage of visits coming from websites in the period'''
         site_visits = self.visits_from_sites(site_id, period, date)
         visits = self.visits(site_id, period, date)
-        percentage = float(site_visits) / float(visits) * 100
-        return int(round(percentage, 0))
+        return self.__percent(site_visits, visits)
         
     def visits_from_search(self, site_id, period=None, date=None):
         '''Returns the number of visits coming from search engines in the period'''
@@ -106,6 +104,11 @@ class Piwik:
             return 0
         fraction = float(numerator) / float(denominator)
         return fraction
+    
+    def __percent(self, numerator, denominator): 
+        fraction = self.__fraction(numerator, denominator)
+        percentage = fraction * 100
+        return int(round(percentage, 0))
         
     def visits(self, site_id, period=None, date=None):
         '''Returns the visits to a site in the period'''
@@ -142,8 +145,7 @@ class Piwik:
         bounces = self.bounces(site_id, period, date)
         visits = self.visits(site_id, period, date)
         bounce_fraction = self.__fraction(bounces, visits)
-        bounce_percent = bounce_fraction * 100
-        return int(round(bounce_percent, 0))
+        self.__percent(bounces, visits)
     
     def site_ids(self):
         '''Returns a list of site ids'''
