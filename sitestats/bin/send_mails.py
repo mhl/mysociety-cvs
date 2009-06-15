@@ -44,6 +44,6 @@ for newsletter in CommonBaseMeasuresNewsletter.objects.all():
     for subscription in newsletter.subscription_set.all():
         print subscription.user.email
         content = newsletter.render('html', sources, date=date(2009, 1, 11))
-        msg = EmailMessage('hi', content, 'test@localhost', [subscription.user.email])
+        msg = EmailMessage('hi', content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
         msg.content_subtype = "html"  
         msg.send()
