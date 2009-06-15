@@ -337,13 +337,13 @@ class PiwikTests(unittest.TestCase):
 
     def testPercentVisitsFromSearch(self):
         self.piwik.visitors_from_search = lambda site_id, period, date: 33
-        self.piwik.visits = lambda site_id, period, date: 99
+        self.piwik.unique_visitors = lambda site_id, period, date: 99
         percent_from_search = self.piwik.percent_visitors_from_search(1)
         self.assertEqual(33, percent_from_search, "percent_visitors_from_search returns the expected figure")
 
     def testPercentVisitsFromSites(self):
         self.piwik.visitors_from_sites = lambda site_id, period, date: 33
-        self.piwik.visits = lambda site_id, period, date: 99
+        self.piwik.unique_visitors = lambda site_id, period, date: 99
         percent_from_sites = self.piwik.percent_visitors_from_sites(1)
         self.assertEqual(33, percent_from_sites, "percent_visitors_from_sites returns the expected figure")
 

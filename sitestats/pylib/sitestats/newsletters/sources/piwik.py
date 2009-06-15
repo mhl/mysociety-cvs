@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.5 2009-06-15 18:19:04 louise Exp $
+# $Id: piwik.py,v 1.6 2009-06-15 18:28:00 louise Exp $
 #
 
 import urllib
@@ -73,14 +73,14 @@ class Piwik:
     def percent_visitors_from_search(self, site_id, period=None, date=None):
         '''Returns the percentage of visitors coming from search engines in the period'''
         search_visitors = self.visitors_from_search(site_id, period, date)
-        visits = self.visits(site_id, period, date)
-        return self.__percent(search_visitors, visits)
+        visitors = self.unique_visitors(site_id, period, date)
+        return self.__percent(search_visitors, visitors)
         
     def percent_visitors_from_sites(self, site_id, period=None, date=None):
         '''Returns the percentage of visitors coming from websites in the period'''
         site_visitors = self.visitors_from_sites(site_id, period, date)
-        visits = self.visits(site_id, period, date)
-        return self.__percent(site_visitors, visits)
+        visitors = self.unique_visitors(site_id, period, date)
+        return self.__percent(site_visitors, visitors)
         
     def visitors_from_search(self, site_id, period=None, date=None):
         '''Returns the number of visitors coming from search engines in the period'''
