@@ -33,6 +33,7 @@ Send out mySociety site stats emails. Run with "--help" to see available options
 ''')
 
 parser.add_option('--verbose', action='store_true', default=False, dest="verbose", help='Produce extra debugging output')
+parser.add_option('--only', dest='only', default=None, help='Only send email for one user identified by username')
 (options, args) = parser.parse_args()
 
 sources = {'piwik' : piwik.Piwik(), 'google' : google.Google()}
@@ -42,15 +43,22 @@ date = date.today()
 # get nearest past Sunday 
 while date.weekday() != 6:
     date = date - timedelta(days=1)
-    
+
+if options.verbose:
+    if options.only:
+        print "Only sending mail to %s" % (only)    
 for newsletter in CommonBaseMeasuresNewsletter.objects.all():
-    print newsletter.name
+    if options.verbose:
+        print "Getting data for %s newsletter" % (newsletter)
     
     for subscription in newsletter.subscription_set.all():
         format = subscription.user.profile.get_email_format_display()
         content = newsletter.render(format, sources, date)
-        print subscription.user
-        msg = EmailMessage("Weekly site stats for mySociety for %s" % (date.strftime("%d/%m/%y")), content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
-        if format == 'html':
-            msg.content_subtype = "html"  
-        msg.send()
+        
+        if not options.only or subscription.user.username == options.only:
+            
+            msg = EmailMessage("Weekly site stats for mySociety for %s" % (date.strftime("%d/%m/%y")), content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
+            if format == 'html':
+                msg.content_subtype = "html"  
+            msg.send()
+            
