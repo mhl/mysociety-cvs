@@ -56,7 +56,8 @@ for newsletter in CommonBaseMeasuresNewsletter.objects.all():
         content = newsletter.render(format, sources, date)
         
         if not options.only or subscription.user.username == options.only:
-            
+            if options.verbose:
+                print "Sending %s format %s newsletter to %s" % (format, newsletter, subscription.user.email)
             msg = EmailMessage("Weekly site stats for mySociety for %s" % (date.strftime("%d/%m/%y")), content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
             if format == 'html':
                 msg.content_subtype = "html"  
