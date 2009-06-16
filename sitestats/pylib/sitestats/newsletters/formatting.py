@@ -3,12 +3,12 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: formatting.py,v 1.2 2009-06-16 12:58:32 louise Exp $
+# $Id: formatting.py,v 1.3 2009-06-16 13:07:44 louise Exp $
 #
 from django.template.loader import render_to_string
 
 def format_cell_value(format, info):
-    if isinstance(info, str):
+    if isinstance(info, basestring):
         return info
     link = info.get('link')
     unit = info.get('unit', '')
