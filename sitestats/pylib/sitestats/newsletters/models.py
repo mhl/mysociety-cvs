@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from sitestats.newsletters import common
 from formatting import render_table, format_cell_value
+from django.db.models import signals
+from django.core.exceptions import ObjectDoesNotExist
 
 class Newsletter(models.Model):
     name = models.CharField(max_length=255)
@@ -16,13 +18,23 @@ class CommonBaseMeasuresNewsletter(Newsletter):
     
     def render(self, format, sources, date=None):
         """Returns the text for a common base measures email in text/html"""
+        self.data = {}
+        self.formats = {}
+        if not self.formats.get(format):
+            if not self.data:
+                self.generate_data(sources, date)
+            rendered = render_table(format, self.data['headers'], self.data['rows'], self.data['totals'])
+            self.formats[format] = rendered
+        return self.formats[format]
+    
+    def generate_data(self, sources, date):
         sites = sources['piwik'].sites()
         stats = self.stats()
         rows = []
         stat_totals = {}
         for site_info in sites: 
             row = [site_info['name']]
-            row += [ format_cell_value(format, cell) for cell in self.get_data(site_info, sources, stat_totals, date)]
+            row += self.get_data(site_info, sources, stat_totals, date)
             rows.append(row)
 
         headers = ['site']
@@ -34,9 +46,9 @@ class CommonBaseMeasuresNewsletter(Newsletter):
                 totals.append(total_val)
             else:
                 totals.append('')
-        rendered = render_table(format, headers, rows, totals)
-
-        return rendered
+        self.data['headers'] = headers
+        self.data['rows'] = rows
+        self.data['totals'] = totals
         
     def stats(self):
         """Returns a dictionary keyed by data source whose values are lists of tuples. Each tuple consists of the name of a
@@ -103,3 +115,21 @@ class Subscription(models.Model):
     newsletter = models.ForeignKey(Newsletter)
     user = models.ForeignKey(User)
     
+class Profile(models.Model):
+    
+    FORMAT_CHOICES = ((0, 'html'), 
+                      (1, 'txt'))
+                       
+    user = models.OneToOneField(User, primary_key=True)
+    one_email = models.BooleanField(default=False)
+    email_format = models.IntegerField(choices=FORMAT_CHOICES, default=0)
+
+def add_user_profile(sender, **kwargs):
+    instance = kwargs['instance']
+    try:
+        instance.profile
+    except ObjectDoesNotExist:
+        profile = Profile(user=instance)
+        profile.save()
+
+signals.pre_save.connect(add_user_profile, sender=User)

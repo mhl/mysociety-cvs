@@ -96,10 +96,13 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'sitestats.newsletters',
-    'django.contrib.admin'
+    'django.contrib.admin',
+    'sitestats.patches.django.contrib.admin'
 )
+
 
 # Whether to use the "HTTP_X_FORWARDED_HOST" header as the hostname. Useful for some 
 # virtual hosting situations. See patches/django/http and http://code.djangoproject.com/ticket/6880
 USE_X_FORWARDED_HOST = False 
 import sitestats.patches.django.http
+

@@ -3,11 +3,13 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: formatting.py,v 1.1 2009-06-03 17:01:42 louise Exp $
+# $Id: formatting.py,v 1.2 2009-06-16 12:58:32 louise Exp $
 #
 from django.template.loader import render_to_string
 
 def format_cell_value(format, info):
+    if isinstance(info, str):
+        return info
     link = info.get('link')
     unit = info.get('unit', '')
     percent_change = info.get('percent_change')
@@ -21,16 +23,20 @@ def format_cell_value(format, info):
     return result
 
 def render_table(format, headers, rows, totals):
+    formatted_rows = []
+    for row in rows: 
+        formatted_row = [ format_cell_value(format, cell) for cell in row ]
+        formatted_rows.append(formatted_row)
     template_params = {}
     if format == 'html':
         file_ext = 'html'
     elif format == 'text':
         file_ext = 'txt'
         totals = ['Totals'] + totals
-        table_data = [headers] + rows + [totals]
+        table_data = [headers] + formatted_rows + [totals]
         pad_text_table(table_data)
         template_params['row_separator'] = text_table_row_separator(table_data, '-')
-    template_params.update({'headers': headers, 'rows': rows, 'totals'  : totals})
+    template_params.update({'headers': headers, 'rows': formatted_rows, 'totals'  : totals})
     rendered = render_to_string('table.' + file_ext, template_params)
     return rendered
     
