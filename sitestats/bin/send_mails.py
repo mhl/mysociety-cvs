@@ -37,12 +37,17 @@ parser.add_option('--verbose', action='store_true', default=False, dest="verbose
 
 sources = {'piwik' : piwik.Piwik(), 'google' : google.Google()}
 
+<<<<<<< send_mails.py
+#date=date(2009, 1, 11)
+date=date.today()
+=======
 date = date.today()
 
 # get nearest past Sunday 
 while date.weekday() != 6:
     date = date - timedelta(days=1)
     
+>>>>>>> 1.7
 for newsletter in CommonBaseMeasuresNewsletter.objects.all():
     print newsletter.name
     
