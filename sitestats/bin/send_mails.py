@@ -9,7 +9,7 @@
 import optparse
 import sys
 import os
-from datetime import date
+from datetime import date, timedelta
 sys.path.append("../pylib")
 import sitestats
 os.environ['DJANGO_SETTINGS_MODULE'] = 'sitestats.settings'
@@ -37,8 +37,12 @@ parser.add_option('--verbose', action='store_true', default=False, dest="verbose
 
 sources = {'piwik' : piwik.Piwik(), 'google' : google.Google()}
 
-date=date(2009, 1, 11)
+date = date.today()
 
+# get nearest past Sunday 
+while date.weekday() != 6:
+    date = date - timedelta(days=1)
+    
 for newsletter in CommonBaseMeasuresNewsletter.objects.all():
     print newsletter.name
     

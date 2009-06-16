@@ -1,21 +1,12 @@
-from django.db import models
-from django.contrib.auth.models import User
 from sitestats.newsletters import common
-from formatting import render_table, format_cell_value
-from django.db.models import signals
-from django.core.exceptions import ObjectDoesNotExist
+from sitestats.newsletters.models import Newsletter
+from sitestats.newsletters.formatting import render_table, format_cell_value
 
-class Newsletter(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __unicode__(self):
-        return self.name
-    
-    def render(self, format, sources, date=None):
-        return "Abstract"
-        
 class CommonBaseMeasuresNewsletter(Newsletter):
     
+    class Meta:
+        app_label = 'newsletters'
+        
     data = {}
     formats = {}
     
@@ -110,29 +101,4 @@ class CommonBaseMeasuresNewsletter(Newsletter):
         row = []
         self.get_piwik_data(site_info['id'], sources['piwik'], stats['piwik'], row, totals, date)
         self.get_google_data(site_info['name'], sources['google'], stats['google'], row, totals, date)
-        return row        
-
-class Subscription(models.Model):
-    """Subscriptions of users to newsletters"""
-    newsletter = models.ForeignKey(Newsletter)
-    user = models.ForeignKey(User)
-    
-class Profile(models.Model):
-    """User profile model"""
-    FORMAT_CHOICES = ((0, 'html'), 
-                      (1, 'text'))
-                       
-    user = models.OneToOneField(User, primary_key=True)
-    one_email = models.BooleanField(default=False)
-    email_format = models.IntegerField(choices=FORMAT_CHOICES, default=0)
-
-def add_user_profile(sender, **kwargs):
-    """Create a user profile for any user that is saved and doesn't already have one"""
-    instance = kwargs['instance']
-    try:
-        instance.profile
-    except ObjectDoesNotExist:
-        profile = Profile(user=instance)
-        profile.save()
-
-signals.post_save.connect(add_user_profile, sender=User)
+        return row

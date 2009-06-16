@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.6 2009-06-15 18:28:00 louise Exp $
+# $Id: piwik.py,v 1.7 2009-06-16 14:57:03 louise Exp $
 #
 
 import urllib
@@ -96,7 +96,7 @@ class Piwik:
             self.referrers[key] = self.__referrer_api_result('getRefererType', site_id, date, period)
         for referrer in self.referrers[key]:
             if referrer['label'] == source:
-                return referrer['nb_uniq_visitors']
+                return referrer['sum_daily_nb_uniq_visitors']
         return 0
 
     def __fraction(self, numerator, denominator):

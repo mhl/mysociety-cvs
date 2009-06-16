@@ -296,7 +296,6 @@ class PiwikTests(unittest.TestCase):
         self.piwik.bounces = lambda site_id, period, date: 0
         self.piwik.visits = lambda site_id, period, date: 0
         bounce_rate = self.piwik.bounce_rate(1)
-        print bounce_rate
         self.assertEqual(0, bounce_rate, "bounce_rate returns zero for zero values")
             
     def testSiteIds(self):
@@ -321,17 +320,17 @@ class PiwikTests(unittest.TestCase):
         self.assertEqual([{'name': '1'}, {'name': '2'}], sites, 'sites returns hashes of site info for all sites sorted by name')
 
     def testVisitorsFromSearch(self):
-        self.fake_api_response('[{"label":"Search Engines","nb_uniq_visitors":350,"nb_visits":353,"nb_actions":506,"max_actions":23,"sum_visit_length":21751,"bounce_count":294,"nb_visits_converted":0},{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
+        self.fake_api_response('[{"label":"Search Engines","sum_daily_nb_uniq_visitors":350,"nb_visits":353,"nb_actions":506,"max_actions":23,"sum_visit_length":21751,"bounce_count":294,"nb_visits_converted":0},{"label":"Websites","sum_daily_nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","sum_daily_nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
         visitors_from_search = self.piwik.visitors_from_search(1)
         self.assertEqual(350, visitors_from_search, 'visitors_from_search returns correct information from example')
 
     def testVisitorsFromSearchShouldReturnZeroIfNoSearchKey(self):
-        self.fake_api_response('[{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
+        self.fake_api_response('[{"label":"Websites","sum_daily_nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","sum_daily_nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
         visitors_from_search = self.piwik.visitors_from_search(1)
         self.assertEqual(0, visitors_from_search, 'visitors_from_search returns zero when key "Search Engines" is not present')        
         
     def testVisitorsFromSites(self):
-        self.fake_api_response('[{"label":"Search Engines","nb_uniq_visitors":350,"nb_visits":353,"nb_actions":506,"max_actions":23,"sum_visit_length":21751,"bounce_count":294,"nb_visits_converted":0},{"label":"Websites","nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
+        self.fake_api_response('[{"label":"Search Engines","sum_daily_nb_uniq_visitors":350,"nb_visits":353,"nb_actions":506,"max_actions":23,"sum_visit_length":21751,"bounce_count":294,"nb_visits_converted":0},{"label":"Websites","sum_daily_nb_uniq_visitors":176,"nb_visits":184,"nb_actions":393,"max_actions":33,"sum_visit_length":42592,"bounce_count":129,"nb_visits_converted":0},{"label":"Direct Entry","sum_daily_nb_uniq_visitors":99,"nb_visits":138,"nb_actions":293,"max_actions":36,"sum_visit_length":22162,"bounce_count":107,"nb_visits_converted":0}]')
         visitors_from_sites = self.piwik.visitors_from_sites(1)
         self.assertEqual(176, visitors_from_sites, 'visitors_from_sites returns correct information from example')
 
