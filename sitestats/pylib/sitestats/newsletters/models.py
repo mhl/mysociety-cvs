@@ -135,4 +135,4 @@ def add_user_profile(sender, **kwargs):
         profile = Profile(user=instance)
         profile.save()
 
-signals.pre_save.connect(add_user_profile, sender=User)
+signals.post_save.connect(add_user_profile, sender=User)
