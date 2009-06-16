@@ -46,7 +46,7 @@ while date.weekday() != 6:
 
 if options.verbose:
     if options.only:
-        print "Only sending mail to %s" % (only)    
+        print "Only sending mail to %s" % (options.only)    
 for newsletter in CommonBaseMeasuresNewsletter.objects.all():
     if options.verbose:
         print "Getting data for %s newsletter" % (newsletter)
