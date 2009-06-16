@@ -16,10 +16,11 @@ class Newsletter(models.Model):
         
 class CommonBaseMeasuresNewsletter(Newsletter):
     
+    data = {}
+    formats = {}
+    
     def render(self, format, sources, date=None):
         """Returns the text for a common base measures email in text/html"""
-        self.data = {}
-        self.formats = {}
         if not self.formats.get(format):
             if not self.data:
                 self.generate_data(sources, date)
