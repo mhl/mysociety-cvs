@@ -112,19 +112,21 @@ class CommonBaseMeasuresNewsletter(Newsletter):
         return row        
 
 class Subscription(models.Model):
+    """Subscriptions of users to newsletters"""
     newsletter = models.ForeignKey(Newsletter)
     user = models.ForeignKey(User)
     
 class Profile(models.Model):
-    
+    """User profile model"""
     FORMAT_CHOICES = ((0, 'html'), 
-                      (1, 'txt'))
+                      (1, 'text'))
                        
     user = models.OneToOneField(User, primary_key=True)
     one_email = models.BooleanField(default=False)
     email_format = models.IntegerField(choices=FORMAT_CHOICES, default=0)
 
 def add_user_profile(sender, **kwargs):
+    """Create a user profile for any user that is saved and doesn't already have one"""
     instance = kwargs['instance']
     try:
         instance.profile
