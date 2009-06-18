@@ -7,12 +7,12 @@ class TWFYNewsletter(Newsletter):
     
     class Meta:
         app_label = 'newsletters'
-        
+    
+    site_name = 'TheyWorkForYou'
+    site_id = None
     data = {}
     formats = {}
     sites = {}
-    site_id = None
-    site_name = 'TheyWorkForYou'
         
     def render(self, format, sources, date=None):
         """Returns the text for a TWFY email in text/html"""

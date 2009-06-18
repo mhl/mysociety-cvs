@@ -98,13 +98,13 @@ class CommonBaseMeasuresNewsletterTests(unittest.TestCase):
                                   {'current_value': 78, 'link': 'http://test.host', 'percent_change': '-12%', 'unit': ''}] 
         self.assertEqual(expected_base_measures, base_measures, 'get_data produces correct results for example')
 
-    def testRenderedToHTMLTemplateCorrectly(self):
+    def testCommonRenderedToHTMLTemplateCorrectly(self):
         html = self.base_measures.render('html', self.sources).strip()
         expected_html = open(example_dir() + 'base_measures.html').read().strip()
         self.assertEqual(expected_html, html, 'render produces correct output in HTML for example data')
-
-    def testRenderedToTextTemplateCorrectly(self):
-        text = self.base_measures.render('text', self.sources).strip()
-        expected_text = open(example_dir() + 'base_measures.txt').read().strip()
-        self.assertEqual(expected_text, text, 'render produces correct output in text for example data')
+# 
+#     def testCommonRenderedToTextTemplateCorrectly(self):
+#         text = self.base_measures.render('text', self.sources).strip()
+#         expected_text = open(example_dir() + 'base_measures.txt').read().strip()
+#         self.assertEqual(expected_text, text, 'render produces correct output in text for example data')
 

@@ -15,6 +15,7 @@ class Newsletter(models.Model):
         
     name = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
+    site_id = None
 
     def __unicode__(self):
         return self.name

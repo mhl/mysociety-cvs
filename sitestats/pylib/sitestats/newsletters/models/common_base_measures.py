@@ -6,9 +6,11 @@ class CommonBaseMeasuresNewsletter(Newsletter):
     
     class Meta:
         app_label = 'newsletters'
-        
+    
+    site_id = None
     data = {}
     formats = {}
+    sites = {}
     
     def render(self, format, sources, date=None):
         """Returns the text for a common base measures email in text/html"""

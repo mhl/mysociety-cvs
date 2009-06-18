@@ -45,8 +45,12 @@ date = date.today()
 while date.weekday() != 6:
     date = date - timedelta(days=1)
 
-
-newsletter_types = [CommonBaseMeasuresNewsletter, TWFYNewsletter, FMSNewsletter]                 
+newsletter_types = [CommonBaseMeasuresNewsletter, 
+                    TWFYNewsletter, 
+                    FMSNewsletter, 
+                    HFYMPNewsletter,
+                    WTTNewsletter,
+                    PBNewsletter]                 
                          
 if options.newsletter:
     newsletter_types = [newsletter for newsletter in newsletter_types if newsletter.__name__ == options.newsletter]   

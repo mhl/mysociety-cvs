@@ -3,19 +3,19 @@ from sitestats.newsletters.models import *
 from sitestats.newsletters.formatting import render_table
 from django.template.loader import render_to_string
 
-class FMSNewsletter(Newsletter):
+class PBNewsletter(Newsletter):
     
     class Meta:
         app_label = 'newsletters'
-        
-    site_name = 'FixMyStreet'  
+    
+    site_name = 'PledgeBank'  
     site_id = None
     data = {}
     formats = {}
     sites = {}
     
     def render(self, format, sources, date=None):
-        """Returns the text for a FixMyStreet email in text/html"""
+        """Returns the text for a PledgeBank email in text/html"""
         self.set_site_id(sources)
         if not self.formats.get(format):
             if not self.data:
@@ -23,7 +23,6 @@ class FMSNewsletter(Newsletter):
             traffic_table = render_table(format, self.data['headers'], self.data['rows'])            
             template_params = {'traffic_table' : traffic_table}
             file_ext = format_extension(format)
-            rendered = render_to_string('twfy.' + file_ext, template_params)
+            rendered = render_to_string('pb.' + file_ext, template_params)
             self.formats[format] = rendered
         return self.formats[format]
-        
