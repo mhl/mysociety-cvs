@@ -8,7 +8,7 @@ class WTTNewsletter(Newsletter):
     class Meta:
         app_label = 'newsletters'
     
-    site_name = 'HearFromYourMP'  
+    site_name = 'WriteToThem'  
     site_id = None
     data = {}
     formats = {}
