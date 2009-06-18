@@ -18,16 +18,18 @@
     {% endfor %}
   </tr>
 {% endfor %}
+{% if totals %} 
   <tr>
       <th>
         Totals
       </th>
-{% for total in totals %}
-      <td>
-        {{ total }}
-      </td>
-{% endfor %}
+  {% for total in totals %}
+        <td>
+          {{ total }}
+        </td>
+  {% endfor %}
   </tr>
+{% endif %}
 </table>
 
 {% endblock %}

@@ -3,26 +3,37 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: formatting.py,v 1.3 2009-06-16 13:07:44 louise Exp $
+# $Id: formatting.py,v 1.4 2009-06-18 09:14:11 louise Exp $
 #
 from django.template.loader import render_to_string
 
 def format_cell_value(format, info):
-    if isinstance(info, basestring):
+    if not isinstance(info, dict):
         return info
     link = info.get('link')
     unit = info.get('unit', '')
     percent_change = info.get('percent_change')
     current_value = info.get('current_value')
-    result = "%s%s" % (current_value, unit)
-    if format == 'html':
-        if link:
-            result = "<a href='%s'>%s</a>" % (link, result)  
-    if percent_change:
-        result += " (%s)" % (percent_change)    
+    previous_value = info.get('previous_value')
+    result = ''
+    if current_value != None:
+        result = "%s%s" % (current_value, unit)
+        if format == 'html':
+            if link:
+                result = "<a href='%s'>%s</a>" % (link, result)  
+        if percent_change:
+            result += " (%s)" % (percent_change)    
+    elif previous_value != None and percent_change != None:
+        result = percent_change
+        result += " (from %s%s)" % (previous_value, unit)
+        if format == 'html':
+            if link:
+                result = "<a href='%s'>%s</a>" % (link, result)  
+    else:
+        raise str(info)
     return result
 
-def render_table(format, headers, rows, totals):
+def render_table(format, headers, rows, totals=None):
     formatted_rows = []
     for row in rows: 
         formatted_row = [ format_cell_value(format, cell) for cell in row ]
@@ -32,8 +43,11 @@ def render_table(format, headers, rows, totals):
         file_ext = 'html'
     elif format == 'text':
         file_ext = 'txt'
-        totals = ['Totals'] + totals
-        table_data = [headers] + formatted_rows + [totals]
+        if totals:
+            totals = ['Totals'] + totals
+            table_data = [headers] + formatted_rows + [totals]
+        else:
+            table_data = [headers] + formatted_rows
         pad_text_table(table_data)
         template_params['row_separator'] = text_table_row_separator(table_data, '-')
     template_params.update({'headers': headers, 'rows': formatted_rows, 'totals'  : totals})

@@ -8,8 +8,6 @@ class FormattingTests(unittest.TestCase):
                 'current_value'  : '34',
                 'percent_change' : '+12%', 
                 'unit'           : 's'}
-                
-        print "testing"
         formatted = formatting.format_cell_value('html', info)
         expected_formatted  = "<a href='http://test.host'>34s</a> (+12%)"
         self.assertEqual(expected_formatted, formatted, 'format_cell_value formats html example with units and link correctly')

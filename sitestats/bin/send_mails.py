@@ -15,11 +15,11 @@ import sitestats
 os.environ['DJANGO_SETTINGS_MODULE'] = 'sitestats.settings'
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.mail import EmailMessage 
-from sitestats.newsletters.models import CommonBaseMeasuresNewsletter, Newsletter, Subscription
+from sitestats.newsletters.models import CommonBaseMeasuresNewsletter, TWFYNewsletter, Newsletter, Subscription
 from sitestats.newsletters.sources import piwik
 from sitestats.newsletters.sources import google
-import mysociety
+from sitestats.newsletters.common import send_newsletter
+
 ###############################################################################
 # Read parameters
 
@@ -44,22 +44,9 @@ date = date.today()
 while date.weekday() != 6:
     date = date - timedelta(days=1)
 
-if options.verbose:
-    if options.only:
-        print "Only sending mail to %s" % (options.only)    
-for newsletter in CommonBaseMeasuresNewsletter.objects.all():
-    if options.verbose:
-        print "Getting data for %s newsletter" % (newsletter)
-    
-    for subscription in newsletter.subscription_set.all():
-        format = subscription.user.profile.get_email_format_display()
-        content = newsletter.render(format, sources, date)
-        
-        if not options.only or subscription.user.username == options.only:
-            if options.verbose:
-                print "Sending %s format %s newsletter to %s" % (format, newsletter, subscription.user.email)
-            msg = EmailMessage("Weekly site stats for mySociety for %s" % (date.strftime("%d/%m/%y")), content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
-            if format == 'html':
-                msg.content_subtype = "html"  
-            msg.send()
-            
+
+newsletter_types = [CommonBaseMeasuresNewsletter, TWFYNewsletter]                 
+                         
+for newsletter_type in newsletter_types:
+    for newsletter in newsletter_type.objects.all():
+        send_newsletter(newsletter, date, sources, options)

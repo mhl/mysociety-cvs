@@ -4,6 +4,6 @@
 |{{ row_separator }}|{% for row in rows %}
 {% for value in row %}| {{ value|safe }} {% endfor %}|
 |{{ row_separator }}|{% endfor %}
-{% for total in totals %}| {{ total }} {% endfor %}|
-|{{ row_separator }}|
+{% if totals %}{% for total in totals %}| {{ total }} {% endfor %}|
+|{{ row_separator }}|{% endif %}
 {% endblock %}
