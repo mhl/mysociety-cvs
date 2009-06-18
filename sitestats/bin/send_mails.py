@@ -34,6 +34,7 @@ Send out mySociety site stats emails. Run with "--help" to see available options
 
 parser.add_option('--verbose', action='store_true', default=False, dest="verbose", help='Produce extra debugging output')
 parser.add_option('--only', dest='only', default=None, help='Only send email for one user identified by username')
+parser.add_option('--newsletter', dest='newsletter', default=None, help='Only send one type of newsletter')
 (options, args) = parser.parse_args()
 
 sources = {'piwik' : piwik.Piwik(), 'google' : google.Google()}
@@ -47,6 +48,9 @@ while date.weekday() != 6:
 
 newsletter_types = [CommonBaseMeasuresNewsletter, TWFYNewsletter, FMSNewsletter]                 
                          
+if options.newsletter:
+    newsletter_types = [newsletter for newsletter in newsletter_types if newsletter.__name__ == options.newsletter]   
+
 for newsletter_type in newsletter_types:
     for newsletter in newsletter_type.objects.all():
         send_newsletter(newsletter, date, sources, options)
