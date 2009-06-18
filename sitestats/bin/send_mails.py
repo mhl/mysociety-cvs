@@ -15,7 +15,7 @@ import sitestats
 os.environ['DJANGO_SETTINGS_MODULE'] = 'sitestats.settings'
 from django.db import models
 from django.contrib.auth.models import User
-from sitestats.newsletters.models import CommonBaseMeasuresNewsletter, TWFYNewsletter, Newsletter, Subscription
+from sitestats.newsletters.models import *
 from sitestats.newsletters.sources import piwik
 from sitestats.newsletters.sources import google
 from sitestats.newsletters.common import send_newsletter
@@ -45,7 +45,7 @@ while date.weekday() != 6:
     date = date - timedelta(days=1)
 
 
-newsletter_types = [CommonBaseMeasuresNewsletter, TWFYNewsletter]                 
+newsletter_types = [CommonBaseMeasuresNewsletter, TWFYNewsletter, FMSNewsletter]                 
                          
 for newsletter_type in newsletter_types:
     for newsletter in newsletter_type.objects.all():
