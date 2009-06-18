@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.10 2009-06-18 09:14:12 louise Exp $
+# $Id: piwik.py,v 1.11 2009-06-18 11:55:38 louise Exp $
 #
 
 import urllib
@@ -32,7 +32,7 @@ class Piwik:
         from any given date so, rewrite params so that a request with a date 'prior4' - the four intervals before 
         the previous four - is rewritten to a request for 'previous8' with a filter on the number of result 
         structures to be returned'''
-        if params.has_key('date') and params['date'].startswith('prior'):
+        if params.has_key('date') and isinstance(params['date'], basestring) and params['date'].startswith('prior'):
             self.results_to_keep = int(re.search('\d+', params['date']).group(0))
             params['date'] = 'previous%s' % (self.results_to_keep * 2)
             return True

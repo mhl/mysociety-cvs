@@ -4,9 +4,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: google.py,v 1.1 2009-06-03 17:01:43 louise Exp $
+# $Id: google.py,v 1.2 2009-06-18 11:55:38 louise Exp $
 #
 import urllib
+import feedparser
 
 class AppURLopener(urllib.FancyURLopener):
     version = "sitestats/google.py v1.0"
@@ -16,6 +17,7 @@ urllib._urlopener = AppURLopener()
 import mysociety
 import re
 from sitestats.newsletters import common
+
 
 class Google:
     '''Interfaces with google'''
@@ -40,35 +42,22 @@ class Google:
                    'as_maxd' : end_date.day,
                    'as_maxm' : end_date.month, 
                    'as_maxy' : end_date.year,
-                   'as_drrb' : 'b' }
+                   'as_drrb' : 'b', 
+                   'output'  : 'atom', 
+                   'num'     : 1000 }
         return params
- 
-    def _parse_news_results(self, html):
-        attributes = {}
-        return attributes 
         
-    def _parse_results(self, html):
-        results_count = re.compile("Results <b>\d+</b> (?:-|&ndash;) <b>\d+</b> of (?:about)?\s?<b>((\d|,)+)</b>")
-        match = results_count.search(html)
-        if match:
-            attributes = { 'results' : int(match.group(1))} 
-        else:
-            no_results = re.compile('did not match any documents')
-            match = no_results.search(html)
-            if match:
-                attributes = {'results' : 0 }
-            else:
-                print html
-                raise Exception, "Can't find number of results"
+    def _parse_results(self, url):
+        content = urllib.urlopen(url).read()
+        feed = feedparser.parse(content)
+        attributes = {'results' : len(feed['entries'])}
         return attributes
     
     def _get_results(self, base_url, params, period=None, date=None):
         date_params = self._date_params(period, date)     
         params.update(date_params)
         query_url = base_url + '?' + urllib.urlencode(params)
-        response = urllib.urlopen(query_url)
-        results_page = response.read()
-        result_attributes = self._parse_results(results_page)
+        result_attributes = self._parse_results(query_url)
         result_attributes['url'] = query_url
         return result_attributes
         
@@ -80,6 +69,7 @@ class Google:
     
     def blogs(self, site_name, period=None, date=None):
         params = { 'as_q' : self._query(site_name) }
+        
         result_attributes = self._get_results(self.base_blog_search_url, params, period, date)
         return result_attributes
     
