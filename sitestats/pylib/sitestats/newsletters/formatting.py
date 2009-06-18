@@ -3,9 +3,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: formatting.py,v 1.4 2009-06-18 09:14:11 louise Exp $
+# $Id: formatting.py,v 1.5 2009-06-18 14:06:57 louise Exp $
 #
 from django.template.loader import render_to_string
+from sitestats.newsletters.common import *
 
 def format_cell_value(format, info):
     if not isinstance(info, dict):
@@ -39,10 +40,8 @@ def render_table(format, headers, rows, totals=None):
         formatted_row = [ format_cell_value(format, cell) for cell in row ]
         formatted_rows.append(formatted_row)
     template_params = {}
-    if format == 'html':
-        file_ext = 'html'
-    elif format == 'text':
-        file_ext = 'txt'
+    file_ext = format_extension(format)
+    if format == 'text':
         if totals:
             totals = ['Totals'] + totals
             table_data = [headers] + formatted_rows + [totals]

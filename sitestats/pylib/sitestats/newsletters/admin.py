@@ -1,4 +1,4 @@
-from sitestats.newsletters.models import Subscription, TWFYNewsletter, CommonBaseMeasuresNewsletter, Profile
+from sitestats.newsletters.models import Subscription, TWFYNewsletter, FMSNewsletter, CommonBaseMeasuresNewsletter, Profile
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin
@@ -25,5 +25,5 @@ admin.site.unregister(Group)
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(TWFYNewsletter)
-
+admin.site.register(FMSNewsletter)
 admin.site.register(CommonBaseMeasuresNewsletter)

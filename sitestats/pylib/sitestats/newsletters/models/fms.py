@@ -3,7 +3,7 @@ from sitestats.newsletters.models import *
 from sitestats.newsletters.formatting import render_table
 from django.template.loader import render_to_string
 
-class TWFYNewsletter(Newsletter):
+class FMSNewsletter(Newsletter):
     
     class Meta:
         app_label = 'newsletters'
@@ -12,10 +12,10 @@ class TWFYNewsletter(Newsletter):
     formats = {}
     sites = {}
     site_id = None
-    site_name = 'TheyWorkForYou'
-        
+    site_name = 'FixMyStreet'  
+    
     def render(self, format, sources, date=None):
-        """Returns the text for a TWFY email in text/html"""
+        """Returns the text for a FixMyStreet email in text/html"""
         self.set_site_id(sources)
         if not self.formats.get(format):
             if not self.data:
@@ -26,3 +26,4 @@ class TWFYNewsletter(Newsletter):
             rendered = render_to_string('twfy.' + file_ext, template_params)
             self.formats[format] = rendered
         return self.formats[format]
+        

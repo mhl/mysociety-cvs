@@ -3,12 +3,17 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: common.py,v 1.3 2009-06-18 09:14:11 louise Exp $
+# $Id: common.py,v 1.4 2009-06-18 14:06:57 louise Exp $
 #
 
 from datetime import date, timedelta
 from django.core.mail import EmailMessage 
 import mysociety
+    
+def format_extension(format):
+    extensions = {'html': 'html',
+                  'text': 'txt'}
+    return extensions[format]
     
 def end_of_current_week():
     return date.today() - timedelta(days=1)

@@ -1,9 +1,7 @@
-{% block content %}
-|{{ row_separator }}|
+{% block content %}|{{ row_separator }}|
 {% for header in headers %}| {{ header }} {% endfor %}|
 |{{ row_separator }}|{% for row in rows %}
 {% for value in row %}| {{ value|safe }} {% endfor %}|
 |{{ row_separator }}|{% endfor %}
 {% if totals %}{% for total in totals %}| {{ total }} {% endfor %}|
-|{{ row_separator }}|{% endif %}
-{% endblock %}
+|{{ row_separator }}|{% endif %}{% endblock %}

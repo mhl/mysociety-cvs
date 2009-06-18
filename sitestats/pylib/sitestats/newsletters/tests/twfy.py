@@ -1,5 +1,6 @@
 import unittest
-from sitestats.newsletters.models.twfy import TWFYNewsletter, TWFYException
+from sitestats.newsletters.models.twfy import TWFYNewsletter
+from sitestats.newsletters.models.newsletter import *
 from sitestats.newsletters import common
 from tests import example_dir
 from datetime import date
@@ -138,10 +139,10 @@ class TWFYNewsletterTests(unittest.TestCase):
 
     def testShouldRaiseErrorIfTWFYNotFound(self):
         self.sources['piwik'].sites = self.sources['piwik'].sites_without_twfy
-        self.assertRaises(TWFYException, self.twfy.render, 'html', self.sources)
+        self.assertRaises(NewsletterException, self.twfy.render, 'html', self.sources)
         
     def testDataRetrievedForUniqueVisitors(self):
-        data = self.twfy.get_data('unique_visitors', self.sources, date=self.test_date)
+        data = self.twfy.get_traffic_data('unique_visitors', self.sources, date=self.test_date)
         expected_data = [22, 
                          {'percent_change' : '-60%', 'previous_value' : 55}, 
                          98,
