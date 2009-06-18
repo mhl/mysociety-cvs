@@ -38,7 +38,7 @@ class Newsletter(models.Model):
         headers = ['', 'This week', '% change on last week', 'last 4 weeks', '% change on last 4 weeks']
         for (header, stat, unit) in stats['piwik']: 
             row = [header]
-            row += self.get_traffic_data(stat, sources, date)
+            row += self.get_traffic_data(stat, sources, unit, date)
             rows.append(row)
 
         self.data['headers'] = headers
@@ -61,7 +61,7 @@ class Newsletter(models.Model):
                               ]}
         return stats
 
-    def get_piwik_traffic_data(self, piwik, statistic, date):
+    def get_piwik_traffic_data(self, piwik, statistic, unit, date):
         this_week_end = date or common.end_of_current_week()
         previous_week_end = common.end_of_previous_week(this_week_end)
         method = getattr(piwik, statistic)
@@ -71,14 +71,16 @@ class Newsletter(models.Model):
         last_four_weeks = method(site_id=self.site_id, date='previous4')
         previous_four_weeks = method(site_id=self.site_id, date='prior4')    
         month_percent_change = common.percent_change(last_four_weeks, previous_four_weeks)
-        row = [current_week, 
+        row = [{ 'current_value' : current_week,
+                 'unit' : unit },  
                { 'percent_change': week_percent_change, 
                  'previous_value' : previous_week }, 
-               last_four_weeks, 
+               { 'current_value' : last_four_weeks,
+                 'unit' : unit },
                { 'percent_change': month_percent_change, 
                  'previous_value': previous_four_weeks } ]
         return row
 
-    def get_traffic_data(self, stat, sources, date=None):
-        row = self.get_piwik_traffic_data(sources['piwik'], stat, date=date)
+    def get_traffic_data(self, stat, sources, unit, date=None):
+        row = self.get_piwik_traffic_data(sources['piwik'], stat, unit, date=date)
         return row

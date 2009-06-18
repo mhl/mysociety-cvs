@@ -23,7 +23,7 @@ class FMSNewsletter(Newsletter):
             traffic_table = render_table(format, self.data['headers'], self.data['rows'])            
             template_params = {'traffic_table' : traffic_table}
             file_ext = format_extension(format)
-            rendered = render_to_string('twfy.' + file_ext, template_params)
+            rendered = render_to_string('fms.' + file_ext, template_params)
             self.formats[format] = rendered
         return self.formats[format]
         

@@ -19,3 +19,4 @@ class TWFYNewsletterTests(unittest.TestCase):
         text = self.twfy.render('text', self.sources).strip()
         expected_text = open(example_dir() + 'twfy.txt').read().strip()
         self.assertEqual(expected_text, text, 'render produces correct output in text for example data')
+        

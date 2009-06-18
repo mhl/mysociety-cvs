@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.11 2009-06-18 11:55:38 louise Exp $
+# $Id: piwik.py,v 1.12 2009-06-18 17:48:11 louise Exp $
 #
 
 import urllib
@@ -25,6 +25,7 @@ class Piwik:
         self.referrers = {}
         self.providers = {}
         self.visit_summaries = {}
+        self.referring_sites = {}
         self.results_to_keep = None
 
     def prior_date(self, params):
@@ -114,19 +115,49 @@ class Piwik:
         params.update(site_params)
         return self.__api_result(params, result_type='structure')
 
-    def __referrer_api_result(self, method, site_id, date, period):
+    def __referrer_api_result(self, method, site_id, date, period, sort_by=None, order=None):
         params = self.__default_params()
         referrer_params = { 'method': 'Referers.' + method, 
                             'idSite': site_id, 
                             'date': date or self.default_date, 
                             'period': period or self.default_period }    
+        if sort_by:
+            referrer_params['filter_sort_column'] = sort_by
+        if order:
+            referrer_params['filter_sort_order'] = order
         params.update(referrer_params)
         return self.__api_result(params, result_type='structure')
 
     def __percent_of_visits(self, number_of_visits, site_id, period, date):
         visits = self.visits(site_id, period, date)
         return self.__percent(number_of_visits, visits)
+    
+    def top_referrers(self, site_id, period=None, date=None, limit=10):
+        '''Returns the top n referrers to the site in the period'''
+        sort_by = 'nb_visits'
+        order = 'desc'
+        key = self.__key(site_id, period, date)
+        if not self.referring_sites.has_key(key):
+          self.referring_sites[key] = self.__referrer_api_result('getWebsites', site_id, date, period, sort_by, order)
+        if limit:
+            sites = self.referring_sites[key][:limit]
+        else:
+            sites = self.referring_sites[key]
+        names = [site['label'] for site in sites]
+        return names
         
+    def visits_from_referrer(self, site_id, referrer, period=None, date=None):
+        '''Number of visits coming from a referring site in the period'''
+        key = self.__key(site_id, period, date)
+        if not self.referring_sites.has_key(key):
+            self.referring_sites[key] = self.__referrer_api_result('getWebsites', site_id, date, period)
+        return self.__get_label_val(self.referring_sites[key], referrer, 'nb_visits')
+        
+    def percent_visits_from_referrer(self, site_id, referrer, period=None, date=None):
+        '''Percentage of visits coming from a referring site in the period'''
+        referrer_visits = self.visits_from_referrer(site_id, referrer, period, date)
+        return self.__percent_of_visits(referrer_visits, site_id, period, date)
+
     def percent_visits_from_search(self, site_id, period=None, date=None):
         '''Returns the percentage of visits coming from search engines in the period'''
         search_visits = self.visits_from_search(site_id, period, date)
