@@ -45,7 +45,7 @@ while date.weekday() != 6:
     date = date - timedelta(days=1)
 
 
-newsletter_types = [CommonBaseMeasuresNewsletter]                 
+newsletter_types = [CommonBaseMeasuresNewsletter, TWFYNewsletter]                 
                          
 for newsletter_type in newsletter_types:
     for newsletter in newsletter_type.objects.all():
