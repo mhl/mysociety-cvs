@@ -13,22 +13,40 @@ class TWFYNewsletter(Newsletter):
     data = {}
     formats = {}
     sites = {}
-        
+     
+    def template(self):
+        return 'twfy'
+           
     def render(self, format, sources, date=None):
         """Returns the text for a TWFY email in text/html"""
         self.set_site_id(sources)
         if not self.formats.get(format):
             if not self.data:
-                self.generate_traffic_data(sources, date)
-            traffic_table = render_table(format, self.data['headers'], self.data['rows'])            
-            template_params = {'traffic_table'         : traffic_table, 
-                               'referring_sites_table' : self.referring_sites_table(format, sources, date) }
-            file_ext = format_extension(format)
-            rendered = render_to_string('twfy.' + file_ext, template_params)
-            self.formats[format] = rendered
+                self.generate_data(sources, date)
+            self.formats[format] =  self.render_data(format)
         return self.formats[format]
 
-    def referring_sites_table(self, format, sources, date):
+    def generate_data(self, sources, date):
+        self.generate_traffic_data(sources, date)
+        self.generate_referring_sites_data(sources, date)
+        self.generate_search_keywords(sources, date)
+       
+    def render_data(self, format):
+     traffic_table = render_table(format, self.data['traffic_headers'], self.data['traffic_rows'])  
+     referring_sites_table = render_table(format, self.data['referring_sites_headers'], self.data['referring_sites_rows'])
+     template_params = {'traffic_table'         : traffic_table, 
+                        'referring_sites_table' : referring_sites_table, 
+                        'search_keywords'       : self.data['search_keywords']}
+     file_ext = format_extension(format)
+     rendered = render_to_string(self.template() + '.' + file_ext, template_params)
+     return rendered
+     
+    def generate_search_keywords(self, sources, date):
+        piwik = sources['piwik']
+        search_keywords = piwik.top_search_keywords(site_id=self.site_id, date=date, limit=20)
+        self.data['search_keywords'] = search_keywords
+        
+    def generate_referring_sites_data(self, sources, date):
         piwik = sources['piwik']
         top_referrers = piwik.top_referrers(site_id=self.site_id, date=date, limit=10)
         headers = ['Referring website', 
@@ -56,5 +74,5 @@ class TWFYNewsletter(Newsletter):
                      'previous_value': previous_four_weeks, 
                      'unit' : '%' }]
             rows.append(row)
-        table = render_table(format, headers, rows)
-        return table
+        self.data['referring_sites_headers'] = headers
+        self.data['referring_sites_rows'] = rows

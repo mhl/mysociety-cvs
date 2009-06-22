@@ -1,4 +1,14 @@
 <strong>Traffic to this site</strong>
 {{ traffic_table }}
+<div style="margin-top: 20px">
 <strong>Top 10 referring websites this week</strong>
 {{ referring_sites_table }}
+</div>
+<div style="margin-top: 20px">
+<strong>Top 20 external search keywords</strong>
+<ul>
+{% for keyword in search_keywords %}
+  <li>{{ keyword|safe }}</li>
+{% endfor %}
+</ul>
+</div>

@@ -222,3 +222,9 @@ class PiwikTests(unittest.TestCase):
         visits_from_facebook = self.piwik.visits_from_referrer(1, referrer='www.facebook.com')
         expected_visits = 99
         self.assertEqual(expected_visits, visits_from_facebook, 'visits_from referrer returns expected results for example data')
+        
+    def testTopSearchKeywords(self):
+        self.fake_api_response('[{"label":"a","nb_visits":198,"nb_actions":759,"max_actions":103,"sum_visit_length":33422,"bounce_count":15,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":197,"idsubdatatable":58},{"label":"b","nb_visits":181,"nb_actions":823,"max_actions":145,"sum_visit_length":59598,"bounce_count":31,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":173,"idsubdatatable":54},{"label":"c","nb_visits":111,"nb_actions":415,"max_actions":68,"sum_visit_length":16213,"bounce_count":16,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":109,"idsubdatatable":61}]')
+        keywords = self.piwik.top_search_keywords(1, limit=3)
+        expected_keywords = ['a', 'b', 'c']
+        self.assertEqual(expected_keywords, keywords, 'top_search_keywords returns expected results for example data')

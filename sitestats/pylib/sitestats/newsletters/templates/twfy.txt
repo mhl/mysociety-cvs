@@ -7,3 +7,8 @@ Top 10 referring websites this week
 -----------------------------------
 
 {{ referring_sites_table }}
+
+Top 20 external search keywords
+-------------------------------
+{% for keyword in search_keywords %}{{ keyword|safe }}
+{% endfor %}

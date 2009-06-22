@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.12 2009-06-18 17:48:11 louise Exp $
+# $Id: piwik.py,v 1.13 2009-06-22 15:00:17 louise Exp $
 #
 
 import urllib
@@ -26,6 +26,7 @@ class Piwik:
         self.providers = {}
         self.visit_summaries = {}
         self.referring_sites = {}
+        self.referrer_keywords = {}
         self.results_to_keep = None
 
     def prior_date(self, params):
@@ -132,6 +133,14 @@ class Piwik:
         visits = self.visits(site_id, period, date)
         return self.__percent(number_of_visits, visits)
     
+    def __top_n_labels_from_list(self, items, limit):
+        if limit:
+            items = items[:limit]
+        else:
+            items = items
+        labels = [item['label'] for item in items]
+        return labels
+        
     def top_referrers(self, site_id, period=None, date=None, limit=10):
         '''Returns the top n referrers to the site in the period'''
         sort_by = 'nb_visits'
@@ -139,12 +148,16 @@ class Piwik:
         key = self.__key(site_id, period, date)
         if not self.referring_sites.has_key(key):
           self.referring_sites[key] = self.__referrer_api_result('getWebsites', site_id, date, period, sort_by, order)
-        if limit:
-            sites = self.referring_sites[key][:limit]
-        else:
-            sites = self.referring_sites[key]
-        names = [site['label'] for site in sites]
-        return names
+        return self.__top_n_labels_from_list(self.referring_sites[key], limit)
+   
+    def top_search_keywords(self, site_id, period=None, date=None, limit=10):
+        '''Returns the top n search keywords that brought users to the site in the period'''
+        sort_by = 'nb_visits'
+        order = 'desc'
+        key = self.__key(site_id, period, date)
+        if not self.referrer_keywords.has_key(key):
+            self.referrer_keywords[key] = self.__referrer_api_result('getKeywords', site_id, date, period, sort_by, order)
+        return self.__top_n_labels_from_list(self.referrer_keywords[key], limit)
         
     def visits_from_referrer(self, site_id, referrer, period=None, date=None):
         '''Number of visits coming from a referring site in the period'''

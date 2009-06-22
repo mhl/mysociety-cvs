@@ -1,5 +1,8 @@
 from django.db import models
 from sitestats.newsletters import common
+from sitestats.newsletters.formatting import render_table
+from django.template.loader import render_to_string
+from sitestats.newsletters.common import *
 
 class NewsletterException(Exception):
     def __init__(self, value):
@@ -21,8 +24,25 @@ class Newsletter(models.Model):
         return self.name
     
     def render(self, format, sources, date=None):
-        return "Abstract"
+        """Returns the text for a TWFY email in text/html"""
+        self.set_site_id(sources)
+        if not self.formats.get(format):
+            if not self.data:
+                self.generate_data(sources, date)
+            self.formats[format] =  self.render_data(format)
+        return self.formats[format]
 
+    def generate_data(self, sources, date):
+        self.generate_traffic_data(sources, date)
+
+    def render_data(self, format):
+     '''Default content for a newsletter - a table of site traffic stats'''
+     traffic_table = render_table(format, self.data['traffic_headers'], self.data['traffic_rows'])  
+     template_params = {'traffic_table' : traffic_table}
+     file_ext = format_extension(format)
+     rendered = render_to_string(self.template() + '.' + file_ext, template_params)
+     return rendered
+                 
     def set_site_id(self, sources):
         sites = sources['piwik'].sites()
         for site in sites:
@@ -41,8 +61,8 @@ class Newsletter(models.Model):
             row += self.get_traffic_data(stat, sources, unit, date)
             rows.append(row)
 
-        self.data['headers'] = headers
-        self.data['rows'] = rows
+        self.data['traffic_headers'] = headers
+        self.data['traffic_rows'] = rows
 
     def traffic_stats(self):
         """Returns a dictionary keyed by data source whose values are lists of tuples. Each tuple consists of the name of a
