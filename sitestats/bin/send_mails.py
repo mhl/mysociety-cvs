@@ -10,7 +10,9 @@ import optparse
 import sys
 import os
 from datetime import date, timedelta
-sys.path.append("../pylib")
+filename = __file__
+file_dir = os.path.abspath(os.path.dirname(filename))
+sys.path.append(file_dir + "../pylib")
 import sitestats
 os.environ['DJANGO_SETTINGS_MODULE'] = 'sitestats.settings'
 from django.db import models
