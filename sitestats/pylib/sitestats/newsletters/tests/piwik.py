@@ -231,7 +231,11 @@ class PiwikTests(unittest.TestCase):
         self.assertEqual(expected_keywords, keywords, 'top_search_keywords returns expected results for example data')
         
     def testSiteLink(self):
-        '''Returns a link to the homepage for a site in the Piwik interface'''
         site_link = self.piwik.site_link(1)
         expected_link = mysociety.config.get('PIWIK_BASE_URL') + '?date=yesterday&action=index&idSite=1&period=week&module=CoreHome'
         self.assertEqual(expected_link, site_link, 'site_link returns expected results for example data')
+        
+    def testSiteLinkForPreviousFour(self):
+        site_link = self.piwik.site_link(1, date="previous4")
+        expected_link = mysociety.config.get('PIWIK_BASE_URL') + "?format=XML&period=week&module=API&idSite=1&date=previous4&method=VisitSummary.get"
+        self.assertEqual(expected_link, site_link, 'site link returns link to API for period that is not available in the interface')

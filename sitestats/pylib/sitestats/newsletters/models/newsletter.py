@@ -69,7 +69,7 @@ class Newsletter(models.Model):
             row += self.get_traffic_data(stat, sources, unit, date)
             rows.append(row)
         piwik = sources['piwik']
-        previous_week_link = piwik.site_link(site_id=self.site_id, date='previous1')
+        previous_week_link = piwik.site_link(site_id=self.site_id, date=date)
         previous_four_weeks_link = piwik.site_link(site_id=self.site_id, date='previous4')
         link_row = ['Piwik link', 
                     {'current_value' : 'link', 

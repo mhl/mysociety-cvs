@@ -143,11 +143,11 @@ class MockPiwik:
            return 4    
     
     def site_link(self, site_id, period=None, date=None):
-        if date == 'previous1':
-            return 'http://previous.1.link'
-        elif date == 'previous4':
+        if date == 'previous4':
             return 'http://previous.4.link'
-           
+        else:
+            return 'http://previous.1.link'   
+            
 class NewsletterTests(unittest.TestCase):
 
     def setUp(self):

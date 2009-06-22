@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.14 2009-06-22 16:00:49 louise Exp $
+# $Id: piwik.py,v 1.15 2009-06-22 16:36:36 louise Exp $
 #
 
 import urllib
@@ -326,12 +326,19 @@ class Piwik:
         return site_list
     
     def site_link(self, site_id, period=None, date=None):
+        '''Returns a link to the homepage for a site in the Piwik interface'''
         period = period or self.default_period
         date = date or self.default_date
         params = {'period' : period, 
                   'date'   : date, 
-                  'idSite' : site_id, 
-                  'module' : 'CoreHome', 
-                  'action' : 'index'}
+                  'idSite' : site_id}
+        # Some values of date are only available through the API          
+        if date.startswith('last') or date.startswith('previous'):
+            params['module'] = 'API'
+            params['format'] = 'XML'
+            params['method'] = 'VisitSummary.get'
+        else: 
+            params['module'] = 'CoreHome'
+            params['action'] = 'index'
         url = self.base_url + '?' + urllib.urlencode(params)
         return url

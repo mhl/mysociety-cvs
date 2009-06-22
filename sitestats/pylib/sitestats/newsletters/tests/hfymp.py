@@ -18,7 +18,4 @@ class HFYMPNewsletterTests(unittest.TestCase):
     def testRenderedToTextTemplateCorrectly(self):
         text = self.hfymp.render('text', self.sources).strip()
         expected_text = open(example_dir() + 'hfymp.txt').read().strip()
-        print text
-        print "***"
-        print expected_text
         self.assertEqual(expected_text, text, 'render produces correct output in text for example data')
