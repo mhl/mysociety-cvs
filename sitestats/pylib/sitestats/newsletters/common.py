@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: common.py,v 1.4 2009-06-18 14:06:57 louise Exp $
+# $Id: common.py,v 1.5 2009-06-22 11:43:03 louise Exp $
 #
 
 from datetime import date, timedelta
@@ -37,20 +37,46 @@ def percent_change(current, previous):
         formatted_percent =  "+%s" % (formatted_percent)
     return formatted_percent
 
-def send_newsletter(newsletter, date, sources, options):
+def send_mail(subject, date, content, email_from, email_to, format):
+    msg = EmailMessage("%s for %s" % (subject, date.strftime("%d/%m/%y")), content, email_from, [email_to])
+    if format == 'html':
+        msg.content_subtype = "html"  
+    msg.send()
+    
+def msg(message, options):
     if options.verbose:
-        if options.only:
-            print "Only sending mail to %s" % (options.only)
-        print "Getting data for %s newsletter" % (newsletter)
-    for subscription in newsletter.subscription_set.all():
-        format = subscription.user.profile.get_email_format_display()
-        content = newsletter.render(format, sources, date)
+        print message
+        
+def mail_separator(format, text):
+    if format == 'html':
+        return "<h2>%s</h2>" % (text)
+    else:
+        return "\n\n\n%s\n%s\n\n" % (text, len(text) * "=")
+        
+def send_newsletters(newsletter_types, date, sources, options):
+    if options.only:
+        msg("Only sending mail to %s" % (options.only), options)
+    combined_mails = {}
+    email_from = mysociety.config.get('MAIL_FROM')
     
-        if not options.only or subscription.user.username == options.only:
-            if options.verbose:
-                print "Sending %s format %s newsletter to %s" % (format, newsletter, subscription.user.email)
-            msg = EmailMessage("%s for %s" % (newsletter.subject, date.strftime("%d/%m/%y")), content, mysociety.config.get('MAIL_FROM'), [subscription.user.email])
-            if format == 'html':
-                msg.content_subtype = "html"  
-            msg.send()
+    for newsletter_type in newsletter_types:
+        for newsletter in newsletter_type.objects.all():
+            msg("Getting data for %s newsletter" % (newsletter), options)
+            for subscription in newsletter.subscription_set.all():
+                user = subscription.user
+                format = user.profile.get_email_format_display()
+                content = newsletter.render(format, sources, date)
     
+                if not options.only or user.username == options.only:
+                    
+                    if (user.profile.one_email):
+                        content_with_header = mail_separator(format, newsletter.subject) + content
+                        existing_content = combined_mails.setdefault(user, '') 
+                        combined_mails[user] = existing_content + content_with_header
+                    else:
+                        msg("Sending %s format %s newsletter to %s" % (format, newsletter, user.email), options)
+                        send_mail(newsletter.subject, date, content, email_from, user.email, format)
+                       
+    for user, content in combined_mails.items():
+        msg("Sending %s format combined newsletter to %s" % (format, user.email), options)
+        send_mail('Combined site statistics', date, content, email_from, user.email, user.profile.get_email_format_display())

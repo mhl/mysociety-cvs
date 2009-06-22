@@ -20,7 +20,7 @@ from django.contrib.auth.models import User
 from sitestats.newsletters.models import *
 from sitestats.newsletters.sources import piwik
 from sitestats.newsletters.sources import google
-from sitestats.newsletters.common import send_newsletter
+from sitestats.newsletters.common import send_newsletters
 
 ###############################################################################
 # Read parameters
@@ -58,6 +58,5 @@ newsletter_types = [CommonBaseMeasuresNewsletter,
 if options.newsletter:
     newsletter_types = [newsletter for newsletter in newsletter_types if newsletter.__name__ == options.newsletter]   
 
-for newsletter_type in newsletter_types:
-    for newsletter in newsletter_type.objects.all():
-        send_newsletter(newsletter, date, sources, options)
+send_newsletters(newsletter_types, date, sources, options)
+
