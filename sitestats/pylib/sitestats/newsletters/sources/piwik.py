@@ -5,13 +5,14 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.17 2009-06-22 16:40:30 louise Exp $
+# $Id: piwik.py,v 1.18 2009-06-22 18:54:55 louise Exp $
 #
 
 import urllib
 import simplejson
 import mysociety
 import re
+from sets import Set
 
 class Piwik:
     '''Interfaces with the Piwik API'''
@@ -142,7 +143,7 @@ class Piwik:
         return labels
         
     def top_referrers(self, site_id, period=None, date=None, limit=10):
-        '''Returns the top n referrers to the site in the period'''
+        '''Returns the top n referrers to the site in the period. Will not work with dates like "last1" or "previous1"'''
         sort_by = 'nb_visits'
         order = 'desc'
         key = self.__key(site_id, period, date)
@@ -150,14 +151,44 @@ class Piwik:
           self.referring_sites[key] = self.__referrer_api_result('getWebsites', site_id, date, period, sort_by, order)
         return self.__top_n_labels_from_list(self.referring_sites[key], limit)
    
-    def top_search_keywords(self, site_id, period=None, date=None, limit=10):
-        '''Returns the top n search keywords that brought users to the site in the period'''
+    def all_search_keywords(self, site_id, period=None, date=None):
         sort_by = 'nb_visits'
         order = 'desc'
         key = self.__key(site_id, period, date)
         if not self.referrer_keywords.has_key(key):
             self.referrer_keywords[key] = self.__referrer_api_result('getKeywords', site_id, date, period, sort_by, order)
-        return self.__top_n_labels_from_list(self.referrer_keywords[key], limit)
+        term_hits = {}
+        search_terms = self.__get_labels(self.referrer_keywords[key])
+        search_terms = list(Set(search_terms))
+        for search_term in search_terms:
+            term_hits[search_term] = self.__get_label_val(self.referrer_keywords[key], search_term, 'nb_visits')
+        return term_hits
+        
+    def top_search_keywords(self, site_id, period=None, date=None, limit=10):
+        '''Returns the top n search keywords that brought users to the site in the period. Will not work with dates like "last1" or "previous1"'''
+        term_counts = self.all_search_keywords(site_id, period, date)
+        term_counts = [ (count, term) for term, count in term_counts.items()]
+        term_counts.sort()
+        term_counts.reverse()
+        if limit:
+            term_counts = term_counts[:limit]
+        return [ term for (count, term) in term_counts ]
+    
+    def upcoming_search_keywords(self, site_id, limit=10):
+        '''Returns the top n "upcoming" search keywords that brought users to the site in previous week.'''
+        this_weeks_keywords = self.all_search_keywords(site_id, period="week", date="previous1")
+        previous_weeks_keywords =  self.all_search_keywords(site_id, period="week", date="prior1")
+        change_index = {}
+        for keyword in this_weeks_keywords.keys():
+            this_weeks_count = this_weeks_keywords[keyword]
+            last_weeks_count = previous_weeks_keywords.get(keyword, 0)
+            change_index[keyword] = (this_weeks_count - last_weeks_count) / (this_weeks_count + last_weeks_count)
+        change_index = [ (count, this_weeks_keywords[term], term) for term, count in change_index.items() ]
+        change_index.sort()
+        change_index.reverse()
+        if limit:
+            change_index = change_index[:limit]
+        return [ term for (change, absolute_count, term) in change_index ]
         
     def visits_from_referrer(self, site_id, referrer, period=None, date=None):
         '''Number of visits coming from a referring site in the period'''
@@ -245,7 +276,21 @@ class Piwik:
                 if item['label'] == label:
                     return item[key]  
         return 0
-    
+
+    def __get_labels(self, data):
+        """If 'data' is a list of hashes, get the value keyed by label from each hash. If 'data' is a hash, 
+        operate recursively for every list of hashes in the hash values and return a complete list of labels. """
+        labels = []
+        # dict keyed on dates of lists of values
+        if isinstance(data, dict):
+            for subhash in data.values():
+                labels += self.__get_labels(subhash) 
+        # lists of values
+        else:
+            for item in data:
+                labels.append(item['label'])  
+        return labels  
+          
     def __fraction(self, numerator, denominator):
         if numerator == 0:
             return 0

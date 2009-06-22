@@ -45,7 +45,7 @@ class TWFYNewsletter(Newsletter):
      
     def generate_search_keywords(self, sources, date):
         piwik = sources['piwik']
-        search_keywords = piwik.top_search_keywords(site_id=self.site_id, date=date, limit=20)
+        search_keywords = piwik.upcoming_search_keywords(site_id=self.site_id, limit=20)
         self.data['search_keywords'] = search_keywords
         
     def generate_referring_sites_data(self, sources, date):

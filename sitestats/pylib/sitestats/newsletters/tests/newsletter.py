@@ -129,7 +129,7 @@ class MockPiwik:
     def top_referrers(self, site_id, period=None, date=None, limit=None):
        return ['www.writetothem.com', 'en.wikipedia.org']
     
-    def top_search_keywords(self, site_id, period=None, date=None, limit=None):
+    def upcoming_search_keywords(self, site_id, period=None, date=None, limit=None):
         return ['stuff', 'more stuff']
         
     def percent_visits_from_referrer(self, site_id, referrer, period=None, date=None):

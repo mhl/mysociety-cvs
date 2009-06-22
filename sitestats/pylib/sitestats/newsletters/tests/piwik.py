@@ -237,5 +237,17 @@ class PiwikTests(unittest.TestCase):
         
     def testSiteLinkForPreviousFour(self):
         site_link = self.piwik.site_link(1, date="previous4")
-        expected_link = mysociety.config.get('PIWIK_BASE_URL') + "?format=XML&period=week&module=API&idSite=1&date=previous4&method=VisitSummary.get"
+        expected_link = mysociety.config.get('PIWIK_BASE_URL') + "?format=XML&period=week&module=API&idSite=1&date=previous4&method=VisitsSummary.get"
         self.assertEqual(expected_link, site_link, 'site link returns link to API for period that is not available in the interface')
+            
+    def testUpcomingSearchKeywords(self):
+        self.piwik.all_search_keywords = fake_search_keywords
+        upcoming_keywords = self.piwik.upcoming_search_keywords(1)
+        expected_keywords = ['c', 'd', 'e', 'b', 'a']
+        self.assertEqual(expected_keywords, upcoming_keywords, 'upcoming_search_keywords returns expected results for example data')
+
+def fake_search_keywords(site_id, period=None, date=None):
+    if date == 'previous1':
+        return {'a' : 21, 'b' : 25, 'c': 60, 'e' : 20, 'd': 50}
+    else:
+        return {'a': 22, 'b': 22}
