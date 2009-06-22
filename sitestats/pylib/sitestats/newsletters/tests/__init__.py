@@ -7,6 +7,7 @@ from fms import *
 from hfymp import *
 from pb import *
 from wtt import *
+from wdtk import *
 from common import *
 from newsletter import *
 
