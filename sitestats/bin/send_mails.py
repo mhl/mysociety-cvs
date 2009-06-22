@@ -52,7 +52,8 @@ newsletter_types = [CommonBaseMeasuresNewsletter,
                     FMSNewsletter, 
                     HFYMPNewsletter,
                     WTTNewsletter,
-                    PBNewsletter]                 
+                    PBNewsletter, 
+                    WDTKNewsletter]                 
                          
 if options.newsletter:
     newsletter_types = [newsletter for newsletter in newsletter_types if newsletter.__name__ == options.newsletter]   
