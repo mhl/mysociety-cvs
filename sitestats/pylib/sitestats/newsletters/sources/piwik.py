@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.15 2009-06-22 16:36:36 louise Exp $
+# $Id: piwik.py,v 1.16 2009-06-22 16:38:25 louise Exp $
 #
 
 import urllib
@@ -333,7 +333,7 @@ class Piwik:
                   'date'   : date, 
                   'idSite' : site_id}
         # Some values of date are only available through the API          
-        if date.startswith('last') or date.startswith('previous'):
+        if isinstance(date, basestring) and (date.startswith('last') or date.startswith('previous')):
             params['module'] = 'API'
             params['format'] = 'XML'
             params['method'] = 'VisitSummary.get'
