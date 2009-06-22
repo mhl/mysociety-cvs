@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.13 2009-06-22 15:00:17 louise Exp $
+# $Id: piwik.py,v 1.14 2009-06-22 16:00:49 louise Exp $
 #
 
 import urllib
@@ -53,7 +53,7 @@ class Piwik:
               
     def __api_result(self, params, result_type):
         prior_date =  self.prior_date(params)          
-        query_url = self.base_url + '&' + urllib.urlencode(params)
+        query_url = self.base_url + '?module=API&' + urllib.urlencode(params)
         response = urllib.urlopen(query_url)
         result = simplejson.loads(response.read())
         if type(result) == type({}) and result.has_key('result') and result['result'] == 'error':
@@ -324,3 +324,14 @@ class Piwik:
         site_list.sort(lambda x, y: cmp(x['name'].lower, y['name'].lower()))
         site_list.reverse()
         return site_list
+    
+    def site_link(self, site_id, period=None, date=None):
+        period = period or self.default_period
+        date = date or self.default_date
+        params = {'period' : period, 
+                  'date'   : date, 
+                  'idSite' : site_id, 
+                  'module' : 'CoreHome', 
+                  'action' : 'index'}
+        url = self.base_url + '?' + urllib.urlencode(params)
+        return url

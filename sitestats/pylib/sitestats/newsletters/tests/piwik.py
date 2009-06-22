@@ -1,4 +1,5 @@
 from sitestats.newsletters.sources import piwik
+import mysociety
 import unittest
 
 class SimpleApiUrl:
@@ -228,3 +229,9 @@ class PiwikTests(unittest.TestCase):
         keywords = self.piwik.top_search_keywords(1, limit=3)
         expected_keywords = ['a', 'b', 'c']
         self.assertEqual(expected_keywords, keywords, 'top_search_keywords returns expected results for example data')
+        
+    def testSiteLink(self):
+        '''Returns a link to the homepage for a site in the Piwik interface'''
+        site_link = self.piwik.site_link(1)
+        expected_link = mysociety.config.get('PIWIK_BASE_URL') + '?date=yesterday&action=index&idSite=1&period=week&module=CoreHome'
+        self.assertEqual(expected_link, site_link, 'site_link returns expected results for example data')

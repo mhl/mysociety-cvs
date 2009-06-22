@@ -32,11 +32,13 @@ class TWFYNewsletter(Newsletter):
         self.generate_search_keywords(sources, date)
        
     def render_data(self, format):
-     traffic_table = render_table(format, self.data['traffic_headers'], self.data['traffic_rows'])  
+     traffic_table = self.render_traffic_data(format)
      referring_sites_table = render_table(format, self.data['referring_sites_headers'], self.data['referring_sites_rows'])
-     template_params = {'traffic_table'         : traffic_table, 
-                        'referring_sites_table' : referring_sites_table, 
-                        'search_keywords'       : self.data['search_keywords']}
+     template_params = {'traffic_table'                  : traffic_table, 
+                        'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
+                        'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link'],
+                        'referring_sites_table'          : referring_sites_table, 
+                        'search_keywords'                : self.data['search_keywords']}
      file_ext = format_extension(format)
      rendered = render_to_string(self.template() + '.' + file_ext, template_params)
      return rendered

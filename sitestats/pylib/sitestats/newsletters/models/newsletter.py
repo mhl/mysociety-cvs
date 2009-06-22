@@ -37,12 +37,20 @@ class Newsletter(models.Model):
 
     def render_data(self, format):
      '''Default content for a newsletter - a table of site traffic stats'''
-     traffic_table = render_table(format, self.data['traffic_headers'], self.data['traffic_rows'])  
-     template_params = {'traffic_table' : traffic_table}
+     traffic_table = self.render_traffic_data(format)
+     template_params = {'traffic_table'                  : traffic_table, 
+                        'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
+                        'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link']
+                        }
      file_ext = format_extension(format)
      rendered = render_to_string(self.template() + '.' + file_ext, template_params)
      return rendered
-                 
+                
+    def render_traffic_data(self, format):
+        if format == 'text':
+          self.data['traffic_rows'] = self.data['traffic_rows'][:-1]
+        return render_table(format, self.data['traffic_headers'], self.data['traffic_rows'])
+
     def set_site_id(self, sources):
         sites = sources['piwik'].sites()
         for site in sites:
@@ -60,7 +68,19 @@ class Newsletter(models.Model):
             row = [header]
             row += self.get_traffic_data(stat, sources, unit, date)
             rows.append(row)
-
+        piwik = sources['piwik']
+        previous_week_link = piwik.site_link(site_id=self.site_id, date='previous1')
+        previous_four_weeks_link = piwik.site_link(site_id=self.site_id, date='previous4')
+        link_row = ['Piwik link', 
+                    {'current_value' : 'link', 
+                     'link' : previous_week_link}, 
+                    '', 
+                    {'current_value' : 'link', 
+                     'link' : previous_four_weeks_link},
+                    '']
+        rows.append(link_row)
+        self.data['piwik_previous_week_link'] = previous_week_link
+        self.data['piwik_previous_four_weeks_link'] = previous_four_weeks_link
         self.data['traffic_headers'] = headers
         self.data['traffic_rows'] = rows
 
