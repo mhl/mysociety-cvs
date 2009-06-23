@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.19 2009-06-23 14:25:36 louise Exp $
+# $Id: piwik.py,v 1.20 2009-06-23 14:41:04 louise Exp $
 #
 
 import urllib
@@ -340,20 +340,26 @@ class Piwik:
    
     def upcoming_search_keywords(self, site_id, limit=10):
        '''Returns the top n "upcoming" search keywords that brought users to the site in previous week.'''
-       this_weeks_keywords = self.all_search_keywords(site_id, period="week", date="previous1")
-       previous_weeks_keywords =  self.all_search_keywords(site_id, period="week", date="prior1")
-       change_index = {}
-       for keyword in this_weeks_keywords.keys():
-           this_weeks_count = this_weeks_keywords[keyword]
-           last_weeks_count = previous_weeks_keywords.get(keyword, 0)
-           change_index[keyword] = (this_weeks_count - last_weeks_count) / (this_weeks_count + last_weeks_count)
-       change_index = [ (count, this_weeks_keywords[term], term) for term, count in change_index.items() ]
-       change_index.sort()
-       change_index.reverse()
-       if limit:
-           change_index = change_index[:limit]
-       return [ term for (change, absolute_count, term) in change_index ]
+       return self.__get_upcoming(site_id, 'all_search_keywords', period, limit)
+       # this_weeks_keywords = self.all_search_keywords(site_id, period="week", date="previous1")
+
     
+    def __get_upcoming(self, site_id, method, period, limit=None):
+        method = getattr(self, method)
+        this_weeks_metric = method(site_id, period, date="previous1")
+        previous_weeks_metric = method(site_id, period, date="prior1")
+        change_index = {}
+        for key in this_weeks_metric.keys():
+            this_weeks_count = this_weeks_metric[key]
+            last_weeks_count = previous_weeks_metric.get(key, 0)
+            change_index[key] = (this_weeks_count - last_weeks_count) / (this_weeks_count + last_weeks_count)
+        change_index = [ (count, this_weeks_metric[term], term) for term, count in change_index.items() ]
+        change_index.sort()
+        change_index.reverse()
+        if limit:
+            change_index = change_index[:limit]
+        return [ term for (change, absolute_count, term) in change_index ]
+        
     def __get_top_n(self, data, limit=None):
         """Takes a hash of numeric values keyed by strings and returns a list of the top n (defaulting to all if no
         limit is supplied), sorted by value"""
