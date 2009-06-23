@@ -9,10 +9,11 @@ class TWFYNewsletterTests(unittest.TestCase):
         self.sources = {'piwik'  : MockPiwik()}
         self.twfy = TWFYNewsletter()
         self.twfy.set_site_id = lambda sources: None
+        self.twfy.base_url = 'http://www.theyworkforyou.com'
         
     def testRenderedToHTMLTemplateCorrectly(self):
         html = self.twfy.render('html', self.sources).strip()
-        expected_html = open(example_dir() + 'twfy.html').read().strip()
+        expected_html = open(example_dir() + 'twfy.html').read().strip()   
         self.assertEqual(expected_html, html, 'render produces correct output in HTML for example data')
         
     def testRenderedToTextTemplateCorrectly(self):

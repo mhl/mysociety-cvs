@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.20 2009-06-23 14:41:04 louise Exp $
+# $Id: piwik.py,v 1.21 2009-06-23 17:03:25 louise Exp $
 #
 
 import urllib
@@ -241,7 +241,7 @@ class Piwik:
         return the summed values. """
         # dict keyed on dates of lists of values
         if isinstance(data, dict):
-            return sum([self.__get_label_val(subhash, label, key) for subhash in data.values()])
+            return sum([int(self.__get_label_val(subhash, label, key)) for subhash in data.values()])
         # lists of values
         else:
             for item in data:
@@ -325,7 +325,7 @@ class Piwik:
             data = self.__get_label_val(data, label, 'subtable')
         return data
         
-    def all_search_keywords(self, site_id, period=None, date=None):
+    def search_keywords(self, site_id, period=None, date=None):
         sort_by = 'nb_visits'
         order = 'desc'
         key = self.__key(site_id, period, date)
@@ -335,25 +335,23 @@ class Piwik:
        
     def top_search_keywords(self, site_id, period=None, date=None, limit=10):
         '''Returns the top n search keywords that brought users to the site in the period.'''
-        term_counts = self.all_search_keywords(site_id, period, date)
+        term_counts = self.search_keywords(site_id, period, date)
         return self.__get_top_n(term_counts, limit)
    
-    def upcoming_search_keywords(self, site_id, limit=10):
-       '''Returns the top n "upcoming" search keywords that brought users to the site in previous week.'''
-       return self.__get_upcoming(site_id, 'all_search_keywords', period, limit)
-       # this_weeks_keywords = self.all_search_keywords(site_id, period="week", date="previous1")
-
-    
-    def __get_upcoming(self, site_id, method, period, limit=None):
-        method = getattr(self, method)
-        this_weeks_metric = method(site_id, period, date="previous1")
-        previous_weeks_metric = method(site_id, period, date="prior1")
+    def upcoming_search_keywords(self, site_id, period=None, limit=10):
+       '''Returns the top n "upcoming" search keywords that brought users to the site in the period.'''
+       period = period or self.default_period
+       this_week = self.search_keywords(site_id, period, date="previous1")
+       previous_week = self.search_keywords(site_id, period, date="prior1")
+       return self.__get_upcoming(this_week, previous_week, limit)
+       
+    def __get_upcoming(self, this_week, last_week, limit=None):
         change_index = {}
-        for key in this_weeks_metric.keys():
-            this_weeks_count = this_weeks_metric[key]
-            last_weeks_count = previous_weeks_metric.get(key, 0)
+        for key in this_week.keys():
+            this_weeks_count = this_week[key]
+            last_weeks_count = last_week.get(key, 0)
             change_index[key] = (this_weeks_count - last_weeks_count) / (this_weeks_count + last_weeks_count)
-        change_index = [ (count, this_weeks_metric[term], term) for term, count in change_index.items() ]
+        change_index = [ (count, this_week[term], term) for term, count in change_index.items() ]
         change_index.sort()
         change_index.reverse()
         if limit:
@@ -381,19 +379,31 @@ class Piwik:
             values[label] = self.__get_label_val(data, label, key)
         return values
          
-    def children(self, site_id, root, period=None, date=None):
+    def children(self, site_id, root, period=None, date=None, exclude=[]):
         '''Return a hash of all child paths under the path "root" with value being the number of hits to the child
         path in the period'''
         key = self.__key(site_id, period, date)
-        self.actions_data[key] = self.__actions_api_result('getActions', site_id, date, period)  
+        key = "%s%s" % (key, root)
+        if not self.actions_data.has_key(key):
+            self.actions_data[key] = self.__actions_api_result('getActions', site_id, date, period)  
         path_data = self.__flatten_data(self.actions_data[key], root)
-        return self.__get_hash_of_values(path_data, 'nb_hits')
+        children =  self.__get_hash_of_values(path_data, 'nb_hits')
+        for key in exclude:
+            del children[key]
+        return children
         
-    def top_children(self, site_id, root, period=None, date=None, limit=10):
+    def top_children(self, site_id, root, period=None, date=None, limit=10, exclude=[]):
         '''Returns the most visited content under the path "root" on the site in the period (by hits)'''
-        children = self.children(site_id, root, period, date)
+        children = self.children(site_id, root, period, date, exclude=exclude)
         return self.__get_top_n(children, limit)
         
+    def upcoming_children(self, site_id, root, period=None, limit=10, exclude=[]):
+       '''Returns the top n "upcoming" content paths under the path "root" on the site in the period (by hits).'''
+       period = period or self.default_period
+       this_week = self.children(site_id, root, period, date="previous1", exclude=exclude)
+       previous_week = self.children(site_id, root, period, date="prior1", exclude=exclude)
+       return self.__get_upcoming(this_week, previous_week, limit)
+       
     def site_ids(self):
         '''Returns a list of site ids'''
         site_id_lists = self.__sites_api_result('getAllSitesId')

@@ -56,6 +56,7 @@ class Newsletter(models.Model):
         for site in sites:
             if site['name'].lower() == self.site_name.lower():
                 self.site_id = site['id']
+                self.base_url = site['main_url']
         if not self.site_id:
             raise NewsletterException("Couldn't find %s in piwik sites list" % self.site_name)
             

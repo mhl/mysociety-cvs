@@ -185,14 +185,12 @@ class PiwikTests(unittest.TestCase):
         self.assertEqual(604, parliament_visits, 'visits_from_parliament returns the expected figure for example data')
         
     def testVisitsFromParliamentSummed(self):
-        self.fake_api_response("""{"2009-06-16":[{"label":"Parliament","nb_uniq_visitors":153,"nb_visits":440,"nb_actions":2589,"max_actions":151,"sum_visit_length":144615,"bounce_count":173,"nb_visits_converted":0,"url":"http:\/\/www.parliament.uk\/"},
-                                                 {"label":"As9105","nb_uniq_visitors":368,"nb_visits":401,"nb_actions":1230,"max_actions":45,"sum_visit_length":93719,"bounce_count":227,"nb_visits_converted":0,"url":"http:\/\/www.as9105.com\/"},
+        self.fake_api_response("""{"2003-06-01":[{"label":"Parliament","nb_uniq_visitors":153,"nb_visits":440,"nb_actions":2589,"max_actions":151,"sum_visit_length":144615,"bounce_count":173,"nb_visits_converted":0,"url":"http:\/\/www.parliament.uk\/"},
                                                  {"label":"Sky","nb_uniq_visitors":373,"nb_visits":388,"nb_actions":1117,"max_actions":97,"sum_visit_length":50671,"bounce_count":227,"nb_visits_converted":0,"url":"http:\/\/www.sky.com\/"},
                                                  {"label":"Gov","nb_uniq_visitors":187,"nb_visits":308,"nb_actions":1754,"max_actions":144,"sum_visit_length":96181,"bounce_count":143,"nb_visits_converted":0,"url":"http:\/\/www.gov.uk\/"},
                                                  {"label":"Ac","nb_uniq_visitors":262,"nb_visits":281,"nb_actions":761,"max_actions":42,"sum_visit_length":41073,"bounce_count":178,"nb_visits_converted":0,"url":"http:\/\/www.ac.uk\/"}],
-                                   "2009-06-17":[{"label":"Parliament","nb_uniq_visitors":156,"nb_visits":604,"nb_actions":2890,"max_actions":136,"sum_visit_length":153454,"bounce_count":313,"nb_visits_converted":0,"url":"http:\/\/www.parliament.uk\/"},
+                                   "2004-06-02":[{"label":"Parliament","nb_uniq_visitors":156,"nb_visits":604,"nb_actions":2890,"max_actions":136,"sum_visit_length":153454,"bounce_count":313,"nb_visits_converted":0,"url":"http:\/\/www.parliament.uk\/"},
                                                  {"label":"Blueyonder","nb_uniq_visitors":522,"nb_visits":599,"nb_actions":2405,"max_actions":146,"sum_visit_length":106125,"bounce_count":371,"nb_visits_converted":0,"url":"http:\/\/www.blueyonder.co.uk\/"},
-                                                 {"label":"As9105","nb_uniq_visitors":458,"nb_visits":557,"nb_actions":1561,"max_actions":55,"sum_visit_length":98770,"bounce_count":336,"nb_visits_converted":0,"url":"http:\/\/www.as9105.com\/"},
                                                  {"label":"Sky","nb_uniq_visitors":442,"nb_visits":456,"nb_actions":1186,"max_actions":39,"sum_visit_length":54846,"bounce_count":266,"nb_visits_converted":0,"url":"http:\/\/www.sky.com\/"}]}""")
         parliament_visits = self.piwik.visits_from_parliament(1, period='day')
         self.assertEqual(1044, parliament_visits, 'visits_from_parliament returns the expected figure for summed example data')
@@ -213,13 +211,13 @@ class PiwikTests(unittest.TestCase):
         self.assertEqual(134849, bounce_count, 'bounces returns the expected figure when summing over a period')
     
     def testTopReferrers(self):
-        self.fake_api_response('[{"label":"www.writetothem.com","nb_uniq_visitors":907,"nb_visits":941,"nb_actions":3085,"max_actions":169,"sum_visit_length":168633,"bounce_count":346,"idsubdatatable":29407},{"label":"en.wikipedia.org","nb_uniq_visitors":770,"nb_visits":783,"nb_actions":2493,"max_actions":229,"sum_visit_length":125549,"bounce_count":429,"idsubdatatable":29141},{"label":"search.virginmedia.com","nb_uniq_visitors":179,"nb_visits":181,"nb_actions":362,"max_actions":84,"sum_visit_length":11796,"bounce_count":120,"idsubdatatable":29193},{"label":"www.number10.gov.uk","nb_uniq_visitors":165,"nb_visits":171,"nb_actions":469,"max_actions":96,"sum_visit_length":47134,"bounce_count":92,"idsubdatatable":29352},{"label":"www.mumsnet.com","nb_uniq_visitors":153,"nb_visits":154,"nb_actions":196,"max_actions":15,"sum_visit_length":5214,"bounce_count":133,"idsubdatatable":29658},{"label":"uk.answers.yahoo.com","nb_uniq_visitors":140,"nb_visits":140,"nb_actions":266,"max_actions":55,"sum_visit_length":10676,"bounce_count":94,"idsubdatatable":29213},{"label":"www.google.co.uk","nb_uniq_visitors":130,"nb_visits":134,"nb_actions":383,"max_actions":116,"sum_visit_length":20370,"bounce_count":81,"idsubdatatable":29298},{"label":"www.facebook.com","nb_uniq_visitors":125,"nb_visits":129,"nb_actions":295,"max_actions":56,"sum_visit_length":16227,"bounce_count":73,"idsubdatatable":29288},{"label":"www.publicwhip.org.uk","nb_uniq_visitors":110,"nb_visits":112,"nb_actions":608,"max_actions":229,"sum_visit_length":32131,"bounce_count":43,"idsubdatatable":29366},{"label":"search.orange.co.uk","nb_uniq_visitors":84,"nb_visits":85,"nb_actions":249,"max_actions":117,"sum_visit_length":9331,"bounce_count":54,"idsubdatatable":29192}]')
+        self.fake_api_response('[{"label":"www.writetothem.com","nb_uniq_visitors":907,"nb_visits":941,"nb_actions":3085,"max_actions":169,"sum_visit_length":168633,"bounce_count":346,"idsubdatatable":29407},{"label":"en.wikipedia.org","nb_uniq_visitors":770,"nb_visits":783,"nb_actions":2493,"max_actions":229,"sum_visit_length":125549,"bounce_count":429,"idsubdatatable":29141},{"label":"search.virginmedia.com","nb_uniq_visitors":179,"nb_visits":181,"nb_actions":362,"max_actions":84,"sum_visit_length":11796,"bounce_count":120,"idsubdatatable":29193}]')
         referrers = self.piwik.top_referrers(1, limit=3)
         expected_referrers = ['www.writetothem.com', 'en.wikipedia.org', 'search.virginmedia.com']
         self.assertEqual(expected_referrers, referrers, 'top_referrers returns the expected results for an example dataset')
     
     def testPercentVisitsFromReferrer(self):
-        self.fake_api_response('{"2009-06-15 to 2009-06-21":[{"label":"www.facebook.com","nb_visits":99,"nb_actions":275,"max_actions":56,"sum_visit_length":18961,"bounce_count":62,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":96,"idsubdatatable":1432},{"label":"members.myfootballclub.co.uk","nb_visits":78,"nb_actions":260,"max_actions":35,"sum_visit_length":41586,"bounce_count":31,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":64,"idsubdatatable":1433}]}')
+        self.fake_api_response('{"2009-06-15 to 2009-06-21":[{"label":"www.facebook.com","nb_visits":99,"nb_actions":275,"max_actions":56,"sum_visit_length":18961,"bounce_count":62,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":96,"idsubdatatable":1432}]}')
         visits_from_facebook = self.piwik.visits_from_referrer(1, referrer='www.facebook.com')
         expected_visits = 99
         self.assertEqual(expected_visits, visits_from_facebook, 'visits_from referrer returns expected results for example data')
@@ -241,37 +239,41 @@ class PiwikTests(unittest.TestCase):
         self.assertEqual(expected_link, site_link, 'site link returns link to API for period that is not available in the interface')
             
     def testUpcomingSearchKeywords(self):
-        self.piwik.all_search_keywords = fake_search_keywords
+        self.piwik.search_keywords = fake_search_keywords
         upcoming_keywords = self.piwik.upcoming_search_keywords(1)
         expected_keywords = ['c', 'd', 'e', 'b', 'a']
         self.assertEqual(expected_keywords, upcoming_keywords, 'upcoming_search_keywords returns expected results for example data')
 
     def test_children(self):
-        self.fake_api_response("""{"2009-06-22":[{"label":"mp",
+        self.fake_api_response("""{"2003-02-22":[{"label":"mp",
                                                   "nb_visits":10296,
                                                   "nb_hits":14340,
                                                   "entry_nb_visits":6100,
-                                                  "subtable":[{"label":"john_bercow",
+                                                  "subtable":[{"label":"person_a",
                                                                 "nb_visits":1459,
                                                                 "nb_hits":1969,
                                                                 "entry_nb_visits":1143 },
-                                                              {"label":"margaret_beckett",
+                                                              {"label":"person_b",
                                                                "nb_visits":266,
                                                                "nb_hits":361,
-                                                               "entry_nb_visits":161}]
+                                                               "entry_nb_visits":161},
+                                                               {"label":"/index",
+                                                                  "nb_visits":266,
+                                                                  "nb_hits":361,
+                                                                  "entry_nb_visits":161}]
                                                     },
                                                     {"label":"mps",
                                                     "nb_visits":1059,
                                                     "nb_hits":1934,
                                                     "entry_nb_visits":513}]}""")
-        children = self.piwik.children(1, 'mp')
-        expected_children = {'john_bercow' : 1969, 'margaret_beckett' : 361 }
+        children = self.piwik.children(1, 'mp', exclude=['/index'])
+        expected_children = {'person_a' : 1969, 'person_b' : 361 }
         self.assertEqual(expected_children, children, 'children produces expected results for example data')
         
     def test_top_children(self):
-        self.piwik.children = lambda site_id, root, period, date: {'john_bercow' : 1459, 'margaret_beckett' : 266 }
+        self.piwik.children = lambda site_id, root, period, date, exclude: {'person_a' : 1459, 'person_b' : 266 }
         top_children = self.piwik.top_children(1, 'mp')
-        expected_children = ['john_bercow', 'margaret_beckett']
+        expected_children = ['person_a', 'person_b']
         self.assertEqual(expected_children, top_children, 'top_children produces expected results for example data')
 
 def fake_search_keywords(site_id, period=None, date=None):
