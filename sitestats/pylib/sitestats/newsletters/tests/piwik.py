@@ -246,6 +246,34 @@ class PiwikTests(unittest.TestCase):
         expected_keywords = ['c', 'd', 'e', 'b', 'a']
         self.assertEqual(expected_keywords, upcoming_keywords, 'upcoming_search_keywords returns expected results for example data')
 
+    def test_children(self):
+        self.fake_api_response("""{"2009-06-22":[{"label":"mp",
+                                                  "nb_visits":10296,
+                                                  "nb_hits":14340,
+                                                  "entry_nb_visits":6100,
+                                                  "subtable":[{"label":"john_bercow",
+                                                                "nb_visits":1459,
+                                                                "nb_hits":1969,
+                                                                "entry_nb_visits":1143 },
+                                                              {"label":"margaret_beckett",
+                                                               "nb_visits":266,
+                                                               "nb_hits":361,
+                                                               "entry_nb_visits":161}]
+                                                    },
+                                                    {"label":"mps",
+                                                    "nb_visits":1059,
+                                                    "nb_hits":1934,
+                                                    "entry_nb_visits":513}]}""")
+        children = self.piwik.children(1, 'mp')
+        expected_children = {'john_bercow' : 1969, 'margaret_beckett' : 361 }
+        self.assertEqual(expected_children, children, 'children produces expected results for example data')
+        
+    def test_top_children(self):
+        self.piwik.children = lambda site_id, root, period, date: {'john_bercow' : 1459, 'margaret_beckett' : 266 }
+        top_children = self.piwik.top_children(1, 'mp')
+        expected_children = ['john_bercow', 'margaret_beckett']
+        self.assertEqual(expected_children, top_children, 'top_children produces expected results for example data')
+
 def fake_search_keywords(site_id, period=None, date=None):
     if date == 'previous1':
         return {'a' : 21, 'b' : 25, 'c': 60, 'e' : 20, 'd': 50}

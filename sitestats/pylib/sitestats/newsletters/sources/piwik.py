@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.18 2009-06-22 18:54:55 louise Exp $
+# $Id: piwik.py,v 1.19 2009-06-23 14:25:36 louise Exp $
 #
 
 import urllib
@@ -28,6 +28,7 @@ class Piwik:
         self.visit_summaries = {}
         self.referring_sites = {}
         self.referrer_keywords = {}
+        self.actions_data = {}
         self.results_to_keep = None
 
     def prior_date(self, params):
@@ -52,7 +53,7 @@ class Piwik:
         self.results_to_keep = None
         return prior_result      
               
-    def __api_result(self, params, result_type):
+    def __api_result(self, params):
         prior_date =  self.prior_date(params)          
         query_url = self.base_url + '?module=API&' + urllib.urlencode(params)
         response = urllib.urlopen(query_url)
@@ -74,7 +75,7 @@ class Piwik:
                          'date': date, 
                          'period': period }
         params.update(visit_params)
-        result = self.__api_result(params, result_type='structure')
+        result = self.__api_result(params)
         return result
         
     def __get_value_from_nested_hash(self, hash, key):
@@ -99,6 +100,16 @@ class Piwik:
             self.visit_summaries[summary_key] = self.__get_visit_summaries_api_result(site_id, date, period)
         value = self.__get_value_from_nested_hash(self.visit_summaries[summary_key], key)
         return value
+    
+    def __actions_api_result(self, method, site_id, date, period):
+        params = self.__default_params()
+        actions_params = { 'method' : 'Actions.' + method, 
+                          'idSite' : site_id, 
+                          'date'   : date or self.default_date, 
+                          'period' : period or self.default_period, 
+                          'expanded' : 1 }
+        params.update(actions_params)
+        return self.__api_result(params)
         
     def __provider_api_result(self, method, site_id, date, period):
         params = self.__default_params()
@@ -107,7 +118,7 @@ class Piwik:
                             'date': date or self.default_date, 
                             'period': period or self.default_period }    
         params.update(referrer_params)
-        return self.__api_result(params, result_type='structure')
+        return self.__api_result(params)
         
     def __sites_api_result(self, method, site_id=None):
         params = self.__default_params()
@@ -115,7 +126,7 @@ class Piwik:
         if site_id:
             site_params['idSite'] = site_id
         params.update(site_params)
-        return self.__api_result(params, result_type='structure')
+        return self.__api_result(params)
 
     def __referrer_api_result(self, method, site_id, date, period, sort_by=None, order=None):
         params = self.__default_params()
@@ -128,7 +139,7 @@ class Piwik:
         if order:
             referrer_params['filter_sort_order'] = order
         params.update(referrer_params)
-        return self.__api_result(params, result_type='structure')
+        return self.__api_result(params)
 
     def __percent_of_visits(self, number_of_visits, site_id, period, date):
         visits = self.visits(site_id, period, date)
@@ -150,45 +161,6 @@ class Piwik:
         if not self.referring_sites.has_key(key):
           self.referring_sites[key] = self.__referrer_api_result('getWebsites', site_id, date, period, sort_by, order)
         return self.__top_n_labels_from_list(self.referring_sites[key], limit)
-   
-    def all_search_keywords(self, site_id, period=None, date=None):
-        sort_by = 'nb_visits'
-        order = 'desc'
-        key = self.__key(site_id, period, date)
-        if not self.referrer_keywords.has_key(key):
-            self.referrer_keywords[key] = self.__referrer_api_result('getKeywords', site_id, date, period, sort_by, order)
-        term_hits = {}
-        search_terms = self.__get_labels(self.referrer_keywords[key])
-        search_terms = list(Set(search_terms))
-        for search_term in search_terms:
-            term_hits[search_term] = self.__get_label_val(self.referrer_keywords[key], search_term, 'nb_visits')
-        return term_hits
-        
-    def top_search_keywords(self, site_id, period=None, date=None, limit=10):
-        '''Returns the top n search keywords that brought users to the site in the period. Will not work with dates like "last1" or "previous1"'''
-        term_counts = self.all_search_keywords(site_id, period, date)
-        term_counts = [ (count, term) for term, count in term_counts.items()]
-        term_counts.sort()
-        term_counts.reverse()
-        if limit:
-            term_counts = term_counts[:limit]
-        return [ term for (count, term) in term_counts ]
-    
-    def upcoming_search_keywords(self, site_id, limit=10):
-        '''Returns the top n "upcoming" search keywords that brought users to the site in previous week.'''
-        this_weeks_keywords = self.all_search_keywords(site_id, period="week", date="previous1")
-        previous_weeks_keywords =  self.all_search_keywords(site_id, period="week", date="prior1")
-        change_index = {}
-        for keyword in this_weeks_keywords.keys():
-            this_weeks_count = this_weeks_keywords[keyword]
-            last_weeks_count = previous_weeks_keywords.get(keyword, 0)
-            change_index[keyword] = (this_weeks_count - last_weeks_count) / (this_weeks_count + last_weeks_count)
-        change_index = [ (count, this_weeks_keywords[term], term) for term, count in change_index.items() ]
-        change_index.sort()
-        change_index.reverse()
-        if limit:
-            change_index = change_index[:limit]
-        return [ term for (change, absolute_count, term) in change_index ]
         
     def visits_from_referrer(self, site_id, referrer, period=None, date=None):
         '''Number of visits coming from a referring site in the period'''
@@ -342,6 +314,79 @@ class Piwik:
         visits = self.visits(site_id, period, date)
         bounce_fraction = self.__fraction(bounces, visits)
         return self.__percent(bounces, visits)
+        
+    def __flatten_data(self, data, label):
+        '''Flatten a data structure, replacing each value (a list) with the "subtable" value of the list item
+        whose label is "label"'''
+        if isinstance(data, dict):
+            for key, value in data.items():
+                data[key] = self.__flatten_data(data[key], label)
+        else: 
+            data = self.__get_label_val(data, label, 'subtable')
+        return data
+        
+    def all_search_keywords(self, site_id, period=None, date=None):
+        sort_by = 'nb_visits'
+        order = 'desc'
+        key = self.__key(site_id, period, date)
+        if not self.referrer_keywords.has_key(key):
+            self.referrer_keywords[key] = self.__referrer_api_result('getKeywords', site_id, date, period, sort_by, order)
+        return self.__get_hash_of_values(self.referrer_keywords[key], 'nb_visits')
+       
+    def top_search_keywords(self, site_id, period=None, date=None, limit=10):
+        '''Returns the top n search keywords that brought users to the site in the period.'''
+        term_counts = self.all_search_keywords(site_id, period, date)
+        return self.__get_top_n(term_counts, limit)
+   
+    def upcoming_search_keywords(self, site_id, limit=10):
+       '''Returns the top n "upcoming" search keywords that brought users to the site in previous week.'''
+       this_weeks_keywords = self.all_search_keywords(site_id, period="week", date="previous1")
+       previous_weeks_keywords =  self.all_search_keywords(site_id, period="week", date="prior1")
+       change_index = {}
+       for keyword in this_weeks_keywords.keys():
+           this_weeks_count = this_weeks_keywords[keyword]
+           last_weeks_count = previous_weeks_keywords.get(keyword, 0)
+           change_index[keyword] = (this_weeks_count - last_weeks_count) / (this_weeks_count + last_weeks_count)
+       change_index = [ (count, this_weeks_keywords[term], term) for term, count in change_index.items() ]
+       change_index.sort()
+       change_index.reverse()
+       if limit:
+           change_index = change_index[:limit]
+       return [ term for (change, absolute_count, term) in change_index ]
+    
+    def __get_top_n(self, data, limit=None):
+        """Takes a hash of numeric values keyed by strings and returns a list of the top n (defaulting to all if no
+        limit is supplied), sorted by value"""
+        data = [ (value, key) for key, value in data.items()]
+        data.sort()
+        data.reverse()
+        if limit:
+            data = data[:limit]
+        return [ key for (value, key) in data ]
+        
+    def __get_hash_of_values(self, data, key):
+        """Maps a list of hashes to a hash that is keyed by the 'label' values in the original hashes, and whose values
+        are the values keyed by 'key'. For a hash (assumed to have list values), performs the same operation for each list
+        value and sums the key values for the same label"""
+        values = {}
+        labels = self.__get_labels(data)
+        labels = list(Set(labels))
+        for label in labels:
+            values[label] = self.__get_label_val(data, label, key)
+        return values
+         
+    def children(self, site_id, root, period=None, date=None):
+        '''Return a hash of all child paths under the path "root" with value being the number of hits to the child
+        path in the period'''
+        key = self.__key(site_id, period, date)
+        self.actions_data[key] = self.__actions_api_result('getActions', site_id, date, period)  
+        path_data = self.__flatten_data(self.actions_data[key], root)
+        return self.__get_hash_of_values(path_data, 'nb_hits')
+        
+    def top_children(self, site_id, root, period=None, date=None, limit=10):
+        '''Returns the most visited content under the path "root" on the site in the period (by hits)'''
+        children = self.children(site_id, root, period, date)
+        return self.__get_top_n(children, limit)
         
     def site_ids(self):
         '''Returns a list of site ids'''
