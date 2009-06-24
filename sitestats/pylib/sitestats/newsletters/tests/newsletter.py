@@ -147,7 +147,10 @@ class MockPiwik:
             return 'http://previous.4.link'
         else:
             return 'http://previous.1.link'   
-            
+
+    def top_roots_and_percent_visits(self, site_id, period=None, date=None, limit=10):
+        return [('mp', 92),('mps', 1)] 
+
     def top_children(self, site_id, root, period=None, date=None, limit=None, exclude=[], include=[]):
         if root == 'mp':
             return ['anne_person', 'bob_person']

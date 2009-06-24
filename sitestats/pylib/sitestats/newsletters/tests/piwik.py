@@ -262,30 +262,49 @@ class PiwikTests(unittest.TestCase):
                                     "nb_visits":1059,
                                     "nb_hits":1934,
                                     "entry_nb_visits":513}]}"""
-    def test_children(self):
+    def testChildren(self):
         self.fake_api_response(self.fake_mp_data())
-        children = self.piwik.children(7, 'mp', date='last1')
+        children = self.piwik.children(1, 'mp', date='last1')
         expected_children = {'person_a' : 1969, 'person_b' : 361 }
         self.assertEqual(expected_children, children, 'children produces expected results for example data')
         
-    def text_children_with_exclude(self):
+    def testChildrenWithExclude(self):
         self.fake_api_response(self.fake_mp_data())
         children = self.piwik.children(7, 'mp', date='last1', exclude=['person_a'])
         expected_children = {'person_b' : 361 }
         self.assertEqual(expected_children, children, 'children produces expected results for example data when given an exclude list')
  
-    def text_children_with_include(self):
+    def testChildrenWithInclude(self):
         self.fake_api_response(self.fake_mp_data())
         children = self.piwik.children(7, 'mp', date='last1', include=['person_a'])
         expected_children = {'person_a' : 1969 }
         self.assertEqual(expected_children, children, 'children produces expected results for example data when given an include list')
  
-    def test_top_children(self):
+    def testTopChildren(self):
         self.piwik.children = lambda site_id, root, period, date, exclude, include: {'person_a' : 1459, 'person_b' : 266 }
         top_children = self.piwik.top_children(1, 'mp')
         expected_children = ['person_a', 'person_b']
         self.assertEqual(expected_children, top_children, 'top_children produces expected results for example data')
 
+    def testRoots(self):
+        self.fake_api_response(self.fake_mp_data())
+        roots = self.piwik.roots(1, date="last1")
+        expected_roots = {'mp': 10296, 'mps': 1059}
+        self.assertEqual(expected_roots, roots, 'roots produces expected content for example data')
+    
+    def testTopRoots(self):
+        self.piwik.roots = lambda site_id, period, date: {'mp': 10296, 'mps': 1059}
+        top_roots = self.piwik.top_roots(1)
+        expected_roots = ['mp', 'mps']
+        self.assertEqual(expected_roots, top_roots, 'top_roots produces expected results for example data')
+    
+    def testTopRootsAndPercentVisits(self):
+        self.piwik.top_roots = lambda site_id, period, date, limit, keep_values: [('mp', 10296), ('mps', 159)]
+        self.piwik.visits = lambda site_id, period, date : 11100
+        roots_and_percent_visits = self.piwik.top_roots_and_percent_visits(1)
+        expected_roots = [('mp', 93),('mps', 1)]
+        self.assertEqual(expected_roots, roots_and_percent_visits, 'top_roots_and_percent_visits produces expected results for example data')
+        
 def fake_search_keywords(site_id, period=None, date=None):
     if date == 'previous1':
         return {'a' : 21, 'b' : 25, 'c': 60, 'e' : 20, 'd': 50}

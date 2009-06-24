@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.22 2009-06-24 11:20:46 louise Exp $
+# $Id: piwik.py,v 1.23 2009-06-24 14:13:33 louise Exp $
 #
 
 import urllib
@@ -335,10 +335,10 @@ class Piwik:
             self.referrer_keywords[key] = self.__referrer_api_result('getKeywords', site_id, date, period, sort_by, order)
         return self.__get_hash_of_values(self.referrer_keywords[key], 'nb_visits')
        
-    def top_search_keywords(self, site_id, period=None, date=None, limit=10):
+    def top_search_keywords(self, site_id, period=None, date=None, limit=10, keep_values=False):
         '''Returns the top n search keywords that brought users to the site in the period.'''
         term_counts = self.search_keywords(site_id, period, date)
-        return self.__get_top_n(term_counts, limit)
+        return self.__get_top_n(term_counts, limit, keep_values=keep_values)
    
     def upcoming_search_keywords(self, site_id, period=None, limit=10):
        '''Returns the top n "upcoming" search keywords that brought users to the site in the period.'''
@@ -360,7 +360,7 @@ class Piwik:
             change_index = change_index[:limit]
         return [ term for (change, absolute_count, term) in change_index ]
         
-    def __get_top_n(self, data, limit=None):
+    def __get_top_n(self, data, limit=None, keep_values=False):
         """Takes a hash of numeric values keyed by strings and returns a list of the top n (defaulting to all if no
         limit is supplied), sorted by value"""
         data = [ (value, key) for key, value in data.items()]
@@ -368,7 +368,11 @@ class Piwik:
         data.reverse()
         if limit:
             data = data[:limit]
-        return [ key for (value, key) in data ]
+        if keep_values:
+            data = [ (key, value) for (value, key) in data ]
+        else:
+            data = [ key for (value, key) in data ]
+        return data
         
     def __get_hash_of_values(self, data, key):
         """Maps a list of hashes to a hash that is keyed by the 'label' values in the original hashes, and whose values
@@ -384,6 +388,7 @@ class Piwik:
     def children(self, site_id, root, period=None, date=None, exclude=[], include=[]):
         '''Return a hash of all child paths under the path "root" with value being the number of hits to the child
         path in the period'''
+        period = period or self.default_period
         key = self.__key(site_id, period, date)
         if not self.actions_data.has_key(key):
             self.actions_data[key] = self.__actions_api_result('getActions', site_id, date, period)  
@@ -402,22 +407,40 @@ class Piwik:
                         included[key] = children[key]
             children = included
         return children
+    
+    def roots(self, site_id, period=None, date=None):
+        '''Return a hash of all root paths under the site with value being the number of visits to the root
+        path in the period'''
+        period = period or self.default_period 
+        key = self.__key(site_id, period, date)
+        if not self.actions_data.has_key(key):
+            self.actions_data[key] = self.__actions_api_result('getActions', site_id, date, period)
+        roots =  self.__get_hash_of_values(self.actions_data[key], 'nb_visits')
+        return roots
         
-    def top_children(self, site_id, root, period=None, date=None, limit=10, exclude=[], include=[]):
+    def top_roots(self, site_id, period=None, date=None, limit=10, keep_values=False):
+        '''Returns the most visited top level paths on the site in this period (by visits). '''    
+        roots = self.roots(site_id, period, date)
+        return self.__get_top_n(roots, limit, keep_values=keep_values)
+        
+    def top_roots_and_percent_visits(self, site_id, period=None, date=None, limit=10):
+        top_roots = self.top_roots(site_id, period, date, limit, keep_values=True)
+        top_roots = [ (root, self.__percent_of_visits(num_visits, site_id, period, date)) for (root, num_visits) in top_roots ]
+        return top_roots
+        
+    def top_children(self, site_id, root, period=None, date=None, limit=10, exclude=[], include=[], keep_values=False):
         '''Returns the most visited content under the path "root" on the site in the period (by hits).
         Items that match any label in "exclude" will not be returned. If "include" is not empty, only labels
         that match some element in "include" will be returned. Items in "exclude" and "include" can take the
         form of regular expressions.'''
-        period = period or self.default_period
         children = self.children(site_id, root, period, date, exclude=exclude, include=include)
-        return self.__get_top_n(children, limit)
+        return self.__get_top_n(children, limit, keep_values=keep_values)
         
     def upcoming_children(self, site_id, root, period=None, limit=10, exclude=[], include=[]):
        '''Returns the top n "upcoming" content paths under the path "root" on the site in the period (by hits).
        Items that match any label in "exclude" will not be returned. If "include" is not empty, only labels
        that match some element in "include" will be returned. Items in "exclude" and "include" can take the
        form of regular expressions.'''
-       period = period or self.default_period
        this_week = self.children(site_id, root, period, date="previous1", exclude=exclude, include=include)
        previous_week = self.children(site_id, root, period, date="prior1", exclude=exclude, include=include)
        return self.__get_upcoming(this_week, previous_week, limit)

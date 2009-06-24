@@ -1,10 +1,6 @@
 <strong>Traffic to this site</strong>
 {{ traffic_table }}
 <div style="margin-top: 20px">
-<strong>Top 10 referring websites this week</strong>
-{{ referring_sites_table }}
-</div>
-<div style="margin-top: 20px">
 <strong>Top 20 upcoming external search keywords</strong>
 <ul>
 {% for keyword in search_keywords %}
@@ -25,4 +21,12 @@
 {% for upcoming_table in upcoming_tables %}
 {{ upcoming_table }}
 {% endfor %}
+</div>
+<div style="margin-top: 20px">
+<strong>Top site areas</strong>
+{{ path_table }}
+</div>
+<div style="margin-top: 20px">
+<strong>Top 10 referring websites this week</strong>
+{{ referring_sites_table }}
 </div>

@@ -30,9 +30,10 @@ class TWFYNewsletter(Newsletter):
 
     def generate_data(self, sources, date):
         self.generate_traffic_data(sources, date)
+        self.generate_upcoming_content(sources, date)
         self.generate_referring_sites_data(sources, date)
         self.generate_search_keywords(sources, date)
-        self.generate_upcoming_content(sources, date)
+        self.generate_path_data(sources, date)
        
     def render_data(self, format):
      traffic_table = self.render_traffic_data(format)
@@ -41,13 +42,15 @@ class TWFYNewsletter(Newsletter):
      for upcoming_data in self.data['upcoming_data']:
          upcoming_tables.append(render_table(format, upcoming_data['headers'], upcoming_data['rows']))
      internal_search_keywords = [format_value(format, params) for params in self.data['internal_search_keywords']]     
+     path_table = render_table(format, self.data['path_headers'], self.data['path_rows'])
      template_params = {'traffic_table'                  : traffic_table, 
                         'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
                         'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link'],
                         'referring_sites_table'          : referring_sites_table, 
                         'search_keywords'                : self.data['search_keywords'], 
                         'internal_search_keywords'       : internal_search_keywords,  
-                        'upcoming_tables'                : upcoming_tables}
+                        'upcoming_tables'                : upcoming_tables, 
+                        'path_table'                     : path_table }
      file_ext = format_extension(format)
      rendered = render_to_string(self.template() + '.' + file_ext, template_params)
      return rendered
@@ -91,9 +94,19 @@ class TWFYNewsletter(Newsletter):
             keyword = re.sub('/\?s=', '', keyword)
             formatting_params['current_value'] = unquote_plus(keyword)
             formatted_keywords.append(formatting_params)
-            
         return formatted_keywords
         
+    def generate_path_data(self, sources, date):
+        piwik = sources['piwik']
+        path_roots = piwik.top_roots_and_percent_visits(site_id=self.site_id, date="previous1", limit=10)
+        headers = ['area of the site', '% visits that included this feature']
+        rows = []
+        for path, percent_of_visits in path_roots:
+            row = [path, {'current_value' : percent_of_visits, 'unit' : '%'}]
+            rows.append(row)
+        self.data['path_headers'] = headers
+        self.data['path_rows'] = rows
+            
     def generate_referring_sites_data(self, sources, date):
         piwik = sources['piwik']
         top_referrers = piwik.top_referrers(site_id=self.site_id, date=date, limit=10)
