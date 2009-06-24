@@ -148,25 +148,23 @@ class MockPiwik:
         else:
             return 'http://previous.1.link'   
             
-    def top_children(self, site_id, path, period=None, date=None, limit=None, exclude=[], include=[]):
-        if path == 'mp':
+    def top_children(self, site_id, root, period=None, date=None, limit=None, exclude=[], include=[]):
+        if root == 'mp':
             return ['anne_person', 'bob_person']
-        elif path == 'wrans':
+        elif root == 'wrans':
             return ['wrans_1', 'wrans_2']
-        elif path == 'debates': 
+        elif root == 'debates': 
             return ['debate_1', 'debate_2']
-        else:
-            return ['video_1', 'video_2']
             
-    def upcoming_children(self, site_id, path, period=None, date=None, limit=None, exclude=[], include=[]):
-        if path == 'mp':
+    def upcoming_children(self, site_id, root, period=None, date=None, limit=None, exclude=[], include=[]):
+        if root == 'mp':
             return ['upcoming_anne_person', 'upcoming_bob_person']
-        elif path == 'wrans':
+        elif root == 'wrans':
             return ['upcoming_wrans_1', 'upcoming_wrans_2']
-        elif path == 'debates': 
+        elif root == 'debates': 
             return ['upcoming_debate_1', 'upcoming_debate_2']
         else:
-            return ['upcoming_video_1', 'upcoming_video_2']            
+            return ['internal stuff', 'more internal stuff']            
         
 class NewsletterTests(unittest.TestCase):
 

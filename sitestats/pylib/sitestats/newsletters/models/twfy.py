@@ -1,7 +1,9 @@
 from sitestats.newsletters.common import *
 from sitestats.newsletters.models import *
-from sitestats.newsletters.formatting import render_table
+from sitestats.newsletters.formatting import render_table, format_value
 from django.template.loader import render_to_string
+from urllib import unquote_plus
+import re
 
 class TWFYNewsletter(Newsletter):
     
@@ -38,12 +40,13 @@ class TWFYNewsletter(Newsletter):
      upcoming_tables = []
      for upcoming_data in self.data['upcoming_data']:
          upcoming_tables.append(render_table(format, upcoming_data['headers'], upcoming_data['rows']))
-         
+     internal_search_keywords = [format_value(format, params) for params in self.data['internal_search_keywords']]     
      template_params = {'traffic_table'                  : traffic_table, 
                         'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
                         'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link'],
                         'referring_sites_table'          : referring_sites_table, 
                         'search_keywords'                : self.data['search_keywords'], 
+                        'internal_search_keywords'       : internal_search_keywords,  
                         'upcoming_tables'                : upcoming_tables}
      file_ext = format_extension(format)
      rendered = render_to_string(self.template() + '.' + file_ext, template_params)
@@ -52,16 +55,17 @@ class TWFYNewsletter(Newsletter):
     def generate_upcoming_content(self, sources, date):
         piwik = sources['piwik']
         stats = [('MP pages',        'mp',      ['/index', -1], []), 
-                 ('Debate pages',    'debates', [], ['\?id=']), 
+                 ('debate pages',    'debates', [], ['\?id=']), 
                  ('Written Answers', 'wrans',   [], ['\?id=.*\.h'])]
         for heading, path, exclude, include in stats:         
-            print "getting top children" 
             top_values = piwik.top_children(self.site_id, path, date="previous1", limit=5, exclude=exclude, include=include)
             upcoming_values = piwik.upcoming_children(self.site_id, path, limit=5, exclude=exclude, include=include)
             headers = ['Top %s' % (heading), 'Upcoming %s' % (heading)]
             rows = []
             base_url = self.base_url
             for top, upcoming in  zip(top_values, upcoming_values):
+                top = re.sub('^/', '', top)
+                upcoming = re.sub('^/', '', upcoming)
                 rows.append([{'current_value' : top, 
                               'link': "%s/%s/%s" % (base_url, path, top)},
                              {'current_value' : upcoming, 
@@ -71,7 +75,24 @@ class TWFYNewsletter(Newsletter):
     def generate_search_keywords(self, sources, date):
         piwik = sources['piwik']
         search_keywords = piwik.upcoming_search_keywords(site_id=self.site_id, limit=20)
+        internal_search_keywords = piwik.upcoming_children(site_id=self.site_id, 
+                                                           root='search',  
+                                                           limit=20, 
+                                                           exclude=[], 
+                                                           include=['/\?s=.'])
         self.data['search_keywords'] = search_keywords
+        self.data['internal_search_keywords'] = self.format_internal_search_keywords(internal_search_keywords)
+        
+    def format_internal_search_keywords(self, keywords):
+        formatted_keywords = []
+        for keyword in keywords:
+            formatting_params = {'link' : "%s/search%s" % (self.base_url, keyword)}
+            keyword = keyword.split('&')[0]
+            keyword = re.sub('/\?s=', '', keyword)
+            formatting_params['current_value'] = unquote_plus(keyword)
+            formatted_keywords.append(formatting_params)
+            
+        return formatted_keywords
         
     def generate_referring_sites_data(self, sources, date):
         piwik = sources['piwik']

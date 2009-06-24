@@ -13,6 +13,14 @@
 </ul>
 </div>
 <div style="margin-top: 20px">
+<strong>Top 20 upcoming internal search keywords</strong>
+<ul>
+{% for keyword in internal_search_keywords %}
+  <li>{{ keyword|safe }}</li>
+{% endfor %}
+</ul>
+</div>
+<div style="margin-top: 20px">
 <strong>Top and upcoming content this week</strong>
 {% for upcoming_table in upcoming_tables %}
 {{ upcoming_table }}

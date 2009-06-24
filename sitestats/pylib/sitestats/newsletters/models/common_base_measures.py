@@ -1,6 +1,6 @@
 from sitestats.newsletters import common
 from sitestats.newsletters.models import Newsletter
-from sitestats.newsletters.formatting import render_table, format_cell_value
+from sitestats.newsletters.formatting import render_table
 
 class CommonBaseMeasuresNewsletter(Newsletter):
     

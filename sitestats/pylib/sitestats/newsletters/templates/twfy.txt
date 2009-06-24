@@ -5,14 +5,14 @@ Traffic to this site
 Piwik link (this week): {{ piwik_previous_week_link}}
 Piwik link (last four weeks): {{ piwik_previous_four_weeks_link}}
 
-Top 10 referring websites this week
------------------------------------
-
-{{ referring_sites_table }}
-
 Top 20 upcoming external search keywords
 -------------------------------
 {% for keyword in search_keywords %}{{ keyword|safe }}
+{% endfor %}
+
+Top 20 upcoming internal search keywords
+-------------------------------
+{% for keyword in internal_search_keywords %}{{ keyword|safe }}
 {% endfor %}
 
 Top and upcoming content this week
@@ -20,3 +20,8 @@ Top and upcoming content this week
 {% for upcoming_table in upcoming_tables %}
 {{ upcoming_table }}
 {% endfor %}
+
+Top 10 referring websites this week
+-----------------------------------
+
+{{ referring_sites_table }}
