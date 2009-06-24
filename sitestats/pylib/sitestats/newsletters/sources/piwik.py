@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.21 2009-06-23 17:03:25 louise Exp $
+# $Id: piwik.py,v 1.22 2009-06-24 11:20:46 louise Exp $
 #
 
 import urllib
@@ -13,6 +13,7 @@ import simplejson
 import mysociety
 import re
 from sets import Set
+import copy
 
 class Piwik:
     '''Interfaces with the Piwik API'''
@@ -317,13 +318,14 @@ class Piwik:
         
     def __flatten_data(self, data, label):
         '''Flatten a data structure, replacing each value (a list) with the "subtable" value of the list item
-        whose label is "label"'''
-        if isinstance(data, dict):
-            for key, value in data.items():
-                data[key] = self.__flatten_data(data[key], label)
+        whose label is "label". Uses deepcopy to preserve the original.'''
+        current_data = copy.deepcopy(data) 
+        if isinstance(current_data, dict):
+            for key, value in current_data.items():
+                current_data[key] = self.__flatten_data(current_data[key], label)
         else: 
-            data = self.__get_label_val(data, label, 'subtable')
-        return data
+            current_data = self.__get_label_val(current_data, label, 'subtable')
+        return current_data
         
     def search_keywords(self, site_id, period=None, date=None):
         sort_by = 'nb_visits'
@@ -379,29 +381,45 @@ class Piwik:
             values[label] = self.__get_label_val(data, label, key)
         return values
          
-    def children(self, site_id, root, period=None, date=None, exclude=[]):
+    def children(self, site_id, root, period=None, date=None, exclude=[], include=[]):
         '''Return a hash of all child paths under the path "root" with value being the number of hits to the child
         path in the period'''
         key = self.__key(site_id, period, date)
-        key = "%s%s" % (key, root)
         if not self.actions_data.has_key(key):
             self.actions_data[key] = self.__actions_api_result('getActions', site_id, date, period)  
         path_data = self.__flatten_data(self.actions_data[key], root)
         children =  self.__get_hash_of_values(path_data, 'nb_hits')
-        for key in exclude:
-            del children[key]
+        for exclude_pattern in exclude:
+            for key in children.keys():
+                if re.search(str(exclude_pattern), str(key)):
+                    del children[key]
+        
+        if include:
+            included = {}
+            for include_pattern in include:
+                for key in children.keys():
+                    if re.search(str(include_pattern), str(key)):
+                        included[key] = children[key]
+            children = included
         return children
         
-    def top_children(self, site_id, root, period=None, date=None, limit=10, exclude=[]):
-        '''Returns the most visited content under the path "root" on the site in the period (by hits)'''
-        children = self.children(site_id, root, period, date, exclude=exclude)
+    def top_children(self, site_id, root, period=None, date=None, limit=10, exclude=[], include=[]):
+        '''Returns the most visited content under the path "root" on the site in the period (by hits).
+        Items that match any label in "exclude" will not be returned. If "include" is not empty, only labels
+        that match some element in "include" will be returned. Items in "exclude" and "include" can take the
+        form of regular expressions.'''
+        period = period or self.default_period
+        children = self.children(site_id, root, period, date, exclude=exclude, include=include)
         return self.__get_top_n(children, limit)
         
-    def upcoming_children(self, site_id, root, period=None, limit=10, exclude=[]):
-       '''Returns the top n "upcoming" content paths under the path "root" on the site in the period (by hits).'''
+    def upcoming_children(self, site_id, root, period=None, limit=10, exclude=[], include=[]):
+       '''Returns the top n "upcoming" content paths under the path "root" on the site in the period (by hits).
+       Items that match any label in "exclude" will not be returned. If "include" is not empty, only labels
+       that match some element in "include" will be returned. Items in "exclude" and "include" can take the
+       form of regular expressions.'''
        period = period or self.default_period
-       this_week = self.children(site_id, root, period, date="previous1", exclude=exclude)
-       previous_week = self.children(site_id, root, period, date="prior1", exclude=exclude)
+       this_week = self.children(site_id, root, period, date="previous1", exclude=exclude, include=include)
+       previous_week = self.children(site_id, root, period, date="prior1", exclude=exclude, include=include)
        return self.__get_upcoming(this_week, previous_week, limit)
        
     def site_ids(self):

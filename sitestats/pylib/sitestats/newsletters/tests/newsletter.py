@@ -148,7 +148,7 @@ class MockPiwik:
         else:
             return 'http://previous.1.link'   
             
-    def top_children(self, site_id, path, period=None, limit=None, exclude=[]):
+    def top_children(self, site_id, path, period=None, date=None, limit=None, exclude=[], include=[]):
         if path == 'mp':
             return ['anne_person', 'bob_person']
         elif path == 'wrans':
@@ -158,7 +158,7 @@ class MockPiwik:
         else:
             return ['video_1', 'video_2']
             
-    def upcoming_children(self, site_id, path, period=None, limit=None, exclude=[]):
+    def upcoming_children(self, site_id, path, period=None, date=None, limit=None, exclude=[], include=[]):
         if path == 'mp':
             return ['upcoming_anne_person', 'upcoming_bob_person']
         elif path == 'wrans':

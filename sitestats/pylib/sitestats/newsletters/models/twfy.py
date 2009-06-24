@@ -51,13 +51,13 @@ class TWFYNewsletter(Newsletter):
      
     def generate_upcoming_content(self, sources, date):
         piwik = sources['piwik']
-        stats = [('MP pages',        'mp',      ['/index', -1]), 
-                 ('Debate pages',    'debates', []), 
-                 ('Written Answers', 'wrans',   []), 
-                 ('Videos',          'video',   ['/index'])]
-        for heading, path, exclude in stats:          
-            top_values = piwik.top_children(self.site_id, path, limit=5, exclude=exclude)
-            upcoming_values = piwik.upcoming_children(self.site_id, path, limit=5, exclude=exclude)
+        stats = [('MP pages',        'mp',      ['/index', -1], []), 
+                 ('Debate pages',    'debates', [], ['\?id=']), 
+                 ('Written Answers', 'wrans',   [], ['\?id=.*\.h'])]
+        for heading, path, exclude, include in stats:         
+            print "getting top children" 
+            top_values = piwik.top_children(self.site_id, path, date="previous1", limit=5, exclude=exclude, include=include)
+            upcoming_values = piwik.upcoming_children(self.site_id, path, limit=5, exclude=exclude, include=include)
             headers = ['Top %s' % (heading), 'Upcoming %s' % (heading)]
             rows = []
             base_url = self.base_url

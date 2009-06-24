@@ -244,34 +244,44 @@ class PiwikTests(unittest.TestCase):
         expected_keywords = ['c', 'd', 'e', 'b', 'a']
         self.assertEqual(expected_keywords, upcoming_keywords, 'upcoming_search_keywords returns expected results for example data')
 
+    def fake_mp_data(self):
+        return """{"2003-02-22":[{"label":"mp",
+                                  "nb_visits":10296,
+                                  "nb_hits":14340,
+                                  "entry_nb_visits":6100,
+                                  "subtable":[{"label":"person_a",
+                                                "nb_visits":1459,
+                                                "nb_hits":1969,
+                                                "entry_nb_visits":1143 },
+                                              {"label":"person_b",
+                                               "nb_visits":266,
+                                               "nb_hits":361,
+                                               "entry_nb_visits":161}]
+                                    },
+                                    {"label":"mps",
+                                    "nb_visits":1059,
+                                    "nb_hits":1934,
+                                    "entry_nb_visits":513}]}"""
     def test_children(self):
-        self.fake_api_response("""{"2003-02-22":[{"label":"mp",
-                                                  "nb_visits":10296,
-                                                  "nb_hits":14340,
-                                                  "entry_nb_visits":6100,
-                                                  "subtable":[{"label":"person_a",
-                                                                "nb_visits":1459,
-                                                                "nb_hits":1969,
-                                                                "entry_nb_visits":1143 },
-                                                              {"label":"person_b",
-                                                               "nb_visits":266,
-                                                               "nb_hits":361,
-                                                               "entry_nb_visits":161},
-                                                               {"label":"/index",
-                                                                  "nb_visits":266,
-                                                                  "nb_hits":361,
-                                                                  "entry_nb_visits":161}]
-                                                    },
-                                                    {"label":"mps",
-                                                    "nb_visits":1059,
-                                                    "nb_hits":1934,
-                                                    "entry_nb_visits":513}]}""")
-        children = self.piwik.children(1, 'mp', exclude=['/index'])
+        self.fake_api_response(self.fake_mp_data())
+        children = self.piwik.children(7, 'mp', date='last1')
         expected_children = {'person_a' : 1969, 'person_b' : 361 }
         self.assertEqual(expected_children, children, 'children produces expected results for example data')
         
+    def text_children_with_exclude(self):
+        self.fake_api_response(self.fake_mp_data())
+        children = self.piwik.children(7, 'mp', date='last1', exclude=['person_a'])
+        expected_children = {'person_b' : 361 }
+        self.assertEqual(expected_children, children, 'children produces expected results for example data when given an exclude list')
+ 
+    def text_children_with_include(self):
+        self.fake_api_response(self.fake_mp_data())
+        children = self.piwik.children(7, 'mp', date='last1', include=['person_a'])
+        expected_children = {'person_a' : 1969 }
+        self.assertEqual(expected_children, children, 'children produces expected results for example data when given an include list')
+ 
     def test_top_children(self):
-        self.piwik.children = lambda site_id, root, period, date, exclude: {'person_a' : 1459, 'person_b' : 266 }
+        self.piwik.children = lambda site_id, root, period, date, exclude, include: {'person_a' : 1459, 'person_b' : 266 }
         top_children = self.piwik.top_children(1, 'mp')
         expected_children = ['person_a', 'person_b']
         self.assertEqual(expected_children, top_children, 'top_children produces expected results for example data')
