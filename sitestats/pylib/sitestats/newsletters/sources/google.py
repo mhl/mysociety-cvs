@@ -4,7 +4,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: google.py,v 1.2 2009-06-18 11:55:38 louise Exp $
+# $Id: google.py,v 1.3 2009-06-25 18:00:45 louise Exp $
 #
 import urllib
 import feedparser
@@ -17,9 +17,9 @@ urllib._urlopener = AppURLopener()
 import mysociety
 import re
 from sitestats.newsletters import common
+import source
 
-
-class Google:
+class Google(source.Source):
     '''Interfaces with google'''
 
     def __init__(self, params={}):

@@ -34,7 +34,35 @@ class TWFYNewsletter(Newsletter):
         self.generate_referring_sites_data(sources, date)
         self.generate_search_keywords(sources, date)
         self.generate_path_data(sources, date)
+        self.generate_alert_data(sources, date)
        
+    def generate_alert_data(self, sources, date):
+        twfy_api = sources["twfy_api"]
+        week_start = start_of_week(date)
+        current_week = twfy_api.email_subscribers_count(week_start, date)
+        previous_week_end = end_of_previous_week(date)
+        previous_week_start = start_of_week(previous_week_end)
+        previous_week = twfy_api.email_subscribers_count(previous_week_start, previous_week_end)
+        week_percent_change = percent_change(current_week, previous_week)
+        
+        month_ago = four_weeks_ago(date)
+        previous_month_end = previous_day(month_ago)
+        previous_month_start = four_weeks_ago(previous_month_end)
+        last_month = twfy_api.email_subscribers_count(month_ago, date)
+        previous_month = twfy_api.email_subscribers_count(previous_month_start, previous_month_end)
+        month_percent_change = percent_change(last_month, previous_month)
+        row = ['Total number of email alert subscribers',
+               { 'current_value' : current_week },  
+               { 'percent_change': week_percent_change, 
+                 'previous_value' : previous_week }, 
+               { 'current_value' : last_month },
+               { 'percent_change': month_percent_change, 
+                 'previous_value': previous_month } ]
+        self.data['traffic_rows'].insert(-1, row)
+        alerts = twfy_api.top_email_subscriptions(week_start, date, limit=5)
+        alerts = [self.get_speakers(alert, sources) for alert in alerts]
+        self.data['alerts'] = alerts
+    
     def render_data(self, format):
      traffic_table = self.render_traffic_data(format)
      referring_sites_table = render_table(format, self.data['referring_sites_headers'], self.data['referring_sites_rows'])
@@ -50,11 +78,12 @@ class TWFYNewsletter(Newsletter):
                         'search_keywords'                : self.data['search_keywords'], 
                         'internal_search_keywords'       : internal_search_keywords,  
                         'upcoming_tables'                : upcoming_tables, 
-                        'path_table'                     : path_table }
+                        'path_table'                     : path_table, 
+                        'alerts'                         : self.data['alerts']}
      file_ext = format_extension(format)
      rendered = render_to_string(self.template() + '.' + file_ext, template_params)
      return rendered
-     
+          
     def generate_upcoming_content(self, sources, date):
         piwik = sources['piwik']
         stats = [('MP pages',        'mp',      ['/index', -1], []), 
@@ -84,17 +113,29 @@ class TWFYNewsletter(Newsletter):
                                                            exclude=[], 
                                                            include=['/\?s=.'])
         self.data['search_keywords'] = search_keywords
-        self.data['internal_search_keywords'] = self.format_internal_search_keywords(internal_search_keywords)
+        self.data['internal_search_keywords'] = self.format_internal_search_keywords(internal_search_keywords, sources)
         
-    def format_internal_search_keywords(self, keywords):
+    def format_internal_search_keywords(self, keywords, sources):
         formatted_keywords = []
         for keyword in keywords:
             formatting_params = {'link' : "%s/search%s" % (self.base_url, keyword)}
             keyword = keyword.split('&')[0]
             keyword = re.sub('/\?s=', '', keyword)
-            formatting_params['current_value'] = unquote_plus(keyword)
+            keyword = unquote_plus(keyword)
+            keyword = self.get_speakers(keyword, sources)
+            formatting_params['current_value'] = keyword
             formatted_keywords.append(formatting_params)
         return formatted_keywords
+        
+    def get_speakers(self, text, sources):
+        twfy_api = sources['twfy_api']
+        matches = re.finditer('speaker:(\d+)', text)
+        if matches:
+            for match in matches:
+                person_id =  match.group(1)
+                person_name = twfy_api.person_name(person_id)
+                text = re.sub('speaker:\d+', 'speaker:' + person_name, text)
+        return text
         
     def generate_path_data(self, sources, date):
         piwik = sources['piwik']

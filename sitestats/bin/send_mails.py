@@ -18,8 +18,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'sitestats.settings'
 from django.db import models
 from django.contrib.auth.models import User
 from sitestats.newsletters.models import *
-from sitestats.newsletters.sources import piwik
-from sitestats.newsletters.sources import google
+from sitestats.newsletters.sources import *
 from sitestats.newsletters.common import send_newsletters
 
 ###############################################################################
@@ -39,7 +38,9 @@ parser.add_option('--only', dest='only', default=None, help='Only send email for
 parser.add_option('--newsletter', dest='newsletter', default=None, help='Only send one type of newsletter')
 (options, args) = parser.parse_args()
 
-sources = {'piwik' : piwik.Piwik(), 'google' : google.Google()}
+sources = { 'piwik'    : Piwik(), 
+            'google'   : Google(), 
+            'twfy_api' : TWFYApi() }
 
 date = date.today()
 

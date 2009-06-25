@@ -29,3 +29,8 @@ Top 10 referring websites this week
 -----------------------------------
 
 {{ referring_sites_table }}
+
+Top 5 email alerts created this week
+------------------------------------
+{% for alert in alerts %}{{ alert }}
+{% endfor %}

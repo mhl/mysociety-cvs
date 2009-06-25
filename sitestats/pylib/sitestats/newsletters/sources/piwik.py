@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.23 2009-06-24 14:13:33 louise Exp $
+# $Id: piwik.py,v 1.24 2009-06-25 18:00:45 louise Exp $
 #
 
 import urllib
@@ -14,8 +14,9 @@ import mysociety
 import re
 from sets import Set
 import copy
+import source 
 
-class Piwik:
+class Piwik(source.Source):
     '''Interfaces with the Piwik API'''
     
     def __init__(self, params={}):
@@ -338,7 +339,7 @@ class Piwik:
     def top_search_keywords(self, site_id, period=None, date=None, limit=10, keep_values=False):
         '''Returns the top n search keywords that brought users to the site in the period.'''
         term_counts = self.search_keywords(site_id, period, date)
-        return self.__get_top_n(term_counts, limit, keep_values=keep_values)
+        return self.get_top_n(term_counts, limit, keep_values=keep_values)
    
     def upcoming_search_keywords(self, site_id, period=None, limit=10):
        '''Returns the top n "upcoming" search keywords that brought users to the site in the period.'''
@@ -359,20 +360,6 @@ class Piwik:
         if limit:
             change_index = change_index[:limit]
         return [ term for (change, absolute_count, term) in change_index ]
-        
-    def __get_top_n(self, data, limit=None, keep_values=False):
-        """Takes a hash of numeric values keyed by strings and returns a list of the top n (defaulting to all if no
-        limit is supplied), sorted by value"""
-        data = [ (value, key) for key, value in data.items()]
-        data.sort()
-        data.reverse()
-        if limit:
-            data = data[:limit]
-        if keep_values:
-            data = [ (key, value) for (value, key) in data ]
-        else:
-            data = [ key for (value, key) in data ]
-        return data
         
     def __get_hash_of_values(self, data, key):
         """Maps a list of hashes to a hash that is keyed by the 'label' values in the original hashes, and whose values
@@ -421,7 +408,7 @@ class Piwik:
     def top_roots(self, site_id, period=None, date=None, limit=10, keep_values=False):
         '''Returns the most visited top level paths on the site in this period (by visits). '''    
         roots = self.roots(site_id, period, date)
-        return self.__get_top_n(roots, limit, keep_values=keep_values)
+        return self.get_top_n(roots, limit, keep_values=keep_values)
         
     def top_roots_and_percent_visits(self, site_id, period=None, date=None, limit=10):
         top_roots = self.top_roots(site_id, period, date, limit, keep_values=True)
@@ -434,7 +421,7 @@ class Piwik:
         that match some element in "include" will be returned. Items in "exclude" and "include" can take the
         form of regular expressions.'''
         children = self.children(site_id, root, period, date, exclude=exclude, include=include)
-        return self.__get_top_n(children, limit, keep_values=keep_values)
+        return self.get_top_n(children, limit, keep_values=keep_values)
         
     def upcoming_children(self, site_id, root, period=None, limit=10, exclude=[], include=[]):
        '''Returns the top n "upcoming" content paths under the path "root" on the site in the period (by hits).

@@ -30,3 +30,11 @@
 <strong>Top 10 referring websites this week</strong>
 {{ referring_sites_table }}
 </div>
+<div style="margin-top: 20px">
+<strong>Top 5 email alerts created this week</strong>
+<ul>
+{% for alert in alerts %}
+  <li>{{ alert }}</li>
+{% endfor %}
+</ul>
+</div>
