@@ -30,7 +30,9 @@ class RemoteUserMiddleware(object):
                 " 'django.contrib.auth.middleware.AuthenticationMiddleware'"
                 " before the RemoteUserMiddleware class.")
         try:
+         
             username = request.META[self.header]
+            
         except KeyError:
             # If specified header doesn't exist then return (leaving
             # request.user set to AnonymousUser by the

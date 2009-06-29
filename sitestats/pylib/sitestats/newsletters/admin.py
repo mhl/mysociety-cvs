@@ -17,7 +17,7 @@ class SubscriptionInline(admin.StackedInline):
 class CustomUserAdmin(UserAdmin):
     inlines = [ProfileInline, SubscriptionInline,]
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
+        (None, {'fields': ('username',)}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
     )
 

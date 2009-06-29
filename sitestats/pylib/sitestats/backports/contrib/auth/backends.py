@@ -16,7 +16,7 @@ class RemoteUserBackend(ModelBackend):
 
     # Create a User object if not already in the database?
     create_unknown_user = True
-
+    
     def authenticate(self, remote_user):
         """
         The username passed as ``remote_user`` is considered trusted.  This
@@ -26,6 +26,8 @@ class RemoteUserBackend(ModelBackend):
         Returns None if ``create_unknown_user`` is ``False`` and a ``User``
         object with the given username is not found in the database.
         """
+   
+    
         if not remote_user:
             return
         user = None
@@ -35,7 +37,7 @@ class RemoteUserBackend(ModelBackend):
         # instead we use get_or_create when creating unknown users since it has
         # built-in safeguards for multiple threads.
         if self.create_unknown_user:
-            user, created = User.objects.get_or_create(username=username, is_staff=True, is_superuser=True)
+            user, created = User.objects.get_or_create(username=username, is_staff=True, is_superuser=True, password="dummy")
             if created:
                 user = self.configure_user(user)
         else:
