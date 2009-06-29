@@ -4,9 +4,9 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org. WWW: http://www.mysociety.org/
 #
-# $Id: crontab.ugly,v 1.3 2009-06-22 10:34:08 louise Exp $
+# $Id: crontab.ugly,v 1.4 2009-06-29 14:21:40 louise Exp $
 
 PATH=/usr/local/bin:/usr/bin:/bin
 MAILTO=sitestats@mysociety.org
 
-43 5 * * mon !!(*= $user *)!! /data/vhost/!!(*= $vhost *)!!/mysociety/sitestats/bin/send_mails.py
+43 8 * * mon !!(*= $user *)!! /data/vhost/!!(*= $vhost *)!!/mysociety/sitestats/bin/send_mails.py
