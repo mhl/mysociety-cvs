@@ -12,6 +12,9 @@ class MockTWFYAPI:
     def top_email_subscriptions(self, start_date, end_date, limit=10):
         return ["a", "b", "c"]
     
+    def top_comment_pages(self, start_date, end_date, limit=10):
+        return ['page one', 'page two']
+    
     def person_name(self, id):
         return "Bob Person"
     

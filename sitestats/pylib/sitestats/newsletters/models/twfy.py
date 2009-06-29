@@ -35,6 +35,7 @@ class TWFYNewsletter(Newsletter):
         self.generate_search_keywords(sources, date)
         self.generate_path_data(sources, date)
         self.generate_alert_data(sources, date)
+        self.generate_comment_data(sources, date)
        
     def generate_alert_data(self, sources, date):
         twfy_api = sources["twfy_api"]
@@ -63,6 +64,16 @@ class TWFYNewsletter(Newsletter):
         alerts = [self.get_speakers(alert, sources) for alert in alerts]
         self.data['alerts'] = alerts
     
+    def generate_comment_data(self, sources, date):
+        twfy_api = sources["twfy_api"]
+        week_start = start_of_week(date)
+        comment_pages = twfy_api.top_comment_pages(week_start, date, limit=5)
+        formatted_comment_pages = []
+        for comment_page in comment_pages:
+             formatted_comment_pages.append({'current_value' : comment_page, 
+                                             'link': "%s/%s" % (self.base_url, comment_page)})
+        self.data['comment_pages'] = formatted_comment_pages
+        
     def render_data(self, format):
      traffic_table = self.render_traffic_data(format)
      referring_sites_table = render_table(format, self.data['referring_sites_headers'], self.data['referring_sites_rows'])
@@ -70,6 +81,7 @@ class TWFYNewsletter(Newsletter):
      for upcoming_data in self.data['upcoming_data']:
          upcoming_tables.append(render_table(format, upcoming_data['headers'], upcoming_data['rows']))
      internal_search_keywords = [format_value(format, params) for params in self.data['internal_search_keywords']]     
+     comment_pages = [format_value(format, params) for params in self.data['comment_pages']] 
      path_table = render_table(format, self.data['path_headers'], self.data['path_rows'])
      template_params = {'traffic_table'                  : traffic_table, 
                         'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
@@ -79,7 +91,8 @@ class TWFYNewsletter(Newsletter):
                         'internal_search_keywords'       : internal_search_keywords,  
                         'upcoming_tables'                : upcoming_tables, 
                         'path_table'                     : path_table, 
-                        'alerts'                         : self.data['alerts']}
+                        'alerts'                         : self.data['alerts'], 
+                        'comment_pages'                  : comment_pages}
      file_ext = format_extension(format)
      rendered = render_to_string(self.template() + '.' + file_ext, template_params)
      return rendered

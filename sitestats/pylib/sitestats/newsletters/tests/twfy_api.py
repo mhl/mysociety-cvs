@@ -15,7 +15,33 @@ class TWFYAPITests(unittest.TestCase):
                               {"criteria":"sri lanka","count":"3"},
                               {"criteria":"Stuart speaker:10229","count":"2"},
                               {"criteria":"dementia","count":"1"}]}"""
-                             
+    
+    def fake_comments(self):
+        return """{"comments":[{"comment_id":"23935",
+                                "user_id":"17136",
+                                "epobject_id":"19970603",
+                                "body":"comment one",
+                                "posted":"2009-06-28 20:54:38",
+                                "major":"1",
+                                "gid":"uk.org.publicwhip/debate/2009-06-23a.655.6",
+                                "url":"/debate/?id=2009-06-23a.655.6#c23935"},
+                                {"comment_id":"23934",
+                                "user_id":"6529",
+                                "epobject_id":"14580056",
+                                "body":"comment two",
+                                "posted":"2009-06-28 11:40:49",
+                                "major":"1",
+                                "gid":"uk.org.publicwhip/debate/2009-01-12a.35.2",
+                                "url":"/debate/?id=2009-01-12a.35.2#c23934"},
+                                {"comment_id":"23933",
+                                "user_id":"14541",
+                                "epobject_id":"14580056",
+                                "body":"comment three",
+                                "posted":"2009-06-28 00:34:11",
+                                "major":"1",
+                                "gid":"uk.org.publicwhip/debate/2009-01-12a.35.2",
+                                "url":"/debate/?id=2009-01-12a.35.2#c23933"}]}"""
+                                 
     def testRaisesErrorWhenErrorReturned(self):
         self.fake_api_response(twfy_api, "{'error': 'Unknown person ID'}")
         self.assertRaises(Exception, self.twfy_api.person_name, 1)
@@ -35,6 +61,14 @@ class TWFYAPITests(unittest.TestCase):
         top_subscriptions = self.twfy_api.top_email_subscriptions(start_date, end_date, limit=3)
         expected_subscriptions = ["speaker:14137", "sri lanka", "Stuart speaker:10229"]
         self.assertEqual(expected_subscriptions, top_subscriptions, "top_email_subscriptions returns expected results for example data")
+        
+    def testTopCommentPages(self):
+        self.fake_api_response(twfy_api, self.fake_comments())
+        start_date = date(2009, 6, 15)
+        end_date = date(2009, 6, 22)
+        top_comment_pages = self.twfy_api.top_comment_pages(start_date, end_date, limit=3)
+        expected_pages = ["/debate/?id=2009-01-12a.35.2", "/debate/?id=2009-06-23a.655.6"]
+        self.assertEqual(expected_pages, top_comment_pages, "top_comment_pages returns expected results for example data")
         
     def testPersonName(self):
         self.fake_api_response(twfy_api, """[{"member_id":"1430",

@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: twfy_api.py,v 1.1 2009-06-25 18:06:44 louise Exp $
+# $Id: twfy_api.py,v 1.2 2009-06-29 15:49:49 louise Exp $
 #
 
 import mysociety
@@ -24,7 +24,7 @@ class TWFYApi(source.Source):
         params.update(request_params)
         query_url = self.base_url + '/api/' + method + '?' + urllib.urlencode(params)
         response = urllib.urlopen(query_url)
-        result = simplejson.loads(response.read())
+        result = simplejson.loads(response.read(), encoding='latin_1')
         if type(result) == type({}) and result.has_key('error') :
             message = "Error returned from twfy_api. Message: %s, query %s" % (result['error'], query_url)
             raise Exception, message
@@ -53,4 +53,15 @@ class TWFYApi(source.Source):
         result = self.__api_result('getPerson', params)
         most_recent = result[0]
         return most_recent['full_name']
+    
+    def top_comment_pages(self, start_date, end_date, limit=10):
+        params = {'start_date': start_date, 
+                  'end_date'  : end_date}
+        result = self.__api_result('getComments', params)
+        url_counts = {}
+        for comment_hash in result["comments"]:
+            page = comment_hash['url'].split('#')[0]
+            count = url_counts.setdefault(page, 0)
+            url_counts[page] += 1
+        return self.get_top_n(url_counts, limit)
     
