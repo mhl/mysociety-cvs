@@ -40,8 +40,8 @@ class TWFYNewsletter(Newsletter):
        
     def generate_media_data(self, sources, date):
        google = sources['google']
-       blogs_info = google.blogs(self.site_name, date=date)
-       news_info = google.news(self.site_name, date=date)
+       blogs_info = google.blogs(self.site_name, self.base_url, date=date)
+       news_info = google.news(self.site_name, self.base_url, date=date)
        self.data['blogs_count'] = {'current_value' : blogs_info['resultcount'], 
                                    'link' : blogs_info['url']}
        self.data['news_count'] = {'current_value' : news_info['resultcount'], 

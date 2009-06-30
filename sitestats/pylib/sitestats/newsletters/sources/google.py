@@ -4,7 +4,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: google.py,v 1.4 2009-06-30 09:26:55 louise Exp $
+# $Id: google.py,v 1.5 2009-06-30 15:48:00 louise Exp $
 #
 import urllib
 import feedparser
@@ -81,12 +81,12 @@ class Google(source.Source):
                     'writetothem'    : 'faxyourmp OR writetothem'}
         return queries.get(site_name, site_name)
     
-    def blogs(self, site_name, period=None, date=None):
-        params = { 'as_q' : self._query(site_name) }
+    def blogs(self, site_name, site_url,  period=None, date=None):
+        params = { 'as_q' : self._query(site_name) + ' -site:' + site_url }
         result_attributes = self._get_results(self.base_blog_search_url, params, period, date)
         return result_attributes
     
-    def news(self, site_name, period=None, date=None):
-        params = { 'q' : self._query(site_name) }
+    def news(self, site_name, site_url, period=None, date=None):
+        params = { 'q' : self._query(site_name)  + ' -site:' + site_url}
         result_attributes = self._get_results(self.base_news_search_url, params, period, date)
         return result_attributes      

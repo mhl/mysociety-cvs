@@ -10,7 +10,7 @@ def newsletter_date():
     
 class MockGoogle:
     
-    def blogs(self, site_name, period=None, date=None):
+    def blogs(self, site_name, site_url, period=None, date=None):
         if date == newsletter_date():
             return {'url'         : 'http://test.host', 
                     'resultcount' : 78,
@@ -20,7 +20,7 @@ class MockGoogle:
             return {'url'     : 'http://test.host', 
                     'resultcount' : 89}
 
-    def news(self, site_name, period=None, date=None):
+    def news(self, site_name, site_url, period=None, date=None):
         if date == newsletter_date():
             return {'url'     : 'http://test.host', 
                     'resultcount' : 98,

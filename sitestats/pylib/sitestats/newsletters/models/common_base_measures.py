@@ -78,13 +78,13 @@ class CommonBaseMeasuresNewsletter(Newsletter):
                 totals[header] = total + current_count
         return row
 
-    def get_google_data(self, site_name, google, statistics, row, totals, date):
+    def get_google_data(self, site_name, site_url, google, statistics, row, totals, date):
         this_week_end = date or common.end_of_current_week()
         previous_week_end = common.end_of_previous_week(this_week_end)
         for header, statistic, unit, need_total in statistics:
             method = getattr(google, statistic)
-            current_data = method(site_name=site_name, date=this_week_end)
-            previous_data = method(site_name=site_name, date=previous_week_end)
+            current_data = method(site_name=site_name, site_url=site_url, date=this_week_end)
+            previous_data = method(site_name=site_name, site_url=site_url, date=previous_week_end)
             current_count = current_data['resultcount']
             previous_count = previous_data['resultcount']
             percent_change = common.percent_change(current_count, previous_count)
@@ -102,5 +102,5 @@ class CommonBaseMeasuresNewsletter(Newsletter):
         stats = self.stats()
         row = []
         self.get_piwik_data(site_info['id'], sources['piwik'], stats['piwik'], row, totals, date)
-        self.get_google_data(site_info['name'], sources['google'], stats['google'], row, totals, date)
+        self.get_google_data(site_info['name'], site_info['main_url'], sources['google'], stats['google'], row, totals, date)
         return row
