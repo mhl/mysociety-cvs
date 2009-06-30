@@ -4,21 +4,27 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: google.py,v 1.3 2009-06-25 18:00:45 louise Exp $
+# $Id: google.py,v 1.4 2009-06-30 09:26:55 louise Exp $
 #
 import urllib
 import feedparser
+import mysociety
+import re
+from sitestats.newsletters import common
+import source
 
 class AppURLopener(urllib.FancyURLopener):
     version = "sitestats/google.py v1.0"
 
 urllib._urlopener = AppURLopener()
 
-import mysociety
-import re
-from sitestats.newsletters import common
-import source
-
+class GoogleResult:
+    
+    def __init__(self, title, content, link):
+        self.title = title
+        self.content = content
+        self.link = link
+    
 class Google(source.Source):
     '''Interfaces with google'''
 
@@ -44,13 +50,21 @@ class Google(source.Source):
                    'as_maxy' : end_date.year,
                    'as_drrb' : 'b', 
                    'output'  : 'atom', 
-                   'num'     : 1000 }
+                   'num'     : 1000, 
+                   'scoring' : 'r' }
         return params
         
     def _parse_results(self, url):
         content = urllib.urlopen(url).read()
         feed = feedparser.parse(content)
-        attributes = {'results' : len(feed['entries'])}
+        results = []
+        for entry in feed['entries']:
+            result = GoogleResult(link=entry['link'], 
+                                  content=entry['content'][0]['value'], 
+                                  title=entry['title'])
+            results.append(result)
+        attributes = {'resultcount' : len(feed['entries']), 
+                      'results'     : results}
         return attributes
     
     def _get_results(self, base_url, params, period=None, date=None):
@@ -69,7 +83,6 @@ class Google(source.Source):
     
     def blogs(self, site_name, period=None, date=None):
         params = { 'as_q' : self._query(site_name) }
-        
         result_attributes = self._get_results(self.base_blog_search_url, params, period, date)
         return result_attributes
     

@@ -64,18 +64,18 @@ class MockGoogle:
     def blogs(self, site_name, period=None, date=None):
         if date == common.end_of_current_week():
             return {'url'     : 'http://test.host', 
-                    'results' : 78}
+                    'resultcount' : 78}
         else:
             return {'url'     : 'http://test.host', 
-                    'results' : 89}
+                    'resultcount' : 89}
 
     def news(self, site_name, period=None, date=None):
         if date == common.end_of_current_week():
             return {'url'     : 'http://test.host', 
-                    'results' : 98}
+                    'resultcount' : 98}
         else:
             return {'url'     : 'http://test.host', 
-                    'results' : 87}
+                    'resultcount' : 87}
 
 class CommonBaseMeasuresNewsletterTests(unittest.TestCase):
 

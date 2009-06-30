@@ -36,7 +36,19 @@ class TWFYNewsletter(Newsletter):
         self.generate_path_data(sources, date)
         self.generate_alert_data(sources, date)
         self.generate_comment_data(sources, date)
+        self.generate_media_data(sources, date)
        
+    def generate_media_data(self, sources, date):
+       google = sources['google']
+       blogs_info = google.blogs(self.site_name, date=date)
+       news_info = google.news(self.site_name, date=date)
+       self.data['blogs_count'] = {'current_value' : blogs_info['resultcount'], 
+                                   'link' : blogs_info['url']}
+       self.data['news_count'] = {'current_value' : news_info['resultcount'], 
+                                  'link' : news_info['url']}
+       self.data['news'] = news_info['results'][:5]
+       self.data['blogs'] = blogs_info['results'][:5]
+    
     def generate_alert_data(self, sources, date):
         twfy_api = sources["twfy_api"]
         week_start = start_of_week(date)
@@ -92,7 +104,11 @@ class TWFYNewsletter(Newsletter):
                         'upcoming_tables'                : upcoming_tables, 
                         'path_table'                     : path_table, 
                         'alerts'                         : self.data['alerts'], 
-                        'comment_pages'                  : comment_pages}
+                        'comment_pages'                  : comment_pages, 
+                        'blogs_count'                    : format_value(format, self.data['blogs_count']),
+                        'news_count'                     : format_value(format, self.data['news_count']), 
+                        'blogs'                          : self.data['blogs'],
+                        'news'                           : self.data['news']}
      file_ext = format_extension(format)
      rendered = render_to_string(self.template() + '.' + file_ext, template_params)
      return rendered

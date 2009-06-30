@@ -85,8 +85,8 @@ class CommonBaseMeasuresNewsletter(Newsletter):
             method = getattr(google, statistic)
             current_data = method(site_name=site_name, date=this_week_end)
             previous_data = method(site_name=site_name, date=previous_week_end)
-            current_count = current_data['results']
-            previous_count = previous_data['results']
+            current_count = current_data['resultcount']
+            previous_count = previous_data['resultcount']
             percent_change = common.percent_change(current_count, previous_count)
             cell_info = {'current_value'  : current_count, 
                          'percent_change' : percent_change, 
