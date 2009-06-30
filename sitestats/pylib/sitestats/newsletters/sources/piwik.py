@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.24 2009-06-25 18:00:45 louise Exp $
+# $Id: piwik.py,v 1.25 2009-06-30 15:03:02 louise Exp $
 #
 
 import urllib
@@ -143,9 +143,9 @@ class Piwik(source.Source):
         params.update(referrer_params)
         return self.__api_result(params)
 
-    def __percent_of_visits(self, number_of_visits, site_id, period, date):
+    def __percent_of_visits(self, number_of_visits, site_id, period, date, decimal_places=0):
         visits = self.visits(site_id, period, date)
-        return self.__percent(number_of_visits, visits)
+        return self.__percent(number_of_visits, visits, decimal_places)
     
     def __top_n_labels_from_list(self, items, limit):
         if limit:
@@ -174,7 +174,7 @@ class Piwik(source.Source):
     def percent_visits_from_referrer(self, site_id, referrer, period=None, date=None):
         '''Percentage of visits coming from a referring site in the period'''
         referrer_visits = self.visits_from_referrer(site_id, referrer, period, date)
-        return self.__percent_of_visits(referrer_visits, site_id, period, date)
+        return self.__percent_of_visits(referrer_visits, site_id, period, date, decimal_places=1)
 
     def percent_visits_from_search(self, site_id, period=None, date=None):
         '''Returns the percentage of visits coming from search engines in the period'''
@@ -271,10 +271,13 @@ class Piwik(source.Source):
         fraction = float(numerator) / float(denominator)
         return fraction
     
-    def __percent(self, numerator, denominator): 
+    def __percent(self, numerator, denominator, decimal_places=0): 
         fraction = self.__fraction(numerator, denominator)
         percentage = fraction * 100
-        return int(round(percentage, 0))
+        percentage =  round(percentage, decimal_places)
+        if decimal_places == 0:
+            percentage = int(percentage)
+        return percentage
         
     def visits(self, site_id, period=None, date=None):
         '''Returns the visits to a site in the period'''

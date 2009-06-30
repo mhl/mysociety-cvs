@@ -205,9 +205,9 @@ class PiwikTests(unittest.TestCase):
     
     def testPercentVisitsFromReferrer(self):
         self.fake_api_response(piwik, '{"2009-06-15 to 2009-06-21":[{"label":"www.facebook.com","nb_visits":99,"nb_actions":275,"max_actions":56,"sum_visit_length":18961,"bounce_count":62,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":96,"idsubdatatable":1432}]}')
-        visits_from_facebook = self.piwik.visits_from_referrer(1, referrer='www.facebook.com')
-        expected_visits = 99
-        self.assertEqual(expected_visits, visits_from_facebook, 'visits_from referrer returns expected results for example data')
+        self.piwik.visits = lambda site_id, period, date: 99000
+        percent_visits_from_facebook = self.piwik.percent_visits_from_referrer(1, referrer='www.facebook.com')
+        self.assertEqual(0.1, percent_visits_from_facebook, 'visits_from referrer returns expected results for example data')
         
     def testTopSearchKeywords(self):
         self.fake_api_response(piwik, '[{"label":"a","nb_visits":198,"nb_actions":759,"max_actions":103,"sum_visit_length":33422,"bounce_count":15,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":197,"idsubdatatable":58},{"label":"b","nb_visits":181,"nb_actions":823,"max_actions":145,"sum_visit_length":59598,"bounce_count":31,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":173,"idsubdatatable":54},{"label":"c","nb_visits":111,"nb_actions":415,"max_actions":68,"sum_visit_length":16213,"bounce_count":16,"nb_visits_converted":0,"sum_daily_nb_uniq_visitors":109,"idsubdatatable":61}]')
