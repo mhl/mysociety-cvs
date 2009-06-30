@@ -72,6 +72,6 @@ class TWFYNewsletterTests(unittest.TestCase):
                              { 'current_value' : 'speaker:Bob Person', 
                                'link' : 'http://www.theyworkforyou.com/search/?s=speaker%3A10544&pop=1'},
                              { 'current_value' : 'iran', 
-                               'link' : 'http://www.theyworkforyou.com/search/?s=iran'} ]
+                               'link' : 'http://www.theyworkforyou.com/search/?s=iran&pop=1'} ]
         formatted_keywords = self.twfy.format_internal_search_keywords(keywords, self.sources)
         self.assertEqual(expected_keywords, formatted_keywords, 'format_internal_search_keywords produces correct output for example data')    

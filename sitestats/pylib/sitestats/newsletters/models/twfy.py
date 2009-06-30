@@ -148,6 +148,8 @@ class TWFYNewsletter(Newsletter):
         formatted_keywords = []
         for keyword in keywords:
             formatting_params = {'link' : "%s/search%s" % (self.base_url, keyword)}
+            if (not formatting_params['link'].endswith('&pop=1')):
+                formatting_params['link'] += '&pop=1'
             keyword = keyword.split('&')[0]
             keyword = re.sub('/\?s=', '', keyword)
             keyword = unquote_plus(keyword)
