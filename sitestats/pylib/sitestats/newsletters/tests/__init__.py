@@ -2,6 +2,7 @@ from formatting import *
 from piwik import *
 from google import *
 from twfy_api import *
+from fms_api import *
 from common_base_measures import *
 from twfy import *
 from fms import *

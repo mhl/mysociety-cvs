@@ -18,15 +18,6 @@ class TWFYNewsletter(Newsletter):
      
     def template(self):
         return 'twfy'
-           
-    def render(self, format, sources, date=None):
-        """Returns the text for a TWFY email in text/html"""
-        self.set_site_id(sources)
-        if not self.formats.get(format):
-            if not self.data:
-                self.generate_data(sources, date)
-            self.formats[format] =  self.render_data(format)
-        return self.formats[format]
 
     def generate_data(self, sources, date):
         self.generate_traffic_data(sources, date)

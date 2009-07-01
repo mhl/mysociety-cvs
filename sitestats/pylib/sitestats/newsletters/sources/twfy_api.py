@@ -1,9 +1,9 @@
 #
-# twfy.py: Interfaces with TheyWorkForYou to extract site statistics.
+# twfy_api.py: Interfaces with TheyWorkForYou to extract site statistics.
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: twfy_api.py,v 1.2 2009-06-29 15:49:49 louise Exp $
+# $Id: twfy_api.py,v 1.3 2009-07-01 10:39:42 louise Exp $
 #
 
 import mysociety

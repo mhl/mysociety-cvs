@@ -24,7 +24,7 @@ class Newsletter(models.Model):
         return self.name
     
     def render(self, format, sources, date=None):
-        """Returns the text for a TWFY email in text/html"""
+        """Returns the text for an email in text/html"""
         self.set_site_id(sources)
         if not self.formats.get(format):
             if not self.data:
