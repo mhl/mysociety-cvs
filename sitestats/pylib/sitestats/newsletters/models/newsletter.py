@@ -67,6 +67,7 @@ class Newsletter(models.Model):
        self.data['blogs'] = blogs_info['results'][:5]
     
     def template_params(self, format):
+        week_start, week_end = self.week_bounds(self.date)
         traffic_table = self.render_traffic_data(format)
         template_params = {'traffic_table'                  : traffic_table, 
                            'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
@@ -74,7 +75,9 @@ class Newsletter(models.Model):
                            'blogs_count'                    : format_value(format, self.data['blogs_count']),
                            'news_count'                     : format_value(format, self.data['news_count']), 
                            'blogs'                          : self.data['blogs'],
-                           'news'                           : self.data['news']}
+                           'news'                           : self.data['news'], 
+                           'week_start'                     : week_start.strftime("%d/%m/%y"), 
+                           'week_end'                       : week_end.strftime("%d/%m/%y")}
         return template_params
     
     def render_data(self, format):
@@ -164,9 +167,9 @@ class Newsletter(models.Model):
         return row
             
     def get_piwik_traffic_data(self, piwik, statistic, unit, date):
-        this_week_end = date or common.end_of_current_week()
-        previous_week_end = common.end_of_previous_week(this_week_end)
         method = getattr(piwik, statistic)
+        this_week_end = date
+        previous_week_end = common.end_of_previous_week(this_week_end)
         current_week = method(site_id=self.site_id, date='previous1')
         previous_week = method(site_id=self.site_id, date='prior1')
         week_percent_change = common.percent_change(current_week, previous_week)

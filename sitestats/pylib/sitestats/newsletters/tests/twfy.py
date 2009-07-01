@@ -32,11 +32,13 @@ class TWFYNewsletterTests(unittest.TestCase):
     def testRenderedToHTMLTemplateCorrectly(self):
         html = self.twfy.render('html', self.sources, date=date(2009, 1, 1)).strip()
         expected_html = open(example_dir() + 'twfy.html').read().strip()
+        # print html
         self.assertEqual(expected_html, html, 'render produces correct output in HTML for example data')
         
     def testRenderedToTextTemplateCorrectly(self):
         text = self.twfy.render('text', self.sources, date=date(2009, 1, 1)).strip()
         expected_text = open(example_dir() + 'twfy.txt').read().strip()
+        # print text
         self.assertEqual(expected_text, text, 'render produces correct output in text for example data')
         
     def testFormatInternalSearchKeywords(self):
