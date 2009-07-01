@@ -1,34 +1,10 @@
 import unittest
 from sitestats.newsletters.models.twfy import TWFYNewsletter
 from tests import example_dir
-from newsletter import MockPiwik
+from newsletter import MockPiwik, MockGoogle
 from datetime import date
-from sitestats.newsletters.sources.google import GoogleResult
 
-def newsletter_date():
-    return date(2009, 1, 1)
-    
-class MockGoogle:
-    
-    def blogs(self, site_name, site_url, period=None, date=None):
-        if date == newsletter_date():
-            return {'url'         : 'http://test.host', 
-                    'resultcount' : 78,
-                    'results'     : [GoogleResult(title='blog one', link='http://one.example.com', content='Blog one content'),
-                                     GoogleResult(title='blog two', link='http://two.example.com', content='Blog two content')]}
-        else:
-            return {'url'     : 'http://test.host', 
-                    'resultcount' : 89}
 
-    def news(self, site_name, site_url, period=None, date=None):
-        if date == newsletter_date():
-            return {'url'     : 'http://test.host', 
-                    'resultcount' : 98,
-                    'results'     : [GoogleResult(title='news one', link='http://one.example.com', content='News one content'),
-                                     GoogleResult(title='news two', link='http://two.example.com', content='News two content')]}
-        else:
-            return {'url'     : 'http://test.host', 
-                    'resultcount' : 87}
 class MockTWFYAPI:
     
     def email_subscribers_count(self, start_date, end_date):
@@ -55,7 +31,7 @@ class TWFYNewsletterTests(unittest.TestCase):
         
     def testRenderedToHTMLTemplateCorrectly(self):
         html = self.twfy.render('html', self.sources, date=date(2009, 1, 1)).strip()
-        expected_html = open(example_dir() + 'twfy.html').read().strip() 
+        expected_html = open(example_dir() + 'twfy.html').read().strip()
         self.assertEqual(expected_html, html, 'render produces correct output in HTML for example data')
         
     def testRenderedToTextTemplateCorrectly(self):

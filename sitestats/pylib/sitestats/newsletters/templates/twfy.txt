@@ -5,26 +5,7 @@ Traffic to this site
 Piwik link (this week): {{ piwik_previous_week_link}}
 Piwik link (last four weeks): {{ piwik_previous_four_weeks_link}}
 
-Media coverage
---------------
-
-Number of articles {{ news_count }}
-Number of blog mentions {{ blogs_count }}
-
-Blogs
------
-{% for blog in blogs %}
-{{ blog.title|safe }}
-{{blog.content|safe}}
-{{blog.link|safe}}
-{% endfor %}
-News
------
-{% for news_item in news %}
-{{ news_item.title|safe }}
-{{news_item.content|safe}}
-{{news_item.link|safe}}
-{% endfor %}
+{% include "media.txt" %}
 Top 20 upcoming external search keywords
 -------------------------------
 {% for keyword in search_keywords %}{{ keyword|safe }}

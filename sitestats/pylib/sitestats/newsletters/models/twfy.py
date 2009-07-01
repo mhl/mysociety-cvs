@@ -20,26 +20,14 @@ class TWFYNewsletter(Newsletter):
         return 'twfy'
 
     def generate_data(self, sources, date):
-        self.generate_traffic_data(sources, date)
+        Newsletter.generate_data(self,sources, date)
         self.generate_upcoming_content(sources, date)
         self.generate_referring_sites_data(sources, date)
         self.generate_search_keywords(sources, date)
         self.generate_path_data(sources, date)
         self.generate_alert_data(sources, date)
         self.generate_comment_data(sources, date)
-        self.generate_media_data(sources, date)
-       
-    def generate_media_data(self, sources, date):
-       google = sources['google']
-       blogs_info = google.blogs(self.site_name, self.base_url, date=date)
-       news_info = google.news(self.site_name, self.base_url, date=date)
-       self.data['blogs_count'] = {'current_value' : blogs_info['resultcount'], 
-                                   'link' : blogs_info['url']}
-       self.data['news_count'] = {'current_value' : news_info['resultcount'], 
-                                  'link' : news_info['url']}
-       self.data['news'] = news_info['results'][:5]
-       self.data['blogs'] = blogs_info['results'][:5]
-              
+        
     def generate_alert_data(self, sources, date):
         twfy_api = sources["twfy_api"]
         method = getattr(twfy_api, 'email_subscribers_count')
@@ -60,32 +48,26 @@ class TWFYNewsletter(Newsletter):
                                              'link': "%s/%s" % (self.base_url, comment_page)})
         self.data['comment_pages'] = formatted_comment_pages
         
-    def render_data(self, format):
-     traffic_table = self.render_traffic_data(format)
-     referring_sites_table = render_table(format, self.data['referring_sites_headers'], self.data['referring_sites_rows'])
-     upcoming_tables = []
-     for upcoming_data in self.data['upcoming_data']:
-         upcoming_tables.append(render_table(format, upcoming_data['headers'], upcoming_data['rows']))
-     internal_search_keywords = [format_value(format, params) for params in self.data['internal_search_keywords']]     
-     comment_pages = [format_value(format, params) for params in self.data['comment_pages']] 
-     path_table = render_table(format, self.data['path_headers'], self.data['path_rows'])
-     template_params = {'traffic_table'                  : traffic_table, 
-                        'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
-                        'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link'],
-                        'referring_sites_table'          : referring_sites_table, 
-                        'search_keywords'                : self.data['search_keywords'], 
-                        'internal_search_keywords'       : internal_search_keywords,  
-                        'upcoming_tables'                : upcoming_tables, 
-                        'path_table'                     : path_table, 
-                        'alerts'                         : self.data['alerts'], 
-                        'comment_pages'                  : comment_pages, 
-                        'blogs_count'                    : format_value(format, self.data['blogs_count']),
-                        'news_count'                     : format_value(format, self.data['news_count']), 
-                        'blogs'                          : self.data['blogs'],
-                        'news'                           : self.data['news']}
-     file_ext = format_extension(format)
-     rendered = render_to_string(self.template() + '.' + file_ext, template_params)
-     return rendered
+    def template_params(self, format):
+        template_params = Newsletter.template_params(self, format)
+        referring_sites_table = render_table(format, self.data['referring_sites_headers'], self.data['referring_sites_rows'])
+        upcoming_tables = []
+        for upcoming_data in self.data['upcoming_data']:
+            upcoming_tables.append(render_table(format, upcoming_data['headers'], upcoming_data['rows']))
+        internal_search_keywords = [format_value(format, params) for params in self.data['internal_search_keywords']]     
+        comment_pages = [format_value(format, params) for params in self.data['comment_pages']] 
+        path_table = render_table(format, self.data['path_headers'], self.data['path_rows'])
+        template_params.update({
+                           'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
+                           'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link'],
+                           'referring_sites_table'          : referring_sites_table, 
+                           'search_keywords'                : self.data['search_keywords'], 
+                           'internal_search_keywords'       : internal_search_keywords,  
+                           'upcoming_tables'                : upcoming_tables, 
+                           'path_table'                     : path_table, 
+                           'alerts'                         : self.data['alerts'], 
+                           'comment_pages'                  : comment_pages})
+        return template_params
           
     def generate_upcoming_content(self, sources, date):
         piwik = sources['piwik']

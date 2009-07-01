@@ -1,6 +1,6 @@
 from django.db import models
 from sitestats.newsletters import common
-from sitestats.newsletters.formatting import render_table
+from sitestats.newsletters.formatting import render_table, format_value
 from django.template.loader import render_to_string
 from sitestats.newsletters.common import *
 
@@ -53,14 +53,33 @@ class Newsletter(models.Model):
 
     def generate_data(self, sources, date):
         self.generate_traffic_data(sources, date)
+        self.generate_media_data(sources, date)
 
+    def generate_media_data(self, sources, date):
+       google = sources['google']
+       blogs_info = google.blogs(self.site_name, self.base_url, date=date)
+       news_info = google.news(self.site_name, self.base_url, date=date)
+       self.data['blogs_count'] = {'current_value' : blogs_info['resultcount'], 
+                                   'link' : blogs_info['url']}
+       self.data['news_count'] = {'current_value' : news_info['resultcount'], 
+                                  'link' : news_info['url']}
+       self.data['news'] = news_info['results'][:5]
+       self.data['blogs'] = blogs_info['results'][:5]
+    
+    def template_params(self, format):
+        traffic_table = self.render_traffic_data(format)
+        template_params = {'traffic_table'                  : traffic_table, 
+                           'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
+                           'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link'],
+                           'blogs_count'                    : format_value(format, self.data['blogs_count']),
+                           'news_count'                     : format_value(format, self.data['news_count']), 
+                           'blogs'                          : self.data['blogs'],
+                           'news'                           : self.data['news']}
+        return template_params
+    
     def render_data(self, format):
      '''Default content for a newsletter - a table of site traffic stats'''
-     traffic_table = self.render_traffic_data(format)
-     template_params = {'traffic_table'                  : traffic_table, 
-                        'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
-                        'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link']
-                        }
+     template_params = self.template_params(format)
      file_ext = format_extension(format)
      rendered = render_to_string(self.template() + '.' + file_ext, template_params)
      return rendered

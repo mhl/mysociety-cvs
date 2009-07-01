@@ -3,6 +3,7 @@ from sitestats.newsletters.models.newsletter import *
 from sitestats.newsletters import common
 from tests import example_dir
 from datetime import date
+from sitestats.newsletters.sources.google import GoogleResult
 
 class MockPiwik:
  
@@ -168,11 +169,36 @@ class MockPiwik:
             return ['upcoming_debate_1', 'upcoming_debate_2']
         else:
             return ['internal stuff', 'more internal stuff']            
-        
+
+def newsletter_date():
+    return date(2009, 1, 1)
+
+class MockGoogle:
+
+    def blogs(self, site_name, site_url, period=None, date=None):
+        if date == newsletter_date():
+            return {'url'         : 'http://test.host', 
+                    'resultcount' : 78,
+                    'results'     : [GoogleResult(title='blog one', link='http://one.example.com', content='Blog one content'),
+                                     GoogleResult(title='blog two', link='http://two.example.com', content='Blog two content')]}
+        else:
+            return {'url'     : 'http://test.host', 
+                    'resultcount' : 89}
+
+    def news(self, site_name, site_url, period=None, date=None):
+        if date == newsletter_date():
+            return {'url'     : 'http://test.host', 
+                    'resultcount' : 98,
+                    'results'     : [GoogleResult(title='news one', link='http://one.example.com', content='News one content'),
+                                     GoogleResult(title='news two', link='http://two.example.com', content='News two content')]}
+        else:
+            return {'url'     : 'http://test.host', 
+                    'resultcount' : 87}      
+                      
 class NewsletterTests(unittest.TestCase):
 
     def setUp(self):
-        self.sources = {'piwik'  : MockPiwik()}
+        self.sources = {'piwik'  : MockPiwik(), 'google' : MockGoogle()}
         self.newsletter = Newsletter()
 
     def testShouldRaiseErrorIfSiteNotFound(self):

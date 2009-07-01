@@ -18,24 +18,16 @@ class FMSNewsletter(Newsletter):
         return 'fms'
 
     def generate_data(self, sources, date):
-        self.generate_traffic_data(sources, date)       
+        Newsletter.generate_data(self,sources, date)    
         self.generate_reports_data(sources, date) 
 
-    def render_data(self, format):
-        '''Default content for a newsletter - a table of site traffic stats'''
-        traffic_table = self.render_traffic_data(format)
+    def template_params(self, format):
+        template_params = Newsletter.template_params(self, format)
         reports_table = render_table(format, self.data['reports_headers'], self.data['reports_rows'])
-        
-        template_params = {'traffic_table'                   : traffic_table, 
-                            'piwik_previous_week_link'       : self.data['piwik_previous_week_link'],
-                            'piwik_previous_four_weeks_link' : self.data['piwik_previous_four_weeks_link'],
-                            'reports_table'                  : reports_table, 
-                            'service_counts'                 : self.data['service_counts'],
-                            'top_categories_this_week'       : self.data['top_categories_this_week']
-                        }
-        file_ext = format_extension(format)
-        rendered = render_to_string(self.template() + '.' + file_ext, template_params)
-        return rendered
+        template_params.update({'reports_table'            : reports_table, 
+                                'service_counts'           : self.data['service_counts'],
+                                'top_categories_this_week' : self.data['top_categories_this_week']})
+        return template_params
         
     def generate_reports_data(self, sources, date):
         fms_api = sources['fms_api']

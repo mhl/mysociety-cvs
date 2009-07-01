@@ -1,0 +1,20 @@
+Media coverage
+--------------
+
+Number of articles {{ news_count }}
+Number of blog mentions {{ blogs_count }}
+
+Blogs
+-----
+{% for blog in blogs %}
+{{ blog.title|safe }}
+{{blog.content|safe}}
+{{blog.link|safe}}
+{% endfor %}
+News
+-----
+{% for news_item in news %}
+{{ news_item.title|safe }}
+{{news_item.content|safe}}
+{{news_item.link|safe}}
+{% endfor %}
