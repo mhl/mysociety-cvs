@@ -24,7 +24,7 @@ class FMSAPITests(unittest.TestCase):
                     {"name":"",
                      "anonymous":"1",
                      "service":"iPhone",
-                     "council":"Lambeth Borough Council",
+                     "council":"Lambeth Borough Council and Southwark Borough Council",
                      "detail":"Reporting another test problem",
                      "confirmed":"2009-07-01 09:15:47.561939",
                      "northing":"179765.049530099",
@@ -48,17 +48,29 @@ class FMSAPITests(unittest.TestCase):
         self.fake_api_response(fms_api, self.fakeProblems())
         service_counts = self.fms_api.service_counts(date(2009, 6, 3), date(2009, 6, 10))
         expected_counts = {'Web interface' : 1, 'iPhone' : 1}
-        self.assertEqual(expected_counts, service_counts, 'service counts returns the expected result with example data')
+        self.assertEqual(expected_counts, service_counts, 'service_counts returns the expected result with example data')
         
     def testCategoryCounts(self):
         self.fake_api_response(fms_api, self.fakeProblems())
         category_counts = self.fms_api.category_counts(date(2009, 6, 3), date(2009, 6, 10))
         expected_counts = {'Trees' : 1, 'Other' : 1}
-        self.assertEqual(expected_counts, category_counts, 'category counts returns the expected result with example data')
+        self.assertEqual(expected_counts, category_counts, 'category_counts returns the expected result with example data')
     
     def testTopCategories(self):
         self.fake_api_response(fms_api, self.fakeProblems())
         categories = self.fms_api.top_categories(date(2009, 6, 3), date(2009, 6, 10), limit=10)
         expected_categories = [('Trees', 1), ('Other', 1)]
         self.assertEqual(expected_categories, categories, 'top_categories returns the expected result with example data')
-        
+  
+    def testCouncilCounts(self):
+        self.fake_api_response(fms_api, self.fakeProblems())
+        council_counts = self.fms_api.council_counts(date(2009, 6, 3), date(2009, 6, 10))
+        expected_counts = {'Lambeth Borough Council' : 1, 'Southwark Borough Council' : 2}
+        self.assertEqual(expected_counts, council_counts, 'council_counts returns the expected result with example data')
+
+    def testTopCouncils(self):
+        self.fake_api_response(fms_api, self.fakeProblems())
+        categories = self.fms_api.top_councils(date(2009, 6, 3), date(2009, 6, 10), limit=10)
+        expected_categories = [('Southwark Borough Council', 2), ('Lambeth Borough Council', 1)]
+        self.assertEqual(expected_categories, categories, 'top_councils returns the expected result with example data')
+       

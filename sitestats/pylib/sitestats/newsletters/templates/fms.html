@@ -8,9 +8,14 @@
       <li>{{ service }}: {{ count }}</li>{% endfor %}
     </ul>
   </div>
-  <div style="margin-top: 20px"><strong>Top categories this week:</strong>
+  <div style="margin-top: 20px"><strong>Top 5 problem categories this week:</strong>
     <ul>{% for category,count in top_categories_this_week %}
       <li>{{ category }}: {{ count }}</li>{% endfor %}
+    </ul>
+  </div>
+  <div style="margin-top: 20px"><strong>Top 5 councils problems were reported for this week:</strong>
+    <ul>{% for council,count in top_councils_this_week %}
+      <li>{{ council }}: {{ count }}</li>{% endfor %}
     </ul>
   </div>
 </div>

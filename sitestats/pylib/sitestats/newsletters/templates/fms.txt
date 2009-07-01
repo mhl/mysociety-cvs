@@ -20,3 +20,8 @@ Top 5 problem categories this week
 ------------------------------------
 {% for category, count in top_categories_this_week %}
 * {{ category }}: {{ count }}{% endfor %}
+
+Top 5 councils problems were reported for this week
+------------------------------------
+{% for council, count in top_councils_this_week %}
+* {{ council }}: {{ count }}{% endfor %}

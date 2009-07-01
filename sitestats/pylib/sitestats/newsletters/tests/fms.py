@@ -17,7 +17,10 @@ class MockFMSAPI:
 
     def top_categories(self, start_date, end_date, limit):
         return [('Trees', 1), ('Other', 1)] 
-           
+
+    def top_councils(self, start_date, end_date, limit):
+        return [('Southwark Borough Council', 2), ('Lambeth Borough Council', 1)]    
+               
 class FMSNewsletterTests(unittest.TestCase):
 
     def setUp(self):
