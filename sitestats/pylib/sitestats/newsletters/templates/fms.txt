@@ -1,10 +1,21 @@
 Traffic to this site
 --------------------
 
-{% block content %}{{ traffic_table }}{% endblock %}
+{{ traffic_table }}
 Piwik link (this week): {{ piwik_previous_week_link}}
 Piwik link (last four weeks): {{ piwik_previous_four_weeks_link}}
 
 Site statistics
 ---------------
-Problems reported in last month: {{ reports_in_last_month }}
+
+{{ reports_table }}
+
+Reports by service this week
+----------------------------
+{% for service,count in service_counts.items %}
+* {{ service }}: {{ count }}{% endfor %}
+
+Top 5 problem categories this week
+------------------------------------
+{% for category, count in top_categories_this_week %}
+* {{ category }}: {{ count }}{% endfor %}

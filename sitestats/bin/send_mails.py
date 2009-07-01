@@ -40,7 +40,8 @@ parser.add_option('--newsletter', dest='newsletter', default=None, help='Only se
 
 sources = { 'piwik'    : Piwik(), 
             'google'   : Google(), 
-            'twfy_api' : TWFYApi() }
+            'twfy_api' : TWFYApi(),
+            'fms_api'  : FMSApi() }
 
 date = date.today()
 

@@ -1,10 +1,16 @@
 <div style="margin-top: 20px"><strong>Traffic to this site</strong>
-{% block content %}
 {{ traffic_table }}
-{% endblock %}
 </div>
 <div style="margin-top: 20px"><strong>Site statistics</strong>
-<div>
-Problems reported in last month: {{ reports_in_last_month }}
-</div>
+  {{ reports_table }}
+  <div style="margin-top: 20px"><strong>Reports by service this week:</strong>
+    <ul>{% for service,count in service_counts.items %}
+      <li>{{ service }}: {{ count }}</li>{% endfor %}
+    </ul>
+  </div>
+  <div style="margin-top: 20px"><strong>Top categories this week:</strong>
+    <ul>{% for category,count in top_categories_this_week %}
+      <li>{{ category }}: {{ count }}</li>{% endfor %}
+    </ul>
+  </div>
 </div>

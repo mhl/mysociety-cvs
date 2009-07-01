@@ -23,8 +23,27 @@ class Newsletter(models.Model):
     def __unicode__(self):
         return self.name
     
+    def week_bounds(self, date):
+        week_start = common.start_of_week(date)
+        return [week_start, date]
+        
+    def previous_week_bounds(self, date):
+        previous_week_end = common.end_of_previous_week(date)
+        previous_week_start = common.start_of_week(previous_week_end)
+        return [previous_week_start, previous_week_end]
+
+    def month_bounds(self, date):
+        month_ago = four_weeks_ago(date)
+        return [month_ago, date]
+        
+    def previous_month_bounds(self, date):
+        previous_month_end = previous_day(four_weeks_ago(date))
+        previous_month_start = four_weeks_ago(previous_month_end)
+        return [previous_month_start, previous_month_end]
+        
     def render(self, format, sources, date=None):
         """Returns the text for an email in text/html"""
+        self.date=date
         self.set_site_id(sources)
         if not self.formats.get(format):
             if not self.data:
@@ -102,6 +121,29 @@ class Newsletter(models.Model):
                               ]}
         return stats
 
+    def generate_stats_row(self, method, date, first_col):
+        week_start, week_end = self.week_bounds(date)
+        previous_week_start, previous_week_end = self.previous_week_bounds(date)
+        month_start, month_end = self.month_bounds(date)
+        previous_month_start, previous_month_end = self.previous_month_bounds(date)
+
+        current_week = method(week_start, week_end)
+        previous_week = method(previous_week_start, previous_week_end)
+        week_percent_change = percent_change(current_week, previous_week)
+
+        current_month = method(month_start, month_end)
+        previous_month = method(previous_month_start, previous_month_end)
+        month_percent_change = percent_change(current_month, previous_month)
+
+        row = [first_col,
+               { 'current_value' : current_week },  
+               { 'percent_change': week_percent_change, 
+                 'previous_value' : previous_week }, 
+               { 'current_value' : current_month },
+               { 'percent_change': month_percent_change, 
+                 'previous_value': previous_month } ]
+        return row
+            
     def get_piwik_traffic_data(self, piwik, statistic, unit, date):
         this_week_end = date or common.end_of_current_week()
         previous_week_end = common.end_of_previous_week(this_week_end)

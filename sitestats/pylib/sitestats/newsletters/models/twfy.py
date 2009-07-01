@@ -39,31 +39,14 @@ class TWFYNewsletter(Newsletter):
                                   'link' : news_info['url']}
        self.data['news'] = news_info['results'][:5]
        self.data['blogs'] = blogs_info['results'][:5]
-    
+              
     def generate_alert_data(self, sources, date):
         twfy_api = sources["twfy_api"]
-        week_start = start_of_week(date)
-        current_week = twfy_api.email_subscribers_count(week_start, date)
-        previous_week_end = end_of_previous_week(date)
-        previous_week_start = start_of_week(previous_week_end)
-        previous_week = twfy_api.email_subscribers_count(previous_week_start, previous_week_end)
-        week_percent_change = percent_change(current_week, previous_week)
-        
-        month_ago = four_weeks_ago(date)
-        previous_month_end = previous_day(month_ago)
-        previous_month_start = four_weeks_ago(previous_month_end)
-        last_month = twfy_api.email_subscribers_count(month_ago, date)
-        previous_month = twfy_api.email_subscribers_count(previous_month_start, previous_month_end)
-        month_percent_change = percent_change(last_month, previous_month)
-        row = ['Total number of email alert subscribers',
-               { 'current_value' : current_week },  
-               { 'percent_change': week_percent_change, 
-                 'previous_value' : previous_week }, 
-               { 'current_value' : last_month },
-               { 'percent_change': month_percent_change, 
-                 'previous_value': previous_month } ]
+        method = getattr(twfy_api, 'email_subscribers_count')
+        row = self.generate_stats_row(method, date, 'Total number of email alert subscribers')
         self.data['traffic_rows'].insert(-1, row)
-        alerts = twfy_api.top_email_subscriptions(week_start, date, limit=5)
+        week_start, week_end = self.week_bounds(date)
+        alerts = twfy_api.top_email_subscriptions(week_start, week_end, limit=5)
         alerts = [self.get_speakers(alert, sources) for alert in alerts]
         self.data['alerts'] = alerts
     
