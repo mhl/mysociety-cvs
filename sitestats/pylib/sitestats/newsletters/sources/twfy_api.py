@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: twfy_api.py,v 1.4 2009-07-02 15:36:17 louise Exp $
+# $Id: twfy_api.py,v 1.5 2009-07-02 15:42:57 louise Exp $
 #
 
 import mysociety
@@ -89,7 +89,6 @@ class TWFYApi(source.Source):
                 
         # TODO: API can return blank page. Should fix in TWFY API
         except ValueError:
-            print "value error %s" % page_type
             return None
         versions_tried = 0
         # Sometimes the version gets incremented after people have visited the page
