@@ -3,18 +3,18 @@ Media coverage
 
 Number of articles {{ news_count }}
 Number of blog mentions {{ blogs_count }}
-
+{% if blogs %}
 Blogs
 -----
 {% for blog in blogs %}
 {{ blog.title|safe }}
 {{blog.content|safe}}
 {{blog.link|safe}}
-{% endfor %}
+{% endfor %}{% endif %}{% if news %}
 News
 -----
 {% for news_item in news %}
 {{ news_item.title|safe }}
 {{news_item.content|safe}}
 {{news_item.link|safe}}
-{% endfor %}
+{% endfor %}{% endif %}

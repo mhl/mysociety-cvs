@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: common.py,v 1.6 2009-06-25 18:00:45 louise Exp $
+# $Id: common.py,v 1.7 2009-07-02 15:55:26 louise Exp $
 #
 
 from datetime import date, timedelta
@@ -53,12 +53,6 @@ def msg(message, options):
     if options.verbose:
         print message
         
-def mail_separator(format, text):
-    if format == 'html':
-        return "<h2>%s</h2>" % (text)
-    else:
-        return "\n\n\n%s\n%s\n\n" % (text, len(text) * "=")
-        
 def send_newsletters(newsletter_types, date, sources, options):
     if options.only:
         msg("Only sending mail to %s" % (options.only), options)
@@ -76,9 +70,8 @@ def send_newsletters(newsletter_types, date, sources, options):
                 if not options.only or user.username == options.only:
                     
                     if (user.profile.one_email):
-                        content_with_header = mail_separator(format, newsletter.subject) + content
                         existing_content = combined_mails.setdefault(user, '') 
-                        combined_mails[user] = existing_content + content_with_header
+                        combined_mails[user] = existing_content + content
                     else:
                         msg("Sending %s format %s newsletter to %s" % (format, newsletter, user.email), options)
                         send_mail(newsletter.subject, date, content, email_from, user.email, format)

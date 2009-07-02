@@ -7,19 +7,19 @@ Number of articles {{ news_count|safe }}
 Number of blog mentions {{ blogs_count|safe }}
 </div>
 </div>
-<div style="margin-top: 20px">
+{% if blogs %}<div style="margin-top: 20px">
 <strong>Blogs</strong>
 <ul>
 {% for blog in blogs %}
   <li><a href="{{blog.link|safe}}"><strong>{{ blog.title|safe }}</strong></a><p>{{ blog.content|safe }}</p></li>
 {% endfor %}
 </ul>
-</div>
-<strong>News</strong>
+</div>{% endif %}
+{% if news %}<strong>News</strong>
 <ul>
 {% for news_item in news %}
    <li><a href="{{news_item.link|safe}}"><strong>{{ news_item.title|safe }}</strong></a><p>{{ news_item.content|safe }}</p></li>
 {% endfor %}
 </ul>
 </div>
-</div>
+</div>{% endif %}

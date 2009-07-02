@@ -32,11 +32,9 @@ class FMSNewsletterTests(unittest.TestCase):
     def testRenderedToHTMLTemplateCorrectly(self):
         html = self.fms.render('html', self.sources, date=newsletter_date()).strip()
         expected_html = open(example_dir() + 'fms.html').read().strip()
-        # print html
         self.assertEqual(expected_html, html, 'render produces correct output in HTML for example data')
         
     def testRenderedToTextTemplateCorrectly(self):
         text = self.fms.render('text', self.sources, date=newsletter_date()).strip()
         expected_text = open(example_dir() + 'fms.txt').read().strip()
-        # print text
         self.assertEqual(expected_text, text, 'render produces correct output in text for example data')
