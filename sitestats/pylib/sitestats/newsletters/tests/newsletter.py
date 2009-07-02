@@ -131,7 +131,7 @@ class MockPiwik:
        return ['www.writetothem.com', 'en.wikipedia.org']
     
     def upcoming_search_keywords(self, site_id, period=None, date=None, limit=None):
-        return ['stuff', 'more stuff']
+        return [('stuff', 28), ('more stuff', 26)]
         
     def percent_visits_from_referrer(self, site_id, referrer, period=None, date=None):
        if date == 'previous1':
@@ -152,23 +152,23 @@ class MockPiwik:
     def top_roots_and_percent_visits(self, site_id, period=None, date=None, limit=10):
         return [('mp', 92),('mps', 1)] 
 
-    def top_children(self, site_id, root, period=None, date=None, limit=None, exclude=[], include=[]):
+    def top_children(self, site_id, root, period=None, date=None, limit=None, exclude=[], include=[], keep_values=True):
         if root == 'mp':
-            return ['anne_person', 'bob_person']
+            return [('anne_person', 54), ('bob_person', 53)]
         elif root == 'wrans':
-            return ['wrans_1', 'wrans_2']
+            return [('wrans_1', 17), ('wrans_2', 12)]
         elif root == 'debates': 
-            return ['debate_1', 'debate_2']
+            return [('/?id=2009-06-24b.800.1', 97), ('debate_2', 88)]
             
-    def upcoming_children(self, site_id, root, period=None, date=None, limit=None, exclude=[], include=[]):
+    def upcoming_children(self, site_id, root, period=None, date=None, limit=None, exclude=[], include=[], keep_values=True):
         if root == 'mp':
-            return ['upcoming_anne_person', 'upcoming_bob_person']
+            return [('upcoming_anne_person', 45), ('upcoming_bob_person', 38)]
         elif root == 'wrans':
-            return ['upcoming_wrans_1', 'upcoming_wrans_2']
+            return [('upcoming_wrans_1', 21), ('upcoming_wrans_2', 19)]
         elif root == 'debates': 
-            return ['upcoming_debate_1', 'upcoming_debate_2']
+            return [('upcoming_debate_1', 67), ('upcoming_debate_2', 21)]
         else:
-            return ['internal stuff', 'more internal stuff']            
+            return [('internal stuff', 37), ('more internal stuff', 35)]            
 
 def newsletter_date():
     return date(2009, 1, 1)

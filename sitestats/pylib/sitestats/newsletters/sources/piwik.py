@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.25 2009-06-30 15:03:02 louise Exp $
+# $Id: piwik.py,v 1.26 2009-07-02 15:36:17 louise Exp $
 #
 
 import urllib
@@ -344,14 +344,14 @@ class Piwik(source.Source):
         term_counts = self.search_keywords(site_id, period, date)
         return self.get_top_n(term_counts, limit, keep_values=keep_values)
    
-    def upcoming_search_keywords(self, site_id, period=None, limit=10):
+    def upcoming_search_keywords(self, site_id, period=None, limit=10, keep_values=True):
        '''Returns the top n "upcoming" search keywords that brought users to the site in the period.'''
        period = period or self.default_period
        this_week = self.search_keywords(site_id, period, date="previous1")
        previous_week = self.search_keywords(site_id, period, date="prior1")
-       return self.__get_upcoming(this_week, previous_week, limit)
+       return self.__get_upcoming(this_week, previous_week, limit, keep_values)
        
-    def __get_upcoming(self, this_week, last_week, limit=None):
+    def __get_upcoming(self, this_week, last_week, limit=None, keep_values=False):
         change_index = {}
         for key in this_week.keys():
             this_weeks_count = this_week[key]
@@ -362,7 +362,11 @@ class Piwik(source.Source):
         change_index.reverse()
         if limit:
             change_index = change_index[:limit]
-        return [ term for (change, absolute_count, term) in change_index ]
+        if keep_values:
+            change_index = [[term, absolute_count] for (change, absolute_count, term) in change_index ]    
+        else:
+            change_index =  [ term for (change, absolute_count, term) in change_index ]
+        return change_index
         
     def __get_hash_of_values(self, data, key):
         """Maps a list of hashes to a hash that is keyed by the 'label' values in the original hashes, and whose values
@@ -426,14 +430,14 @@ class Piwik(source.Source):
         children = self.children(site_id, root, period, date, exclude=exclude, include=include)
         return self.get_top_n(children, limit, keep_values=keep_values)
         
-    def upcoming_children(self, site_id, root, period=None, limit=10, exclude=[], include=[]):
+    def upcoming_children(self, site_id, root, period=None, limit=10, exclude=[], include=[], keep_values=True):
        '''Returns the top n "upcoming" content paths under the path "root" on the site in the period (by hits).
        Items that match any label in "exclude" will not be returned. If "include" is not empty, only labels
        that match some element in "include" will be returned. Items in "exclude" and "include" can take the
        form of regular expressions.'''
        this_week = self.children(site_id, root, period, date="previous1", exclude=exclude, include=include)
        previous_week = self.children(site_id, root, period, date="prior1", exclude=exclude, include=include)
-       return self.__get_upcoming(this_week, previous_week, limit)
+       return self.__get_upcoming(this_week, previous_week, limit, keep_values)
        
     def site_ids(self):
         '''Returns a list of site ids'''

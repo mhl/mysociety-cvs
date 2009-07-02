@@ -11,12 +11,12 @@ Piwik link (last four weeks): {{ piwik_previous_four_weeks_link}}
 {% include "media.txt" %}
 Top 20 upcoming external search keywords
 -------------------------------
-{% for keyword in search_keywords %}{{ keyword|safe }}
+{% for keyword, count in search_keywords %}{{ keyword|safe }}: {{ count }}
 {% endfor %}
 
 Top 20 upcoming internal search keywords
 -------------------------------
-{% for keyword in internal_search_keywords %}{{ keyword|safe }}
+{% for keyword, count in internal_search_keywords %}{{ keyword|safe }}: {{ count }}
 {% endfor %}
 
 Top and upcoming content this week
@@ -41,5 +41,5 @@ Top 5 pages with new comments this week
 
 Top 5 email alerts created this week
 ------------------------------------
-{% for alert in alerts %}{{ alert }}
+{% for alert, count in alerts %}{{ alert }}: {{ count }}
 {% endfor %}

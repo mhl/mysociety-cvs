@@ -228,7 +228,7 @@ class PiwikTests(unittest.TestCase):
     def testUpcomingSearchKeywords(self):
         self.piwik.search_keywords = fake_search_keywords
         upcoming_keywords = self.piwik.upcoming_search_keywords(1)
-        expected_keywords = ['c', 'd', 'e', 'b', 'a']
+        expected_keywords = [['c', 60], ['d', 50], ['e', 20], ['b', 25], ['a', 21]]
         self.assertEqual(expected_keywords, upcoming_keywords, 'upcoming_search_keywords returns expected results for example data')
 
     def fake_mp_data(self):

@@ -35,7 +35,7 @@ class TWFYNewsletter(Newsletter):
         self.data['traffic_rows'].insert(-1, row)
         week_start, week_end = self.week_bounds(date)
         alerts = twfy_api.top_email_subscriptions(week_start, week_end, limit=5)
-        alerts = [self.get_speakers(alert, sources) for alert in alerts]
+        alerts = [(self.get_speakers(alert, sources), count) for (alert, count) in alerts]
         self.data['alerts'] = alerts
     
     def generate_comment_data(self, sources, date):
@@ -44,9 +44,19 @@ class TWFYNewsletter(Newsletter):
         comment_pages = twfy_api.top_comment_pages(week_start, date, limit=5)
         formatted_comment_pages = []
         for comment_page in comment_pages:
-             formatted_comment_pages.append({'current_value' : comment_page, 
+             page_type = self.extract_gid_type_from_path(comment_page)
+             page_title = comment_page
+             if page_type:
+                 page_title = self.page_title_from_querystring(comment_page, page_type, '', twfy_api)
+             formatted_comment_pages.append({'current_value' : page_title, 
                                              'link': "%s/%s" % (self.base_url, comment_page)})
         self.data['comment_pages'] = formatted_comment_pages
+    
+    def extract_gid_type_from_path(self, path):
+        match = re.search('^/(.*)/', path)
+        if match:
+            return match.group(1)
+        return None
         
     def template_params(self, format):
         template_params = Newsletter.template_params(self, format)
@@ -54,7 +64,7 @@ class TWFYNewsletter(Newsletter):
         upcoming_tables = []
         for upcoming_data in self.data['upcoming_data']:
             upcoming_tables.append(render_table(format, upcoming_data['headers'], upcoming_data['rows']))
-        internal_search_keywords = [format_value(format, params) for params in self.data['internal_search_keywords']]     
+        internal_search_keywords = [(format_value(format, params), count) for params, count in self.data['internal_search_keywords']]     
         comment_pages = [format_value(format, params) for params in self.data['comment_pages']] 
         path_table = render_table(format, self.data['path_headers'], self.data['path_rows'])
         template_params.update({
@@ -71,24 +81,37 @@ class TWFYNewsletter(Newsletter):
           
     def generate_upcoming_content(self, sources, date):
         piwik = sources['piwik']
-        stats = [('MP pages',        'mp',      ['/index', -1], []), 
-                 ('debate pages',    'debates', [], ['\?id=']), 
-                 ('Written Answers', 'wrans',   [], ['\?id=.*\.h'])]
-        for heading, path, exclude, include in stats:         
-            top_values = piwik.top_children(self.site_id, path, date="previous1", limit=5, exclude=exclude, include=include)
-            upcoming_values = piwik.upcoming_children(self.site_id, path, limit=5, exclude=exclude, include=include)
-            headers = ['Top %s' % (heading), 'Upcoming %s' % (heading)]
+        twfy_api = sources['twfy_api']
+        stats = [('MP pages',              'mp',      '',         ['/index', -1], []), 
+                 ('Commons debate pages',  'debates', 'commons',  [],             ['\?id=']), 
+                 ('Written Answers',       'wrans',   '',         [],             ['\?id=.*\.h'])]
+        for heading, path, sub_type, exclude, include in stats:         
+            top_values = piwik.top_children(self.site_id, path, date="previous1", limit=5, exclude=exclude, include=include, keep_values=True)
+            upcoming_values = piwik.upcoming_children(self.site_id, path, limit=5, exclude=exclude, include=include, keep_values=True)
+            headers = ['Top %s' % (heading), 'Hits', 'Upcoming %s' % (heading), 'Hits']
             rows = []
             base_url = self.base_url
-            for top, upcoming in  zip(top_values, upcoming_values):
+            for (top, top_value), (upcoming, upcoming_value) in zip(top_values, upcoming_values):
                 top = re.sub('^/', '', top)
                 upcoming = re.sub('^/', '', upcoming)
-                rows.append([{'current_value' : top, 
+                rows.append([{'current_value' : self.page_title_from_querystring(top, path, sub_type, twfy_api), 
                               'link': "%s/%s/%s" % (base_url, path, top)},
-                             {'current_value' : upcoming, 
-                              'link': "%s/%s/%s" % (base_url, path, upcoming)} ])
+                             {'current_value' : top_value },
+                             {'current_value' : self.page_title_from_querystring(upcoming, path, sub_type, twfy_api), 
+                              'link': "%s/%s/%s" % (base_url, path, upcoming)},
+                             {'current_value' : upcoming_value } ])
             self.data.setdefault('upcoming_data', []).append({'headers' : headers, 'rows' : rows})
-            
+    
+    def page_title_from_querystring(self, querystring, page_type, sub_type, twfy_api):
+        if page_type not in ['debate', 'debates', 'wrans']:
+            return querystring
+        gid = re.search('id=(.*?)(&|$)', unquote_plus(querystring))
+        if gid:
+            title = twfy_api.page_title(gid.group(1), page_type, sub_type)
+            if title:
+                return title
+        return querystring
+                
     def generate_search_keywords(self, sources, date):
         piwik = sources['piwik']
         search_keywords = piwik.upcoming_search_keywords(site_id=self.site_id, limit=20)
@@ -96,13 +119,13 @@ class TWFYNewsletter(Newsletter):
                                                            root='search',  
                                                            limit=20, 
                                                            exclude=[], 
-                                                           include=['/\?s=.'])
+                                                           include=['/\?s=.'], keep_values=True)
         self.data['search_keywords'] = search_keywords
         self.data['internal_search_keywords'] = self.format_internal_search_keywords(internal_search_keywords, sources)
         
     def format_internal_search_keywords(self, keywords, sources):
         formatted_keywords = []
-        for keyword in keywords:
+        for (keyword, count) in keywords:
             formatting_params = {'link' : "%s/search%s" % (self.base_url, keyword)}
             if (not formatting_params['link'].endswith('&pop=1')):
                 formatting_params['link'] += '&pop=1'
@@ -111,7 +134,7 @@ class TWFYNewsletter(Newsletter):
             keyword = unquote_plus(keyword)
             keyword = self.get_speakers(keyword, sources)
             formatting_params['current_value'] = keyword
-            formatted_keywords.append(formatting_params)
+            formatted_keywords.append((formatting_params, count))
         return formatted_keywords
         
     def get_speakers(self, text, sources):
@@ -145,11 +168,12 @@ class TWFYNewsletter(Newsletter):
                    '% change on last 4 weeks']
         rows = []
         for referrer in top_referrers: 
-            current_week = piwik.percent_visits_from_referrer(site_id=self.site_id, referrer=referrer, date='previous1')
-            previous_week = piwik.percent_visits_from_referrer(site_id=self.site_id, referrer=referrer, date='prior1')
+            method = getattr(piwik, 'percent_visits_from_referrer')
+            current_week = method(site_id=self.site_id, referrer=referrer, date='previous1')
+            previous_week = method(site_id=self.site_id, referrer=referrer, date='prior1')
             week_percent_change = percent_change(current_week, previous_week)
-            last_four_weeks = piwik.percent_visits_from_referrer(site_id=self.site_id, referrer=referrer, date='previous4')
-            previous_four_weeks = piwik.percent_visits_from_referrer(site_id=self.site_id, referrer=referrer, date='prior4')    
+            last_four_weeks = method(site_id=self.site_id, referrer=referrer, date='previous4')
+            previous_four_weeks = method(site_id=self.site_id, referrer=referrer, date='prior4')    
             month_percent_change = percent_change(last_four_weeks, previous_four_weeks)
             row = [referrer, 
                    {'current_value' : current_week, 

@@ -5,16 +5,16 @@
 <div style="margin-top: 20px">
 <strong>Top 20 upcoming external search keywords</strong>
 <ul>
-{% for keyword in search_keywords %}
-  <li>{{ keyword|safe }}</li>
+{% for keyword, count in search_keywords %}
+  <li>{{ keyword|safe }}: {{ count }}</li>
 {% endfor %}
 </ul>
 </div>
 <div style="margin-top: 20px">
 <strong>Top 20 upcoming internal search keywords</strong>
 <ul>
-{% for keyword in internal_search_keywords %}
-  <li>{{ keyword|safe }}</li>
+{% for keyword, count in internal_search_keywords %}
+  <li>{{ keyword|safe }} : {{ count }}</li>
 {% endfor %}
 </ul>
 </div>
@@ -43,8 +43,8 @@
 <div style="margin-top: 20px">
 <strong>Top 5 email alerts created this week</strong>
 <ul>
-{% for alert in alerts %}
-  <li>{{ alert }}</li>
+{% for alert, count in alerts %}
+  <li>{{ alert }}: {{ count }}</li>
 {% endfor %}
 </ul>
 </div>

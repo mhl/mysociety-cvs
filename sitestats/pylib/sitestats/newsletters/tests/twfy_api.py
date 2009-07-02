@@ -59,7 +59,7 @@ class TWFYAPITests(unittest.TestCase):
         start_date = date(2009, 6, 15)
         end_date = date(2009, 6, 22)
         top_subscriptions = self.twfy_api.top_email_subscriptions(start_date, end_date, limit=3)
-        expected_subscriptions = ["speaker:14137", "sri lanka", "Stuart speaker:10229"]
+        expected_subscriptions = [('speaker:14137', 4), ('sri lanka', 3), ('Stuart speaker:10229', 2)]
         self.assertEqual(expected_subscriptions, top_subscriptions, "top_email_subscriptions returns expected results for example data")
         
     def testTopCommentPages(self):
@@ -81,4 +81,30 @@ class TWFYAPITests(unittest.TestCase):
                                               "image":"/images/mps/10544.jpg"}]""")
         name = self.twfy_api.person_name(33)
         self.assertEqual('Dennis Skinner', name, "person_name returns the expected result for example data")
+    
+    def testPageTitle(self):
+        self.fake_api_response(twfy_api, """[{"gid" : "2009-06-24b.800.0",
+                                              "body" : "Opposition Day &#8212; [14th allotted day]"
+                                             },
+                                             {
+                                              "gid" : "2009-06-24b.800.1",      
+                                              "body" : "Iraq Inquiry"}]""")
+        title = self.twfy_api.page_title(gid="2009-06-24b.800.1", page_type='debates', sub_type='commons')
+        self.assertEqual('Iraq Inquiry', title, 'page_title returns expected results for example data')
+        
+    def testPageTitleWrans(self):
+        self.fake_api_response(twfy_api, """[{"epobject_id":"19985215",
+                                              "gid" : "2009-06-24b.800.1", 
+                                              "body":"Business, Innovation and Skills"},
+                                             {"epobject_id":"19985231",
+                                              "gid":"2009-06-24b.279662.h",
+                                              "body":"Building Colleges for the Future Programme"}]""")
+        title = self.twfy_api.page_title(gid="2009-06-24a.279662.h", page_type='wrans', sub_type='')
+        self.assertEqual('Building Colleges for the Future Programme', title, 'page_title returns expected results for example data')
+      
+    def testNextVersionGid(self):
+        next_gid = self.twfy_api.next_version_gid("2009-06-24a.279662.h")
+        self.assertEqual("2009-06-24b.279662.h", next_gid, "next_version_gid increments gid to next version")
+        next_gid = self.twfy_api.next_version_gid("2009-06-24.279662.h")
+        self.assertEqual("2009-06-24.279662.h", next_gid, "next_version_gid increments gid to next version")
     

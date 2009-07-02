@@ -3,13 +3,14 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: twfy_api.py,v 1.3 2009-07-01 10:39:42 louise Exp $
+# $Id: twfy_api.py,v 1.4 2009-07-02 15:36:17 louise Exp $
 #
 
 import mysociety
 import urllib
 import simplejson
 import source
+import re
 
 class TWFYApi(source.Source):
     '''Interfaces with TheyWorkForYou'''
@@ -24,7 +25,8 @@ class TWFYApi(source.Source):
         params.update(request_params)
         query_url = self.base_url + '/api/' + method + '?' + urllib.urlencode(params)
         response = urllib.urlopen(query_url)
-        result = simplejson.loads(response.read(), encoding='latin_1')
+        result = response.read()
+        result = simplejson.loads(result, encoding='latin_1')
         if type(result) == type({}) and result.has_key('error') :
             message = "Error returned from twfy_api. Message: %s, query %s" % (result['error'], query_url)
             raise Exception, message
@@ -39,14 +41,14 @@ class TWFYApi(source.Source):
             total_alerts += int(alert_hash["count"])
         return total_alerts
         
-    def top_email_subscriptions(self, start_date, end_date, limit=10):
+    def top_email_subscriptions(self, start_date, end_date, limit=10, keep_values=True):
         params = {'start_date': start_date, 
                   'end_date'  : end_date}
         result = self.__api_result('getAlerts', params)
         criteria_counts = {}
         for alert_hash in result["alerts"]:
             criteria_counts[alert_hash['criteria']] = int(alert_hash['count'])
-        return self.get_top_n(criteria_counts, limit)
+        return self.get_top_n(criteria_counts, limit, keep_values)
         
     def person_name(self, person_id):
         params = {'id' : person_id}
@@ -65,3 +67,73 @@ class TWFYApi(source.Source):
             url_counts[page] += 1
         return self.get_top_n(url_counts, limit)
     
+    def next_version_gid(self, gid):
+        version = re.sub("(\d\d\d\d-\d\d-\d\d)(.)(\..*)", self.next_version, gid)
+        return version
+        
+    def next_version(self, match):
+        char_index = ord(match.group(2))
+        return match.group(1) + chr(char_index + 1) + match.group(3)
+    
+    def page_title(self, gid, page_type, sub_type):
+        result = []
+        params = {'gid' : gid }
+        # print "looking for %s" % gid
+        if sub_type != '':
+            params['type'] = sub_type
+        try:
+            if page_type in ['debates', 'debate']:
+                result = self.__api_result('getDebates', params)
+            elif page_type == 'wrans':
+                result = self.__api_result('getWrans', params)
+                
+        # TODO: API can return blank page. Should fix in TWFY API
+        except ValueError:
+            print "value error %s" % page_type
+            return None
+        versions_tried = 0
+        # Sometimes the version gets incremented after people have visited the page
+        # so we need to check for later versions
+        while versions_tried < 5:    
+            title = self.__title_from_debate_list(result, gid, page_type)
+            if title:
+                return title
+            gid = self.next_version_gid(gid)
+            versions_tried += 1
+        return None
+
+    def __title_from_debate_list(self, data, gid, page_type):
+        for debate_hash in data:  
+            if debate_hash['gid'] == gid:
+                # Looking at a speech in a debate
+                if page_type == 'debate':
+                    return self.__debate_title_from_speech(debate_hash) 
+                else:
+                    return debate_hash['body']
+        return None
+                
+    def __speaker_from_debate(self, data):
+        """Get the speaker from a hash of debate info"""
+        if data.has_key('speaker'):
+            return data['speaker'].get('first_name') + ' ' + data['speaker'].get('last_name') 
+        return None
+    
+    def __parent_gid_from_debate(self, data):
+        """Get the parent gid from a hash of debate info"""
+        if data.has_key('listurl'):
+            listurl = data['listurl']
+            match = re.search('\?id=(.*?)(&|$|#)', listurl)
+            if match:
+                return match.group(1)
+        return None
+    
+    def __debate_title_from_speech(self, data):
+        """Construct a title for a speech in a debate"""
+        parent_gid = self.__parent_gid_from_debate(data)
+        speaker = self.__speaker_from_debate(data)
+        if parent_gid and speaker:
+            debate_title = self.page_title(parent_gid, 'debates', 'commons')
+            if debate_title: 
+                return "%s speaking in %s" % (speaker, debate_title)
+        return None
+                
