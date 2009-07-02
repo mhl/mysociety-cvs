@@ -12,14 +12,26 @@ class CommonBaseMeasuresNewsletter(Newsletter):
     formats = {}
     sites = {}
     
+    def template(self):
+        return 'common_base_measures'
+        
     def render(self, format, sources, date=None):
-        """Returns the text for a common base measures email in text/html"""
+        """Returns the text for an email in text/html"""
+        self.date=date
         if not self.formats.get(format):
             if not self.data:
                 self.generate_data(sources, date)
-            rendered = render_table(format, self.data['headers'], self.data['rows'], self.data['totals'])
-            self.formats[format] = rendered
+            self.formats[format] =  self.render_data(format)
         return self.formats[format]
+        
+    def template_params(self, format):
+        """Returns the text for a common base measures email in text/html"""
+        week_start, week_end = self.week_bounds(self.date)
+        summary_table = render_table(format, self.data['headers'], self.data['rows'], self.data['totals'])
+        params = {'summary_table' : summary_table,
+                  'week_start'    : week_start.strftime("%d/%m/%y"), 
+                  'week_end'      : week_end.strftime("%d/%m/%y")}
+        return params
     
     def generate_data(self, sources, date):
         sites = sources['piwik'].sites()

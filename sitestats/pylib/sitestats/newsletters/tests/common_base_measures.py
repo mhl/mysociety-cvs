@@ -2,6 +2,7 @@ import unittest
 from sitestats.newsletters.models import CommonBaseMeasuresNewsletter
 from sitestats.newsletters import common
 from tests import example_dir
+from newsletter import  newsletter_date
 
 class MockPiwik:
 
@@ -99,12 +100,12 @@ class CommonBaseMeasuresNewsletterTests(unittest.TestCase):
         self.assertEqual(expected_base_measures, base_measures, 'get_data produces correct results for example')
 
     def testCommonRenderedToHTMLTemplateCorrectly(self):
-        html = self.base_measures.render('html', self.sources).strip()
+        html = self.base_measures.render('html', self.sources, date=newsletter_date()).strip()
         expected_html = open(example_dir() + 'base_measures.html').read().strip()
         self.assertEqual(expected_html, html, 'render produces correct output in HTML for example data')
 
     def testCommonRenderedToTextTemplateCorrectly(self):
-        text = self.base_measures.render('text', self.sources).strip()
+        text = self.base_measures.render('text', self.sources, date=newsletter_date()).strip()
         expected_text = open(example_dir() + 'base_measures.txt').read().strip()
         self.assertEqual(expected_text, text, 'render produces correct output in text for example data')
 
