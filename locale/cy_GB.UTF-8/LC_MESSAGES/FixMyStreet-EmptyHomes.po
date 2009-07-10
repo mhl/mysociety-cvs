@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2009-07-09 14:56+0100\n"
-"PO-Revision-Date: 2009-07-10 13:00+0100\n"
+"POT-Creation-Date: 2009-07-10 14:16+0100\n"
+"PO-Revision-Date: 2009-07-10 15:34+0100\n"
 "Last-Translator: mysociety/bin/make_emptyhomes_po\n"
 "Language-Team: mySociety\n"
 "MIME-Version: 1.0\n"
@@ -21,13 +21,11 @@ msgstr ""
 
 #: bci/perllib/Page.pm:78
 #, perl-format
-#, fuzzy
 msgid ""
 "Please try again later, or <a href=\"mailto:%s\">email us</a> to let us know."
 msgstr "Rhowch gynnig eto'n ddiweddarach, neu <a href=\"mailto:%s\">anfonwch neges e-bost atom</a>i roi gwybod inni."
 
 #: bci/perllib/Page.pm:79
-#, fuzzy
 msgid "Sorry! Something's gone wrong."
 msgstr "Ymddiheuriadau! Mae rhywbeth wedi mynd o'i le."
 
@@ -56,13 +54,12 @@ msgid "About us"
 msgstr "Amdanom ni"
 
 #: bci/perllib/Page.pm:170
-#, fuzzy
 msgid "Report Empty Homes"
-msgstr ""
+msgstr "Adrodd am Eiddo Gwag"
 
 #: bci/perllib/Page.pm:179 bci/perllib/Page.pm:543 bci/web/contact.cgi:63
 msgid "FixMyStreet"
-msgstr ""
+msgstr "reportemptyhomes.com"
 
 #: bci/perllib/Page.pm:197
 msgid "Fix<span id=\"my\">My</span>Street"
@@ -297,7 +294,8 @@ msgstr ""
 "Diolch am geisio cadarnhau eich rhybudd. Fodd bynnag, mae'n ymddangos bod gennym wall\n"
 "ein hunain, felly <a href=\"/contact\">rhowch wybod i ni beth sydd wedi digwydd</a> ac fe wnawn ni edrych yn fanylach ar hyn.\n"
 
-#: bci/web/alert.cgi:50 bci/web/alert.cgi:53 bci/web/alert.cgi:266
+#: bci/web/alert.cgi:50 bci/web/alert.cgi:53 bci/web/alert.cgi:202
+#: bci/web/alert.cgi:269
 msgid "Local RSS feeds and email alerts"
 msgstr "Porthiannau RSS a hysbysiadau e-bost lleol"
 
@@ -326,7 +324,6 @@ msgid "Or problems reported to:"
 msgstr "Neu eiddo gwag y rhoddwyd gwybod amdanynt i:"
 
 #: bci/web/alert.cgi:173
-#, fuzzy
 msgid ""
 "FixMyStreet sends different categories of problem\n"
 "to the appropriate council, so problems within the boundary of a particular "
@@ -350,61 +347,76 @@ msgstr ""
 msgid "Photos of recent nearby reports"
 msgstr "Ffotograffau o adroddiadau cyfagos diweddar"
 
+#: bci/web/alert.cgi:201
+#, perl-format
+msgid "Local RSS feeds and email alerts for &lsquo;%s&rsquo;"
+msgstr ""
+
+#: bci/web/alert.cgi:212
+#, perl-format
+msgid "Here are the types of local problem alerts for &lsquo;%s&rsquo;."
+msgstr ""
+
 #: bci/web/alert.cgi:213
+msgid ""
+"Select which type of alert you&rsquo;d like and click the button for an RSS\n"
+"feed, or enter your email address to subscribe to an email alert."
+msgstr ""
+
+#: bci/web/alert.cgi:216
 msgid "The simplest alert is our geographic one:"
 msgstr "Yr hysbysiad symlaf yw ein hysbysiad daearyddol:"
 
-#: bci/web/alert.cgi:214
+#: bci/web/alert.cgi:217
 #, perl-format
 msgid "Problems within %skm of this location"
 msgstr "Eiddo gwag o fewn %skm o'r lleoliad hwn"
 
-#: bci/web/alert.cgi:220
+#: bci/web/alert.cgi:223
 msgid "(a default distance which covers roughly 200,000 people)"
 msgstr "(pellter rhagosodedig sy'n cynnwys tua 200,000 o bobl)"
 
-#: bci/web/alert.cgi:222
+#: bci/web/alert.cgi:225
 msgid "RSS feed of nearby problems"
 msgstr "Porthiant RSS o eiddo gwag sydd gerllaw"
 
-#: bci/web/alert.cgi:222 bci/web/alert.cgi:254 bci/web/index.cgi:804
+#: bci/web/alert.cgi:225 bci/web/alert.cgi:257 bci/web/index.cgi:804
 #: bci/web/index.cgi:932 bci/web/reports.cgi:212
 msgid "RSS feed"
 msgstr "Porthiant RSS"
 
-#: bci/web/alert.cgi:223
+#: bci/web/alert.cgi:226
 msgid "(alternatively the RSS feed can be customised, within"
 msgstr "(fel arall, gellir addasu'r porthiant RSS yn bersonol, o fewn"
 
-#: bci/web/alert.cgi:229
+#: bci/web/alert.cgi:232
 msgid ""
 "Or you can subscribe to an alert based upon what ward or council you&rsquo;"
 "re in:"
 msgstr "Neu, gallwch danysgrifio am hysbysiad yn ôl pa ward neu gyngor yr ydych yn byw ynddo:"
 
-#: bci/web/alert.cgi:231
+#: bci/web/alert.cgi:234
 msgid "Give me an RSS feed"
 msgstr "Rhowch borthiant RSS i mi"
 
-#: bci/web/alert.cgi:232
+#: bci/web/alert.cgi:235
 msgid "or"
 msgstr "neu"
 
-#: bci/web/alert.cgi:233
+#: bci/web/alert.cgi:236
 msgid "Your email:"
 msgstr "Eich cyfeiriad e-bost:"
 
-#: bci/web/alert.cgi:234
+#: bci/web/alert.cgi:237
 msgid "Subscribe me to an email alert"
 msgstr "Dymunaf danysgrifio i rybuddion drwy e-bost"
 
-#: bci/web/alert.cgi:254
+#: bci/web/alert.cgi:257
 #, perl-format
 msgid "RSS feed of %s"
 msgstr "Porthiant RSS %s"
 
-#: bci/web/alert.cgi:267
-#, fuzzy
+#: bci/web/alert.cgi:270
 msgid ""
 "FixMyStreet has a variety of RSS feeds and email alerts for local problems, "
 "including\n"
@@ -412,11 +424,11 @@ msgid ""
 "problems\n"
 "within a certain distance of a particular location."
 msgstr ""
-"Mae gan yr Asiantaeth Tai Gwag amrywiaeth o borthiannau RSS a hysbysiadau e-bost ar gyfer eiddo gwag lleol,\n"
+"Mae gan reportemptyhomes.com amrywiaeth o borthiannau RSS a hysbysiadau e-bost ar gyfer eiddo gwag lleol,\n"
 "gan gynnwys hysbysiadau am bob eiddo gwag mewn ward neu gyngor penodol, neu bob eiddo gwag\n"
 "o fewn pellter penodol o leoliad penodol."
 
-#: bci/web/alert.cgi:271
+#: bci/web/alert.cgi:274
 msgid ""
 "To find out what local alerts we have for you, please enter your GB\n"
 "postcode or street name and area:"
@@ -424,51 +436,51 @@ msgstr ""
 "I gael gwybod pa hysbysiadau lleol sydd gennym yn eich ardal, cyngor neu ward chi,\n"
 "cofnodwch eich cod post Prydeinig neu enw stryd ac ardal:"
 
-#: bci/web/alert.cgi:279
+#: bci/web/alert.cgi:282
 msgid "Some photos of recent reports"
 msgstr "Rhai ffotograffau o adroddiadau diweddar"
 
-#: bci/web/alert.cgi:286
+#: bci/web/alert.cgi:289
 msgid "Please select the feed you want"
 msgstr "Dewiswch y porthiant rydych chi eisiau ei gael"
 
-#: bci/web/alert.cgi:299
+#: bci/web/alert.cgi:302
 msgid "Illegal feed selection"
 msgstr "Dewis porthiant annilys"
 
-#: bci/web/alert.cgi:312
+#: bci/web/alert.cgi:315
 msgid "Receive email when updates are left on this problem."
 msgstr "Derbyn neges e-bost pan fydd diweddariadau'n cael eu rhoi am yr eiddo gwag hwn."
 
-#: bci/web/alert.cgi:313 bci/web/index.cgi:663 bci/web/index.cgi:919
+#: bci/web/alert.cgi:316 bci/web/index.cgi:663 bci/web/index.cgi:919
 msgid "Email:"
 msgstr "E-bost:"
 
-#: bci/web/alert.cgi:314 bci/web/index.cgi:920
+#: bci/web/alert.cgi:317 bci/web/index.cgi:920
 msgid "Subscribe"
 msgstr "Tanysgrifio"
 
-#: bci/web/alert.cgi:337
+#: bci/web/alert.cgi:340
 msgid "You have successfully subscribed to that alert."
 msgstr "Rydych wedi tanysgrifio'n llwyddiannus i'r hysbysiad hwnnw."
 
-#: bci/web/alert.cgi:340
+#: bci/web/alert.cgi:343
 msgid "We could not validate that alert."
 msgstr "Ni allem ddilysu'r hysbysiad hwnnw."
 
-#: bci/web/alert.cgi:359
+#: bci/web/alert.cgi:362
 msgid "You have successfully confirmed your alert."
 msgstr "Rydych wedi cadarnhau'ch hysbysiad yn llwyddiannus."
 
-#: bci/web/alert.cgi:363
+#: bci/web/alert.cgi:366
 msgid "You have successfully deleted your alert."
 msgstr "Rydych wedi dileu'ch hysbysiad yn llwyddiannus."
 
-#: bci/web/alert.cgi:375
+#: bci/web/alert.cgi:378
 msgid "Please enter a valid email address"
 msgstr "Cofnodwch gyfeiriad e-bost dilys"
 
-#: bci/web/alert.cgi:376
+#: bci/web/alert.cgi:379
 msgid "Please select the type of alert you want"
 msgstr "Dewiswch y math o hysbysiad rydych chi eisiau ei gael"
 
@@ -648,7 +660,6 @@ msgstr ""
 "defnyddiwch y blwch sydd i'w gael ar y <a href=\"/\">dudalen flaen</a>."
 
 #: bci/web/contact.cgi:120
-#, fuzzy
 msgid ""
 "Please do <strong>not</strong> report problems through this form; messages "
 "go to\n"
@@ -656,7 +667,7 @@ msgid ""
 "please <a href=\"/\">go to the front page</a> and follow the instructions."
 msgstr ""
 "<strong>Peidiwch</strong> ag adrodd am eiddo gwag drwy gyfrwng y ffurflen hon;\n"
-"bydd y negeseuon yn mynd at y tîm sydd y tu ôl i'r Asiantaeth Tai Gwag, nid at gyngor.\n"
+"bydd y negeseuon yn mynd at y tîm sydd y tu ôl i reportemptyhomes.com, nid at gyngor.\n"
 "I roi gwybod am eiddo gwag <a href=\"/\">ewch i'r dudalen flaen</a> a dilynwch y cyfarwyddiadau."
 
 #: bci/web/contact.cgi:123
@@ -778,9 +789,8 @@ msgid "Enter details of the problem"
 msgstr "Rhowch fanylion yr eiddo gwag"
 
 #: bci/web/index.cgi:168
-#, fuzzy
 msgid "FixMyStreet updates"
-msgstr "Diweddariadau'r Asiantaeth Tai Gwag"
+msgstr "Diweddariadau i reportemptyhomes.com"
 
 #: bci/web/index.cgi:171
 #, perl-format
@@ -1091,9 +1101,8 @@ msgid "No problems found."
 msgstr "Ni ddaethpwyd o hyd i unrhyw eiddo gwag."
 
 #: bci/web/index.cgi:850
-#, fuzzy
 msgid "Recent local problems, FixMyStreet"
-msgstr "Eiddo gwag lleol diweddar, yr Asiantaeth Tai Gwag"
+msgstr "Eiddo gwag lleol diweddar, reportemptyhomes.com"
 
 #: bci/web/index.cgi:881 bci/web/index.cgi:883
 msgid "Unknown problem ID"
@@ -1101,7 +1110,7 @@ msgstr "ID eiddo gwag anhysbys"
 
 #: bci/web/index.cgi:884
 msgid "That report has been removed from FixMyStreet."
-msgstr "Mae'r eiddo gwag hwnnw wedi cael ei guddio o olwg y cyhoedd gan ei fod yn cynnwys manylion cyhoeddus amhriodol."
+msgstr "Mae'r adroddiad hwnnw wedi cael ei dynnu oddi ar reportemptyhomes.com"
 
 #: bci/web/index.cgi:903
 msgid "This problem is old and of unknown status."
@@ -1148,9 +1157,8 @@ msgid "Alert me to future updates"
 msgstr "Rhowch wybod i mi am ddiweddariadau yn y dyfodol"
 
 #: bci/web/index.cgi:990
-#, fuzzy
 msgid "Updates to this problem, FixMyStreet"
-msgstr "Diweddariadau i'r eiddo gwag hwn, yr Asiantaeth Tai Gwag"
+msgstr "Diweddariadau i'r eiddo gwag hwn, reportemptyhomes.com"
 
 #: bci/web/questionnaire.cgi:28 bci/web/questionnaire.cgi:206
 msgid "Questionnaire"
@@ -1376,9 +1384,8 @@ msgstr "%s - Adroddiadau cryno"
 
 #: bci/web/reports.cgi:211
 #, perl-format
-#, fuzzy
 msgid "Problems within %s, FixMyStreet"
-msgstr "Eiddo gwag o fewn %s, yr Asiantaeth Tai Gwag"
+msgstr "Eiddo gwag o fewn %s, reportemptyhomes.com"
 
 #: bci/web/reports.cgi:213
 #, perl-format
