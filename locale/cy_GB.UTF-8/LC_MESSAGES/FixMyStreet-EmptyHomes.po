@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2009-07-10 14:16+0100\n"
-"PO-Revision-Date: 2009-07-10 15:34+0100\n"
+"POT-Creation-Date: 2009-07-10 17:36+0100\n"
+"PO-Revision-Date: 2009-07-10 17:44+0100\n"
 "Last-Translator: mysociety/bin/make_emptyhomes_po\n"
 "Language-Team: mySociety\n"
 "MIME-Version: 1.0\n"
@@ -107,6 +107,21 @@ msgstr "Eiddo gwag"
 #: bci/perllib/Page.pm:553 bci/web/index.cgi:411
 msgid "problem"
 msgstr "eiddo gwag"
+
+#: bci/perllib/Page.pm:556
+#, perl-format
+msgid ""
+"<h1>Nearly Done! Now check your email...</h1>\n"
+"<p>The confirmation email <strong>may</strong> take a few minutes to arrive "
+"&mdash; <em>please</em> be patient.</p>\n"
+"<p>If you use web-based email or have 'junk mail' filters, you may wish to "
+"check your bulk/spam mail folders: sometimes, our messages are marked that "
+"way.</p>\n"
+"<p>You must now click the link in the email we've just sent you &mdash;\n"
+"if you do not, your %s will not be %s.</p>\n"
+"<p>(Don't worry &mdash; we'll hang on to your %s while you're checking your "
+"email.)</p>\n"
+msgstr ""
 
 #: bci/perllib/Page.pm:572
 msgid "today"
@@ -1429,22 +1444,22 @@ msgstr "Eiddo gwag hen, nid yw eu cyflwr yn hysbys"
 msgid "Old fixed"
 msgstr "Hen wedi'i adfer i'w ddefnyddio"
 
-#: bci/bin/send-reports:90
+#: bci/bin/send-reports:77
 msgid ""
 "This web page also contains a photo of the problem, provided by the user."
 msgstr "Mae'r dudalen we hon hefyd yn cynnwys ffotograff o'r eiddo gwag, wedi'i ddarparu gan y defnyddiwr."
 
-#: bci/bin/send-reports:96
+#: bci/bin/send-reports:83
 msgid "To view a map of the precise location of this issue"
 msgstr "Gweld map o union leoliad y broblem hon"
 
-#: bci/bin/send-reports:97
+#: bci/bin/send-reports:84
 msgid ""
 "The user could not locate the problem on a map, but to see the area around "
 "the location they entered"
 msgstr "Ni allai'r defnyddiwr leoli'r eiddo gwag ar fap, ond i weld yr ardal o gwmpas y lleoliad a gofnodwyd ganddynt "
 
-#: bci/bin/send-reports:101
+#: bci/bin/send-reports:88
 #, perl-format
 msgid ""
 "The closest address, as the crow flies, to the location of this problem, "
@@ -1452,6 +1467,72 @@ msgid ""
 "ensure that you check it against the details provided by the user and, if "
 "possible, the map."
 msgstr "Y cyfeiriad agosaf ar draws gwlad, i leoliad yr eiddo gwag hwn, %.0fm i ffwrdd, yw: %s - sylwer bod hwn yn cael ei greu'n awtomatig, felly gwnewch yn siwr eich bod yn ei gadarnhau yn ôl y manylion sy'n cael eu rhoi gan y defnyddiwr ac, os oes modd, ei gadarnhau yn ôl y map."
+
+#: bci/db/alert_types_eha.pl:2 bci/db/alert_types_eha.pl:3
+#, perl-brace-format
+msgid "Updates on {{title}}"
+msgstr "Diweddariadau am {{title}}"
+
+#: bci/db/alert_types_eha.pl:4
+#, perl-brace-format
+msgid "Update by {{name}}"
+msgstr "Diweddariadau yn ôl {{name}}"
+
+#: bci/db/alert_types_eha.pl:7
+msgid "New reports on reportemptyhomes.com"
+msgstr "Adroddiadau newydd ar reportemptyhomes.com"
+
+#: bci/db/alert_types_eha.pl:8
+msgid "The latest empty properties reported by users"
+msgstr "Yr eiddo gwag diweddaraf y mae defnyddwyr wedi rhoi gwybod amdanynt"
+
+#: bci/db/alert_types_eha.pl:11
+msgid "Properties recently reported as put back to use on reportemptyhomes.com"
+msgstr "Eiddo y cafwyd adroddiadau diweddar ar reportemptyhomes.com eu bod wedi cael eu hadfer i'w defnyddio"
+
+#: bci/db/alert_types_eha.pl:12
+msgid "The latest properties reported back to use by users"
+msgstr "Yr eiddo diweddaraf y mae defnyddwyr wedi rhoi gwybod eu bod yn ôl mewn defnyd"
+
+#: bci/db/alert_types_eha.pl:15
+msgid "New local reports on reportemptyhomes.com"
+msgstr "Adroddiadau lleol newydd ar reportemptyhomes.com"
+
+#: bci/db/alert_types_eha.pl:16
+msgid "The latest local reports reported by users"
+msgstr "Yr adroddiadau lleol diweddaraf y mae defnyddwyr wedi rhoi gwybod amdanynt"
+
+#: bci/db/alert_types_eha.pl:19
+#, perl-brace-format
+msgid "New reports to {{COUNCIL}} on reportemptyhomes.com"
+msgstr "Adroddiadau newydd i gyngor {{COUNCIL}} ar reportemptyhomes.com"
+
+#: bci/db/alert_types_eha.pl:20
+#, perl-brace-format
+msgid "The latest reports for {{COUNCIL}} reported by users"
+msgstr "Yr adroddiadau diweddaraf ar gyfer cyngor {{COUNCIL}} y mae defnyddwyr wedi rhoi gwybod amdanynt"
+
+#: bci/db/alert_types_eha.pl:23
+#, perl-brace-format
+msgid ""
+"New reports for {{COUNCIL}} within {{WARD}} ward on reportemptyhomes.com"
+msgstr "Adroddiadau newydd ar gyfer cyngor {{COUNCIL}}, yn ward {{WARD}} ar reportemptyhomes.com"
+
+#: bci/db/alert_types_eha.pl:24
+#, perl-brace-format
+msgid ""
+"The latest reports for {{COUNCIL}} within {{WARD}} ward reported by users"
+msgstr "Yr adroddiadau diweddaraf ar gyfer cyngor {{COUNCIL}}, yn ward {{WARD}} y mae defnyddwyr wedi rhoi gwybod amdanynt"
+
+#: bci/db/alert_types_eha.pl:27
+#, perl-brace-format
+msgid "New reports within {{NAME}}'s boundary on reportemptyhomes.com"
+msgstr "Adroddiadau newydd o fewn ffin {{NAME}} ar reportemptyhomes.com"
+
+#: bci/db/alert_types_eha.pl:28
+#, perl-brace-format
+msgid "The latest reports within {{NAME}}'s boundary reported by users"
+msgstr "Yr adroddiadau diweddaraf o fewn ffin {{NAME}} y mae defnyddwyr wedi rhoi gwybod amdanynt"
 
 #. Please leave the first word "Subject:" untranslated
 
