@@ -68,6 +68,23 @@ class FMSAPITests(unittest.TestCase):
         expected_counts = {'Lambeth Borough Council' : 1, 'Southwark Borough Council' : 2}
         self.assertEqual(expected_counts, council_counts, 'council_counts returns the expected result with example data')
 
+    def testCouncilCountsWithEmptyCouncils(self):
+        problems = """[{"name":"",
+                    "anonymous":"1",
+                    "service":"Web interface",
+                    "council":null,
+                    "detail":"Reporting a test problem. Please ignore",
+                    "confirmed":"2009-07-01 09:15:47.561939",
+                    "northing":"179765.049530099",
+                    "category":"Trees",
+                    "title":"Test problem",
+                    "whensent":"2009-07-01 09:55:02.205413",
+                    "easting":"532589.53517907"}]"""
+        self.fake_api_response(fms_api, problems)
+        council_counts = self.fms_api.council_counts(date(2009, 6, 3), date(2009, 6, 10))
+        expected_counts = {}
+        self.assertEqual(expected_counts, council_counts, 'council_counts returns the expected result when problems are missing councils')
+        
     def testTopCouncils(self):
         self.fake_api_response(fms_api, self.fakeProblems())
         categories = self.fms_api.top_councils(date(2009, 6, 3), date(2009, 6, 10), limit=10)

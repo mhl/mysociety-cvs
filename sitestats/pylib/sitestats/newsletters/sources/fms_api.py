@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: fms_api.py,v 1.3 2009-07-01 15:34:44 louise Exp $
+# $Id: fms_api.py,v 1.4 2009-07-14 10:06:50 louise Exp $
 #
 
 import mysociety
@@ -61,9 +61,10 @@ class FMSApi(source.Source):
         council_counts = {}
         for problem in problems:
             councils = problem['council']
-            council_list = councils.split(' and ')
-            for council in council_list:
-                council_counts[council] = council_counts.setdefault(council, 0) + 1
+            if councils:
+                council_list = councils.split(' and ')
+                for council in council_list:
+                    council_counts[council] = council_counts.setdefault(council, 0) + 1
         return council_counts
         
     def top_councils(self, start_date, end_date, limit=10):
