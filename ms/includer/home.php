@@ -9,8 +9,8 @@
 	the UK’s best known democracy websites.</h3>
 	<p>
 Using our services, <strong>200,000</strong> people have written to their
-MP for the first time, over <strong>8,000</strong> potholes and other broken
-things have been fixed, nearly <strong>9,000,000</strong> signatures have been
+MP for the first time, nearly <strong>19,000</strong> potholes and other broken
+things have been fixed, over <strong>10,500,000</strong> signatures have been
 left on petitions to the Prime Minister, and at least <strong>77</strong> tiny
 hats have been knitted for charity.
 		<br/>
