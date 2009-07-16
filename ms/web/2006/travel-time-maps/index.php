@@ -9,8 +9,8 @@ include "../../wp/wp-content/themes/default/header.php";
 <h1>Travel-time Maps and their Uses</h1>
 
 <div class="contenthalf">
-<p>Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;<br>
-Tom Steinberg, mySociety &lt;<a href="mailto:tom@mysociety.org">tom@mysociety.org</a>&gt;<br>
+<p>Chris Lightfoot and Tom Steinberg, mySociety<br>
+<a href="mailto:team&#64;mysociety.org">team&#64;mysociety.org</a>
 </p>
 
 <p>This work was funded and supported by the <a href="http://www.dft.gov.uk/">Department&nbsp;for&nbsp;Transport</a>.</p>

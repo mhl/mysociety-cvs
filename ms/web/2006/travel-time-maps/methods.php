@@ -8,7 +8,7 @@ include "../../wp/wp-content/themes/default/header.php";
 
 <h1>Travel-time Maps: Methods</h1>
 
-<p>Chris Lightfoot, mySociety &lt;<a href="mailto:chris@mysociety.org">chris@mysociety.org</a>&gt;</p>
+<p>Chris Lightfoot, mySociety &lt;<a href="mailto:team&#64;mysociety.org">team&#64;mysociety.org</a>&gt;</p>
 
 <p>This work was funded and supported by the <a href="http://www.dft.gov.uk/">Department&nbsp;for&nbsp;Transport</a>.</p>
 
