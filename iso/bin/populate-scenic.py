@@ -5,7 +5,7 @@ Put house price data into database.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 
-$Id: populate-scenic.py,v 1.2 2009-05-11 22:23:44 francis Exp $
+$Id: populate-scenic.py,v 1.3 2009-07-21 09:16:56 francis Exp $
 """
 import os
 import sys
@@ -32,6 +32,9 @@ src = urllib.urlopen('http://scenic.mysociety.org/votes.tsv')
 input = csv.reader(src, dialect='excel-tab')
 
 #print >> csvfile, 'Easting,Northing,Rating'
+
+header = input.next()
+assert header == ["ID,Lat,Lon,Average,Variance,Votes,Geograph URI"]
 
 db.execute('''begin''')
 db.execute('''delete from scenic''')
