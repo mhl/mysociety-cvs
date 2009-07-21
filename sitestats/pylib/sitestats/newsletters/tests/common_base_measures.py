@@ -90,9 +90,9 @@ class CommonBaseMeasuresNewsletterTests(unittest.TestCase):
         base_measures = self.base_measures.get_data(self.sources['piwik'].sites()[1], self.sources, {})
         expected_base_measures = [{'current_value': 22, 'percent_change': '-60%', 'unit': ''}, 
                                   {'current_value': 33, 'percent_change': '-25%', 'unit': ''}, 
-                                  {'current_value': 77, 'percent_change': '-13%', 'unit': '%'}, 
-                                  {'current_value': 34, 'percent_change': '-24%', 'unit': '%'}, 
-                                  {'current_value': 56, 'percent_change': '-16%', 'unit': '%'}, 
+                                  {'current_value': 77, 'percent_change': '-11%', 'unit': '%'}, 
+                                  {'current_value': 34, 'percent_change': '-11%', 'unit': '%'}, 
+                                  {'current_value': 56, 'percent_change': '-11%', 'unit': '%'}, 
                                   {'current_value': 11, 'percent_change': '-83%', 'unit': ''}, 
                                   {'current_value': 12, 'percent_change': '-48%', 'unit': 's'}, 
                                   {'current_value': 98, 'link': 'http://test.host', 'percent_change': '+13%', 'unit': ''}, 

@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: common.py,v 1.7 2009-07-02 15:55:26 louise Exp $
+# $Id: common.py,v 1.8 2009-07-21 13:56:09 louise Exp $
 #
 
 from datetime import date, timedelta
@@ -34,10 +34,13 @@ def end_of_previous_week(date=None):
         date = end_of_current_week()
     return date - timedelta(days=7)
 
-def percent_change(current, previous):
+def percent_change(current, previous, unit):
     if previous == 0:
         return 'n/a'
-    percent_change = (float(current * 100) / float(previous)) - 100
+    if unit == '%':
+        percent_change = current - previous
+    else:
+        percent_change = (float(current * 100) / float(previous)) - 100
     formatted_percent = "%d%%" % round(percent_change, 0)
     if formatted_percent[0] != '-':
         formatted_percent =  "+%s" % (formatted_percent)

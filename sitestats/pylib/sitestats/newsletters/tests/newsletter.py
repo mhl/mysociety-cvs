@@ -210,8 +210,8 @@ class NewsletterTests(unittest.TestCase):
         data = self.newsletter.get_traffic_data('unique_visitors', self.sources, '%')
         expected_data = [{'current_value' : 22,
                           'unit' : '%'}, 
-                         {'percent_change' : '-60%', 'previous_value' : 55}, 
+                         {'percent_change' : '-33%', 'previous_value' : 55}, 
                          {'current_value' : 98,
                           'unit' : '%'},
-                         {'percent_change' : '+27%', 'previous_value' : 77}] 
+                         {'percent_change' : '+21%', 'previous_value' : 77}] 
         self.assertEqual(expected_data, data, 'get_data produces correct results for unique_visitors example')

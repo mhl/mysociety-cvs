@@ -143,7 +143,7 @@ class Newsletter(models.Model):
                               ]}
         return stats
 
-    def generate_stats_row(self, method, date, first_col):
+    def generate_stats_row(self, method, date, first_col, unit):
         week_start, week_end = self.week_bounds(date)
         previous_week_start, previous_week_end = self.previous_week_bounds(date)
         month_start, month_end = self.month_bounds(date)
@@ -151,11 +151,11 @@ class Newsletter(models.Model):
 
         current_week = method(week_start, week_end)
         previous_week = method(previous_week_start, previous_week_end)
-        week_percent_change = percent_change(current_week, previous_week)
+        week_percent_change = percent_change(current_week, previous_week, unit)
 
         current_month = method(month_start, month_end)
         previous_month = method(previous_month_start, previous_month_end)
-        month_percent_change = percent_change(current_month, previous_month)
+        month_percent_change = percent_change(current_month, previous_month, unit)
 
         row = [first_col,
                { 'current_value' : current_week },  
@@ -172,10 +172,10 @@ class Newsletter(models.Model):
         previous_week_end = common.end_of_previous_week(this_week_end)
         current_week = method(site_id=self.site_id, date='previous1')
         previous_week = method(site_id=self.site_id, date='prior1')
-        week_percent_change = common.percent_change(current_week, previous_week)
+        week_percent_change = common.percent_change(current_week, previous_week, unit)
         last_four_weeks = method(site_id=self.site_id, date='previous4')
         previous_four_weeks = method(site_id=self.site_id, date='prior4')    
-        month_percent_change = common.percent_change(last_four_weeks, previous_four_weeks)
+        month_percent_change = common.percent_change(last_four_weeks, previous_four_weeks, unit)
         row = [{ 'current_value' : current_week,
                  'unit' : unit },  
                { 'percent_change': week_percent_change, 

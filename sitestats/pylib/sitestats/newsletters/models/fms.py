@@ -41,7 +41,7 @@ class FMSNewsletter(Newsletter):
         
         for (header, stat, unit) in stats: 
             method = getattr(fms_api, stat)
-            row = self.generate_stats_row(method, date, header)
+            row = self.generate_stats_row(method, date, header, unit)
             rows.append(row)
         self.data['reports_headers'] = headers
         self.data['reports_rows'] = rows

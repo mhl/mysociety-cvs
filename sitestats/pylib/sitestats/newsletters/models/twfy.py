@@ -31,7 +31,7 @@ class TWFYNewsletter(Newsletter):
     def generate_alert_data(self, sources, date):
         twfy_api = sources["twfy_api"]
         method = getattr(twfy_api, 'email_subscribers_count')
-        row = self.generate_stats_row(method, date, 'Total number of email alert subscribers')
+        row = self.generate_stats_row(method, date, 'Total number of email alert subscribers', '')
         self.data['traffic_rows'].insert(-1, row)
         week_start, week_end = self.week_bounds(date)
         alerts = twfy_api.top_email_subscriptions(week_start, week_end, limit=5)
@@ -171,10 +171,10 @@ class TWFYNewsletter(Newsletter):
             method = getattr(piwik, 'percent_visits_from_referrer')
             current_week = method(site_id=self.site_id, referrer=referrer, date='previous1')
             previous_week = method(site_id=self.site_id, referrer=referrer, date='prior1')
-            week_percent_change = percent_change(current_week, previous_week)
+            week_percent_change = percent_change(current_week, previous_week, '%')
             last_four_weeks = method(site_id=self.site_id, referrer=referrer, date='previous4')
             previous_four_weeks = method(site_id=self.site_id, referrer=referrer, date='prior4')    
-            month_percent_change = percent_change(last_four_weeks, previous_four_weeks)
+            month_percent_change = percent_change(last_four_weeks, previous_four_weeks, '%')
             row = [referrer, 
                    {'current_value' : current_week, 
                     'unit' : '%'}, 

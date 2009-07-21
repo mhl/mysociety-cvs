@@ -80,7 +80,7 @@ class CommonBaseMeasuresNewsletter(Newsletter):
             method = getattr(piwik, statistic)
             current = method(site_id=site_id, date=this_week_end)
             previous = method(site_id=site_id, date=previous_week_end)
-            percent_change = common.percent_change(current, previous)
+            percent_change = common.percent_change(current, previous, unit)
             cell_info = {'current_value'  : current, 
                          'percent_change' : percent_change, 
                          'unit'           : unit}
@@ -99,7 +99,7 @@ class CommonBaseMeasuresNewsletter(Newsletter):
             previous_data = method(site_name=site_name, site_url=site_url, date=previous_week_end)
             current_count = current_data['resultcount']
             previous_count = previous_data['resultcount']
-            percent_change = common.percent_change(current_count, previous_count)
+            percent_change = common.percent_change(current_count, previous_count, unit)
             cell_info = {'current_value'  : current_count, 
                          'percent_change' : percent_change, 
                          'unit'           : unit, 
