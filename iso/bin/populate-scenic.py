@@ -5,7 +5,7 @@ Put house price data into database.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 
-$Id: populate-scenic.py,v 1.3 2009-07-21 09:16:56 francis Exp $
+$Id: populate-scenic.py,v 1.4 2009-07-21 09:20:59 francis Exp $
 """
 import os
 import sys
@@ -40,7 +40,7 @@ db.execute('''begin''')
 db.execute('''delete from scenic''')
 
 for row in input:
-    id, lat, lon, rating = row
+    id, lat, lon, rating, variance, votes, geograph_uri = row
 
     x, y = geoconvert.wgs84_to_national_grid(lat, lon)
     merc_x, merc_y = geoconvert.bng2gym(x, y)
