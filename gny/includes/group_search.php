@@ -76,7 +76,7 @@
 			$radius_km = $gaze->get_radius_containing_population($long, $lat, POPULATION_THRESHOLD, MAX_KM_DISTANCE_BUFFER);
 			
 			//if that worked, do the other search
-			if($radius_km && $gaze->status !='service unavaliable'){
+			if ($radius_km && $gaze->status !='service unavaliable' && !get_http_var('pointonly')) {
 			
 				//work out the buffered long / lat values
 				$buffered_long = distance_to_longitude($radius_km);
