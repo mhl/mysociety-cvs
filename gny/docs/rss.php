@@ -48,6 +48,10 @@ class rss_page extends pagebase {
 	//Bind
 	protected function bind() {
 
+		//get categories
+		$search = factory::create('search');
+		$categories = $search->search_cached('category', array(array('category_id', '<>', 0)));
+
 		if($this->mode == 'all'){
 //			throw_404();
 		}
@@ -68,6 +72,7 @@ class rss_page extends pagebase {
 	    $this->page_title = "Search results for " . $this->query_display_text;
 	    $this->menu_item = "search";
 		$this->assign('groups', $groups);
+		$this->assign('categories', $categories);
 		$this->assign('query', $this->query);
 		$this->assign('search_link', WWW_SERVER . '/search/' . urlencode($this->query));
 		$this->assign('query_display_text', $this->query_display_text);
