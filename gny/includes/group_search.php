@@ -8,7 +8,7 @@
 		public $warnings = array();
 		public $search_type = "";
 	
-		public function search($search_term){
+		public function search($search_term, $category = 0){
 			
 			//set the search type
 			$this->search_type = self::get_search_type($search_term);
@@ -61,13 +61,13 @@
 			
 			//Do the search for groups directly covering this location
 			$search = factory::create('search');
-			$groups = $search->search('group', array(
+			$groups = $search->search('group', $this->add_category(array(
 				array('long_bottom_left', '<', $long),
 				array('long_top_right', '>', $long),
 				array('lat_bottom_left', '<', $lat),
 				array('lat_top_right', '>', $lat),
 				array('confirmed', '=', 1)		
-				),
+				), $category),
 				'AND'
 			);
 			
@@ -90,46 +90,46 @@
 
 				//do the buffered searches (THIS IS REALY INEFFICANT BUT PEAR DATA OBJECTS DONT DO MIXED AND/OR SEARCHES)
 				$groups_buffered = array();
-				$groups_buffered1 = $search->search('group', array(
+				$groups_buffered1 = $search->search('group', $this->add_category(array(
 					array('long_bottom_left', '>', $buffered_bottom_left_long),
 					array('long_bottom_left', '<', $buffered_top_right_long),
 					array('lat_bottom_left', '>', $buffered_bottom_left_lat),
 					array('lat_bottom_left', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
-					),
+					), $category),
 					'AND'
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered1);
 				
-				$groups_buffered2 = $search->search('group', array(
+				$groups_buffered2 = $search->search('group', $this->add_category(array(
 					array('long_top_right', '<', $buffered_top_right_long),
 					array('long_top_right', '>', $buffered_top_right_long),
 					array('lat_top_right', '>', $buffered_bottom_left_lat),
 					array('lat_top_right', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
-					),
+					), $category),
 					'AND'
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered2);
 				
-				$groups_buffered3 = $search->search('group', array(
+				$groups_buffered3 = $search->search('group', $this->add_category(array(
 					array('long_bottom_left', '>', $buffered_bottom_left_long),
 					array('long_bottom_left', '<', $buffered_top_right_long),
 					array('lat_top_right', '>', $buffered_bottom_left_lat),
 					array('lat_top_right', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
-					),
+					), $category),
 					'AND'
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered3);
 				
-				$groups_buffered4 = $search->search('group', array(
+				$groups_buffered4 = $search->search('group', $this->add_category(array(
 					array('long_top_right', '>', $buffered_bottom_left_long),
 					array('long_top_right', '<', $buffered_top_right_long),
 					array('lat_bottom_left', '>', $buffered_bottom_left_lat),
 					array('lat_bottom_left', '<', $buffered_top_right_lat),
 					array('confirmed', '=', 1)				
-					),
+					), $category),
 					'AND'
 				);
 				$groups_buffered = array_merge($groups_buffered, $groups_buffered4);
@@ -196,6 +196,12 @@
 		
 		}
 	
+		function add_category($where, $category) {
+			if ($category) {
+				$where[] = array('category_id', '=', $category);
+			}
+			return $where;
+		}
 	
 	}
 
