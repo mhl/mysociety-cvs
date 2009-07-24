@@ -56,6 +56,7 @@ class rss_page extends pagebase {
 //			throw_404();
 		}
 		
+		$groups = array();
 		if($this->mode == 'postcode' || $this->mode == 'zipcode'|| $this->mode == 'longlat'){
 			//do the search
 			$group_search = factory::create('group_search');
@@ -65,6 +66,10 @@ class rss_page extends pagebase {
 			if(sizeof($group_search->warnings) > 0){
 				$this->warnings = $group_search->warnings;
 			}
+		}
+
+		foreach ($groups as $group) {
+			$group->category = $categories[$group->category_id]->name;
 		}
 
 		//page vars
