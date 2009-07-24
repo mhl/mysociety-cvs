@@ -50,7 +50,11 @@ class rss_page extends pagebase {
 
 		//get categories
 		$search = factory::create('search');
-		$categories = $search->search_cached('category', array(array('category_id', '<>', 0)));
+		$category_objs = $search->search_cached('category', array(array('category_id', '<>', 0)));
+		$categories = array();
+		foreach ($category_objs as $obj) {
+			$categories[$obj->category_id] = $obj;
+		}
 
 		if($this->mode == 'all'){
 //			throw_404();
