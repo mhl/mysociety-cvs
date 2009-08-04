@@ -50,7 +50,7 @@ Template Name: Call for proposals 09
                   </li>
                     <?php endwhile;?>
                 </ul>
-                <a href="/category/proposals-submissions-2009/">View all ideas &raquo;</a>
+                <a href="/category/proposal-submissions-2009/">View all ideas &raquo;</a>
     </div>    
     
 <?php include (TEMPLATEPATH . '/catposts.php'); ?>
