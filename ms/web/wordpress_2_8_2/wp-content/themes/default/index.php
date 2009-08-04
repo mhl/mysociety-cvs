@@ -13,6 +13,10 @@ if (have_posts()) : ?>
     }
 
     while (have_posts()) : the_post();
+    
+        //exclude call for proposals
+        if ( !in_category('29') ) {
+    
 ?>
 		<div class="post dividerbottom">
 				<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
@@ -25,7 +29,7 @@ if (have_posts()) : ?>
 				<p class="postmetadata"><?php the_tags('Tags: ', ', ', '<br />'); ?> Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?></p>
 
 			</div>
-
+		<?php } ?>
 		<?php endwhile; ?>
 
 		<div class="navigation">
