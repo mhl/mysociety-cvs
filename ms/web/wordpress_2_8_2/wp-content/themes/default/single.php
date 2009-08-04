@@ -94,7 +94,7 @@
 		    <div class="contentnarrow right">
 		        <a class="linkbutton" href="/services/request-a-quote/?p=map">
                     <span class="left">&nbsp;</span>
-                    <span class="middle">Add your idea now</span>
+                    <span class="middle">Add an idea</span>
                     <span class="right">&nbsp;</span>
                 </a>
                 <br class="clear"/>
