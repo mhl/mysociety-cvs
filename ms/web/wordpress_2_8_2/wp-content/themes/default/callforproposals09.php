@@ -41,8 +41,7 @@ Template Name: Call for proposals 09
     <div class="contentnarrow right">
         <div class="sidebar">
             <h3>Ideas so far</h3>
-            <!--Recent posts-->
-            <?php if (!is_home()) { ?>
+            <!--Recent posts
                 <ul>
                     <?php $myposts = get_posts('numberposts=12&category=29');
                         foreach($myposts as $post) {?>
@@ -51,7 +50,7 @@ Template Name: Call for proposals 09
                             </li>
                     <?php } ?>
                 </ul>
-            <?php } ?>
+            -->
         </div>
     </div>    
     
