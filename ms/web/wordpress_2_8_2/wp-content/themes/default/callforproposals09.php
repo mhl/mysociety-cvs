@@ -42,7 +42,7 @@ Template Name: Call for proposals 09
             <h3>Ideas so far</h3>
             <!--Recent posts-->
                 <ul>
-                    <?php query_posts('category_name=proposals-submissions-2009&showposts=10'); ?>
+                    <?php query_posts('category_name=proposal-submissions-2009&showposts=10'); ?>
 
                     <?php while (have_posts()) : the_post(); ?>
                     <li>
