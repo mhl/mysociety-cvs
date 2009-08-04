@@ -84,43 +84,41 @@
 			<!-- Comments -->		
 			<?php comments_template(); ?>
 
-		</div>
 
-		
-		<!-- Sidebar -->
-		<?php if (!$is_idea){ ?>		
-		    <?php get_sidebar(); ?>
-		<?php }else{ ?>
-		    <div class="contentnarrow right">
-		        <p>
-		        <a class="linkbutton" href="/call-for-proposals-2009">
-                        <span class="left">&nbsp;</span>
-                        <span class="middle">Add an idea ...</span>
-                        <span class="right">&nbsp;</span>
-                    </a>
-                    <br class="clear"/>
-                </p>
-                <h3>Ideas so far</h3>
-                <!--Recent posts-->
-                    <ul>
-                        <?php query_posts('category_name=proposal-submissions-2009&showposts=10'); ?>
-
-                        <?php while (have_posts()) : the_post(); ?>
-                        <li>
-                          <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a><br />
-                      </li>
-                        <?php endwhile;?>
-                    </ul>
-                    <a href="/category/proposal-submissions-2009/">View all ideas &raquo;</a>
-            </div>
-		<?php } ?>
-		<br class="clear"/>
 	<?php endwhile; else: ?>
 
 		<p>Sorry, no posts matched your criteria.</p>
 
 <?php endif; ?>
 
-	</div>
+</div>
+		
+<!-- Sidebar -->
+<?php if (!$is_idea){ ?>		
+    <?php get_sidebar(); ?>
+<?php }else{ ?>
+    <div class="contentnarrow right">
+        <p>
+        <a class="linkbutton" href="/call-for-proposals-2009">
+                <span class="left">&nbsp;</span>
+                <span class="middle">Add an idea ...</span>
+                <span class="right">&nbsp;</span>
+            </a>
+            <br class="clear"/>
+        </p>
+        <h3>Ideas so far</h3>
+        <!--Recent posts-->
+            <ul>
+                <?php query_posts('category_name=proposal-submissions-2009&showposts=10'); ?>
+
+                <?php while (have_posts()) : the_post(); ?>
+                <li>
+                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                </li>
+                <?php endwhile;?>
+            </ul>
+            <a href="/category/proposal-submissions-2009/">View all ideas &raquo;</a>
+    </div>
+<?php } ?>
 
 <?php get_footer(); ?>
