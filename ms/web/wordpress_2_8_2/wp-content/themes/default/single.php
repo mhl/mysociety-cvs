@@ -17,7 +17,6 @@
             }
         ?>
 
-
 		<!--Title-->
 		<?php if (!$is_idea){ ?>
 		    <h1>mySociety blog &raquo; <?php the_title(); ?></h1>
@@ -89,7 +88,30 @@
 
 		
 		<!-- Sidebar -->
-		<?php get_sidebar(); ?>
+		<?php if (!$is_idea){ ?>		
+		    <?php get_sidebar(); ?>
+		<?php }else{ ?>
+		    <div class="contentnarrow right">
+		        <a class="linkbutton" href="/services/request-a-quote/?p=map">
+                    <span class="left">&nbsp;</span>
+                    <span class="middle">Add your idea now</span>
+                    <span class="right">&nbsp;</span>
+                </a>
+                <br class="clear"/>
+                <h3>Ideas so far</h3>
+                <!--Recent posts-->
+                    <ul>
+                        <?php query_posts('category_name=proposal-submissions-2009&showposts=10'); ?>
+
+                        <?php while (have_posts()) : the_post(); ?>
+                        <li>
+                          <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a><br />
+                      </li>
+                        <?php endwhile;?>
+                    </ul>
+                    <a href="/category/proposal-submissions-2009/">View all ideas &raquo;</a>
+            </div>
+		<?php } ?>
 		<br class="clear"/>
 	<?php endwhile; else: ?>
 
