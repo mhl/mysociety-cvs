@@ -31,14 +31,14 @@
                 
                     <small>
                         <?php if($author_web == ''){ ?>
-                            By <?php echo $author_name; ?>
+                            By <strong><?php echo $author_name; ?></strong>
                         <?php } else { ?>
-                            By <a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a>
+                            By <strong><a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
                         <?php } ?>
                     </small>
             <?php } else { ?>
                 <small>
-                    <?php the_time('l, F jS, Y') ?> by <?php the_author() ?>
+                    <?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong>
                 </small>
             <?php } ?>
 

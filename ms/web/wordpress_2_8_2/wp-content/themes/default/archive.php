@@ -3,7 +3,11 @@
 
  	  <?php $post = $posts[0]; // Hack. Set $post so that the_date() works. ?>
  	  <?php /* If this is a category archive */ if (is_category()) { ?>
-		<h1 class="pagetitle">mySociety blog &raquo; <?php single_cat_title(); ?></h1>
+ 	      <?php if(!in_category(29)){ ?>
+		      <h1 class="pagetitle">mySociety blog &raquo; <?php single_cat_title(); ?></h1>
+		  <?php }else{ ?>
+		      <h1 class="pagetitle">Call For Proposals  2009 &raquo; <?php single_cat_title(); ?></h1>		      
+		  <?php } ?>		        
  	  <?php /* If this is a tag archive */ } elseif( is_tag() ) { ?>
 		<h1 class="pagetitle">mySociety blog &raquo; posts tagged &#8216;<?php single_tag_title(); ?>&#8217;</h1>
  	  <?php /* If this is a daily archive */ } elseif (is_day()) { ?>
@@ -25,9 +29,39 @@
 } 
 ?>
 		<?php while (have_posts()) : the_post(); ?>
+		    
+		    <?php
+                // is idea submission?
+                $is_idea = in_category(29);
+
+                //get post meta if this is an idea submission
+                if($is_idea){
+                    $keys = get_post_custom_values('Author Name');
+                    $author_name = $keys[0];
+                    $keys = get_post_custom_values('Author Webpage');
+                    $author_web = $keys[0];                    
+                    if($author_web == 'http://'){
+                       $author_web = '';
+                    }
+                }
+            ?>
+            
 		<div class="post dividerbottom">
 				<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
-				<small><?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong></small>
+				<?php if ($is_idea){ ?>
+
+                        <small>
+                            <?php if($author_web == ''){ ?>
+                                By <strong><?php echo $author_name; ?></strong>
+                            <?php } else { ?>
+                                By <strong><a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
+                            <?php } ?>
+                        </small>
+                <?php } else { ?>
+                    <small>
+                        <?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong>
+                    </small>
+                <?php } ?>
 
 				<div class="entry">
 					<?php the_content() ?>
