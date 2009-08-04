@@ -39,19 +39,18 @@ Template Name: Call for proposals 09
         </div>
     </div>
     <div class="contentnarrow right">
-        <div class="sidebar">
             <h3>Ideas so far</h3>
-            <!--Recent posts
+            <!--Recent posts-->
                 <ul>
-                    <?php $myposts = get_posts('numberposts=12&category=29');
-                        foreach($myposts as $post) {?>
-                            <li>
-                                <a href="<?php the_permalink(); ?>"><?php the_title();?></a>
-                            </li>
-                    <?php } ?>
+                    <?php query_posts('category_name=proposals-submissions-2009&showposts=10'); ?>
+
+                    <?php while (have_posts()) : the_post(); ?>
+                    <li>
+                      <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a><br />
+                  </li>
+                    <?php endwhile;?>
                 </ul>
-            -->
-        </div>
+                <a href="/category/proposals-submissions-2009/">View all ideas &raquo;</a>
     </div>    
     
 <?php include (TEMPLATEPATH . '/catposts.php'); ?>
