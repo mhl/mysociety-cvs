@@ -1,11 +1,48 @@
 <?php get_header(); ?>
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+	    
+	    <?php
+            // is idea submission?
+            $is_idea = in_category(29);
+            
+            //get post meta if this is an idea submission
+            if($is_idea){
+                $keys = get_post_custom_values('Author Name');
+                $author_name = $keys[0];
+                $keys = get_post_custom_values('Author Webpage');
+                $author_web = $keys[0];                    
+                if($author_web == 'http://'){
+                   $author_web = '';
+                }
+            }
+        ?>
+
+
 		<!--Title-->
-		<h1>mySociety blog &raquo; <?php the_title(); ?></h1>
+		<?php if (!$is_idea){ ?>
+		    <h1>mySociety blog &raquo; <?php the_title(); ?></h1>
+		<?php }else{ ?>
+		    <h1>Call For Proposals 2009 &raquo; <?php the_title(); ?></h1>		
+		<?php } ?>
 		
 		<!--Post-->
 		<div class="contentwide">
-        <small>By <strong><?php the_author() ?></strong> on <?php the_time('l, F jS, Y') ?></small>
+		    
+		    <?php if ($is_idea){ ?>
+                
+                    <small>
+                        <?php if($author_web == ''){ ?>
+                            By <?php echo $author_name; ?>
+                        <?php } else { ?>
+                            By <a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a>
+                        <?php } ?>
+                    </small>
+            <?php } else { ?>
+                <small>
+                    <?php the_time('l, F jS, Y') ?> by <?php the_author() ?>
+                </small>
+            <?php } ?>
+
 			<div class="entry" id="post-<?php the_ID(); ?>">
 				<?php the_content('<p class="serif">Read the rest of this entry &raquo;</p>'); ?>
 
