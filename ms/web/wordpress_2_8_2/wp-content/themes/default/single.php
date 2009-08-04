@@ -92,12 +92,14 @@
 		    <?php get_sidebar(); ?>
 		<?php }else{ ?>
 		    <div class="contentnarrow right">
+		        <p>
 		        <a class="linkbutton" href="/services/request-a-quote/?p=map">
-                    <span class="left">&nbsp;</span>
-                    <span class="middle">Add an idea</span>
-                    <span class="right">&nbsp;</span>
-                </a>
-                <br class="clear"/>
+                        <span class="left">&nbsp;</span>
+                        <span class="middle">Add an idea ...</span>
+                        <span class="right">&nbsp;</span>
+                    </a>
+                    <br class="clear"/>
+                </p>
                 <h3>Ideas so far</h3>
                 <!--Recent posts-->
                     <ul>
