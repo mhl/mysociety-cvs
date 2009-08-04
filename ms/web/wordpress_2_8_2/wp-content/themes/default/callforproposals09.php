@@ -44,7 +44,7 @@ Template Name: Call for proposals 09
             <!--Recent posts-->
             <?php if (!is_home()) { ?>
                 <ul>
-                    <?php $myposts = get_posts('numberposts=12&cat=29');
+                    <?php $myposts = get_posts('numberposts=12&category=29');
                         foreach($myposts as $post) {?>
                             <li>
                                 <a href="<?php the_permalink(); ?>"><?php the_title();?></a>
