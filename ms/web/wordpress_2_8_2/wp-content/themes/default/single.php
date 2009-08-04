@@ -93,7 +93,7 @@
 		<?php }else{ ?>
 		    <div class="contentnarrow right">
 		        <p>
-		        <a class="linkbutton" href="/services/request-a-quote/?p=map">
+		        <a class="linkbutton" href="/call-for-proposals-2009">
                         <span class="left">&nbsp;</span>
                         <span class="middle">Add an idea ...</span>
                         <span class="right">&nbsp;</span>
