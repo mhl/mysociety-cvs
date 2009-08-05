@@ -8,11 +8,11 @@
 	<h3>Hello! We are mySociety &ndash; we run most of 
 	the UK’s best known democracy websites.</h3>
 	<p>
-Using our services, <strong>200,000</strong> people have written to their
-MP for the first time, nearly <strong>19,000</strong> potholes and other broken
-things have been fixed, over <strong>10,500,000</strong> signatures have been
-left on petitions to the Prime Minister, and at least <strong>77</strong> tiny
-hats have been knitted for charity.
+Using our services, <strong>200,000</strong> people have <a href="http://www.writetothem.com/">written to their
+MP</a> for the first time, nearly <strong>19,000</strong> potholes and other broken
+things <a href="http://www.fixmystreet.com/">have been fixed</a>, over <strong>10,500,000</strong> signatures have been
+left on <a href="http://petitions.number10.gov.uk/">petitions to the Prime Minister</a>, and at least <strong>77</strong> tiny
+hats have been <a href="http://www.pledgebank.com/thebigknit07">knitted for charity</a>.
 		<br/>
 		<a href="/projects/" class="morelink">View all our projects &raquo;</a>
 	</p>
