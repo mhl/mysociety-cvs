@@ -63,9 +63,9 @@ for id in range(0, max_station_id + 1):
         tim = struct.unpack("h", tim_bytes)[0]
         tot = tot + tim
         c = c + 1
-    tim = tim / c
+    tot = tot / c
 
-    out_bytes = struct.pack("=h", tim)
+    out_bytes = struct.pack("=h", tot)
     assert len(out_bytes) == 2
     dest_handle.seek(id * 2)
     dest_handle.write(out_bytes)
