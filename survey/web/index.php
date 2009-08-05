@@ -6,7 +6,7 @@
  * Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: index.php,v 1.6 2009-05-26 23:16:12 francis Exp $
+ * $Id: index.php,v 1.7 2009-08-05 15:25:11 matthew Exp $
  * 
  */
 
@@ -62,13 +62,15 @@ if (get_http_var('querydone')) {
     if (!$verified)
         err("Signature wasn't verified.");
 
-    # See if already there
-    $already_done = db_getOne('select count(*) from survey_done where user_code = ?', array($user_code));
-    if ($already_done) {
-        header('Location: ' . $return_url);
-        exit;
+    if ($site != 'twfy') {
+        # See if already there
+        $already_done = db_getOne('select count(*) from survey_done where user_code = ?', array($user_code));
+        if ($already_done) {
+            header('Location: ' . $return_url);
+            exit;
+        }
+        db_query('insert into survey_done (user_code) values (?)', array($user_code));
     }
-    db_query('insert into survey_done (user_code) values (?)', array($user_code));
 
     # Make arbitary key for storing actual data against
     $batch = auth_random_token();
