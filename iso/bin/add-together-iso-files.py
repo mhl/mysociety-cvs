@@ -53,6 +53,7 @@ dest_handle = open(dest_file, 'w')
 for id in range(0, max_station_id + 1):
     tot = 0
     c = 0
+    valid = True
     for handle in read_handles:
         # the .iso file is just a list of shorts, containing times in minutes, 
         # in order of location id, so we can just seek by location id
@@ -63,7 +64,12 @@ for id in range(0, max_station_id + 1):
         tim = struct.unpack("h", tim_bytes)[0]
         tot = tot + tim
         c = c + 1
-    tot = tot / c
+        if tim < 0: # if a place wasn't accessible, i.e. distance was MINUTES_NULL
+            valid = False
+    if valid:
+        tot = tot / c
+    else:
+        tot = -1
 
     out_bytes = struct.pack("=h", tot)
     assert len(out_bytes) == 2
