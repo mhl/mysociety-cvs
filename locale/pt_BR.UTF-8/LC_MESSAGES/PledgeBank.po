@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: matthew@mysociety.org\n"
-"POT-Creation-Date: 2009-01-07 16:00+0000\n"
+"POT-Creation-Date: 2009-08-08 21:51+0100\n"
 "PO-Revision-Date: 2007-12-23 06:56-0300\n"
 "Last-Translator: Creso Moraes <creso@enfoquecivico.org.br>\n"
 "Language-Team: pt_BR <team@pledgebank.com>\n"
@@ -1046,7 +1046,7 @@ msgstr "Enviar mensagem"
 msgid "If you got the email more than a year ago, then your request has probably expired.  Please try doing what you were doing from the beginning."
 msgstr "Se você recebeu o email há mais de um ano, seu pedido provavelmente expirou. Experimente fazer de novo desde o começo."
 
-#: phplib/utility.php:382 phplib/utility.php:390
+#: phplib/utility.php:384 phplib/utility.php:392
 msgid "today"
 msgstr "hoje"
 
@@ -2127,7 +2127,7 @@ msgid "Powered by Easynet"
 msgstr "Servidores da Easynet"
 
 #: pb/phplib/pbfacebook.php:155 pb/web/new.php:167 pb/web/new.php:512
-#: pb/web/ref-index.php:408 pb/web/ref-plain.php:40
+#: pb/web/ref-index.php:415 pb/web/ref-plain.php:40
 msgid "I will"
 msgstr "Eu prometo"
 
@@ -2164,8 +2164,7 @@ msgstr "Promessa que você apoiou:"
 msgid "You've neither made nor signed any pledges."
 msgstr "Você nem fez nem apoiou quaisquer promessas."
 
-#: pb/phplib/pbfacebook.php:588 pb/web/ref-sign.php:234 pb/web/sms.php:67
-#: pb/web/sms.php:137
+#: pb/phplib/pbfacebook.php:588 pb/web/sms.php:67 pb/web/sms.php:137
 msgid "Thanks for signing up to this pledge!"
 msgstr "Obrigado por apoiar esta promessa!"
 
@@ -2575,7 +2574,7 @@ msgid "<strong>You can still sign up</strong>, to help make it successful where 
 msgstr "<strong>Você ainda pode se inscrever</strong> para fazê-la acontecer onde mora."
 
 #: pb/phplib/pledge.php:1307 pb/phplib/pledge.php:1313
-#: pb/web/ref-index.php:388
+#: pb/web/ref-index.php:395
 msgid "This pledge has now closed; it was successful!"
 msgstr "Promessa bem sucedida e já fechada!"
 
@@ -3895,11 +3894,12 @@ msgstr "Vocês apagam promessas bobas ou ilegais?"
 
 #. TRANS: 'backpage' means the pledge is hidden, so you could translate it as "hide"
 #: pb/web/faq.php:223
+#, fuzzy
 msgid ""
 "PledgeBank reserves the right to 'backpage' any pledge which we\n"
 "    consider to be inappropriate. This means that your pledge will work, but will\n"
 "    not show up on the all page, or in the search. We will normally backpage\n"
-"    pledges which are really nothing more than advertising or propoganda, or which\n"
+"    pledges which are really nothing more than advertising or propaganda, or which\n"
 "    are entirely frivolous. We will also delete pledges which promote or incite\n"
 "    illegal behaviour."
 msgstr ""
@@ -4345,7 +4345,7 @@ msgstr "Aí você poderá alterar a imagem da promessa."
 msgid "View your pledges at PledgeBank.com"
 msgstr "Ver suas promessas no EuPrometo.org"
 
-#: pb/web/my.php:63 pb/web/ref-index.php:343
+#: pb/web/my.php:63 pb/web/ref-index.php:350
 msgid "Suggested pledges"
 msgstr "Promessas sugeridas"
 
@@ -4369,29 +4369,37 @@ msgstr "Você não tem promessas em aberto. <a href=\"/new\">Crie uma nova</a>."
 msgid "<h2>Pledges you have signed</h2>"
 msgstr "<h2>Promessas que você apoiou</h2>"
 
-#: pb/web/my.php:133
+#: pb/web/my.php:135
 #, fuzzy
 msgid "Have you now done what you pledged anyway?"
 msgstr "Foi você que fez esta promessa?"
 
-#: pb/web/my.php:135
+#: pb/web/my.php:137
 #, fuzzy
 msgid "Have you now done what you pledged?"
 msgstr "Você fez esta promessa?"
 
-#: pb/web/my.php:137 pb/web/new.php:345
+#: pb/web/my.php:139 pb/web/new.php:345
 msgid "Yes"
 msgstr "Sim"
 
-#: pb/web/my.php:141
+#: pb/web/my.php:142
 msgid "That's great!"
 msgstr "Isso é genial!"
 
-#: pb/web/my.php:154
+#: pb/web/my.php:150
+msgid "If, in fact, you have NOT yet done your bit for this pledge, you need to click this button:"
+msgstr ""
+
+#: pb/web/my.php:151
+msgid "I HAVE NOT DONE THIS YET!"
+msgstr ""
+
+#: pb/web/my.php:162
 msgid "You have signed no pledges."
 msgstr "Você não apoiou qualquer promessa."
 
-#: pb/web/my.php:157
+#: pb/web/my.php:165
 #, php-format
 msgid "Why not <a href=\"mailto:%s\">send us photos</a> of yourself carrying out successful pledges?"
 msgstr "Que tal <a href=\"mailto:%s\">enviar-nos fotos</a> de você executando suas promessas?"
@@ -5685,52 +5693,57 @@ msgstr "%s, o criador da promessa, apoiado por:"
 msgid "Succeeded on %s"
 msgstr "Teve êxito em %s"
 
-#: pb/web/ref-index.php:254
+#: pb/web/ref-index.php:256
 #, fuzzy
 msgid "I have now done what I pledged"
 msgstr "Você fez esta promessa?"
 
-#: pb/web/ref-index.php:280
+#: pb/web/ref-index.php:258
+#, fuzzy
+msgid "I have NOT done what I pledged"
+msgstr "Você fez esta promessa?"
+
+#: pb/web/ref-index.php:287
 msgid "View signup rate graph"
 msgstr "Visualizar gráfico do ritmo de apoios"
 
-#: pb/web/ref-index.php:287
+#: pb/web/ref-index.php:294
 msgid "RSS feed of comments on this pledge"
 msgstr "Alimentação RSS de comentários a esta promessa"
 
-#: pb/web/ref-index.php:288
+#: pb/web/ref-index.php:295
 msgid "Comments on this pledge"
 msgstr "Comentários a esta promessa"
 
-#: pb/web/ref-index.php:296
+#: pb/web/ref-index.php:303
 #, php-format
 msgid "Because there are so many comments, only the most recent %d are shown on this page."
 msgstr "Como há muitos comentários, só os %d mais recentes são mostrados aqui."
 
-#: pb/web/ref-index.php:299
+#: pb/web/ref-index.php:306
 msgid "Show all comments"
 msgstr "Mostrar todos os comentários"
 
-#: pb/web/ref-index.php:344
+#: pb/web/ref-index.php:351
 msgid "Some of the people who signed this pledge also signed these pledges..."
 msgstr "Pessoas que apoiaram esta promessa também apoiaram essas outras..."
 
-#: pb/web/ref-index.php:351 pb/web/ref-related.js.php:60
+#: pb/web/ref-index.php:358 pb/web/ref-related.js.php:60
 #, php-format
 msgid "%s person"
 msgid_plural "%s people"
 msgstr[0] "pessoa %s"
 msgstr[1] "pessoas %s "
 
-#: pb/web/ref-index.php:394
+#: pb/web/ref-index.php:401
 msgid "You might be interested in these other pledges:"
 msgstr "Você talvez se interesse por estas outras promessas:"
 
-#: pb/web/ref-index.php:403
+#: pb/web/ref-index.php:410
 msgid "See <a href=\"/list\">more pledges</a>, and all <a href=\"/faq\">about how PledgeBank works</a>."
 msgstr "Ver <a href=\"/list\">mais promessas</a>, e tudo <a href=\"/faq\">sobre como funciona o EuPrometo</a>."
 
-#: pb/web/ref-index.php:419
+#: pb/web/ref-index.php:426
 #, php-format
 msgid "Comments on Pledge '%s'"
 msgstr "Comentários sobre a promessa '%s'"
@@ -6060,6 +6073,11 @@ msgstr ""
 msgid "Thanks for signing up to this pledge in %s!"
 msgstr "Obrigado por aderir a esta promessa em %s!"
 
+#: pb/web/ref-sign.php:234
+#, fuzzy, php-format
+msgid "Thanks for signing up to the <a href=\"%s\">%s pledge</a>!"
+msgstr "Obrigado por apoiar esta promessa!"
+
 #: pb/web/ref-sign.php:250
 msgid "You cannot sign your own pledge!"
 msgstr "Você não pode apoiar a própria promessa!"
@@ -6081,7 +6099,8 @@ msgid "PledgeBank pledge survey"
 msgstr "Pesquisa sobre promessa no EuPrometo"
 
 #: pb/web/ref-survey.php:42
-msgid "You did not sign this pledge, so cannot say that you have done it!"
+#, fuzzy
+msgid "You did not sign this pledge, so cannot say that you have or have not done it!"
 msgstr "Você não assinou esta promessa, logo, não pode dizer que a fez!"
 
 #: pb/web/rsscomments.php:13
