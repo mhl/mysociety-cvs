@@ -46,6 +46,10 @@
 	<?php print file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/nav.html"); ?>
 	<?php include (TEMPLATEPATH . '/searchform.php'); ?>
 	</div>
+	
+	<div id="divShout">
+	   <a href="http://www.mysociety.org/call-for-proposals-2009/">Got an idea for mySociety? Add it to the mySociety Call for proposals 2009! &gt;&gt;</a>
+	</div>
 
 
 	<div id="divContent">

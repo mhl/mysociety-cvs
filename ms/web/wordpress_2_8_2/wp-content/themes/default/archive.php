@@ -6,7 +6,7 @@
  	      <?php if(!in_category(29)){ ?>
 		      <h1 class="pagetitle">mySociety blog &raquo; <?php single_cat_title(); ?></h1>
 		  <?php }else{ ?>
-		      <h1 class="pagetitle">Call For Proposals  2009 &raquo; <?php single_cat_title(); ?></h1>		      
+		      <h1 class="pagetitle"><?php single_cat_title(); ?></h1>		      
 		  <?php } ?>		        
  	  <?php /* If this is a tag archive */ } elseif( is_tag() ) { ?>
 		<h1 class="pagetitle">mySociety blog &raquo; posts tagged &#8216;<?php single_tag_title(); ?>&#8217;</h1>
