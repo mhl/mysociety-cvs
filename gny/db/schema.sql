@@ -2,10 +2,10 @@
 -- Needs to be run against a mysql database
 
 CREATE TABLE `category` (
-  `category_id` int(11) NOT NULL auto_increment
-  `name` varchar(100) NOT NULL default ''
-  `hint` varchar(255) default NULL
-  `url_id` varchar(20) NOT NULL default ''
+  `category_id` int(11) NOT NULL auto_increment,
+  `name` varchar(100) NOT NULL default '',
+  `hint` varchar(255) default NULL,
+  `url_id` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`category_id`)
 );
 
@@ -14,8 +14,8 @@ CREATE TABLE `confirmation` (
   `parent_table` varchar(40) NOT NULL default '',
   `parent_id` int(11) NOT NULL default '0',
   `link_key` varchar(40) NOT NULL default '',
-  `argument` varchar(50) default NULL
-  PRIMARY KEY  (`confirmation_id`),
+  `argument` varchar(50) default NULL,
+  PRIMARY KEY  (`confirmation_id`)
 );
 
 CREATE TABLE `contact_email` (
@@ -43,7 +43,7 @@ CREATE TABLE `groups` (
   `name` varchar(150) NOT NULL default '',
   `byline` text NOT NULL,
   `description` text,
-  `category_id` int(11) default NULL
+  `category_id` int(11) default NULL,
   `tags` text,
   `involved_type` varchar(50) NOT NULL default '',
   `involved_link` varchar(150) default NULL,
@@ -62,13 +62,13 @@ CREATE TABLE `groups` (
   `url_id` varchar(150) NOT NULL default '',
   `involved_email` varchar(150) default NULL,
   PRIMARY KEY  (`group_id`),
-  KEY `url` (`url_id`),
+  KEY `url` (`url_id`)
 );
 
 CREATE TABLE `stat` (
-  `stat_key` varchar(100) NOT NULL default ''
-  `stat_value` varchar(100) NOT NULL default ''
-  `stat_id` int(11) NOT NULL auto_increment
+  `stat_key` varchar(100) NOT NULL default '',
+  `stat_value` varchar(100) NOT NULL default '',
+  `stat_id` int(11) NOT NULL auto_increment,
   PRIMARY KEY  (`stat_id`)
 );
 
