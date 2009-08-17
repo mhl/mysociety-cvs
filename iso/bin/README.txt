@@ -75,6 +75,7 @@ do-nptdr.py - script to call Python journey planner and make map
 fastplan.cpp - C++ journey planner
 fastplan-coopt.cpp - coopeted C++ journey planner, for calling by isodaemon
 isodaemon.py - daemon to call C++ planner and make .iso route files
+add-together-iso-files.py - sum together two .iso files as made by isodaemon.py
 
 post-deploy-setup - used when deploying the site
 generate-config - used when deploying the site
@@ -84,9 +85,16 @@ test-run - test script for Contours of Life
 clear-generated-maps - erase maps entries in database and .iso route files
 clear-tile-cache - clear tile server's cache of tiles
 uk-bounds - Provide tile bounds for the UK at different zoom levels
+grab-uk-bounds-urls - Grab URL of every tile in UK from a URL base, so it gets precached
+
+manual-invites - Manually send out invites to use private beta
+email-invites - Send out more invitations to private beta
+email-finished-maps - Send out emails saying a map is finished
 
 populate-all - generate binary files for C++ journey planner, and put stations in database
 cull_stations.py - calculate render threshold for stations at different zoom levels
+populate-houseprices.py - put house prices in database
+populate-scenic.py - put scenicness data in database
 
 i-am-traffic.py - load test Contours of Life
 traffic-analyse - run i-am-traffic.py with varying numbers of worker map sessions
