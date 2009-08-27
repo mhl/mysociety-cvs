@@ -16,17 +16,27 @@ if len(sys.argv) != 2:
     sys.exit()
 url_prefix = sys.argv[1]
 
-lat_max = 60.85 # Out Stack, Shetland Islands
-lat_max = 58.67 # Dunnet Head
+# Whole of UK:
+
+#lat_max = 60.85 # Out Stack, Shetland Islands
+#lat_max = 58.67 # Dunnet Head
 lat_max = 55.8 # Marshall meadows Bay, Northumberland
 
-lat_min = 49.85 # Western Rocks, Isles of Scilly
+#lat_min = 49.85 # Western Rocks, Isles of Scilly
 lat_min = 49.95 # The Lizard
 
 lon_max = 1.762833 # Lowestoft Ness, Suffolk
-lon_min = -8.64 # Soay
-lon_min = -7.54 # Caolos, Outer Heb.
+
+#lon_min = -8.64 # Soay
+#lon_min = -7.54 # Caolos, Outer Heb.
 lon_min = -5.49 # Grassholm, Pembrokeshire
+
+# Just London:
+
+#lat_max = 51.6393 # Rickmansworth
+#lat_min = 51.2781 # Sevenoaks
+#lon_max = 0.1874 # Sevenoaks
+#lon_min = -0.4659 # Rickmansworth
 
 for zoom in range(7,16):
     (xtileL, ytileL) = geoconvert.wgs84_to_tile(lat_max, lon_min, zoom)
