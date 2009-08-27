@@ -857,6 +857,9 @@ function tdomf_widget_customfields_textarea_validate($args,$number,$options) {
       // don't apply content filters!
       
       if($options['ta-char-limit'] > 0 && strlen($ta_prefiltered) > $options['ta-char-limit']) {
+        if(!empty($options['title'])) {
+          $output .= $options['title'] . ': ';
+	}
         $output .= sprintf(__("You have exceeded the max character length by %d characters","tdomf"),(strlen($ta_prefiltered) - $options['ta-char-limit'])); 
       } else if($options['ta-word-limit'] > 0) {
         // Remove all HTML tags as they do not count as "words"!
