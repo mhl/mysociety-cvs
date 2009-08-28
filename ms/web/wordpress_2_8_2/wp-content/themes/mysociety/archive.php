@@ -50,13 +50,13 @@ while (have_posts()) : the_post();
 			<li id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a>
                         <small>
                             <?php if($author_web == ''){ ?>
-                                By <strong><?php echo $author_name; ?></strong>
+                                by <strong><?php echo $author_name; ?></strong>
                             <?php } else { ?>
-                                By <strong><a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
+                                by <strong><a rel="nofollow" href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
                             <?php } ?>
-                        </small>
 
-			<p class="postmetadata"><?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?></p>
+			| <?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?>
+                        </small>
 
 		</div>
 <?php
