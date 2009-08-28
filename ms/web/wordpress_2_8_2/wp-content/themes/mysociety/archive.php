@@ -46,19 +46,16 @@ while (have_posts()) : the_post();
                     $author_web = '';
                 }
 ?>
-		<div class="post dividerbottom">
 			<li id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a>
                         <small>
                             <?php if($author_web == ''){ ?>
-                                by <strong><?php echo $author_name; ?></strong>
+                                by <?php echo $author_name; ?>
                             <?php } else { ?>
-                                by <strong><a rel="nofollow" href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
+                                by <a rel="nofollow" href="<?php echo $author_web ?>"><?php echo $author_name; ?></a>
                             <?php } ?>
 
 			| <?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?>
                         </small>
-
-		</div>
 <?php
 	} else {
 ?>
