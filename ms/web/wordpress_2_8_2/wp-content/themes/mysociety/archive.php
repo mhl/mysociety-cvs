@@ -24,8 +24,11 @@
 	<div class="contentwide">
 
 
-<?php if (is_category('Projects')) {
-     $posts = query_posts($query_string . '&orderby=title&order=asc&posts_per_page=-1');
+<?php
+if (is_category('Projects')) {
+    $posts = query_posts($query_string . '&orderby=title&order=asc&posts_per_page=-1');
+} elseif (is_category(29)) {
+    $posts = query_posts($query_string . '&posts_per_page=-1');
 } 
 ?>
 		<?php while (have_posts()) : the_post(); ?>
