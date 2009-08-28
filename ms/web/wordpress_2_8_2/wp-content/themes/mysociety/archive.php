@@ -23,36 +23,31 @@
  	  <?php } ?>
 	<div class="contentwide">
 
-
 <?php
 if (is_category('Projects')) {
     $posts = query_posts($query_string . '&orderby=title&order=asc&posts_per_page=-1');
 } elseif (is_category(29)) {
     $posts = query_posts($query_string . '&posts_per_page=-1');
+    echo '<ul>';
 } 
-?>
-		<?php while (have_posts()) : the_post(); ?>
-		    
-		    <?php
-                // is idea submission?
-                $is_idea = in_category(29);
 
-                //get post meta if this is an idea submission
-                if($is_idea){
-                    $keys = get_post_custom_values('Author Name');
-                    $author_name = $keys[0];
-                    $keys = get_post_custom_values('Author Webpage');
-                    $author_web = $keys[0];                    
-                    if($author_web == 'http://'){
-                       $author_web = '';
-                    }
+while (have_posts()) : the_post();
+
+        // is idea submission?
+         $is_idea = in_category(29);
+
+        // get post meta and only display basics if this is an idea submission
+	if ($is_idea) {
+                $keys = get_post_custom_values('Author Name');
+                $author_name = $keys[0];
+                $keys = get_post_custom_values('Author Webpage');
+                $author_web = $keys[0];                    
+                if ($author_web == 'http://') {
+                    $author_web = '';
                 }
-            ?>
-            
+?>
 		<div class="post dividerbottom">
-				<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
-				<?php if ($is_idea){ ?>
-
+			<li id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a>
                         <small>
                             <?php if($author_web == ''){ ?>
                                 By <strong><?php echo $author_name; ?></strong>
@@ -60,21 +55,37 @@ if (is_category('Projects')) {
                                 By <strong><a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
                             <?php } ?>
                         </small>
-                <?php } else { ?>
+
+			<p class="postmetadata"><?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?></p>
+
+		</div>
+<?php
+	} else {
+?>
+		<div class="post dividerbottom">
+			<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
                     <small>
                         <?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong>
                     </small>
-                <?php } ?>
 
-				<div class="entry">
-					<?php the_content() ?>
-				</div>
-
-				<p class="postmetadata"><?php the_tags('Tags: ', ', ', '<br />'); ?> Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?></p>
-
+			<div class="entry">
+				<?php the_content() ?>
 			</div>
 
-		<?php endwhile; ?>
+			<p class="postmetadata"><?php the_tags('Tags: ', ', ', '<br />'); ?> Posted in <?php the_category(', ') ?> | <?php edit_post_link('Edit', '', ' | '); ?>  <?php comments_popup_link('No Comments &#187;', '1 Comment &#187;', '% Comments &#187;'); ?></p>
+
+		</div>
+
+<?php
+	}
+
+endwhile;
+
+if (is_category(29)) {
+    echo '</ul>';
+}
+
+?>
 
 		<div class="navigation">
 			<div class="alignleft"><?php next_posts_link('&laquo; Older Entries') ?></div>
