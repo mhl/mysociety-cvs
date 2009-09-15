@@ -1,50 +1,15 @@
-<div id="divProductHeadline" class="contenthalf aligncenter">
-
-	<!-- Header -->
-	<h1>mySociety Petitions</h1>
-	<p>
-		Run Your Council Petitions With Maximum Impact and Minimum Effort!
-	</p>
-	
-	<!-- Quote -->
-	<?php
-	/*
-	<blockquote>
-		<strike>"A really nice quote about how great this is"</strike>
-	</blockquote>
-	<cite>
-		<strike>- Mr Web No 10 website</strike>
-	</cite>
-	*/
-	?>
-	
-	<!-- More info 
-	<a class="linkbutton" href="/services/request-a-quote/?p=petition">
-        <span class="left">&nbsp;</span>
-        <span class="middle">Get a quote now</span>                
-        <span class="right">&nbsp;</span>
-    </a>
-    -->
-	<br/>
-	<a href="http://brighton.matthew.pet.mysociety.org/">Try our demo</a>
+<div id="divProductHeadline" class="contentfull">
+    <h2>mySociety Petitions</h2>
 </div>
-
-<div class="contenthalf aligncenter">
-	<img src="/contimg/brighton1.png" alt="" title="" width="300px" height="300px"/>
-</div>
-
-<br class="clear" />
 
 <!-- Short paragraph about the system-->
 <div class="contentfull">
-	<div class="dividertop dividerbottom">
-		<p class="aligncenter">
-			<strong>
-				<span class="highlight">
-				An award winning system designed to help you cope with the new <acronym title="Department of Communities &amp; Local Government">CLG</acronym> duty to respond to local petitions
-			</span>
-		</strong>
-		</p>
+	<div class="dividerbottom">
+		<p>An award winning system designed to help you cope with the
+		new <acronym title="Department of Communities &amp; Local Government">CLG</acronym>
+		duty to respond to local petitions &ndash; 
+		run your council petitions with maximum impact and minimum
+		effort.</p>
 	</div>
 </div>
 
