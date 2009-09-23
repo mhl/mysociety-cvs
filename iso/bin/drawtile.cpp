@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.3 2009-09-23 16:32:54 francis Exp $
+// $Id: drawtile.cpp,v 1.4 2009-09-23 17:28:07 francis Exp $
 //
 
 // TODO:
@@ -365,22 +365,29 @@ int main(int argc, char * argv[]) {
 
     // Read data set from .nodes file
     std::string nodes_file = "/home/francis/toobig/nptdr/tmpwork/test.nodes";
+    std::string iso_file = "/home/francis/toobig/nptdr/tmpwork/1440.iso";
     struct stat nodes_info;
     stat(nodes_file.c_str(), &nodes_info);
     int nodes_to_read = nodes_info.st_size / sizeof(double) / 2;
     if (stat < 0) {
-        throw Exception("failed to stat nodes file");
+        throw Exception("failed to stat .nodes file");
     }
     FILE *nodes_h = fopen(nodes_file.c_str(), "rb");
     if (nodes_h < 0) {
-        throw Exception("failed to fopen nodes file");
+        throw Exception("failed to fopen .nodes file");
+    }
+    FILE *iso_h = fopen(iso_file.c_str(), "rb");
+    if (iso_h < 0) {
+        throw Exception("failed to fopen .iso file");
     }
     for (int i = 0; i < nodes_to_read; ++i) {
         double x, y;
         my_fread(&x, 1, sizeof(double), nodes_h);
         my_fread(&y, 1, sizeof(double), nodes_h);
+        short int value;
+        my_fread(&value, 1, sizeof(short int), iso_h);
         if (i > 0)  // XXX skip station 0 for now
-            data_set.add_datum(x, y, 100);
+            data_set.add_datum(x, y, value);
     }
     // Internal test populate data set
     /*
