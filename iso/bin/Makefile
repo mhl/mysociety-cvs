@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.11 2009-08-20 16:54:12 francis Exp $
+# $Id: Makefile,v 1.12 2009-09-23 16:30:53 francis Exp $
 #
 
 CFLAGS = -Wall -O2 -DOUTPUT_ROUTE_DETAILS 
@@ -14,7 +14,7 @@ CFLAGS_PROFILE = ${CFLAGS} -pg
 
 # -fno-exceptions -fno-rtti # these can make it faster, or slower... needs better analysis
 
-BINARIES=fastplan fastplan-debug fastplan-profile fastplan-coopt fastplan-coopt-debug drawtile
+BINARIES=fastplan fastplan-debug fastplan-profile fastplan-coopt fastplan-coopt-debug drawtile drawtile-debug drawtile-profile
 
 CPP = /usr/bin/g++
 
@@ -61,4 +61,6 @@ drawtile: ${DRAWTILE_DEPEND}
 drawtile-debug: ${DRAWTILE_DEPEND}
 	$(CPP) $(CFLAGS_DEBUG) $(DRAWTILE_LINK) drawtile.cpp -o drawtile-debug
 
+drawtile-profile: ${DRAWTILE_DEPEND}
+	$(CPP) $(CFLAGS_PROFILE) $(DRAWTILE_LINK) drawtile.cpp -o drawtile-profile
 
