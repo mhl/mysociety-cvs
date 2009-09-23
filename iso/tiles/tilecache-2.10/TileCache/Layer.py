@@ -53,6 +53,7 @@ class Tile (object):
         miny = self.layer.bbox[1] + (res * self.y * self.layer.size[1])
         maxx = self.layer.bbox[0] + (res * (self.x + 1) * self.layer.size[0])
         maxy = self.layer.bbox[1] + (res * (self.y + 1) * self.layer.size[1])
+        # raise "bounds " + repr((minx, miny, maxx, maxy)) + " self.layer.size " + repr(self.layer.size) + " res " + repr(res) + " self.x/y " + repr((self.x, self.y))
         return (minx, miny, maxx, maxy)
 
     def bbox (self):
