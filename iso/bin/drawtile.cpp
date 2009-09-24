@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.7 2009-09-24 23:24:07 francis Exp $
+// $Id: drawtile.cpp,v 1.8 2009-09-24 23:25:05 francis Exp $
 //
 
 // TODO:
@@ -324,11 +324,8 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
         const Datum& datum = *it;
         int datum_on_tile_x, datum_on_tile_y;
         tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-        if (datum_on_tile_x > 0 && datum_on_tile_y > 0 && datum_on_tile_x < image_width && datum_on_tile_y < image_height) {
-            debug_log(boost::format("datum merc: %lf %lf datum tile place: %d %d value: %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y %datum.value);
-        }
-        // guarded_min_plot(datum_on_tile_x, datum_on_tile_y, 1000000);
-        //continue;
+        //if (datum_on_tile_x > 0 && datum_on_tile_y > 0 && datum_on_tile_x < image_width && datum_on_tile_y < image_height)
+        //    debug_log(boost::format("datum merc: %lf %lf datum tile place: %d %d value: %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y %datum.value);
         for (int x = -pixel_radius; x <= pixel_radius; x++) {
             for (int y = -pixel_radius; y <= pixel_radius; y++) {
                 int plot_x = datum_on_tile_x + x;
