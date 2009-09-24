@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.11 2009-09-24 13:12:45 duncan Exp $
+# $Id: invite.cgi,v 1.12 2009-09-24 13:18:21 duncan Exp $
 #
 
 import sys
@@ -36,7 +36,7 @@ def create_invite(email,
         db().execute("INSERT INTO invite (email, source, source_id) VALUES (%s, %s, %s)", (email, source, source_id))
     except IntegrityError, e:
         # Let's assume the integrity error is because of a unique key
-d        # violation - ie. an identical row has appeared in the milliseconds
+        # violation - ie. an identical row has appeared in the milliseconds
         # since we looked
         db().execute('ROLLBACK')
 
