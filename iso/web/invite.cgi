@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.12 2009-09-24 13:18:21 duncan Exp $
+# $Id: invite.cgi,v 1.13 2009-09-24 13:21:08 duncan Exp $
 #
 
 import sys
@@ -70,7 +70,7 @@ def friend_invite(invite, email):
         except IntegrityError:
             vars['error'] = 'That email address has already had an invite.'
         else:
-            vars['success']: u'Thanks, we\u2019ll send an invite.'
+            vars['success'] = u'Thanks, we\u2019ll send an invite.'
 
             if not num:
                 template = 'invite-none.html'
