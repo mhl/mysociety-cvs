@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: makeplan.h,v 1.18 2009-05-13 12:10:41 francis Exp $
+// $Id: makeplan.h,v 1.19 2009-09-24 22:00:30 francis Exp $
 //
 
 // XXX all code is inline in this header file because a) I've got too
@@ -483,7 +483,7 @@ class PlanningATCO {
     std::string _read_pascal_string(FILE *fp) {
         short len;
         my_fread(&len, 1, sizeof(short), fp);
-        // log(boost::format("_read_pascal_string len: %d") % len);
+        // debug_log(boost::format("_read_pascal_string len: %d") % len);
         std::string ret;
         ret.resize(len);
         my_fread(&ret[0], 1, len, fp);
@@ -500,7 +500,7 @@ class PlanningATCO {
             exit(1);
         }
         my_fread(&this->number_of_locations, 1, sizeof(int), fp);
-        log(boost::format("number of locations: %d") % this->number_of_locations);
+        debug_log(boost::format("number of locations: %d") % this->number_of_locations);
 
         locations.resize(this->number_of_locations + 1);
         for (int i = 1; i <= this->number_of_locations; ++i) {
@@ -516,7 +516,7 @@ class PlanningATCO {
 
             locations_by_text_id[l->text_id] = id;
 
-            log(boost::format("loaded location: %s") % l->toString().c_str());
+            debug_log(boost::format("loaded location: %s") % l->toString().c_str());
         }
 
         fclose(fp);
@@ -529,7 +529,7 @@ class PlanningATCO {
             exit(1);
         }
         my_fread(&this->number_of_journeys, 1, sizeof(int), fp);
-        log(boost::format("number of journeys: %d") % this->number_of_journeys);
+        debug_log(boost::format("number of journeys: %d") % this->number_of_journeys);
 
         journeys.resize(this->number_of_journeys + 1);
         for (int i = 1; i <= this->number_of_journeys; ++i) {
@@ -544,7 +544,7 @@ class PlanningATCO {
 
             short number_of_hops;
             my_fread(&number_of_hops, 1, sizeof(number_of_hops), fp);
-            log(boost::format("loaded journey: %s hops:%d") % j->toString().c_str() % number_of_hops);
+            debug_log(boost::format("loaded journey: %s hops:%d") % j->toString().c_str() % number_of_hops);
 
             j->hops.resize(number_of_hops);
             for (int ii = 0; ii < number_of_hops; ++ii) {
@@ -556,7 +556,7 @@ class PlanningATCO {
                 hop.mins_arr = mins_arr;
                 hop.mins_dep = mins_dep;
                 j->hops[ii] = hop;
-                log(boost::format("loaded hop: %s") % hop.toString().c_str());
+                debug_log(boost::format("loaded hop: %s") % hop.toString().c_str());
 
                 // update index
                 journeys_visiting_location[hop.location_id].insert(id);
@@ -590,7 +590,7 @@ class PlanningATCO {
 
                 if (sqdist < nearby_max_distance_sq) {
                     double dist = sqrt(sqdist);
-                    log(boost::format("generate_proximity_index_slow: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location.text_id % other_easting % other_northing);
+                    debug_log(boost::format("generate_proximity_index_slow: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % nearby_max_distance % other_location.text_id % other_easting % other_northing);
                     this->nearby_locations[location_id][other_location_id] = dist;
                     this->nearby_locations[other_location_id][location_id] = dist;
                 }
@@ -672,7 +672,7 @@ class PlanningATCO {
 
                     if (sqdist < nearby_max_distance_sq) {
                         double dist = sqrt(sqdist);
-                        log(boost::format("generate_proximity_index_fast: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % this->nearby_max_distance % other_location.text_id % other_easting % other_northing);
+                        debug_log(boost::format("generate_proximity_index_fast: %s (%d,%d) is %f (sq %f, max %f) away from %s (%d,%d)") % location.text_id % easting % northing % dist % sqdist % this->nearby_max_distance % other_location.text_id % other_easting % other_northing);
                         this->nearby_locations[location_id][other_location_id] = dist;
                     }
                 }
@@ -699,7 +699,7 @@ class PlanningATCO {
                           + (northing - location.northing)*(northing - location.northing);
 
             if (dist_sq < best_dist_so_far_sq || best_dist_so_far_sq < 0) {
-                log(boost::format("find_nearest_station_to_point: %s (%d,%d) is sqdist %f away from grid %d,%d") % location.text_id % easting % northing % dist_sq % easting % northing);
+                debug_log(boost::format("find_nearest_station_to_point: %s (%d,%d) is sqdist %f away from grid %d,%d") % location.text_id % easting % northing % dist_sq % easting % northing);
                 best_dist_so_far_sq = dist_sq;
                 best_location_id = location_id;
             }
@@ -711,7 +711,7 @@ class PlanningATCO {
 #ifdef DEBUG
     /* Use this for testing the two proximity index functions above */
     void dump_nearby_locations() {
-        log("---------------------------------------\n");
+        debug_log("---------------------------------------\n");
         for (LocationID location_id = 1; location_id <= this->number_of_locations; location_id++) {
             Location &location = this->locations[location_id];
             const NearbyLocationsInner& nearby_locations_inner = this->nearby_locations[location_id];
@@ -720,10 +720,10 @@ class PlanningATCO {
                 Location &other_location = this->locations[other_location_id];
                 double dist = p.second;
 
-                log(boost::format("dump_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)") % location.text_id % location.easting % location.northing % dist % other_location.text_id % other_location.easting % other_location.northing)
+                debug_log(boost::format("dump_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)") % location.text_id % location.easting % location.northing % dist % other_location.text_id % other_location.easting % other_location.northing)
             }
         }
-        log("---------------------------------------\n");
+        debug_log("---------------------------------------\n");
     }
 #endif
 
@@ -737,7 +737,7 @@ class PlanningATCO {
     */
     void adjacent_location_times(Adjacents &adjacents, LocationID target_location_id, Minutes target_arrival_time) {
         // Check that there are journeys visiting this location
-        log(boost::format("adjacent_location_times target_location: %s target_arrival_time: %s") % this->locations[target_location_id].text_id % format_time(target_arrival_time));
+        debug_log(boost::format("adjacent_location_times target_location: %s target_arrival_time: %s") % this->locations[target_location_id].text_id % format_time(target_arrival_time));
         JourneysVisitingLocation::iterator it = this->journeys_visiting_location.find(target_location_id);
         if (it == journeys_visiting_location.end()) {
             // This can happen, for example, with locations that are only
@@ -747,7 +747,7 @@ class PlanningATCO {
             // Go through every journey visiting the location
             const std::set<JourneyID>& journey_list = it->second;
             BOOST_FOREACH(const JourneyID& journey_id, journey_list) {
-                log(boost::format("\tconsidering journey: %s") % this->journeys[journey_id].text_id)
+                debug_log(boost::format("\tconsidering journey: %s") % this->journeys[journey_id].text_id)
                 this->_adjacent_location_times_for_journey(target_location_id, target_arrival_time, adjacents, journey_id);
             }
         }
@@ -802,7 +802,7 @@ class PlanningATCO {
 
             #ifdef DEBUG
             Location *location = &this->locations[location_id];
-            log(boost::format("_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)") % location->text_id % location->easting % location->northing % dist % target_location->text_id % target_easting % target_northing)
+            debug_log(boost::format("_nearby_locations: %s (%d,%d) is %d away from %s (%d,%d)") % location->text_id % location->easting % location->northing % dist % target_location->text_id % target_easting % target_northing)
             #endif
 
             Minutes walk_time = this->_walk_time_apart(dist);
@@ -883,7 +883,7 @@ class PlanningATCO {
                 continue;
             }
             Minutes possible_arrival_time_at_target_location = this->direction.mins_arr(hop);
-            log(boost::format("\t\t%s time %s at target location %s") % this->direction.arrive_depart() % format_time(possible_arrival_time_at_target_location) % this->locations[target_location_id].text_id);
+            debug_log(boost::format("\t\t%s time %s at target location %s") % this->direction.arrive_depart() % format_time(possible_arrival_time_at_target_location) % this->locations[target_location_id].text_id);
             // See if that is a closer arrival time than what we got so far
             assert(this->direction.mins_arr(hop) >= 0);
             if (this->direction.earlier_than_or_equal(this->direction.add_minutes(possible_arrival_time_at_target_location, interchange_time), target_arrival_time)
@@ -895,11 +895,11 @@ class PlanningATCO {
         // See whether if we want to use this journey to get to this
         // stop, we get there on time to change to the next journey.
         if (arrival_time_at_target_location == MINUTES_NULL) {
-            log(boost::format("\t\twhich are all too %s for %s by %s with interchange time %d so not using journey") % this->direction.late_early() % this->locations[target_location_id].text_id % format_time(target_arrival_time) % interchange_time);
+            debug_log(boost::format("\t\twhich are all too %s for %s by %s with interchange time %d so not using journey") % this->direction.late_early() % this->locations[target_location_id].text_id % format_time(target_arrival_time) % interchange_time);
             return;
         }
 
-        log("\t\tadding stops");
+        debug_log("\t\tadding stops");
         this->_adjacent_location_times_add_stops(target_location_id, adjacents, journey_id, arrival_time_at_target_location);
     }
 
@@ -937,7 +937,7 @@ class PlanningATCO {
 #endif
         );
 #ifdef DEBUG
-        log(boost::format("\t\t\tadding stop: %s %s") % this->locations[hop.location_id].text_id % format_time(departure_time));
+        debug_log(boost::format("\t\t\tadding stop: %s %s") % this->locations[hop.location_id].text_id % format_time(departure_time));
 #endif
         this->_add_to_adjacents(place_time, adjacents);
         return true;
@@ -1058,7 +1058,7 @@ class PlanningATCO {
             this->settled[nearest_location_id] = nearest_time;
             // ... do whatever is required with it
             (*this.*result_function_pointer)(nearest_location_id, nearest_time);
-            log(boost::format("settled location %s time %s") % this->locations[nearest_location_id].text_id % format_time(nearest_time));
+            debug_log(boost::format("settled location %s time %s") % this->locations[nearest_location_id].text_id % format_time(nearest_time));
             
             // Add all of its neighbours to the queue
             Adjacents adjacents;
@@ -1070,7 +1070,7 @@ class PlanningATCO {
                 const Location& location = this->locations[location_id];
                 #endif 
                 const PlaceTime& arrive_place_time = p.second;
-                log(boost::format("considering direct connecting station: %s priority %s") % location.text_id.c_str() % format_time(arrive_place_time.when));
+                debug_log(boost::format("considering direct connecting station: %s priority %s") % location.text_id.c_str() % format_time(arrive_place_time.when));
                 if (queue_values[location_id]) {
                     // already in heap
                     Minutes current_priority = *queue_values[location_id];
@@ -1078,7 +1078,7 @@ class PlanningATCO {
                     // is the new one better than the old?
                     if (this->direction.later_than(arrive_place_time.when, current_priority)) {
                         // yep, replace it
-                        log(boost::format("\tupdated location %s from priority %s to priority %s") % this->locations[location_id].text_id % format_time(current_priority) % format_time(arrive_place_time.when));
+                        debug_log(boost::format("\tupdated location %s from priority %s to priority %s") % this->locations[location_id].text_id % format_time(current_priority) % format_time(arrive_place_time.when));
                         queue_values[location_id] = arrive_place_time.when;
                         heap.update(location_id);
 #ifdef OUTPUT_ROUTE_DETAILS
@@ -1086,19 +1086,19 @@ class PlanningATCO {
 #endif
                     } else {
                         // nope, don't bother with it
-                        log(boost::format("\tlocation %s already in heap priority %s") % this->locations[location_id].text_id % format_time(current_priority));
+                        debug_log(boost::format("\tlocation %s already in heap priority %s") % this->locations[location_id].text_id % format_time(current_priority));
                     }
                 } else {
                     if (this->settled[location_id] == MINUTES_NULL) {
                         // completely new priority to heap
-                        log(boost::format("\tadded location %s with priority %s") % this->locations[location_id].text_id % format_time(arrive_place_time.when));
+                        debug_log(boost::format("\tadded location %s with priority %s") % this->locations[location_id].text_id % format_time(arrive_place_time.when));
                         queue_values[location_id] = arrive_place_time.when;
                         heap.push(location_id);
 #ifdef OUTPUT_ROUTE_DETAILS
                         this->routes[location_id] = RouteNode(nearest_location_id, arrive_place_time.onwards_journey_id);
 #endif
                     } else {
-                        log(boost::format("\tlocation %s already settled") %  this->locations[location_id].text_id);
+                        debug_log(boost::format("\tlocation %s already settled") %  this->locations[location_id].text_id);
                     }
                 }
             }

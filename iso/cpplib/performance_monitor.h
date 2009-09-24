@@ -1,11 +1,11 @@
 //
-// performance_monitor.cpp:
+// performance_monitor.h:
 // Outputs timings round sections of code.
 //
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: performance_monitor.h,v 1.2 2009-03-25 12:06:29 francis Exp $
+// $Id: performance_monitor.h,v 1.3 2009-09-24 22:00:30 francis Exp $
 //
 
 /* Measures wall clock use 

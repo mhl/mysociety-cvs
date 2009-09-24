@@ -10,13 +10,14 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.4 2009-09-23 17:28:07 francis Exp $
+// $Id: drawtile.cpp,v 1.5 2009-09-24 22:00:30 francis Exp $
 //
 
 // TODO:
 // Coordinate transforms (how do effect_radius?)
 // Box set size should surely be effect_radius * 2 not just effect_radius
 // Move im to be member of Tile?
+// Cache pixels_per_meter
 
 #include <math.h> 
 #include <gd.h>
@@ -28,13 +29,16 @@
 
 #include <vector>
 #include <list>
+#include <map>
 
 #include "../../cpplib/mysociety_error.h"
+#include "../../cpplib/mysociety_geo.h"
 #include "../cpplib/performance_monitor.h"
 
 /* Any size of tile you like, as long as it is 256x256 pixels */
 int image_width = 256;
 int image_height = 256;
+double image_diagonal = sqrt(image_width * image_width + image_height * image_height);
 int zoom_levels = 20;
 gdImagePtr im;
 
@@ -66,7 +70,7 @@ double calc_dist(double x, double y) {
 void guarded_plot(int x, int y, int col) {
     plot_count++;
     if (x >= 0 && y >= 0 && x < image_width && y < image_height) {
-        //log(boost::format("plotting: %d %d colour: %d") % x % y % col);
+        //debug_log(boost::format("plotting: %d %d colour: %d") % x % y % col);
         gdImageTrueColorPixel(im, x, y) = col;
     }
 }
@@ -122,7 +126,31 @@ class Tile {
     }
 
     std::string debug_info() {
-        return (boost::format("Tile: zoom/x/y: %d/%d/%d merc-x-range: %f %f merc-y-range: %f %f") % this->zoom % this->x % this->y % min_x_merc % max_x_merc % min_y_merc % max_y_merc).str();
+        return (boost::format("Tile: zoom/x/y: %d/%d/%d merc-x-range: %lf %lf merc-y-range: %lf %lf pixels/m: %lf") % this->zoom % this->x % this->y % min_x_merc % max_x_merc % min_y_merc % max_y_merc % this->pixels_per_meter()).str();
+    }
+
+    // Number of pixels per meter of spherical globe in current projection.
+    double pixels_per_meter() const {
+        double lon1, lat1;
+        double lon2, lat2;
+        merc_to_lat_lon(this->min_x_merc, this->min_y_merc, &lat1, &lon1);
+        merc_to_lat_lon(this->max_x_merc, this->max_y_merc, &lat2, &lon2);
+        //debug_log(boost::format("pixels_per_meter: internal lat1 lon1 %lf %lf") % lat1 % lon1);
+        //debug_log(boost::format("pixels_per_meter: internal lat2 lon2 %lf %lf") % lat2 % lon2);
+
+        // XXX This great_circle_distance returns (a bit) different results to kilometers_between in tilecache
+        double diagonal_1_in_m = great_circle_distance(lat1, lon1, lat2, lon2);
+        double diagonal_2_in_m = great_circle_distance(lat1, lon2, lat2, lon1);
+        double average_diagonal_in_m = (diagonal_1_in_m + diagonal_2_in_m) / 2;
+        //debug_log(boost::format("pixels_per_meter: internal diagonal_1_in_m diagonal_2_in_m %lf %lf") % diagonal_1_in_m % diagonal_2_in_m);
+
+        return image_diagonal / average_diagonal_in_m;
+    }
+
+    // Convert a distance in meters to an approximate distance in pixels on the tile
+    double meters_to_pixels(double distance) const {
+        double pixels = distance * this->pixels_per_meter();
+        return pixels;
     }
 
     int zoom;
@@ -169,7 +197,7 @@ class DataSet {
     }
 
     // add a new point to data set, keeping boundaries up to date
-    void add_datum(double x, double y, double value) {
+    Datum& add_datum(double x, double y, double value) {
         this->entries.push_back(Datum(x, y, value));
         if (x > this->x_max)
             this->x_max = x;
@@ -179,26 +207,30 @@ class DataSet {
             this->y_max = y;
         if (y < this->y_min)
             this->y_min = y;
-        // log(boost::format("add_datum x y: %f %f value: %f") % x % y % value);
-    }
-
-    // XXX tmp
-    int effect_radius_in_pixels() const {
-        return 10;
+        // debug_log(boost::format("add_datum x y: %lf %lf value: %lf") % x % y % value);
+        return this->entries[this->entries.size() - 1];
     }
 
     // display basic information about data set
     std::string debug_info() {
-        return (boost::format("DataSet: Number of datums: %d X-Range: %f %f Y-Range: %f %f") % this->entries.size() % this->x_min % this->x_max % this->y_min % this->y_max).str();
+        return (boost::format("DataSet: Number of datums: %d X-Range: %lf %lf Y-Range: %lf %lf") % this->entries.size() % this->x_min % this->x_max % this->y_min % this->y_max).str();
+    }
+
+    // return parameter value
+    double get_param(const std::string& name) const {
+        return this->params.find(name)->second;
     }
 
     // ranges allowed for datum locations
     double x_min, x_max; 
     double y_min, y_max;
 
+    // other parameters for rendering the data set
+    std::map<std::string, double> params;
+
     // maximum distance away from a datum that it can affect contour tile colour.
     // also used as cone radius for minimum cone algorithm.
-    double effect_radius;
+    double effect_radius; // XXX deprecated
 
     // used to quickly find datum t
     int box_set_width, box_set_height;
@@ -269,9 +301,6 @@ void draw_pretty_test_pattern() {
 /////////////////////////////////////////////////////////////////////
 // Drawing functions
 
-// For drawing cones, scale the height of the cone by this much
-int test_multiple_factor = 1;
-
 // Draw some inverted cones on the tile. The cones are inverted, with their point
 // at the bottom. The height of the point is the value of the datum, its centre
 // point is the position of the datum. The height is used as the colour value of
@@ -282,19 +311,22 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
     //gdImageFilledRectangle(im, 0, 0, image_width - 1, image_height - 1, no_data_colour); 
     //gdImageFilledRectangle(im, 0, 0, 100, 100, 10000); 
     //return;
+    
+    double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
+    double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
 
     for (DatumEntries::const_iterator it = data_set.entries.begin(); it != data_set.entries.end(); it++) {
         const Datum& datum = *it;
         int datum_on_tile_x, datum_on_tile_y;
         tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-        // log(boost::format("datum merc: %f %f datum tile place: %d %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y);
-        for (int x = -data_set.effect_radius_in_pixels(); x <= data_set.effect_radius_in_pixels() ; x++) {
-            for (int y = -data_set.effect_radius_in_pixels(); y <= data_set.effect_radius_in_pixels(); y++) {
+        // debug_log(boost::format("datum merc: %lf %lf datum tile place: %d %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y);
+        for (int x = -pixel_radius; x <= pixel_radius; x++) {
+            for (int y = -pixel_radius; y <= pixel_radius; y++) {
                 int plot_x = datum_on_tile_x + x;
                 int plot_y = datum_on_tile_y + y;
                 double dist = calc_dist(x, y);
-                if (dist <= data_set.effect_radius_in_pixels()) {
-                    guarded_min_plot(plot_x, plot_y, dist * test_multiple_factor + datum.value);
+                if (dist <= pixel_radius) {
+                    guarded_min_plot(plot_x, plot_y, dist / pixel_radius * datum.value);
                 }
             }
         }
@@ -304,10 +336,11 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
 
 // Efficient version of draw_datums_as_cones_loop_by_datum, which loops over pixels
 // rather than over cones.
+int test_multiple_factor = 1; // XXX deprecated
 void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set) {
     for (int x = 0; x < image_width ; x++) {
         for (int y = 0; y < image_height; y++) {
-            //log(boost::format("Plot place: %d %d") % x % y);
+            //debug_log(boost::format("Plot place: %d %d") % x % y);
 
             // XXX should magically find nearby datums rather than loop over all of them
             double min_dist = -1;
@@ -358,6 +391,13 @@ int main(int argc, char * argv[]) {
     PerformanceMonitor pm;
     DataSet data_set;
 
+    double mercx, mercy;
+    lat_lon_to_merc(53.466667, -2.233333, &mercx, &mercy); // Manchester
+    printf("Manchester mercx, mercy: %lf %lf\n", mercx, mercy); // roughly: -248128.680454, 7071667.54412 (that's actually Manchester Picadilly)
+    double lat, lon;
+    merc_to_lat_lon(-248613.492332, 7069789.545191, &lat, &lon); // Manchester
+    printf("Manchester lat, lon: %lf %lf\n", lat, lon); // 53.466667, -2.233333
+
     /*if (argc < 7) {
         fprintf(stderr, "fastplan.cpp arguments are:\n  1. fast index file prefix\n  2. output prefix (or 'stream' for stdout incremental)\n  3. arrive_by or depart_after\n  4. target arrival time / departure in mins after midnight\n  5. target location\n  6. earliest/latest departure in mins after midnight to go back to\n  7, 8. easting, northing to use to find destination if destination is 'coordinate'\n");
         return 1;
@@ -386,9 +426,12 @@ int main(int argc, char * argv[]) {
         my_fread(&y, 1, sizeof(double), nodes_h);
         short int value;
         my_fread(&value, 1, sizeof(short int), iso_h);
-        if (i > 0)  // XXX skip station 0 for now
+        if (i > 0) { // XXX skip station 0 for now
             data_set.add_datum(x, y, value);
+        }
     }
+    data_set.params["max_walk_distance_in_meters"] = 2400; // 2400 meters is a half hour of walking at 1.34 m/s
+
     // Internal test populate data set
     /*
     data_set.effect_radius = 10.0;
@@ -404,22 +447,24 @@ int main(int argc, char * argv[]) {
     pm.display("Initialising data set took");
     // make_datum_box_set(data_set);
     // pm.display("Making box set took");
-    log(data_set.debug_info());
+    debug_log(data_set.debug_info());
 
     // Work out which tile to go for 
     // XXX these tile_ would come from the URL e.g. iso/11/1011/671.png
     Tile tile(11, 1011, 671); // zoom, x, y as in URL, e.g. iso/11/1011/671.png
-    log(tile.debug_info());
+    debug_log(tile.debug_info());
 
     // Create gd image surface
     im = gdImageCreateTrueColor(image_width, image_height);
+    int white = gdImageColorAllocate(im, 255, 255, 255);  
+    gdImageFilledRectangle(im, 0, 0, image_width, image_height, white);
     pm.display("Creating surface took");
 
     // Set pixel values
     //draw_pretty_test_pattern();
     draw_datums_as_cones_loop_by_datum(data_set, tile);
     //draw_datums_as_cones_loop_by_pixel(data_set);
-    log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
+    debug_log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
     pm.display("Plotting image took");
 
     // Write out PNG file

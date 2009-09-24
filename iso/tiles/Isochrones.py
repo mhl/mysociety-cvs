@@ -6,7 +6,7 @@ Custom TileCache module for rendering of isochrone images based on travel time d
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Isochrones.py,v 1.32 2009-05-06 17:25:28 francis Exp $
+$Id: Isochrones.py,v 1.33 2009-09-24 22:00:31 francis Exp $
 """
 import os
 import sys
@@ -117,6 +117,7 @@ def draw_tile(points, tile, log):
     array = numpy.ones(tile.size(), numpy.int32) * 0xFFFFFF
     
     # 2400 meters is a half hour of walking at 1.34 m/s
+    raise repr(Cone.pixels_per_kilometer(tile))
     pixels_per_max_walk_meters = 2400 * Cone.pixels_per_kilometer(tile) / 1000
     
     prep_time = time.time() - prep_start

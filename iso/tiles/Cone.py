@@ -5,7 +5,7 @@ numpy array cones where value = travel time from center, in seconds.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Cone.py,v 1.5 2009-05-01 00:22:41 francis Exp $
+$Id: Cone.py,v 1.6 2009-09-24 22:00:31 francis Exp $
 
 >>> import Isochrones
 >>> xmin, ymin = GYM(-123, 37)
@@ -74,15 +74,18 @@ def pixels_per_kilometer(tile):
     
     lon1, lat1 = GYM(xmin, ymin, inverse=True)
     lon2, lat2 = GYM(xmax, ymax, inverse=True)
-    
+
     assert -90 <= lat1 and lat1 <= 90
     assert -90 <= lat2 and lat2 <= 90
     assert -180 <= lon1 and lon1 <= 180
     assert -180 <= lon2 and lon2 <= 180
+    
+    #raise repr((lat1, lon1, lat2, lon2))
 
     distance1 = kilometers_between(lat1, lon1, lat2, lon2)
     distance2 = kilometers_between(lat1, lon2, lat2, lon1)
     average_distance = (distance1 + distance2) / 2
+    #raise repr(distance1) + " " + repr(distance2)
     
     return math.hypot(width, height) / average_distance
 
