@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.14 2009-09-24 13:28:21 duncan Exp $
+# $Id: invite.cgi,v 1.15 2009-09-24 14:06:35 duncan Exp $
 #
 
 import sys
@@ -82,23 +82,21 @@ def friend_invite(invite, email):
 
 
 def log_email(email):
+    vars = {'email': email}
+
     if not email:
-        return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide your email address.' })
-    if not validate_email(email):
-        return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide a valid email address.' })
+        vars['error'] = 'Please provide your email address.'
+    elif not validate_email(email):
+        vars['error'] = 'Please provide a valid email address.'
+    else:
+        try:
+            create_invite(email, 'web')
+        except IntegrityError:
+            vars['error'] = 'That email address is already in our system.'
 
-    db().execute('BEGIN')
-    try:
-        db().execute("INSERT INTO invite (email, source) VALUES (%s, 'web')", (email,))
-    except IntegrityError, e:
-        # Let's assume the integrity error is because of a unique key
-        # violation - ie. an identical row has appeared in the milliseconds
-        # since we looked
-        db().execute('ROLLBACK')
-        return render_to_response('invite-email.html', { 'email': email, 'error': 'That email address is already in our system.' })
-    db().execute('COMMIT')
+    template = 'invite-email.html' if 'error' in vars else 'invite-email-thanks.html'
 
-    return render_to_response('invite-email-thanks.html')
+    return render_to_response(template, vars)
 
 def parse_token(token):
     db().execute('SELECT * FROM invite WHERE token=%s', (token,))
