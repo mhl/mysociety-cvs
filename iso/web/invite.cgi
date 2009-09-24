@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.10 2009-06-04 14:55:41 francis Exp $
+# $Id: invite.cgi,v 1.11 2009-09-24 13:12:45 duncan Exp $
 #
 
 import sys
@@ -21,36 +21,72 @@ from django.http import HttpResponseRedirect
 
 from coldb import db
 
-def friend_invite(invite, email):
-    if not email:
-        return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide an email address.' })
-    if not validate_email(email):
-        return render_to_response('invite-friend.html', { 'email': email, 'error': 'Please provide a valid email address.' })
+#----------- start of storage functions ----------
+# The first part of getting the explicit database stuff out of
+# the rather front-end bits below. Some functions to view and
+# store data, which we can later change for different storage.
+
+def create_invite(email,
+                  source='web',
+                  source_id=None):
+
     db().execute('BEGIN')
     try:
-        db().execute("INSERT INTO invite (email, source, source_id) VALUES (%s, 'friend', %s)", (email, invite.id))
+        # FIXME - check that psycopg converts None to 'NULL'.
+        db().execute("INSERT INTO invite (email, source, source_id) VALUES (%s, %s, %s)", (email, source, source_id))
     except IntegrityError, e:
         # Let's assume the integrity error is because of a unique key
-        # violation - ie. an identical row has appeared in the milliseconds
+d        # violation - ie. an identical row has appeared in the milliseconds
         # since we looked
         db().execute('ROLLBACK')
-        return render_to_response('invite-friend.html', { 'email': email, 'error': 'That email address has already had an invite.' })
-    db().execute('UPDATE invite SET num_invites = num_invites - 1 WHERE id=%s', (invite.id,))
-    db().execute('COMMIT')
-    db().execute('SELECT num_invites FROM invite WHERE id=%s', (invite.id,))
-    num = db().fetchone()[0]
-    vars = {
-        'success': u'Thanks, we\u2019ll send an invite.',
-    }
-    if num==0:
-        return render_to_response('invite-none.html', vars)
-    return render_to_response('invite-friend.html', vars)
+
+        # FIXME - should probably raise a different Exception.
+        raise 
+
+    if source_id:
+        # If this is an friend invite, then we need to decrement the source's invite count
+        db().execute('UPDATE invite SET num_invites = num_invites - 1 WHERE id=%s', (source_id,))
+        db().execute('COMMIT')
+
+        db().execute('SELECT num_invites FROM invite WHERE id=%s', (source_id,))
+        num = db().fetchone()[0]
+
+        # Return the number of invites left.
+        return num
+
+#-------- end of storage functions ----------
+
+def friend_invite(invite, email):
+    template = 'invite-friend.html'
+    vars = {}
+
+    if not email:
+        vars['error'] = 'Please provide an email address.'
+    if not validate_email(email):
+        vars['error'] = 'Please provide a valid email address.'
+    else:
+        try:
+            num = create_invite(email, 'friend', invite.id)
+        except IntegrityError:
+            vars['error'] = 'That email address has already had an invite.'
+        else:
+            vars['success']: u'Thanks, we\u2019ll send an invite.'
+
+            if not num:
+                template = 'invite-none.html'
+
+    if error in vars:
+        vars['email'] = email
+
+    return render_to_response(template, vars)
+
 
 def log_email(email):
     if not email:
         return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide your email address.' })
     if not validate_email(email):
         return render_to_response('invite-email.html', { 'email': email, 'error': 'Please provide a valid email address.' })
+
     db().execute('BEGIN')
     try:
         db().execute("INSERT INTO invite (email, source) VALUES (%s, 'web')", (email,))
@@ -61,15 +97,18 @@ def log_email(email):
         db().execute('ROLLBACK')
         return render_to_response('invite-email.html', { 'email': email, 'error': 'That email address is already in our system.' })
     db().execute('COMMIT')
+
     return render_to_response('invite-email-thanks.html')
 
 def parse_token(token):
     db().execute('SELECT * FROM invite WHERE token=%s', (token,))
     row = db().fetchone()
+
     if not row:
         return HttpResponseRedirect('/signup')
     response = HttpResponseRedirect('/')
     response.set_cookie('token', value=token, max_age=86400*28)
+
     return response
 
 #####################################################################
