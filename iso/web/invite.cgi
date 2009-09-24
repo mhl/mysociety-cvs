@@ -6,55 +6,24 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.15 2009-09-24 14:06:35 duncan Exp $
+# $Id: invite.cgi,v 1.16 2009-09-24 15:09:41 duncan Exp $
 #
 
 import sys
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
-from psycopg2 import IntegrityError
+
+from django.http import HttpResponseRedirect
 
 import mysociety.config
 mysociety.config.set_file("../conf/general")
 
-from page import *
-from django.http import HttpResponseRedirect
+from page import validate_email, \
+                 render_to_response, \
+                 wsgi_loop
 
-from coldb import db
-
-#----------- start of storage functions ----------
-# The first part of getting the explicit database stuff out of
-# the rather front-end bits below. Some functions to view and
-# store data, which we can later change for different storage.
-
-def create_invite(email,
-                  source='web',
-                  source_id=None):
-
-    db().execute('BEGIN')
-    try:
-        # FIXME - check that psycopg converts None to 'NULL'.
-        db().execute("INSERT INTO invite (email, source, source_id) VALUES (%s, %s, %s)", (email, source, source_id))
-    except IntegrityError, e:
-        # Let's assume the integrity error is because of a unique key
-        # violation - ie. an identical row has appeared in the milliseconds
-        # since we looked
-        db().execute('ROLLBACK')
-
-        # FIXME - should probably raise a different Exception.
-        raise 
-
-    if source_id:
-        # If this is an friend invite, then we need to decrement the source's invite count
-        db().execute('UPDATE invite SET num_invites = num_invites - 1 WHERE id=%s', (source_id,))
-        db().execute('COMMIT')
-
-        db().execute('SELECT num_invites FROM invite WHERE id=%s', (source_id,))
-        num = db().fetchone()[0]
-
-        # Return the number of invites left.
-        return num
-
-#-------- end of storage functions ----------
+from storage import StorageError , \
+                    create_invite, \
+                    token_exists
 
 def friend_invite(invite, email):
     template = 'invite-friend.html'
@@ -67,7 +36,7 @@ def friend_invite(invite, email):
     else:
         try:
             num = create_invite(email, 'friend', invite.id)
-        except IntegrityError:
+        except StorageError:
             vars['error'] = 'That email address has already had an invite.'
         else:
             vars['success'] = u'Thanks, we\u2019ll send an invite.'
@@ -91,7 +60,7 @@ def log_email(email):
     else:
         try:
             create_invite(email, 'web')
-        except IntegrityError:
+        except StorageError:
             vars['error'] = 'That email address is already in our system.'
 
     template = 'invite-email.html' if 'error' in vars else 'invite-email-thanks.html'
@@ -99,14 +68,12 @@ def log_email(email):
     return render_to_response(template, vars)
 
 def parse_token(token):
-    db().execute('SELECT * FROM invite WHERE token=%s', (token,))
-    row = db().fetchone()
-
-    if not row:
-        return HttpResponseRedirect('/signup')
-    response = HttpResponseRedirect('/')
-    response.set_cookie('token', value=token, max_age=86400*28)
-
+    if token_exists(token):
+        response = HttpResponseRedirect('/')
+        response.set_cookie('token', value=token, max_age=86400*28)
+    else:
+        response = HttpResponseRedirect('/signup')
+        
     return response
 
 #####################################################################
@@ -129,6 +96,7 @@ def main(fs):
         return render_to_response('invite-none.html')
     if 'friend' in fs:
         return friend_invite(invite, fs['friend'])
+
     return render_to_response('invite-friend.html')
 
 # Main FastCGI loop
