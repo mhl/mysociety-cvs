@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.6 2009-09-24 22:24:46 francis Exp $
+// $Id: drawtile.cpp,v 1.7 2009-09-24 23:24:07 francis Exp $
 //
 
 // TODO:
@@ -18,6 +18,8 @@
 // Box set size should surely be effect_radius * 2 not just effect_radius
 // Move im to be member of Tile?
 // Cache pixels_per_meter
+// Sort out great circle distance difference (pixel radius)
+// Put back time to 1800 seconds like it should be 
 
 #include <math.h> 
 #include <gd.h>
@@ -312,7 +314,11 @@ void draw_pretty_test_pattern() {
 // time by public transport.
 void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& tile) {
     double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
+    double max_walk_time = data_set.get_param("max_walk_time");
+
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
+    debug_log(boost::format("pixel_radius: %lf") % pixel_radius);
+    pixel_radius = 54.451374078082381; // XXX fix me :) is the great circle distance difference
 
     for (DatumEntries::const_iterator it = data_set.entries.begin(); it != data_set.entries.end(); it++) {
         const Datum& datum = *it;
@@ -329,7 +335,8 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
                 int plot_y = datum_on_tile_y + y;
                 double dist = calc_dist(x, y);
                 if (dist <= pixel_radius) {
-                    guarded_min_plot(plot_x, plot_y, dist / pixel_radius * datum.value);
+                    // debug_log(boost::format("dist: %lf pixel_radius: %lf") % dist % pixel_radius);
+                    guarded_min_plot(plot_x, plot_y, dist / pixel_radius * max_walk_time + datum.value);
                 }
             }
         }
@@ -435,7 +442,8 @@ int main(int argc, char * argv[]) {
             }
         }
     }
-    data_set.params["max_walk_distance_in_meters"] = 2400; // 2400 meters is a half hour of walking at 1.34 m/s
+    data_set.params["max_walk_distance_in_meters"] = 2400; // 2400 meters is a half hour of walking at 1.33333 m/s
+    data_set.params["max_walk_time"] = 2400; // 1800 seconds is half an hour XXX change it back to that value
 
     // Internal test populate data set
     /*

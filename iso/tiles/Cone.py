@@ -5,7 +5,7 @@ numpy array cones where value = travel time from center, in seconds.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Cone.py,v 1.6 2009-09-24 22:00:31 francis Exp $
+$Id: Cone.py,v 1.7 2009-09-24 23:24:07 francis Exp $
 
 >>> import Isochrones
 >>> xmin, ymin = GYM(-123, 37)
@@ -102,7 +102,7 @@ def make_cone(radius):
     # do bottom-right quadrant of cone
     for x in range(r):
         for y in range(r):
-            corner[x, y] = 2400 * math.hypot(x, y) / r
+            corner[x, y] = a400 * math.hypot(x, y) / r # XXX I think this is a bug, and 2400 is meters, and should be 1800 seconds (half an hour)
 
     # flip and copy to other three quadrants
     cone[:r,:r] = numpy.flipud(numpy.fliplr(corner)) # top left
