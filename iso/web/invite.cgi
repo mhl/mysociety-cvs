@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.13 2009-09-24 13:21:08 duncan Exp $
+# $Id: invite.cgi,v 1.14 2009-09-24 13:28:21 duncan Exp $
 #
 
 import sys
@@ -75,7 +75,7 @@ def friend_invite(invite, email):
             if not num:
                 template = 'invite-none.html'
 
-    if error in vars:
+    if 'error' in vars:
         vars['email'] = email
 
     return render_to_response(template, vars)
