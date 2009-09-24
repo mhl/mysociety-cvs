@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.5 2009-09-24 22:00:30 francis Exp $
+// $Id: drawtile.cpp,v 1.6 2009-09-24 22:24:46 francis Exp $
 //
 
 // TODO:
@@ -66,21 +66,24 @@ double calc_dist(double x, double y) {
     return sqrt(x * x + y * y);
 }
 
-/* Plot a pixel on a tile, check values in range */
+/* Plot a pixel on a tile, check values in range.
+   Note: GD has Y going down the page, in spherical mercator coords it goes up.
+   That's why we flip the Y value just before drawing.
+*/
 void guarded_plot(int x, int y, int col) {
     plot_count++;
     if (x >= 0 && y >= 0 && x < image_width && y < image_height) {
         //debug_log(boost::format("plotting: %d %d colour: %d") % x % y % col);
-        gdImageTrueColorPixel(im, x, y) = col;
+        gdImageTrueColorPixel(im, x, image_height - 1 - y) = col; 
     }
 }
 
 /* Plot a pixel on a tile, check values in range, but use the minimum value */
 void guarded_min_plot(int x, int y, int col) {
     if (x >= 0 && y >= 0 && x < image_width && y < image_height) {
-        int current_col = gdImageTrueColorPixel(im, x, y);
+        int current_col = gdImageTrueColorPixel(im, x, image_height - 1 - y);
         if (current_col == 0 || col < current_col) {
-            gdImageTrueColorPixel(im, x, y) = col;
+            gdImageTrueColorPixel(im, x, image_height - 1 - y) = col;
         }
     }
     plot_count++;
@@ -103,7 +106,7 @@ class Tile {
         // the terminology of tilecache), but internally we use the Tile Map
         // Service Specification
         // (http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification)
-        // convention.
+        // convention. i.e. Y increases as you head North.
         int max_url_y = int(round( (merc_y_orig_max - merc_y_orig_min) / (res * image_height))) - 1;
         this->y = max_url_y - l_google_url_y;
 
@@ -308,10 +311,6 @@ void draw_pretty_test_pattern() {
 // is used. This algorithm is, for example, used for making contours of travel
 // time by public transport.
 void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& tile) {
-    //gdImageFilledRectangle(im, 0, 0, image_width - 1, image_height - 1, no_data_colour); 
-    //gdImageFilledRectangle(im, 0, 0, 100, 100, 10000); 
-    //return;
-    
     double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
 
@@ -319,7 +318,11 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
         const Datum& datum = *it;
         int datum_on_tile_x, datum_on_tile_y;
         tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-        // debug_log(boost::format("datum merc: %lf %lf datum tile place: %d %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y);
+        if (datum_on_tile_x > 0 && datum_on_tile_y > 0 && datum_on_tile_x < image_width && datum_on_tile_y < image_height) {
+            debug_log(boost::format("datum merc: %lf %lf datum tile place: %d %d value: %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y %datum.value);
+        }
+        // guarded_min_plot(datum_on_tile_x, datum_on_tile_y, 1000000);
+        //continue;
         for (int x = -pixel_radius; x <= pixel_radius; x++) {
             for (int y = -pixel_radius; y <= pixel_radius; y++) {
                 int plot_x = datum_on_tile_x + x;
@@ -427,7 +430,9 @@ int main(int argc, char * argv[]) {
         short int value;
         my_fread(&value, 1, sizeof(short int), iso_h);
         if (i > 0) { // XXX skip station 0 for now
-            data_set.add_datum(x, y, value);
+            if (value >= 0) { // -1 is no journey available
+                data_set.add_datum(x, y, value * 60); // file contains minutes, plotting uses seconds
+            }
         }
     }
     data_set.params["max_walk_distance_in_meters"] = 2400; // 2400 meters is a half hour of walking at 1.34 m/s
