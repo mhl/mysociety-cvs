@@ -6,11 +6,12 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.16 2009-09-24 15:09:41 duncan Exp $
+# $Id: invite.cgi,v 1.17 2009-09-24 15:14:49 duncan Exp $
 #
 
 import sys
-sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
+sys.path.extend(("../pylib", "../../pylib"))
+#sys.path.append("/home/matthew/lib/python")
 
 from django.http import HttpResponseRedirect
 
