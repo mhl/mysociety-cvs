@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.20 2009-09-25 12:38:59 duncan Exp $
+# $Id: invite.cgi,v 1.21 2009-09-25 12:47:28 duncan Exp $
 #
 
 import sys
@@ -49,7 +49,7 @@ def invite_view(email, invite=None):
         except storage.StorageError:
             context['error'] = 'That email address has already had an invite.'
         else:
-            context['success'] = u'Thanks, we\u2019ll send an invite.'
+            context['success'] = u'Thanks, we\u2019ll send an invite to %s.' %email
             # Since adding the email was successful, we probably don't want
             # the box still filled in.
             context.pop('email')
