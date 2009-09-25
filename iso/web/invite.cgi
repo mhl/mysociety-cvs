@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.18 2009-09-25 10:58:37 duncan Exp $
+# $Id: invite.cgi,v 1.19 2009-09-25 12:11:15 duncan Exp $
 #
 
 import sys
@@ -65,7 +65,7 @@ def invite_view(email, invite=None):
     return page.render_to_response(template, context)
 
 def parse_token(token):
-    if storage.token_exists(token):
+    if storage.get_token_by_value(token):
         response = HttpResponseRedirect('/')
         response.set_cookie('token', value=token, max_age=86400*28)
     else:

@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.28 2009-06-08 10:07:12 francis Exp $
+# $Id: page.py,v 1.29 2009-09-25 12:11:14 duncan Exp $
 #
 
 import os, re, cgi, cgitb, sys
@@ -28,11 +28,22 @@ from sendemail import send_email
 import mysociety.config
 from coldb import db
 
-def render_to_response(template, vars={}, mimetype=None, cache_max_age = None):
-    vars.update({
+import storage
+
+def render_to_response(
+    template, 
+    context=None, 
+    mimetype=None, 
+    cache_max_age=None
+    ):
+
+    if context is None:
+        context = {}
+
+    context.update({
         'self': os.environ.get('REQUEST_URI', ''),
     })
-    response = HttpResponse(render_to_string(template, vars), mimetype=mimetype)
+    response = HttpResponse(render_to_string(template, context), mimetype=mimetype)
 
     if cache_max_age:
         response['Cache-Control'] = 'max-age: ' + str(cache_max_age)
@@ -124,10 +135,10 @@ class Invite(object):
         return self.token
 
     def check(self):
-        db().execute('SELECT * FROM invite WHERE token=%s', (self.token.value,))
-        row = db().fetchone()
-        if not row: return
-        self.__dict__.update(row)
+        token_row = storage.get_token_by_value(self.token.value)
+        
+        if token_row:
+            self.__dict__.update(token_row)
 
     @property
     def postcodes(self):

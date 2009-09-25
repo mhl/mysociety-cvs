@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.2 2009-09-25 10:58:35 duncan Exp $
+# $Id: storage.py,v 1.3 2009-09-25 12:11:14 duncan Exp $
 #
 
 from coldb import db
@@ -14,8 +14,8 @@ from psycopg2 import IntegrityError
 class StorageError(Exception):
     """An error occurred when accessing storage."""
 
-def token_exists(token):
-    db().execute('SELECT * FROM invite WHERE token=%s', (token,))
+def get_token_by_value(token_value):
+    db().execute('SELECT * FROM invite WHERE token=%s', (token_value,))
     return db().fetchone()
 
 def create_invite(email,
