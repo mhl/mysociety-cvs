@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.1 2009-09-28 10:10:42 duncan Exp $
+# $Id: psql_storage.py,v 1.2 2009-09-28 14:04:32 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -45,9 +45,23 @@ def decrement_invite_count(invite_id):
     db().execute('COMMIT')
     
 def get_postcodes_by_invite(invite_id, limit=100):    
-    db().execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s ORDER BY id DESC LIMIT %s', (invite_id, limit))
+    db().execute('SELECT postcode FROM invite_postcode WHERE invite_id=%d ORDER BY id DESC LIMIT %d', (invite_id, limit))
     return db().fetchall()
 
 def add_postcode(invite_id, postcode):
-    db().execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%s, '%s')''' % (invite_id, postcode))
+    db().execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%d, '%d')''' % (invite_id, postcode))
     db().execute('COMMIT')
+
+def get_latest_postcodes(limit=10):
+    db().execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
+        ORDER BY working_start DESC LIMIT %d''' %limit)
+    return db().fetchall()
+
+# Find station nearest to given easting/northing
+def get_nearest_station(easting, northing):
+    db().execute('''SELECT text_id, long_description, id FROM station WHERE
+        position_osgb && Expand(GeomFromText('POINT(%d %d)', 27700), 50000)
+        AND Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700)) < 50000
+        ORDER BY Distance(position_osgb, GeomFromText('POINT(%d %d)', 27700))
+        LIMIT 1''' % (easting, northing, easting, northing, easting, northing))
+    return db().fetchone()

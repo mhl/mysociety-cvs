@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.4 2009-09-28 10:10:42 duncan Exp $
+# $Id: storage.py,v 1.5 2009-09-28 14:04:32 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -75,3 +75,20 @@ def add_postcode(invite_id, postcode):
     postcode against that invite.
     """
     psql_storage.add_postcode(invite_id, postcode)
+
+def get_latest_postcodes(limit=10):
+    """
+    Fetches the last few postcodes which have complete maps.
+    The optional argument limit is the maximum returned.
+    """
+    postcode_rows = psql_storage.get_latest_postcodes(limit=limit)
+
+    return [ utils.canonicalise_postcode(row[0]) for row in postcode_rows ]
+
+def get_nearest_station(easting, northing):
+    """
+    Accepts an easing and a northing, and returns the nearest station
+    to those co-ordinates.
+    Return value is a tuple of (text_id, long_description, id). 
+    """
+    return psql_storage.get_nearest_station(easting, northing)

@@ -6,18 +6,14 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.125 2009-09-28 10:10:43 duncan Exp $
+# $Id: index.cgi,v 1.126 2009-09-28 14:04:32 duncan Exp $
 #
 
 import sys
 import os.path
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
-import struct
-import re
 import psycopg2
-import Cookie
 import psycopg2.errorcodes
-import urllib2
 
 import mysociety.config
 mysociety.config.set_file("../conf/general")
@@ -32,6 +28,7 @@ from django.http import HttpResponseRedirect
 from coldb import db
 import geoconvert
 import isoweb
+import storage
 import utils
 
 tmpwork = mysociety.config.get('TMPWORK')
@@ -273,15 +270,15 @@ def check_postcode(pc, invite):
         f = mysociety.mapit.get_location(pc)
     except RABXException, e:
         vars['error'] = e.text
-        return render_to_response('index.html', vars)
+        return page.render_to_response('index.html', vars)
 
     #(station, station_long, station_id) = isoweb.nearest_station(E, N)
     #if not station:
-    #    return render_to_response('index.html', { 'error': 'Could not find a station or bus stop :(' })
+    #    return page.render_to_response('index.html', { 'error': 'Could not find a station or bus stop :(' })
 
     if f['coordsyst'] == 'I':
         vars['error'] = u'I\u2019m afraid we don\u2019t have information for Northern Ireland.'
-        return render_to_response('index.html', vars)
+        return page.render_to_response('index.html', vars)
 
     # Canonicalise it, and redirect to that URL
     pc = page.sanitise_postcode(pc)
@@ -290,15 +287,15 @@ def check_postcode(pc, invite):
 
 def map_complete(map, invite):
     # Check there is a route file
-    file = os.path.join(tmpwork, '%s.iso' % str(map.id))
-    if not os.path.exists(file):
-        return render_to_response('map-noiso.html', { 'map_id' : map.id })
+    filename = os.path.join(tmpwork, '%s.iso' % str(map.id))
+    if not os.path.exists(filename):
+        return page.render_to_response('map-noiso.html', { 'map_id' : map.id })
     # Let's show the map
     if map.target_direction == 'arrive_by':
         initial_minutes = abs(map.target_time - map.target_limit_time) - 60
     else:
         initial_minutes = 60
-    return render_to_response('map.html', {
+    return page.render_to_response('map.html', {
         'map': map,
         'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
         'show_max_minutes': abs(map.target_time - map.target_limit_time),
@@ -314,7 +311,7 @@ def map(fs, invite):
     # If the load is too high on the server, don't allow new map
     current_connections = page.current_proxy_connections()
     if current_connections >= page.max_connections:
-        return render_to_response('map-http-overload.html', map.add_url_params({ 'current_connections' : current_connections, 'max_connections' : page.max_connections }))
+        return page.render_to_response('map-http-overload.html', map.add_url_params({ 'current_connections' : current_connections, 'max_connections' : page.max_connections }))
 
     # If it is complete, then render it
     if map.current_state == 'complete':
@@ -326,7 +323,7 @@ def map(fs, invite):
     approx_waiting_time = map.maps_to_be_made * generation_time / float(map.concurrent_map_makers)
     # ... if too long, ask for email
     if map.current_state in ('new', 'working') and approx_waiting_time > 60:
-        return render_to_response('map-provideemail.html', map.add_url_params({
+        return page.render_to_response('map-provideemail.html', map.add_url_params({
             'title': map.title(),
             'state': map.state,
             'approx_waiting_time': int(approx_waiting_time),
@@ -342,7 +339,7 @@ def map(fs, invite):
         return map_complete(map, invite)
     elif map.current_state == 'working':
         server, server_port = map.working_server.split(':')
-        return render_to_response('map-working.html', {
+        return page.render_to_response('map-working.html', {
             'title': map.title(),
             'approx_waiting_time': round(generation_time),
             'state' : map.state,
@@ -351,9 +348,9 @@ def map(fs, invite):
             'refresh': int(generation_time)<5 and int(generation_time) or 5,
         })
     elif map.current_state == 'error':
-        return render_to_response('map-error.html', { 'map_id' : map.id })
+        return page.render_to_response('map-error.html', { 'map_id' : map.id })
     elif map.current_state == 'new':
-        return render_to_response('map-pleasewait.html', {
+        return page.render_to_response('map-pleasewait.html', {
             'title': map.title(),
             'approx_waiting_time': int(approx_waiting_time),
             'state' : map.state,
@@ -364,8 +361,8 @@ def map(fs, invite):
 
 # Email has been given, remember to mail them when map is ready
 def log_email(fs, email):
-    if not validate_email(email):
-        return render_to_response('map-provideemail-error.html', {
+    if not page.validate_email(email):
+        return page.render_to_response('map-provideemail-error.html', {
             'target_postcode': fs['target_postcode'],
             'email': email,
         })
@@ -378,12 +375,16 @@ def log_email(fs, email):
     db().execute('BEGIN')
     db().execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
     db().execute('COMMIT')
-    return render_to_response('map-provideemail-thanks.html')
+    return page.render_to_response('map-provideemail-thanks.html')
 
 # Used when in Flash you click on somewhere to get the route
+#
+# Duncan: I don't see how this can currently work, given two
+# functions in isoweb (look_up_time_taken and look_up_route_node)
+# that it depends on rely on struct without importing it.
 def get_route(fs, lat, lon):
     E, N = geoconvert.wgs84_to_national_grid(lat, lon)
-    (station, station_long, station_id) = isoweb.nearest_station(E, N)
+    (station, station_long, station_id) = storage.get_nearest_station(E, N)
 
     # Look up time taken
     map = Map(fs)
@@ -449,7 +450,7 @@ def get_route(fs, lat, lon):
             route_str += "No route found"
         route_str += "\n";
 
-    return render_to_response('route.xml', {
+    return page.render_to_response('route.xml', {
         'lat': lat, 'lon': lon,
         'e': E, 'n': N,
         'station' : station,
@@ -465,13 +466,13 @@ def main(fs):
     if 'stats' in fs:
         state = get_queue_state()
         current_connections = page.current_proxy_connections()
-        return render_to_response('map-stats.html', {
+        return page.render_to_response('map-stats.html', {
             'state': state,
             'current_connections' : current_connections, 
             'max_connections' : page.max_connections 
         })
 
-    invite = Invite()
+    invite = page.Invite()
     if not invite.id:
         return HttpResponseRedirect('/signup')
 
@@ -489,22 +490,19 @@ def main(fs):
         postcodes = invite.postcodes
         if (postcode, utils.canonicalise_postcode(postcode)) not in postcodes:
             if invite.maps_left <= 0:
-                return render_to_response('beta-limit.html', { 'postcodes': postcodes })
+                return page.render_to_response('beta-limit.html', { 'postcodes': postcodes })
             invite.add_postcode(postcode)
         return map(fs, invite)
 
     # Front page display
-    db().execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
-        ORDER BY working_start DESC LIMIT 10''')
-    most_recent = [ utils.canonicalise_postcode(row[0]) for row in db().fetchall() ]
-    return render_to_response('index.html', {
+    return page.render_to_response('index.html', {
         'invite': invite,
-        'most_recent': most_recent,
+        'most_recent': storage.get_recent_postcodes(limit=10),
         'show_dropdown': len(invite.postcodes) > 3
     })
 
 # Main FastCGI loop
 if __name__ == "__main__":
-    wsgi_loop(main)
+    page.wsgi_loop(main)
 
 
