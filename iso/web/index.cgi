@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.126 2009-09-28 14:04:32 duncan Exp $
+# $Id: index.cgi,v 1.127 2009-09-28 14:07:48 duncan Exp $
 #
 
 import sys
@@ -497,7 +497,7 @@ def main(fs):
     # Front page display
     return page.render_to_response('index.html', {
         'invite': invite,
-        'most_recent': storage.get_recent_postcodes(limit=10),
+        'most_recent': storage.get_latest_postcodes(limit=10),
         'show_dropdown': len(invite.postcodes) > 3
     })
 
