@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.29 2009-09-25 12:11:14 duncan Exp $
+# $Id: page.py,v 1.30 2009-09-28 10:10:41 duncan Exp $
 #
 
 import os, re, cgi, cgitb, sys
@@ -29,6 +29,7 @@ import mysociety.config
 from coldb import db
 
 import storage
+import utils
 
 def render_to_response(
     template, 
@@ -135,7 +136,7 @@ class Invite(object):
         return self.token
 
     def check(self):
-        token_row = storage.get_token_by_value(self.token.value)
+        token_row = storage.get_invite_by_token(self.token.value)
         
         if token_row:
             self.__dict__.update(token_row)
@@ -143,8 +144,7 @@ class Invite(object):
     @property
     def postcodes(self):
         if not self._postcodes:
-            db().execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s ORDER BY id DESC LIMIT 100', (self.id, ))
-            self._postcodes = [ (row['postcode'], canonicalise_postcode(row['postcode']) ) for row in db().fetchall() ]
+            self._postcodes = storage.get_postcodes_by_invite(self.id)
         return self._postcodes
 
     @property
@@ -152,9 +152,8 @@ class Invite(object):
         return self.num_maps - len(self.postcodes)
 
     def add_postcode(self, pc):
-        db().execute('''INSERT INTO invite_postcode (invite_id, postcode) VALUES (%s, '%s')''' % (self.id, pc))
-        db().execute('COMMIT')
-        self._postcodes.append( (pc, canonicalise_postcode(pc)) )
+        storage.add_postcode(self.id, pc)
+        self._postcodes.append( (pc, utils.canonicalise_postcode(pc)) )
 
 # Random token generation
 def random_token():
@@ -163,12 +162,6 @@ def random_token():
     for k in range(17):
         token += random.choice(chars)
     return token
-
-# Prettifying functions
-def canonicalise_postcode(pc):
-    pc = re.sub('[^A-Z0-9]', '', pc.upper())
-    pc = re.sub('(\d[A-Z]{2})$', r' \1', pc)
-    return pc
 
 # Make sure no bad characters in postcode
 def sanitise_postcode(pc):

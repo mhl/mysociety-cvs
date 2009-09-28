@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.21 2009-09-25 12:47:28 duncan Exp $
+# $Id: invite.cgi,v 1.22 2009-09-28 10:10:43 duncan Exp $
 #
 
 import sys
@@ -43,7 +43,6 @@ def invite_view(email, invite=None):
         try:
             num = storage.create_invite(
                 email, 
-                source='friend' if invite else 'web', 
                 source_id=invite.id if invite else None
                 )
         except storage.StorageError:
@@ -68,7 +67,7 @@ def invite_view(email, invite=None):
     return page.render_to_response(template, context)
 
 def parse_token(token):
-    if storage.get_token_by_value(token):
+    if storage.get_invite_by_token(token):
         response = HttpResponseRedirect('/')
         response.set_cookie('token', value=token, max_age=86400*28)
     else:

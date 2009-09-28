@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.124 2009-06-08 10:47:54 matthew Exp $
+# $Id: index.cgi,v 1.125 2009-09-28 10:10:43 duncan Exp $
 #
 
 import sys
@@ -32,6 +32,7 @@ from django.http import HttpResponseRedirect
 from coldb import db
 import geoconvert
 import isoweb
+import utils
 
 tmpwork = mysociety.config.get('TMPWORK')
 
@@ -162,7 +163,7 @@ class Map:
         if self.target_station_id:
             return self.text_id
         elif self.target_postcode:
-            return canonicalise_postcode(self.target_postcode)
+            return utils.canonicalise_postcode(self.target_postcode)
         else:
             return '%d,%d' % (self.target_e, self.target_n)
 
@@ -486,7 +487,7 @@ def main(fs):
     elif got_map_spec: # Page for generating/ displaying map
         postcode = page.sanitise_postcode(fs['target_postcode'])
         postcodes = invite.postcodes
-        if (postcode, canonicalise_postcode(postcode)) not in postcodes:
+        if (postcode, utils.canonicalise_postcode(postcode)) not in postcodes:
             if invite.maps_left <= 0:
                 return render_to_response('beta-limit.html', { 'postcodes': postcodes })
             invite.add_postcode(postcode)
@@ -495,7 +496,7 @@ def main(fs):
     # Front page display
     db().execute('''SELECT target_postcode FROM map WHERE state='complete' AND target_postcode IS NOT NULL
         ORDER BY working_start DESC LIMIT 10''')
-    most_recent = [ canonicalise_postcode(row[0]) for row in db().fetchall() ]
+    most_recent = [ utils.canonicalise_postcode(row[0]) for row in db().fetchall() ]
     return render_to_response('index.html', {
         'invite': invite,
         'most_recent': most_recent,
