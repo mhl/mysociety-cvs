@@ -10,16 +10,13 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.8 2009-09-24 23:25:05 francis Exp $
+// $Id: drawtile.cpp,v 1.9 2009-10-02 16:10:39 francis Exp $
 //
 
 // TODO:
-// Coordinate transforms (how do effect_radius?)
+// Convert box set thing to use own radius (which is really then separate from the effect radius which varies per tile now)
 // Box set size should surely be effect_radius * 2 not just effect_radius
 // Move im to be member of Tile?
-// Cache pixels_per_meter
-// Sort out great circle distance difference (pixel radius)
-// Put back time to 1800 seconds like it should be 
 
 #include <math.h> 
 #include <gd.h>
@@ -38,9 +35,9 @@
 #include "../cpplib/performance_monitor.h"
 
 /* Any size of tile you like, as long as it is 256x256 pixels */
-int image_width = 256;
-int image_height = 256;
-double image_diagonal = sqrt(image_width * image_width + image_height * image_height);
+#define IMAGE_WIDTH 256
+#define IMAGE_HEIGHT 256
+double image_diagonal = sqrt(IMAGE_WIDTH * IMAGE_WIDTH + IMAGE_HEIGHT * IMAGE_HEIGHT);
 int zoom_levels = 20;
 gdImagePtr im;
 
@@ -62,10 +59,58 @@ int sqrt_count = 0;
 // Plotting on tiles
 
 /* Length of vector */
-//double sqrt_cache[image_width][image_height];
 double calc_dist(double x, double y) {
     sqrt_count++;
     return sqrt(x * x + y * y);
+}
+
+/* Square of length of vector */
+double calc_dist_sq(double x, double y) {
+    return x * x + y * y;
+}
+
+/* Optimised version of length of vector. Only takes pixel lengths
+ * which are shorter than the size of the tile as input, caches
+ * results for output. */
+double sqrt_cache[IMAGE_WIDTH+1][IMAGE_HEIGHT+1];
+bool sqrt_cache_initialised = false;
+void calc_dist_fast_int_initialise() {
+    for (int x = 0; x <= IMAGE_WIDTH; x++) {
+        for (int y = 0; y <= IMAGE_HEIGHT; y++) {
+            sqrt_cache[x][y] = sqrt(double(x * x + y * y));
+        }
+    }
+
+    sqrt_cache_initialised = true;
+}
+double calc_dist_fast_int_on_tile(int x, int y) {
+    // debug_log(boost::format("calc_dist_fast_int_on_tile: %d %d") % x % y);
+    
+    x = abs(x); y = abs(y);
+    assert(x >= 0 && y >= 0 && x <= IMAGE_WIDTH && y <= IMAGE_HEIGHT);
+    assert(sqrt_cache_initialised);
+
+    double result = sqrt_cache[x][y];
+    return result;
+}
+
+/* Another optimised distance function. */
+typedef std::map<int, double> SqrtCacheColumn;
+typedef std::map<int, SqrtCacheColumn> SqrtCache;
+SqrtCache sqrt_cache_flex;
+double calc_dist_fast_int_anywhere(int x, int y) {
+    SqrtCache::iterator it = sqrt_cache_flex.find(x);
+    if (it != sqrt_cache_flex.end()) {
+        SqrtCacheColumn::iterator it2 = it->second.find(y);
+        if (it2 != it->second.end()) {
+            return it2->second;
+        }
+    }
+
+    sqrt_count++;
+    double value = sqrt(double(x * x + y * y));
+    sqrt_cache_flex[x][y] = value;
+    return value;
 }
 
 /* Plot a pixel on a tile, check values in range.
@@ -74,21 +119,21 @@ double calc_dist(double x, double y) {
 */
 void guarded_plot(int x, int y, int col) {
     plot_count++;
-    if (x >= 0 && y >= 0 && x < image_width && y < image_height) {
+    if (x >= 0 && y >= 0 && x < IMAGE_WIDTH && y < IMAGE_HEIGHT) {
         //debug_log(boost::format("plotting: %d %d colour: %d") % x % y % col);
-        gdImageTrueColorPixel(im, x, image_height - 1 - y) = col; 
+        gdImageTrueColorPixel(im, x, IMAGE_HEIGHT - 1 - y) = col; 
     }
 }
 
 /* Plot a pixel on a tile, check values in range, but use the minimum value */
 void guarded_min_plot(int x, int y, int col) {
-    if (x >= 0 && y >= 0 && x < image_width && y < image_height) {
-        int current_col = gdImageTrueColorPixel(im, x, image_height - 1 - y);
+    plot_count++;
+    if (x >= 0 && y >= 0 && x < IMAGE_WIDTH && y < IMAGE_HEIGHT) {
+        int current_col = gdImageTrueColorPixel(im, x, IMAGE_HEIGHT - 1 - y);
         if (current_col == 0 || col < current_col) {
-            gdImageTrueColorPixel(im, x, image_height - 1 - y) = col;
+            gdImageTrueColorPixel(im, x, IMAGE_HEIGHT - 1 - y) = col;
         }
     }
-    plot_count++;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -109,33 +154,45 @@ class Tile {
         // Service Specification
         // (http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification)
         // convention. i.e. Y increases as you head North.
-        int max_url_y = int(round( (merc_y_orig_max - merc_y_orig_min) / (res * image_height))) - 1;
+        int max_url_y = int(round( (merc_y_orig_max - merc_y_orig_min) / (res * IMAGE_HEIGHT))) - 1;
         this->y = max_url_y - l_google_url_y;
 
-        this->min_x_merc = merc_x_orig_min + (res * this->x * image_width);
-        this->min_y_merc = merc_y_orig_min + (res * this->y * image_height);
-        this->max_x_merc = merc_x_orig_min + (res * (this->x + 1) * image_width);
-        this->max_y_merc = merc_y_orig_min + (res * (this->y + 1) * image_height);
+        this->min_x_merc = merc_x_orig_min + (res * this->x * IMAGE_WIDTH);
+        this->min_y_merc = merc_y_orig_min + (res * this->y * IMAGE_HEIGHT);
+        this->max_x_merc = merc_x_orig_min + (res * (this->x + 1) * IMAGE_WIDTH);
+        this->max_y_merc = merc_y_orig_min + (res * (this->y + 1) * IMAGE_HEIGHT);
+
+        this->pixels_per_meter = this->calc_pixels_per_meter();
     }
 
     // Convert a mercator coordinate into a pixel coordinate on the tile
     // XXX could output doubles here for accuracy for other purposes
     void transform_merc_onto_tile(double merc_x, double merc_y, int& tile_x, int &tile_y) const {
-        /*assert(merc_x >= this->min_x_merc);
-        assert(merc_x <= this->max_x_merc);
-        assert(merc_y >= this->min_y_merc);
-        assert(merc_y <= this->max_y_merc);*/
+        tile_x = (merc_x - min_x_merc) / (max_x_merc - min_x_merc) * IMAGE_WIDTH;
+        tile_y = (merc_y - min_y_merc) / (max_y_merc - min_y_merc) * IMAGE_HEIGHT;
+    }
 
-        tile_x = (merc_x - min_x_merc) / (max_x_merc - min_x_merc) * image_width;
-        tile_y = (merc_y - min_y_merc) / (max_y_merc - min_y_merc) * image_height;
+    // Test to see if a mercator coordinate is on the tile or not.
+    bool is_merc_on_tile(double merc_x, double merc_y) const {
+        return (merc_x >= this->min_x_merc) &&
+            (merc_x <= this->max_x_merc) &&
+            (merc_y >= this->min_y_merc) &&
+            (merc_y <= this->max_y_merc);
+    }
+    
+    // Test to see if a pixel coordinate on the tile is within box extended
+    // in both dimensions by distance pixels of the tile.
+    bool is_pixel_near_tile(int x, int y, int distance) const {
+        return (x >= -distance && x <= IMAGE_WIDTH + distance &&
+                y >= -distance && y <= IMAGE_HEIGHT + distance);
     }
 
     std::string debug_info() {
-        return (boost::format("Tile: zoom/x/y: %d/%d/%d merc-x-range: %lf %lf merc-y-range: %lf %lf pixels/m: %lf") % this->zoom % this->x % this->y % min_x_merc % max_x_merc % min_y_merc % max_y_merc % this->pixels_per_meter()).str();
+        return (boost::format("Tile: zoom/x/y: %d/%d/%d merc-x-range: %lf %lf merc-y-range: %lf %lf pixels/m: %lf") % this->zoom % this->x % this->y % min_x_merc % max_x_merc % min_y_merc % max_y_merc % this->pixels_per_meter).str();
     }
 
     // Number of pixels per meter of spherical globe in current projection.
-    double pixels_per_meter() const {
+    double calc_pixels_per_meter() const {
         double lon1, lat1;
         double lon2, lat2;
         merc_to_lat_lon(this->min_x_merc, this->min_y_merc, &lat1, &lon1);
@@ -143,7 +200,6 @@ class Tile {
         //debug_log(boost::format("pixels_per_meter: internal lat1 lon1 %lf %lf") % lat1 % lon1);
         //debug_log(boost::format("pixels_per_meter: internal lat2 lon2 %lf %lf") % lat2 % lon2);
 
-        // XXX This great_circle_distance returns (a bit) different results to kilometers_between in tilecache
         double diagonal_1_in_m = great_circle_distance(lat1, lon1, lat2, lon2);
         double diagonal_2_in_m = great_circle_distance(lat1, lon2, lat2, lon1);
         double average_diagonal_in_m = (diagonal_1_in_m + diagonal_2_in_m) / 2;
@@ -154,7 +210,7 @@ class Tile {
 
     // Convert a distance in meters to an approximate distance in pixels on the tile
     double meters_to_pixels(double distance) const {
-        double pixels = distance * this->pixels_per_meter();
+        double pixels = distance * this->pixels_per_meter;
         return pixels;
     }
 
@@ -163,6 +219,8 @@ class Tile {
 
     double min_x_merc, max_x_merc;
     double min_y_merc, max_y_merc;
+
+    double pixels_per_meter;
 };
 
 /////////////////////////////////////////////////////////////////////
@@ -294,8 +352,8 @@ void box_set_square_at_point(const DataSet& data_set, const double x, const doub
 // Draw a test pattern on the tile
 void draw_pretty_test_pattern() {
     int d = 0;
-    for (int x = 0; x < image_width; x++) {
-        for (int y = 0; y < image_height; y++) {
+    for (int x = 0; x < IMAGE_WIDTH; x++) {
+        for (int y = 0; y < IMAGE_HEIGHT; y++) {
             guarded_plot(x, y, d);
             d++;
         }
@@ -315,22 +373,26 @@ void draw_pretty_test_pattern() {
 void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& tile) {
     double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
     double max_walk_time = data_set.get_param("max_walk_time");
-
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
-    debug_log(boost::format("pixel_radius: %lf") % pixel_radius);
-    pixel_radius = 54.451374078082381; // XXX fix me :) is the great circle distance difference
+    debug_log(boost::format("draw_datums_as_cones_loop_by_datum: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
 
     for (DatumEntries::const_iterator it = data_set.entries.begin(); it != data_set.entries.end(); it++) {
         const Datum& datum = *it;
         int datum_on_tile_x, datum_on_tile_y;
+    
         tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-        //if (datum_on_tile_x > 0 && datum_on_tile_y > 0 && datum_on_tile_x < image_width && datum_on_tile_y < image_height)
+
+        if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
+            continue;
+        }
+
+        //if (datum_on_tile_x > 0 && datum_on_tile_y > 0 && datum_on_tile_x < IMAGE_WIDTH && datum_on_tile_y < IMAGE_HEIGHT)
         //    debug_log(boost::format("datum merc: %lf %lf datum tile place: %d %d value: %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y %datum.value);
         for (int x = -pixel_radius; x <= pixel_radius; x++) {
             for (int y = -pixel_radius; y <= pixel_radius; y++) {
                 int plot_x = datum_on_tile_x + x;
                 int plot_y = datum_on_tile_y + y;
-                double dist = calc_dist(x, y);
+                double dist = calc_dist_fast_int_on_tile(int(x), int(y));
                 if (dist <= pixel_radius) {
                     // debug_log(boost::format("dist: %lf pixel_radius: %lf") % dist % pixel_radius);
                     guarded_min_plot(plot_x, plot_y, dist / pixel_radius * max_walk_time + datum.value);
@@ -343,47 +405,77 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
 
 // Efficient version of draw_datums_as_cones_loop_by_datum, which loops over pixels
 // rather than over cones.
-int test_multiple_factor = 1; // XXX deprecated
-void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set) {
-    for (int x = 0; x < image_width ; x++) {
-        for (int y = 0; y < image_height; y++) {
-            //debug_log(boost::format("Plot place: %d %d") % x % y);
+void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& tile) {
+    double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
+    double max_walk_time = data_set.get_param("max_walk_time");
+    double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
+    debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
+
+    double pixel_radius_sq = pixel_radius * pixel_radius;
+
+    // Work out which datums might matter
+    DatumIndexList datum_index_list;
+    for (DatumIndex ix = 0; ix < data_set.entries.size(); ix++) {
+        const Datum& datum = data_set.entries[ix];
+
+        int datum_on_tile_x, datum_on_tile_y;
+        tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
+        if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
+            continue;
+        }
+
+        datum_index_list.push_back(ix);
+    }
+    debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
+
+    for (int x = 0; x < IMAGE_WIDTH; x++) {
+        for (int y = 0; y < IMAGE_HEIGHT; y++) {
+            //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: x: %d y: %d") % x % y);
 
             // XXX should magically find nearby datums rather than loop over all of them
             double min_dist = -1;
             double min_value = -1;
 
-            int center_box_x, center_box_y;
-            box_set_square_at_point(data_set, x, y, center_box_x, center_box_y); // XXX convert x and y
-            int box_range_min_x = (center_box_x > 0) ? (center_box_x - 1) : center_box_x;
-            int box_range_max_x = (center_box_x < data_set.box_set_width - 1) ? (center_box_x + 1) : center_box_x;
-            int box_range_min_y = (center_box_y > 0) ? (center_box_y - 1) : center_box_y;
-            int box_range_max_y = (center_box_y < data_set.box_set_height - 1) ? (center_box_y + 1) : center_box_y;
-            for (int box_x = box_range_min_x; box_x <= box_range_max_x; box_x++) {
-                for (int box_y = box_range_min_y; box_y <= box_range_max_y; box_y++) {
-                    const DatumIndexList& datum_index_list = data_set.box_set[box_x][box_y];
+            //int center_box_x, center_box_y;
+            //box_set_square_at_point(data_set, x, y, center_box_x, center_box_y); // XXX convert x and y
+            //int box_range_min_x = (center_box_x > 0) ? (center_box_x - 1) : center_box_x;
+            //int box_range_max_x = (center_box_x < data_set.box_set_width - 1) ? (center_box_x + 1) : center_box_x;
+            //int box_range_min_y = (center_box_y > 0) ? (center_box_y - 1) : center_box_y;
+            //int box_range_max_y = (center_box_y < data_set.box_set_height - 1) ? (center_box_y + 1) : center_box_y;
+            //for (int box_x = box_range_min_x; box_x <= box_range_max_x; box_x++) {
+                //for (int box_y = box_range_min_y; box_y <= box_range_max_y; box_y++) {
+                    //const DatumIndexList& datum_index_list = data_set.box_set[box_x][box_y];
                     for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
+                    //for (DatumEntries::const_iterator it = data_set.entries.begin(); it != data_set.entries.end(); it++) {
                         DatumIndex ix = *it;
                         const Datum& datum = data_set.entries[ix];
+                        /// const Datum& datum = *it;
 
-                        int rel_x = datum.x - x;
-                        int rel_y = datum.y - y;
-
-                        if (rel_x < -data_set.effect_radius || rel_x > data_set.effect_radius || rel_y < -data_set.effect_radius  || rel_y > data_set.effect_radius) {
+                        int datum_on_tile_x, datum_on_tile_y;
+                        tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
+                        if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
                             continue;
                         }
 
-                        double dist = calc_dist(rel_x, rel_y);
-                        if (dist <= data_set.effect_radius && (min_dist == -1 || dist * test_multiple_factor + datum.value < min_dist * test_multiple_factor + min_value)) {
-                            min_dist = dist;
-                            min_value = datum.value;
+                        // Find relative position of datum from the pixel we are plotting
+                        int rel_x = datum_on_tile_x - x;
+                        int rel_y = datum_on_tile_y - y;
+                        double dist_sq = calc_dist_sq(rel_x, rel_y);
+                        if (dist_sq <= pixel_radius_sq) {
+                            //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: rel_x: %d rel_y: %d dist_sq: %lf pixel_radius_sq: %lf") % rel_x % rel_y % dist_sq % pixel_radius_sq);
+                            double dist = calc_dist_fast_int_anywhere(rel_x, rel_y);
+                            double value = dist / pixel_radius * max_walk_time + datum.value;
+                            if (min_dist < 0 || value < min_value) {
+                                min_dist = dist;
+                                min_value = value;
+                            }
                         }
                     }
-                }
-            }
+                //}
+            //}
 
-            if (min_dist != -1) {
-                guarded_plot(x, y, min_dist * test_multiple_factor + min_value);
+            if (min_dist >= 0) {
+                guarded_plot(x, y, min_value);
             } else {
                 guarded_plot(x, y, no_data_colour);
             }
@@ -398,17 +490,23 @@ int main(int argc, char * argv[]) {
     PerformanceMonitor pm;
     DataSet data_set;
 
+    /*
     double mercx, mercy;
     lat_lon_to_merc(53.466667, -2.233333, &mercx, &mercy); // Manchester
     printf("Manchester mercx, mercy: %lf %lf\n", mercx, mercy); // roughly: -248128.680454, 7071667.54412 (that's actually Manchester Picadilly)
     double lat, lon;
     merc_to_lat_lon(-248613.492332, 7069789.545191, &lat, &lon); // Manchester
     printf("Manchester lat, lon: %lf %lf\n", lat, lon); // 53.466667, -2.233333
+    */
 
     /*if (argc < 7) {
         fprintf(stderr, "fastplan.cpp arguments are:\n  1. fast index file prefix\n  2. output prefix (or 'stream' for stdout incremental)\n  3. arrive_by or depart_after\n  4. target arrival time / departure in mins after midnight\n  5. target location\n  6. earliest/latest departure in mins after midnight to go back to\n  7, 8. easting, northing to use to find destination if destination is 'coordinate'\n");
         return 1;
     }*/
+    
+    // Precalculate some things for optimisation
+    calc_dist_fast_int_initialise();
+    pm.display("Precalculating square roots took");
 
     // Read data set from .nodes file
     std::string nodes_file = "/home/francis/toobig/nptdr/tmpwork/test.nodes";
@@ -440,7 +538,7 @@ int main(int argc, char * argv[]) {
         }
     }
     data_set.params["max_walk_distance_in_meters"] = 2400; // 2400 meters is a half hour of walking at 1.33333 m/s
-    data_set.params["max_walk_time"] = 2400; // 1800 seconds is half an hour XXX change it back to that value
+    data_set.params["max_walk_time"] = 1800; // 1800 seconds is half an hour 
 
     // Internal test populate data set
     /*
@@ -465,15 +563,15 @@ int main(int argc, char * argv[]) {
     debug_log(tile.debug_info());
 
     // Create gd image surface
-    im = gdImageCreateTrueColor(image_width, image_height);
+    im = gdImageCreateTrueColor(IMAGE_WIDTH, IMAGE_HEIGHT);
     int white = gdImageColorAllocate(im, 255, 255, 255);  
-    gdImageFilledRectangle(im, 0, 0, image_width, image_height, white);
+    gdImageFilledRectangle(im, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT, white);
     pm.display("Creating surface took");
 
     // Set pixel values
     //draw_pretty_test_pattern();
     draw_datums_as_cones_loop_by_datum(data_set, tile);
-    //draw_datums_as_cones_loop_by_pixel(data_set);
+    //draw_datums_as_cones_loop_by_pixel(data_set, tile);
     debug_log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
     pm.display("Plotting image took");
 

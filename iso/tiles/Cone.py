@@ -5,7 +5,7 @@ numpy array cones where value = travel time from center, in seconds.
 Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 Email: mike@stamen.com; WWW: http://www.mysociety.org/
 
-$Id: Cone.py,v 1.8 2009-09-24 23:57:50 francis Exp $
+$Id: Cone.py,v 1.9 2009-10-02 16:10:39 francis Exp $
 
 >>> import Isochrones
 >>> xmin, ymin = GYM(-123, 37)
@@ -38,6 +38,7 @@ import pyproj
 
 GYM = pyproj.Proj(proj='merc', a=6378137, b=6378137, lat_ts=0.0, lon_0=0.0, x_0=0.0, y_0=0, k=1.0, units='m', nadgrids=None, no_defs=True)
 
+# XXX this function is wrong, see below.
 def kilometers_between(lat1, lon1, lat2, lon2):
     """ Number of kilometers between two locations on spherical globe given in degrees.
     """
@@ -50,6 +51,9 @@ def kilometers_between(lat1, lon1, lat2, lon2):
     rad2 = (lat2 * math.pi/180, lon2 * math.pi/180)
     
     # vector in x, y, z
+    # XXX this is not right - it isn't rotating the X, Y values to acount for
+    # the latitude (the Z value is fine).
+    # See cpplib/mysociety_geo.h for a better great circle distance function.
     point1 = (math.sin(rad1[1]), math.cos(rad1[1]), math.sin(rad1[0]))
     point2 = (math.sin(rad2[1]), math.cos(rad2[1]), math.sin(rad2[0]))
     
