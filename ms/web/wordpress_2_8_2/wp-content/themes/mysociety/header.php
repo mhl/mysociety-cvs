@@ -43,7 +43,7 @@
 
 	<!-- Menu -->
 	<div id="divMenu">
-	<?php print file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/nav.html"); ?>
+	<?php print file_get_contents(TEMPLATEPATH . '/nav.html'); ?>
 	<?php include (TEMPLATEPATH . '/searchform.php'); ?>
 	</div>
 	

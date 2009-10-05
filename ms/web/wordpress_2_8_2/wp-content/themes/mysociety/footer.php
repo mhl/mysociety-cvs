@@ -1,7 +1,7 @@
 
 		<div id="divFooter">
 			<?
-		    	print file_get_contents($_SERVER['DOCUMENT_ROOT'] .  "/footer.html"); 
+		    	print file_get_contents(TEMPLATEPATH . '/footer.html');
 			?>
 
 			<p>
