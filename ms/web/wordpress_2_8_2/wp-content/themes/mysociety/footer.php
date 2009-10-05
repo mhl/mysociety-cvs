@@ -13,7 +13,17 @@
 	</div>
 </div>
 
-    <?php wp_footer(); ?>
+<?php
+
+wp_footer();
+
+if ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org') {
+    $piwik_id = 11;
+} else {
+    $piwik_id = 5;
+}
+
+?>
 
 <!-- Piwik -->
 <script type="text/javascript">
@@ -23,12 +33,12 @@ document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/ja
 <script type="text/javascript">
 <!--
 piwik_action_name = '';
-piwik_idsite = 5;
+piwik_idsite = <?=$piwik_id ?>;
 piwik_url = pkBaseURL + "piwik.php";
 piwik_log(piwik_action_name, piwik_idsite, piwik_url);
 //-->
 </script>
-<noscript><img src="http://piwik.mysociety.org/piwik.php?idsite=5" style="border:0" alt=""></noscript>
+<noscript><img src="http://piwik.mysociety.org/piwik.php?idsite=<?=$piwik_id ?>" style="border:0" alt=""></noscript>
 <!-- /Piwik -->
 
 </body>
