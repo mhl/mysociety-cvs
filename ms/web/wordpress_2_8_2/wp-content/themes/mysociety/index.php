@@ -4,7 +4,7 @@ get_header();
 
 if (have_posts()) : ?>
 
-	<h1 class="pagetitle">mySociety blog</h1>
+	<h1 class="pagetitle hide">mySociety blog</h1>
 	<div class="contentwide">
 
 <?php

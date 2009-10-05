@@ -19,7 +19,7 @@
 
 		<!--Title-->
 		<?php if (!$is_idea){ ?>
-		    <h1>mySociety blog &raquo; <?php the_title(); ?></h1>
+		    <h1><?php the_title(); ?></h1>
 		<?php }else{ ?>
 		    <h1>Call For Proposals 2009 &raquo; <?php the_title(); ?></h1>		
 		<?php } ?>
