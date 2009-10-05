@@ -1,11 +1,36 @@
 Contours of life TODO
 =====================
 
-Worry about marmite hardware error
+Make the isodaemons and the frontend web application use Amazon Queue Service
+to communicate with each other that a job needs doing. By the end of this task,
+the isoademons will not need to read PostgreSQL at all.
+
+Make the frontend stateless (best) and/or store any state in a data store
+that only the frontend needs to access.
+
+
+Delete bitter/tea/balti from all CVS repositories entirely, and all the
+arch stuff that they depend on.
+
+Read about AWS security keys a lot more and more carefully.
+
+Work out how to make an AMI / UML image that isn't contaminated by our server
+access privilege system, but still gain benefits of our config stuff.
+
+
+
+Read about ec2-init package that Ubuntu has, looks useful
 
 Invite system
+    Should just run automatically without ever manually having to send invites
+    Should try and rely on viral friend thing a bit more to get new signups
+    Should be sure they
     email-form.html doesn't have other variables than target_postcode in it
     Make it not email invites while server overloaded
+
+
+Later
+-----
 
 Housing/scenic tiles are always loading from same subdomain
 
@@ -33,10 +58,6 @@ Time slider could be more timey, e.g. with times along it. Or something
 more visually time-like.
 
 A marker showing where the destination is on the map would be helpful
-
-
-Later
------
 
 Fix display when put times of day / depart after in URLs
 UI for choose different times of day and depart after
