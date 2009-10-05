@@ -24,14 +24,25 @@ if (is_category()) {
 } else {
 	echo '<p id="sidebar_rss"><a href="', bloginfo('rss2_url'), '"><img align="top" src="http://www.mysociety.org/feed.png" alt=""> RSS feed</a></p>';
 }
+
+if ($_SERVER['SERVER_NAME']=='cee.mysociety.org') {
+    $news_list = 'cee-talk';
+    $news_title = 'Mailing list';
+    $news_desc = 'Enter your email address below to get and discuss occasional emails about what we&rsquo;ve been up to.';
+} else {
+    $news_list = 'news';
+    $news_title = 'News alerts';
+    $news_desc = 'Enter your email address below and we&rsquo;ll send you occasional emails about what we&rsquo;ve been up to.';
+}
+
 ?>
 
 <!-- News list -->
 <div class="infoboxpurple contentnarrow right dividerright">
-	<form method=post action="https://secure.mysociety.org/admin/lists/mailman/subscribe/news">
-		<h4>News alerts</h4>
+	<form method=post action="https://secure.mysociety.org/admin/lists/mailman/subscribe/<?=$news_list ?>">
+		<h4><?=$news_title ?></h4>
 		<p>
-			<label for="txtEmail">Enter your email address below and we'll send you occasional emails about what we've been up to.</label>
+			<label for="txtEmail"><?=$news_desc ?></label>
 		</p>
 		<ul class="nobullets">
 			<li>
