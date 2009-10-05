@@ -27,7 +27,7 @@
 	<div id="divHeader">
 		<div id="imgLogo">
 			<a href="/" title="mySociety.org homepage">
-				<img src="/contimg/logo.png" alt="mySociety.org" width="297" height="62" />
+				<img src="http://www.mysociety.org/contimg/logo.png" alt="mySociety.org" width="297" height="62" />
 			</a>
 		</div>
 
