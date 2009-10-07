@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.4 2009-10-07 21:34:54 duncan Exp $
+# $Id: psql_storage.py,v 1.5 2009-10-07 22:01:39 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -52,6 +52,7 @@ def insert_invite(email,
 
     try:
         db().execute("INSERT INTO invite (email, source, source_id) VALUES (%s, %s, %s)", (email, source, source_id))
+        db().execute('COMMIT')
     except psycopg2.IntegrityError:
         # Let's assume the integrity error is because of a unique key
         # violation - ie. an identical row has appeared in the milliseconds
