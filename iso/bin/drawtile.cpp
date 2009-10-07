@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.10 2009-10-07 01:41:02 francis Exp $
+// $Id: drawtile.cpp,v 1.11 2009-10-07 08:35:31 francis Exp $
 //
 
 // TODO:
@@ -30,6 +30,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <algorithm>
 
 #include "../../cpplib/mysociety_error.h"
 #include "../../cpplib/mysociety_geo.h"
@@ -400,7 +401,7 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
     int int_pixel_radius = int(pixel_radius) + 1;
     debug_log(boost::format("draw_datums_as_cones_loop_by_datum: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
 
-    // Work out which datums might matter
+    // Work out which datums might matter, using box set
     DatumIndexList datum_index_list;
     double x_1, y_1;
     tile.transform_tile_onto_merc(-int_pixel_radius, -int_pixel_radius, x_1, y_1);
@@ -414,18 +415,28 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
         const Datum& datum = data_set.entries[ix];
         int datum_on_tile_x, datum_on_tile_y;
     
+        // Do finer grained clipping than box set does - 
+        // XXX perhaps instead call this in datum_box_set_find_by_rectangle?
         tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-
         if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
             continue;
         }
 
         //if (datum_on_tile_x > 0 && datum_on_tile_y > 0 && datum_on_tile_x < IMAGE_WIDTH && datum_on_tile_y < IMAGE_HEIGHT)
         //    debug_log(boost::format("datum merc: %lf %lf datum tile place: %d %d value: %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y %datum.value);
-        for (int x = -pixel_radius; x <= pixel_radius; x++) {
-            for (int y = -pixel_radius; y <= pixel_radius; y++) {
-                int plot_x = datum_on_tile_x + x;
-                int plot_y = datum_on_tile_y + y;
+       
+        // Clip the cone
+        int loop_x_min, loop_x_max;
+        loop_x_min = std::max(datum_on_tile_x - int_pixel_radius, 0);
+        loop_x_max = std::min(datum_on_tile_x + int_pixel_radius, IMAGE_WIDTH);
+        int loop_y_min, loop_y_max;
+        loop_y_min = std::max(datum_on_tile_y - int_pixel_radius, 0);
+        loop_y_max = std::min(datum_on_tile_y + int_pixel_radius, IMAGE_HEIGHT);
+        // Loop over pixels of cone, rendering into place
+        for (int plot_x = loop_x_min; plot_x <= loop_x_max; plot_x++) {
+            for (int plot_y = loop_y_min; plot_y <= loop_y_max; plot_y++) {
+                int x = plot_x - datum_on_tile_x;
+                int y = plot_y - datum_on_tile_y;
                 double dist = calc_dist_fast_int_on_tile(int(x), int(y));
                 if (dist <= pixel_radius) {
                     // debug_log(boost::format("dist: %lf pixel_radius: %lf") % dist % pixel_radius);
