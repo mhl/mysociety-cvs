@@ -6,22 +6,19 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: email-invites,v 1.13 2009-09-28 12:18:00 matthew Exp $
+# $Id: email-invites,v 1.14 2009-10-07 21:34:54 duncan Exp $
 #
 
 import sys
 sys.path.extend((sys.path[0]+"/../pylib", sys.path[0]+"/../../pylib"))
-import os
-import re
+
 import optparse
 
 import mysociety.config
 mysociety.config.set_file(sys.path[0]+"/../conf/general")
 
-from page import random_token, send_template_email
-
-import coldb
-db = coldb.get_cursor()
+import page
+import storage
 
 parser = optparse.OptionParser()
 parser.set_usage('''
@@ -40,45 +37,28 @@ if not options.friend and not options.signup:
     print "Please specify at least --friend or --signup"
     sys.exit(1)
 
-def main():
-    if options.friend:
-        send_invites('SELECT invite.*, inviter.email as inviter_email FROM invite, invite as inviter WHERE invite.source_id = inviter.id AND invite.token IS NULL')
-    if options.signup:
-        send_invites('SELECT * FROM invite WHERE token IS NULL AND invite.source_id IS NULL')
 
-def send_invites(query):
-    if options.email:
-        query = query + " AND invite.email = '%s'" % (options.email)
-    query = query + ' ORDER BY invite.id'
-    query = query + ' LIMIT %s' % (options.limit)
 
-    if options.debug:
-        print "Query:", query
 
-    db.execute(query)
-    invites = db.fetchall()
+invites = []
 
-    for row in invites:
-        if row.get('inviter_email'):
-            template = 'email-invite.txt'
-            inviter_email = row['inviter_email']
-        else:
-            template = 'email-signup.txt'
-            inviter_email = None
+if options.friend:
+    invites.extend(
+        storage.get_new_invites(
+            email=options.email,
+            limit=options.limit,
+            source='friend')
+        )
 
-        if options.debug:
-            print "Sending invite to", row['email'], "from", inviter_email, "using template", template,
+if options.signup:
+    invites.extend(
+        storage.get_new_invites(
+            email=options.email,
+            limit=options.limit,
+            source='web')
+        )
 
-        token = random_token()
-        db.execute('UPDATE invite SET token=%s where id=%s', (token, row['id']))
-        db.execute('COMMIT')
-        url = mysociety.config.get('BASE_URL') + 'T/' + token
-        send_template_email(row['email'], template, {
-            'url': url,
-            'pid': os.getpid(),
-            'inviter_email': inviter_email,
-        })
-        if options.debug:
-            print "done"
+for invite in invites:
+    page.email_invite(invite)
 
-main()
+

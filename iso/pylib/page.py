@@ -6,10 +6,10 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.30 2009-09-28 10:10:41 duncan Exp $
+# $Id: page.py,v 1.31 2009-10-07 21:34:54 duncan Exp $
 #
 
-import os, re, cgi, cgitb, sys
+import os, re, cgitb, sys
 import Cookie
 import random
 import urllib2
@@ -114,6 +114,32 @@ def send_template_email(to, template, vars):
         'To': to,
         'Subject': subject,
     })
+
+
+def activate_invite(invite_id):
+    token = random_token()
+    storage.set_invite_token(invite_id, token)
+
+    return token
+
+def email_invite(invite, debug=False):
+    inviter_email = invite.get('inviter_email')
+    template = 'email-invite.txt' if inviter_email else 'email-signup.txt'
+
+    if debug:
+        print "Sending invite to", invite['email'], "from", inviter_email, "using template", template,
+
+    token = activate_invite(invite['id'])
+
+    url = mysociety.config.get('BASE_URL') + 'T/' + token
+    send_template_email(invite['email'], template, {
+            'url': url,
+            'pid': os.getpid(),
+            'inviter_email': inviter_email,
+            })
+
+    if debug:
+        print "done"
 
 # Cookie invite handling stuff
 

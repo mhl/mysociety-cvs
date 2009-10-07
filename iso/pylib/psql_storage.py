@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.3 2009-09-28 14:33:29 duncan Exp $
+# $Id: psql_storage.py,v 1.4 2009-10-07 21:34:54 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -23,6 +23,26 @@ def get_invite_by_token(token_value):
 def get_invite_by_id(invite_id):
     db().execute('SELECT * FROM invite WHERE id=%s', (invite_id,))
     return db().fetchone()
+
+def get_new_invites(email=None, limit=1, source=None, debug=False):
+    if source == 'web':
+        query = 'SELECT * FROM invite WHERE token IS NULL AND invite.source_id IS NULL'
+    elif source == 'friend':
+        query = 'SELECT invite.*, inviter.email as inviter_email FROM invite, invite as inviter WHERE invite.source_id = inviter.id AND invite.token IS NULL'
+        
+    if email:
+        query = query + " AND invite.email = '%s'" % (email)
+    query = query + ' ORDER BY invite.id'
+    
+    if limit:
+        query = query + ' LIMIT %s' % (limit)
+
+    if debug:
+        print "Query:", query
+
+    db().execute(query)
+
+    return db().fetchall()
 
 def insert_invite(email,
                   source='web',
@@ -44,6 +64,10 @@ def decrement_invite_count(invite_id):
     db().execute('UPDATE invite SET num_invites = num_invites - 1 WHERE id=%s', (invite_id,))
     db().execute('COMMIT')
     
+def set_invite_token(invite_id, token):
+    db().execute('UPDATE invite SET token=%s where id=%s', (token, invite_id))
+    db().execute('COMMIT')
+
 def get_postcodes_by_invite(invite_id, limit=100):    
     db().execute('SELECT postcode FROM invite_postcode WHERE invite_id=%s ORDER BY id DESC LIMIT %s', (invite_id, limit))
     return db().fetchall()

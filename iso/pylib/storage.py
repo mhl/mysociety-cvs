@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.5 2009-09-28 14:04:32 duncan Exp $
+# $Id: storage.py,v 1.6 2009-10-07 21:34:54 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -28,6 +28,25 @@ def get_invite_by_token(token_value):
     or None, if the invite wasn't found.
     """
     return psql_storage.get_invite_by_token(token_value)
+
+def get_new_invites(email=None, source='friend', limit=1, debug=False):
+    """
+    This function returns the oldest invites with no token
+    of type given by the source argument, up to a maximim given by limit.
+
+    Called with an email address, this will return only invites to that email
+    address.
+
+    email - either an email address, or something false.
+    source - currently either 'web' or 'friend', defaulting to 'friend'.
+    limit - the maximum number of invites to return defaulting to 1
+            so that we don't send a lot by accident.
+    debug - boolean which determines how much is printed.
+    """
+    return psql_storage.get_new_invites(email=email,
+                                        source=source,
+                                        limit=limit,
+                                        debug=debug)
 
 def create_invite(email,
                   source_id=None):
@@ -61,6 +80,10 @@ def create_invite(email,
         # Return the number of invites left
         invite_row = psql_storage.get_invite_by_id(source_id)
         return invite_row['num_invites']
+
+def set_invite_token(invite_id, token):
+    """Accepts an invite_id and a token, and sets that token on the invite."""
+    psql_storage.set_invite_token(invite_id, token)
 
 def get_postcodes_by_invite(invite_id):
     """
