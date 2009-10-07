@@ -10,13 +10,14 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.9 2009-10-02 16:10:39 francis Exp $
+// $Id: drawtile.cpp,v 1.10 2009-10-07 01:41:02 francis Exp $
 //
 
 // TODO:
 // Convert box set thing to use own radius (which is really then separate from the effect radius which varies per tile now)
-// Box set size should surely be effect_radius * 2 not just effect_radius
+// Nearby pixel radius check should surely be pixel_radius * 2 not just pixel_radius
 // Move im to be member of Tile?
+// remove effect_radius completely
 
 #include <math.h> 
 #include <gd.h>
@@ -145,8 +146,6 @@ class Tile {
         this->zoom = l_zoom;
 
         double res = merc_max_resolution / double(1 << this->zoom);
-        //self.resolutions = [maxRes / 2 ** i for i in range(zoom_levels))]
-        //res  = self.layer.resolutions[self.z]
 
         this->x = l_google_url_x;
         // flip Y value - the URLs we use are Google URLs (tms_type='google' in
@@ -170,6 +169,12 @@ class Tile {
     void transform_merc_onto_tile(double merc_x, double merc_y, int& tile_x, int &tile_y) const {
         tile_x = (merc_x - min_x_merc) / (max_x_merc - min_x_merc) * IMAGE_WIDTH;
         tile_y = (merc_y - min_y_merc) / (max_y_merc - min_y_merc) * IMAGE_HEIGHT;
+    }
+
+    // Convert pixel coordinate on a tile into a mercator coordinate
+    void transform_tile_onto_merc(int tile_x, int tile_y, double& merc_x, double& merc_y) const {
+        merc_x = (double(tile_x) / double(IMAGE_WIDTH)) * (max_x_merc - min_x_merc) + min_x_merc;
+        merc_y = (double(tile_y) / double(IMAGE_HEIGHT)) * (max_y_merc - min_y_merc) + min_y_merc;
     }
 
     // Test to see if a mercator coordinate is on the tile or not.
@@ -291,24 +296,22 @@ class DataSet {
     // other parameters for rendering the data set
     std::map<std::string, double> params;
 
-    // maximum distance away from a datum that it can affect contour tile colour.
-    // also used as cone radius for minimum cone algorithm.
-    double effect_radius; // XXX deprecated
-
-    // used to quickly find datum t
+    // used to quickly find datums
+    double box_set_radius;
     int box_set_width, box_set_height;
     DatumBoxSet box_set;
 };
 
 // Create a grid of squares, each datum going into one squares. Squares are same size
 // as the maximum radius that a datum can affect the tile colour.
-void make_datum_box_set(DataSet& data_set) {
+void datum_box_set_make(DataSet& data_set, double radius) {
     DatumBoxSet& box_set = data_set.box_set;
     box_set.clear();
+    data_set.box_set_radius = radius;
 
-    // work out how many entries their in box set
-    int box_set_width = (data_set.x_max - data_set.x_min) / data_set.effect_radius + 1;
-    int box_set_height = (data_set.y_max - data_set.y_min) / data_set.effect_radius + 1;
+    // work out how many entries there are in the box set
+    int box_set_width = int((data_set.x_max - data_set.x_min) / data_set.box_set_radius) + 1;
+    int box_set_height = int((data_set.y_max - data_set.y_min) / data_set.box_set_radius) + 1;
     box_set.resize(box_set_width);
     data_set.box_set_width = box_set_width;
     data_set.box_set_height = box_set_height;
@@ -326,8 +329,8 @@ void make_datum_box_set(DataSet& data_set) {
         assert(datum.y >= data_set.y_min);
         assert(datum.y <= data_set.y_max);
 
-        int box_x = (datum.x - data_set.x_min) / data_set.effect_radius;
-        int box_y = (datum.y - data_set.y_min) / data_set.effect_radius;
+        int box_x = int((datum.x - data_set.x_min) / data_set.box_set_radius);
+        int box_y = int((datum.y - data_set.y_min) / data_set.box_set_radius);
 
         assert(box_x >= 0);
         assert(box_x < box_set_width);
@@ -339,14 +342,34 @@ void make_datum_box_set(DataSet& data_set) {
     }
 }
 // Given a point (a datum, essentially), return the position of the box set grid cell that contains that point.
-void box_set_square_at_point(const DataSet& data_set, const double x, const double y, int& box_x, int& box_y) {
-    box_x = (x - data_set.x_min) / data_set.effect_radius;
-    box_y = (y - data_set.y_min) / data_set.effect_radius;
+void datum_box_set_square_at_point(const DataSet& data_set, const double x, const double y, int& box_x, int& box_y) {
+    box_x = int((x - data_set.x_min) / data_set.box_set_radius);
+    box_y = int((y - data_set.y_min) / data_set.box_set_radius);
     // make sure it is in bounds
     if (box_x < 0) box_x = 0;
     if (box_x >= data_set.box_set_width) box_x = data_set.box_set_width - 1;
     if (box_y < 0) box_y = 0;
     if (box_y >= data_set.box_set_height) box_y = data_set.box_set_height - 1;
+}
+// Returns all the datums in the given (mercator coordinate) rectangle.
+void datum_box_set_find_by_rectangle(const DataSet& data_set, const double x_1, const double y_1, const double x_2, const double y_2, DatumIndexList &ret) {
+    int box_x_1, box_y_1;
+    datum_box_set_square_at_point(data_set, x_1, y_1, box_x_1, box_y_1);
+    int box_x_2, box_y_2;
+    datum_box_set_square_at_point(data_set, x_2, y_2, box_x_2, box_y_2);
+
+    debug_log((boost::format("datum_box_set_find_by_rectangle: found ranges: box x: %d %d box y: %d %d ") % box_x_1 % box_x_2 % box_y_1 % box_y_2).str());
+
+    ret.clear();
+    for (int box_x = box_x_1; box_x <= box_x_2; box_x++) {
+        for (int box_y = box_y_1; box_y <= box_y_2; box_y++) {
+            const DatumIndexList &datum_index_list = data_set.box_set[box_x][box_y];
+            for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
+                DatumIndex ix = *it;
+                ret.push_back(ix);
+            }
+        }
+    }
 }
 
 // Draw a test pattern on the tile
@@ -374,10 +397,21 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
     double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
     double max_walk_time = data_set.get_param("max_walk_time");
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
+    int int_pixel_radius = int(pixel_radius) + 1;
     debug_log(boost::format("draw_datums_as_cones_loop_by_datum: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
 
-    for (DatumEntries::const_iterator it = data_set.entries.begin(); it != data_set.entries.end(); it++) {
-        const Datum& datum = *it;
+    // Work out which datums might matter
+    DatumIndexList datum_index_list;
+    double x_1, y_1;
+    tile.transform_tile_onto_merc(-int_pixel_radius, -int_pixel_radius, x_1, y_1);
+    double x_2, y_2;
+    tile.transform_tile_onto_merc(IMAGE_WIDTH + int_pixel_radius, IMAGE_HEIGHT + int_pixel_radius, x_2, y_2);
+    datum_box_set_find_by_rectangle(data_set, x_1, y_1, x_2, y_2, datum_index_list);
+    debug_log(boost::format("draw_datums_as_cones_loop_by_datum: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
+
+    for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
+        DatumIndex ix = *it;
+        const Datum& datum = data_set.entries[ix];
         int datum_on_tile_x, datum_on_tile_y;
     
         tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
@@ -409,70 +443,51 @@ void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& til
     double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
     double max_walk_time = data_set.get_param("max_walk_time");
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
+    int int_pixel_radius = int(pixel_radius) + 1;
     debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
 
     double pixel_radius_sq = pixel_radius * pixel_radius;
 
     // Work out which datums might matter
     DatumIndexList datum_index_list;
-    for (DatumIndex ix = 0; ix < data_set.entries.size(); ix++) {
-        const Datum& datum = data_set.entries[ix];
-
-        int datum_on_tile_x, datum_on_tile_y;
-        tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-        if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
-            continue;
-        }
-
-        datum_index_list.push_back(ix);
-    }
+    double x_1, y_1;
+    tile.transform_tile_onto_merc(-int_pixel_radius, -int_pixel_radius, x_1, y_1);
+    double x_2, y_2;
+    tile.transform_tile_onto_merc(IMAGE_WIDTH + int_pixel_radius, IMAGE_HEIGHT + int_pixel_radius, x_2, y_2);
+    datum_box_set_find_by_rectangle(data_set, x_1, y_1, x_2, y_2, datum_index_list);
     debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
 
     for (int x = 0; x < IMAGE_WIDTH; x++) {
         for (int y = 0; y < IMAGE_HEIGHT; y++) {
             //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: x: %d y: %d") % x % y);
 
-            // XXX should magically find nearby datums rather than loop over all of them
             double min_dist = -1;
             double min_value = -1;
 
-            //int center_box_x, center_box_y;
-            //box_set_square_at_point(data_set, x, y, center_box_x, center_box_y); // XXX convert x and y
-            //int box_range_min_x = (center_box_x > 0) ? (center_box_x - 1) : center_box_x;
-            //int box_range_max_x = (center_box_x < data_set.box_set_width - 1) ? (center_box_x + 1) : center_box_x;
-            //int box_range_min_y = (center_box_y > 0) ? (center_box_y - 1) : center_box_y;
-            //int box_range_max_y = (center_box_y < data_set.box_set_height - 1) ? (center_box_y + 1) : center_box_y;
-            //for (int box_x = box_range_min_x; box_x <= box_range_max_x; box_x++) {
-                //for (int box_y = box_range_min_y; box_y <= box_range_max_y; box_y++) {
-                    //const DatumIndexList& datum_index_list = data_set.box_set[box_x][box_y];
-                    for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
-                    //for (DatumEntries::const_iterator it = data_set.entries.begin(); it != data_set.entries.end(); it++) {
-                        DatumIndex ix = *it;
-                        const Datum& datum = data_set.entries[ix];
-                        /// const Datum& datum = *it;
+            for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
+                DatumIndex ix = *it;
+                const Datum& datum = data_set.entries[ix];
 
-                        int datum_on_tile_x, datum_on_tile_y;
-                        tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-                        if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
-                            continue;
-                        }
+                int datum_on_tile_x, datum_on_tile_y;
+                tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
+                if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
+                    continue;
+                }
 
-                        // Find relative position of datum from the pixel we are plotting
-                        int rel_x = datum_on_tile_x - x;
-                        int rel_y = datum_on_tile_y - y;
-                        double dist_sq = calc_dist_sq(rel_x, rel_y);
-                        if (dist_sq <= pixel_radius_sq) {
-                            //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: rel_x: %d rel_y: %d dist_sq: %lf pixel_radius_sq: %lf") % rel_x % rel_y % dist_sq % pixel_radius_sq);
-                            double dist = calc_dist_fast_int_anywhere(rel_x, rel_y);
-                            double value = dist / pixel_radius * max_walk_time + datum.value;
-                            if (min_dist < 0 || value < min_value) {
-                                min_dist = dist;
-                                min_value = value;
-                            }
-                        }
+                // Find relative position of datum from the pixel we are plotting
+                int rel_x = datum_on_tile_x - x;
+                int rel_y = datum_on_tile_y - y;
+                double dist_sq = calc_dist_sq(rel_x, rel_y);
+                if (dist_sq <= pixel_radius_sq) {
+                    //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: rel_x: %d rel_y: %d dist_sq: %lf pixel_radius_sq: %lf") % rel_x % rel_y % dist_sq % pixel_radius_sq);
+                    double dist = calc_dist_fast_int_anywhere(rel_x, rel_y);
+                    double value = dist / pixel_radius * max_walk_time + datum.value;
+                    if (min_dist < 0 || value < min_value) {
+                        min_dist = dist;
+                        min_value = value;
                     }
-                //}
-            //}
+                }
+            }
 
             if (min_dist >= 0) {
                 guarded_plot(x, y, min_value);
@@ -542,7 +557,6 @@ int main(int argc, char * argv[]) {
 
     // Internal test populate data set
     /*
-    data_set.effect_radius = 10.0;
     int c = 0;
     for (int i = 3; i < 10; i++) {
         for (int j = 3; j < 10; j++) {
@@ -553,8 +567,8 @@ int main(int argc, char * argv[]) {
     */
 
     pm.display("Initialising data set took");
-    // make_datum_box_set(data_set);
-    // pm.display("Making box set took");
+    datum_box_set_make(data_set, 1000); // XXX 1000 is just a guess an boxset optimisation parameter
+    pm.display("Making box set took");
     debug_log(data_set.debug_info());
 
     // Work out which tile to go for 

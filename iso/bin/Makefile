@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.13 2009-09-24 22:00:30 francis Exp $
+# $Id: Makefile,v 1.14 2009-10-07 01:41:02 francis Exp $
 #
 
 CFLAGS = -Wall -O2 -DOUTPUT_ROUTE_DETAILS 
@@ -53,7 +53,7 @@ fastplan-coopt-debug: ${FASTPLAN_COOPT_DEPEND}
 # Contour tile renderer
 
 DRAWTILE_DEPEND=drawtile.cpp Makefile ../cpplib/performance_monitor.h ../../cpplib/mysociety_error.h ../../cpplib/mysociety_geo.h
-DRAWTILE_LINK=-lgd
+DRAWTILE_LINK=-lgd 
 
 drawtile: ${DRAWTILE_DEPEND}
 	$(CPP) $(CFLAGS) $(DRAWTILE_LINK) drawtile.cpp -o drawtile
