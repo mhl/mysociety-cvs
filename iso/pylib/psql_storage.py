@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.5 2009-10-07 22:01:39 duncan Exp $
+# $Id: psql_storage.py,v 1.6 2009-10-07 22:08:03 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -66,6 +66,8 @@ def decrement_invite_count(invite_id):
     db().execute('COMMIT')
     
 def set_invite_token(invite_id, token):
+    print invite_id, type(invite_id)
+    print token, type(token)
     db().execute('UPDATE invite SET token=%s where id=%s', (token, invite_id))
     db().execute('COMMIT')
 
