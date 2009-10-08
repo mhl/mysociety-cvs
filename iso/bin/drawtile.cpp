@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.11 2009-10-07 08:35:31 francis Exp $
+// $Id: drawtile.cpp,v 1.12 2009-10-08 12:28:24 francis Exp $
 //
 
 // TODO:
@@ -88,7 +88,9 @@ void calc_dist_fast_int_initialise() {
 double calc_dist_fast_int_on_tile(int x, int y) {
     // debug_log(boost::format("calc_dist_fast_int_on_tile: %d %d") % x % y);
     
-    x = abs(x); y = abs(y);
+    x = x > 0 ? x : -x;
+    y = y > 0 ? y : -y;
+
     assert(x >= 0 && y >= 0 && x <= IMAGE_WIDTH && y <= IMAGE_HEIGHT);
     assert(sqrt_cache_initialised);
 
@@ -96,23 +98,23 @@ double calc_dist_fast_int_on_tile(int x, int y) {
     return result;
 }
 
-/* Another optimised distance function. */
-typedef std::map<int, double> SqrtCacheColumn;
-typedef std::map<int, SqrtCacheColumn> SqrtCache;
+/* Another optimised distance function, with a squareroot one. */
+typedef std::map<int, double> SqrtCache;
 SqrtCache sqrt_cache_flex;
-double calc_dist_fast_int_anywhere(int x, int y) {
-    SqrtCache::iterator it = sqrt_cache_flex.find(x);
+double sqrt_fast_int(int large) {
+    SqrtCache::iterator it = sqrt_cache_flex.find(large);
     if (it != sqrt_cache_flex.end()) {
-        SqrtCacheColumn::iterator it2 = it->second.find(y);
-        if (it2 != it->second.end()) {
-            return it2->second;
-        }
+        return it->second;
     }
 
     sqrt_count++;
-    double value = sqrt(double(x * x + y * y));
-    sqrt_cache_flex[x][y] = value;
+    double value = sqrt(large);
+    sqrt_cache_flex[large] = value;
     return value;
+}
+double calc_dist_fast_int_anywhere(int x, int y) {
+    int large = x * x + y * y;
+    return sqrt_fast_int(large);
 }
 
 /* Plot a pixel on a tile, check values in range.
@@ -127,7 +129,8 @@ void guarded_plot(int x, int y, int col) {
     }
 }
 
-/* Plot a pixel on a tile, check values in range, but use the minimum value */
+/* Plot a pixel on a tile, check values in range, but use the minimum value 
+ * See guarded_plot above for reason why we flip the Y value just before drawing. */
 void guarded_min_plot(int x, int y, int col) {
     plot_count++;
     if (x >= 0 && y >= 0 && x < IMAGE_WIDTH && y < IMAGE_HEIGHT) {
@@ -410,6 +413,7 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
     datum_box_set_find_by_rectangle(data_set, x_1, y_1, x_2, y_2, datum_index_list);
     debug_log(boost::format("draw_datums_as_cones_loop_by_datum: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
 
+    int inner_count = 0;
     for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
         DatumIndex ix = *it;
         const Datum& datum = data_set.entries[ix];
@@ -425,31 +429,35 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
         //if (datum_on_tile_x > 0 && datum_on_tile_y > 0 && datum_on_tile_x < IMAGE_WIDTH && datum_on_tile_y < IMAGE_HEIGHT)
         //    debug_log(boost::format("datum merc: %lf %lf datum tile place: %d %d value: %d") % datum.x % datum.y % datum_on_tile_x % datum_on_tile_y %datum.value);
        
-        // Clip the cone
+        // Clip the cone in X direction
         int loop_x_min, loop_x_max;
         loop_x_min = std::max(datum_on_tile_x - int_pixel_radius, 0);
         loop_x_max = std::min(datum_on_tile_x + int_pixel_radius, IMAGE_WIDTH);
-        int loop_y_min, loop_y_max;
-        loop_y_min = std::max(datum_on_tile_y - int_pixel_radius, 0);
-        loop_y_max = std::min(datum_on_tile_y + int_pixel_radius, IMAGE_HEIGHT);
         // Loop over pixels of cone, rendering into place
         for (int plot_x = loop_x_min; plot_x <= loop_x_max; plot_x++) {
+            int x = plot_x - datum_on_tile_x;
+            // Work out range to use in Y direction (to make circular cone, clipped to tile)
+            int y_max = int(sqrt_fast_int(int_pixel_radius*int_pixel_radius - x*x)) + 1;
+            int loop_y_min, loop_y_max;
+            loop_y_min = std::max(datum_on_tile_y - y_max, 0);
+            loop_y_max = std::min(datum_on_tile_y + y_max, IMAGE_HEIGHT);
+            //    debug_log(boost::format("y_max is: %d pixel_radius is: %d") % y_max % pixel_radius);
+            //
             for (int plot_y = loop_y_min; plot_y <= loop_y_max; plot_y++) {
-                int x = plot_x - datum_on_tile_x;
                 int y = plot_y - datum_on_tile_y;
+                inner_count++;
                 double dist = calc_dist_fast_int_on_tile(int(x), int(y));
-                if (dist <= pixel_radius) {
-                    // debug_log(boost::format("dist: %lf pixel_radius: %lf") % dist % pixel_radius);
-                    guarded_min_plot(plot_x, plot_y, dist / pixel_radius * max_walk_time + datum.value);
-                }
+                guarded_min_plot(plot_x, plot_y, dist / pixel_radius * max_walk_time + datum.value);
             }
         }
 
     }
+
+    debug_log(boost::format("inner_count %d") % inner_count);
 }
 
-// Efficient version of draw_datums_as_cones_loop_by_datum, which loops over pixels
-// rather than over cones.
+// Alternative version of draw_datums_as_cones_loop_by_datum, which loops over
+// pixels rather than over cones. Hoped it would be quicker, but it isn't.
 void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& tile) {
     double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
     double max_walk_time = data_set.get_param("max_walk_time");
@@ -508,6 +516,70 @@ void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& til
         }
     }
 }
+
+/*
+// The old Lightfoot algorithm was:
+//    median
+//    1km search radius
+//    10 minimum points (otherwise returns no data)
+void draw_median_search(const DataSet& data_set, const Tile& tile) {
+    double search_radius_in_meters = data_set.get_param("search_radius_in_meters");
+    double pixel_radius = tile.meters_to_pixels(search_radius_in_meters);
+    int int_pixel_radius = int(pixel_radius) + 1;
+    debug_log(boost::format("darw_median_search: search_radius_in_meters %lf pixel_radius %lf") % search_radius_in_meters % pixel_radius);
+
+    double pixel_radius_sq = pixel_radius * pixel_radius;
+
+    for (int x = 0; x < IMAGE_WIDTH; x++) {
+        for (int y = 0; y < IMAGE_HEIGHT; y++) {
+            //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: x: %d y: %d") % x % y);
+
+            // Work out which datums might matter
+            DatumIndexList datum_index_list;
+            double x_1, y_1;
+            tile.transform_tile_onto_merc(x-int_pixel_radius, y-int_pixel_radius, x_1, y_1);
+            double x_2, y_2;
+            tile.transform_tile_onto_merc(x + int_pixel_radius, y + int_pixel_radius, x_2, y_2);
+            datum_box_set_find_by_rectangle(data_set, x_1, y_1, x_2, y_2, datum_index_list);
+            //debug_log(boost::format("draw_median_search: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
+
+            double min_dist = -1;
+            double min_value = -1;
+
+            for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
+                DatumIndex ix = *it;
+                const Datum& datum = data_set.entries[ix];
+
+                int datum_on_tile_x, datum_on_tile_y;
+                tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
+                if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
+                    continue;
+                }
+
+                // Find relative position of datum from the pixel we are plotting
+                int rel_x = datum_on_tile_x - x;
+                int rel_y = datum_on_tile_y - y;
+                double dist_sq = calc_dist_sq(rel_x, rel_y);
+                if (dist_sq <= pixel_radius_sq) {
+                    //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: rel_x: %d rel_y: %d dist_sq: %lf pixel_radius_sq: %lf") % rel_x % rel_y % dist_sq % pixel_radius_sq);
+                    double dist = calc_dist_fast_int_anywhere(rel_x, rel_y);
+                    double value = dist / pixel_radius * max_walk_time + datum.value;
+                    if (min_dist < 0 || value < min_value) {
+                        min_dist = dist;
+                        min_value = value;
+                    }
+                }
+            }
+
+            if (min_dist >= 0) {
+                guarded_plot(x, y, min_value);
+            } else {
+                guarded_plot(x, y, no_data_colour);
+            }
+        }
+    }
+}
+*/
 
 /////////////////////////////////////////////////////////////////////
 // Main entry point
