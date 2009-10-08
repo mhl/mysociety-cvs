@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.22 2009-09-28 10:10:43 duncan Exp $
+# $Id: invite.cgi,v 1.23 2009-10-08 15:27:51 duncan Exp $
 #
 
 import sys
@@ -42,7 +42,8 @@ def invite_view(email, invite=None):
     else:
         try:
             num = storage.create_invite(
-                email, 
+                email,
+                source='friend' if invite else 'web',
                 source_id=invite.id if invite else None
                 )
         except storage.StorageError:

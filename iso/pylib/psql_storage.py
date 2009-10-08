@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.7 2009-10-07 22:26:27 duncan Exp $
+# $Id: psql_storage.py,v 1.8 2009-10-08 15:27:51 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -46,12 +46,13 @@ def get_new_invites(email=None, limit=1, source=None, debug=False):
 
 def insert_invite(email,
                   source='web',
-                  source_id=None):
+                  source_id=None,
+                  token=None):
 
     db().execute('BEGIN')
 
     try:
-        db().execute("INSERT INTO invite (email, source, source_id) VALUES (%s, %s, %s)", (email, source, source_id))
+        db().execute("INSERT INTO invite (email, source, source_id, token) VALUES (%s, %s, %s, %s)", (email, source, source_id, token))
         db().execute('COMMIT')
     except psycopg2.IntegrityError:
         # Let's assume the integrity error is because of a unique key

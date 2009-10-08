@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.31 2009-10-07 21:34:54 duncan Exp $
+# $Id: page.py,v 1.32 2009-10-08 15:27:51 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -121,6 +121,14 @@ def activate_invite(invite_id):
     storage.set_invite_token(invite_id, token)
 
     return token
+
+def create_invite_with_token(email, source='manual'):
+    token = random_token()
+
+    storage.create_invite(email, source=source, token=token)
+
+    return token
+
 
 def email_invite(invite, debug=False):
     inviter_email = invite.get('inviter_email')

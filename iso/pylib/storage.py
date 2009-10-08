@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.6 2009-10-07 21:34:54 duncan Exp $
+# $Id: storage.py,v 1.7 2009-10-08 15:27:51 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -49,25 +49,34 @@ def get_new_invites(email=None, source='friend', limit=1, debug=False):
                                         debug=debug)
 
 def create_invite(email,
-                  source_id=None):
+                  source='web',
+                  source_id=None,
+                  token=None):
     """
     Arguments are:
 
     email - an email address as a string
+    source - a string describing what sort of invite this is. Currently
+    expected values are: 'web', 'friend', or 'manual'.
     source_id - this will be an integer id of the person sending the invite
-    if this is a friend invite, or None, if this is a web signup.
+    if this is a friend invite, or None, if this is a web signup or manual
+    invite.
+    token - a token as a string, or None. If this is present, the invite is
+    immediately active.
 
     This function does the following:
     1) Insert a new invite.
-    2) Decrement the number of invites that the invitor has.
+    2) Decrement the number of invites that the invitor has (if there is
+    an invitor).
     3) Return that number of invites.
     """
-
+    
     try:
         psql_storage.insert_invite(
             email, 
-            source='friend' if source_id else 'web', 
-            source_id=source_id
+            source=source, 
+            source_id=source_id,
+            token=token
             )
     except psycopg2.IntegrityError:
         # Catch the database specific error and raise our own
