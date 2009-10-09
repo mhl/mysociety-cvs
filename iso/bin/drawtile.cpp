@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.14 2009-10-09 08:13:49 francis Exp $
+// $Id: drawtile.cpp,v 1.15 2009-10-09 08:38:09 francis Exp $
 //
 
 // TODO:
@@ -470,7 +470,7 @@ void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& til
 
     double pixel_radius_sq = pixel_radius * pixel_radius;
 
-    // Work out which datums might matter
+    // Work out which datums might matter, using box set
     DatumIndexList datum_index_list;
     double x_1, y_1;
     tile.transform_tile_onto_merc(-int_pixel_radius, -int_pixel_radius, x_1, y_1);
@@ -594,12 +594,13 @@ class ConeValuesAtPoint {
 
             if (min_value == -1 || value < min_value) {
                 min_value = value;
+                // update our max limit, as we now know how far up the lower cones have come
+                max_r = min_value + time_dist_drop_to_point;
             }
         }
         return min_value;
     }
 };
-
 void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& tile) {
     double max_walk_distance_in_meters = data_set.get_param_double("max_walk_distance_in_meters");
     double max_walk_time = data_set.get_param_double("max_walk_time");
@@ -609,7 +610,7 @@ void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& ti
 
     double pixel_radius_sq = pixel_radius * pixel_radius;
 
-    // Work out which datums might matter
+    // Work out which datums might matter, using box set
     DatumIndexList datum_index_list;
     double x_1, y_1;
     tile.transform_tile_onto_merc(-int_pixel_radius, -int_pixel_radius, x_1, y_1);
@@ -795,7 +796,13 @@ int main(int argc, char * argv[]) {
     pm.display("Creating surface took");
 
     // Set pixel values
-    draw_on_tile(data_set, tile);
+#ifdef PROFILE
+    for (int i = 0; i < 10; ++i) {
+#endif
+        draw_on_tile(data_set, tile);
+#ifdef PROFILE
+    }
+#endif
     pm.display("Plotting image took");
 
     // Write out PNG file

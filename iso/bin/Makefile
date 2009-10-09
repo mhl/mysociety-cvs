@@ -5,12 +5,12 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.14 2009-10-07 01:41:02 francis Exp $
+# $Id: Makefile,v 1.15 2009-10-09 08:38:09 francis Exp $
 #
 
 CFLAGS = -Wall -O2 -DOUTPUT_ROUTE_DETAILS 
 CFLAGS_DEBUG = -Wall -g -DDEBUG -DOUTPUT_ROUTE_DETAILS
-CFLAGS_PROFILE = ${CFLAGS} -pg
+CFLAGS_PROFILE = ${CFLAGS} -pg -DPROFILE
 
 # -fno-exceptions -fno-rtti # these can make it faster, or slower... needs better analysis
 
