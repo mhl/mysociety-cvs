@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.15 2009-10-09 08:38:09 francis Exp $
+// $Id: drawtile.cpp,v 1.16 2009-10-09 09:25:29 francis Exp $
 //
 
 // TODO:
@@ -74,47 +74,45 @@ double calc_dist_sq(double x, double y) {
 /* Optimised version of length of vector. Only takes pixel lengths
  * which are shorter than the size of the tile as input, caches
  * results for output. */
-double sqrt_cache[IMAGE_WIDTH+1][IMAGE_HEIGHT+1];
+#define SQRT_CACHE_X_MAX IMAGE_WIDTH + 100
+#define SQRT_CACHE_Y_MAX IMAGE_HEIGHT + 100
+double sqrt_cache_sum[SQRT_CACHE_X_MAX+1][SQRT_CACHE_Y_MAX+1];
+double sqrt_cache_sub[SQRT_CACHE_X_MAX+1][SQRT_CACHE_Y_MAX+1];
 bool sqrt_cache_initialised = false;
 void calc_dist_fast_int_initialise() {
-    for (int x = 0; x <= IMAGE_WIDTH; x++) {
-        for (int y = 0; y <= IMAGE_HEIGHT; y++) {
-            sqrt_cache[x][y] = sqrt(double(x * x + y * y));
+    for (int x = 0; x <= SQRT_CACHE_X_MAX; x++) {
+        for (int y = 0; y <= SQRT_CACHE_Y_MAX; y++) {
+            sqrt_cache_sum[x][y] = sqrt(double(x * x + y * y));
+            if (x >= y) {
+                sqrt_cache_sub[x][y] = sqrt(double(x * x - y * y));
+            }
         }
     }
 
     sqrt_cache_initialised = true;
 }
-double calc_dist_fast_int_on_tile(int x, int y) {
-    // debug_log(boost::format("calc_dist_fast_int_on_tile: %d %d") % x % y);
-    
+double calc_dist_fast_int_sum(int x, int y) {
+    // debug_log(boost::format("calc_dist_fast_int_sum: %d %d") % x % y);
     x = x > 0 ? x : -x;
     y = y > 0 ? y : -y;
 
-    assert(x >= 0 && y >= 0 && x <= IMAGE_WIDTH && y <= IMAGE_HEIGHT);
+    assert(x >= 0 && y >= 0 && x <= SQRT_CACHE_X_MAX && y <= SQRT_CACHE_Y_MAX);
     assert(sqrt_cache_initialised);
 
-    double result = sqrt_cache[x][y];
+    double result = sqrt_cache_sum[x][y];
     return result;
 }
+double calc_dist_fast_int_sub(int x, int y) {
+    // debug_log(boost::format("calc_dist_fast_int_sub: %d %d") % x % y);
+    x = x > 0 ? x : -x;
+    y = y > 0 ? y : -y;
 
-/* Another optimised distance function, with a squareroot one. */
-typedef std::map<int, double> SqrtCache;
-SqrtCache sqrt_cache_flex;
-double sqrt_fast_int(int large) {
-    SqrtCache::iterator it = sqrt_cache_flex.find(large);
-    if (it != sqrt_cache_flex.end()) {
-        return it->second;
-    }
+    assert (x >= y);
+    assert(x >= 0 && y >= 0 && x <= SQRT_CACHE_X_MAX && y <= SQRT_CACHE_Y_MAX);
+    assert(sqrt_cache_initialised);
 
-    sqrt_count++;
-    double value = sqrt(large);
-    sqrt_cache_flex[large] = value;
-    return value;
-}
-double calc_dist_fast_int_anywhere(int x, int y) {
-    int large = x * x + y * y;
-    return sqrt_fast_int(large);
+    double result = sqrt_cache_sub[x][y];
+    return result;
 }
 
 /* Plot a pixel on a tile, check values in range.
@@ -440,7 +438,7 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
         for (int plot_x = loop_x_min; plot_x <= loop_x_max; plot_x++) {
             int x = plot_x - datum_on_tile_x;
             // Work out range to use in Y direction (to make circular cone, clipped to tile)
-            int y_max = int(sqrt_fast_int(int_pixel_radius*int_pixel_radius - x*x)) + 1;
+            int y_max = int(calc_dist_fast_int_sub(int_pixel_radius, x)) + 1;
             int loop_y_min, loop_y_max;
             loop_y_min = std::max(datum_on_tile_y - y_max, 0);
             loop_y_max = std::min(datum_on_tile_y + y_max, IMAGE_HEIGHT);
@@ -449,7 +447,7 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
             for (int plot_y = loop_y_min; plot_y <= loop_y_max; plot_y++) {
                 int y = plot_y - datum_on_tile_y;
                 inner_count++;
-                double dist = calc_dist_fast_int_on_tile(int(x), int(y));
+                double dist = calc_dist_fast_int_sum(int(x), int(y));
                 guarded_min_plot(plot_x, plot_y, dist / pixel_radius * max_walk_time + datum.value);
             }
         }
@@ -503,7 +501,7 @@ void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& til
                 double dist_sq = calc_dist_sq(rel_x, rel_y);
                 if (dist_sq <= pixel_radius_sq) {
                     //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: rel_x: %d rel_y: %d dist_sq: %lf pixel_radius_sq: %lf") % rel_x % rel_y % dist_sq % pixel_radius_sq);
-                    double dist = calc_dist_fast_int_anywhere(rel_x, rel_y);
+                    double dist = calc_dist_fast_int_sum(rel_x, rel_y);
                     double value = dist / pixel_radius * max_walk_time + datum.value;
                     if (min_dist < 0 || value < min_value) {
                         min_dist = dist;
@@ -546,7 +544,7 @@ class ConeValuesAtPoint {
             }
 
             // Find relative position of datum from the pixel we are plotting
-            double dist = calc_dist_fast_int_anywhere(datum_on_tile_x - drop_x, datum_on_tile_y - drop_y);
+            double dist = calc_dist_fast_int_sum(datum_on_tile_x - drop_x, datum_on_tile_y - drop_y);
             double value = dist / pixel_radius * max_walk_time + datum.value;
             this->rlist.push_back(ValueDatumPair(value, ix));
         }
@@ -562,7 +560,7 @@ class ConeValuesAtPoint {
     // Calculate value at x, y - scan fewer datums by using the values calculated in the constructor.
     double evaluate_min_at_point(const DataSet& data_set, const Tile& tile, int x, int y, double pixel_radius, double max_walk_time) {
         // How far in time from the drop point are we?
-        double dist_drop_to_point = calc_dist_fast_int_anywhere(this->drop_x - x, this->drop_y - y);
+        double dist_drop_to_point = calc_dist_fast_int_sum(this->drop_x - x, this->drop_y - y);
         double time_dist_drop_to_point = dist_drop_to_point / pixel_radius * max_walk_time;
         // The lowest cone at the drop point, will likely still be lowest in nearby areas. 
         // The only other cones that can have gone below it, must be within twice the walking
@@ -589,10 +587,17 @@ class ConeValuesAtPoint {
             // work out value for this cone at our pixel position
             int datum_on_tile_x, datum_on_tile_y;
             tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-            double dist = calc_dist_fast_int_anywhere(datum_on_tile_x - x, datum_on_tile_y - y);
-            double value = dist / pixel_radius * max_walk_time + datum.value;
+            double dist_sq = calc_dist_sq(datum_on_tile_x - x, datum_on_tile_y - y);
+            double compare_against = (min_value - datum.value) * pixel_radius / max_walk_time;
+            // This squared comparison is equivalent to the following, only leaves the squareroot until later
+            // if (min_value == -1 || value < min_value) {
+            if (min_value == -1 || dist_sq < compare_against * compare_against) {
+                double dist = calc_dist_fast_int_sum(datum_on_tile_x - x, datum_on_tile_y - y);
+                double value = dist / pixel_radius * max_walk_time + datum.value;
+                if (min_value != -1 && value > min_value) {
+                    debug_log(boost::format("error value > min_value %lf >= %lf") % value % min_value);
+                }
 
-            if (min_value == -1 || value < min_value) {
                 min_value = value;
                 // update our max limit, as we now know how far up the lower cones have come
                 max_r = min_value + time_dist_drop_to_point;
@@ -607,8 +612,6 @@ void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& ti
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
     int int_pixel_radius = int(pixel_radius) + 1;
     debug_log(boost::format("draw_datums_as_cones_with_drop_line: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
-
-    double pixel_radius_sq = pixel_radius * pixel_radius;
 
     // Work out which datums might matter, using box set
     DatumIndexList datum_index_list;
@@ -707,7 +710,7 @@ void draw_on_tile(const DataSet& data_set, const Tile& tile) {
     } else if (algorithm == "test") {
         draw_pretty_test_pattern();
     } 
-    debug_log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
+    debug_log(boost::format("Plot count: %d Squareroot count: %d Squareroot x range: %d %d y range: %d %d") % plot_count % sqrt_count % sqrt_min_x % sqrt_max_x % sqrt_min_y % sqrt_max_y );
 }
 
 /////////////////////////////////////////////////////////////////////
