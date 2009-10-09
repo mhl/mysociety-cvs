@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.16 2009-10-09 09:25:29 francis Exp $
+// $Id: drawtile.cpp,v 1.17 2009-10-09 16:49:25 francis Exp $
 //
 
 // TODO:
@@ -71,10 +71,9 @@ double calc_dist_sq(double x, double y) {
     return x * x + y * y;
 }
 
-/* Optimised version of length of vector. Only takes pixel lengths
- * which are shorter than the size of the tile as input, caches
- * results for output. */
-#define SQRT_CACHE_X_MAX IMAGE_WIDTH + 100
+/* Optimised version of length of vector. Only takes pixel lengths which are
+ * shorter than the given sizeas input, caches results for output. */
+#define SQRT_CACHE_X_MAX IMAGE_WIDTH + 100 // will only work for zoom levels where pixel radius is < 100
 #define SQRT_CACHE_Y_MAX IMAGE_HEIGHT + 100
 double sqrt_cache_sum[SQRT_CACHE_X_MAX+1][SQRT_CACHE_Y_MAX+1];
 double sqrt_cache_sub[SQRT_CACHE_X_MAX+1][SQRT_CACHE_Y_MAX+1];
@@ -150,9 +149,9 @@ class Tile {
         double res = merc_max_resolution / double(1 << this->zoom);
 
         this->x = l_google_url_x;
-        // flip Y value - the URLs we use are Google URLs (tms_type='google' in
-        // the terminology of tilecache), but internally we use the Tile Map
-        // Service Specification
+        // flip Y value - the URLs we use are Google Maps URLs
+        // (tms_type='google' in the terminology of tilecache), but internally
+        // we use the Tile Map Service Specification
         // (http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification)
         // convention. i.e. Y increases as you head North.
         int max_url_y = int(round( (merc_y_orig_max - merc_y_orig_min) / (res * IMAGE_HEIGHT))) - 1;
@@ -164,6 +163,18 @@ class Tile {
         this->max_y_merc = merc_y_orig_min + (res * (this->y + 1) * IMAGE_HEIGHT);
 
         this->pixels_per_meter = this->calc_pixels_per_meter();
+    }
+
+    // Static function that returns the Google Maps style URL which contains a
+    // given mercator point at a given zoom.
+    static void merc_to_google_url(double merc_x, double merc_y, int zoom, int& google_url_x, int&google_url_y) {
+        double res = merc_max_resolution / double(1 << zoom);
+        double x = (merc_x - merc_x_orig_min) / res / IMAGE_WIDTH;
+        double y = (merc_y - merc_y_orig_min) / res / IMAGE_WIDTH;
+
+        google_url_x = (int)x;
+        int max_url_y = int(round( (merc_y_orig_max - merc_y_orig_min) / (res * IMAGE_HEIGHT))) - 1;
+        google_url_y = max_url_y - (int)y;
     }
 
     // Convert a mercator coordinate into a pixel coordinate on the tile
@@ -204,13 +215,13 @@ class Tile {
         double lon2, lat2;
         merc_to_lat_lon(this->min_x_merc, this->min_y_merc, &lat1, &lon1);
         merc_to_lat_lon(this->max_x_merc, this->max_y_merc, &lat2, &lon2);
-        //debug_log(boost::format("pixels_per_meter: internal lat1 lon1 %lf %lf") % lat1 % lon1);
-        //debug_log(boost::format("pixels_per_meter: internal lat2 lon2 %lf %lf") % lat2 % lon2);
+        debug_log(boost::format("pixels_per_meter: internal merc %lf %lf lat1 lon1 %lf %lf") % this->min_x_merc % this->min_y_merc % lat1 % lon1);
+        debug_log(boost::format("pixels_per_meter: internal merc %lf %lf lat2 lon2 %lf %lf") % this->max_x_merc % this->max_y_merc % lat2 % lon2);
 
         double diagonal_1_in_m = great_circle_distance(lat1, lon1, lat2, lon2);
         double diagonal_2_in_m = great_circle_distance(lat1, lon2, lat2, lon1);
         double average_diagonal_in_m = (diagonal_1_in_m + diagonal_2_in_m) / 2;
-        //debug_log(boost::format("pixels_per_meter: internal diagonal_1_in_m diagonal_2_in_m %lf %lf") % diagonal_1_in_m % diagonal_2_in_m);
+        debug_log(boost::format("pixels_per_meter: internal diagonal_1_in_m diagonal_2_in_m %lf %lf") % diagonal_1_in_m % diagonal_2_in_m);
 
         return image_diagonal / average_diagonal_in_m;
     }
@@ -345,6 +356,8 @@ void datum_box_set_make(DataSet& data_set, double radius) {
         DatumIndexList &datum_index_list = box_set[box_x][box_y];
         datum_index_list.push_back(ix);
     }
+
+    debug_log((boost::format("box set width: %d height: %d") % box_set_width % box_set_height).str());
 }
 // Given a point (a datum, essentially), return the position of the box set grid cell that contains that point.
 void datum_box_set_square_at_point(const DataSet& data_set, const double x, const double y, int& box_x, int& box_y) {
@@ -569,7 +582,10 @@ class ConeValuesAtPoint {
         // speed (i.e. the rate of change of the hyperbolic slice through the centre of the one)
         // ii) the lowest cone can have risen up most the walking time, and the other cones
         // can have gone down by at most the walking time. Making twice walking time in total.
-        double max_r = rlist.front().first + (2 * time_dist_drop_to_point);
+        double max_r = -1;
+        if (rlist.size() > 0) {
+            max_r = rlist.front().first + (2 * time_dist_drop_to_point);
+        }
 
         double min_value = -1;
         for (unsigned int i = 0; i < this->rlist.size(); ++i) {
@@ -579,7 +595,7 @@ class ConeValuesAtPoint {
             const Datum& datum = data_set.entries[ix];
 
             // drop out if we are too far
-            if (drop_value > max_r) {
+            if (max_r != -1 && drop_value > max_r) {
                 //debug_log(boost::format("jumping out drop-value: %lf max_r: %lf") % drop_value % max_r);
                 break;
             }
@@ -698,6 +714,9 @@ void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
 
 // render on tile according to parameters
 void draw_on_tile(const DataSet& data_set, const Tile& tile) {
+    int white = gdImageColorAllocate(im, 255, 255, 255);  
+    gdImageFilledRectangle(im, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT, white);
+
     std::string algorithm = data_set.get_param("algorithm");
     if (algorithm == "cones1") {
         draw_datums_as_cones_loop_by_datum(data_set, tile);
@@ -710,7 +729,7 @@ void draw_on_tile(const DataSet& data_set, const Tile& tile) {
     } else if (algorithm == "test") {
         draw_pretty_test_pattern();
     } 
-    debug_log(boost::format("Plot count: %d Squareroot count: %d Squareroot x range: %d %d y range: %d %d") % plot_count % sqrt_count % sqrt_min_x % sqrt_max_x % sqrt_min_y % sqrt_max_y );
+    debug_log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -728,6 +747,14 @@ int main(int argc, char * argv[]) {
     merc_to_lat_lon(-248613.492332, 7069789.545191, &lat, &lon); // Manchester
     printf("Manchester lat, lon: %lf %lf\n", lat, lon); // 53.466667, -2.233333
     */
+    Tile t(11, 1011, 671); // zoom, x, y as in URL, e.g. iso/11/1011/671.png
+    double merc_x, merc_y;
+    t.transform_tile_onto_merc(IMAGE_WIDTH/2, IMAGE_HEIGHT/2, merc_x, merc_y);
+    int google_url_x, google_url_y;
+    int zoom = 8;
+    Tile::merc_to_google_url(merc_x, merc_y, zoom, google_url_x, google_url_y);
+    printf("Old: 11/1011/671 New google URL: %d/%d/%d\n", zoom, google_url_x, google_url_y);
+    //return 0;
 
     // Data to load
     std::string nodes_file = "/home/francis/toobig/nptdr/tmpwork/stations.nodes";
@@ -787,26 +814,43 @@ int main(int argc, char * argv[]) {
     pm.display("Making box set took");
     debug_log(data_set.debug_info());
 
-    // Work out which tile to go for 
-    // XXX these tile_ would come from the URL e.g. iso/11/1011/671.png
-    Tile tile(11, 1011, 671); // zoom, x, y as in URL, e.g. iso/11/1011/671.png
-    debug_log(tile.debug_info());
-
     // Create gd image surface
     im = gdImageCreateTrueColor(IMAGE_WIDTH, IMAGE_HEIGHT);
-    int white = gdImageColorAllocate(im, 255, 255, 255);  
-    gdImageFilledRectangle(im, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT, white);
     pm.display("Creating surface took");
+    
+    int tile_count = 0;
+    int start_x = 1011 * 2;
+    int start_y = 671 * 2;
+    for (int z = 12; z > 5; --z) {
+        for (int i = -2; i < 3; ++i) {
+            for (int j = -2; j < 3; ++j) {
+                // Work out which tile to go for 
+                // XXX these tile_ would come from the URL e.g. iso/11/1011/671.png
+                /*int zoom = 11;
+                int tile_x = 1011 + i;
+                int tile_y = 671 + j;*/
 
-    // Set pixel values
-#ifdef PROFILE
-    for (int i = 0; i < 10; ++i) {
-#endif
-        draw_on_tile(data_set, tile);
-#ifdef PROFILE
+                /*zoom = 5;
+                tile_x = 15 + i;
+                tile_y = 10 + j;*/
+                int zoom = z;
+                int tile_x = start_x + i;
+                int tile_y = start_y + j;
+
+                Tile tile(zoom, tile_x, tile_y); // zoom, x, y as in URL, e.g. iso/11/1011/671.png
+                debug_log(tile.debug_info());
+
+                // Set pixel values
+                PerformanceMonitor inner_pm;
+                draw_on_tile(data_set, tile);
+                tile_count++;
+                inner_pm.display((boost::format("Plotting tile %d %d %d took") % zoom % tile_x % tile_y).str());
+            }
+        }
+        start_x /= 2;
+        start_y /= 2;
     }
-#endif
-    pm.display("Plotting image took");
+    pm.display((boost::format("Total for all %d images") % tile_count).str());
 
     // Write out PNG file
     FILE *out = fopen ("/tmp/drawtile.png", "wb");
