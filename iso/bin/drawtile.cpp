@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.12 2009-10-08 12:28:24 francis Exp $
+// $Id: drawtile.cpp,v 1.13 2009-10-09 08:09:36 francis Exp $
 //
 
 // TODO:
@@ -298,6 +298,7 @@ class DataSet {
     double y_min, y_max;
 
     // other parameters for rendering the data set
+    std::string algorithm;
     std::map<std::string, double> params;
 
     // used to quickly find datums
@@ -362,7 +363,7 @@ void datum_box_set_find_by_rectangle(const DataSet& data_set, const double x_1, 
     int box_x_2, box_y_2;
     datum_box_set_square_at_point(data_set, x_2, y_2, box_x_2, box_y_2);
 
-    debug_log((boost::format("datum_box_set_find_by_rectangle: found ranges: box x: %d %d box y: %d %d ") % box_x_1 % box_x_2 % box_y_1 % box_y_2).str());
+    //debug_log((boost::format("datum_box_set_find_by_rectangle: found ranges: box x: %d %d box y: %d %d ") % box_x_1 % box_x_2 % box_y_1 % box_y_2).str());
 
     ret.clear();
     for (int box_x = box_x_1; box_x <= box_x_2; box_x++) {
@@ -376,6 +377,9 @@ void datum_box_set_find_by_rectangle(const DataSet& data_set, const double x_1, 
     }
 }
 
+/////////////////////////////////////////////////////////////////////
+// Drawing functions
+
 // Draw a test pattern on the tile
 void draw_pretty_test_pattern() {
     int d = 0;
@@ -387,9 +391,6 @@ void draw_pretty_test_pattern() {
     }
 
 }
-
-/////////////////////////////////////////////////////////////////////
-// Drawing functions
 
 // Draw some inverted cones on the tile. The cones are inverted, with their point
 // at the bottom. The height of the point is the value of the datum, its centre
@@ -482,6 +483,7 @@ void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& til
 
             double min_dist = -1;
             double min_value = -1;
+            DatumIndex min_ix = -1;
 
             for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
                 DatumIndex ix = *it;
@@ -504,12 +506,14 @@ void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& til
                     if (min_dist < 0 || value < min_value) {
                         min_dist = dist;
                         min_value = value;
+                        min_ix = ix;
                     }
                 }
             }
 
             if (min_dist >= 0) {
-                guarded_plot(x, y, min_value);
+                //guarded_plot(x, y, min_value);
+                guarded_plot(x, y, min_ix * 200);
             } else {
                 guarded_plot(x, y, no_data_colour);
             }
@@ -517,12 +521,132 @@ void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& til
     }
 }
 
-/*
+// Class representing the values of *every* cone's height at a particular position.
+class ConeValuesAtPoint {
+    public:
+    int drop_x, drop_y;
+    typedef std::pair<double, DatumIndex> ValueDatumPair;
+    std::vector< ValueDatumPair > rlist;
+
+    // Constructor which calculates the values of *all* the cones at the tile position drop_x, drop_y
+    ConeValuesAtPoint(const DataSet& data_set, const Tile& tile, const DatumIndexList& datum_index_list, int drop_x, int drop_y, double pixel_radius, double max_walk_time) {
+        this->drop_x = drop_x;
+        this->drop_y = drop_y;
+
+        for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
+            DatumIndex ix = *it;
+            const Datum& datum = data_set.entries[ix];
+
+            int datum_on_tile_x, datum_on_tile_y;
+            tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
+            if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
+                continue;
+            }
+
+            // Find relative position of datum from the pixel we are plotting
+            double dist = calc_dist_fast_int_anywhere(datum_on_tile_x - drop_x, datum_on_tile_y - drop_y);
+            double value = dist / pixel_radius * max_walk_time + datum.value;
+            this->rlist.push_back(ValueDatumPair(value, ix));
+        }
+
+        // Sort them, the lowest first.
+        std::sort(this->rlist.begin(), this->rlist.end());
+
+        /*for (unsigned int i = 0; i < this->rlist.size(); ++i) {
+            debug_log(boost::format("cone value: %lf") % this->rlist[i].first);
+        }*/
+    }
+
+    // Calculate value at x, y - scan fewer datums by using the values calculated in the constructor.
+    double evaluate_min_at_point(const DataSet& data_set, const Tile& tile, int x, int y, double pixel_radius, double max_walk_time) {
+        // How far in time from the drop point are we?
+        double dist_drop_to_point = calc_dist_fast_int_anywhere(this->drop_x - x, this->drop_y - y);
+        double time_dist_drop_to_point = dist_drop_to_point / pixel_radius * max_walk_time;
+        // The lowest cone at the drop point, will likely still be lowest in nearby areas. 
+        // The only other cones that can have gone below it, must be within twice the walking
+        // time between. This is because:
+        // i) the rate of change of any hyperbolic slice of the cone is at most the walking
+        // speed (i.e. the rate of change of the hyperbolic slice through the centre of the one)
+        // ii) the lowest cone can have risen up most the walking time, and the other cones
+        // can have gone down by at most the walking time. Making twice walking time in total.
+        double max_r = rlist.front().first + (2 * time_dist_drop_to_point);
+
+        double min_value = -1;
+        for (unsigned int i = 0; i < this->rlist.size(); ++i) {
+            ValueDatumPair p = rlist[i];
+            double drop_value = p.first;
+            DatumIndex ix = p.second;
+            const Datum& datum = data_set.entries[ix];
+
+            // drop out if we are too far
+            if (drop_value > max_r) {
+                //debug_log(boost::format("jumping out drop-value: %lf max_r: %lf") % drop_value % max_r);
+                break;
+            }
+
+            // work out value for this cone at our pixel position
+            int datum_on_tile_x, datum_on_tile_y;
+            tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
+            double dist = calc_dist_fast_int_anywhere(datum_on_tile_x - x, datum_on_tile_y - y);
+            double value = dist / pixel_radius * max_walk_time + datum.value;
+
+            if (min_value == -1 || value < min_value) {
+                min_value = value;
+            }
+        }
+        return min_value;
+    }
+};
+
+void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& tile) {
+    double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
+    double max_walk_time = data_set.get_param("max_walk_time");
+    double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
+    int int_pixel_radius = int(pixel_radius) + 1;
+    debug_log(boost::format("draw_datums_as_cones_with_drop_line: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
+
+    double pixel_radius_sq = pixel_radius * pixel_radius;
+
+    // Work out which datums might matter
+    DatumIndexList datum_index_list;
+    double x_1, y_1;
+    tile.transform_tile_onto_merc(-int_pixel_radius, -int_pixel_radius, x_1, y_1);
+    double x_2, y_2;
+    tile.transform_tile_onto_merc(IMAGE_WIDTH + int_pixel_radius, IMAGE_HEIGHT + int_pixel_radius, x_2, y_2);
+    datum_box_set_find_by_rectangle(data_set, x_1, y_1, x_2, y_2, datum_index_list);
+    debug_log(boost::format("draw_datums_as_cones_with_drop_line: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
+
+    // Loop in a subtiles of DROP_STEP size over the tile
+    int DROP_STEP = 16;
+    for (unsigned int drop_x = 0; drop_x < IMAGE_WIDTH; drop_x += DROP_STEP) {
+        for (unsigned int drop_y = 0; drop_y < IMAGE_HEIGHT; drop_y += DROP_STEP) {
+            // Drop a line - i.e. calculate the values of all datum cones - at the centre of the subtile
+            ConeValuesAtPoint vlap(data_set, tile, datum_index_list, drop_x + DROP_STEP / 2, drop_y + DROP_STEP / 2, pixel_radius, max_walk_time);
+            // Loop over each pixel of the subtile
+            for (unsigned int x = drop_x; x < drop_x + DROP_STEP; x += 1) {
+                //debug_log(boost::format("draw_datums_as_cones_with_drop_line: x: %d") % x);
+                for (unsigned int y = drop_y; y < drop_y + DROP_STEP; y += 1) {
+                    
+                    // Using dropped line to limit cones that could have effected it, plot point
+                    double min_value = vlap.evaluate_min_at_point(data_set, tile, x, y, pixel_radius, max_walk_time);
+                    if (min_value >= 0) {
+                        guarded_plot(x, y, min_value);
+                        //guarded_plot(x, y, min_ix * 200);
+                    } else {
+                        guarded_plot(x, y, no_data_colour);
+                    }
+                }
+            }
+
+        }
+    }
+}
+
 // The old Lightfoot algorithm was:
 //    median
 //    1km search radius
 //    10 minimum points (otherwise returns no data)
-void draw_median_search(const DataSet& data_set, const Tile& tile) {
+void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
     double search_radius_in_meters = data_set.get_param("search_radius_in_meters");
     double pixel_radius = tile.meters_to_pixels(search_radius_in_meters);
     int int_pixel_radius = int(pixel_radius) + 1;
@@ -537,49 +661,50 @@ void draw_median_search(const DataSet& data_set, const Tile& tile) {
             // Work out which datums might matter
             DatumIndexList datum_index_list;
             double x_1, y_1;
-            tile.transform_tile_onto_merc(x-int_pixel_radius, y-int_pixel_radius, x_1, y_1);
+            tile.transform_tile_onto_merc(x - int_pixel_radius, y - int_pixel_radius, x_1, y_1);
             double x_2, y_2;
             tile.transform_tile_onto_merc(x + int_pixel_radius, y + int_pixel_radius, x_2, y_2);
             datum_box_set_find_by_rectangle(data_set, x_1, y_1, x_2, y_2, datum_index_list);
-            //debug_log(boost::format("draw_median_search: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
+            //debug_log(boost::format("draw_datums_as_median: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
 
-            double min_dist = -1;
-            double min_value = -1;
-
+            std::vector<double> value_list;
             for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
                 DatumIndex ix = *it;
                 const Datum& datum = data_set.entries[ix];
-
                 int datum_on_tile_x, datum_on_tile_y;
                 tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
-                if (!tile.is_pixel_near_tile(datum_on_tile_x, datum_on_tile_y, pixel_radius)) {
-                    continue;
-                }
-
-                // Find relative position of datum from the pixel we are plotting
-                int rel_x = datum_on_tile_x - x;
-                int rel_y = datum_on_tile_y - y;
-                double dist_sq = calc_dist_sq(rel_x, rel_y);
+                double dist_sq = calc_dist_sq(datum_on_tile_x - x, datum_on_tile_y - y);
                 if (dist_sq <= pixel_radius_sq) {
-                    //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: rel_x: %d rel_y: %d dist_sq: %lf pixel_radius_sq: %lf") % rel_x % rel_y % dist_sq % pixel_radius_sq);
-                    double dist = calc_dist_fast_int_anywhere(rel_x, rel_y);
-                    double value = dist / pixel_radius * max_walk_time + datum.value;
-                    if (min_dist < 0 || value < min_value) {
-                        min_dist = dist;
-                        min_value = value;
-                    }
+                    value_list.push_back(datum.value);
                 }
             }
+            std::sort(value_list.begin(), value_list.end());
 
-            if (min_dist >= 0) {
-                guarded_plot(x, y, min_value);
+            if (value_list.size() > 0) {
+                double median = value_list[value_list.size() / 2];
+                guarded_plot(x, y, median);
             } else {
                 guarded_plot(x, y, no_data_colour);
             }
         }
     }
 }
-*/
+
+// render on tile according to parameters
+void draw_on_tile(const DataSet& data_set, const Tile& tile) {
+    if (data_set.algorithm == "cones") {
+        draw_datums_as_cones_loop_by_datum(data_set, tile);
+    } else if (data_set.algorithm == "cones2") {
+        draw_datums_as_cones_loop_by_pixel(data_set, tile);
+    } else if (data_set.algorithm == "cones3") {
+        draw_datums_as_cones_with_drop_line(data_set, tile);
+    } else if (data_set.algorithm == "median") {
+        draw_datums_as_median(data_set, tile);
+    } else if (data_set.algorithm == "test") {
+        draw_pretty_test_pattern();
+    } 
+    debug_log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
+}
 
 /////////////////////////////////////////////////////////////////////
 // Main entry point
@@ -597,18 +722,23 @@ int main(int argc, char * argv[]) {
     printf("Manchester lat, lon: %lf %lf\n", lat, lon); // 53.466667, -2.233333
     */
 
-    /*if (argc < 7) {
-        fprintf(stderr, "fastplan.cpp arguments are:\n  1. fast index file prefix\n  2. output prefix (or 'stream' for stdout incremental)\n  3. arrive_by or depart_after\n  4. target arrival time / departure in mins after midnight\n  5. target location\n  6. earliest/latest departure in mins after midnight to go back to\n  7, 8. easting, northing to use to find destination if destination is 'coordinate'\n");
-        return 1;
-    }*/
-    
+    // Data to load
+    std::string nodes_file = "/home/francis/toobig/nptdr/tmpwork/stations.nodes";
+    std::string iso_file = "/home/francis/toobig/nptdr/tmpwork/1440.iso";
+    // Algorithm to use
+    data_set.algorithm = "cones";
+    data_set.algorithm = "cones2";
+    data_set.algorithm = "cones3";
+    data_set.params["max_walk_distance_in_meters"] = 2400; // 2400 meters is a half hour of walking at 1.33333 m/s
+    data_set.params["max_walk_time"] = 1800; // 1800 seconds is half an hour 
+    //data_set.algorithm = "median";
+    //data_set.params["search_radius_in_meters"] = 1800; 
+
     // Precalculate some things for optimisation
     calc_dist_fast_int_initialise();
     pm.display("Precalculating square roots took");
 
     // Read data set from .nodes file
-    std::string nodes_file = "/home/francis/toobig/nptdr/tmpwork/test.nodes";
-    std::string iso_file = "/home/francis/toobig/nptdr/tmpwork/1440.iso";
     struct stat nodes_info;
     stat(nodes_file.c_str(), &nodes_info);
     int nodes_to_read = nodes_info.st_size / sizeof(double) / 2;
@@ -635,8 +765,6 @@ int main(int argc, char * argv[]) {
             }
         }
     }
-    data_set.params["max_walk_distance_in_meters"] = 2400; // 2400 meters is a half hour of walking at 1.33333 m/s
-    data_set.params["max_walk_time"] = 1800; // 1800 seconds is half an hour 
 
     // Internal test populate data set
     /*
@@ -666,10 +794,7 @@ int main(int argc, char * argv[]) {
     pm.display("Creating surface took");
 
     // Set pixel values
-    //draw_pretty_test_pattern();
-    draw_datums_as_cones_loop_by_datum(data_set, tile);
-    //draw_datums_as_cones_loop_by_pixel(data_set, tile);
-    debug_log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
+    draw_on_tile(data_set, tile);
     pm.display("Plotting image took");
 
     // Write out PNG file
