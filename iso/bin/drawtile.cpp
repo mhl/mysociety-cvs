@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.13 2009-10-09 08:09:36 francis Exp $
+// $Id: drawtile.cpp,v 1.14 2009-10-09 08:13:49 francis Exp $
 //
 
 // TODO:
@@ -289,8 +289,11 @@ class DataSet {
     }
 
     // return parameter value
-    double get_param(const std::string& name) const {
+    std::string get_param(const std::string& name) const {
         return this->params.find(name)->second;
+    }
+    double get_param_double(const std::string& name) const {
+        return atof(this->params.find(name)->second.c_str());
     }
 
     // ranges allowed for datum locations
@@ -298,8 +301,7 @@ class DataSet {
     double y_min, y_max;
 
     // other parameters for rendering the data set
-    std::string algorithm;
-    std::map<std::string, double> params;
+    std::map<std::string, std::string> params;
 
     // used to quickly find datums
     double box_set_radius;
@@ -399,8 +401,8 @@ void draw_pretty_test_pattern() {
 // is used. This algorithm is, for example, used for making contours of travel
 // time by public transport.
 void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& tile) {
-    double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
-    double max_walk_time = data_set.get_param("max_walk_time");
+    double max_walk_distance_in_meters = data_set.get_param_double("max_walk_distance_in_meters");
+    double max_walk_time = data_set.get_param_double("max_walk_time");
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
     int int_pixel_radius = int(pixel_radius) + 1;
     debug_log(boost::format("draw_datums_as_cones_loop_by_datum: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
@@ -460,8 +462,8 @@ void draw_datums_as_cones_loop_by_datum(const DataSet& data_set, const Tile& til
 // Alternative version of draw_datums_as_cones_loop_by_datum, which loops over
 // pixels rather than over cones. Hoped it would be quicker, but it isn't.
 void draw_datums_as_cones_loop_by_pixel(const DataSet& data_set, const Tile& tile) {
-    double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
-    double max_walk_time = data_set.get_param("max_walk_time");
+    double max_walk_distance_in_meters = data_set.get_param_double("max_walk_distance_in_meters");
+    double max_walk_time = data_set.get_param_double("max_walk_time");
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
     int int_pixel_radius = int(pixel_radius) + 1;
     debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
@@ -599,8 +601,8 @@ class ConeValuesAtPoint {
 };
 
 void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& tile) {
-    double max_walk_distance_in_meters = data_set.get_param("max_walk_distance_in_meters");
-    double max_walk_time = data_set.get_param("max_walk_time");
+    double max_walk_distance_in_meters = data_set.get_param_double("max_walk_distance_in_meters");
+    double max_walk_time = data_set.get_param_double("max_walk_time");
     double pixel_radius = tile.meters_to_pixels(max_walk_distance_in_meters);
     int int_pixel_radius = int(pixel_radius) + 1;
     debug_log(boost::format("draw_datums_as_cones_with_drop_line: max_walk_distance_in_meters %lf max_walk_time %lf pixel_radius %lf") % max_walk_distance_in_meters % max_walk_time % pixel_radius);
@@ -647,7 +649,7 @@ void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& ti
 //    1km search radius
 //    10 minimum points (otherwise returns no data)
 void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
-    double search_radius_in_meters = data_set.get_param("search_radius_in_meters");
+    double search_radius_in_meters = data_set.get_param_double("search_radius_in_meters");
     double pixel_radius = tile.meters_to_pixels(search_radius_in_meters);
     int int_pixel_radius = int(pixel_radius) + 1;
     debug_log(boost::format("darw_median_search: search_radius_in_meters %lf pixel_radius %lf") % search_radius_in_meters % pixel_radius);
@@ -692,15 +694,16 @@ void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
 
 // render on tile according to parameters
 void draw_on_tile(const DataSet& data_set, const Tile& tile) {
-    if (data_set.algorithm == "cones") {
+    std::string algorithm = data_set.get_param("algorithm");
+    if (algorithm == "cones1") {
         draw_datums_as_cones_loop_by_datum(data_set, tile);
-    } else if (data_set.algorithm == "cones2") {
+    } else if (algorithm == "cones2") {
         draw_datums_as_cones_loop_by_pixel(data_set, tile);
-    } else if (data_set.algorithm == "cones3") {
+    } else if (algorithm == "cones3") {
         draw_datums_as_cones_with_drop_line(data_set, tile);
-    } else if (data_set.algorithm == "median") {
+    } else if (algorithm == "median") {
         draw_datums_as_median(data_set, tile);
-    } else if (data_set.algorithm == "test") {
+    } else if (algorithm == "test") {
         draw_pretty_test_pattern();
     } 
     debug_log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
@@ -726,13 +729,11 @@ int main(int argc, char * argv[]) {
     std::string nodes_file = "/home/francis/toobig/nptdr/tmpwork/stations.nodes";
     std::string iso_file = "/home/francis/toobig/nptdr/tmpwork/1440.iso";
     // Algorithm to use
-    data_set.algorithm = "cones";
-    data_set.algorithm = "cones2";
-    data_set.algorithm = "cones3";
-    data_set.params["max_walk_distance_in_meters"] = 2400; // 2400 meters is a half hour of walking at 1.33333 m/s
-    data_set.params["max_walk_time"] = 1800; // 1800 seconds is half an hour 
-    //data_set.algorithm = "median";
-    //data_set.params["search_radius_in_meters"] = 1800; 
+    data_set.params["algorithm"] = "cones3";
+    data_set.params["max_walk_distance_in_meters"] = "2400"; // 2400 meters is a half hour of walking at 1.33333 m/s
+    data_set.params["max_walk_time"] = "1800"; // 1800 seconds is half an hour 
+    //data_set.params["algorithm"] = "median";
+    //data_set.params["search_radius_in_meters"] = "1800"; 
 
     // Precalculate some things for optimisation
     calc_dist_fast_int_initialise();
