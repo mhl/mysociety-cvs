@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.19 2009-10-11 14:46:22 francis Exp $
+// $Id: drawtile.cpp,v 1.20 2009-10-11 16:31:52 francis Exp $
 //
 
 // TODO:
@@ -710,10 +710,12 @@ void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
             }
 
             if ((int)value_list.size() >= minimum_points) {
+                // For discussion of quickly finding medians in C++ see
+                // http://stackoverflow.com/questions/810657/fastest-code-c-c-to-select-the-median-in-a-set-of-27-floating-point-values/810905
                 std::vector<double>::iterator first = value_list.begin();
                 std::vector<double>::iterator last = value_list.end();
                 std::vector<double>::iterator middle = first + (last - first) / 2;
-                std::nth_element(first, middle, last); // can specify comparator as optional 4th arg
+                std::nth_element(first, middle, last);
                 double median = *middle;
                 //std::sort(value_list.begin(), value_list.end());
                 //double median = value_list[value_list.size() / 2];
