@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.18 2009-10-11 09:44:31 francis Exp $
+// $Id: drawtile.cpp,v 1.19 2009-10-11 14:46:22 francis Exp $
 //
 
 // TODO:
@@ -265,7 +265,7 @@ class Datum {
 // A data set is the data behind a particular layer. e.g. All the house prices used.
 typedef std::vector<Datum> DatumEntries;
 typedef unsigned int DatumIndex;
-typedef std::list<DatumIndex> DatumIndexList;
+typedef std::vector<DatumIndex> DatumIndexList;
 typedef std::vector< std::vector< DatumIndexList > > DatumBoxSet;
 class DataSet {
     public:
@@ -304,6 +304,9 @@ class DataSet {
     }
     double get_param_double(const std::string& name) const {
         return atof(this->params.find(name)->second.c_str());
+    }
+    int get_param_int(const std::string& name) const {
+        return atoi(this->params.find(name)->second.c_str());
     }
 
     // ranges allowed for datum locations
@@ -665,24 +668,28 @@ void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& ti
     }
 }
 
-// The old Lightfoot algorithm was:
-//    median
+// Find median of values within a given radius from each pixel.
+// Chris Lightfoot used a median algorithm for house prices in his original protoype, with:
 //    1km search radius
 //    10 minimum points (otherwise returns no data)
 void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
     double search_radius_in_meters = data_set.get_param_double("search_radius_in_meters");
+    int minimum_points = data_set.get_param_int("minimum_points");
+    if (minimum_points < 1)
+        minimum_points = 1;
     double pixel_radius = tile.meters_to_pixels(search_radius_in_meters);
     int int_pixel_radius = int(pixel_radius) + 1;
-    debug_log(boost::format("darw_median_search: search_radius_in_meters %lf pixel_radius %lf") % search_radius_in_meters % pixel_radius);
+    debug_log(boost::format("draw_datums_as_median: search_radius_in_meters %lf pixel_radius %lf") % search_radius_in_meters % pixel_radius);
 
     double pixel_radius_sq = pixel_radius * pixel_radius;
 
+    DatumIndexList datum_index_list;
     for (int x = 0; x < IMAGE_WIDTH; x++) {
         for (int y = 0; y < IMAGE_HEIGHT; y++) {
             //debug_log(boost::format("draw_datums_as_cones_loop_by_pixel: x: %d y: %d") % x % y);
 
             // Work out which datums might matter
-            DatumIndexList datum_index_list;
+            datum_index_list.clear();
             double x_1, y_1;
             tile.transform_tile_onto_merc(x - int_pixel_radius, y - int_pixel_radius, x_1, y_1);
             double x_2, y_2;
@@ -701,10 +708,15 @@ void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
                     value_list.push_back(datum.value);
                 }
             }
-            std::sort(value_list.begin(), value_list.end());
 
-            if (value_list.size() > 0) {
-                double median = value_list[value_list.size() / 2];
+            if ((int)value_list.size() >= minimum_points) {
+                std::vector<double>::iterator first = value_list.begin();
+                std::vector<double>::iterator last = value_list.end();
+                std::vector<double>::iterator middle = first + (last - first) / 2;
+                std::nth_element(first, middle, last); // can specify comparator as optional 4th arg
+                double median = *middle;
+                //std::sort(value_list.begin(), value_list.end());
+                //double median = value_list[value_list.size() / 2];
                 guarded_plot(x, y, median);
             } else {
                 guarded_plot(x, y, no_data_colour);
@@ -826,8 +838,10 @@ int main(int argc, char * argv[]) {
     //data_set.params["sub_algorithm"] = "drop_line";
     data_set.params["max_walk_distance_in_meters"] = "2400"; // 2400 meters is a half hour of walking at 1.33333 m/s
     data_set.params["max_walk_time"] = "1800"; // 1800 seconds is half an hour 
-    //data_set.params["algorithm"] = "median";
-    //data_set.params["search_radius_in_meters"] = "1800"; 
+
+    data_set.params["algorithm"] = "median";
+    data_set.params["search_radius_in_meters"] = "1000"; 
+    data_set.params["minimum_points"] = "0"; 
 
     // Precalculate some things for optimisation
     calc_dist_fast_int_initialise();
