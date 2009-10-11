@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.17 2009-10-09 16:49:25 francis Exp $
+// $Id: drawtile.cpp,v 1.18 2009-10-11 09:44:31 francis Exp $
 //
 
 // TODO:
@@ -31,6 +31,7 @@
 #include <list>
 #include <map>
 #include <algorithm>
+#include <fcgiapp.h>
 
 #include "../../cpplib/mysociety_error.h"
 #include "../../cpplib/mysociety_geo.h"
@@ -718,18 +719,63 @@ void draw_on_tile(const DataSet& data_set, const Tile& tile) {
     gdImageFilledRectangle(im, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT, white);
 
     std::string algorithm = data_set.get_param("algorithm");
-    if (algorithm == "cones1") {
-        draw_datums_as_cones_loop_by_datum(data_set, tile);
-    } else if (algorithm == "cones2") {
-        draw_datums_as_cones_loop_by_pixel(data_set, tile);
-    } else if (algorithm == "cones3") {
-        draw_datums_as_cones_with_drop_line(data_set, tile);
+    std::string sub_algorithm = data_set.get_param("sub_algorithm");
+    if (algorithm == "cones") {
+        if (sub_algorithm == "by_datum") {
+            draw_datums_as_cones_loop_by_datum(data_set, tile);
+        } else if (sub_algorithm == "by_pixel") {
+            draw_datums_as_cones_loop_by_pixel(data_set, tile);
+        } else if (sub_algorithm == "drop_line") {
+            draw_datums_as_cones_with_drop_line(data_set, tile);
+        } else {
+            assert(0);
+        }
     } else if (algorithm == "median") {
         draw_datums_as_median(data_set, tile);
     } else if (algorithm == "test") {
         draw_pretty_test_pattern();
-    } 
+    } else {
+        assert(0);
+    }
     debug_log(boost::format("Plot count: %d Squareroot count: %d") % plot_count % sqrt_count);
+}
+
+// Draw a bunch of tiles at various zooms to benchmark things
+void render_benchmark_tiles(const DataSet& data_set) {
+    int tile_count = 0;
+    int start_x = 1011 * 2;
+    int start_y = 671 * 2;
+    for (int z = 12; z > 5; --z) {
+        for (int i = -2; i < 3; ++i) {
+            for (int j = -2; j < 3; ++j) {
+                // Work out which tile to go for 
+                // XXX these tile_ would come from the URL e.g. iso/11/1011/671.png
+
+                int zoom = z;
+                int tile_x = start_x + i;
+                int tile_y = start_y + j;
+
+                Tile tile(zoom, tile_x, tile_y); // zoom, x, y as in URL, e.g. iso/11/1011/671.png
+                debug_log(tile.debug_info());
+
+                // Set pixel values
+                PerformanceMonitor inner_pm;
+                draw_on_tile(data_set, tile);
+                tile_count++;
+                inner_pm.display((boost::format("Plotting tile %d %d %d took") % zoom % tile_x % tile_y).str());
+            }
+        }
+        start_x /= 2;
+        start_y /= 2;
+    }
+    debug_log((boost::format("Image count: %d") % tile_count).str());
+}
+
+// Write out PNG file
+void write_out_png(const Tile& tile, const std::string& filename) {
+    FILE *out = fopen(filename.c_str(), "wb");
+    gdImagePngEx(im, out, -1); // -1 is default compression, 0 is no compression
+    fclose(out);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -739,28 +785,45 @@ int main(int argc, char * argv[]) {
     PerformanceMonitor pm;
     DataSet data_set;
 
-    /*
-    double mercx, mercy;
-    lat_lon_to_merc(53.466667, -2.233333, &mercx, &mercy); // Manchester
-    printf("Manchester mercx, mercy: %lf %lf\n", mercx, mercy); // roughly: -248128.680454, 7071667.54412 (that's actually Manchester Picadilly)
-    double lat, lon;
-    merc_to_lat_lon(-248613.492332, 7069789.545191, &lat, &lon); // Manchester
-    printf("Manchester lat, lon: %lf %lf\n", lat, lon); // 53.466667, -2.233333
-    */
-    Tile t(11, 1011, 671); // zoom, x, y as in URL, e.g. iso/11/1011/671.png
-    double merc_x, merc_y;
-    t.transform_tile_onto_merc(IMAGE_WIDTH/2, IMAGE_HEIGHT/2, merc_x, merc_y);
-    int google_url_x, google_url_y;
-    int zoom = 8;
-    Tile::merc_to_google_url(merc_x, merc_y, zoom, google_url_x, google_url_y);
-    printf("Old: 11/1011/671 New google URL: %d/%d/%d\n", zoom, google_url_x, google_url_y);
-    //return 0;
+    if (argc != 2) {
+        return 1;
+    }
+
+    std::string command;
+    if (argc == 2) {
+        command = argv[1];
+    }
+    if (command != "one" && command != "benchmark" && command != "fcgi" && command != "custom") {
+        printf("drawtile.cpp: only argument must be command 'one', 'benchmark', 'fcgi' or 'custom'\n");
+        return 1;
+    }
+
+    if (command == "custom") {
+        double mercx, mercy;
+        lat_lon_to_merc(53.466667, -2.233333, &mercx, &mercy); // Manchester
+        printf("Manchester mercx, mercy: %lf %lf\n", mercx, mercy); // roughly: -248128.680454, 7071667.54412 (that's actually Manchester Picadilly)
+        double lat, lon;
+        merc_to_lat_lon(-248613.492332, 7069789.545191, &lat, &lon); // Manchester
+        printf("Manchester lat, lon: %lf %lf\n", lat, lon); // 53.466667, -2.233333
+        /*
+        Tile t(11, 1011, 671); // zoom, x, y as in URL, e.g. iso/11/1011/671.png
+        double merc_x, merc_y;
+        t.transform_tile_onto_merc(IMAGE_WIDTH/2, IMAGE_HEIGHT/2, merc_x, merc_y);
+        int google_url_x, google_url_y;
+        int zoom = 8;
+        Tile::merc_to_google_url(merc_x, merc_y, zoom, google_url_x, google_url_y);
+        printf("Old: 11/1011/671 New google URL: %d/%d/%d\n", zoom, google_url_x, google_url_y);
+        */
+        return 0;
+    }
 
     // Data to load
     std::string nodes_file = "/home/francis/toobig/nptdr/tmpwork/stations.nodes";
     std::string iso_file = "/home/francis/toobig/nptdr/tmpwork/1440.iso";
     // Algorithm to use
-    data_set.params["algorithm"] = "cones3";
+    data_set.params["algorithm"] = "cones";
+    data_set.params["sub_algorithm"] = "by_datum";
+    //data_set.params["sub_algorithm"] = "drop_line";
     data_set.params["max_walk_distance_in_meters"] = "2400"; // 2400 meters is a half hour of walking at 1.33333 m/s
     data_set.params["max_walk_time"] = "1800"; // 1800 seconds is half an hour 
     //data_set.params["algorithm"] = "median";
@@ -798,17 +861,6 @@ int main(int argc, char * argv[]) {
         }
     }
 
-    // Internal test populate data set
-    /*
-    int c = 0;
-    for (int i = 3; i < 10; i++) {
-        for (int j = 3; j < 10; j++) {
-            c++;
-            data_set.add_datum(i * 24, j * 24, c * 5);
-        }
-    }
-    */
-
     pm.display("Initialising data set took");
     datum_box_set_make(data_set, 1000); // XXX 1000 is just a guess an boxset optimisation parameter
     pm.display("Making box set took");
@@ -817,46 +869,71 @@ int main(int argc, char * argv[]) {
     // Create gd image surface
     im = gdImageCreateTrueColor(IMAGE_WIDTH, IMAGE_HEIGHT);
     pm.display("Creating surface took");
-    
-    int tile_count = 0;
-    int start_x = 1011 * 2;
-    int start_y = 671 * 2;
-    for (int z = 12; z > 5; --z) {
-        for (int i = -2; i < 3; ++i) {
-            for (int j = -2; j < 3; ++j) {
-                // Work out which tile to go for 
-                // XXX these tile_ would come from the URL e.g. iso/11/1011/671.png
-                /*int zoom = 11;
-                int tile_x = 1011 + i;
-                int tile_y = 671 + j;*/
-
-                /*zoom = 5;
-                tile_x = 15 + i;
-                tile_y = 10 + j;*/
-                int zoom = z;
-                int tile_x = start_x + i;
-                int tile_y = start_y + j;
-
-                Tile tile(zoom, tile_x, tile_y); // zoom, x, y as in URL, e.g. iso/11/1011/671.png
-                debug_log(tile.debug_info());
-
-                // Set pixel values
-                PerformanceMonitor inner_pm;
-                draw_on_tile(data_set, tile);
-                tile_count++;
-                inner_pm.display((boost::format("Plotting tile %d %d %d took") % zoom % tile_x % tile_y).str());
+   
+    // Display
+    if (command == "benchmark") {
+        render_benchmark_tiles(data_set); 
+        pm.display("Total render time");
+    } else if (command == "one") {
+        Tile tile(11, 1011, 671);
+        draw_on_tile(data_set, tile);
+        pm.display("Tile render time");
+        std::string outfile = "/tmp/drawtile.png";
+        write_out_png(tile, outfile);
+        pm.display("Writing PNG to " + outfile + " took");
+    } else if (command == "fcgi") {
+        //FCGX_IsCGI
+        FCGX_Request request;
+        FCGX_Stream *in, *out, *err;
+        FCGX_ParamArray envp;
+        if (FCGX_InitRequest(&request, 0, 0) != 0)
+            throw Exception("FCGX_InitRequest failed");
+        while (FCGX_Accept(&in, &out, &err, &envp) == 0) {
+            std::string bytes;
+            // Parse the parameters
+            std::string path_info = FCGX_GetParam("PATH_INFO", envp);
+            std::vector<std::string> parts;
+            std::string sofar;
+            for (unsigned int i = 0; i < path_info.size(); ++i) {
+                char c = path_info[i];
+                if (c == '/') {
+                    parts.push_back(sofar);
+                    sofar = "";
+                } else {
+                    sofar += c;
+                }
             }
-        }
-        start_x /= 2;
-        start_y /= 2;
-    }
-    pm.display((boost::format("Total for all %d images") % tile_count).str());
+            parts.push_back(sofar);
+            if (parts.size() == 5) {
+                // Convert parameters from strings to integers
+                std::string layer;
+                int x, y, z;
+                layer = parts[1];
+                x = atoi(parts[2].c_str());
+                y = atoi(parts[3].c_str());
+                z = atoi(parts[4].c_str());
 
-    // Write out PNG file
-    FILE *out = fopen ("/tmp/drawtile.png", "wb");
-    gdImagePngEx(im, out, -1); // -1 is default compression, 0 is no compression
-    fclose(out);
-    pm.display("Writing PNG took");
+                // Render the tile and return as a PNG
+                Tile tile(x, y, z);
+                draw_on_tile(data_set, tile);
+                int size;
+                void *png_ptr = gdImagePngPtr(im, &size);
+                int ret = FCGX_PutS("Content-type: image/png\n\n", out);
+                ret = FCGX_PutStr((char *)png_ptr, size, out);
+                gdFree(png_ptr);
+
+                // Log success
+                pm.display((boost::format("drawtile.cpp: Handled FCGI request for layer %s tile %d/%d/%d in") % layer % z % x % y).str());
+            } else {
+                // User error
+                bytes = (boost::format("Content-type: text/html\n\nFailed to parse PATH_INFO as /layer/zoom/x/y")).str();
+                int ret = FCGX_PutS(bytes.c_str(), out);
+            }
+            FCGX_Finish();
+        }
+    } else {
+        assert(0);
+    }
 }
 
 
