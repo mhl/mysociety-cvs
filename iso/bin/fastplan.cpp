@@ -6,7 +6,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan.cpp,v 1.11 2009-05-13 12:10:41 francis Exp $
+// $Id: fastplan.cpp,v 1.12 2009-10-12 12:39:36 francis Exp $
 //
 
 // Usage:
@@ -17,8 +17,8 @@
 #include <math.h> // something weird in /usr/include/bits/mathcalls.h means this must be included from top level file
 
 #include "../../cpplib/mysociety_error.h"
+#include "../../cpplib/performance_monitor.h"
 #include "../cpplib/makeplan.h"
-#include "../cpplib/performance_monitor.h"
 
 int main(int argc, char * argv[]) {
     if (argc < 7) {

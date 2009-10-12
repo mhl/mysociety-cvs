@@ -8,7 +8,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.14 2009-05-13 12:10:41 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.15 2009-10-12 12:39:36 francis Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
@@ -18,8 +18,8 @@
 #include <math.h> // something weird in /usr/include/bits/mathcalls.h means this must be included from top level file
 
 #include "../../cpplib/mysociety_error.h"
+#include "../../cpplib/performance_monitor.h"
 #include "../cpplib/makeplan.h"
-#include "../cpplib/performance_monitor.h"
 
 #include <iostream>
 

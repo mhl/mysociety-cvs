@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Makefile,v 1.16 2009-10-11 09:44:31 francis Exp $
+# $Id: Makefile,v 1.17 2009-10-12 12:39:36 francis Exp $
 #
 
 CFLAGS = -Wall -O2 -DOUTPUT_ROUTE_DETAILS 
@@ -26,7 +26,7 @@ clean:
 #########################################################################
 # Command line planner, called by do-nptdr.py
 
-FASTPLAN_DEPEND=fastplan.cpp Makefile ../cpplib/makeplan.h ../cpplib/performance_monitor.h ../../cpplib/mysociety_error.h
+FASTPLAN_DEPEND=fastplan.cpp Makefile ../cpplib/makeplan.h ../../cpplib/performance_monitor.h ../../cpplib/mysociety_error.h
 
 fastplan: ${FASTPLAN_DEPEND}
 	$(CPP) $(CFLAGS) fastplan.cpp -o fastplan
@@ -52,7 +52,7 @@ fastplan-coopt-debug: ${FASTPLAN_COOPT_DEPEND}
 #########################################################################
 # Contour tile renderer
 
-DRAWTILE_DEPEND=drawtile.cpp Makefile ../cpplib/performance_monitor.h ../../cpplib/mysociety_error.h ../../cpplib/mysociety_geo.h
+DRAWTILE_DEPEND=drawtile.cpp Makefile ../../cpplib/performance_monitor.h ../../cpplib/mysociety_error.h ../../cpplib/mysociety_geo.h
 DRAWTILE_LINK=-lgd -lfcgi
 
 drawtile: ${DRAWTILE_DEPEND}

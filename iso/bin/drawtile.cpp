@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.20 2009-10-11 16:31:52 francis Exp $
+// $Id: drawtile.cpp,v 1.21 2009-10-12 12:39:36 francis Exp $
 //
 
 // TODO:
@@ -35,7 +35,7 @@
 
 #include "../../cpplib/mysociety_error.h"
 #include "../../cpplib/mysociety_geo.h"
-#include "../cpplib/performance_monitor.h"
+#include "../../cpplib/performance_monitor.h"
 
 /* Any size of tile you like, as long as it is 256x256 pixels */
 #define IMAGE_WIDTH 256
