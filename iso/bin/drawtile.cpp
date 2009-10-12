@@ -10,14 +10,11 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.21 2009-10-12 12:39:36 francis Exp $
+// $Id: drawtile.cpp,v 1.22 2009-10-12 22:21:00 francis Exp $
 //
 
 // TODO:
-// Convert box set thing to use own radius (which is really then separate from the effect radius which varies per tile now)
-// Nearby pixel radius check should surely be pixel_radius * 2 not just pixel_radius
 // Move im to be member of Tile?
-// remove effect_radius completely
 
 #include <math.h> 
 #include <gd.h>
@@ -30,8 +27,11 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <set>
 #include <algorithm>
 #include <fcgiapp.h>
+
+#include <boost/foreach.hpp>
 
 #include "../../cpplib/mysociety_error.h"
 #include "../../cpplib/mysociety_geo.h"
@@ -395,19 +395,7 @@ void datum_box_set_find_by_rectangle(const DataSet& data_set, const double x_1, 
 }
 
 /////////////////////////////////////////////////////////////////////
-// Drawing functions
-
-// Draw a test pattern on the tile
-void draw_pretty_test_pattern() {
-    int d = 0;
-    for (int x = 0; x < IMAGE_WIDTH; x++) {
-        for (int y = 0; y < IMAGE_HEIGHT; y++) {
-            guarded_plot(x, y, d);
-            d++;
-        }
-    }
-
-}
+// Drawing functions - cones
 
 // Draw some inverted cones on the tile. The cones are inverted, with their point
 // at the bottom. The height of the point is the value of the datum, its centre
@@ -626,6 +614,7 @@ class ConeValuesAtPoint {
         return min_value;
     }
 };
+
 void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& tile) {
     double max_walk_distance_in_meters = data_set.get_param_double("max_walk_distance_in_meters");
     double max_walk_time = data_set.get_param_double("max_walk_time");
@@ -668,18 +657,21 @@ void draw_datums_as_cones_with_drop_line(const DataSet& data_set, const Tile& ti
     }
 }
 
+/////////////////////////////////////////////////////////////////////
+// Drawing functions - median
+
 // Find median of values within a given radius from each pixel.
 // Chris Lightfoot used a median algorithm for house prices in his original protoype, with:
 //    1km search radius
 //    10 minimum points (otherwise returns no data)
-void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
+void draw_datums_as_median_naive(const DataSet& data_set, const Tile& tile) {
     double search_radius_in_meters = data_set.get_param_double("search_radius_in_meters");
     int minimum_points = data_set.get_param_int("minimum_points");
     if (minimum_points < 1)
         minimum_points = 1;
     double pixel_radius = tile.meters_to_pixels(search_radius_in_meters);
     int int_pixel_radius = int(pixel_radius) + 1;
-    debug_log(boost::format("draw_datums_as_median: search_radius_in_meters %lf pixel_radius %lf") % search_radius_in_meters % pixel_radius);
+    debug_log(boost::format("draw_datums_as_median_naive: search_radius_in_meters %lf pixel_radius %lf") % search_radius_in_meters % pixel_radius);
 
     double pixel_radius_sq = pixel_radius * pixel_radius;
 
@@ -695,7 +687,7 @@ void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
             double x_2, y_2;
             tile.transform_tile_onto_merc(x + int_pixel_radius, y + int_pixel_radius, x_2, y_2);
             datum_box_set_find_by_rectangle(data_set, x_1, y_1, x_2, y_2, datum_index_list);
-            //debug_log(boost::format("draw_datums_as_median: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
+            //debug_log(boost::format("draw_datums_as_median_naive: datum count %d datums nearby %d") % data_set.entries.size() % datum_index_list.size());
 
             std::vector<double> value_list;
             for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
@@ -727,6 +719,123 @@ void draw_datums_as_median(const DataSet& data_set, const Tile& tile) {
     }
 }
 
+void draw_datums_as_median_rolling(const DataSet& data_set, const Tile& tile) {
+    double search_radius_in_meters = data_set.get_param_double("search_radius_in_meters");
+    int minimum_points = data_set.get_param_int("minimum_points");
+    if (minimum_points < 1)
+        minimum_points = 1;
+    double pixel_radius = tile.meters_to_pixels(search_radius_in_meters);
+    int int_pixel_radius = int(pixel_radius) + 1;
+    debug_log(boost::format("draw_datums_as_median_rolling: search_radius_in_meters %lf pixel_radius %lf") % search_radius_in_meters % pixel_radius);
+
+    double pixel_radius_sq = pixel_radius * pixel_radius;
+
+    DatumIndexList datum_index_list;
+    std::vector<DatumIndexList> enters;
+    std::vector<DatumIndexList> exits;
+    enters.resize(IMAGE_WIDTH);
+    exits.resize(IMAGE_WIDTH);
+    for (int y = 0; y < IMAGE_HEIGHT; y++) {
+        // Work out which datums might matter - in rectangle along whole row
+        datum_index_list.clear();
+        double x_1, y_1;
+        tile.transform_tile_onto_merc(0 - int_pixel_radius, y - int_pixel_radius, x_1, y_1);
+        double x_2, y_2;
+        tile.transform_tile_onto_merc(IMAGE_WIDTH + int_pixel_radius, y + int_pixel_radius, x_2, y_2);
+        datum_box_set_find_by_rectangle(data_set, x_1, y_1, x_2, y_2, datum_index_list);
+
+        debug_log(boost::format("draw_datums_as_median_rolling: y %d datum count %d datums nearby %d") % y % data_set.entries.size() % datum_index_list.size());
+
+        // work out x-coordinates at which datums enter or leave the circle 
+        for (int x = 0; x < IMAGE_WIDTH; x++) {
+            enters[x].clear();
+            exits[x].clear();
+        }
+        for (DatumIndexList::const_iterator it = datum_index_list.begin(); it != datum_index_list.end(); it++) {
+            DatumIndex ix = *it;
+            const Datum& datum = data_set.entries[ix];
+            int datum_on_tile_x, datum_on_tile_y;
+            tile.transform_merc_onto_tile(datum.x, datum.y, datum_on_tile_x, datum_on_tile_y);
+
+            if (abs(datum_on_tile_y - y) <= int_pixel_radius) {
+                int delta = calc_dist_fast_int_sub(int_pixel_radius, datum_on_tile_y - y);
+                int enter_x = datum_on_tile_x - delta;
+                int exit_x = datum_on_tile_x + delta;
+                if (enter_x >= IMAGE_WIDTH && exit_x >= IMAGE_WIDTH)
+                    continue;
+                if (enter_x < 0 && exit_x < 0)
+                    continue;
+                if (enter_x < 0)
+                    enter_x = 0;
+                if (exit_x >= IMAGE_WIDTH - 1)
+                    exit_x = IMAGE_WIDTH - 1;
+
+                //debug_log(boost::format("draw_datums_as_median_rolling: datum on tile x %d y %d enter %d exit %d") % datum_on_tile_x % datum_on_tile_y % enter_x % exit_x);
+
+                assert(enter_x <= IMAGE_WIDTH);
+                assert(exit_x >= 0);
+
+                enters[enter_x].push_back(ix);
+                exits[exit_x].push_back(ix);
+            }
+        }
+
+        // loop through X coordinates, inserting and removing datums as we come to them
+        std::set<DatumIndex> datums;
+        std::vector<double> value_list;
+        for (int x = 0; x < IMAGE_WIDTH; x++) {
+            // insert new points that sweep in
+            BOOST_FOREACH(const DatumIndex& ix, enters[x]) {
+                datums.insert(ix);
+            }
+
+            // work out values and median
+            value_list.clear();
+            BOOST_FOREACH(const DatumIndex& ix, datums) {
+                const Datum& datum = data_set.entries[ix];
+                value_list.push_back(datum.value);
+            }
+
+            if ((int)value_list.size() >= minimum_points) {
+                // For discussion of quickly finding medians in C++ see
+                // http://stackoverflow.com/questions/810657/fastest-code-c-c-to-select-the-median-in-a-set-of-27-floating-point-values/810905
+                std::vector<double>::iterator first = value_list.begin();
+                std::vector<double>::iterator last = value_list.end();
+                std::vector<double>::iterator middle = first + (last - first) / 2;
+                std::nth_element(first, middle, last);
+                double median = *middle;
+                //std::sort(value_list.begin(), value_list.end());
+                //double median = value_list[value_list.size() / 2];
+                guarded_plot(x, y, median);
+            } else {
+                guarded_plot(x, y, no_data_colour);
+            }
+             
+            // remove points that are sweeping out
+            BOOST_FOREACH(const DatumIndex& ix, exits[x]) {
+                datums.erase(ix);
+            }
+        }
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////
+// Drawing functions - general
+
+// Draw a test pattern on the tile
+void draw_pretty_test_pattern() {
+    int d = 0;
+    for (int x = 0; x < IMAGE_WIDTH; x++) {
+        for (int y = 0; y < IMAGE_HEIGHT; y++) {
+            guarded_plot(x, y, d);
+            d++;
+        }
+    }
+
+}
+
+
 // render on tile according to parameters
 void draw_on_tile(const DataSet& data_set, const Tile& tile) {
     int white = gdImageColorAllocate(im, 255, 255, 255);  
@@ -745,7 +854,13 @@ void draw_on_tile(const DataSet& data_set, const Tile& tile) {
             assert(0);
         }
     } else if (algorithm == "median") {
-        draw_datums_as_median(data_set, tile);
+        if (sub_algorithm == "naive") {
+            draw_datums_as_median_naive(data_set, tile);
+        } else if (sub_algorithm == "rolling") {
+            draw_datums_as_median_rolling(data_set, tile);
+        } else {
+            assert(0);
+        }
     } else if (algorithm == "test") {
         draw_pretty_test_pattern();
     } else {
@@ -842,6 +957,7 @@ int main(int argc, char * argv[]) {
     data_set.params["max_walk_time"] = "1800"; // 1800 seconds is half an hour 
 
     data_set.params["algorithm"] = "median";
+    data_set.params["sub_algorithm"] = "rolling";
     data_set.params["search_radius_in_meters"] = "1000"; 
     data_set.params["minimum_points"] = "0"; 
 
