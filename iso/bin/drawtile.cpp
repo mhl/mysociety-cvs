@@ -10,7 +10,7 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: drawtile.cpp,v 1.22 2009-10-12 22:21:00 francis Exp $
+// $Id: drawtile.cpp,v 1.23 2009-10-12 23:01:41 francis Exp $
 //
 
 // TODO:
@@ -746,7 +746,7 @@ void draw_datums_as_median_rolling(const DataSet& data_set, const Tile& tile) {
 
         debug_log(boost::format("draw_datums_as_median_rolling: y %d datum count %d datums nearby %d") % y % data_set.entries.size() % datum_index_list.size());
 
-        // work out x-coordinates at which datums enter or leave the circle 
+        // Work out x-coordinates at which datums enter or leave the circle 
         for (int x = 0; x < IMAGE_WIDTH; x++) {
             enters[x].clear();
             exits[x].clear();
@@ -761,6 +761,7 @@ void draw_datums_as_median_rolling(const DataSet& data_set, const Tile& tile) {
                 int delta = calc_dist_fast_int_sub(int_pixel_radius, datum_on_tile_y - y);
                 int enter_x = datum_on_tile_x - delta;
                 int exit_x = datum_on_tile_x + delta;
+
                 if (enter_x >= IMAGE_WIDTH && exit_x >= IMAGE_WIDTH)
                     continue;
                 if (enter_x < 0 && exit_x < 0)
