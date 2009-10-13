@@ -17,7 +17,7 @@ na - NotApathetic codebase
 na2005 - NotApathetic 2005 UK General Election, static file version
 fyr - WriteToThem (internal name FaxYourRepresentative)
 twfy - TheyWorkForYou
-foi - Freedom of Information Filer and Archive
+foi - WhatDoTheyKnow
 gny - Groups Near You
 
 news - Look up your local newspapers
