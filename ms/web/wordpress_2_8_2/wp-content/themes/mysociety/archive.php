@@ -31,13 +31,14 @@ if (is_category('Projects')) {
     echo '<ul>';
 } 
 
+$is_cee_cfp = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org' && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
 while (have_posts()) : the_post();
 
         // is idea submission?
          $is_idea = in_category(29);
 
         // get post meta and only display basics if this is an idea submission
-	if ($is_idea) {
+	if ($is_idea || $is_cee_cfp) {
                 $keys = get_post_custom_values('Author Name');
                 $author_name = $keys[0];
                 $keys = get_post_custom_values('Author Webpage');
