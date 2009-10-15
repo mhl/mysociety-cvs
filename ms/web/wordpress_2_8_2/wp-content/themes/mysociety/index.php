@@ -34,10 +34,11 @@ if (have_posts()) : ?>
 
 		    <?php if ($is_cee_cfp) { ?>
                     <small>
+                        <?php the_time('l, F jS, Y') ?>
                         <?php if($author_web == ''){ ?>
-                            By <strong><?php echo $author_name; ?></strong>
+                            by <strong><?php echo $author_name; ?></strong>
                         <?php } else { ?>
-                            By <strong><a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
+                            by <strong><a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
                         <?php } ?>
                     </small>
             <?php } else { ?>
