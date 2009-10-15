@@ -27,14 +27,18 @@
 <?
     if ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org') {
         $logo = 'cee.png';
+        $logo_w = 360;
+        $logo_h = 62;
     } else {
         $logo = 'logo.png';
+        $logo_w = 297;
+        $logo_h = 62;
     }
 ?>
 	<div id="divHeader">
 		<div id="imgLogo">
 			<a href="/" title="mySociety.org homepage">
-				<img src="http://www.mysociety.org/contimg/<?=$logo ?>" alt="mySociety.org" width="297" height="62" />
+				<img src="http://www.mysociety.org/contimg/<?=$logo ?>" alt="mySociety.org" width="<?=$logo_w?>" height="<?=$logo_h?>" />
 			</a>
 		</div>
 
@@ -51,7 +55,13 @@
 	<!-- Menu -->
 	<div id="divMenu">
 <?php
-        if ($_SERVER['SERVER_NAME'] != 'cee.mysociety.org') {
+        if ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org') {
+            echo '<ul class="collapse">
+	<li><a href="http://www.mysociety.org/">Home</a></li>
+	<li><a href="http://www.mysociety.org/projects/">Projects</a></li>
+	<li><a href="http://www.mysociety.org/about/">About us</a></li>
+</ul>';
+        } else {
             print file_get_contents(TEMPLATEPATH . '/nav.html');
     	    include (TEMPLATEPATH . '/searchform.php');
         }
