@@ -103,7 +103,7 @@ if (!$is_idea && !$is_cee_cfp) {
         $add_link = '/call-for-proposals-2009/';
         $view_link = '/category/proposal-submissions-2009/';
     } elseif ($is_cee_cfp) {
-        $add_link = '/';
+        $add_link = '/cfp/';
         $view_link = '/cfp/view/';
     }
 
