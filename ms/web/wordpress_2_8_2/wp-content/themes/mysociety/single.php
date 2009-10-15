@@ -4,9 +4,10 @@
 	    <?php
             // is idea submission?
             $is_idea = in_category(29);
-            
+            $is_cee_cfp = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org' && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
+
             //get post meta if this is an idea submission
-            if($is_idea){
+            if ($is_idea || $is_cee_cfp) {
                 $keys = get_post_custom_values('Author Name');
                 $author_name = $keys[0];
                 $keys = get_post_custom_values('Author Webpage');
@@ -27,7 +28,7 @@
 		<!--Post-->
 		<div class="contentwide">
 		    
-		    <?php if ($is_idea){ ?>
+		    <?php if ($is_idea || $is_cee_cfp) { ?>
                 
                     <small>
                         <?php if($author_web == ''){ ?>
@@ -94,7 +95,7 @@
 </div>
 		
 <!-- Sidebar -->
-<?php if (!$is_idea){ ?>		
+<?php if (!$is_idea && !$is_cee_cfp){ ?>		
     <?php get_sidebar(); ?>
 <?php }else{ ?>
     <div class="contentnarrow right">
@@ -109,13 +110,19 @@
         <h3>Ideas so far</h3>
         <!--Recent posts-->
             <ul>
-                <?php query_posts('category_name=proposal-submissions-2009&showposts=10'); ?>
+<?php
 
-                <?php while (have_posts()) : the_post(); ?>
+if ($is_idea) {
+    query_posts('category_name=proposal-submissions-2009&showposts=10');
+} elseif ($is_cee_cfp) {
+    query_posts('showposts=10');
+}
+
+while (have_posts()) : the_post(); ?>
                 <li>
                     <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                 </li>
-                <?php endwhile;?>
+<?php endwhile;?>
             </ul>
             <a href="/category/proposal-submissions-2009/">View all ideas &raquo;</a>
     </div>

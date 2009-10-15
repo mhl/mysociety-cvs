@@ -1,7 +1,9 @@
 
 		<div id="divFooter">
 			<?
+            if ($_SERVER['SERVER_NAME'] != 'cee.mysociety.org') {
 		    	print file_get_contents(TEMPLATEPATH . '/footer.html');
+            }
 			?>
 
 			<p>

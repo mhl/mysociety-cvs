@@ -24,10 +24,17 @@
 	<a href="#divContent" class="hide">Skip navigation</a>
 
 	<!--Header-->
+<?
+    if ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org') {
+        $logo = 'cee.png';
+    } else {
+        $logo = 'logo.png';
+    }
+?>
 	<div id="divHeader">
 		<div id="imgLogo">
 			<a href="/" title="mySociety.org homepage">
-				<img src="http://www.mysociety.org/contimg/logo.png" alt="mySociety.org" width="297" height="62" />
+				<img src="http://www.mysociety.org/contimg/<?=$logo ?>" alt="mySociety.org" width="297" height="62" />
 			</a>
 		</div>
 
@@ -43,8 +50,12 @@
 
 	<!-- Menu -->
 	<div id="divMenu">
-	<?php print file_get_contents(TEMPLATEPATH . '/nav.html'); ?>
-	<?php include (TEMPLATEPATH . '/searchform.php'); ?>
+<?php
+        if ($_SERVER['SERVER_NAME'] != 'cee.mysociety.org') {
+            print file_get_contents(TEMPLATEPATH . '/nav.html');
+    	    include (TEMPLATEPATH . '/searchform.php');
+        }
+?>
 	</div>
 	
 	<div id="divContent">
