@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.8 2009-10-08 15:27:51 duncan Exp $
+# $Id: psql_storage.py,v 1.9 2009-10-15 18:04:41 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -91,3 +91,10 @@ def get_nearest_station(easting, northing):
         ORDER BY Distance(position_osgb, GeomFromText('POINT(%(easting)s %(northing)s)', 27700))
         LIMIT 1''' %{'easting':easting, 'northing':northing})
     return db().fetchone()
+
+def get_map_queue_state():
+    state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
+    db().execute('''SELECT state, count(*) FROM map GROUP BY state''')
+    for row in db().fetchall():
+        state[row[0]] = row[1]
+    return state

@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.32 2009-10-08 15:27:51 duncan Exp $
+# $Id: page.py,v 1.33 2009-10-15 18:04:41 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -170,6 +170,7 @@ class Invite(object):
         return self.token
 
     def check(self):
+
         token_row = storage.get_invite_by_token(self.token.value)
         
         if token_row:

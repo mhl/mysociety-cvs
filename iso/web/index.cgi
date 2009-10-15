@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.127 2009-09-28 14:07:48 duncan Exp $
+# $Id: index.cgi,v 1.128 2009-10-15 18:04:42 duncan Exp $
 #
 
 import sys
@@ -19,7 +19,7 @@ import mysociety.config
 mysociety.config.set_file("../conf/general")
 
 import page
-from page import *
+#from page import *
 import mysociety.mapit
 from mysociety.rabx import RABXException
 
@@ -142,7 +142,7 @@ class Map:
 
     # How far is making this map? 
     def get_progress_info(self):
-        self.state = get_queue_state()
+        self.state = storage.get_map_queue_state()
 
         if self.id:
             db().execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (self.id,))
@@ -382,89 +382,89 @@ def log_email(fs, email):
 # Duncan: I don't see how this can currently work, given two
 # functions in isoweb (look_up_time_taken and look_up_route_node)
 # that it depends on rely on struct without importing it.
-def get_route(fs, lat, lon):
-    E, N = geoconvert.wgs84_to_national_grid(lat, lon)
-    (station, station_long, station_id) = storage.get_nearest_station(E, N)
+# def get_route(fs, lat, lon):
+#     E, N = geoconvert.wgs84_to_national_grid(lat, lon)
+#     (station, station_long, station_id) = storage.get_nearest_station(E, N)
 
-    # Look up time taken
-    map = Map(fs)
-    tim = isoweb.look_up_time_taken(map.id, station_id)
+#     # Look up time taken
+#     map = Map(fs)
+#     tim = isoweb.look_up_time_taken(map.id, station_id)
 
-    # Look up route...
-    location_id = station_id
-    route = []
-    c = 0 
-    while True:
-        (next_location_id, next_journey_id) = isoweb.look_up_route_node(map.id, location_id)
-        leaving_time = isoweb.look_up_time_taken(map.id, location_id)
+#     # Look up route...
+#     location_id = station_id
+#     route = []
+#     c = 0 
+#     while True:
+#         (next_location_id, next_journey_id) = isoweb.look_up_route_node(map.id, location_id)
+#         leaving_time = isoweb.look_up_time_taken(map.id, location_id)
 
-        c = c + 1 
-        if c > 100:
-            raise Exception("route displayer probably in infinite loop")
+#         c = c + 1 
+#         if c > 100:
+#             raise Exception("route displayer probably in infinite loop")
 
-        route.append((location_id, next_location_id, next_journey_id))
-        if next_journey_id == isoweb.JOURNEY_NULL:
-            break
-        if next_journey_id == isoweb.JOURNEY_ALREADY_THERE:
-            break
+#         route.append((location_id, next_location_id, next_journey_id))
+#         if next_journey_id == isoweb.JOURNEY_NULL:
+#             break
+#         if next_journey_id == isoweb.JOURNEY_ALREADY_THERE:
+#             break
 
-        location_id = next_location_id
-    # ... get station names from database
-    ids = ','.join([ str(int(route_node[0])) for route_node in route ]) + "," + str(station_id)
-    db().execute('''SELECT text_id, long_description, id FROM station WHERE id in (%s)''' % ids)
-    name_by_id = {}
-    for row in db().fetchall():
-        name_by_id[row['id']] = row['long_description'] + " (" + row['text_id'] + ")"
-    name_by_id[isoweb.LOCATION_TARGET] = 'TARGET'
-    # ... get journey info from database
-    ids = ','.join([ str(int(route_node[2])) for route_node in route ])
-    db().execute('''SELECT text_id, vehicle_code, id FROM journey WHERE id in (%s)''' % ids)
-    journey_by_id = {}
-    vehicle_code_by_id = {}
-    for row in db().fetchall():
-        journey_by_id[row['id']] = row['text_id']
-        vehicle_code_by_id[row['id']] = row['vehicle_code']
-    # ... and show it
-    route_str = "From " + str(name_by_id[station_id]) + " \n"
-    for location_id, next_location_id, journey_id in route:
-        location_time = isoweb.look_up_time_taken(map.id, location_id)
-        if map.target_direction == 'arrive_by':
-            leaving_after_midnight = map.target_time - location_time
-        elif map.target_direction == 'depart_after':
-            leaving_after_midnight = map.target_time - location_time
-        else:
-            assert(False)
-        route_str += isoweb.format_time(leaving_after_midnight) + " "
-        if journey_id > 0: 
-            next_location_name = name_by_id[next_location_id]
-            vehicle_code = vehicle_code_by_id[journey_id]
-            route_str += isoweb.pretty_vehicle_code(vehicle_code) + " (" + journey_by_id[journey_id] + ") to " + next_location_name
-        elif journey_id == isoweb.JOURNEY_WALK:
-            next_location_name = name_by_id[next_location_id]
-            route_str += "Walk to " + next_location_name;
-        elif journey_id == isoweb.JOURNEY_ALREADY_THERE:
-            location_name = name_by_id[location_id]
-            arrived = True
-            route_str += "You've arrived"
-        elif journey_id == isoweb.JOURNEY_NULL:
-            route_str += "No route found"
-        route_str += "\n";
+#         location_id = next_location_id
+#     # ... get station names from database
+#     ids = ','.join([ str(int(route_node[0])) for route_node in route ]) + "," + str(station_id)
+#     db().execute('''SELECT text_id, long_description, id FROM station WHERE id in (%s)''' % ids)
+#     name_by_id = {}
+#     for row in db().fetchall():
+#         name_by_id[row['id']] = row['long_description'] + " (" + row['text_id'] + ")"
+#     name_by_id[isoweb.LOCATION_TARGET] = 'TARGET'
+#     # ... get journey info from database
+#     ids = ','.join([ str(int(route_node[2])) for route_node in route ])
+#     db().execute('''SELECT text_id, vehicle_code, id FROM journey WHERE id in (%s)''' % ids)
+#     journey_by_id = {}
+#     vehicle_code_by_id = {}
+#     for row in db().fetchall():
+#         journey_by_id[row['id']] = row['text_id']
+#         vehicle_code_by_id[row['id']] = row['vehicle_code']
+#     # ... and show it
+#     route_str = "From " + str(name_by_id[station_id]) + " \n"
+#     for location_id, next_location_id, journey_id in route:
+#         location_time = isoweb.look_up_time_taken(map.id, location_id)
+#         if map.target_direction == 'arrive_by':
+#             leaving_after_midnight = map.target_time - location_time
+#         elif map.target_direction == 'depart_after':
+#             leaving_after_midnight = map.target_time - location_time
+#         else:
+#             assert(False)
+#         route_str += isoweb.format_time(leaving_after_midnight) + " "
+#         if journey_id > 0: 
+#             next_location_name = name_by_id[next_location_id]
+#             vehicle_code = vehicle_code_by_id[journey_id]
+#             route_str += isoweb.pretty_vehicle_code(vehicle_code) + " (" + journey_by_id[journey_id] + ") to " + next_location_name
+#         elif journey_id == isoweb.JOURNEY_WALK:
+#             next_location_name = name_by_id[next_location_id]
+#             route_str += "Walk to " + next_location_name;
+#         elif journey_id == isoweb.JOURNEY_ALREADY_THERE:
+#             location_name = name_by_id[location_id]
+#             arrived = True
+#             route_str += "You've arrived"
+#         elif journey_id == isoweb.JOURNEY_NULL:
+#             route_str += "No route found"
+#         route_str += "\n";
 
-    return page.render_to_response('route.xml', {
-        'lat': lat, 'lon': lon,
-        'e': E, 'n': N,
-        'station' : station,
-        'station_long' : station_long,
-        'time_taken' : tim,
-        'route_str' : route_str
-    }, mimetype='text/xml')
+#     return page.render_to_response('route.xml', {
+#         'lat': lat, 'lon': lon,
+#         'e': E, 'n': N,
+#         'station' : station,
+#         'station_long' : station_long,
+#         'time_taken' : tim,
+#         'route_str' : route_str
+#     }, mimetype='text/xml')
 
 #####################################################################
 # Main FastCGI loop
 
 def main(fs):
     if 'stats' in fs:
-        state = get_queue_state()
+        state = storage.get_map_queue_state()
         current_connections = page.current_proxy_connections()
         return page.render_to_response('map-stats.html', {
             'state': state,

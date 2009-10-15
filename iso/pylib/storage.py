@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.7 2009-10-08 15:27:51 duncan Exp $
+# $Id: storage.py,v 1.8 2009-10-15 18:04:41 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -124,3 +124,7 @@ def get_nearest_station(easting, northing):
     Return value is a tuple of (text_id, long_description, id). 
     """
     return psql_storage.get_nearest_station(easting, northing)
+
+def get_map_queue_state():
+    return psql_storage.get_map_queue_state()
+
