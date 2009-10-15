@@ -24,14 +24,14 @@
 	<div class="contentwide">
 
 <?php
+$is_cee_cfp = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org' && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
 if (is_category('Projects')) {
     $posts = query_posts($query_string . '&orderby=title&order=asc&posts_per_page=-1');
-} elseif (is_category(29)) {
+} elseif (is_category(29) || $is_cee_cfp) {
     $posts = query_posts($query_string . '&posts_per_page=-1');
     echo '<ul>';
 } 
 
-$is_cee_cfp = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org' && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
 while (have_posts()) : the_post();
 
         // is idea submission?

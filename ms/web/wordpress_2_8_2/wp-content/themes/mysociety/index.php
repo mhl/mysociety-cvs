@@ -14,13 +14,38 @@ if (have_posts()) : ?>
 
     while (have_posts()) : the_post();
     
+    $is_cee_cfp = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org' && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
+    if ($is_cee_cfp) {
+        $keys = get_post_custom_values('Author Name');
+        $author_name = $keys[0];
+        $keys = get_post_custom_values('Author Webpage');
+        $author_web = $keys[0];                    
+        if($author_web == 'http://'){
+            $author_web = '';
+        }
+    }
+
         //exclude call for proposals
         if ( !in_category('29') ) {
     
 ?>
 		<div class="post dividerbottom">
 				<h3 id="post-<?php the_ID(); ?>"><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
-				<small><?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong></small>
+
+		    <?php if ($is_cee_cfp) { ?>
+                    <small>
+                        <?php if($author_web == ''){ ?>
+                            By <strong><?php echo $author_name; ?></strong>
+                        <?php } else { ?>
+                            By <strong><a href="<?php echo $author_web ?>"><?php echo $author_name; ?></a></strong>
+                        <?php } ?>
+                    </small>
+            <?php } else { ?>
+                <small>
+                    <?php the_time('l, F jS, Y') ?> by <strong><?php the_author() ?></strong>
+                </small>
+            <?php } ?>
+
 
 				<div class="entry">
 					<?php the_content() ?>
