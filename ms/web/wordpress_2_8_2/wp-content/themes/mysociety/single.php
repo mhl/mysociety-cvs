@@ -95,12 +95,22 @@
 </div>
 		
 <!-- Sidebar -->
-<?php if (!$is_idea && !$is_cee_cfp){ ?>		
-    <?php get_sidebar(); ?>
-<?php }else{ ?>
+<?php
+if (!$is_idea && !$is_cee_cfp) {
+    get_sidebar();
+} else {
+    if ($is_idea) {
+        $add_link = '/call-for-proposals-2009/';
+        $view_link = '/category/proposal-submissions-2009/';
+    } elseif ($is_cee_cfp) {
+        $add_link = '/';
+        $view_link = '/cfp/view/';
+    }
+
+?>
     <div class="contentnarrow right">
         <p>
-        <a class="linkbutton" href="/call-for-proposals-2009">
+        <a class="linkbutton" href="<?=$add_link?>">
                 <span class="left">&nbsp;</span>
                 <span class="middle">Add an idea ...</span>
                 <span class="right">&nbsp;</span>
@@ -124,7 +134,7 @@ while (have_posts()) : the_post(); ?>
                 </li>
 <?php endwhile;?>
             </ul>
-            <a href="/category/proposal-submissions-2009/">View all ideas &raquo;</a>
+            <a href="<?=$view_link?>">View all ideas &raquo;</a>
     </div>
 <?php } ?>
 
