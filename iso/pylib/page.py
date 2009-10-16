@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.34 2009-10-16 09:40:00 duncan Exp $
+# $Id: page.py,v 1.35 2009-10-16 09:59:33 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -64,7 +64,8 @@ def wsgi_loop(main):
                     continue
                 os.environ[k] = v
 
-            response = main(fs)
+            cookies = Cookie.BaseCookie(os.environ.get('HTTP_COOKIE', ''))
+            response = main(fs, cookies=cookies)
 
             status = "200 OK"
             if isinstance(response, HttpResponseRedirect):
@@ -155,17 +156,12 @@ class Invite(object):
     id = 0
     num_invites = 0
 
-    def __init__(self):
+    def __init__(self, token):
         self._postcodes = []
+        self.token = token
 
-        cookie_str = ''
-        if 'HTTP_COOKIE' in os.environ:
-            cookie_str = os.environ['HTTP_COOKIE']
-        cookies = Cookie.BaseCookie(cookie_str)
-        if not 'token' in cookies:
-            return
-        self.token = cookies['token']
-        self.check()
+        if token:
+            self.check()
 
     def __str__(self):
         return self.token

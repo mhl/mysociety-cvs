@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.23 2009-10-08 15:27:51 duncan Exp $
+# $Id: invite.cgi,v 1.24 2009-10-16 09:59:33 duncan Exp $
 #
 
 import sys
@@ -80,7 +80,7 @@ def parse_token(token):
 #####################################################################
 # Main FastCGI loop
     
-def main(fs):
+def main(fs, cookies=None):
     # Someone signing themselves up
     if 'email' in fs:
         return invite_view(fs['email'])

@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: proxy.cgi,v 1.17 2009-06-04 14:45:13 francis Exp $
+# $Id: proxy.cgi,v 1.18 2009-10-16 09:59:33 duncan Exp $
 #
 
 import sys, os.path, os, re, urllib
@@ -18,7 +18,7 @@ mysociety.config.set_file("../conf/general")
 from page import wsgi_loop, slurp_file
 from django.http import HttpResponse, HttpResponseRedirect
 
-def main(fs):
+def main(fs, cookies=None):
     dir = mysociety.config.get('CLOUDMADE_PROXY_CACHE_DIR', '/colwork/cloudmade-tiles')
     url = fs.get('u', '')
     if url:

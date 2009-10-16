@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.129 2009-10-16 09:40:32 duncan Exp $
+# $Id: index.cgi,v 1.130 2009-10-16 09:59:33 duncan Exp $
 #
 
 import sys
@@ -467,11 +467,14 @@ def stats_view():
 #####################################################################
 # Main FastCGI loop
 
-def main(fs):
+def main(fs, cookies=None):
+    cookies = cookies or {}
+
     if 'stats' in fs:
         return stats_view()
 
-    invite = page.Invite()
+    invite = page.Invite(cookies.get('token'))
+
     if not invite.id:
         return HttpResponseRedirect('/signup')
 
