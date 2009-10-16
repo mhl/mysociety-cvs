@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.131 2009-10-16 19:16:14 duncan Exp $
+# $Id: index.cgi,v 1.132 2009-10-16 20:03:22 duncan Exp $
 #
 
 import sys
@@ -449,7 +449,7 @@ def main(fs, cookies=None):
     if 'stats' in fs:
         return stats_view()
 
-    invite = page.Invite(cookies.get('token'))
+    invite = page.Invite(cookies.get('token').value)
 
     # Everything below currently needs an invite.
     # This will redirect if invite is missing.
