@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.128 2009-10-15 18:04:42 duncan Exp $
+# $Id: index.cgi,v 1.129 2009-10-16 09:40:32 duncan Exp $
 #
 
 import sys
@@ -35,13 +35,6 @@ tmpwork = mysociety.config.get('TMPWORK')
 
 #####################################################################
 # Class representing the parameters for a map, and its status
-
-def get_queue_state():
-    state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
-    db().execute('''SELECT state, count(*) FROM map GROUP BY state''')
-    for row in db().fetchall():
-        state[row[0]] = row[1]
-    return state
 
 class Map:
     '''Represents the parameters needed to make one public transport map.
@@ -459,18 +452,24 @@ def log_email(fs, email):
 #         'route_str' : route_str
 #     }, mimetype='text/xml')
 
+def stats_view():
+    state = storage.get_map_queue_state()
+    current_connections = page.current_proxy_connections()
+    return page.render_to_response(
+        'map-stats.html', 
+        {
+            'state': state,
+            'current_connections' : current_connections, 
+            'max_connections' : page.max_connections,
+            }
+        )
+
 #####################################################################
 # Main FastCGI loop
 
 def main(fs):
     if 'stats' in fs:
-        state = storage.get_map_queue_state()
-        current_connections = page.current_proxy_connections()
-        return page.render_to_response('map-stats.html', {
-            'state': state,
-            'current_connections' : current_connections, 
-            'max_connections' : page.max_connections 
-        })
+        return stats_view()
 
     invite = page.Invite()
     if not invite.id:
