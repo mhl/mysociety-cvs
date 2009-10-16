@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.33 2009-10-15 18:04:41 duncan Exp $
+# $Id: page.py,v 1.34 2009-10-16 09:40:00 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -154,9 +154,10 @@ def email_invite(invite, debug=False):
 class Invite(object):
     id = 0
     num_invites = 0
-    _postcodes = []
 
     def __init__(self):
+        self._postcodes = []
+
         cookie_str = ''
         if 'HTTP_COOKIE' in os.environ:
             cookie_str = os.environ['HTTP_COOKIE']
