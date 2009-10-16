@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.35 2009-10-16 09:59:33 duncan Exp $
+# $Id: page.py,v 1.36 2009-10-16 19:16:13 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -102,8 +102,8 @@ def validate_email(address):
     else:
         return False
 
-def send_template_email(to, template, vars):
-    message = render_to_string(template, vars)
+def send_template_email(to, template, context):
+    message = render_to_string(template, context)
     subject = 'Message from Mapumental'
     m = re.match('Subject: (.*)\n', message)
     if m:
@@ -161,17 +161,13 @@ class Invite(object):
         self.token = token
 
         if token:
-            self.check()
+            token_row = storage.get_invite_by_token(token)
+
+            if token_row:
+                self.__dict__.update(token_row)
 
     def __str__(self):
         return self.token
-
-    def check(self):
-
-        token_row = storage.get_invite_by_token(self.token.value)
-        
-        if token_row:
-            self.__dict__.update(token_row)
 
     @property
     def postcodes(self):

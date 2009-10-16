@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.9 2009-10-15 18:04:41 duncan Exp $
+# $Id: psql_storage.py,v 1.10 2009-10-16 19:16:13 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -92,9 +92,71 @@ def get_nearest_station(easting, northing):
         LIMIT 1''' %{'easting':easting, 'northing':northing})
     return db().fetchone()
 
-def get_map_queue_state():
+def get_station_coords(station_id):
+    db().execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (station_id,))
+    return db().fetchone()
+
+def get_map_queue_state(map_id=None):
     state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
     db().execute('''SELECT state, count(*) FROM map GROUP BY state''')
+
     for row in db().fetchall():
         state[row[0]] = row[1]
+
+    if map_id:
+        db().execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
+        state['ahead'] = db().fetchone()[0]
+        state['to_make'] = state['ahead'] + state['working']
+    else:
+        state['to_make'] = state['new'] + state['working'] + 1
+
     return state
+
+
+def queue_map(
+    target_station_id=None, 
+    target_postcode=None, 
+    target_e=None,
+    target_n=None,
+    target_direction=None,
+    target_time=None,
+    target_limit_time=None,
+    target_date=None,
+    ):
+
+    db().execute('BEGIN')
+    db().execute("SELECT nextval('map_id_seq')")
+
+    map_id = db().fetchone()[0]
+
+    try:
+        db().execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date))
+
+    except:
+        db().execute('ROLLBACK')
+        raise
+
+    db().execute('COMMIT')
+
+    return map_id
+
+def get_average_generation_time(
+    target_direction=None,
+    target_time=None,
+    target_limit_time=None,
+    target_date=None,
+    ):
+    # Take average time for maps with the same times, taken from the last
+    # day, or last 50 at most.
+    # XXX will need to make times ranges if we let people enter any time in UI
+    db().execute('''SELECT AVG(working_took) FROM 
+        ( SELECT working_took FROM map WHERE
+            target_direction = %s AND
+            target_time = %s AND target_limit_time = %s AND target_date = %s AND
+            working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval 
+            ORDER BY working_start DESC LIMIT 50
+        ) AS working_took
+        ''', 
+        (target_direction, target_time, target_limit_time, target_date))
+    avg_time, = db().fetchone()
+    return avg_time or 30

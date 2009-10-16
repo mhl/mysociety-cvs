@@ -6,20 +6,17 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.130 2009-10-16 09:59:33 duncan Exp $
+# $Id: index.cgi,v 1.131 2009-10-16 19:16:14 duncan Exp $
 #
 
 import sys
 import os.path
 sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
-import psycopg2
-import psycopg2.errorcodes
 
 import mysociety.config
 mysociety.config.set_file("../conf/general")
 
 import page
-#from page import *
 import mysociety.mapit
 from mysociety.rabx import RABXException
 
@@ -47,8 +44,6 @@ class Map:
     XXX Does lots of database things not easily tested in doctest
     '''
 
-    state = {}
-
     # Given URL parameters, look up parameters of map
     def __init__(self, fs):
         # Be sure to properly sanitise any inputs read from fs into this
@@ -59,9 +54,7 @@ class Map:
         if 'station_id' in fs:
             # target is specific station
             self.text_id = page.sanitise_station_id(fs['station_id'])
-            db().execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (self.text_id,))
-            row = db().fetchone()
-            self.target_station_id, self.target_e, self.target_n = row
+            self.target_station_id, self.target_e, self.target_n = storage.get_station_coords(self.text_id)
             self.target_postcode = None
         else:
             # target is a grid reference
@@ -87,6 +80,7 @@ class Map:
                 self.target_direction = direction
             else:
                 raise Exception("Bad direction parameter specified, only arrive_by and depart_after supported")
+
         self.target_time = isoweb.default_target_time
         if 'target_time' in fs:
             self.target_time = int(fs['target_time'])
@@ -117,37 +111,6 @@ class Map:
         else:
             (self.id, self.current_state, self.working_server) = row
 
-    def current_generation_time(self):
-        # Take average time for maps with the same times, taken from the last
-        # day, or last 50 at most.
-        # XXX will need to make times ranges if we let people enter any time in UI
-        db().execute('''SELECT AVG(working_took) FROM 
-            ( SELECT working_took FROM map WHERE
-                target_direction = %s AND
-                target_time = %s AND target_limit_time = %s AND target_date = %s AND
-                working_start > (SELECT MAX(working_start) FROM map) - '1 day'::interval 
-                ORDER BY working_start DESC LIMIT 50
-            ) AS working_took
-            ''', 
-            (self.target_direction, self.target_time, self.target_limit_time, self.target_date))
-        avg_time, = db().fetchone()
-        return avg_time or 30
-
-    # How far is making this map? 
-    def get_progress_info(self):
-        self.state = storage.get_map_queue_state()
-
-        if self.id:
-            db().execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (self.id,))
-            self.state['ahead'] = db().fetchone()[0]
-            self.maps_to_be_made = self.state['ahead'] + self.state['working']
-        else:
-            self.maps_to_be_made = self.state['new'] + self.state['working'] + 1
-
-        self.concurrent_map_makers = self.state['working']
-        if self.concurrent_map_makers < 1:
-            self.concurrent_map_makers = 1
-
     def title(self):
         # XXX Currently just location, needs to include arrival time etc.
         if self.target_station_id:
@@ -170,14 +133,17 @@ class Map:
             return 'from the chosen starting point'
 
     # Merges hashes for URL into dict and return
-    def add_url_params(self, d):
-        new_d = d.copy()
+    def get_url_params(self):
+        new_d = {}
+
         if self.target_station_id:
-            new_d.update( { 'station_id' : self.target_station_id } )
+            new_d['station_id'] = self.target_station_id
         elif self.target_postcode:
-            new_d.update( { 'target_postcode': self.target_postcode } )
+            new_d['target_postcode'] =  self.target_postcode
         else:
-            new_d.update( { 'target_e' : self.target_e, 'target_n' : self.target_n } )
+            new_d['target_e'] = self.target_e
+            new_d['target_n'] = self.target_n
+
         return new_d
 
     # Construct own URL
@@ -216,32 +182,19 @@ class Map:
             ret = ret + "&"
         return ret
 
-    # Start off generation of map!
-    # Returns False if the insert failed due to an integrity error
-    # True otherwise
     def start_generation(self):
-        db().execute('BEGIN')
-        db().execute("SELECT nextval('map_id_seq')")
-        self.id = db().fetchone()[0]
-        try:
-            db().execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (self.id, 'new', self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
-        except psycopg2.IntegrityError, e:
-            db().execute('ROLLBACK')
-            if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
-                # The integrity error is because of a unique key violation - ie. an
-                # identical row has appeared in the milliseconds since we looked
-                self.id = None
-                return False
-            else:
-                raise
-        except:
-            db().execute('ROLLBACK')
-            raise
-        db().execute('COMMIT')
-        if 'new' in self.state:
-            self.state['new'] += 1
-            self.state['ahead'] = self.state['new']
-        return True
+        self.id = storage.queue_map(self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date)
+
+#         if 'new' in self.state:
+#             self.state['new'] += 1
+
+#             # Duncan: I'm confused as to what this next line does. Why
+#             # would we want to change the number of maps ahead in the
+#             # queue to state['new']?
+#             self.state['ahead'] = self.state['new']
+
+        # This should be True if the map has been queued, and false, otherwise.
+        return self.id
 
     def target_time_formatted(self):
         return isoweb.format_time(self.target_time)
@@ -253,7 +206,7 @@ def check_postcode(pc, invite):
     """Given a postcode, look up grid reference and redirect to a URL
     containing that"""
 
-    vars = {
+    context = {
         'invite': invite,
         'postcode': pc,
     }
@@ -262,36 +215,37 @@ def check_postcode(pc, invite):
     try:
         f = mysociety.mapit.get_location(pc)
     except RABXException, e:
-        vars['error'] = e.text
-        return page.render_to_response('index.html', vars)
+        context['error'] = e.text
+        return page.render_to_response('index.html', context)
 
     #(station, station_long, station_id) = isoweb.nearest_station(E, N)
     #if not station:
     #    return page.render_to_response('index.html', { 'error': 'Could not find a station or bus stop :(' })
 
     if f['coordsyst'] == 'I':
-        vars['error'] = u'I\u2019m afraid we don\u2019t have information for Northern Ireland.'
-        return page.render_to_response('index.html', vars)
+        context['error'] = u'I\u2019m afraid we don\u2019t have information for Northern Ireland.'
+        return page.render_to_response('index.html', context)
 
     # Canonicalise it, and redirect to that URL
     pc = page.sanitise_postcode(pc)
 
     return HttpResponseRedirect('/postcode/%s' % (pc))
 
-def map_complete(map, invite):
+
+def map_complete(map_object, invite):
     # Check there is a route file
-    filename = os.path.join(tmpwork, '%s.iso' % str(map.id))
+    filename = os.path.join(tmpwork, '%s.iso' % str(map_object.id))
     if not os.path.exists(filename):
-        return page.render_to_response('map-noiso.html', { 'map_id' : map.id })
+        return page.render_to_response('map-noiso.html', { 'map_id' : map_object.id })
     # Let's show the map
-    if map.target_direction == 'arrive_by':
-        initial_minutes = abs(map.target_time - map.target_limit_time) - 60
+    if map_object.target_direction == 'arrive_by':
+        initial_minutes = abs(map_object.target_time - map_object.target_limit_time) - 60
     else:
         initial_minutes = 60
     return page.render_to_response('map.html', {
-        'map': map,
+        'map': map_object,
         'tile_web_host' : mysociety.config.get('TILE_WEB_HOST'),
-        'show_max_minutes': abs(map.target_time - map.target_limit_time),
+        'show_max_minutes': abs(map_object.target_time - map_object.target_limit_time),
         'initial_minutes': initial_minutes,
         'invite': invite,
         'show_dropdown': len(invite.postcodes) > 3,
@@ -299,58 +253,68 @@ def map_complete(map, invite):
 
 def map(fs, invite):
     # Look up state of map etc.
-    map = Map(fs)
-
-    # If the load is too high on the server, don't allow new map
-    current_connections = page.current_proxy_connections()
-    if current_connections >= page.max_connections:
-        return page.render_to_response('map-http-overload.html', map.add_url_params({ 'current_connections' : current_connections, 'max_connections' : page.max_connections }))
+    map_object = Map(fs)
 
     # If it is complete, then render it
-    if map.current_state == 'complete':
-        return map_complete(map, invite)
+    if map_object.current_state == 'complete':
+        return map_complete(map_object, invite)
 
     # See how long it will take to make it
-    map.get_progress_info()
-    generation_time = map.current_generation_time()
-    approx_waiting_time = map.maps_to_be_made * generation_time / float(map.concurrent_map_makers)
+    map_progress = storage.get_map_queue_state(map_object.id)
+
+    generation_time = storage.get_average_generation_time(
+        target_direction=map_object.target_direction,
+        target_time=map_object.target_time,
+        target_limit_time=map_object.target_limit_time,
+        target_date=map_object.target_date,
+        )
+
+    approx_waiting_time = map_progress['to_make'] * generation_time / float(min(map_progress['working'], 1))
+
     # ... if too long, ask for email
-    if map.current_state in ('new', 'working') and approx_waiting_time > 60:
-        return page.render_to_response('map-provideemail.html', map.add_url_params({
-            'title': map.title(),
-            'state': map.state,
+    if map_object.current_state in ('new', 'working') and approx_waiting_time > 60:
+        context = {
+            'title': map_object.title(),
+            'state': map_progress,
             'approx_waiting_time': int(approx_waiting_time),
-        }))
+            }
+
+        context.update(map_object.get_url_params())
+
+        return page.render_to_response('map-provideemail.html', context)
 
     # If map isn't being made , set it going
-    if map.id is None:
-        if not map.start_generation():
-            map = Map(fs) # Fetch it again, it must be there now
+    if not map_object.id:
+        try:
+            map_object.start_generation()
+        except storage.AlreadyQueuedError:
+            # Looks like someone else has put this kind of map in the queue
+            # let's call map again from scratch.
+            return map(fs, invite)
 
-    # Please wait...
-    if map.current_state == 'complete':
-        return map_complete(map, invite)
-    elif map.current_state == 'working':
-        server, server_port = map.working_server.split(':')
+    if map_object.current_state == 'working':
+        server, server_port = map_object.working_server.split(':')
         return page.render_to_response('map-working.html', {
-            'title': map.title(),
+            'title': map_object.title(),
             'approx_waiting_time': round(generation_time),
-            'state' : map.state,
+            'state' : map_progress,
             'server': server,
             'server_port': server_port,
             'refresh': int(generation_time)<5 and int(generation_time) or 5,
         })
-    elif map.current_state == 'error':
-        return page.render_to_response('map-error.html', { 'map_id' : map.id })
-    elif map.current_state == 'new':
+
+    if map_object.current_state == 'error':
+        return page.render_to_response('map-error.html', { 'map_id' : map_object.id })
+    
+    if map_object.current_state == 'new':
         return page.render_to_response('map-pleasewait.html', {
-            'title': map.title(),
+            'title': map_object.title(),
             'approx_waiting_time': int(approx_waiting_time),
-            'state' : map.state,
+            'state' : map_progress,
             'refresh': 2,
         })
-    else:
-        raise Exception("unknown state " + map.current_state)
+
+    raise Exception("unknown state " + map_object.current_state)
 
 # Email has been given, remember to mail them when map is ready
 def log_email(fs, email):
@@ -360,14 +324,18 @@ def log_email(fs, email):
             'email': email,
         })
     # Okay, we have an email, set off the process
-    map = Map(fs)
-    if map.id is None:
-        if not map.start_generation():
-            map = Map(fs) # Fetch it again
+    map_object = Map(fs)
+
+    if not map_object.id:
+        try:
+            map_object.start_generation()
+        except storage.AlreadyQueuedError:
+            map_object = Map(fs) # Fetch it again
 
     db().execute('BEGIN')
-    db().execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map.id))
+    db().execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map_object.id))
     db().execute('COMMIT')
+
     return page.render_to_response('map-provideemail-thanks.html')
 
 # Used when in Flash you click on somewhere to get the route
@@ -464,6 +432,14 @@ def stats_view():
             }
         )
 
+def check_invite(invite):
+    # Currently this chucks the user out to signup if they
+    # don't have an invite. Later we'll want to modify this
+    # to create an invite on the fly.
+    if not invite.id:
+        return HttpResponseRedirect('/signup')
+
+
 #####################################################################
 # Main FastCGI loop
 
@@ -475,25 +451,41 @@ def main(fs, cookies=None):
 
     invite = page.Invite(cookies.get('token'))
 
-    if not invite.id:
-        return HttpResponseRedirect('/signup')
+    # Everything below currently needs an invite.
+    # This will redirect if invite is missing.
+    check_invite(invite)
 
     #got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
     got_map_spec = ('target_postcode' in fs)
 
-    if 'lat' in fs: # Flash request for route
-        return get_route(fs, float(fs['lat']), float(fs['lon']))
-    elif 'pc' in fs: # Front page submission
+# Duncan - not currently in use.
+#    if 'lat' in fs: # Flash request for route
+#        return get_route(fs, float(fs['lat']), float(fs['lon']))
+
+    if 'pc' in fs: # Front page submission
         return check_postcode(fs['pc'], invite)
-    elif got_map_spec and 'email' in fs: # Overloaded email request
+
+    if got_map_spec and 'email' in fs: # Overloaded email request
         return log_email(fs, fs['email'])
-    elif got_map_spec: # Page for generating/ displaying map
+
+    if got_map_spec: # Page for generating/ displaying map
         postcode = page.sanitise_postcode(fs['target_postcode'])
         postcodes = invite.postcodes
         if (postcode, utils.canonicalise_postcode(postcode)) not in postcodes:
             if invite.maps_left <= 0:
                 return page.render_to_response('beta-limit.html', { 'postcodes': postcodes })
             invite.add_postcode(postcode)
+
+        # If the load is too high on the server, don't allow new map
+        current_connections = page.current_proxy_connections()
+        if current_connections >= page.max_connections:
+            context = {
+                'current_connections': current_connections, 
+                'max_connections': page.max_connections
+                }
+
+            return page.render_to_response('map-http-overload.html', context)
+
         return map(fs, invite)
 
     # Front page display
