@@ -42,6 +42,9 @@
 			</a>
 		</div>
 
+<?php
+    if ($_SERVER['SERVER_NAME'] != 'cee.mysociety.org') {
+?>
 		<p id="pHeaderDonate" >
 			<a id="aPiggy" href="/donate/" title="Donate to mySociety" >
 				&nbsp;
@@ -50,6 +53,9 @@
 			<br/>
 			<a href="/donate/">Donate to mySociety</a>
 		</p>
+<?php
+    }
+?>
 	</div>
 
 	<!-- Menu -->
