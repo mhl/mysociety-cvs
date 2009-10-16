@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.134 2009-10-16 20:21:04 duncan Exp $
+# $Id: index.cgi,v 1.135 2009-10-16 20:39:20 duncan Exp $
 #
 
 import sys
@@ -436,8 +436,8 @@ def check_invite(invite):
     # Currently this chucks the user out to signup if they
     # don't have an invite. Later we'll want to modify this
     # to create an invite on the fly.
-    if not invite.id:
-        return HttpResponseRedirect('/signup')
+    return invite.id
+
 
 
 #####################################################################
@@ -451,7 +451,8 @@ def main(fs, cookies=None):
 
     # Everything below currently needs an invite.
     # This will redirect if invite is missing.
-    check_invite(invite)
+    if not check_invite(invite):
+        return HttpResponseRedirect('/signup')
 
     #got_map_spec = ('station_id' in fs or 'target_e' in fs or 'target_postcode' in fs)
     got_map_spec = ('target_postcode' in fs)
