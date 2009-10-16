@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.132 2009-10-16 20:03:22 duncan Exp $
+# $Id: index.cgi,v 1.133 2009-10-16 20:06:16 duncan Exp $
 #
 
 import sys
@@ -269,7 +269,7 @@ def map(fs, invite):
         target_date=map_object.target_date,
         )
 
-    approx_waiting_time = map_progress['to_make'] * generation_time / float(min(map_progress['working'], 1))
+    approx_waiting_time = map_progress['to_make'] * generation_time / float(max(map_progress['working'], 1))
 
     # ... if too long, ask for email
     if map_object.current_state in ('new', 'working') and approx_waiting_time > 60:
