@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.24 2009-10-16 09:59:33 duncan Exp $
+# $Id: invite.cgi,v 1.25 2009-10-16 10:01:46 duncan Exp $
 #
 
 import sys
@@ -95,7 +95,7 @@ def main(fs, cookies=None):
         return parse_token(fs['token'])
 
     # Invite system
-    invite = page.Invite()
+    invite = page.Invite(cookies.get('token'))
     if not invite.num_invites:
         return page.render_to_response('invite-none.html')
     if 'friend' in fs:
