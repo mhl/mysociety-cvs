@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.36 2009-10-16 19:16:13 duncan Exp $
+# $Id: page.py,v 1.37 2009-10-19 17:27:19 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -30,6 +30,8 @@ from coldb import db
 
 import storage
 import utils
+import isoweb
+import geoconvert
 
 def render_to_response(
     template, 
@@ -182,6 +184,191 @@ class Invite(object):
     def add_postcode(self, pc):
         storage.add_postcode(self.id, pc)
         self._postcodes.append( (pc, utils.canonicalise_postcode(pc)) )
+
+#####################################################################
+# Class representing the parameters for a map, and its status
+
+class Map(object):
+    id = None
+    working_server = None
+
+    target_station_id = None
+    target_postcode = None
+
+    def __init__(self, 
+                 easting, 
+                 northing, 
+                 target_direction=None, 
+                 target_time=None,
+                 target_limit_time=None,
+                 ):
+        self.target_e = easting
+        self.target_n = northing
+
+        # Used for centring map
+        self.lat, self.lon = geoconvert.national_grid_to_wgs84(self.target_e, self.target_n)
+
+        # Times, directions and date
+        if target_direction:
+            if target_direction in ['arrive_by', 'depart_after']:
+                self.target_direction = target_direction
+            else:
+                raise Exception("Bad direction parameter specified, only arrive_by and depart_after supported")
+        else:
+            self.target_direction = isoweb.default_target_direction
+            
+        self.target_time = target_time or isoweb.default_target_time
+        self.target_limit_time = target_limit_time or isoweb.default_target_limit_time(self.target_direction)
+
+        # XXX date is fixed for now
+        self.target_date = isoweb.default_target_date
+
+        self.update_status()
+
+    def update_status(self):
+        status = storage.get_map_status(
+            self.target_direction,
+            self.target_time,
+            self.target_limit_time,
+            self.target_date,
+            easting = self.target_e,
+            northing = self.target_n,
+            )
+
+        if status:
+            self.id, self.current_status, self.working_server = status
+        else:
+            self.current_status = 'new'
+
+    # Construct own URL, ensure ends inside query parameters so can add more
+    # (Flash just appends strings to this URL for e.g. route URL)
+    def url_with_params(self):
+        ret = self.url()
+        if not '?' in ret:
+            ret = ret + "?"
+        else:
+            ret = ret + "&"
+        return ret
+
+    def target_time_formatted(self):
+        return isoweb.format_time(self.target_time)
+    
+    def flash_direction(self):
+        if self.target_direction == 'arrive_by':
+            return 'arrive'
+        elif self.target_direction == 'depart_after':
+            return 'depart'
+
+    def flash_hover_text(self):
+        if self.target_direction == 'arrive_by':
+            return 'to the chosen destination'
+        elif self.target_direction == 'depart_after':
+            return 'from the chosen starting point'
+
+    def title(self):
+        # XXX Currently just location, needs to include arrival time etc.
+        return '%d,%d' % (self.target_e, self.target_n)
+
+    def get_base_url(self):
+        return "/grid/" + str(self.target_e) + "/" + str(self.target_n)
+
+    # Construct own URL
+    def url(self):
+        url = self.get_base_url()
+
+        url_params = []
+        if self.target_direction != isoweb.default_target_direction:
+            url_params.append("target_direction=" + str(self.target_direction))
+        if self.target_time != isoweb.default_target_time:
+            url_params.append("target_time=" + str(self.target_time))
+        if self.target_limit_time != isoweb.default_target_limit_time(self.target_direction):
+            url_params.append("target_limit_time=" + str(self.target_limit_time))
+        if len(url_params) > 0:
+            url = url + "?" + "&".join(url_params)
+        
+        return url
+
+    # Merges hashes for URL into dict and return
+    def get_url_params(self):
+        return {'target_e': self.target_e, 'target_n': self.target_n}
+
+    def start_generation(self):
+        self.id = storage.queue_map(self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date)
+
+#         if 'new' in self.state:
+#             self.state['new'] += 1
+
+#             # Duncan: I'm confused as to what this next line does. Why
+#             # would we want to change the number of maps ahead in the
+#             # queue to state['new']?
+#             self.state['ahead'] = self.state['new']
+
+        # This should be True if the map has been queued, and false, otherwise.
+        return self.id
+                                                                                       
+class StationMap(Map):
+    def __init__(self, station_id, **kwargs):
+        self.text_id = sanitise_station_id(station_id)
+        self.target_station_id, easting, northing = storage.get_station_coords(self.text_id)
+
+        super(StationMap, self).__init__(int(easting), int(northing), **kwargs)
+
+    def update_status(self):
+        status = storage.get_map_status(
+            self.target_direction,
+            self.target_time,
+            self.target_limit_time,
+            self.target_date,
+            station_id = self.target_station_id
+            )
+
+        if status:
+            self.id, self.current_status, self.working_server = status
+        else:
+            self.current_status = 'new'
+
+    def title(self):
+        return self.text_id
+
+    def get_base_url(self):
+        return "/station/" + self.target_station_id
+                                                                                       
+    def get_url_params(self):
+        return {'station_id': self.target_station_id}
+
+class PostcodeMap(Map):
+    def __init__(self, postcode, **kwargs):
+        self.target_postcode = sanitise_postcode(postcode)
+        f = mysociety.mapit.get_location(self.target_postcode)
+
+        super(PostcodeMap, self).__init__(int(f['easting']), int(f['northing']), **kwargs)
+
+    def title(self):
+        return utils.canonicalise_postcode(self.target_postcode)
+
+    def get_base_url(self):
+        return "/postcode/" + self.target_postcode
+
+    def get_url_params(self):
+        return {'target_postcode': self.target_postcode}
+
+def create_map_from_fs(fs):
+    postcode = fs.get('postcode')
+    if postcode:
+        return PostcodeMap(postcode)
+    
+    station_id = fs.get('station_id')
+    if station_id:
+        return StationMap(station_id)
+
+    easting = fs.get('target_e')
+    northing = fs.get('target_n')
+
+    if easting and northing:
+        return Map(int(easting), int(northing))
+
+    raise Exception("Insufficient info to find a map.")
+
 
 # Random token generation
 def random_token():

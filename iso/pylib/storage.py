@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.10 2009-10-19 14:13:40 duncan Exp $
+# $Id: storage.py,v 1.11 2009-10-19 17:27:19 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -178,6 +178,32 @@ def queue_map(
             raise AlreadyQueuedError
         else:
             raise
+
+def get_map_status(
+    direction,
+    target_time,
+    limit_time,
+    target_date,
+    easting=None,
+    northing=None,
+    station_id=None,
+    ):
+    """Returns the id of the map, the current state, and the server working
+    on it (as a tuple) if it is queued, or None, if not.
+
+    Requires inputs of direction, target_time, limit_time, target_date, and
+    either both easting and northing or station_id
+    """
+
+    common_args = (direction, target_time, limit_time, target_date)
+
+    if station_id:
+        return psql_storage.get_map_status_by_station(station_id, *common_args)
+            
+    elif easting and northing:
+        psql_storage.get_map_status_by_position(easting, northing, *common_args)
+    else:
+        raise Exception('Insufficient info to find map.')
 
 def get_average_generation_time(
     target_direction=None,

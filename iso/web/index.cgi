@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.136 2009-10-19 14:13:42 duncan Exp $
+# $Id: index.cgi,v 1.137 2009-10-19 17:27:19 duncan Exp $
 #
 
 import sys
@@ -22,181 +22,10 @@ from mysociety.rabx import RABXException
 
 from django.http import HttpResponseRedirect
 
-from coldb import db
-import geoconvert
-import isoweb
 import storage
 import utils
 
 tmpwork = mysociety.config.get('TMPWORK')
-
-#####################################################################
-# Class representing the parameters for a map, and its status
-
-class Map:
-    '''Represents the parameters needed to make one public transport map.
-    >>> map = Map({ 'target_postcode' : 'ox13dr' })
-    >>> map.title()
-    'OX1 3DR'
-    >>> map.url()
-    '/postcode/OX13DR'
-
-    XXX Does lots of database things not easily tested in doctest
-    '''
-    target_postcode = None
-    target_station_id = None
-
-    # Given URL parameters, look up parameters of map
-    def __init__(self, fs):
-        # Be sure to properly sanitise any inputs read from fs into this
-        # function, so they don't have characters that might need escaping in
-        # them. This will make URLs look nicer, and is also assumed by Map.url
-        # below.
-
-        if 'station_id' in fs:
-            # target is specific station
-            self.text_id = page.sanitise_station_id(fs['station_id'])
-            self.target_station_id, self.target_e, self.target_n = storage.get_station_coords(self.text_id)
-        else:
-            # target is a grid reference
-            if 'target_postcode' in fs:
-                self.target_postcode = page.sanitise_postcode(fs['target_postcode'])
-                f = mysociety.mapit.get_location(self.target_postcode)
-                self.target_e = int(f['easting'])
-                self.target_n = int(f['northing'])
-            else:
-                self.target_e = int(fs['target_e'])
-                self.target_n = int(fs['target_n'])
-
-        # Used for centring map
-        self.lat, self.lon = geoconvert.national_grid_to_wgs84(self.target_e, self.target_n)
-
-        # Times, directions and date
-        self.target_direction = isoweb.default_target_direction
-        if 'target_direction' in fs:
-            direction = fs['target_direction']
-            if direction in ['arrive_by', 'depart_after']:
-                self.target_direction = direction
-            else:
-                raise Exception("Bad direction parameter specified, only arrive_by and depart_after supported")
-
-        self.target_time = int(fs.get('target_time', isoweb.default_target_time))
-        self.target_limit_time = int(
-            fs.get('target_limit_time',
-                   isoweb.default_target_limit_time(self.target_direction))
-            )
-
-        # XXX date is fixed for now
-        self.target_date = isoweb.default_target_date
-
-        # Get record from database
-        if self.target_station_id:
-            db().execute('''SELECT id, state, working_server FROM map WHERE 
-                target_station_id = %s AND 
-                target_direction = %s AND
-                target_time = %s AND target_limit_time = %s 
-                AND target_date = %s''', 
-                (self.target_station_id, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
-        else:
-            db().execute('''SELECT id, state, working_server FROM map WHERE 
-                target_e = %s AND target_n = %s AND 
-                target_direction = %s AND
-                target_time = %s AND target_limit_time = %s 
-                AND target_date = %s''', 
-                (self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date))
-        row = db().fetchone()
-        if row is None:
-            (self.id, self.current_state, self.working_server) = (None, 'new', None)
-        else:
-            (self.id, self.current_state, self.working_server) = row
-
-    def title(self):
-        # XXX Currently just location, needs to include arrival time etc.
-        if self.target_station_id:
-            return self.text_id
-        elif self.target_postcode:
-            return utils.canonicalise_postcode(self.target_postcode)
-        else:
-            return '%d,%d' % (self.target_e, self.target_n)
-
-    def flash_direction(self):
-        if self.target_direction == 'arrive_by':
-            return 'arrive'
-        elif self.target_direction == 'depart_after':
-            return 'depart'
-
-    def flash_hover_text(self):
-        if self.target_direction == 'arrive_by':
-            return 'to the chosen destination'
-        elif self.target_direction == 'depart_after':
-            return 'from the chosen starting point'
-
-    # Merges hashes for URL into dict and return
-    def get_url_params(self):
-        new_d = {}
-
-        if self.target_station_id:
-            new_d['station_id'] = self.target_station_id
-        elif self.target_postcode:
-            new_d['target_postcode'] =  self.target_postcode
-        else:
-            new_d['target_e'] = self.target_e
-            new_d['target_n'] = self.target_n
-
-        return new_d
-
-    # Construct own URL
-    def url(self):
-        # We assume members have been properly sanitised when loaded, so there
-        # are no characters that need escaping.
-
-        if self.target_station_id:
-            url = "/station/" + self.target_station_id
-        elif self.target_postcode:
-            url = "/postcode/" + self.target_postcode
-        elif self.target_e and self.target_n:
-            url = "/grid/" + str(self.target_e) + "/" + str(self.target_n)
-        else:
-            raise Exception("can't make URL")
-
-        url_params = []
-        if self.target_direction != isoweb.default_target_direction:
-            url_params.append("target_direction=" + str(self.target_direction))
-        if self.target_time != isoweb.default_target_time:
-            url_params.append("target_time=" + str(self.target_time))
-        if self.target_limit_time != isoweb.default_target_limit_time(self.target_direction):
-            url_params.append("target_limit_time=" + str(self.target_limit_time))
-        if len(url_params) > 0:
-            url = url + "?" + "&".join(url_params)
-        
-        return url
-
-    # Construct own URL, ensure ends inside query parameters so can add more
-    # (Flash just appends strings to this URL for e.g. route URL)
-    def url_with_params(self):
-        ret = self.url()
-        if not '?' in ret:
-            ret = ret + "?"
-        else:
-            ret = ret + "&"
-        return ret
-
-    def start_generation(self):
-        self.id = storage.queue_map(self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date)
-
-#         if 'new' in self.state:
-#             self.state['new'] += 1
-
-#             # Duncan: I'm confused as to what this next line does. Why
-#             # would we want to change the number of maps ahead in the
-#             # queue to state['new']?
-#             self.state['ahead'] = self.state['new']
-
-        # This should be True if the map has been queued, and false, otherwise.
-        return self.id
-
-    def target_time_formatted(self):
-        return isoweb.format_time(self.target_time)
 
 #####################################################################
 # Controllers
@@ -250,9 +79,9 @@ def map_complete(map_object, invite):
         'show_dropdown': len(invite.postcodes) > 3,
     })
 
-def map(fs, invite):
+def render_map(fs, invite):
     # Look up state of map etc.
-    map_object = Map(fs)
+    map_object = page.create_map_from_fs(fs)
 
     # If it is complete, then render it
     if map_object.current_state == 'complete':
@@ -289,7 +118,7 @@ def map(fs, invite):
         except storage.AlreadyQueuedError:
             # Looks like someone else has put this kind of map in the queue
             # let's call map again from scratch.
-            return map(fs, invite)
+            return render_map(fs, invite)
 
     if map_object.current_state == 'working':
         server, server_port = map_object.working_server.split(':')
@@ -323,13 +152,13 @@ def log_email(fs, email):
             'email': email,
         })
     # Okay, we have an email, set off the process
-    map_object = Map(fs)
+    map_object = page.create_map_from_fs(fs)
 
     if not map_object.id:
         try:
             map_object.start_generation()
         except storage.AlreadyQueuedError:
-            map_object = Map(fs) # Fetch it again
+            map_object = page.create_map_from_fs(fs) # Fetch it again
 
     storage.queue_map_email(email, map_object.id)
 
@@ -482,7 +311,7 @@ def main(fs, cookies=None):
 
             return page.render_to_response('map-http-overload.html', context)
 
-        return map(fs, invite)
+        return render_map(fs, invite)
 
     # Front page display
     return page.render_to_response('index.html', {

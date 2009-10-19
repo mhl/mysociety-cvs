@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.11 2009-10-19 14:13:40 duncan Exp $
+# $Id: psql_storage.py,v 1.12 2009-10-19 17:27:19 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -140,6 +140,48 @@ def queue_map(
 
     return map_id
 
+
+def get_map_status_by_position(
+    easting,
+    northing,
+    direction,
+    target_time,
+    limit_time,
+    target_date,
+    ):
+    """Returns the id of the map, the current state, and the server working
+    on it (as a tuple) if it is queued, or None, if not."""
+
+    db().execute('''SELECT id, state, working_server FROM map WHERE 
+                target_e = %s AND target_n = %s AND 
+                target_direction = %s AND
+                target_time = %s AND target_limit_time = %s 
+                AND target_date = %s''', 
+                 (easting, northing, direction, 
+                  target_time, limit_time, target_date)
+                 )
+    return db().fetchone()
+
+def get_map_status_by_station(
+    station_id,
+    direction,
+    target_time,
+    limit_time,
+    target_date,
+    ):
+    """Returns the id of the map, the current state, and the server working
+    on it (as a tuple) if it is queued, on None, if not."""
+
+    db().execute('''SELECT id, state, working_server FROM map WHERE 
+                target_station_id = %s AND 
+                target_direction = %s AND
+                target_time = %s AND target_limit_time = %s 
+                AND target_date = %s''', 
+                 (station_id, direction, 
+                  target_time, limit_time, target_date)
+                 )
+    return db().fetchone()
+    
 def get_average_generation_time(
     target_direction=None,
     target_time=None,
