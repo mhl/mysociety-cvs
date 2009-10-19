@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.135 2009-10-16 20:39:20 duncan Exp $
+# $Id: index.cgi,v 1.136 2009-10-19 14:13:42 duncan Exp $
 #
 
 import sys
@@ -43,6 +43,8 @@ class Map:
 
     XXX Does lots of database things not easily tested in doctest
     '''
+    target_postcode = None
+    target_station_id = None
 
     # Given URL parameters, look up parameters of map
     def __init__(self, fs):
@@ -55,7 +57,6 @@ class Map:
             # target is specific station
             self.text_id = page.sanitise_station_id(fs['station_id'])
             self.target_station_id, self.target_e, self.target_n = storage.get_station_coords(self.text_id)
-            self.target_postcode = None
         else:
             # target is a grid reference
             if 'target_postcode' in fs:
@@ -64,10 +65,8 @@ class Map:
                 self.target_e = int(f['easting'])
                 self.target_n = int(f['northing'])
             else:
-                self.target_postcode = None
                 self.target_e = int(fs['target_e'])
                 self.target_n = int(fs['target_n'])
-            self.target_station_id = None
 
         # Used for centring map
         self.lat, self.lon = geoconvert.national_grid_to_wgs84(self.target_e, self.target_n)
@@ -81,12 +80,12 @@ class Map:
             else:
                 raise Exception("Bad direction parameter specified, only arrive_by and depart_after supported")
 
-        self.target_time = isoweb.default_target_time
-        if 'target_time' in fs:
-            self.target_time = int(fs['target_time'])
-        self.target_limit_time = isoweb.default_target_limit_time(self.target_direction)
-        if 'target_limit_time' in fs:
-            self.target_limit_time = int(fs['target_limit_time'])
+        self.target_time = int(fs.get('target_time', isoweb.default_target_time))
+        self.target_limit_time = int(
+            fs.get('target_limit_time',
+                   isoweb.default_target_limit_time(self.target_direction))
+            )
+
         # XXX date is fixed for now
         self.target_date = isoweb.default_target_date
 
@@ -332,9 +331,7 @@ def log_email(fs, email):
         except storage.AlreadyQueuedError:
             map_object = Map(fs) # Fetch it again
 
-    db().execute('BEGIN')
-    db().execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email, map_object.id))
-    db().execute('COMMIT')
+    storage.queue_map_email(email, map_object.id)
 
     return page.render_to_response('map-provideemail-thanks.html')
 

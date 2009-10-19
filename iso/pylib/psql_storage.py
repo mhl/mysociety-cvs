@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.10 2009-10-16 19:16:13 duncan Exp $
+# $Id: psql_storage.py,v 1.11 2009-10-19 14:13:40 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -160,3 +160,13 @@ def get_average_generation_time(
         (target_direction, target_time, target_limit_time, target_date))
     avg_time, = db().fetchone()
     return avg_time or 30
+
+
+
+def queue_map_email(email_address, map_id):
+    """Accepts an email address and a map_id and queues an 
+    email about that map to that email address.
+    """
+    db().execute('BEGIN')
+    db().execute('INSERT INTO email_queue (email, map_id) VALUES (%s, %s)', (email_address, map_id))
+    db().execute('COMMIT')

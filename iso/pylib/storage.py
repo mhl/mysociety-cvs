@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.9 2009-10-16 19:16:13 duncan Exp $
+# $Id: storage.py,v 1.10 2009-10-19 14:13:40 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -194,3 +194,9 @@ def get_average_generation_time(
         target_date=target_date,
         )
 
+def queue_map_email(email_address, map_id):
+    """Accepts an email address and a map_id and queues an 
+    email about that map to that email address.
+    """
+    psql_storage.queue_map_email(email_address, map_id)
+    
