@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.18 2009-10-20 16:38:15 duncan Exp $
+# $Id: psql_storage.py,v 1.19 2009-10-20 16:43:13 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -269,7 +269,7 @@ def get_average_generation_time(
     # Take average time for maps with the same times, taken from the last
     # day, or last 50 at most.
     # XXX will need to make times ranges if we let people enter any time in UI
-    db().execute('''SELECT AVG(working_took) FROM 
+    db().execute('''SELECT AVG(working_took) as average_time FROM 
         ( SELECT working_took FROM map WHERE
             target_direction = %s AND
             target_time = %s AND target_limit_time = %s AND target_date = %s AND
@@ -280,10 +280,7 @@ def get_average_generation_time(
         (target_direction, target_time, target_limit_time, target_date))
     row = db().fetchone()
 
-    try:
-        avg_time = row['working_took'] if row else None
-    except KeyError:
-        raise Exception('%s' %row.items())
+    avg_time = row['average_time'] if row else None
 
     return avg_time or 30
 
