@@ -5,22 +5,37 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.14 2009-10-20 13:55:40 duncan Exp $
+# $Id: psql_storage.py,v 1.15 2009-10-20 15:34:43 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
 # psycopg2 uses.
 
+import functools
 import psycopg2
 
 from coldb import db
 
+def return_a_dict(func):
+    """Decorate functions with this in order to return a dictionary
+    rather than the half dictionary, half list thing that comes out of 
+    DictCursor by default."""
 
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        nasty_row = func(*args, **kwargs)
+        if nasty_row:
+            return dict(nasty_row.items())
+
+    return wrapper
+
+@return_a_dict
 def get_invite_by_token(token_value):
     if token_value:
         db().execute('SELECT * FROM invite WHERE token=%s', (token_value,))
         return db().fetchone()
 
+@return_a_dict
 def get_invite_by_id(invite_id):
     db().execute('SELECT * FROM invite WHERE id=%s', (invite_id,))
     return db().fetchone()
@@ -85,6 +100,7 @@ def get_latest_postcodes(limit=10):
     return db().fetchall()
 
 # Find station nearest to given easting/northing
+@return_a_dict
 def get_nearest_station(easting, northing):
     db().execute('''SELECT text_id, long_description, id FROM station WHERE
         position_osgb && Expand(GeomFromText('POINT(%(easting)s %(northing)s)', 27700), 50000)
@@ -93,6 +109,7 @@ def get_nearest_station(easting, northing):
         LIMIT 1''' %{'easting':easting, 'northing':northing})
     return db().fetchone()
 
+@return_a_dict
 def get_station_coords(station_id):
     db().execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (station_id,))
     return db().fetchone()
@@ -141,6 +158,7 @@ def queue_map(
 
     return map_id
 
+@return_a_dict
 def get_map_from_queue(server_description):
     # find something to do - we start with the map that was queued longest ago.
     offset = 0
@@ -199,6 +217,7 @@ def notify_map_error(map_id):
     db().execute("update map set state = 'error' where id = %(id)s", dict(id=map_id))
     db().execute("commit")
     
+@return_a_dict
 def get_map_status_by_position(
     easting,
     northing,
@@ -220,6 +239,7 @@ def get_map_status_by_position(
                  )
     return db().fetchone()
 
+@return_a_dict
 def get_map_status_by_station(
     station_id,
     direction,
@@ -258,7 +278,9 @@ def get_average_generation_time(
         ) AS working_took
         ''', 
         (target_direction, target_time, target_limit_time, target_date))
-    avg_time, = db().fetchone()
+    row = db().fetchone()
+    avg_time = row['working_took'] if row else None
+
     return avg_time or 30
 
 
