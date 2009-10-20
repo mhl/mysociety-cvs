@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.43 2009-10-20 15:49:18 duncan Exp $
+# $Id: page.py,v 1.44 2009-10-20 16:18:09 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -239,9 +239,9 @@ class Map(object):
             )
 
         if status:
-            self.id, self.current_status, self.working_server = status
+            self.id, self.current_state, self.working_server = status
         else:
-            self.current_status = 'new'
+            self.current_state = 'new'
 
     # Construct own URL, ensure ends inside query parameters so can add more
     # (Flash just appends strings to this URL for e.g. route URL)
@@ -326,9 +326,9 @@ class StationMap(Map):
             )
 
         if status:
-            self.id, self.current_status, self.working_server = status
+            self.id, self.current_state, self.working_server = status
         else:
-            self.current_status = 'new'
+            self.current_state = 'new'
 
     def title(self):
         return self.text_id
