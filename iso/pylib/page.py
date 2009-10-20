@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.41 2009-10-20 13:55:40 duncan Exp $
+# $Id: page.py,v 1.42 2009-10-20 13:57:22 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -169,7 +169,7 @@ class Invite(object):
         if name in self._token_row:
             return self._token_row[name]
         else:
-            raise AttributeError
+            raise AttributeError('%s' %self._token_row)
 
     def __str__(self):
         return self.token
