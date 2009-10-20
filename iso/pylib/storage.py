@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.15 2009-10-20 17:17:10 duncan Exp $
+# $Id: storage.py,v 1.16 2009-10-20 17:28:39 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -219,8 +219,8 @@ def get_map_status(
     northing=None,
     station_id=None,
     ):
-    """Returns the id of the map, the current state, and the server working
-    on it (as a tuple) if it is queued, or None, if not.
+    """Returns a dictionary with keys id, state, working_server.
+    And appropriate values if the map is queued, or or None, if not.
 
     Requires inputs of direction, target_time, limit_time, target_date, and
     either both easting and northing or station_id

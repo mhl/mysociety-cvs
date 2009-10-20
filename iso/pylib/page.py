@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.44 2009-10-20 16:18:09 duncan Exp $
+# $Id: page.py,v 1.45 2009-10-20 17:28:39 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -317,7 +317,7 @@ class StationMap(Map):
         super(StationMap, self).__init__(int(easting), int(northing), **kwargs)
 
     def update_status(self):
-        status = storage.get_map_status(
+        status_dict = storage.get_map_status(
             self.target_direction,
             self.target_time,
             self.target_limit_time,
@@ -325,8 +325,10 @@ class StationMap(Map):
             station_id = self.target_station_id
             )
 
-        if status:
-            self.id, self.current_state, self.working_server = status
+        if status_dict:
+            self.id = status_dict['id']
+            self.current_state = status_dict['state']
+            self.working_server = status_dict['working_server']
         else:
             self.current_state = 'new'
 
