@@ -25,7 +25,9 @@ if (is_category()) {
 	echo '<p id="sidebar_rss"><a href="', bloginfo('rss2_url'), '"><img align="top" src="http://www.mysociety.org/feed.png" alt=""> RSS feed</a></p>';
 }
 
-if ($_SERVER['SERVER_NAME']=='cee.mysociety.org') {
+$is_cee = ($_SERVER['SERVER_NAME']=='cee.mysociety.org');
+
+if ($is_cee) {
     $news_list = 'cee-talk';
     $news_title = 'Mailing list';
     $news_desc = 'Enter your email address below to get and discuss occasional emails about what we&rsquo;ve been up to.';
@@ -54,6 +56,14 @@ if ($_SERVER['SERVER_NAME']=='cee.mysociety.org') {
 		</ul>
 	</form>
 </div>
+
+<?php
+
+if ($is_cee) {
+    get_sidebar('cfp');
+} else {
+
+?>
 
 <!-- News list -->
 <div id="divElsewhere" class="infoboxblue contentnarrow right dividerright">
@@ -93,13 +103,13 @@ if ($_SERVER['SERVER_NAME']=='cee.mysociety.org') {
 
 		<?php }?>
 
+<?php } ?>
+
 		<?php endif; ?>
 	</ul>
 
 	</div>
 </div>
-
-
 
 <!-- Navigation -->
 <div class="sidebar contentnarrow right">
@@ -109,3 +119,4 @@ if ($_SERVER['SERVER_NAME']=='cee.mysociety.org') {
 		<div class="alignright"><?php next_post_link('%link &raquo;') ?></div>
 	</p>
 </div>
+
