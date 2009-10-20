@@ -1,5 +1,9 @@
 <?php
 
+# XXX
+$is_idea = in_category(29);
+$is_cee_cfp = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org' && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
+
 if ($is_idea) {
     $add_link = '/call-for-proposals-2009/';
     $add_text = 'Add an idea&hellip;';
