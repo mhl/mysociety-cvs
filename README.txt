@@ -39,6 +39,7 @@ placeopedia - Placeopedia
 panopticon - RSS aggregator
 hm - HassleMe
 ideasbank - Guardian project
+scenic - Scenic or Not
 
 Incomplete or dormant projects
 ==============================
@@ -52,6 +53,7 @@ Organisational sites
 ms - mySociety.org website
 mscouk - mySociety.co.uk website
 ukcodwww - UKCOD.org.uk website
+cee - cee.mySociety.org website
 
 intranet - Internal documentation / wiki
 cvswww - Development infrastructure, cvs.mysociety.org
