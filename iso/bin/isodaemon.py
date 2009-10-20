@@ -141,10 +141,7 @@ def check_for_new_maps_to_make(p):
     
     if row:
         map_id = row['id']
-        try:
-            target_station_text_id = row['station_text_id']
-        except:
-            raise Exception("%s" %row.items())
+        target_station_text_id = row['station_text_id']
         target_e = row['target_e']
         target_n = row['target_n']
         target_direction = row['target_direction']
