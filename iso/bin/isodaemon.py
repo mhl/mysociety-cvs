@@ -163,7 +163,7 @@ def check_for_new_maps_to_make(p):
 
         # mark that we've done
         storage.drop_map_from_queue(map_id)
-        storage.notify_map_done(map_id, time_taken)
+        storage.notify_map_done(map_id, route_finding_time_taken)
         log("completed map " + str(map_id))
     except (SystemExit, KeyboardInterrupt, AbortIsoException):
         # daemon was explicitly stopped, don't mark map as error
