@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.14 2009-10-20 16:47:56 duncan Exp $
+# $Id: storage.py,v 1.15 2009-10-20 17:17:10 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -232,7 +232,7 @@ def get_map_status(
         return psql_storage.get_map_status_by_station(station_id, *common_args)
             
     elif easting and northing:
-        psql_storage.get_map_status_by_position(easting, northing, *common_args)
+        return psql_storage.get_map_status_by_position(easting, northing, *common_args)
     else:
         raise Exception('Insufficient info to find map.')
 
