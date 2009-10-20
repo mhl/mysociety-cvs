@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.22 2009-10-20 17:42:32 duncan Exp $
+# $Id: psql_storage.py,v 1.23 2009-10-20 17:53:06 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -168,9 +168,23 @@ def get_map_from_queue(server_description):
             # we get the row "for update" to lock it, and "nowait" so we
             # get an exception if someone else already has it, rather than
             # pointlessly waiting for them
-            db().execute("""select id, state, (select text_id from station where id = target_station_id), 
-                            target_e, target_n, target_direction, target_time, target_limit_time, target_date from map where 
-                            state = 'new' order by created limit 1 offset %s for update nowait""" % offset)
+            db().execute("""
+select
+    id, 
+    state, 
+    (select text_id from station where id = target_station_id) as station_text_id, 
+    target_e, 
+    target_n,
+    target_direction,
+    target_time,
+    target_limit_time,
+    target_date 
+from map 
+where state = 'new' 
+order by created 
+limit 1 
+offset %s 
+for update nowait""" % offset)
             row = db().fetchone()
             break
         except psycopg2.OperationalError:
