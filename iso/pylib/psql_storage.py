@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.17 2009-10-20 16:37:06 duncan Exp $
+# $Id: psql_storage.py,v 1.18 2009-10-20 16:38:15 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -283,7 +283,7 @@ def get_average_generation_time(
     try:
         avg_time = row['working_took'] if row else None
     except KeyError:
-        raise Exception('%s' %row.values())
+        raise Exception('%s' %row.items())
 
     return avg_time or 30
 
