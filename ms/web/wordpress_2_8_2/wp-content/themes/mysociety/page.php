@@ -21,6 +21,9 @@
 
 <?php
 
-# get_sidebar();
+$is_cee_cfp = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org' && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
+if ($is_cee_cfp) {
+    get_sidebar('cfp');
+}
 get_footer();
 
