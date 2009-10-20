@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.21 2009-10-20 17:20:48 duncan Exp $
+# $Id: psql_storage.py,v 1.22 2009-10-20 17:42:32 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -185,7 +185,8 @@ def get_map_from_queue(server_description):
     if not row:
         return
 
-    id, state = row[:2]
+    id = row['id']
+    state = row['state']
     # XXX check target_date here is same as whatever fastindex timetable file we're using
 
     # see if another instance of daemon got it *just* before us
