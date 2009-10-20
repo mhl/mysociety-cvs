@@ -141,7 +141,7 @@ def check_for_new_maps_to_make(p):
     
     if row:
         map_id = row['id']
-        station_text_id = row['station_text_id']
+        target_station_text_id = row['station_text_id']
         target_e = row['target_e']
         target_n = row['target_n']
         target_direction = row['target_direction']
