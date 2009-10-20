@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.19 2009-10-20 16:43:13 duncan Exp $
+# $Id: psql_storage.py,v 1.20 2009-10-20 17:10:36 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -143,9 +143,9 @@ def queue_map(
     ):
 
     db().execute('BEGIN')
-    db().execute("SELECT nextval('map_id_seq')")
+    db().execute("SELECT nextval('map_id_seq') as next_map_id")
 
-    map_id = db().fetchone()[0]
+    map_id = db().fetchone()['next_map_id']
 
     try:
         db().execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date))
