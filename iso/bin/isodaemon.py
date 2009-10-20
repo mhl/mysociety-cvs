@@ -141,7 +141,10 @@ def check_for_new_maps_to_make(p):
     
     if row:
         map_id = row['id']
-        target_station_text_id = row['station_text_id']
+        try:
+            target_station_text_id = row['station_text_id']
+        except:
+            raise Exception("%s" %row.items())
         target_e = row['target_e']
         target_n = row['target_n']
         target_direction = row['target_direction']
@@ -170,7 +173,7 @@ def check_for_new_maps_to_make(p):
         log("explicit stop received for map " + str(map_id) + ", reverting from 'working' to 'new'")
         storage.return_map_to_queue(map_id)
         raise
-    except SystemExit:
+    except:
         # record there was an error, so we can find out easily
         # if the recording error doesn't work, then presumably it was a database error
         log("error received for map " + str(map_id) + ", reverting from 'working' to 'error'")
