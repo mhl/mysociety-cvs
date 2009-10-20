@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.13 2009-10-20 13:26:23 duncan Exp $
+# $Id: psql_storage.py,v 1.14 2009-10-20 13:55:40 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -17,8 +17,9 @@ from coldb import db
 
 
 def get_invite_by_token(token_value):
-    db().execute('SELECT * FROM invite WHERE token=%s', (token_value,))
-    return db().fetchone()
+    if token_value:
+        db().execute('SELECT * FROM invite WHERE token=%s', (token_value,))
+        return db().fetchone()
 
 def get_invite_by_id(invite_id):
     db().execute('SELECT * FROM invite WHERE id=%s', (invite_id,))

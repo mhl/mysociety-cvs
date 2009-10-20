@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.40 2009-10-20 13:49:51 duncan Exp $
+# $Id: page.py,v 1.41 2009-10-20 13:55:40 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -165,9 +165,9 @@ class Invite(object):
 
         self._token_row = (storage.get_invite_by_token(token) or defaults_dict) if token else defaults_dict
 
-    def __getattr__(self, lookup_key):
-        if lookup_key in self._token_row:
-            return self._token_row[lookup_key]
+    def __getattr__(self, name):
+        if name in self._token_row:
+            return self._token_row[name]
         else:
             raise AttributeError
 
