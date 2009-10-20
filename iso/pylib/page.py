@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.42 2009-10-20 13:57:22 duncan Exp $
+# $Id: page.py,v 1.43 2009-10-20 15:49:18 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -356,7 +356,7 @@ class PostcodeMap(Map):
         return {'target_postcode': self.target_postcode}
 
 def create_map_from_fs(fs):
-    postcode = fs.get('postcode')
+    postcode = fs.get('target_postcode')
     if postcode:
         return PostcodeMap(postcode)
     
