@@ -27,16 +27,19 @@ if ($is_idea) {
     <br class="clear"/>
     </p>
 
+<?php
+if ($is_idea || $is_cee_cfp) {
+?>
     <h3>Ideas so far</h3>
     <!--Recent posts-->
     <ul>
 <?php
 
-if ($is_idea) {
-    query_posts('category_name=proposal-submissions-2009&showposts=10');
-} elseif ($is_cee) {
-    query_posts('showposts=10');
-}
+    if ($is_idea) {
+        query_posts('category_name=proposal-submissions-2009&showposts=10');
+    } elseif ($is_cee) {
+        query_posts('showposts=10');
+    }
 
 while (have_posts()) : the_post(); ?>
         <li>
@@ -46,6 +49,19 @@ while (have_posts()) : the_post(); ?>
     </ul>
 
     <a href="<?=$view_link?>">View all ideas &raquo;</a>
+
+<?php } else { ?>
+
+    <p>
+    <a class="linkbutton" href="<?=$view_link?>">
+        <span class="left">&nbsp;</span>
+        <span class="middle">View all ideas</span>
+        <span class="right">&nbsp;</span>
+    </a>
+    <br class="clear"/>
+    </p>
+
+<?php } ?>
 
 </div>
 
