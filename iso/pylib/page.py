@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.39 2009-10-20 13:41:40 duncan Exp $
+# $Id: page.py,v 1.40 2009-10-20 13:49:51 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -155,27 +155,21 @@ def email_invite(invite, debug=False):
 # Cookie invite handling stuff
 
 class Invite(object):
-    id = None
-    num_invites = 0
-
     def __init__(self, token):
+        # Used so that an invite which isn't in the database still has an id
+        # attribute and no invites.
+        defaults_dict = {'id': None, 'num_invites': 0}
+
         self._postcodes = []
         self.token = token
 
-        self._token_row = (storage.get_invite_by_token(token) or {}) if token else {}
+        self._token_row = (storage.get_invite_by_token(token) or defaults_dict) if token else defaults_dict
 
-    def __getattribute__(self, lookup_key):
-        # Override attribute lookup to try self._token_row first, and 
-        # then if that fails to do normal attribute lookup. This is done
-        # so that we can store defaults of id = None and num_invites = 0
-        # as class attributes.
-        if lookup_key in self.__dict__:
-            return self.__dict__[lookup_key]
-
+    def __getattr__(self, lookup_key):
         if lookup_key in self._token_row:
             return self._token_row[lookup_key]
         else:
-            return object.__getattribute__(self, lookup_key)
+            raise AttributeError
 
     def __str__(self):
         return self.token
