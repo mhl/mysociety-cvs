@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.45 2009-10-20 17:28:39 duncan Exp $
+# $Id: page.py,v 1.46 2009-10-20 17:31:38 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -229,7 +229,7 @@ class Map(object):
         self.update_status()
 
     def update_status(self):
-        status = storage.get_map_status(
+        status_dict = storage.get_map_status(
             self.target_direction,
             self.target_time,
             self.target_limit_time,
@@ -238,8 +238,10 @@ class Map(object):
             northing = self.target_n,
             )
 
-        if status:
-            self.id, self.current_state, self.working_server = status
+        if status_dict:
+            self.id = status_dict['id']
+            self.current_state = status_dict['state']
+            self.working_server = status_dict['working_server']
         else:
             self.current_state = 'new'
 
