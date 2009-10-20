@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.20 2009-10-20 17:10:36 duncan Exp $
+# $Id: psql_storage.py,v 1.21 2009-10-20 17:20:48 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -122,8 +122,8 @@ def get_map_queue_state(map_id=None):
         state[row[0]] = row[1]
 
     if map_id:
-        db().execute('''SELECT count(*) FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
-        state['ahead'] = db().fetchone()[0]
+        db().execute('''SELECT count(*) as ahead_count FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
+        state['ahead'] = db().fetchone()['ahead_count']
         state['to_make'] = state['ahead'] + state['working']
     else:
         state['to_make'] = state['new'] + state['working'] + 1
