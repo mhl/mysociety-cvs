@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.11 2009-10-19 17:27:19 duncan Exp $
+# $Id: storage.py,v 1.12 2009-10-20 13:26:23 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -178,6 +178,36 @@ def queue_map(
             raise AlreadyQueuedError
         else:
             raise
+
+def get_map_from_queue(server_description):
+    """
+    Takes a variable server_description, which is used to record who is 
+    working on this item in the queue.
+
+    Returns a tuple:
+
+    (id, state, target_station_text_id, target_e, target_n, target_direction, target_time, target_limit_time, target_date)
+
+    of a map that needs making.
+    """
+    return psql_storage.get_map_from_queue(server_description)
+
+def return_map_to_queue(map_id):
+    """For some reason we've not finished working on this map properly,
+    so put it back in the queue."""
+    psql_storage.return_map_to_queue(map_id)
+
+def drop_map_from_queue(map_id):
+    """Notify the queue that this map doesn't need doing any more."""
+    # At the moment we don't need this, as it's handled in notify_map_done.
+
+def notify_map_done(map_id, time_taken):
+    """Notify the front end that the map is done."""
+    psql_storage.notify_map_done(map_id, time_taken)
+
+def notify_map_error(map_id):
+    """Notify the front end that a map has failed."""
+    psql_storage.notify_map_error(map_id)
 
 def get_map_status(
     direction,

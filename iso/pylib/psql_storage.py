@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.12 2009-10-19 17:27:19 duncan Exp $
+# $Id: psql_storage.py,v 1.13 2009-10-20 13:26:23 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -140,7 +140,64 @@ def queue_map(
 
     return map_id
 
+def get_map_from_queue(server_description):
+    # find something to do - we start with the map that was queued longest ago.
+    offset = 0
+    while True:
+        try:
+            db().execute("begin")
+            # we get the row "for update" to lock it, and "nowait" so we
+            # get an exception if someone else already has it, rather than
+            # pointlessly waiting for them
+            db().execute("""select id, state, (select text_id from station where id = target_station_id), 
+                            target_e, target_n, target_direction, target_time, target_limit_time, target_date from map where 
+                            state = 'new' order by created limit 1 offset %s for update nowait""" % offset)
+            row = db().fetchone()
+            break
+        except psycopg2.OperationalError:
+            # if someone else has the item locked, i.e. they are working on it, then we
+            # try and find a different one to work on
+            db().execute("rollback")
+            offset = offset + 1
+            #log("somebody else had the item, trying offset " + str(offset))
+            continue
 
+    # If there is nothing to do, then return.
+    if not row:
+        return
+
+    id, state = row[:2]
+    # XXX check target_date here is same as whatever fastindex timetable file we're using
+
+    # see if another instance of daemon got it *just* before us
+    if state != 'new':
+        #log("somebody else is already working on map " + str(id))
+        db().execute("rollback")
+        return
+
+    # recording in the database that we are working on this
+    #log("working on map " + str(id))
+    db().execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
+            dict(id=id, server=server_description))
+    db().execute("commit")
+
+    return row
+
+def return_map_to_queue(map_id):
+    db().execute("begin")
+    db().execute("update map set state = 'new' where id = %(id)s", dict(id=map_id))
+    db().execute("commit")
+
+def notify_map_done(map_id, time_taken):
+    db().execute("begin")
+    db().execute("update map set state = 'complete', working_took = %(took)s where id = %(id)s", dict(id=map_id, took=time_taken))
+    db().execute("commit")
+
+def notify_map_error(map_id):
+    db().execute("begin")
+    db().execute("update map set state = 'error' where id = %(id)s", dict(id=map_id))
+    db().execute("commit")
+    
 def get_map_status_by_position(
     easting,
     northing,

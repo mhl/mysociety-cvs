@@ -14,7 +14,6 @@
 # from __future__ import with_statement # for use with daemon below in Python 2.5
 
 import sys
-import subprocess
 import re
 import os
 import optparse
@@ -23,7 +22,6 @@ import datetime
 import traceback
 import socket
 import signal
-import psycopg2
 
 os.chdir(sys.path[0])
 sys.path.append("../../pylib")
@@ -32,7 +30,8 @@ import daemon # see PEP 3143 for documentation
 import mysociety.config
 
 sys.path.append("../pylib")
-import coldb
+
+import storage
 
 mysociety.config.set_file("../conf/general")
 mysociety.config.load_default()
@@ -136,54 +135,20 @@ def do_binplan(p, outfile, target_direction, target_time, target_limit_time, sta
     return (float(route_finding_time_taken), float(output_time_taken))
 
 # Core code of one isodaemon process. Checks database for map making work to do and does it.
-def check_for_new_maps_to_make(p, db):
-    # find something to do - we start with the map that was queued longest ago.
-    offset = 0
-    while True:
-        try:
-            db.execute("begin")
-            # we get the row "for update" to lock it, and "nowait" so we
-            # get an exception if someone else already has it, rather than
-            # pointlessly waiting for them
-            db.execute("""select id, state, (select text_id from station where id = target_station_id), 
-                            target_e, target_n, target_direction, target_time, target_limit_time, target_date from map where 
-                            state = 'new' order by created limit 1 offset %s for update nowait""" % offset)
-            row = db.fetchone()
-            break
-        except psycopg2.OperationalError:
-            # if someone else has the item locked, i.e. they are working on it, then we
-            # try and find a different one to work on
-            db.execute("rollback")
-            offset = offset + 1
-            log("somebody else had the item, trying offset " + str(offset))
-            continue
-
-    # if there's nothing more to do, give up
-    if row == None:
-        db.execute("rollback")
+def check_for_new_maps_to_make(p):
+    # Get a map to work on from the queue
+    row = storage.get_map_from_queue(server_and_pid())
+    
+    if row:
+        (map_id, state, target_station_text_id, target_e, target_n, target_direction, target_time, target_limit_time, target_date) = row
+    else:
         # wait a bit, so don't thrash the database
         time.sleep(sleep_db_poll)
         return
 
-    (id, state, target_station_text_id, target_e, target_n, target_direction, target_time, target_limit_time, target_date) = row
-    # XXX check target_date here is same as whatever fastindex timetable file we're using
-
-    # see if another instance of daemon got it *just* before us
-    if state != 'new':
-        log("somebody else is already working on map " + str(id))
-        db.execute("rollback")
-        return
-
-    # recording in the database that we are working on this
-    log("working on map " + str(id))
-    db.execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
-            dict(id=id, server=server_and_pid()))
-    db.execute("commit")
-
     try:
         # actually perform the route finding
-        db.execute("begin")
-        outfile = os.path.join(tmpwork, "%d.iso" % int(id))
+        outfile = os.path.join(tmpwork, "%d.iso" % int(map_id))
         #if child_number == 1: # for debugging
         #        raise Exception("testbroken")
 
@@ -191,25 +156,21 @@ def check_for_new_maps_to_make(p, db):
             do_binplan(p, outfile, target_direction, target_time, target_limit_time, target_station_text_id, target_e, target_n)
 
         # mark that we've done
-        log("completed map " + str(id))
-        db.execute("update map set state = 'complete', working_took = %(took)s where id = %(id)s", dict(id=id, took=route_finding_time_taken))
-        db.execute("commit")
+        storage.drop_map_from_queue(map_id)
+        storage.notify_map_done(map_id, time_taken)
+        log("completed map " + str(map_id))
     except (SystemExit, KeyboardInterrupt, AbortIsoException):
         # daemon was explicitly stopped, don't mark map as error
-        log("explicit stop received for map " + str(id) + ", reverting from 'working' to 'new'")
-        db.execute("rollback")
-        db.execute("begin")
-        db.execute("update map set state = 'new' where id = %(id)s", dict(id=id))
-        db.execute("commit")
+        log("explicit stop received for map " + str(map_id) + ", reverting from 'working' to 'new'")
+        storage.return_map_to_queue(map_id)
         raise
     except:
         # record there was an error, so we can find out easily
         # if the recording error doesn't work, then presumably it was a database error
-        log("error received for map " + str(id) + ", reverting from 'working' to 'error'")
-        db.execute("rollback")
-        db.execute("begin")
-        db.execute("update map set state = 'error' where id = %(id)s", dict(id=id))
-        db.execute("commit")
+        log("error received for map " + str(map_id) + ", reverting from 'working' to 'error'")
+
+        storage.drop_map_from_queue(map_id)
+        storage.notify_map_error(map_id)
         raise
 
 # Talking to multiple C++ processes
@@ -316,12 +277,9 @@ def do_main_loop():
         p.stdin.write("info\n")
         my_readline(p, 'fastplan-coopt:')
 
-        # connect to the database
-        db = coldb.get_cursor()
-
         # loop, checking database for new maps to make
         while True:
-            check_for_new_maps_to_make(p, db)
+            check_for_new_maps_to_make(p)
     finally:
         p.close_pipes()
 
