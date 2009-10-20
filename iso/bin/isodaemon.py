@@ -140,7 +140,13 @@ def check_for_new_maps_to_make(p):
     row = storage.get_map_from_queue(server_and_pid())
     
     if row:
-        (map_id, state, target_station_text_id, target_e, target_n, target_direction, target_time, target_limit_time, target_date) = row
+        map_id = row['id']
+        station_text_id = row['station_text_id']
+        target_e = row['target_e']
+        target_n = row['target_n']
+        target_direction = row['target_direction']
+        target_time = row['target_time']
+        target_limit_time = row['target_limit_time']        
     else:
         # wait a bit, so don't thrash the database
         time.sleep(sleep_db_poll)
