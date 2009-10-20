@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.38 2009-10-19 17:54:35 duncan Exp $
+# $Id: page.py,v 1.39 2009-10-20 13:41:40 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -169,6 +169,8 @@ class Invite(object):
         # then if that fails to do normal attribute lookup. This is done
         # so that we can store defaults of id = None and num_invites = 0
         # as class attributes.
+        if lookup_key in self.__dict__:
+            return self.__dict__[lookup_key]
 
         if lookup_key in self._token_row:
             return self._token_row[lookup_key]
