@@ -63,9 +63,10 @@
 <?php
         if ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org') {
             echo '<ul class="collapse">
-	<li><a href="http://www.mysociety.org/">Home</a></li>
-	<li><a href="http://www.mysociety.org/projects/">Projects</a></li>
-	<li><a href="http://www.mysociety.org/about/">About us</a></li>
+	<li><a href="http://cee.mysociety.org/">Home</a></li>
+	<li><a href="http://cee.mysociety.org/cfp/">Submit a proposal</a></li>
+	<li><a href="http://cee.mysociety.org/cfp/view/">View ideas</a></li>
+	<li><a href="http://www.mysociety.org/">mySociety</a></li>
 </ul>';
         } else {
             print file_get_contents(TEMPLATEPATH . '/nav.html');
