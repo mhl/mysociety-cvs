@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.12 2009-10-20 13:26:23 duncan Exp $
+# $Id: storage.py,v 1.13 2009-10-20 16:47:01 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -13,6 +13,7 @@
 # above don't need to know how things were stored.
 
 import psycopg2
+import psycopg.errorcodes
 
 import psql_storage
 import utils
