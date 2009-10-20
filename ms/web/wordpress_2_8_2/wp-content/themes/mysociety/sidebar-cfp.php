@@ -2,13 +2,14 @@
 
 # XXX
 $is_idea = in_category(29);
-$is_cee_cfp = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org' && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
+$is_cee = ($_SERVER['SERVER_NAME'] == 'cee.mysociety.org');
+$is_cee_cfp = ($is_cee && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
 
 if ($is_idea) {
     $add_link = '/call-for-proposals-2009/';
     $add_text = 'Add an idea&hellip;';
     $view_link = '/category/proposal-submissions-2009/';
-} elseif ($is_cee_cfp) {
+} elseif ($is_cee) {
     $add_link = '/cfp/';
     $view_link = '/cfp/view/';
     $add_text = 'Submit a proposal';
@@ -33,7 +34,7 @@ if ($is_idea) {
 
 if ($is_idea) {
     query_posts('category_name=proposal-submissions-2009&showposts=10');
-} elseif ($is_cee_cfp) {
+} elseif ($is_cee) {
     query_posts('showposts=10');
 }
 
