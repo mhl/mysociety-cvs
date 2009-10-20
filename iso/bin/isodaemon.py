@@ -170,7 +170,7 @@ def check_for_new_maps_to_make(p):
         log("explicit stop received for map " + str(map_id) + ", reverting from 'working' to 'new'")
         storage.return_map_to_queue(map_id)
         raise
-    except:
+    except SystemExit:
         # record there was an error, so we can find out easily
         # if the recording error doesn't work, then presumably it was a database error
         log("error received for map " + str(map_id) + ", reverting from 'working' to 'error'")
