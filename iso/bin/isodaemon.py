@@ -42,6 +42,8 @@ tmpwork = mysociety.config.get('TMPWORK')
 concurr = int(mysociety.config.get('ISODAEMON_CONCURRENT_JOBS'))
 sleep_db_poll = 2.0
 
+map_creation_queue = storage.get_map_creation_queue()
+
 parser = optparse.OptionParser()
 
 parser.set_usage('''
@@ -137,7 +139,7 @@ def do_binplan(p, outfile, target_direction, target_time, target_limit_time, sta
 # Core code of one isodaemon process. Checks database for map making work to do and does it.
 def check_for_new_maps_to_make(p):
     # Get a map to work on from the queue
-    row = storage.get_map_from_queue(server_and_pid())
+    row = map_creation_queue.get_map_from_queue(server_and_pid())
     
     if row:
         map_id = row['id']
@@ -162,20 +164,20 @@ def check_for_new_maps_to_make(p):
             do_binplan(p, outfile, target_direction, target_time, target_limit_time, target_station_text_id, target_e, target_n)
 
         # mark that we've done
-        storage.drop_map_from_queue(map_id)
+        map_creation_queue.drop_map_from_queue(map_id)
         storage.notify_map_done(map_id, route_finding_time_taken)
         log("completed map " + str(map_id))
     except (SystemExit, KeyboardInterrupt, AbortIsoException):
         # daemon was explicitly stopped, don't mark map as error
         log("explicit stop received for map " + str(map_id) + ", reverting from 'working' to 'new'")
-        storage.return_map_to_queue(map_id)
+        map_creation_queue.return_map_to_queue(map_id)
         raise
     except:
         # record there was an error, so we can find out easily
         # if the recording error doesn't work, then presumably it was a database error
         log("error received for map " + str(map_id) + ", reverting from 'working' to 'error'")
 
-        storage.drop_map_from_queue(map_id)
+        map_creation_queue.drop_map_from_queue(map_id)
         storage.notify_map_error(map_id)
         raise
 

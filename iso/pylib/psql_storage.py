@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.23 2009-10-20 17:53:06 duncan Exp $
+# $Id: psql_storage.py,v 1.24 2009-10-22 14:33:09 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -15,6 +15,9 @@ import functools
 import psycopg2
 
 from coldb import db
+
+# Imported directly to avoid circular imports.
+from storage import AlreadyQueuedError
 
 def return_a_dict(func):
     """Decorate functions with this in order to return a dictionary
@@ -28,6 +31,132 @@ def return_a_dict(func):
             return dict(nasty_row.items())
 
     return wrapper
+
+class PSQLMapCreationQueue(object):
+    def __init__(self, db_cursor=None):
+        # At some point we should move to passing db_cursor in.
+        self.db = db_cursor or db()
+
+    def get_map_queue_state(self, map_id=None):
+        state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
+        self.db.execute('''SELECT state, count(*) FROM map GROUP BY state''')
+
+        for row in self.db.fetchall():
+            state[row[0]] = row[1]
+
+        if map_id:
+            self.db.execute('''SELECT count(*) as ahead_count FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
+            state['ahead'] = self.db.fetchone()['ahead_count']
+            state['to_make'] = state['ahead'] + state['working']
+        else:
+            state['to_make'] = state['new'] + state['working'] + 1
+
+        return state
+
+    def queue_map(
+        self,
+        target_station_id=None, 
+        target_postcode=None, 
+        target_e=None,
+        target_n=None,
+        target_direction=None,
+        target_time=None,
+        target_limit_time=None,
+        target_date=None,
+        ):
+
+        try:
+            self.db.execute('BEGIN')
+            self.db.execute("SELECT nextval('map_id_seq') as next_map_id")
+
+            map_id = self.db.fetchone()['next_map_id']
+
+            try:
+                self.db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date))
+
+            except:
+                self.db.execute('ROLLBACK')
+                raise
+
+            self.db.execute('COMMIT')
+            
+        except psycopg2.IntegrityError, e:
+            if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
+                # The integrity error is because of a unique key violation - ie. an
+                # identical row has appeared in the milliseconds since we looked
+                raise AlreadyQueuedError
+            else:
+                raise
+
+        return map_id
+
+    @return_a_dict
+    def get_map_from_queue(self, server_description):
+        # find something to do - we start with the map that was queued longest ago.
+        offset = 0
+        while True:
+            try:
+                self.db.execute("begin")
+                # we get the row "for update" to lock it, and "nowait" so we
+                # get an exception if someone else already has it, rather than
+                # pointlessly waiting for them
+                self.db.execute("""
+    select
+        id, 
+        state, 
+        (select text_id from station where id = target_station_id) as station_text_id, 
+        target_e, 
+        target_n,
+        target_direction,
+        target_time,
+        target_limit_time,
+        target_date 
+    from map 
+    where state = 'new' 
+    order by created 
+    limit 1 
+    offset %s 
+    for update nowait""" % offset)
+                row = self.db.fetchone()
+                break
+            except psycopg2.OperationalError:
+                # if someone else has the item locked, i.e. they are working on it, then we
+                # try and find a different one to work on
+                self.db.execute("rollback")
+                offset = offset + 1
+                #log("somebody else had the item, trying offset " + str(offset))
+                continue
+
+        # If there is nothing to do, then return.
+        if not row:
+            return
+
+        id = row['id']
+        state = row['state']
+        # XXX check target_date here is same as whatever fastindex timetable file we're using
+
+        # see if another instance of daemon got it *just* before us
+        if state != 'new':
+            #log("somebody else is already working on map " + str(id))
+            self.db.execute("rollback")
+            return
+
+        # recording in the database that we are working on this
+        #log("working on map " + str(id))
+        self.db.execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
+                dict(id=id, server=server_description))
+        self.db.execute("commit")
+
+        return row
+
+    def return_map_to_queue(self, map_id):
+        self.db.execute("begin")
+        self.db.execute("update map set state = 'new' where id = %(id)s", dict(id=map_id))
+        self.db.execute("commit")
+
+    def drop_map_from_queue(self, map_id):
+        pass
+
 
 @return_a_dict
 def get_invite_by_token(token_value):
@@ -113,114 +242,6 @@ def get_nearest_station(easting, northing):
 def get_station_coords(station_id):
     db().execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (station_id,))
     return db().fetchone()
-
-def get_map_queue_state(map_id=None):
-    state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
-    db().execute('''SELECT state, count(*) FROM map GROUP BY state''')
-
-    for row in db().fetchall():
-        state[row[0]] = row[1]
-
-    if map_id:
-        db().execute('''SELECT count(*) as ahead_count FROM map WHERE created <= (SELECT created FROM map WHERE id = %s) AND state = 'new' ''', (map_id,))
-        state['ahead'] = db().fetchone()['ahead_count']
-        state['to_make'] = state['ahead'] + state['working']
-    else:
-        state['to_make'] = state['new'] + state['working'] + 1
-
-    return state
-
-
-def queue_map(
-    target_station_id=None, 
-    target_postcode=None, 
-    target_e=None,
-    target_n=None,
-    target_direction=None,
-    target_time=None,
-    target_limit_time=None,
-    target_date=None,
-    ):
-
-    db().execute('BEGIN')
-    db().execute("SELECT nextval('map_id_seq') as next_map_id")
-
-    map_id = db().fetchone()['next_map_id']
-
-    try:
-        db().execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date))
-
-    except:
-        db().execute('ROLLBACK')
-        raise
-
-    db().execute('COMMIT')
-
-    return map_id
-
-@return_a_dict
-def get_map_from_queue(server_description):
-    # find something to do - we start with the map that was queued longest ago.
-    offset = 0
-    while True:
-        try:
-            db().execute("begin")
-            # we get the row "for update" to lock it, and "nowait" so we
-            # get an exception if someone else already has it, rather than
-            # pointlessly waiting for them
-            db().execute("""
-select
-    id, 
-    state, 
-    (select text_id from station where id = target_station_id) as station_text_id, 
-    target_e, 
-    target_n,
-    target_direction,
-    target_time,
-    target_limit_time,
-    target_date 
-from map 
-where state = 'new' 
-order by created 
-limit 1 
-offset %s 
-for update nowait""" % offset)
-            row = db().fetchone()
-            break
-        except psycopg2.OperationalError:
-            # if someone else has the item locked, i.e. they are working on it, then we
-            # try and find a different one to work on
-            db().execute("rollback")
-            offset = offset + 1
-            #log("somebody else had the item, trying offset " + str(offset))
-            continue
-
-    # If there is nothing to do, then return.
-    if not row:
-        return
-
-    id = row['id']
-    state = row['state']
-    # XXX check target_date here is same as whatever fastindex timetable file we're using
-
-    # see if another instance of daemon got it *just* before us
-    if state != 'new':
-        #log("somebody else is already working on map " + str(id))
-        db().execute("rollback")
-        return
-
-    # recording in the database that we are working on this
-    #log("working on map " + str(id))
-    db().execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
-            dict(id=id, server=server_description))
-    db().execute("commit")
-
-    return row
-
-def return_map_to_queue(map_id):
-    db().execute("begin")
-    db().execute("update map set state = 'new' where id = %(id)s", dict(id=map_id))
-    db().execute("commit")
 
 def notify_map_done(map_id, time_taken):
     db().execute("begin")

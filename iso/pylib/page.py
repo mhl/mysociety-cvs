@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.46 2009-10-20 17:31:38 duncan Exp $
+# $Id: page.py,v 1.47 2009-10-22 14:33:09 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -298,7 +298,7 @@ class Map(object):
         return {'target_e': self.target_e, 'target_n': self.target_n}
 
     def start_generation(self):
-        self.id = storage.queue_map(self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date)
+        self.id = map_creation_queue.queue_map(self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date)
 
 #         if 'new' in self.state:
 #             self.state['new'] += 1

@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.138 2009-10-22 11:39:56 duncan Exp $
+# $Id: index.cgi,v 1.139 2009-10-22 14:33:10 duncan Exp $
 #
 
 import sys
@@ -15,12 +15,6 @@ sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 
 import mysociety.config
 mysociety.config.set_file("../conf/general")
-
-# Duncan 22/10/2009 - temporary debug to see if I've got the config
-# and packages stuff right.
-import boto
-mysociety.config['OPTION_AWS_KEY']
-# End of temporary bit
 
 import page
 import mysociety.mapit
@@ -32,6 +26,8 @@ import storage
 import utils
 
 tmpwork = mysociety.config.get('TMPWORK')
+
+map_creation_queue = storage.get_map_creation_queue()
 
 #####################################################################
 # Controllers
@@ -94,7 +90,7 @@ def render_map(fs, invite):
         return map_complete(map_object, invite)
 
     # See how long it will take to make it
-    map_progress = storage.get_map_queue_state(map_object.id)
+    map_progress = map_creation_queue.get_map_queue_state(map_object.id)
 
     generation_time = storage.get_average_generation_time(
         target_direction=map_object.target_direction,
@@ -253,7 +249,7 @@ def log_email(fs, email):
 #     }, mimetype='text/xml')
 
 def stats_view():
-    state = storage.get_map_queue_state()
+    state = map_creation_queue.get_map_queue_state()
     current_connections = page.current_proxy_connections()
     return page.render_to_response(
         'map-stats.html', 
