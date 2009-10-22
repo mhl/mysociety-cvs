@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.137 2009-10-19 17:27:19 duncan Exp $
+# $Id: index.cgi,v 1.138 2009-10-22 11:39:56 duncan Exp $
 #
 
 import sys
@@ -15,6 +15,12 @@ sys.path.extend(("../pylib", "../../pylib", "/home/matthew/lib/python"))
 
 import mysociety.config
 mysociety.config.set_file("../conf/general")
+
+# Duncan 22/10/2009 - temporary debug to see if I've got the config
+# and packages stuff right.
+import boto
+mysociety.config['OPTION_AWS_KEY']
+# End of temporary bit
 
 import page
 import mysociety.mapit
