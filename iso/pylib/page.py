@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: page.py,v 1.47 2009-10-22 14:33:09 duncan Exp $
+# $Id: page.py,v 1.48 2009-10-22 15:32:11 duncan Exp $
 #
 
 import os, re, cgitb, sys
@@ -297,20 +297,6 @@ class Map(object):
     def get_url_params(self):
         return {'target_e': self.target_e, 'target_n': self.target_n}
 
-    def start_generation(self):
-        self.id = map_creation_queue.queue_map(self.target_station_id, self.target_postcode, self.target_e, self.target_n, self.target_direction, self.target_time, self.target_limit_time, self.target_date)
-
-#         if 'new' in self.state:
-#             self.state['new'] += 1
-
-#             # Duncan: I'm confused as to what this next line does. Why
-#             # would we want to change the number of maps ahead in the
-#             # queue to state['new']?
-#             self.state['ahead'] = self.state['new']
-
-        # This should be True if the map has been queued, and false, otherwise.
-        return self.id
-                                                                                       
 class StationMap(Map):
     def __init__(self, station_id, **kwargs):
         self.text_id = sanitise_station_id(station_id)

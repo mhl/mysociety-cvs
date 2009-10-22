@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.25 2009-10-22 14:47:43 duncan Exp $
+# $Id: psql_storage.py,v 1.26 2009-10-22 15:32:11 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -51,18 +51,7 @@ class PSQLMapCreationQueue(object):
 
         return state
 
-    def queue_map(
-        self,
-        target_station_id=None, 
-        target_postcode=None, 
-        target_e=None,
-        target_n=None,
-        target_direction=None,
-        target_time=None,
-        target_limit_time=None,
-        target_date=None,
-        ):
-
+    def queue_map(self, map_object):
         try:
             self.db.execute('BEGIN')
             self.db.execute("SELECT nextval('map_id_seq') as next_map_id")
@@ -70,7 +59,7 @@ class PSQLMapCreationQueue(object):
             map_id = self.db.fetchone()['next_map_id']
 
             try:
-                self.db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (map_id, 'new', target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date))
+                self.db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (map_id, 'new', map_object.target_station_id, map_object.target_postcode, map_object.target_e, map_object.target_n, map_object.target_direction, map_object.target_time, map_object.target_limit_time, map_object.target_date))
 
             except:
                 self.db.execute('ROLLBACK')

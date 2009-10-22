@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.140 2009-10-22 14:47:44 duncan Exp $
+# $Id: index.cgi,v 1.141 2009-10-22 15:32:11 duncan Exp $
 #
 
 import sys
@@ -117,7 +117,7 @@ def render_map(fs, invite):
     # If map isn't being made , set it going
     if not map_object.id:
         try:
-            map_object.start_generation()
+            map_object.id = map_creation_queue.queue_map(map_object)
         except storage_exceptions.AlreadyQueuedError:
             # Looks like someone else has put this kind of map in the queue
             # let's call map again from scratch.
@@ -159,7 +159,7 @@ def log_email(fs, email):
 
     if not map_object.id:
         try:
-            map_object.start_generation()
+            map_object.id = map_creation_queue.queue_(map_object)
         except storage_exceptions.AlreadyQueuedError:
             map_object = page.create_map_from_fs(fs) # Fetch it again
 

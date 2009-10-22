@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.18 2009-10-22 14:47:43 duncan Exp $
+# $Id: storage.py,v 1.19 2009-10-22 15:32:11 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -34,18 +34,8 @@ class MapCreationQueue:
         key 'ahead' showing how many maps are ahead of this one in the queue.
         """
 
-    def queue_map(
-        self,
-        target_station_id=None, 
-        target_postcode=None, 
-        target_e=None,
-        target_n=None,
-        target_direction=None,
-        target_time=None,
-        target_limit_time=None,
-        target_date=None,
-        ):
-        """Queue up a map with the attributes passed in.
+    def queue_map(self, map_object):
+        """Queue up a map to be made from the map_object passed in.
 
         Returns a unique id for the map which can be used in filenames, etc.
         """
