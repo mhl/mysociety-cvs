@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: invite.cgi,v 1.27 2009-10-20 13:39:38 duncan Exp $
+# $Id: invite.cgi,v 1.28 2009-10-22 14:47:44 duncan Exp $
 #
 
 import sys
@@ -19,6 +19,7 @@ mysociety.config.set_file("../conf/general")
 
 import page
 import storage
+import storage_exceptions
 
 def invite_view(email, invite=None):
     """I think it's time to start calling things like this views.
@@ -46,7 +47,7 @@ def invite_view(email, invite=None):
                 source='friend' if invite else 'web',
                 source_id=invite.id if invite else None
                 )
-        except storage.StorageError:
+        except storage_exceptions.StorageError:
             context['error'] = 'That email address has already had an invite.'
         else:
             context['success'] = u'Thanks, we\u2019ll send an invite to %s.' %email

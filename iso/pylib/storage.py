@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.17 2009-10-22 14:33:09 duncan Exp $
+# $Id: storage.py,v 1.18 2009-10-22 14:47:43 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -13,16 +13,10 @@
 # above don't need to know how things were stored.
 
 import psycopg2
-import psycopg2.errorcodes
 
 import psql_storage
 import utils
-
-class StorageError(Exception):
-    """An error occurred when accessing storage."""
-
-class AlreadyQueuedError(Exception):
-    """The details asked for are already in the queue."""
+import storage_exceptions
 
 def get_map_creation_queue():
     return psql_storage.PSQLMapCreationQueue()
@@ -137,7 +131,7 @@ def create_invite(email,
             )
     except psycopg2.IntegrityError:
         # Catch the database specific error and raise our own
-        raise StorageError
+        raise storage_exceptions.StorageError
 
     if source_id:
         # If this is an friend invite, then we need to decrement the source's invite count

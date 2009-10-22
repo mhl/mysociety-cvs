@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.24 2009-10-22 14:33:09 duncan Exp $
+# $Id: psql_storage.py,v 1.25 2009-10-22 14:47:43 duncan Exp $
 #
 
 # Functions is this module should return rows in the format that
@@ -15,9 +15,7 @@ import functools
 import psycopg2
 
 from coldb import db
-
-# Imported directly to avoid circular imports.
-from storage import AlreadyQueuedError
+import storage_exceptions
 
 def return_a_dict(func):
     """Decorate functions with this in order to return a dictionary
@@ -84,7 +82,7 @@ class PSQLMapCreationQueue(object):
             if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
                 # The integrity error is because of a unique key violation - ie. an
                 # identical row has appeared in the milliseconds since we looked
-                raise AlreadyQueuedError
+                raise storage_exceptions.AlreadyQueuedError
             else:
                 raise
 

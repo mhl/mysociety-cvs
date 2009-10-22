@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.139 2009-10-22 14:33:10 duncan Exp $
+# $Id: index.cgi,v 1.140 2009-10-22 14:47:44 duncan Exp $
 #
 
 import sys
@@ -23,6 +23,7 @@ from mysociety.rabx import RABXException
 from django.http import HttpResponseRedirect
 
 import storage
+import storage_exceptions
 import utils
 
 tmpwork = mysociety.config.get('TMPWORK')
@@ -117,7 +118,7 @@ def render_map(fs, invite):
     if not map_object.id:
         try:
             map_object.start_generation()
-        except storage.AlreadyQueuedError:
+        except storage_exceptions.AlreadyQueuedError:
             # Looks like someone else has put this kind of map in the queue
             # let's call map again from scratch.
             return render_map(fs, invite)
@@ -159,7 +160,7 @@ def log_email(fs, email):
     if not map_object.id:
         try:
             map_object.start_generation()
-        except storage.AlreadyQueuedError:
+        except storage_exceptions.AlreadyQueuedError:
             map_object = page.create_map_from_fs(fs) # Fetch it again
 
     storage.queue_map_email(email, map_object.id)
