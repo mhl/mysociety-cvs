@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.27 2009-10-23 15:18:29 duncan Exp $
+# $Id: psql_storage.py,v 1.28 2009-10-23 15:23:12 duncan Exp $
 #
 
 import functools
@@ -65,7 +65,7 @@ class PSQLMapCreationQueue(object):
         return state
 
     def queue_map(self, map_object):
-        return insert_map(map_object.__dict__)
+        return insert_map(**map_object.__dict__)
 
     @return_a_dict
     def get_map_from_queue(self, server_description):
