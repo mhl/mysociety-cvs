@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.19 2009-10-22 15:32:11 duncan Exp $
+# $Id: storage.py,v 1.20 2009-10-23 15:18:29 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -20,46 +20,6 @@ import storage_exceptions
 
 def get_map_creation_queue():
     return psql_storage.PSQLMapCreationQueue()
-    
-# Map Creation Queue objects should look like this.
-class MapCreationQueue:
-    def get_map_queue_state(self, map_id=None):
-        """Returns a dictionary with keys 
-
-        'new', 'working', 'complete', 'error', 'to_make'
-
-        each of which stores the number of maps in that state as its value.
-
-        If the optional argument map_id is passed in, there will also be a
-        key 'ahead' showing how many maps are ahead of this one in the queue.
-        """
-
-    def queue_map(self, map_object):
-        """Queue up a map to be made from the map_object passed in.
-
-        Returns a unique id for the map which can be used in filenames, etc.
-        """
-
-    def get_map_from_queue(self, server_description):
-        """
-        Takes a variable server_description, which is used to record who is 
-        working on this item in the queue.
-
-        Returns a tuple:
-
-        (id, state, target_station_text_id, target_e, target_n, target_direction, target_time, target_limit_time, target_date)
-
-        of a map that needs making.
-        """
-
-    def return_map_to_queue(self, map_id):
-        """For some reason we've not finished working on this map properly,
-        so put it back in the queue."""
-
-    def drop_map_from_queue(self, map_id):
-        """Notify the queue that this map doesn't need doing any more."""
-        pass
-
 
 def get_invite_by_token(token_value):
     """
@@ -171,13 +131,29 @@ def get_station_coords(station_text_id):
     easting and northing."""
     return psql_storage.get_station_coords(station_text_id)
 
-def notify_map_done(map_id, time_taken):
+def notify_map_done(**kwargs):
     """Notify the front end that the map is done."""
-    psql_storage.notify_map_done(map_id, time_taken)
+    map_id = kwargs.get('id')
+    if map_id:
+        # The map is already in postgres, so update it.
+        psql_storage.notify_map_done(map_id, kwargs['working_took'])
+    else:
+        # We're not using postgres for the queue, map will need inserting.
+        params = {'state': 'complete'}
+        params.update(kwargs)
+        psql_storage.insert_map(**params)
 
-def notify_map_error(map_id):
+def notify_map_error(**kwargs):
     """Notify the front end that a map has failed."""
-    psql_storage.notify_map_error(map_id)
+    map_id = kwargs.get('id')
+    if map_id:
+        # The map is already in postgres, so update it.
+        psql_storage.notify_map_error(map_id)
+    else:
+        # We're not using postgres for the queue, map will need inserting.
+        params = {'state': 'error'}
+        params.update(kwargs)
+        psql_storage.insert_map(**params)
 
 def get_map_status(
     direction,

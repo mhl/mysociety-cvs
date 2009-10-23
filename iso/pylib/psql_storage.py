@@ -5,11 +5,8 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.26 2009-10-22 15:32:11 duncan Exp $
+# $Id: psql_storage.py,v 1.27 2009-10-23 15:18:29 duncan Exp $
 #
-
-# Functions is this module should return rows in the format that
-# psycopg2 uses.
 
 import functools
 import psycopg2
@@ -29,6 +26,22 @@ def return_a_dict(func):
             return dict(nasty_row.items())
 
     return wrapper
+
+class PSQLQueuedMap(object):
+    def __init__(self, row):
+        self._row = row
+
+    def get_body(self):
+        return self._row
+
+    def release(self):
+        self.db.execute("begin")
+        self.db.execute("update map set state = 'new' where id = %(id)s", self._row)
+        self.db.execute("commit")
+
+    def delete(self):
+        pass
+
 
 class PSQLMapCreationQueue(object):
     def __init__(self, db_cursor=None):
@@ -52,30 +65,7 @@ class PSQLMapCreationQueue(object):
         return state
 
     def queue_map(self, map_object):
-        try:
-            self.db.execute('BEGIN')
-            self.db.execute("SELECT nextval('map_id_seq') as next_map_id")
-
-            map_id = self.db.fetchone()['next_map_id']
-
-            try:
-                self.db.execute('INSERT INTO map (id, state, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (map_id, 'new', map_object.target_station_id, map_object.target_postcode, map_object.target_e, map_object.target_n, map_object.target_direction, map_object.target_time, map_object.target_limit_time, map_object.target_date))
-
-            except:
-                self.db.execute('ROLLBACK')
-                raise
-
-            self.db.execute('COMMIT')
-            
-        except psycopg2.IntegrityError, e:
-            if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
-                # The integrity error is because of a unique key violation - ie. an
-                # identical row has appeared in the milliseconds since we looked
-                raise storage_exceptions.AlreadyQueuedError
-            else:
-                raise
-
-        return map_id
+        return insert_map(map_object.__dict__)
 
     @return_a_dict
     def get_map_from_queue(self, server_description):
@@ -118,7 +108,7 @@ class PSQLMapCreationQueue(object):
         if not row:
             return
 
-        id = row['id']
+        map_id = row['id']
         state = row['state']
         # XXX check target_date here is same as whatever fastindex timetable file we're using
 
@@ -131,18 +121,12 @@ class PSQLMapCreationQueue(object):
         # recording in the database that we are working on this
         #log("working on map " + str(id))
         self.db.execute("update map set state = 'working', working_server = %(server)s, working_start = now() where id = %(id)s", 
-                dict(id=id, server=server_description))
+                dict(id=map_id, server=server_description))
         self.db.execute("commit")
 
-        return row
+        queued_map = PSQLQueuedMap(**row)
 
-    def return_map_to_queue(self, map_id):
-        self.db.execute("begin")
-        self.db.execute("update map set state = 'new' where id = %(id)s", dict(id=map_id))
-        self.db.execute("commit")
-
-    def drop_map_from_queue(self, map_id):
-        pass
+        return queued_map
 
 
 @return_a_dict
@@ -229,6 +213,35 @@ def get_nearest_station(easting, northing):
 def get_station_coords(station_id):
     db().execute('''SELECT id, X(position_osgb), Y(position_osgb) FROM station WHERE text_id = %s''', (station_id,))
     return db().fetchone()
+
+def insert_map(**kwargs):
+    try:
+        db().execute('BEGIN')
+        db().execute("SELECT nextval('map_id_seq') as next_map_id")
+
+        map_id = db().fetchone()['next_map_id']
+        params = {'id': map_id}
+        params.update(kwargs)
+
+        try:
+            db().execute('INSERT INTO map (id, state, working_server, working_start, working_took, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%(id)s, %(state)s, %(target_station_id)s, %(target_postcode)s, %(target_e)s, %(target_n)s, %(target_direction)s, %(target_time)s, %(target_limit_time)s, %(target_date)s)', params)
+
+        except:
+            db().execute('ROLLBACK')
+            raise
+
+        db().execute('COMMIT')
+
+    except psycopg2.IntegrityError, e:
+        if e.pgcode == psycopg2.errorcodes.UNIQUE_VIOLATION:
+            # The integrity error is because of a unique key violation - ie. an
+            # identical row has appeared in the milliseconds since we looked
+            raise storage_exceptions.AlreadyQueuedError
+        else:
+            raise
+
+    return map_id
+
 
 def notify_map_done(map_id, time_taken):
     db().execute("begin")

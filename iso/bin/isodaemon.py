@@ -74,8 +74,8 @@ def stamp():
     return server_and_pid() + " " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # Write something to logfile
-def log(str):
-    print stamp(), str
+def log(message_string):
+    print stamp(), message_string
     sys.stdout.flush()
 
 # Reads data from coopted C++ process, prints and returns it.
@@ -139,46 +139,40 @@ def do_binplan(p, outfile, target_direction, target_time, target_limit_time, sta
 # Core code of one isodaemon process. Checks database for map making work to do and does it.
 def check_for_new_maps_to_make(p):
     # Get a map to work on from the queue
-    row = map_creation_queue.get_map_from_queue(server_and_pid())
+    queued_map = map_creation_queue.get_map_from_queue(server_and_pid())
+    params = queued_map.get_body()
     
-    if row:
-        map_id = row['id']
-        target_station_text_id = row['station_text_id']
-        target_e = row['target_e']
-        target_n = row['target_n']
-        target_direction = row['target_direction']
-        target_time = row['target_time']
-        target_limit_time = row['target_limit_time']        
-    else:
+    if not queued_map:
         # wait a bit, so don't thrash the database
         time.sleep(sleep_db_poll)
         return
 
     try:
         # actually perform the route finding
-        outfile = os.path.join(tmpwork, "%d.iso" % int(map_id))
+        outfile = os.path.join(tmpwork, "%d.iso" % int(params['id']))
         #if child_number == 1: # for debugging
         #        raise Exception("testbroken")
 
         (route_finding_time_taken, output_time_taken) = \
-            do_binplan(p, outfile, target_direction, target_time, target_limit_time, target_station_text_id, target_e, target_n)
+            do_binplan(p, outfile, params['target_direction'], params['target_time'], params['target_limit_time'], params['station_text_id'], params['target_e'], params['target_n'])
 
         # mark that we've done
-        map_creation_queue.drop_map_from_queue(map_id)
-        storage.notify_map_done(map_id, route_finding_time_taken)
-        log("completed map " + str(map_id))
+        queued_map.delete()
+        storage.notify_map_done(working_took=route_finding_time_taken, **params)
+        log("completed map " + str(params['id']))
     except (SystemExit, KeyboardInterrupt, AbortIsoException):
         # daemon was explicitly stopped, don't mark map as error
-        log("explicit stop received for map " + str(map_id) + ", reverting from 'working' to 'new'")
-        map_creation_queue.return_map_to_queue(map_id)
+        log("explicit stop received for map " + str(params['id']) + ", reverting from 'working' to 'new'")
+        # Send the map back to the queue so someone else can work on it.
+        queued_map.release()
         raise
     except:
         # record there was an error, so we can find out easily
         # if the recording error doesn't work, then presumably it was a database error
-        log("error received for map " + str(map_id) + ", reverting from 'working' to 'error'")
+        log("error received for map " + str(params['id']) + ", reverting from 'working' to 'error'")
 
-        map_creation_queue.drop_map_from_queue(map_id)
-        storage.notify_map_error(map_id)
+        storage.notify_map_error(**params)
+        queued_map.delete()
         raise
 
 # Talking to multiple C++ processes
