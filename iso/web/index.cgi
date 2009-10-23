@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.141 2009-10-22 15:32:11 duncan Exp $
+# $Id: index.cgi,v 1.142 2009-10-23 15:27:10 duncan Exp $
 #
 
 import sys
@@ -87,7 +87,7 @@ def render_map(fs, invite):
     map_object = page.create_map_from_fs(fs)
 
     # If it is complete, then render it
-    if map_object.current_state == 'complete':
+    if map_object.state == 'complete':
         return map_complete(map_object, invite)
 
     # See how long it will take to make it
@@ -103,7 +103,7 @@ def render_map(fs, invite):
     approx_waiting_time = map_progress['to_make'] * generation_time / float(max(map_progress['working'], 1))
 
     # ... if too long, ask for email
-    if map_object.current_state in ('new', 'working') and approx_waiting_time > 60:
+    if map_object.state in ('new', 'working') and approx_waiting_time > 60:
         context = {
             'title': map_object.title(),
             'state': map_progress,
@@ -123,7 +123,7 @@ def render_map(fs, invite):
             # let's call map again from scratch.
             return render_map(fs, invite)
 
-    if map_object.current_state == 'working':
+    if map_object.state == 'working':
         server, server_port = map_object.working_server.split(':')
         return page.render_to_response('map-working.html', {
             'title': map_object.title(),
@@ -134,10 +134,10 @@ def render_map(fs, invite):
             'refresh': int(generation_time)<5 and int(generation_time) or 5,
         })
 
-    if map_object.current_state == 'error':
+    if map_object.state == 'error':
         return page.render_to_response('map-error.html', { 'map_id' : map_object.id })
     
-    if map_object.current_state == 'new':
+    if map_object.state == 'new':
         return page.render_to_response('map-pleasewait.html', {
             'title': map_object.title(),
             'approx_waiting_time': int(approx_waiting_time),
@@ -145,7 +145,7 @@ def render_map(fs, invite):
             'refresh': 2,
         })
 
-    raise Exception("unknown state " + map_object.current_state)
+    raise Exception("unknown state " + map_object.state)
 
 # Email has been given, remember to mail them when map is ready
 def log_email(fs, email):
