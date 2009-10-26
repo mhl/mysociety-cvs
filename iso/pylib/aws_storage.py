@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: aws_storage.py,v 1.6 2009-10-26 17:05:09 duncan Exp $
+# $Id: aws_storage.py,v 1.7 2009-10-26 17:54:24 duncan Exp $
 #
 
 import sys
@@ -41,10 +41,14 @@ def get_or_create_queue(queue_name, visibility_timeout):
 
 class MapCreationQueueMessage(boto.sqs.message.Message):
     def encode(self, value):
-        return pickle.dumps(value)
+        # Would use super here rather than refering to the superclass
+        # method directly, but for some reason, Message is an old style class
+        return boto.sqs.message.Message.encode(self, pickle.dumps(value))
 
     def decode(self, value):
-        return pickle.loads(value)
+        # Would use super here rather than refering to the superclass
+        # method directly, but for some reason, Message is an old style class
+        return pickle.loads(boto.sqs.message.Message.decode(self, value))
 
     def release(self):
         # The message will reappear after the visibility timeout ends.
