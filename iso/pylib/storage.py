@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.20 2009-10-23 15:18:29 duncan Exp $
+# $Id: storage.py,v 1.21 2009-10-26 14:31:39 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -15,11 +15,27 @@
 import psycopg2
 
 import psql_storage
+import aws_storage
+
 import utils
 import storage_exceptions
 
+import mysociety.config
+mysociety.config.set_file("../conf/general")
+
 def get_map_creation_queue():
-    return psql_storage.PSQLMapCreationQueue()
+    aws_key = mysociety.config.get('OPTION_AWS_KEY')
+    aws_secret = mysociety.config.get('OPTION_AWS_SECRET')
+    aws_queue_name = mysociety.config.get('OPTION_AWS_MAP_CREATION_QUEUE_NAME')
+    aws_visibility_timeout = mysociety.config.get('OPTION_AWS_MAP_CREATION_QUEUE_VISIBILITY_TIMEOUT')
+
+    # If we have what we need to use AWS, use that, otherwise, use postgres.
+    # There is no need for aws_visibility_timeout here since None will cause
+    # us to use the default.
+    if aws_key and aws_secret and aws_queue_name:
+        return aws_storage.AWSMapCreationQueue(aws_queue_name, aws_visibility_timeout)
+    else:
+        return psql_storage.PSQLMapCreationQueue()
 
 def get_invite_by_token(token_value):
     """

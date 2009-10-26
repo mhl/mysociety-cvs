@@ -40,7 +40,7 @@ fastindex = mysociety.config.get('ISODAEMON_FASTINDEX')
 logfile = mysociety.config.get('ISODAEMON_LOGFILE')
 tmpwork = mysociety.config.get('TMPWORK')
 concurr = int(mysociety.config.get('ISODAEMON_CONCURRENT_JOBS'))
-sleep_db_poll = 2.0
+sleep_db_poll = int(mysociety.config.get('OPTION_ISODAEMON_POLL_SLEEP'))
 
 map_creation_queue = storage.get_map_creation_queue()
 
@@ -140,6 +140,8 @@ def do_binplan(p, outfile, target_direction, target_time, target_limit_time, sta
 def check_for_new_maps_to_make(p):
     # Get a map to work on from the queue
     queued_map = map_creation_queue.get_map_from_queue(server_and_pid())
+    log("Got map from queue: %s" %queued_map
+
     params = queued_map.get_body()
     
     if not queued_map:
