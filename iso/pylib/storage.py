@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.24 2009-10-26 15:05:10 duncan Exp $
+# $Id: storage.py,v 1.25 2009-10-26 19:19:06 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -18,7 +18,6 @@ sys.path.extend(("../pylib", "../../pylib"))
 import psycopg2
 
 import psql_storage
-import aws_storage
 
 import utils
 import storage_exceptions
@@ -36,6 +35,9 @@ def get_map_creation_queue():
     # There is no need for aws_visibility_timeout here since None will cause
     # us to use the default.
     if aws_key and aws_secret and aws_queue_name:
+        # Do the import of aws_storage in here so that it isn't run on a
+        # system not using AWS
+        import aws_storage
         return aws_storage.AWSMapCreationQueue(aws_queue_name, aws_visibility_timeout)
     else:
         return psql_storage.PSQLMapCreationQueue()
