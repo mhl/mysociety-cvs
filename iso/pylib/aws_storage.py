@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: aws_storage.py,v 1.2 2009-10-26 14:50:29 duncan Exp $
+# $Id: aws_storage.py,v 1.3 2009-10-26 14:53:16 duncan Exp $
 #
 
 import sys
@@ -27,11 +27,11 @@ aws_connection = boto.sqs.connection.SQSConnection(
 
 # FIXME - should make the queue visibility timeout an option
 
-def get_or_create_queue(queue_name):
+def get_or_create_queue(queue_name, visibility_timeout):
     # Get the queue with this name if it exists, or create it if not.
     # the create method would do exactly the same thing, but is apparently
     # more expensive than doing a lookup first.
-    return aws_connection.lookup(queue_name) or aws_connection.create_queue(queue_name)
+    return aws_connection.lookup(queue_name, visibility_timeout) or aws_connection.create_queue(queue_name, visibility_timeout)
 
 class MapCreationQueueMessage(boto.sqs.message.Message):
     def encode(self, value):
