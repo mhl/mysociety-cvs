@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.23 2009-10-26 14:50:29 duncan Exp $
+# $Id: storage.py,v 1.24 2009-10-26 15:05:10 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -30,7 +30,7 @@ def get_map_creation_queue():
     aws_key = mysociety.config.get('AWS_KEY')
     aws_secret = mysociety.config.get('AWS_SECRET')
     aws_queue_name = mysociety.config.get('AWS_MAP_CREATION_QUEUE_NAME')
-    aws_visibility_timeout = mysociety.config.get('AWS_MAP_CREATION_QUEUE_VISIBILITY_TIMEOUT')
+    aws_visibility_timeout = int(mysociety.config.get('AWS_MAP_CREATION_QUEUE_VISIBILITY_TIMEOUT'))
 
     # If we have what we need to use AWS, use that, otherwise, use postgres.
     # There is no need for aws_visibility_timeout here since None will cause
