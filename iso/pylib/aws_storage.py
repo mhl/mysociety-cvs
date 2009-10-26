@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: aws_storage.py,v 1.1 2009-10-26 14:31:39 duncan Exp $
+# $Id: aws_storage.py,v 1.2 2009-10-26 14:50:29 duncan Exp $
 #
 
 import sys
@@ -21,8 +21,8 @@ import mysociety.config
 mysociety.config.set_file("../conf/general")
 
 aws_connection = boto.sqs.connection.SQSConnection(
-    mysociety.config.get('OPTION_AWS_KEY'),
-    mysociety.config.get('OPTION_AWS_SECRET'),
+    mysociety.config.get('AWS_KEY'),
+    mysociety.config.get('AWS_SECRET'),
     )
 
 # FIXME - should make the queue visibility timeout an option
