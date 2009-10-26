@@ -141,13 +141,13 @@ def check_for_new_maps_to_make(p):
     # Get a map to work on from the queue
     queued_map = map_creation_queue.get_map_from_queue(server_and_pid())
     log("Got map from queue: %s" %queued_map)
-
-    params = queued_map.get_body()
     
     if not queued_map:
         # wait a bit, so don't thrash the database
         time.sleep(sleep_db_poll)
         return
+
+    params = queued_map.get_body()
 
     try:
         # actually perform the route finding
