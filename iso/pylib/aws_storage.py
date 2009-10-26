@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: aws_storage.py,v 1.5 2009-10-26 15:26:24 duncan Exp $
+# $Id: aws_storage.py,v 1.6 2009-10-26 17:05:09 duncan Exp $
 #
 
 import sys
@@ -64,7 +64,7 @@ class AWSMapCreationQueue(object):
         return { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0, 'to_make': 0 }
 
     def queue_map(self, map_object):
-        message = boto.sqs.message.Message()
+        message = MapCreationQueueMessage()
         
         message_dict = {
             'station_id': map_object.target_station_id, 
