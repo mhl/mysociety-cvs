@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.29 2009-10-26 10:51:57 duncan Exp $
+# $Id: psql_storage.py,v 1.30 2009-10-26 10:55:13 duncan Exp $
 #
 
 import functools
@@ -222,7 +222,10 @@ def insert_map(**kwargs):
 
         map_id = db().fetchone()['next_map_id']
         params = {'id': map_id, 
-                  'state': None, 
+                  'state': None,
+                  'working_server': None,
+                  'working_start': None,
+                  'working_took': None,
                   'target_station_id': None, 
                   'target_postcode': None,
                   'target_e': None,
@@ -236,7 +239,7 @@ def insert_map(**kwargs):
         params.update(kwargs)
 
         try:
-            db().execute('INSERT INTO map (id, state, working_server, working_start, working_took, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%(id)s, %(state)s, %(target_station_id)s, %(target_postcode)s, %(target_e)s, %(target_n)s, %(target_direction)s, %(target_time)s, %(target_limit_time)s, %(target_date)s)', params)
+            db().execute('INSERT INTO map (id, state, working_server, working_start, working_took, target_station_id, target_postcode, target_e, target_n, target_direction, target_time, target_limit_time, target_date) VALUES (%(id)s, %(state)s, %(working_server)s, %(working_start)s, %(working_took)s, %(target_station_id)s, %(target_postcode)s, %(target_e)s, %(target_n)s, %(target_direction)s, %(target_time)s, %(target_limit_time)s, %(target_date)s)', params)
 
         except:
             db().execute('ROLLBACK')
