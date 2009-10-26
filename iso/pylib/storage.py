@@ -5,12 +5,15 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.21 2009-10-26 14:31:39 duncan Exp $
+# $Id: storage.py,v 1.22 2009-10-26 14:46:53 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
 # things that are stored, but in a way that means that the layers
 # above don't need to know how things were stored.
+
+import sys
+sys.path.extend(("../pylib", "../../pylib"))
 
 import psycopg2
 
