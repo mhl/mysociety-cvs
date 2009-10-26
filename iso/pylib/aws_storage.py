@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: aws_storage.py,v 1.4 2009-10-26 15:03:56 duncan Exp $
+# $Id: aws_storage.py,v 1.5 2009-10-26 15:26:24 duncan Exp $
 #
 
 import sys
@@ -61,7 +61,7 @@ class AWSMapCreationQueue(object):
         # Will probably need to take it off this class.
         
         # This is a stub which returns something to display so that things don't break
-        return { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
+        return { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0, 'to_make': 0 }
 
     def queue_map(self, map_object):
         message = boto.sqs.message.Message()
