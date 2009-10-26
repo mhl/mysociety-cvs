@@ -40,7 +40,7 @@ fastindex = mysociety.config.get('ISODAEMON_FASTINDEX')
 logfile = mysociety.config.get('ISODAEMON_LOGFILE')
 tmpwork = mysociety.config.get('TMPWORK')
 concurr = int(mysociety.config.get('ISODAEMON_CONCURRENT_JOBS'))
-sleep_db_poll = int(mysociety.config.get('OPTION_ISODAEMON_POLL_SLEEP'))
+sleep_db_poll = int(mysociety.config.get('ISODAEMON_POLL_SLEEP'))
 
 map_creation_queue = storage.get_map_creation_queue()
 
