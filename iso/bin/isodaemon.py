@@ -8,6 +8,23 @@
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
 
+# Note on the forking / piping:
+#
+# If each fastplan-coopt was spawned separately, they would each load in their
+# own copy of the timetable data. This takes maybe 1Gb of RAM, which for 8
+# isodaemons on a multicore machine would be too much.
+#
+# Instead, fastplan-coopt is spawned once, and the isodaemons tell it  to fork
+# the other instances.  They then share the same copy of the timetable data
+# (copy on write).
+#
+# So the isodaemons can communicate with the forked instances, the Python code
+# makes various pipe file handles in advance, and then the fatsplan-coopt
+# instances use those file handles. See do_main_loop and fastplan-coopt.cpp for
+# details.
+#
+
+# Todo:
 # Pipe read timeouts
 # Trapping all exceptions / errors and logging to syslog and resuming 
 
