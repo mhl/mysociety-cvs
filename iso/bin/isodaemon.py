@@ -156,6 +156,7 @@ def do_binplan(p, outfile, target_direction, target_time, target_limit_time, sta
 # Core code of one isodaemon process. Checks database for map making work to do and does it.
 def check_for_new_maps_to_make(p):
     # Get a map to work on from the queue
+    log("hello")
     queued_map = map_creation_queue.get_map_from_queue(server_and_pid())
     log("Got map from queue: %s" %queued_map)
     
@@ -296,9 +297,7 @@ def do_main_loop():
         # check communication with C++ planner is working
         log("child started number " + str(child_number))
         p.stdin.write("info\n")
-        log("debug 1: child: %s" %child_number)
         my_readline(p, 'fastplan-coopt:')
-        log("debug 2: child: %s" %child_number)
 
         # loop, checking database for new maps to make
         while True:
