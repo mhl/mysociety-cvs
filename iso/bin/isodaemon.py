@@ -165,6 +165,7 @@ def check_for_new_maps_to_make(p):
         return
 
     params = queued_map.get_body()
+    log("Params: %s" %str(params))
 
     try:
         # actually perform the route finding
