@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.32 2009-10-27 18:50:02 duncan Exp $
+# $Id: psql_storage.py,v 1.33 2009-10-27 18:53:14 duncan Exp $
 #
 
 import functools
@@ -79,6 +79,7 @@ class PSQLMapCreationQueue(object):
         offset = 0
         while True:
             try:
+                self.logger("Running query with offset = %s" %offset)
                 self.db.execute("begin")
                 # we get the row "for update" to lock it, and "nowait" so we
                 # get an exception if someone else already has it, rather than
@@ -101,11 +102,13 @@ class PSQLMapCreationQueue(object):
     offset %s 
     for update nowait""" % offset)
                 row = self.db.fetchone()
+                self.logger("Got row: %s" %str(row))
                 break
             except psycopg2.OperationalError:
                 # if someone else has the item locked, i.e. they are working on it, then we
                 # try and find a different one to work on
                 self.db.execute("rollback")
+                self.logger("Rolling back and incrementing offset")
                 offset = offset + 1
                 #log("somebody else had the item, trying offset " + str(offset))
                 continue
