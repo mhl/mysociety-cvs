@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.25 2009-10-26 19:19:06 duncan Exp $
+# $Id: storage.py,v 1.26 2009-10-27 18:46:28 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -25,7 +25,7 @@ import storage_exceptions
 import mysociety.config
 mysociety.config.set_file("../conf/general")
 
-def get_map_creation_queue():
+def get_map_creation_queue(logger=None):
     aws_key = mysociety.config.get('AWS_KEY')
     aws_secret = mysociety.config.get('AWS_SECRET')
     aws_queue_name = mysociety.config.get('AWS_MAP_CREATION_QUEUE_NAME')
@@ -40,7 +40,7 @@ def get_map_creation_queue():
         import aws_storage
         return aws_storage.AWSMapCreationQueue(aws_queue_name, aws_visibility_timeout)
     else:
-        return psql_storage.PSQLMapCreationQueue()
+        return psql_storage.PSQLMapCreationQueue(logger=logger)
 
 def get_invite_by_token(token_value):
     """

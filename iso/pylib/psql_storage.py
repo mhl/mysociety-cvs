@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.30 2009-10-26 10:55:13 duncan Exp $
+# $Id: psql_storage.py,v 1.31 2009-10-27 18:46:28 duncan Exp $
 #
 
 import functools
@@ -45,9 +45,13 @@ class PSQLQueuedMap(object):
 
 
 class PSQLMapCreationQueue(object):
-    def __init__(self, db_cursor=None):
+    def __init__(self, db_cursor=None, logger=None):
         # At some point we should move to passing db_cursor in.
         self.db = db_cursor or db()
+
+        # Either use the logger passed in, or silently dump things that
+        # are logged.
+        self.logger = logger or lambda x: None
 
     def get_map_queue_state(self, map_id=None):
         state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
@@ -71,6 +75,7 @@ class PSQLMapCreationQueue(object):
     @return_a_dict
     def get_map_from_queue(self, server_description):
         # find something to do - we start with the map that was queued longest ago.
+        self.logger("Getting map from queue. Server description: %s" %server_description)
         offset = 0
         while True:
             try:
@@ -125,7 +130,7 @@ class PSQLMapCreationQueue(object):
                 dict(id=map_id, server=server_description))
         self.db.execute("commit")
 
-        queued_map = PSQLQueuedMap(**row)
+        queued_map = PSQLQueuedMap(row)
 
         return queued_map
 
