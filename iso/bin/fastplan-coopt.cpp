@@ -8,12 +8,12 @@
 // Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 // Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 //
-// $Id: fastplan-coopt.cpp,v 1.15 2009-10-12 12:39:36 francis Exp $
+// $Id: fastplan-coopt.cpp,v 1.16 2009-10-27 17:27:04 duncan Exp $
 //
 
 // Example one off runs (the EOF from stdin will make the program exit after one command)
 //echo plan 540 0 450445 207017 | ./fastplan-coopt /home/francis/toobig/nptdr/gen/fastindex-713f1c5e34a0-2008-10-07 >out
-//echo binplan /tmp/map1.iso 540 0 340002053CR | ./fastplan-coopt /home/francis/toobig/nptdr/gen/fastindex-713f1c5e34a0-2008-10-07
+//echo binplan /tmp/map1.iso /tmp/route1 arrive_by 540 0 '' 393451 804639 | ./fastplan-coopt /data/vhost/duncan.col.mysociety.org/tmpwork/fastindex-all-country-2008-10-07
 
 #include <math.h> // something weird in /usr/include/bits/mathcalls.h means this must be included from top level file
 

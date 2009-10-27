@@ -156,7 +156,6 @@ def do_binplan(p, outfile, target_direction, target_time, target_limit_time, sta
 # Core code of one isodaemon process. Checks database for map making work to do and does it.
 def check_for_new_maps_to_make(p):
     # Get a map to work on from the queue
-    log("hello")
     queued_map = map_creation_queue.get_map_from_queue(server_and_pid())
     log("Got map from queue: %s" %queued_map)
     
