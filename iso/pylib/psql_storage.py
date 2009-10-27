@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.31 2009-10-27 18:46:28 duncan Exp $
+# $Id: psql_storage.py,v 1.32 2009-10-27 18:50:02 duncan Exp $
 #
 
 import functools
@@ -51,7 +51,7 @@ class PSQLMapCreationQueue(object):
 
         # Either use the logger passed in, or silently dump things that
         # are logged.
-        self.logger = logger or lambda x: None
+        self.logger = logger or (lambda x: None)
 
     def get_map_queue_state(self, map_id=None):
         state = { 'new': 0, 'working': 0, 'complete': 0, 'error' : 0 }
