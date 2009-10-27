@@ -296,7 +296,9 @@ def do_main_loop():
         # check communication with C++ planner is working
         log("child started number " + str(child_number))
         p.stdin.write("info\n")
+        log("debug 1: child: %s" %child_number)
         my_readline(p, 'fastplan-coopt:')
+        log("debug 2: child: %s" %child_number)
 
         # loop, checking database for new maps to make
         while True:
