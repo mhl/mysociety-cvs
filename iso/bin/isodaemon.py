@@ -48,8 +48,6 @@ import mysociety.config
 
 sys.path.append("../pylib")
 
-import storage
-
 mysociety.config.set_file("../conf/general")
 mysociety.config.load_default()
 pidfile = mysociety.config.get('ISODAEMON_PIDFILE')
@@ -114,7 +112,7 @@ def my_readline(p, check_regexp = None):
         return line
 
 
-
+import storage
 map_creation_queue = storage.get_map_creation_queue(logger=log)
 
 

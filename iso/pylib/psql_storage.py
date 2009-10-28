@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.36 2009-10-28 16:22:21 duncan Exp $
+# $Id: psql_storage.py,v 1.37 2009-10-28 17:09:55 duncan Exp $
 #
 
 import functools
@@ -101,6 +101,7 @@ class PSQLMapCreationQueue(object):
     limit 1 
     offset %d 
     for update nowait""" %offset)
+
                 self.logger("Run query")
                 row = self.db.fetchone()
                 self.logger("Got row: %s" %str(row))
@@ -111,7 +112,7 @@ class PSQLMapCreationQueue(object):
                 # try and find a different one to work on
                 self.db.execute("rollback")
                 self.logger("Rolling back and incrementing offset")
-                offset = offset + 1
+                offset += 1
                 #log("somebody else had the item, trying offset " + str(offset))
                 continue
             

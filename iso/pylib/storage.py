@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: storage.py,v 1.26 2009-10-27 18:46:28 duncan Exp $
+# $Id: storage.py,v 1.27 2009-10-28 17:09:55 duncan Exp $
 #
 
 # Functions in this module should provide an API for accessing
@@ -23,7 +23,7 @@ import utils
 import storage_exceptions
 
 import mysociety.config
-mysociety.config.set_file("../conf/general")
+#mysociety.config.set_file("../conf/general")
 
 def get_map_creation_queue(logger=None):
     aws_key = mysociety.config.get('AWS_KEY')
