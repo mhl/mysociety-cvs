@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.34 2009-10-28 16:01:47 duncan Exp $
+# $Id: psql_storage.py,v 1.35 2009-10-28 16:06:58 duncan Exp $
 #
 
 import functools
@@ -101,8 +101,10 @@ class PSQLMapCreationQueue(object):
     limit 1 
     offset %s 
     for update nowait""", (offset,))
+                self.logger("Run query")
                 row = self.db.fetchone()
                 self.logger("Got row: %s" %str(row))
+
                 break
             except psycopg2.OperationalError:
                 # if someone else has the item locked, i.e. they are working on it, then we
@@ -112,6 +114,7 @@ class PSQLMapCreationQueue(object):
                 offset = offset + 1
                 #log("somebody else had the item, trying offset " + str(offset))
                 continue
+            
 
         # If there is nothing to do, then return.
         if not row:
