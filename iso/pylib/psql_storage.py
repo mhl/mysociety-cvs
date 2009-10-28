@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.37 2009-10-28 17:09:55 duncan Exp $
+# $Id: psql_storage.py,v 1.38 2009-10-28 17:58:28 duncan Exp $
 #
 
 import functools
@@ -75,11 +75,9 @@ class PSQLMapCreationQueue(object):
     @return_a_dict
     def get_map_from_queue(self, server_description):
         # find something to do - we start with the map that was queued longest ago.
-        self.logger("Getting map from queue. Server description: %s" %server_description)
         offset = 0
         while True:
             try:
-                self.logger("Running query with offset = %s" %offset)
                 self.db.execute("begin")
                 # we get the row "for update" to lock it, and "nowait" so we
                 # get an exception if someone else already has it, rather than
@@ -102,16 +100,13 @@ class PSQLMapCreationQueue(object):
     offset %d 
     for update nowait""" %offset)
 
-                self.logger("Run query")
                 row = self.db.fetchone()
-                self.logger("Got row: %s" %str(row))
 
                 break
             except psycopg2.OperationalError:
                 # if someone else has the item locked, i.e. they are working on it, then we
                 # try and find a different one to work on
                 self.db.execute("rollback")
-                self.logger("Rolling back and incrementing offset")
                 offset += 1
                 #log("somebody else had the item, trying offset " + str(offset))
                 continue
