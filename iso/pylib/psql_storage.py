@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.33 2009-10-27 18:53:14 duncan Exp $
+# $Id: psql_storage.py,v 1.34 2009-10-28 16:01:47 duncan Exp $
 #
 
 import functools
@@ -100,7 +100,7 @@ class PSQLMapCreationQueue(object):
     order by created 
     limit 1 
     offset %s 
-    for update nowait""" % offset)
+    for update nowait""", (offset,))
                 row = self.db.fetchone()
                 self.logger("Got row: %s" %str(row))
                 break
