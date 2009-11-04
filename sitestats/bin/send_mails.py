@@ -35,7 +35,7 @@ Send out mySociety site stats emails. Run with "--help" to see available options
 
 parser.add_option('--verbose', action='store_true', default=False, dest="verbose", help='Produce extra debugging output')
 parser.add_option('--only', dest='only', default=None, help='Only send email for one user identified by username')
-parser.add_option('--newsletter', dest='newsletter', default=None, help='Only send one type of newsletter')
+parser.add_option('--newsletter', dest='newsletter', default=None, help='Only send one type of newsletter e.g. TWFYNewsletter, CommonBaseMeasuresNewsletter')
 (options, args) = parser.parse_args()
 
 sources = { 'piwik'    : Piwik(), 
