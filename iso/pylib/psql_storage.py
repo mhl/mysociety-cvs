@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.38 2009-10-28 17:58:28 duncan Exp $
+# $Id: psql_storage.py,v 1.39 2009-11-04 21:29:03 duncan Exp $
 #
 
 import functools
@@ -103,7 +103,7 @@ class PSQLMapCreationQueue(object):
                 row = self.db.fetchone()
 
                 break
-            except psycopg2.OperationalError:
+            except SystemExit: #psycopg2.OperationalError:
                 # if someone else has the item locked, i.e. they are working on it, then we
                 # try and find a different one to work on
                 self.db.execute("rollback")
