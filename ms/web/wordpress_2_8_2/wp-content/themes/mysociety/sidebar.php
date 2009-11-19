@@ -26,6 +26,7 @@ if (is_category()) {
 }
 
 $is_cee = ($_SERVER['SERVER_NAME']=='cee.mysociety.org');
+$is_cee_cfp = ($is_cee && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
 
 if ($is_cee) {
     $news_list = 'cee-talk';
@@ -82,6 +83,11 @@ if ($is_cee) {
 			</ul>
 		</p>
 </div>
+<?
+}
+
+if (!$is_cee || $is_cee_cfp) {
+?>
 			<!-- Categories -->
     
 <br/>
