@@ -96,11 +96,7 @@
 		
 <?php
 
-if (!$is_idea && !$is_cee_cfp) {
-    get_sidebar();
-} else {
-    get_sidebar('cfp');
-}
-
+get_sidebar();
+echo '<br class="clear"/>';
 get_footer();
 

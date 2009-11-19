@@ -25,6 +25,7 @@ if (is_category()) {
 	echo '<p id="sidebar_rss"><a href="', bloginfo('rss2_url'), '"><img align="top" src="http://www.mysociety.org/feed.png" alt=""> RSS feed</a></p>';
 }
 
+$is_idea = in_category(29);
 $is_cee = ($_SERVER['SERVER_NAME']=='cee.mysociety.org');
 $is_cee_cfp = ($is_cee && substr($_SERVER['REQUEST_URI'], 0, 5) == '/cfp/');
 
@@ -60,7 +61,7 @@ if ($is_cee) {
 
 <?php
 
-if ($is_cee) {
+if ($is_cee || $is_idea) {
     get_sidebar('cfp');
 } else {
 

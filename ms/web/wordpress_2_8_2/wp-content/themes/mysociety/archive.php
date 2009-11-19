@@ -79,7 +79,7 @@ while (have_posts()) : the_post();
 
 endwhile;
 
-if (is_category(29)) {
+if (is_category(29) || $is_cee_cfp) {
     echo '</ul>';
 }
 
