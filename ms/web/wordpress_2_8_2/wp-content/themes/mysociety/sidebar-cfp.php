@@ -52,6 +52,11 @@ while (have_posts()) : the_post(); ?>
 
 <?php } else { ?>
 
+			<h4>Ideas by country</h4>
+			<ul class="nobullets">
+                <?=file_get_contents('http://cee.mysociety.org/cfp-cats.php'); ?>
+			</ul>
+		
     <p>
     <a class="linkbutton" href="<?=$view_link?>">
         <span class="left">&nbsp;</span>
