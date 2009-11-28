@@ -291,7 +291,7 @@ exit;
     <div id="content" class="narrowcolumn">
 	<h2 class="pagetitle">Proposals 2006</h2>
 <?php 
-	$posts = get_posts('cat=3&numberposts=10000');
+	$posts = get_posts('category=3&numberposts=10000');
 ?>
 	<?php foreach ($posts as $post) : ?>
 	<div class="post">
