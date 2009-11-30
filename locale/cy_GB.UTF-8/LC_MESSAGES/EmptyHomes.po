@@ -335,11 +335,13 @@ msgstr "Cadarnhau"
 
 #: bci/web/alert.cgi:38
 msgid ""
-"Thank you for trying to confirm your alert. We seem to have an error ourselves\n"
-"though, so <a href=\"/contact\">please let us know what went on</a> and we'll look into it.\n"
+"Thank you for trying to confirm your alert. We seem to have an error "
+"ourselves\n"
+"though, so <a href=\"%s\">please let us know what went on</a> and we'll look "
+"into it.\n"
 msgstr ""
 "Diolch am geisio cadarnhau eich rhybudd. Fodd bynnag, mae'n ymddangos bod gennym wall\n"
-"ein hunain, felly <a href=\"/contact\">rhowch wybod i ni beth sydd wedi digwydd</a> ac fe wnawn ni edrych yn fanylach ar hyn.\n"
+"ein hunain, felly <a href=\"/%s\">rhowch wybod i ni beth sydd wedi digwydd</a> ac fe wnawn ni edrych yn fanylach ar hyn.\n"
 
 #: bci/web/alert.cgi:50 bci/web/alert.cgi:53 bci/web/alert.cgi:202
 #: bci/web/alert.cgi:269
@@ -670,6 +672,12 @@ msgstr "Cysylltu â'r tîm"
 msgid "You are reporting the following empty property report for being abusive, containing personal information, or similar:"
 msgstr "Rydych yn cwyno am yr adroddiad canlynol am eiddo gwag gan ei fod yn sarhaus, neu'n cynnwys gwybodaeth bersonol, neu debyg:"
 
+#: bci/web/contact.cgi:160
+msgid ""
+"You are reporting the following update for being abusive, containing "
+"personal information, or similar:"
+msgstr ""
+
 #: bci/web/contact.cgi:115
 msgid ""
 "We&rsquo;d love to hear what you think about this\n"
@@ -760,6 +768,10 @@ msgstr "Adrodd am eiddo gwag a gweld y rhain"
 #: bci/web/index.cgi:104
 msgid " "
 msgstr " "
+
+#: bci/web/contact.cgi:124 bci/web/index.cgi:436
+msgid "There were problems with your report. Please see below."
+msgstr ""
 
 #: bci/web/index.cgi:125
 #, perl-format
@@ -968,6 +980,14 @@ msgstr ""
 "Ar y safle, byddwn yn dangos pwnc a manylion yr eiddo gwag,\n"
 "ynghyd â'ch enw os ydych yn rhoi caniatâd i ni."
 
+#: bci/web/index.cgi:641
+#, perl-format
+msgid ""
+"All the information you provide here will be sent to <strong>%s</strong>.\n"
+"The subject and details of the empty property will be public, plus your\n"
+"name if you give us permission."
+msgstr ""
+
 #: bci/web/index.cgi:613
 msgid ""
 "<p>We do not yet have details for the council that covers\n"
@@ -1004,6 +1024,16 @@ msgstr ""
 "ac i'r pwynt; mae ysgrifennu eich neges yn gyfan gwbl mewn priflythrennau\n"
 "yn ei gwneud hi'n anodd ei darllen, fel y mae diffyg atalnodi.\n"
 
+#: bci/web/index.cgi:703
+msgid ""
+"Please fill in details of the empty property below. The council won't be able\n"
+"to help unless you leave as much detail as you can, so please describe the "
+"exact location of\n"
+"the empty property (e.g. on a wall), what it is, how long it has been there, a "
+"description (and a\n"
+"photo of the empty property if you have one), etc."
+msgstr ""
+
 #: bci/web/index.cgi:644
 msgid "Please fill in details of the empty property below."
 msgstr "Llenwch fanylion yr eiddo gwag isod."
@@ -1035,6 +1065,10 @@ msgstr "(dewisol)"
 #: bci/web/index.cgi:667
 msgid "Can we show your name on the site?"
 msgstr "Allwn ni ddangos eich enw chi ar y safle?"
+
+#: bci/web/index.cgi:732 
+msgid "Can we show your name publicly?"
+msgstr ""
 
 #: bci/web/index.cgi:668
 msgid "(we never show your email address or phone number)"
@@ -1154,9 +1188,20 @@ msgstr "Rhowch ddiweddariad"
 msgid "Please note that updates are not sent to the council."
 msgstr "Sylwer nad yw diweddariadau'n cael eu hanfon at y cyngor."
 
+#: bci/web/index.cgi:988
+msgid ""
+"Please note that updates are not sent to the council. If you leave your name "
+"it will be public. Your information will only be used in accordance with our "
+"<a href=\"/faq#privacy\">privacy policy</a>"
+msgstr ""
+
 #: bci/web/index.cgi:955
 msgid "Update:"
 msgstr "Diweddariad:"
+
+#: bci/web/index.cgi:905
+msgid "There were problems with your update. Please see below."
+msgstr ""
 
 #: bci/web/index.cgi:957
 msgid "Alert me to future updates"
@@ -1400,6 +1445,11 @@ msgstr "Gallwch <a href=\"%s\">weld mwy o fanylion</a> neu fynd yn ôl a <a href
 #, perl-format
 msgid "This is a summary of all reports for one %s."
 msgstr "Dyma grynodeb o'r holl adroddiadau ar gyfer y %s."
+
+#: bci/web/reports.cgi:205
+#, perl-format
+msgid "This is a summary of all reports for this %s."
+msgstr ""
 
 #: bci/web/reports.cgi:246
 msgid "Old empty properties, state unknown"
@@ -1711,7 +1761,7 @@ msgid ""
 "Hi<?=$values['name']?>,\n"
 "\n"
 "To confirm the report you have uploaded to reportemptyhomes.com via\n"
-"<?=$values['service'], and to check or add any details,\n"
+"<?=$values['service']?>, and to check or add any details,\n"
 "please visit the following URL:\n"
 "\n"
 "<?=$values['url']?>\n"
