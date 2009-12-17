@@ -162,42 +162,48 @@ def check_for_new_maps_to_make(p):
     # Get a map to work on from the queue
     log("Checking for maps to create.")
     queued_map = map_creation_queue.get_map_from_queue(server_and_pid())
-    log("Got map from queue: %s" %queued_map)
     
     if not queued_map:
         # wait a bit, so don't thrash the database
         time.sleep(sleep_db_poll)
         return
 
-    params = queued_map.get_body()
-    log("Params: %s" %str(params))
+    log("Got map from queue: %s" %queued_map.identifier)
 
     try:
         # actually perform the route finding
-        outfile = os.path.join(tmpwork, "%d.iso" % int(params['id']))
+        filename = "%s.iso" %queued_map.identifier
+
+        outfile = os.path.join(tmpwork, filename)
         #if child_number == 1: # for debugging
         #        raise Exception("testbroken")
 
         (route_finding_time_taken, output_time_taken) = \
-            do_binplan(p, outfile, params['target_direction'], params['target_time'], params['target_limit_time'], params['station_text_id'], params['target_e'], params['target_n'])
+            do_binplan(p, 
+                       outfile, 
+                       queued_map.target_direction, 
+                       queued_map.target_time, 
+                       queued_map.target_limit_time, 
+                       queued_map.station_text_id, 
+                       queued_map.target_e, 
+                       queued_map.target_n,
+                       )
 
         # mark that we've done
-        queued_map.delete()
-        storage.notify_map_done(working_took=route_finding_time_taken, **params)
-        log("completed map " + str(params['id']))
+        queued_map.mark_as_done(outfile)
+        log("completed map " + queued_map.identifier)
     except (SystemExit, KeyboardInterrupt, AbortIsoException):
         # daemon was explicitly stopped, don't mark map as error
-        log("explicit stop received for map " + str(params['id']) + ", reverting from 'working' to 'new'")
+        log("explicit stop received for map " + str(queued_map.identifier) + ", reverting from 'working' to 'new'")
         # Send the map back to the queue so someone else can work on it.
         queued_map.release()
         raise
     except:
         # record there was an error, so we can find out easily
         # if the recording error doesn't work, then presumably it was a database error
-        log("error received for map " + str(params['id']) + ", reverting from 'working' to 'error'")
+        log("error received for map " + str(queued_map.identifier) + ", reverting from 'working' to 'error'")
 
-        storage.notify_map_error(**params)
-        queued_map.delete()
+        queued_map.mark_as_error()
         raise
 
 # Talking to multiple C++ processes

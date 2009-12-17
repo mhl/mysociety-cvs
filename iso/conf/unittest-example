@@ -1,20 +1,22 @@
 <?php
 /*
  * general-example:
- * Example values for the "general" config file.
+ * Example values for the "unittest" config file.
+ * This, as you've guessed, is a config file for unit tests so that we can
+ * avoid using the same queues, etc as in the general config file.
  *
  * Configuration parameters, in PHP syntax. Configuration parameters are set
  * using the PHP define('OPTION_...', '...') function. Both perl and PHP code
  * parse this properly, so you can use comments and conditionals and whatnot,
  * but unless essential it's better to keep it simple....
  *
- * Copy this file to one called "general" in the same directory.  Or
+ * Copy this file to one called "unittest" in the same directory.  Or
  * have multiple config files and use a symlink to change between them.
  * 
- * Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
- * Email: francis@mysociety.org; WWW: http://www.mysociety.org
+ * Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
+ * Email: duncan@mysociety.org; WWW: http://www.mysociety.org
  *
- * $Id: general-example,v 1.24 2009-12-17 16:16:49 duncan Exp $
+ * $Id: unittest-example,v 1.1 2009-12-17 16:16:49 duncan Exp $
  * 
  */
 
@@ -51,7 +53,7 @@ define('OPTION_CLOUDMADE_PROXY_CACHE_DIR', '/tmp/tilecache-cloudmade/');
 
 // Parameters for isodaemon
 define('OPTION_ISODAEMON_PIDFILE', '/tmp/isodaemon.pid');
-define('OPTION_ISODAEMON_FASTINDEX', '/home/francis/toobig/nptdr/gen/fastindex-all-country-2008-10-07');
+define('OPTION_ISODAEMON_FASTINDEX', '<path to>/fastindex-all-country-2008-10-07');
 define('OPTION_ISODAEMON_LOGFILE', '/tmp/isodaemon.log');
 define('OPTION_ISODAEMON_CONCURRENT_JOBS', 1);
 
