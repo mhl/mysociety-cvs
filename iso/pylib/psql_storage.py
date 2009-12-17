@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: duncan@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: psql_storage.py,v 1.39 2009-11-04 21:29:03 duncan Exp $
+# $Id: psql_storage.py,v 1.40 2009-12-17 16:27:31 duncan Exp $
 #
 
 import functools
@@ -43,6 +43,11 @@ class PSQLQueuedMap(object):
     def delete(self):
         pass
 
+    def get_storage_key(self):
+        # Get something unique to use for filenames. In this case the id will
+        # do to match up with what currently happens, though it would be nice
+        # to do the same as for AWS.
+        return self._row['id']
 
 class PSQLMapCreationQueue(object):
     def __init__(self, db_cursor=None, logger=None):
@@ -103,7 +108,7 @@ class PSQLMapCreationQueue(object):
                 row = self.db.fetchone()
 
                 break
-            except SystemExit: #psycopg2.OperationalError:
+            except psycopg2.OperationalError:
                 # if someone else has the item locked, i.e. they are working on it, then we
                 # try and find a different one to work on
                 self.db.execute("rollback")

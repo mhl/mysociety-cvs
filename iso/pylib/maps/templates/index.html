@@ -1,0 +1,56 @@
+{% extends 'extends/base.html' %}
+
+{% block fulltitle %}Mapumental{% endblock %}
+
+{% block body_id %}home{% endblock %}
+
+{% block subtitle %}
+<p id="subtitle"><span></span>How far will you go?</p>
+{% endblock %}
+
+{% block content %}
+
+{% if error %}<div id="errors">{{ error }}</div>{% endif %}
+
+<div id="main-column">
+
+<p>Mapumental: A ninja tool for helping you house or job hunt within Great Britain.</p>
+
+<form action="/" method="POST">
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+
+</div>
+
+<div id="side-map">
+<h2><img src="/i/most-recent.png" alt="Most Recent"></h2>
+<ul>
+{% for p in most_recent %}
+<li>{{ p }}
+{% endfor %}
+</ul>
+</div>
+
+<div id="side-column">
+<p>Mapumental helps you build custom maps that help you work out the optimal
+place to live or work in order to have an easy commute and an affordable home.
+It is a project of Channel 4 and mySociety &mdash;
+<a href="/help">read more about the project</a>,
+or <a href="/contact">get in touch</a>.</p>
+</div>
+
+<div id="map-footer">
+
+<p id="footer-side">
+
+| <a href="/help">Help</a>
+| <a href="/contact">Contact</a>
+| <a href="http://www.stamen.com/"><img src="/i/stamen.png" alt="Stamen" width="53" height="20" align="top"></a>
+| <a href="http://www.mysociety.org/"><img src="/i/mysoc.png" alt="mySociety" width="90" height="20" align="top"></a>
+
+</p>
+
+</div>
+
+{% endblock %}

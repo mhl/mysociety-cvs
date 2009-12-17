@@ -6,7 +6,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: matthew@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: index.cgi,v 1.142 2009-10-23 15:27:10 duncan Exp $
+# $Id: index.cgi,v 1.143 2009-12-17 16:34:11 duncan Exp $
 #
 
 import sys
@@ -159,7 +159,7 @@ def log_email(fs, email):
 
     if not map_object.id:
         try:
-            map_object.id = map_creation_queue.queue_(map_object)
+            map_object.id = map_creation_queue.queue_map(map_object)
         except storage_exceptions.AlreadyQueuedError:
             map_object = page.create_map_from_fs(fs) # Fetch it again
 
