@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.26 2009-07-02 15:36:17 louise Exp $
+# $Id: piwik.py,v 1.27 2010-01-04 17:34:43 louise Exp $
 #
 
 import urllib
@@ -385,7 +385,7 @@ class Piwik(source.Source):
         period = period or self.default_period
         key = self.__key(site_id, period, date)
         if not self.actions_data.has_key(key):
-            self.actions_data[key] = self.__actions_api_result('getActions', site_id, date, period)  
+            self.actions_data[key] = self.__actions_api_result('getPageUrls', site_id, date, period)  
         path_data = self.__flatten_data(self.actions_data[key], root)
         children =  self.__get_hash_of_values(path_data, 'nb_hits')
         for exclude_pattern in exclude:
