@@ -15,7 +15,7 @@ ycml - HearFromYourMP - NOW IN GIT
 pb - PledgeBank
 na - NotApathetic codebase
 na2005 - NotApathetic 2005 UK General Election, static file version
-fyr - WriteToThem (internal name FaxYourRepresentative)
+fyr - WriteToThem (internal name FaxYourRepresentative) - NOW IN GIT
 twfy - TheyWorkForYou
 foi - WhatDoTheyKnow - NOW IN GIT
 gny - Groups Near You
