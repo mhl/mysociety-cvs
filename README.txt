@@ -90,7 +90,6 @@ pnmtilesplit - Split a single large PNM file into numerous smaller tiles
 utils/ - Various useful separate utilities 
 cpan/ - Various Perl modules packaged for CPAN
 monitoring - Our own server monitoring system
-monitor - Nagios server monitoring system
 
 Libraries etc.
 ==============
