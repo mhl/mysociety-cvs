@@ -15,7 +15,7 @@ if (!@include "../conf/general") {
 }
 define('DB_NAME', OPTION_CEE_DB_NAME);     // The name of the database
 define('DB_USER', OPTION_CEE_DB_USER);     // Your MySQL username
-define('DB_PASSWORD', OPTION_CEE_DB_PASSWORD); // ...and password
+define('DB_PASSWORD', OPTION_CEE_DB_PASS); // ...and password
 define('DB_HOST', OPTION_CEE_DB_HOST);     // 99% chance you won't need to change this value
 
 # Different prefix for the Call for Proposals tables
