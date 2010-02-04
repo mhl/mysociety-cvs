@@ -12,11 +12,11 @@ Main projects
 
 bci - FixMyStreet (internal name BrokenCivicInfrastructure) - NOW IN GIT
 ycml - HearFromYourMP - NOW IN GIT
-pb - PledgeBank
+pb - PledgeBank - NOW IN GIT
 na - NotApathetic codebase
 na2005 - NotApathetic 2005 UK General Election, static file version
 fyr - WriteToThem (internal name FaxYourRepresentative) - NOW IN GIT
-twfy - TheyWorkForYou
+twfy - TheyWorkForYou - NOW IN GIT
 foi - WhatDoTheyKnow - NOW IN GIT
 gny - Groups Near You
 
