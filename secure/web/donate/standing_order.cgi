@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.4
+#!/usr/bin/env python2.5
 #
 # standing_order.cgi:
 # Creates standing order mandates for printing out.
@@ -8,7 +8,7 @@
 # Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: standing_order.cgi,v 1.5 2009-01-26 13:57:13 matthew Exp $
+# $Id: standing_order.cgi,v 1.6 2010-02-17 22:33:26 matthew Exp $
 #
 
 
@@ -129,6 +129,9 @@ def generate_pdf(c, ref):
     p_close = ParagraphStyle('normal', alignment = TA_LEFT, spaceBefore = 0, spaceAfter = 0,
         fontSize = small_writing, leading = small_writing*1.2, fontName = main_font)
 
+    p_last = ParagraphStyle('normal', alignment = TA_LEFT, spaceBefore = 0, spaceAfter = 12,
+        fontSize = small_writing, leading = small_writing*1.2, fontName = main_font)
+
     p_head = ParagraphStyle('normal', alignment = TA_LEFT, spaceBefore = 0, spaceAfter = 0, 
         fontSize = large_writing, leading = large_writing*1.2, fontName = heading_font)
 
@@ -136,19 +139,15 @@ def generate_pdf(c, ref):
     c.drawInlineImage("mysociety-dark.jpg", margin_left, frame_height, logo_width, logo_height)
 
     #generate the intro text
-    text = [Paragraph(_("Thank you for supporting mySociety"), p_normal)]
-
-    text.extend([Paragraph(_("""You opted to donate by monthly standing order.
-                              Please fill in the form below and send it to: """), p_normal)])
-
-    text.extend([Paragraph(_("""F.A.O. Tom Steinberg"""), p_close)])
-    text.extend([Paragraph(_("""12 Duke's Road,"""), p_close)])
-    text.extend([Paragraph(_("""London WC1H 9AD"""), p_close)])
-
-    text.extend([Paragraph(_("""Thanks again for your support."""), p_normal)])
-    text.extend([Paragraph(_("""Best wishes,"""), p_close)])
-
-    text.extend([Paragraph(_("""Tom Steinberg, Director mySociety."""), p_normal)])
+    text = [
+        Paragraph("", p_normal),
+        Paragraph(_("Thank you for supporting mySociety."), p_normal),
+        Paragraph(_("You opted to donate by monthly standing order."), p_normal),
+        Paragraph(_("Please fill in the form below and send it to your bank."), p_normal),
+        Paragraph(_("""Thanks again for your support."""), p_normal),
+        Paragraph(_("""Best wishes,"""), p_close),
+        Paragraph(_("""Tom Steinberg, Director mySociety."""), p_last),
+    ]
 
     # draw it to a frame    
     intro_frame_height = 7 * cm
