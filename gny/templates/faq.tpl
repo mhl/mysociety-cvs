@@ -43,7 +43,8 @@
                 send us an email telling us what is up.{/l}
             </dd>
             <dt>{l}Who runs {$site_name}?{/l}</dt>
-            <dd>{l}{$site_name} is run by <a href="http://www.mysociety.org">mySociety.org</a>, a charity 
+            <dd>{l}{$site_name} is run by <a href="http://www.mysociety.org">mySociety.org</a>, the
+                project of a <a href="http://www.ukcod.org.uk/">registered charity</a>, 
                 which builds useful websites which give people simple, tangible benefits in the 
                 civic and community aspects of their lives. It was built by 
                 <a href="http://www.memespring.co.uk">Richard Pope</a>, <a href="http://www.dracos.co.uk">Matthew Somerville</a>
