@@ -2,8 +2,6 @@
 
 require_once dirname(__FILE__) . "/../../phplib/evel.php";
 
-$sent = false;
-
 if (isset($_POST['_is_postback']) && $_POST['_is_postback'] && strtolower($_POST['theWord']) == 'tangent') {
 
     $to = OPTION_QUOTE_EMAIL;
@@ -26,15 +24,12 @@ if (isset($_POST['_is_postback']) && $_POST['_is_postback'] && strtolower($_POST
         'Subject' => $subject,
     ), $to);
 
-    $sent = true;
+    print '<p>Thanks, your request has been sent and someone will get back to you soon.
+<br /><a href="/">Return to the mySociety homepage</a></p>';
 
-}
+} else {
 
 ?>
-
-<h1>Request a quote</h1>
-
-<?php if ($sent == false) { ?>
     <form method="POST">
         <input type="hidden" name="_is_postback" value="1" />
         <ul class="nobullets form">
@@ -61,12 +56,12 @@ if (isset($_POST['_is_postback']) && $_POST['_is_postback'] && strtolower($_POST
                     </select>
                 </li>
                 <li>
-                    <label for="quote_information">More information</label>
-                    <textarea id="quote_information" name="information" cols=10 rows=50></textarea>
-                    <small>e.g. What you are specifically interested in, what you&rsquo;re after</small>
+                    <label for="quote_information">Details of your enquiry</label>
+                    <textarea id="quote_information" name="information" cols=40 rows=10></textarea>
+                    <br /><small>e.g. what you are specifically interested in, what is your budget, timescale, etc.</small>
                 </li>
                 <li>
-                  <p>Please enter the word "tangent" into the box below so we know that it's not just spam</p>
+                  <p>Please enter the word &ldquo;tangent&rdquo; into the box below so we know that you&rsquo;re a real person, thanks</p>
                     <label for="theWord">Enter "tangent"</label>
                     <input type="text" class="textbox large" id="theWord" name="theWord" />
                 </li>
@@ -76,9 +71,6 @@ if (isset($_POST['_is_postback']) && $_POST['_is_postback'] && strtolower($_POST
             </div>
         </form>
 
-<?php } else { ?>
+<?php
 
-    <p>Thanks, your request has been sent and someone will get back to you soon.
-    <br /><a href="/">Return to the mySociety homepage</a></p>
-
-<?php } ?>
+}
