@@ -9,8 +9,8 @@
 	the UK’s best known democracy websites.</h3>
 	<p>
 Using our services, <strong>200,000</strong> people have <a href="http://www.writetothem.com/">written to their
-MP</a> for the first time, nearly <strong>19,000</strong> potholes and other broken
-things <a href="http://www.fixmystreet.com/">have been fixed</a>, over <strong>10,500,000</strong> signatures have been
+MP</a> for the first time, over <strong>32,000</strong> potholes and other broken
+things <a href="http://www.fixmystreet.com/">have been fixed</a>, over <strong>12,000,000</strong> signatures have been
 left on <a href="http://petitions.number10.gov.uk/">petitions to the Prime Minister</a>, and at least <strong>77</strong> tiny
 hats have been <a href="http://www.pledgebank.com/thebigknit07">knitted for charity</a>.
 		<br/>
