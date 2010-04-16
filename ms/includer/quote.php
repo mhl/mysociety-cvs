@@ -11,7 +11,7 @@ if (isset($_POST['_is_postback']) && $_POST['_is_postback'] && strtolower($_POST
     $from_name = $_POST['txtName'];
     $area = $_POST['area'];
     $org = $_POST['txtOrganisation'];
-    $info = $POST['information'];
+    $info = $_POST['information'];
 
     if ($from_name && $from_email && $area && $info) {
 
