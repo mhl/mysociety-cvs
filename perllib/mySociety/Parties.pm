@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Parties.pm,v 1.21 2009-07-14 16:58:07 dademcron Exp $
+# $Id: Parties.pm,v 1.22 2010-05-17 09:48:10 matthew Exp $
 #
 
 package mySociety::Parties;
@@ -74,6 +74,7 @@ display them with.
     "Liberal Democrat" => "Liberal Democrat",
     "Liberal Democrats" => "Liberal Democrat",
     "Scottish Liberal Democrats" => "Liberal Democrat",
+    "Ind LDem" => "Independent Liberal Democrat",
 
     "One London Group" => "One London Group",
 
