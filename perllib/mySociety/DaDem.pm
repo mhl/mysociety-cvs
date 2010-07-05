@@ -8,7 +8,7 @@
 # Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 # WWW: http://www.mysociety.org
 #
-# $Id: DaDem.pm,v 1.43 2009-12-17 13:02:35 louise Exp $
+# $Id: DaDem.pm,v 1.44 2010-07-05 08:22:36 louise Exp $
 
 package mySociety::DaDem;
 
@@ -89,8 +89,8 @@ sub get_secret () {
   list of the representatives returned by that area, or, for an array, a
   hash mapping area ID to a list of representatives for each; or, on
   failure, an error code. The default is to return only current
-  reprenatives. If ALL has value 1, then even deleted representatives are
-  returned. 
+  representatives. If ALL has value 1, then even deleted representatives
+  are returned. 
 
 =cut
 sub get_representatives ($;$) {
