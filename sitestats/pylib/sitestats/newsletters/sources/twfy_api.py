@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: twfy_api.py,v 1.5 2009-07-02 15:42:57 louise Exp $
+# $Id: twfy_api.py,v 1.6 2010-07-26 11:06:18 louise Exp $
 #
 
 import mysociety
@@ -81,24 +81,27 @@ class TWFYApi(source.Source):
         # print "looking for %s" % gid
         if sub_type != '':
             params['type'] = sub_type
+
+        if page_type in ['debates', 'debate']:
+            api_function = 'getDebates'
+        else:
+            api_function = 'getWrans'
+
         try:
-            if page_type in ['debates', 'debate']:
-                result = self.__api_result('getDebates', params)
-            elif page_type == 'wrans':
-                result = self.__api_result('getWrans', params)
-                
+            result = self.__api_result(api_function, params)
         # TODO: API can return blank page. Should fix in TWFY API
         except ValueError:
             return None
-        versions_tried = 0
-        # Sometimes the version gets incremented after people have visited the page
-        # so we need to check for later versions
-        while versions_tried < 5:    
-            title = self.__title_from_debate_list(result, gid, page_type)
-            if title:
-                return title
-            gid = self.next_version_gid(gid)
-            versions_tried += 1
+	if 'redirect' in result:
+            gid = result['redirect']
+            params['gid'] = gid
+            try:
+                result = self.__api_result(api_function, params)
+            except ValueError:
+                return None
+        title = self.__title_from_debate_list(result, gid, page_type)
+        if title:
+            return title
         return None
 
     def __title_from_debate_list(self, data, gid, page_type):
