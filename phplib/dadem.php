@@ -8,7 +8,7 @@
  * Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
  * WWW: http://www.mysociety.org
  *
- * $Id: dadem.php,v 1.60 2009-12-17 13:02:36 louise Exp $
+ * $Id: dadem.php,v 1.61 2010-08-08 23:05:00 francis Exp $
  *
  */
 
@@ -57,8 +57,8 @@ function dadem_get_secret() {
   list of the representatives returned by that area, or, for an array, a
   hash mapping area ID to a list of representatives for each; or, on
   failure, an error code. The default is to return only current
-  reprenatives. If ALL has value 1, then even deleted representatives are
-  returned.  */
+  representatives. If ALL has value 1, then even deleted representatives
+  are returned.  */
 function dadem_get_representatives($id_or_array, $all = null) {
     global $dadem_client;
     $params = func_get_args();
