@@ -5,7 +5,7 @@
 // Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
 // Email: louise.crow@gmail.com. WWW: http://www.mysociety.org
 //
-// $Id: page.php,v 1.2 2006-12-07 15:53:56 louise Exp $
+// $Id: page.php,v 1.3 2010-09-02 21:07:02 louise Exp $
 
 
 /* page_header TITLE [PARAMS]
@@ -30,7 +30,8 @@ function page_header($title='', $params = array()) {
 <link rel="stylesheet" type="text/css" media="all" href="/news.css">
 </head>
 <body>
-<h1 id="heading"><a href="/">NeWs</a></h1> 
+<h1 id="heading"><a href="/">NeWs</a></h1>
+<h2 id="banner">This site is old - it was last updated in early 2007.  
 <div id="content">
 <?
 }
