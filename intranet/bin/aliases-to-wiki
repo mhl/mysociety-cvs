@@ -7,14 +7,13 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.3 2010-09-06 18:01:11 adam Exp $
+# $Id: aliases-to-wiki,v 1.4 2010-09-06 18:03:05 adam Exp $
 #
 
 set -x
 
 ALIASDIR=/etc/exim4/virtual
-#WIKIDIR=/data/vhost/intranet.mysociety.org/data/MySociety/Organisation/Email
-WIKIDIR=/home/adam/public_html/wikitest/Organization/Email
+WIKIDIR=/data/vhost/intranet.mysociety.org/data/MySociety/Organisation/Email
 
 if [ ! -d ${WIKIDIR} ] ; then
     mkdir -p ${WIKIDIR}
