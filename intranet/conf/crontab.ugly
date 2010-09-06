@@ -1,0 +1,12 @@
+# crontab.ugly:
+#     Timed tasks for intranet. Template file.
+#
+# Copyright (c) 2010 UK Citizens Online Democracy. All rights reserved.
+# Email: adam@mysociety.org. WWW: http://www.mysociety.org/
+#
+# $Id: crontab.ugly,v 1.1 2010-09-06 16:01:27 adam Exp $
+
+PATH=/usr/local/bin:/usr/bin:/bin
+MAILTO=adam@mysociety.org
+
+11 *    * * *   !!(*= $user *)!! /data/vhost/!!(*= $vhost *)!!/mysociety/intranet/bin/aliases-to-wiki
