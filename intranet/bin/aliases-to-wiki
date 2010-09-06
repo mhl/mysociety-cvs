@@ -7,7 +7,7 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.6 2010-09-06 18:23:47 adam Exp $
+# $Id: aliases-to-wiki,v 1.7 2010-09-06 18:26:58 adam Exp $
 #
 
 set -e
@@ -95,7 +95,7 @@ cat << EOF > ${WIKIDIR}/WebHome.txt
 ---++ %MAKETEXT{"Available Information"}%
 EOF
 
-ls -1 /etc/exim4/virtual/ | while read F; do rename -n 's/\./-/g' ${F} | awk '{print $NF}' | perl -ne 'chomp; print qq^* [[$_]]\n^;'; done >> ${WIKIDIR}/WebHome.txt
+ls -1 /etc/exim4/virtual/ | while read F; do rename -n 's/\./-/g' ${F} | awk '{print $NF}' | perl -ne 'chomp; print qq^   * [[$_]]\n^;'; done >> ${WIKIDIR}/WebHome.txt
 
 cat << EOF >> ${WIKIDIR}/WebHome.txt
 ---++ <nop>%WEB% Web Utilities
