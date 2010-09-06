@@ -4,7 +4,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: google.py,v 1.5 2009-06-30 15:48:00 louise Exp $
+# $Id: google.py,v 1.6 2010-09-06 08:54:00 louise Exp $
 #
 import urllib
 import feedparser
@@ -77,8 +77,9 @@ class Google(source.Source):
         
     def _query(self, site_name):
         site_name = site_name.lower()
-        queries = { 'fixmystreet'    : 'NeighbourhoodFixIt OR FixMyStreet', 
-                    'writetothem'    : 'faxyourmp OR writetothem'}
+        queries = { 'fixmystreet'    : 'NeighbourhoodFixIt OR "FixMyStreet"', 
+                    'writetothem'    : 'faxyourmp OR "writetothem"', 
+                    'whatdotheyknow' : '"whatdotheyknow"'}
         return queries.get(site_name, site_name)
     
     def blogs(self, site_name, site_url,  period=None, date=None):
