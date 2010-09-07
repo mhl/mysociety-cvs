@@ -14,6 +14,12 @@ my @vhostsFilenames = ("/data/servers/vhosts.pl", "./vhosts.pl"); # try in this 
 
 my $isInList = 0;
 
+our $vhosts;
+our $databases;
+
+my %uniqueServers;
+my $totalServers = 0;
+
 print "Content-type: text/$contentType\n\n";
 
 my $vhostsFilename = shift @vhostsFilenames;
@@ -36,9 +42,7 @@ while ($vhostsFilename){
 }
 
 my %vh = %$vhosts if $vhosts; # $vhosts is declared in vhosts.pl
-
 my %vhostsByServer; # to contain: e.g., 'balti' => ['dave.fixmystreet.com', 'gut.dave.thingummy']
-
 my ($totalVhosts, %vhostsByName);
 
 foreach my $vhost (sort keys %vh) {
@@ -53,18 +57,38 @@ foreach my $vhost (sort keys %vh) {
         push @vhostsOnThisServer, $vhost;        
         $vhostsByServer{$server}=\@vhostsOnThisServer;
         $vhostsByName{$vhost}++;
+        $uniqueServers{$server}++;
     }
 }
 
-my $totalServers = 0;
+my %db = %$databases if $databases; # $databases is declared in vhosts.pl
+my %databasesByServer; # to contain: e.g., 'balti' => ['dbfoo', 'dbbar']
+my ($totalDatabases, %databasesByName, %databaseTypeByName);
+
+foreach my $db (sort keys %db) {
+    my $hRef = $db{$db};
+    my %databaseData = %$hRef;
+    my $host = $databaseData{"host"};
+    $databaseTypeByName{$db}=$databaseData{"type"};
+    $databasesByName{$db} ||= 0;
+    $aRef = $databasesByServer{$host};
+    my @databasesOnThisServer = $aRef? @$aRef : ();
+    push @databasesOnThisServer, $db;        
+    $databasesByServer{$host}=\@databasesOnThisServer;
+    $databasesByName{$db}++;
+    $uniqueServers{$host}++;
+}
+
 my @report;
 
-foreach my $server (sort keys %vhostsByServer){ 
+foreach my $server (sort keys %uniqueServers){ 
     $totalServers++;
+    say("---++ $server");
+
+    say("<div class='vhosts-col'>");
     my $aRef = $vhostsByServer{$server};
     my @vhostsOnThisServer = @$aRef if $aRef;
     my $cVhosts = @vhostsOnThisServer;
-    say("---++ $server");
     if ($cVhosts){
         say(($cVhosts-1?"$cVhosts vhosts are":"Only one vhost is") . " configured on $server:");
         foreach (sort @vhostsOnThisServer){
@@ -75,21 +99,40 @@ foreach my $server (sort keys %vhostsByServer){
     } else {
         say("No vhosts running on this server.")
     }
+    say("</div>");    
+
+    say("<div class='vhosts-col'>");
+    $aRef = $databasesByServer{$server};
+    my @databasesOnThisServer = @$aRef if $aRef;
+    my $cDatabases = @databasesOnThisServer;
+    if ($cDatabases){
+        say(($cDatabases-1?"$cDatabases databases are":"Only one database is") . " configured on $server:");
+        foreach (sort @databasesOnThisServer){
+          say("   * $_ <span class='db-type'>[$databaseTypeByName{$_}]</span>");
+          $totalDatatbases++;
+        } 
+    } else {
+        say("No databases running on this server.")
+    }
+    say("</div>");
+    say("<div style='clear:both;height:1px'></div>");    
 }
-my @homeless;
+
+my $totalUniqueDatabases = keys %databasesByName;
+my @homelessVhosts;
 my $totalUniqueVhosts = 0;
 
 foreach (sort keys %vhostsByName){
     if ($vhostsByName{$_}){
         $totalUniqueVhosts++
     } else {
-        push @homeless, $_
+        push @homelessVhosts, $_
     }
 }
 my $selfLink = qq{ | <a href="$0" target="_top">click for full page</a>};
 say("=$vhostsFilename parsed at " . gmtime() . "=" . $selfLink) if $vhostsFilename; 
-presay("Vhosts declared but not on any server: " . join(", ", @homeless)) if @homeless;
-presay("Total: $totalVhosts vhosts ($totalUniqueVhosts unique) configured across $totalServers servers. $selfLink");
+presay("Vhosts declared but not on any server: " . join(", ", @homelessVhosts)) if @homelessVhosts;
+presay("Total: $totalVhosts vhosts ($totalUniqueVhosts unique) and $totalUniqueDatabases databases configured across $totalServers servers. $selfLink");
 presay("---+ vhosts.pl summary");
 
 my $report = join "\n", @report;
@@ -131,13 +174,21 @@ __DATA__
 	@import url('https://secure.mysociety.org/intranet/pub/TWiki/PatternSkin/style.css');
 	@import url('https://secure.mysociety.org/intranet/pub/TWiki/PatternSkin/colors.css');
 	@import url("https://secure.mysociety.org/intranet/pub/TWiki/PatternSkin/print.css");
+	.db-type{color:#cccccc;padding-left:1em;}
+	.db-type:hover{color:#666666;}
+	.vhosts-col{float:left; width:45%;}
+	body{margin-top:10px;}
 </style>
 </head>
-<body class="patternViewPage" style="margin-top:10px;">
+<body class="patternViewPage">
 <div id="patternPage">
 <div id="patternMainContents">
-<div id="patternContent"><div id="patternTopic">
+<div id="patternContent">
+<div id="patternTopic">
 %CONTENT%
-</div></div></div></div>
+</div>
+</div>
+</div>
+</div>
 </body>
 </html>
