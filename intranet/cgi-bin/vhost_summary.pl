@@ -43,7 +43,7 @@ while ($vhostsFilename){
 
 my %vh = %$vhosts if $vhosts; # $vhosts is declared in vhosts.pl
 my %vhostsByServer; # to contain: e.g., 'balti' => ['dave.fixmystreet.com', 'gut.dave.thingummy']
-my ($totalVhosts, %vhostsByName);
+my ($totalVhosts, %vhostsByName, %productionVhosts);
 
 foreach my $vhost (sort keys %vh) {
     my $hRef = $vh{$vhost};
@@ -56,6 +56,7 @@ foreach my $vhost (sort keys %vh) {
         my @vhostsOnThisServer = $aRef? @$aRef : ();
         push @vhostsOnThisServer, $vhost;        
         $vhostsByServer{$server}=\@vhostsOnThisServer;
+	$productionVhosts{$vhost}++ unless $vhostData{"staging"};
         $vhostsByName{$vhost}++;
         $uniqueServers{$server}++;
     }
@@ -63,7 +64,7 @@ foreach my $vhost (sort keys %vh) {
 
 my %db = %$databases if $databases; # $databases is declared in vhosts.pl
 my %databasesByServer; # to contain: e.g., 'balti' => ['dbfoo', 'dbbar']
-my ($totalDatabases, %databasesByName, %databaseTypeByName);
+my (%databasesByName, %databaseTypeByName);
 
 foreach my $db (sort keys %db) {
     my $hRef = $db{$db};
@@ -92,7 +93,7 @@ foreach my $server (sort keys %uniqueServers){
     if ($cVhosts){
         say(($cVhosts-1?"$cVhosts vhosts are":"Only one vhost is") . " configured on $server:");
         foreach (sort @vhostsOnThisServer){
-          my $b = /^(www|secure|news|intranet|lists)\./? '*':'';
+          my $b = '*' if $productionVhosts{$_};
           say("   * $b$_$b");
           $totalVhosts++;
         } 
@@ -109,7 +110,6 @@ foreach my $server (sort keys %uniqueServers){
         say(($cDatabases-1?"$cDatabases databases are":"Only one database is") . " configured on $server:");
         foreach (sort @databasesOnThisServer){
           say("   * $_ <span class='db-type'>[$databaseTypeByName{$_}]</span>");
-          $totalDatatbases++;
         } 
     } else {
         say("No databases running on this server.")
