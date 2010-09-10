@@ -7,7 +7,7 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.7 2010-09-06 18:26:58 adam Exp $
+# $Id: aliases-to-wiki,v 1.8 2010-09-10 14:31:51 adam Exp $
 #
 
 set -e
@@ -20,7 +20,9 @@ if [ ! -d ${WIKIDIR} ] ; then
 fi
 
 ls -1 ${ALIASDIR} | while read F; do
+
     TF=`rename -n 's/\./-/g' ${F} | awk '{print $NF}'`
+
     if [ -e ${WIKIDIR}/${TF} ] ; then
         rm ${WIKIDIR}/${TF}
     fi
@@ -33,30 +35,33 @@ ls -1 ${ALIASDIR} | while read F; do
         rm ${WIKIDIR}/${TF}.txt,v
     fi
 
-# make the header...
-## these bits come from mysociety/intranet/cgi-bin/vhost_summary.pl
-echo '%META:TOPICINFO{author="AdamMcGreggor" date="1283793241" format="1.1" version="1.1"}%' > ${WIKIDIR}/${TF}.txt
-echo '%META:TOPICPARENT{name="WebHome"}%' >> ${WIKIDIR}/${TF}.txt
-echo '|  local part  |  clicky thingy  | recipients/destination  |' >> ${WIKIDIR}/${TF}.txt
+    # make the header...
+    ## these bits come from mysociety/intranet/cgi-bin/vhost_summary.pl
+    echo '%META:TOPICINFO{author="AdamMcGreggor" date="1283793241" format="1.1" version="1.1"}%' > ${WIKIDIR}/${TF}.txt
+    echo '%META:TOPICPARENT{name="WebHome"}%' >> ${WIKIDIR}/${TF}.txt
+    echo '|  local part  |  clicky thingy  | recipients/destination  |' >> ${WIKIDIR}/${TF}.txt
 
-# build the content:
-## for some reason, can't strip the first part in the out line, so
-## hackily do this...
-awk '!/^(#|$)/ {print $1}' ${ALIASDIR}/${F} | while read L; 
-    do
-        SL=`echo ${L} | sed 's/://'`
-        grep ^${L} ${ALIASDIR}/${F} | \
-        awk '{sub(/:/,""); out=""; for(i=2;i<=NF;i++){out=$out" "$i}; print "| " $1 " | "$1"@" "'"${F}"'" " | BAA" $out " |" }' | \
-        ## and hackily zap that. Ugh.
-        sed "s/BAA${SL}//" >> ${WIKIDIR}/${TF}-unsorted
-    done
+    # build the content:
+    ## for some reason, can't strip the first part in the out line, so
+    ## hackily do this...
+    awk '!/^(#|$)/ {print $1}' ${ALIASDIR}/${F} | while read L; 
+        do
+            SL=`echo ${L} | sed 's/://'`
+            grep ^${L} ${ALIASDIR}/${F} | \
+            awk '{sub(/:/,""); out=""; for(i=2;i<=NF;i++){out=$out" "$i}; print "| " $1 " | "$1"@" "'"${F}"'" " | BAA" $out " |" }' | \
+            ## and hackily zap that. Ugh.
+            sed "s/BAA${SL}//" >> ${WIKIDIR}/${TF}-unsorted
+        done
 
-    ## a-z is nice:
+        ## a-z is nice:
     sort ${WIKIDIR}/${TF}-unsorted >> ${WIKIDIR}/${TF}.txt
     rm ${WIKIDIR}/${TF}-unsorted
+    
+    ## Twiki likes the first-name to start with an UC letter:
+    N=`echo ${TF} | perl -ne 'print ucfirst($_)'`
+    ln -s ${WIKIDIR}/${TF} ${WIKIDIR}/${N}
 
-
-# build the version file:
+    # build the version file:
 cat << EOF >> "${WIKIDIR}/${TF}.txt,v"
 head    1.1;
 access;
@@ -83,11 +88,15 @@ log
 @
 text
 EOF
+    ## and some proper content, now...
+    cat ${WIKIDIR}/${TF}.txt >> "${WIKIDIR}/${TF}.txt,v"
 
-cat ${WIKIDIR}/${TF}.txt >> "${WIKIDIR}/${TF}.txt,v"
-
+    ## Wikicase the ,v file:
+    N=`echo ${TF} | perl -ne 'print ucfirst($_)'`
+    ln -s "${WIKIDIR}/${TF}.txt,v" "${WIKIDIR}/${N}.txt,v"
 done
 
+## build the index page
 cat << EOF > ${WIKIDIR}/WebHome.txt
 %META:TOPICINFO{author="AdamMcGreggor" date="1283793231" format="1.1" version="1.7"}%
 ---+!! %MAKETEXT{"Welcome to the [_1] web" args="<nop>%WEB%"}%
