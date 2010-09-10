@@ -129,10 +129,11 @@ foreach (sort keys %vhostsByName){
         push @homelessVhosts, $_
     }
 }
+my $cProductionSites = scalar keys %productionVhosts;
 my $selfLink = qq{ | <a href="$0" target="_top">click for full page</a>};
 say("=$vhostsFilename parsed at " . gmtime() . "=" . $selfLink) if $vhostsFilename; 
 presay("Vhosts declared but not on any server: " . join(", ", @homelessVhosts)) if @homelessVhosts;
-presay("Total: $totalVhosts vhosts ($totalUniqueVhosts unique) and $totalUniqueDatabases databases configured across $totalServers servers. $selfLink");
+presay("Total: $totalVhosts vhosts ($totalUniqueVhosts unique, $cProductionSites production) and $totalUniqueDatabases databases configured across $totalServers servers. $selfLink");
 presay("---+ vhosts.pl summary");
 
 my $report = join "\n", @report;
