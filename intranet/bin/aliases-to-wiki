@@ -7,7 +7,7 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.8 2010-09-10 14:31:51 adam Exp $
+# $Id: aliases-to-wiki,v 1.9 2010-09-10 14:35:49 adam Exp $
 #
 
 set -e
@@ -59,7 +59,9 @@ ls -1 ${ALIASDIR} | while read F; do
     
     ## Twiki likes the first-name to start with an UC letter:
     N=`echo ${TF} | perl -ne 'print ucfirst($_)'`
-    ln -s ${WIKIDIR}/${TF} ${WIKIDIR}/${N}
+    if [ ! -L ${WIKIDIR}/${N} ] ; then
+        ln -s ${WIKIDIR}/${TF} ${WIKIDIR}/${N}
+    fi
 
     # build the version file:
 cat << EOF >> "${WIKIDIR}/${TF}.txt,v"
@@ -93,7 +95,9 @@ EOF
 
     ## Wikicase the ,v file:
     N=`echo ${TF} | perl -ne 'print ucfirst($_)'`
-    ln -s "${WIKIDIR}/${TF}.txt,v" "${WIKIDIR}/${N}.txt,v"
+    if [ ! -L "${WIKIDIR}/${N}.txt,v" ] ; then
+        ln -s "${WIKIDIR}/${TF}.txt,v" "${WIKIDIR}/${N}.txt,v"
+    fi
 done
 
 ## build the index page
