@@ -7,10 +7,10 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.9 2010-09-10 14:35:49 adam Exp $
+# $Id: aliases-to-wiki,v 1.10 2010-09-10 14:53:06 adam Exp $
 #
 
-set -e
+set -x
 
 ALIASDIR=/etc/exim4/virtual
 WIKIDIR=/data/vhost/intranet.mysociety.org/data/MySociety/Organisation/Email
@@ -57,10 +57,13 @@ ls -1 ${ALIASDIR} | while read F; do
     sort ${WIKIDIR}/${TF}-unsorted >> ${WIKIDIR}/${TF}.txt
     rm ${WIKIDIR}/${TF}-unsorted
     
-    ## Twiki likes the first-name to start with an UC letter:
+    ## Twiki likes^Wdemands the first-name to start with an UC letter:
     N=`echo ${TF} | perl -ne 'print ucfirst($_)'`
     if [ ! -L ${WIKIDIR}/${N} ] ; then
-        ln -s ${WIKIDIR}/${TF} ${WIKIDIR}/${N}
+        ln -s "${WIKIDIR}/${TF}.txt" "${WIKIDIR}/${N}"
+    fi
+    if [ ! -L ${WIKIDIR}/${N}.txt ] ; then
+        ln -s "${WIKIDIR}/${TF}.txt" "${WIKIDIR}/${N}.txt"
     fi
 
     # build the version file:
