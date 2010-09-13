@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: twfy_api.py,v 1.6 2010-07-26 11:06:18 louise Exp $
+# $Id: twfy_api.py,v 1.7 2010-09-13 09:02:12 louise Exp $
 #
 
 import mysociety
@@ -117,7 +117,7 @@ class TWFYApi(source.Source):
     def __speaker_from_debate(self, data):
         """Get the speaker from a hash of debate info"""
         if data.has_key('speaker'):
-            return data['speaker'].get('first_name') + ' ' + data['speaker'].get('last_name') 
+            return data['speaker'].get('first_name', '') + ' ' + data['speaker'].get('last_name', '') 
         return None
     
     def __parent_gid_from_debate(self, data):
