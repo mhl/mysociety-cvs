@@ -2,7 +2,6 @@
 
     require_once('HTTP/Request.php');
     require_once('cache.php');
-    require_once 'mapit.php';
     require_once 'evel.php';
     require_once 'countries.php';
 	
@@ -185,8 +184,8 @@
 	function get_postcode_location($zip, $country){
 
 		if ($country == 'UK') {
-			$data = mapit_get_location($zip, is_partial_postcode($zip) ? 1 : 0);
-			if (mapit_get_error($data))
+			$data = json_decode(file_get_contents('http://mapit.mysociety.org/postcode/' . (is_partial_postcode($zip) ? 'partial/' : '') . rawurlencode($zip)), true);
+			if (!$data)
 				return false;
 			return array(
 				0 => $data['wgs84_lon']+0,
