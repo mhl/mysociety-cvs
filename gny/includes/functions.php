@@ -184,7 +184,7 @@
 	function get_postcode_location($zip, $country){
 
 		if ($country == 'UK') {
-			$data = json_decode(file_get_contents('http://mapit.mysociety.org/postcode/' . (is_partial_postcode($zip) ? 'partial/' : '') . rawurlencode($zip)), true);
+			$data = json_decode(@file_get_contents('http://mapit.mysociety.org/postcode/' . (is_partial_postcode($zip) ? 'partial/' : '') . rawurlencode($zip)), true);
 			if (!$data)
 				return false;
 			return array(
