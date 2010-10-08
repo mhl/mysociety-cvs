@@ -5,11 +5,11 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org. WWW: http://www.mysociety.org/
 #
-# $Id: crontab.ugly,v 1.1 2008-06-05 13:11:36 francis Exp $
+# $Id: crontab.ugly,v 1.2 2010-10-08 14:41:05 matthew Exp $
 #
 
 PATH=/usr/local/bin:/usr/bin:/bin
-MAILTO=team@mysociety.org
+MAILTO=sysadmin@mysociety.org
 
 # Randomly reorder rows for privacy reasons, once a day.
 59 1 * * * !!(*= $user *)!! !!(*= $randomly *)!! run-with-lockfile -n /data/vhost/!!(*= $vhost *)!!/randomly-reorder-data.lock /data/vhost/!!(*= $vhost *)!!/mysociety/survey/bin/randomly-reorder-data
