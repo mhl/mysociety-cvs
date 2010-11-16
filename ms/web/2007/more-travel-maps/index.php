@@ -167,7 +167,7 @@ Francis Irving from mySociety has written a <a href="realtime">technical
 review</a> on the challenges of developing a real-time map generation system.</p>
 
 <p>If you&rsquo;re interested in working with us on this, email <a
-href="mailto:karl&#64;mysociety.org">karl&#64;mysociety.org</a>.</p>
+href="mailto:hello&#64;mysociety.org">hello&#64;mysociety.org</a>.</p>
 
 <h2><a name="acknowledgments"></a>Acknowledgments</h2>
 
