@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Parties.pm,v 1.22 2010-05-17 09:48:10 matthew Exp $
+# $Id: Parties.pm,v 1.23 2010-11-22 12:36:05 dademcron Exp $
 #
 
 package mySociety::Parties;
@@ -47,6 +47,7 @@ display them with.
 
     "XB" => "Crossbench", # House of Lords
     "Crossbench" => "Crossbench",
+    "Judge" => "Judge",
 
     "DUP" => "DUP",
     "DU" => "DUP",
