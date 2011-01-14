@@ -82,7 +82,6 @@ class confirmed2_page extends pagebase {
 		if(!$this->viewstate['show_sent']){
 			$this->page_title = "Your group has been added!";
 			$this->set_focus_control = "txtEmails";	
-			$this->track = 'added-group';
 			
 			//work out the name of the person
 			$name_split = explode(' ', $result[0]->created_name);			

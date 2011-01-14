@@ -17,8 +17,6 @@
 		</script>
 	{/if}
 	
-    {if $track}{$track}{/if}
-
     <!-- Piwik -->
     <script type="text/javascript">
     var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.mysociety.org/" : "http://piwik.mysociety.org/");

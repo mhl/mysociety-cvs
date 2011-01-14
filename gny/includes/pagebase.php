@@ -1,7 +1,6 @@
 <?php
 require_once ("init.php");
 require_once ("smarty/intsmarty.class.php");
-require_once 'tracking.php';
 
 abstract class pagebase {
 
@@ -22,7 +21,6 @@ abstract class pagebase {
     protected $smarty_template ="";
 	protected $data = null;
 	protected $rss_link = '';
-	protected $track = '';
 	protected $use_body_script = false;	
 
     //Constructor
@@ -64,9 +62,6 @@ abstract class pagebase {
         $this->smarty->assign("secure_server", SECURE_SERVER);
         $this->smarty->assign("form_action", htmlspecialchars($_SERVER['PHP_SELF']) . '?' . $_SERVER["QUERY_STRING"]);
         $this->smarty->assign("onloadscript", $this->onloadscript);
-        if ($this->track)
-            $this->track = track_code($this->track);
-        $this->smarty->assign('track', $this->track);
         if(sizeof($this->warn_controls) == 0){
             $this->smarty->assign("set_focus_control", $this->set_focus_control);
         }else{
