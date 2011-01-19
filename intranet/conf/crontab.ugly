@@ -4,9 +4,9 @@
 # Copyright (c) 2010 UK Citizens Online Democracy. All rights reserved.
 # Email: adam@mysociety.org. WWW: http://www.mysociety.org/
 #
-# $Id: crontab.ugly,v 1.1 2010-09-06 16:01:27 adam Exp $
+# $Id: crontab.ugly,v 1.2 2011-01-19 00:25:05 adam Exp $
 
 PATH=/usr/local/bin:/usr/bin:/bin
 MAILTO=adam@mysociety.org
 
-11 *    * * *   !!(*= $user *)!! /data/vhost/!!(*= $vhost *)!!/mysociety/intranet/bin/aliases-to-wiki
+11 *    * * *   !!(*= $user *)!! /data/vhost/!!(*= $vhost *)!!/mysociety/intranet/bin/aliases-to-wiki > /dev/null 2>&1

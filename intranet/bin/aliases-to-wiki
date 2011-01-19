@@ -7,7 +7,7 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.14 2011-01-19 00:18:04 adam Exp $
+# $Id: aliases-to-wiki,v 1.15 2011-01-19 00:25:05 adam Exp $
 #
 
 #set -e
@@ -21,7 +21,7 @@ if [ ! -d ${WIKIDIR} ] ; then
 fi
 
 ls -1 ${ALIASDIR} | while read F; do
-    if [ ! x${F} = x ]; then
+    if [ ! x = x${F} ]; then
     
     TF=`rename -n 's/\./-/g' ${F} | awk '{print $NF}'`
 
