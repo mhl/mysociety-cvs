@@ -6,7 +6,7 @@
  * Copyright (c) 2006 UK Citizens Online Democracy. All rights reserved.
  * Email: louise@mysociety.org. WWW: http://www.mysociety.org
  *
- * $Id: details.php,v 1.3 2011-01-18 10:05:35 louise Exp $
+ * $Id: details.php,v 1.4 2011-01-19 01:31:53 matthew Exp $
  * 
  */
 
@@ -25,8 +25,6 @@ page_header();
 
 $donor = array();
 
-print "<h2>Sorry, donations are temporarily disabled while we move to a new server. Back shortly!</h2>";
-exit();
 if (get_http_var('donor_submit')){
 
     #validate the data
