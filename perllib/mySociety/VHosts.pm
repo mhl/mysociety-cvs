@@ -100,11 +100,9 @@ sub _entry {
 =head2 all_vhosts_backup_dirs
 
     $entry_list = $vhosts->all_vhosts_backup_dirs();
-    $entry_list = $vhosts->all_vhosts_backup_dirs( { make_dirs_absolute => 1 } );
 
-Returns all the directories that need to be backed up as an arrayref of entries.
-Setting make_dirs_absolute to true will return the list with all paths made
-absolute.
+Returns all the directories (with absolute paths) that need to be backed up
+as an arrayref of entries.
 
     $entry_list = [
         {
@@ -112,12 +110,6 @@ absolute.
             servers => ['arrow'],
             dir     => '/absolute/path/to/dir',
         },
-        {
-            vhost   => 'www.mysociety.org',
-            servers => ['arrow'],
-            dir     => 'relative/path',
-        },
-        ...
     ];
 
 =cut
@@ -128,12 +120,12 @@ sub all_vhosts_backup_dirs {
     my @entries = ();
 
     # flags
-    my $make_dirs_absolute = $args->{make_dirs_absolute} || 0;
+    my $make_dirs_absolute = 1;
 
     foreach my $vhost_name ( sort keys %{ $self->{vhosts} } ) {
 
         my $vhost      = $self->vhost($vhost_name);
-        my $vhost_base = "/data/vhost/$vhost_name/mysociety";
+        my $vhost_base = "/data/vhost/$vhost_name";
 
         foreach my $dir ( @{ $vhost->{backup_dirs} || [] } ) {
 
@@ -143,11 +135,7 @@ sub all_vhosts_backup_dirs {
             if ( $make_dirs_absolute && !dir($dir)->is_absolute ) {
                 $dir = dir($dir)             #
                   ->absolute($vhost_base)    # absolute based on vhost dir
-                                             # ->resolve() # collapse '/foo/../'
                   ->stringify;               # make it a string
-
-                # strip out foo/.. from path
-                1 while $dir =~ s{/[^/]+/\.\.}{};
             }
 
             push @entries,

@@ -28,7 +28,7 @@ $vhosts = {
         cvs_user  => 'anon',
         databases => ['msorg'],
         backup_dirs =>
-          [ '/absolute/path/to/dir', 'relative/path', '../up_one_level' ],
+          [ '/absolute/path/to/dir', 'relative/path', '.' ],
     },
 };
 

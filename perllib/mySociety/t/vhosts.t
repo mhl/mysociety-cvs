@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 7;
 
 # locate the sample file to use for testing
 my $sample_vhosts = __FILE__;
@@ -32,7 +32,7 @@ is(
 
 # check some of the more useful methods - such as finding all dirs to backup
 is_deeply(
-    $vhosts->all_vhosts_backup_dirs(),                 #
+    $vhosts->all_vhosts_backup_dirs(),    #
     [
         {
             vhost   => 'www.mysociety.org',
@@ -42,34 +42,12 @@ is_deeply(
         {
             vhost   => 'www.mysociety.org',
             servers => ['arrow'],
-            dir     => 'relative/path',
+            dir     => '/data/vhost/www.mysociety.org/relative/path',
         },
         {
             vhost   => 'www.mysociety.org',
             servers => ['arrow'],
-            dir     => '../up_one_level',
-        },
-    ],
-    "got all_vhosts_backup_dirs"
-);
-
-is_deeply(
-    $vhosts->all_vhosts_backup_dirs( { make_dirs_absolute => 1 } ),    #
-    [
-        {
-            vhost   => 'www.mysociety.org',
-            servers => ['arrow'],
-            dir     => '/absolute/path/to/dir',
-        },
-        {
-            vhost   => 'www.mysociety.org',
-            servers => ['arrow'],
-            dir     => '/data/vhost/www.mysociety.org/mysociety/relative/path',
-        },
-        {
-            vhost   => 'www.mysociety.org',
-            servers => ['arrow'],
-            dir => '/data/vhost/www.mysociety.org/up_one_level',
+            dir => '/data/vhost/www.mysociety.org',
         },
     ],
     "got all_vhosts_backup_dirs (using make_dirs_absolute=>1)"
