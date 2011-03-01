@@ -69,7 +69,7 @@ is_deeply(
         {
             vhost   => 'www.mysociety.org',
             servers => ['arrow'],
-            dir => '/data/vhost/www.mysociety.org/mysociety/../up_one_level',
+            dir => '/data/vhost/www.mysociety.org/up_one_level',
         },
     ],
     "got all_vhosts_backup_dirs (using make_dirs_absolute=>1)"

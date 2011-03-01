@@ -145,6 +145,9 @@ sub all_vhosts_backup_dirs {
                   ->absolute($vhost_base)    # absolute based on vhost dir
                                              # ->resolve() # collapse '/foo/../'
                   ->stringify;               # make it a string
+
+                # strip out foo/.. from path
+                1 while $dir =~ s{/[^/]+/\.\.}{};
             }
 
             push @entries,
