@@ -69,5 +69,5 @@ mySociety, contact Tom on +44 7811 082158.</strong>
 
 </div>
 
-<?php include "wp/wp-content/themes/mysociety/footer.php"; ?>
+<?php include "../../wp/wp-content/themes/mysociety/footer.php"; ?>
 
