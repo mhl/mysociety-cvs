@@ -2,16 +2,15 @@
 
 $body_id = 'moretravel';
 
-# XXX This is hideous
-ob_start();
 include "interactive_map.php";
 include "../../wp/wp-blog-header.php";
-add_action('wp_head', 'add_swfobject_js');
-include "../../wp/wp-content/themes/default/header.php"; 
-$header = ob_get_clean();
-$header = str_replace('<title>mySociety', '<title>mySociety &raquo; More travel-time maps &raquo; Travel time / house price maps (BBC Television Centre &amp; Olympic Stadium site)', $header);
 header('HTTP/1.0 200 OK');
-print $header;
+add_action('wp_head', 'add_swfobject_js');
+function fix_title($title) {
+    return 'More travel-time maps &raquo; Travel time / house price maps (BBC Television Centre &amp; Olympic Stadium site)';
+}
+add_filter('wp_title', 'fix_title');
+include "../../wp/wp-content/themes/mysociety/header.php"; 
 ?>
 
 <h1>Travel time and house price maps</h1>
@@ -37,4 +36,4 @@ times to work and with varying house prices.</p>
 
 <p><a href="./">Main page explaining these maps</a></p>
 
-<?php include "../../wp/wp-content/themes/default/footer.php"; ?>
+<?php include "../../wp/wp-content/themes/mysociety/footer.php"; ?>

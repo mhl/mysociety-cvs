@@ -2,14 +2,13 @@
 
 $body_id = 'moretravel';
 
-# XXX This is hideous
-ob_start();
 include "../../wp/wp-blog-header.php";
-include "../../wp/wp-content/themes/default/header.php"; 
-$header = ob_get_clean();
-$header = str_replace('<title>mySociety', '<title>mySociety &raquo; Travel-time maps &raquo; Real time travel maps', $header);
 header('HTTP/1.0 200 OK');
-print $header;
+function fix_title($title) {
+    return 'Travel-time maps &raquo; Real time travel maps';
+}
+add_filter('wp_title', 'fix_title');
+include "../../wp/wp-content/themes/mysociety/header.php"; 
 ?>
 
 <h1>Real time travel maps</h1>
@@ -173,5 +172,5 @@ for the task.</p>
 
 <p><a href="./">Main page explaining these maps</a></p>
 
-<?php include "../../wp/wp-content/themes/default/footer.php"; ?>
+<?php include "../../wp/wp-content/themes/mysociety/footer.php"; ?>
 

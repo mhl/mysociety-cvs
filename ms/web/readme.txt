@@ -1,11 +1,10 @@
 Notes on the 2008 rebuild.
 
-The templates, css and images for navigation are all inside the wordpress theme for this design which is called mySociety2008
+The templates, css and images for navigation are all inside the wordpress theme
+for this design which can be found in (from cvs root):
+mysociety/ms/web/wordpress/wp-content/themes/mysociety/
 
-which can be found in (from cvs root):
-mysociety/ms/web/wordpress/wp-content/themes/default/
-
-images are in the folder called images, these are jsut images for the theme not for the content.
+images are in the folder called images, these are just images for the theme not for the content.
 
 Images for the content are in a folder called contimg which lives at the webserving root. 
 
