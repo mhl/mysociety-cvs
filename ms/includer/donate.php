@@ -4,7 +4,7 @@
 	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 		<input type="hidden" name="cmd" value="_xclick-subscriptions">
 
-		<input type="hidden" name="business" value="james@mysociety.org">
+		<input type="hidden" name="business" value="finance@mysociety.org">
 		<input type="hidden" name="item_name" value="Monthly Donation to mySociety">
 		<input type="hidden" name="no_shipping" value="1">
 		<input type="hidden" name="lc" value="GB">
@@ -64,7 +64,7 @@
 
 	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 		<input type="hidden" name="cmd" value="_xclick">
-		<input type="hidden" name="business" value="james@mysociety.org">
+		<input type="hidden" name="business" value="finance@mysociety.org">
 		<input type="hidden" name="item_name" value="Donation to mySociety">
 		<input type="hidden" name="no_shipping" value="2">
 		<input type="hidden" name="tax" value="0">
