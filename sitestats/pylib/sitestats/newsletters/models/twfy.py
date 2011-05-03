@@ -106,7 +106,8 @@ class TWFYNewsletter(Newsletter):
         if page_type not in ['debate', 'debates', 'wrans']:
             return querystring
         gid = re.search('id=(.*?)(&|$)', unquote_plus(querystring))
-        if gid:
+        
+        if gid and gid.group(1) != '':
             title = twfy_api.page_title(gid.group(1), page_type, sub_type)
             if title:
                 return title

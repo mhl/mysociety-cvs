@@ -3,7 +3,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: twfy_api.py,v 1.7 2010-09-13 09:02:12 louise Exp $
+# $Id: twfy_api.py,v 1.8 2011-05-03 09:34:03 louise Exp $
 #
 
 import mysociety
@@ -78,7 +78,6 @@ class TWFYApi(source.Source):
     def page_title(self, gid, page_type, sub_type):
         result = []
         params = {'gid' : gid }
-        # print "looking for %s" % gid
         if sub_type != '':
             params['type'] = sub_type
 
@@ -109,6 +108,7 @@ class TWFYApi(source.Source):
             if debate_hash['gid'] == gid:
                 # Looking at a speech in a debate
                 if page_type == 'debate':
+
                     return self.__debate_title_from_speech(debate_hash) 
                 else:
                     return debate_hash['body']
