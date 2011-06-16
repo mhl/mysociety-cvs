@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Parties.pm,v 1.23 2010-11-22 12:36:05 dademcron Exp $
+# $Id: Parties.pm,v 1.24 2011-06-16 15:51:45 dademcron Exp $
 #
 
 package mySociety::Parties;
@@ -30,6 +30,7 @@ display them with.
 =cut
 %mySociety::Parties::canonical = (
     "Alliance" => "Alliance",
+    "Alliance Party" => "Alliance",
     "Alliance Party of Northern Ireland" => "Alliance",
 
     "Bp" => "Bishop", # House of Lords
@@ -91,6 +92,7 @@ display them with.
     "Respect" => "Respect",
 
     "SDLP" => "SDLP",
+    "Social Democratic and Labour Party" => "SDLP",
 
     "Scottish National Party" => "SNP",
     "SNP" => "SNP",
@@ -110,6 +112,7 @@ display them with.
     "Sinn Fein" => "Sinn Féin",
     "Sinn Féin" => "Sinn Féin",
     "Sinn F\x{e9}in" => "Sinn Féin",
+    "Sinn F\x{c9}in" => "Sinn Féin",
 
     "Solidarity Group" => "Solidarity Group", 
 
