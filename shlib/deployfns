@@ -4,7 +4,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: deployfns,v 1.23 2011-07-08 00:38:50 robin Exp $
+# $Id: deployfns,v 1.24 2011-07-08 01:17:45 robin Exp $
 #
 
 # Warnings and errors
@@ -39,7 +39,7 @@ read_conf () {
                   die "Configuration error: both $1 and %1.yml exist (remove one)"
               fi
 
-              /data/mysociety/bin/yaml2sh "$1.yml" >$CONF_SOURCE || \
+              /data/mysociety/bin/yaml2sh --prefix=OPTION_ "$1.yml" >$CONF_SOURCE || \
                   die "shlib/deployfns read_conf: error loading config file $1.yml"
           else
               export MYSOCIETY_CONFIG_FILE_PATH=$1
