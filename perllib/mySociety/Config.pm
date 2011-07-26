@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: team@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Config.pm,v 1.26 2011-07-07 22:37:44 robin Exp $
+# $Id: Config.pm,v 1.27 2011-07-26 14:22:16 duncan Exp $
 #
 
 package mySociety::Config;
@@ -204,7 +204,7 @@ sub read_config ($;$) {
     my ($f, $defaults) = @_;
 
     my $config;
-    if ($f =~ /\.yml$/) {
+    if ($f =~ /\.yml/) {
         $config = read_config_from_yaml($f);
     } elsif (-f "$f.yml") {
         if (-e $f) {
