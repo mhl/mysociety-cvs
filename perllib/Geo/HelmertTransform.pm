@@ -13,12 +13,12 @@
 # 
 # Email: team@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: HelmertTransform.pm,v 1.14 2011-08-10 09:37:21 evdb Exp $
+# $Id: HelmertTransform.pm,v 1.15 2011-08-10 09:38:42 evdb Exp $
 #
 
 package Geo::HelmertTransform;
 
-$Geo::HelmertTransform::VERSION = '1.14'
+$Geo::HelmertTransform::VERSION = '1.14';
 
 use strict;
 
