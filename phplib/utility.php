@@ -7,7 +7,7 @@
  * Mainly: Copyright (c) 2003-2004, FaxYourMP Ltd 
  * Parts are: Copyright (c) 2004 UK Citizens Online Democracy
  *
- * $Id: utility.php,v 1.90 2009-04-21 16:18:51 matthew Exp $
+ * $Id: utility.php,v 1.91 2011-08-12 05:39:56 matthew Exp $
  * 
  */
 
@@ -40,7 +40,7 @@ function unfck_gpc() {
 if (get_magic_quotes_gpc()) unfck_gpc();
 
 /* Make some vague effort to turn off the "magic quotes" nonsense. */
-set_magic_quotes_runtime(0);
+ini_set('magic_quotes_runtime', 0);
 
 /*
  * Actually useful functions begin below here.
@@ -402,10 +402,15 @@ function prettify($s, $html = true) {
         return prettify_num($s);
     return $s;
 }
+
+# Given a number, try to format it according to the current locale
 function prettify_num($s) {
     if (ctype_digit($s)) {
         $locale_info = localeconv();
-        return number_format($s, 0, $locale_info['decimal_point'], $locale_info['thousands_sep']);
+        # number_format is not multibyte-safe. Who would have thought it?
+        $n = number_format($s);
+        $n = str_replace(',', $locale_info['thousands_sep'], $n);
+        return $n;
     }
     return $s;
 }

@@ -7,7 +7,7 @@
  * Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
  * Email: francis@mysociety.org; WWW: http://www.mysociety.org/
  *
- * $Id: auth.php,v 1.10 2008-12-01 13:46:50 matthew Exp $
+ * $Id: auth.php,v 1.11 2011-08-12 05:39:55 matthew Exp $
  * 
  */
 
@@ -60,7 +60,7 @@ function auth_token_retrieve($scope, $token) {
     $data = pg_unescape_bytea($data);
 
     $pos = 0;
-    $res = rabx_wire_rd(&$data, &$pos);
+    $res = rabx_wire_rd($data, $pos);
     if (rabx_is_error($res)) {
         $res = unserialize($data);
         if (is_null($res))

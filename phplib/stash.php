@@ -6,7 +6,7 @@
  * Copyright (c) 2005 UK Citizens Online Democracy. All rights reserved.
  * Email: chris@mysociety.org; WWW: http://www.mysociety.org/
  *
- * $Id: stash.php,v 1.13 2009-09-14 16:57:52 matthew Exp $
+ * $Id: stash.php,v 1.14 2011-08-12 05:39:56 matthew Exp $
  * 
  */
 
@@ -89,7 +89,7 @@ function stash_redirect($key, $email = NULL, $function = NULL) {
         // For if they changed email address on login screen
         $post_data = pg_unescape_bytea($post_data);
         $pos = 0;
-        $params = rabx_wire_rd(&$post_data, &$pos);
+        $params = rabx_wire_rd($post_data, $pos);
         if (rabx_is_error($params))
             err("Bad serialised POST data in stash_redirect('$key')");
         $params = call_user_func($function, $params, $old_email, $email); 
@@ -142,7 +142,7 @@ function stash_check_for_post_redirect() {
     /* Postgres/PEAR DB BYTEA madness -- see comment in auth.php. */
     $post_data = pg_unescape_bytea($post_data);
     $pos = 0;
-    $stashed_POST = rabx_wire_rd(&$post_data, &$pos);
+    $stashed_POST = rabx_wire_rd($post_data, $pos);
     if (rabx_is_error($stashed_POST))
         err("Bad serialised POST data in stash_check_for_post_redirect('$key')");
 
