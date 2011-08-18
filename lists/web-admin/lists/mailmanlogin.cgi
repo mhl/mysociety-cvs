@@ -12,7 +12,7 @@
 # Email: chris@mysociety.org; WWW: http://www.mysociety.org/
 #
 
-my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.6 2006-06-28 13:16:16 chris Exp $';
+my $rcsid = ''; $rcsid .= '$Id: mailmanlogin.cgi,v 1.7 2011-08-18 14:02:28 matthew Exp $';
 
 use strict;
 
@@ -24,9 +24,10 @@ BEGIN {
 use CGI::Fast;
 use WWW::Mechanize;
 
-my $M = new WWW::Mechanize(agent => "mailmanlogin $rcsid");
+my $M = new WWW::Mechanize();
 my $hh = new HTTP::Headers();
 $M->default_headers($hh);
+$M->agent( "mailmanlogin $rcsid" );
 
 # Details of the local Mailman installation.
 my $mailman_login_url = mySociety::Config::get('MAILMAN_LOGIN_URL');
