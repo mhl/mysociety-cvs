@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: team@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Config.pm,v 1.27 2011-07-26 14:22:16 duncan Exp $
+# $Id: Config.pm,v 1.28 2011-09-07 10:35:25 robin Exp $
 #
 
 package mySociety::Config;
@@ -190,7 +190,7 @@ EOF
 
 Read configuration from FILE.
 
-If the filename ends in .yml, or FILE.yml exists, that file is parsed as
+If the filename contains .yml, or FILE.yml exists, that file is parsed as
 a YAML object which is returned. Otherwise FILE is parsed by PHP, and any defines
 are extracted as config values.
 
