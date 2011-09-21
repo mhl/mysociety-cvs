@@ -5,7 +5,7 @@
 # Copyright (c) 2009 UK Citizens Online Democracy. All rights reserved.
 # Email: louise@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: piwik.py,v 1.27 2010-01-04 17:34:43 louise Exp $
+# $Id: piwik.py,v 1.28 2011-09-21 09:40:52 louise Exp $
 #
 
 import urllib
@@ -87,7 +87,7 @@ class Piwik(source.Source):
         if hash.has_key(key):
             value = hash[key]
         else:
-            value = sum([sub_hash[key] for sub_hash_key, sub_hash in hash.items()])
+            value = sum([sub_hash[key] for sub_hash_key, sub_hash in hash.items() if sub_hash.has_key(key)])
         return value
     
     def __key(self, site_id, period, date): 
