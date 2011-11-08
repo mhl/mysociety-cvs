@@ -7,7 +7,7 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.15 2011-01-19 00:25:05 adam Exp $
+# $Id: aliases-to-wiki,v 1.16 2011-11-08 11:48:58 matthew Exp $
 #
 
 #set -e
@@ -34,7 +34,7 @@ ls -1 ${ALIASDIR} | while read F; do
     # build the content:
     ## for some reason, can't strip the first part in the out line, so
     ## hackily do this...
-    awk '!/^(#|$)/ {print $1}' "${ALIASDIR}/${F}" | while read L; 
+    awk '!/^(#| *$)/ {print $1}' "${ALIASDIR}/${F}" | while read L; 
         do
             SL=`echo ${L} | sed 's/://'`
             grep ^${L} "${ALIASDIR}/${F}" | \
