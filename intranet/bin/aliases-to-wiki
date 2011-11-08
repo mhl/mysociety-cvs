@@ -7,7 +7,7 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.16 2011-11-08 11:48:58 matthew Exp $
+# $Id: aliases-to-wiki,v 1.17 2011-11-08 12:12:23 matthew Exp $
 #
 
 #set -e
@@ -40,7 +40,7 @@ ls -1 ${ALIASDIR} | while read F; do
             grep ^${L} "${ALIASDIR}/${F}" | \
             awk '{sub(/:/,""); out=""; for(i=2;i<=NF;i++){out=$out" "$i}; print "| " $1 " | "$1"@" "'"${F}"'" " | BAA" $out " |" }' | \
             ## and hackily zap that. Ugh.
-            sed "s/BAA${SL}//" >> "${WIKIDIR}/${TF}-unsorted"
+            sed "s/BAA${SL}[ \t]*//" >> "${WIKIDIR}/${TF}-unsorted"
         done
 
     ## a-z is nice:
