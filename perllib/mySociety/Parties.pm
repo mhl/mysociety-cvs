@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Parties.pm,v 1.24 2011-06-16 15:51:45 dademcron Exp $
+# $Id: Parties.pm,v 1.25 2012-08-06 18:21:08 matthew Exp $
 #
 
 package mySociety::Parties;
@@ -118,9 +118,9 @@ display them with.
 
     "Traditional Unionist" => "Traditional Unionist Voice",
 
-    "UK Independence Party" => "UK Independence",
-    "UK Independence" => "UK Independence",
-    "UKIP" => "UK Independence",
+    "UK Independence Party" => "UKIP",
+    "UK Independence" => "UKIP",
+    "UKIP" => "UKIP",
 
     "UU" => "UUP",
     "UUP" => "UUP",
