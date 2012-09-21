@@ -10,7 +10,7 @@
 
 my $contentType = "html"; # set "html" for standalone page, or "plain" for inclusion in TWiki
 
-my @vhostsFilenames = ("/data/servers/vhosts.pl", "./vhosts.pl"); # try in this order: useful for testing
+my @vhostsFilenames = ("/data/vhosts.pl", "./vhosts.pl"); # try in this order: useful for testing
 
 my $isInList = 0;
 
