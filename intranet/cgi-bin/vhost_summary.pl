@@ -41,6 +41,7 @@ while ($vhostsFilename){
     }
 }
 
+my @st = stat $vhostsFilename;
 my %vh = %$vhosts if $vhosts; # $vhosts is declared in vhosts.pl
 my %vhostsByServer; # to contain: e.g., 'balti' => ['dave.fixmystreet.com', 'gut.dave.thingummy']
 my ($totalVhosts, %vhostsByName, %productionVhosts);
@@ -132,6 +133,7 @@ foreach (sort keys %vhostsByName){
 my $cProductionSites = scalar keys %productionVhosts;
 my $selfLink = qq{ | <a href="$0" target="_top">click for full page</a>};
 say("=$vhostsFilename parsed at " . gmtime() . "=" . $selfLink) if $vhostsFilename; 
+presay("Results generated from $vhostsFilename (last updated ".localtime(@st[9]).")");
 presay("Vhosts declared but not on any server: " . join(", ", @homelessVhosts)) if @homelessVhosts;
 presay("Total: $totalVhosts vhosts ($totalUniqueVhosts unique, $cProductionSites production) and $totalUniqueDatabases databases configured across $totalServers servers. $selfLink");
 presay("---+ vhosts.pl summary");
