@@ -15,7 +15,7 @@ use Sys::Syslog;
 BEGIN {
     use Exporter ();
     our @ISA = qw(Exporter);
-    our @EXPORT_OK = qw(&open_log &print_log &printf_log &shell &describe_waitval);
+    our @EXPORT_OK = qw(&open_log &print_log &printf_log &shell &describe_waitval &log_to_stderr);
 }
 our @EXPORT_OK;
 
