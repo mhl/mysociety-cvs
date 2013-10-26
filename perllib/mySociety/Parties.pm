@@ -6,7 +6,7 @@
 # Copyright (c) 2004 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: Parties.pm,v 1.25 2012-08-06 18:21:08 matthew Exp $
+# $Id: Parties.pm,v 1.26 2013-10-26 19:16:10 dademcron Exp $
 #
 
 package mySociety::Parties;
@@ -36,6 +36,7 @@ display them with.
     "Bp" => "Bishop", # House of Lords
     "Bishop" => "Bishop",
 
+    'British Democratic Party' => 'British Democratic Party',
     'BNP' => 'BNP',
     'British National Party' => 'BNP',
 
@@ -49,6 +50,7 @@ display them with.
     "XB" => "Crossbench", # House of Lords
     "Crossbench" => "Crossbench",
     "Judge" => "Judge",
+    "Non-affiliated" => "Non-affiliated",
 
     "DUP" => "DUP",
     "DU" => "DUP",
@@ -77,6 +79,8 @@ display them with.
     "Liberal Democrats" => "Liberal Democrat",
     "Scottish Liberal Democrats" => "Liberal Democrat",
     "Ind LDem" => "Independent Liberal Democrat",
+
+    "NI21" => "NI21", 
 
     "One London Group" => "One London Group",
 
@@ -129,6 +133,8 @@ display them with.
 
     "UKUP" => "UKUP",
     "United Kingdom Unionist Party" => "UKUP",
+
+    "We Demand a Referendum" => "We Demand a Referendum Party",
 
     # Latest Robert Kilroy-Silk vehicle
     "Veritas" => "Veritas",
