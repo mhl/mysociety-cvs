@@ -9,7 +9,7 @@ sub say($) {
 
 my $dir = '/etc/exim4/virtual';
 
-my (@cron, @clientsupport);
+my (@cron, %supports);
 
 while (my $f = <$dir/*>) {
     (my $domain = $f) =~ s{^.*/}{};
@@ -17,11 +17,12 @@ while (my $f = <$dir/*>) {
     open(FP, $f) or die $!;
     while (<FP>) {
         s/\@mysociety.org//g;
-        s/([a-z]*)\@[a-z.]*/<abbr title="$&">$1<\/abbr>/g;
+        s/([a-z-]*)\@[a-z.]*/<abbr title="$&">$1<\/abbr>/g;
         push @cron, $_ if /^cron-/;
-        if (/^clientsupport/) {
+        if (/^(clientsupport|support|staff):/) {
+            my $type = $1;
             s/^.*?: *//;
-            push @clientsupport, "<strong>$domain</strong>: $_";
+            push @{$supports{$type}}, "<strong>$domain</strong>: $_";
         }
     }
     close FP;
@@ -55,7 +56,7 @@ tr td:last-child, tr th:last-child { border-right: 0; }
 <table>
 EOF
 
-foreach (sort @clientsupport) {
+foreach (sort @{$supports{clientsupport}}) {
     my @cols = split /[:,]/, $_, 4;
     say "<tr><td>" . join("</td><td>", @cols) . "</td></tr>";
 }
@@ -70,6 +71,28 @@ EOF
 foreach (sort @cron) {
     my @cols = split /[:,]/, $_, 4;
     @cols = (@cols, "", "")[0..3];
+    say "<tr><td>" . join("</td><td>", @cols) . "</td></tr>";
+}
+print <<EOF;
+</table>
+
+<h3>support@</h3>
+<table>
+EOF
+
+foreach (sort @{$supports{support}}) {
+    my @cols = split /[:,]/, $_, 4;
+    say "<tr><td>" . join("</td><td>", @cols) . "</td></tr>";
+}
+print <<EOF;
+</table>
+
+<h3>staff@</h3>
+<table>
+EOF
+
+foreach (sort @{$supports{staff}}) {
+    my @cols = split /[:,]/, $_, 2;
     say "<tr><td>" . join("</td><td>", @cols) . "</td></tr>";
 }
 say "</table>";
