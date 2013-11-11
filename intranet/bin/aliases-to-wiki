@@ -7,7 +7,7 @@
 # All rights reserved.
 # Email: <adam@mysociety.org>; WWW: http://blog.amyl.org.uk/
 #
-# $Id: aliases-to-wiki,v 1.18 2013-11-11 10:45:24 matthew Exp $
+# $Id: aliases-to-wiki,v 1.19 2013-11-11 10:48:55 matthew Exp $
 #
 
 #set -e
@@ -114,4 +114,4 @@ This section is auto-generated hourly.
 
 EOF
 
-ls -1 /etc/exim4/virtual/ | while read F; do rename -n 's/\./-/g' ${F} | awk '{print $NF}' | perl -ne 'chomp; print qq^   * [[$_]]\n^;'; done >> "${WIKIDIR}/WebHome.txt"
+ls -1 /etc/exim4/virtual/ | while read F; do rename -n 's/\./-/g' ${F} | awk '{print $NF}' | perl -ne 'chomp; print qq^   * [[$_]]\n^;'; done >> "${WIKIDIR}/Reference.txt"
